@@ -585,7 +585,9 @@ public string secure_savefile(string name)
   if(!name||name=="")
     return "";
   name=explode(name,".")[0];
-  if (file_size(SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
+  if (file_size("/"LIBDATADIR"/"SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
+    return "/"LIBDATADIR"/"SECURESAVEPATH+name[0..0]+"/"+name;
+  else if (file_size(SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
     return SECURESAVEPATH+name[0..0]+"/"+name;
 
   return "";
