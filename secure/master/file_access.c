@@ -149,7 +149,10 @@ string make_path_absolute(string str) {
   return _get_path(str, getuid(TP));
 }
 
-
+// Hngl. Inkludieren aus /sys ist hier doof.
+#ifndef FSIZE_DIR
+#define FSIZE_DIR -2
+#endif
 mixed valid_write(string path, string euid, string fun, object obj)
 {
   int s,lvl;
@@ -159,10 +162,16 @@ mixed valid_write(string path, string euid, string fun, object obj)
   if (member(path,' ')!=-1) return 0;
 
   // Unter LIBDATADIR (/data) sollen komplett identische Schreibrechte
-  // vergeben werden.
+  // vergeben werden. Ausnahme ist jedoch fun=="mkdir": hier soll die
+  // Erstellung eines Verezeichnisses jedem erlaubt sein, wenn es das
+  // entsprechende Verzeichnis ausserhalb /data/ schon gibt.
   if (sizeof(path) > 6
-      && path[0..5] == "/"LIBDATADIR"/")
+      && path[0..5] == "/"LIBDATADIR"/") {
+    if (fun=="mkdir")
+        return file_size(path[5..]) == FSIZE_DIR;
+
     return valid_write(path[5..], euid, fun, obj) != 0;
+  }
 
   switch(fun) {
     case "log_file":
