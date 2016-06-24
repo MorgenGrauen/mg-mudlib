@@ -1,0 +1,102 @@
+Units
+
+DEFINIERT IN: 
+        /std/unit.c
+
+BESCHREIBUNG:
+        Das Unit-Objekt kann dazu verwendet werden, um groessere Mengen
+        eines Objektes - wie Muenzen - zu erzeugen.
+
+        Das grundlegende Konzept ist, das Unit-Objekte nicht mehr nur 
+        ueber ihre Namen, sondern auch ueber ihre Menge angesprochen 
+        werden kann.
+
+        So wird das id() der Muenzen nicht nur 'muenzen' sondern auch 
+        '3 muenzen' verstehen und auswerten koennen.
+
+        move() kann Teile des ganzen Unit-Objekts bewegen, ein neuer
+        Clone wird erzeugt und diesem der verbleibende Rest der Menge
+        zugewiesen. Nach erfolgreichem move() schaut das Unit-Objekt am
+        Zielort, ob dort evtl. bereits Units des gleichen Typs vorhanden
+        sind und vereinigt sich ggf. mit ihnen, in dem das alte Unit-
+        Objekt zerstoert wird.
+
+        Unit-Objekte werden in einigen Dinger anders programmiert, dazu
+        gehoert folgendes:
+
+        P_SHORT                 ES WIRD KEINE P_SHORT GESETZT!
+
+        P_AMOUNT                Die Menge des Unit-Objekts 'von Haus aus',
+                                also beim Clonen (daher meistens 1)
+
+        P_NAME                  Bei Unit-Objekten kann hier ein String-Array
+                                in der Form ({ SINGULAR_NAME,PLURAL_NAME })
+                                angegeben werden
+
+        SetCoinsPerUnits        Wieviel ist eine bestimmte Menge wert
+        NICHT P_VALUE
+
+        SetGramsPerUnits        Wieviel wiegt eine bestimmte Menge
+        NICHT P_WEIGHT
+
+        AddSingularId		String-Array mit den Singular-IDs 
+        AddPluralId		String-Array mit den Plural-IDs
+
+        zusaetzlich koennen natuerlich IDs per AddId vergeben werden
+
+        Weiterhin verfuegen Unit-Objekte ueber die Moeglichkeit eines
+        automatischen Zerfalls. Dieser ist steuerbar ueber die Props
+        P_UNIT_DECAY_INTERVAL, P_UNIT_DECAY_QUOTA, P_UNIT_DECAY_FLAGS,
+        P_UNIT_DECAY_MIN. Hierbei wird der Zerfall von der Blueprint des
+        Unit-Objektes gesteuert, was als Zerfallsmaster fungiert, weil Clones
+        nicht unbedingt immer nen Reset haben muessen. Die entsprechenden
+        Props sollten daher in der Blueprint konfiguriert werden. (s. Manpages 
+        und Beispiel)
+
+BEISPIELE:
+        Wir basteln uns ein ganz einfaches Unit-Objekt:
+
+        inherit "/std/unit";
+
+        protected void create()
+        {
+          if(!clonep(this_object())) {
+              set_next_reset(-1);
+              return;
+          }
+          ::create();
+          SetProp(P_LONG,"Das ist die kleine Leiche einer Ameise.\n");
+          SetProp(P_NAME,({ "Ameisenleiche","Ameisenleichen" }));
+          SetProp(P_AMOUNT,1);       // es handelt sich um 1 einziges Objekt
+          SetCoinsPerUnits(20,10);   // 10 Objekte sind 20 Muenzen wert
+          SetGramsPerUnits(1,10);    // 10 Objekte wiegen 1 Gramm
+          
+          AddSingularId( ({ "leiche","ameisenleiche" }) );
+          AddPluralId( ({ "leichen","ameisenleichen" }) );
+          
+          AddId("\n-MeineAmeisenleiche");
+        }
+
+        Wir basteln nun ein Unitobjekt, was zerfallen soll:
+        inherit "/std/unit";
+        protected void create() {
+            // Konfig s.o. ...
+            if (!clonep()) {
+              // Zerfall alle 3h
+              SetProp(P_UNIT_DECAY_INTERVAL, 3*3600);
+              // es zerfallen jeweils 10%
+              SetProp(P_UNIT_DECAY_QUOTA, 1000);
+              // es sollen min. 10 Einheiten jeweils uebrigbleiben
+              SetProp(P_UNIT_DECAY_MIN, 10);
+            }
+        }
+
+SIEHE AUCH:
+        P_AMOUNT, P_NAME, P_UNIT_DECAY_INTERVAL, P_UNIT_DECAY_QUOTA, 
+        P_UNIT_DECAY_MIN, P_UNIT_DECAY_FLAGS
+        DoDecay(), doDecayMessage(), SetGramsPerUnits(), SetCoinsPerUnits(), 
+        AddSingularId(), AddPluralId(), QueryCoinsPerUnits(),
+        QueryGramsPerUnits()
+        /std/unit.c
+
+14.10.2007, Zesstra

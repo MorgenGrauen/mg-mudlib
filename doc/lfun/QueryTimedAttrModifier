@@ -1,0 +1,42 @@
+QueryTimedAttrModifier()
+FUNKTION:
+     mapping QueryTimedAttrModifier(string key)
+
+DEFINIERT IN:
+     /std/living/attributes.c
+
+ARGUMENTE:
+     key	-	aus P_TIMED_ATTR_MOD abzufragender Eintrag
+
+BESCHREIBUNG:
+     Der zu key gehoerende Eintrag in P_TIMED_ATTR_MOD wird abgefragt.
+
+RUeCKGABEWERT:
+     Ein leeres Mapping im Falle eines fehlerhaften key-Argumentes oder 
+     eines nicht existenten Keys.
+     
+     Ansonsten wird ein Mapping der Form
+     
+        ([
+           Key : ([ Mapping mit den Modifikatoren ]) ;
+                 Ablaufzeit ; Ablaufobjekt ; Nachrichtenempfaenger 
+        ])    
+
+     zurueckgegeben.Die Ablaufzeit ist hierbei die Zeit in Sekunden seit
+     dem 1. Jan 1970, 0.0:0 GMT, das Ablaufobjekt ist das Objekt an dessen
+     Existenz die Attributveraenderungen gebunden ist und der
+     Nachrichtenempfaenger ist dasjenigen Objekte welches im Falle 
+     durch den Aufruf von "NotifyTimedAttrModExpired" benachrichtigt 
+     wird sobald das Attribut abgelaufen ist. 
+     Der Funktion NotifyTimedAttrModExpired wird als Argument der key
+     der abgelaufenen Attributveraenderung uebergeben.
+     Das Mapping ist eine Kopie der Originaldatenstruktur zu diesem Key.
+    
+SIEHE AUCH:
+	QueryAttribute(), QueryRealAttribute(), QueryAttributeOffset(),
+	SetAttribute(), SetRealAttribute(), UpdateAttributes(),
+	SetTimedAttrModifier(), DeleteTimedAttrModifier(),
+	P_ATTRIBUTES, P_ATTRIBUTES_OFFSETS, P_TIMED_ATTR_MOD,
+	P_X_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
+----------------------------------------------------------------------------
+Last modified: Tue Jul 27 20:00:20 2004 by Muadib

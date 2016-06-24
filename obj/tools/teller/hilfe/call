@@ -1,0 +1,26 @@
+BEFEHL:
+	'funktion, ''funktion oder
+	->funktion, -->funktion
+
+ARGUMENTE:
+	Alle Stackelemente bis zum letzten Lock.
+	funktion -- Name einer lfun.
+
+FUNKTION:
+	Rufe in dem Objekt oberhalb des letzten Locks, die angegebene
+	Funktion auf und uebergib die folgenden Elemente des Stacks
+	(bis hinauf zum TOS) als Argumente. Entferne den Lock.
+	Wenn mit die Funktion mit zwei Apostrophen oder zwei Minuszeichen
+	gerufen wurde, lege das Ergebnis auf den Stack. (Bei einfachem
+	Apostroph bzw. Minuszeichen also nicht.)
+
+BEISPIEL:
+	,me "das Grauen am Morgen" 'set_title
+	Enspricht:
+	call_other( this_player(), "set_title", "das Grauen am Morgen" );
+
+WARNUNG:
+	Man sollte vorher nachschauen, ob nicht noch etwas auf dem Stack
+	liegt, denn wenn kein Lock da ist, wuerde die Funktion darin
+	aufgerufen werden (mit me und "das Grauen am Morgen" als Argumente),
+	Deshalb besser so: ,,me "das Grauen am Morgen" ''set_title

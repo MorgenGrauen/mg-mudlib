@@ -1,0 +1,12 @@
+SYNOPSIS
+      xtail <-|+#> <file>
+	  or
+	  xtail <-|+#>    (when reading from a pipe)
+
+DESCRIPTION
+      xtail prints the last part of a given file; It reads from a pipe
+	  if no file is given.
+
+EXAMPLES
+      xtail -10 workroom.c prints the last 10 lines of the file workroom.c.
+	  xtail +10 workroom.c prints all lines of workroom.c beginning at line 10.

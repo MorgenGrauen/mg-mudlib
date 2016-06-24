@@ -1,0 +1,42 @@
+FUNKTION:
+        int random(int n)
+
+ARGUMENTE:
+        n: Zahlen-Bereich aus dem gewaehlt werden soll.
+
+BESCHREIBUNG:
+        Gibt eine zufaellige Zahl im Bereich von 0..(n-1) zurueck.
+
+BEMERKUNGEN:
+        Der Nachteil der Zufaelligkeit (ueber grosse Zahlen) ist, dass wenn
+        viele Zahlen in einem kleinen Bereich in kurzer Zeit generiert
+        werden, einige Zahlen sehr viel haeufiger auftreten als andere.
+
+        Es sei nochmal darauf hingewiesen, dass der Bereich immer bei 0 
+        und NICHT bei 1 anfaengt. Ein random(10) geht also nicht von 
+        1..10 sondern von 0..9!
+
+BEISPIELE:
+        // Einfache Abfrage z.B. aus der HitFunc einer Waffe:
+
+        if(random(101) >= 70) return random(11);
+        else                  return 0;
+
+        // Spieler soll in einen zufaellig ausgewaehlten Raum gemovt
+        // werden: 
+
+        string *dest = ({ "raum1","raum2","raum3","raum4","raum5" });
+        this_player()->move(dest[random(sizeof(dest))],M_GO|M_NOCHECK);
+
+        // Es soll eine zufaellige Meldung ausgegeben werden:
+
+        tell_object(this_player(),
+         ({ "Es knackt.\n", "Dir ist kalt.\n", "Du schwitzt.\n",
+            "Du bekommst Angst.\n", "Hinter Dir knackt es im Gebuesch.\n",
+            "Ein kuehler Wind kommt auf.\n" })[random(6)]);
+
+        Wie man sieht, gibt es fuer random() viele schoene Einsatz-
+        moeglichkeiten. Wobei letzteres Beispiel ueber AddRoomMessage
+        (fuer Raeume) viel einfacher umzusetzen ist.
+
+7.Aug 2007 Gloinson

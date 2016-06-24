@@ -1,0 +1,21 @@
+Materialid:
+MAT_NITROGLYCERINE       "nitroglycerine"
+
+Name:
+"Nitroglycerin" "Nitroglycerins" "Nitroglycerin" "Nitroglycerin"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_OIL:25
+MAT_MISC_EXPLOSIVE:50
+MAT_NITROGLYCERINE
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_EXPLOSIVE:100
+MATGROUP_FLUID:100

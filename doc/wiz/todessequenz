@@ -1,0 +1,115 @@
+Eine Todessequenz ist eine ganz normale Textdatei mit folgendem Aufbau:
+In der ersten Zeile steht die Dauer der Todessequenz in heart_beat-Einheiten.
+Es folgen Eintraege der Form <zeit>:<text>. <zeit> ist dabei der Zeitpunkt
+(ebenfalls in heart_beat-Einheiten), in denen der Text <text> ausgegeben
+werden soll. <text> kann sich dabei auch ueber mehrere Zeilen erstrecken;
+Leerzeilen werden 1:1 uebernommen.
+
+Beispiel:
+---- <snip> ----
+70
+1:Vor Dir tut sich ein tiefer, schwarzer Abgrund auf. Ein starker Sog
+versucht, Dich hineinzuziehen.
+
+2:Du balancierst muehsam auf dem Rand des Abgrundes, doch dann wird der
+Sog zu stark!
+
+3:Du faellst! Um Dich herum ist nur noch tiefe Schwaerze.
+... usw.
+---- <snip> ---
+
+Um die Todessequenz ein wenig abwechslungsreicher zu gestalten, kann man
+einige Platzhalter verwenden. Man kann Meldungen einbauen, die abhaenig sind
+
+- vom Geschlecht: dies geht mit <G>mText:wText</G>. mText wird bei maennlichen
+  Toten eingebaut, wText bei weiblichen. Man kann auch einen der Texte weg-
+  lassen; der Doppelpunkt ist jedoch Pflicht!
+  Beispiel:
+    5:Der Tod sagt: KOMM MIT MIR, STERBLICHE<G>R:</G>!
+    6:Der Tod sagt: WAR WOHL NIX, <G>BUERSCHCHEN:FROLLEINCHEN</G>!
+
+- von der Rasse: Dies geht aehnlich wie beim Geschlecht, und zwar in der Form
+  <R>dText|mText|eText|zText|hText|fText</R>.
+  mText wird bei Menschen ausgegeben, eText bei Elfen, zText bei Zwergen,
+  hText bei Hobbits, fText bei Felinen und dText bei allen anderen
+  (zB. Magier mit selbst gesetzten Rassen).
+
+  Wie bei geschlechtsabhaengigen Meldungen koennen auch hier einzelne Texte
+  weggelassen werden.
+
+  Beispiel:
+    1:Der Tod sagt: SCHOEN GESTORBEN, <R>FREMDLING|MENSCHLEIN|SPITZOHR|DREIKAESEHOCH</R>?
+    2:<R>||Der Tod sagt: ELFEN WAREN SCHON LANGE NICHT MEHR HIER!|</R>
+
+- vom Charakter: Der Charakter eines Spielers kann sich im Bereich von -1000
+  (satanisch) bis +1000 (heilig) bewegen. Zwischen <A> und </A> kann man
+  charakterabhaengige Meldungen einbauen. Die Abstufungen werden dabei in der
+  Form ##<Untergrenze>## angegeben, wobei <Untergrenze> die untere Grenze des
+  Charakterwertes ist, ab dem die Meldung ausgegeben wird.
+  Der Text direkt nach <A> entspricht einer Untergrenze von -1000, die
+  weiteren Texte sollten in aufsteigender Reihenfolge angegeben werden.
+  Beispiel:
+    7:<A>
+    Der Tod sagt: AH, EIN SATANIST!
+    ##-999##
+    Der Tod sagt: SO EIN<G>:E</G> SCHLIMME<G>R:</G>!
+    ##0##
+    Der Tod sagt: EIN TYPISCHES UNENTSCHIEDEN...
+    ##1##
+    Der Tod sagt: SO EIN<G>:E</G> LIEBE<G>R:</G>!
+    ##1000##
+    Der Tod sagt: OH, GUTEN TAG, EUER HEILIGKEIT!
+    </A>
+
+- von der Zahl der Tode: Dies geht aehlich wie beim Charakter, allerdings
+  ist der Platzhalter hier <D>...</D>. Die Untergrenze fuer den ersten Text
+  ist 1 (sonst waere der Spieler ja nicht hier ;)
+  Beispiel:
+    8:<D>
+    Der Tod sagt: SCHOEN, DICH AUCH MAL HIER ZU SEHEN!
+    ##2##
+    Der Tod sagt: MACH DIR NIX DRAUS, DAS PASSIERT SCHON MAL!
+    ##20##
+    Der Tod sagt: WAS, DU SCHON WIEDER?
+    ##50##
+    Der Tod sagt: NOCH EINMAL, UND ICH BEHALTE DICH ENDGUELTIG HIER!
+    </D>
+
+- vom Level: Auch hier erfolgt die Auswertung wie beim Charakter, allerdings
+  zwischen den Platzhaltern <L> und </L>. Die Untergrenze fuer den ersten
+  Text ist 0.
+  Beispiel:
+    8:<L>
+    Der Tod sagt: MACH DIR NICHTS DRAUS.
+    ##5##
+    Der Tod sagt: VIELLEICHT SOLLTEST DU DAS NAECHSTE MAL BESSER AUFPASSEN!
+    ##15##
+    Der Tod sagt: SO WIRST DU NIE SEHER ODER MAGIER!
+    ##20##
+    Der Tod sagt: NUR EIN TOTER SEHER IST EIN GUTER SEHER! ;)
+    </L>
+
+- vom Zufall: Und noch mehr Abwechslung... ;) Der Aufbau ist aehnlich dem der
+  vorherigen. Zwischen den Platzhaltern <Z=wert> und </Z> stehen Meldungen der
+  ##x##text, wobei die x die relative Wahrscheinlichkeit (bezogen auf wert)
+  angeben, mit der der Text text ausgegeben wird.
+  Die x sollten zusammengezaehlt wert ergeben! Die Reihenfolge ist zwar
+  prinzipiell egal, aus Performancegruenden sollte man die Texte aber mit
+  absteigender Wahrscheinlichkeit anordnen.
+  Beispiel:
+    9:<Z=6>
+    ##3##
+    Dieser Text wird in 50% aller Faelle ausgegeben (3/6)
+    ##2##
+    Dieser Text in 33% aller Faelle (2/6)
+    ##1##
+    Und dieser Text in 17% aller Faelle (1/6)
+    </Z>
+
+Ausserdem kann man noch den Namen des Toten einbauen, und zwar mit <n> in
+normaler Schreibweise, und mit <N> in GROSSbuchstaben.
+Beispiel:
+  10:Du schaust in den Spiegel und siehst: <n>!
+  11:Der Tod sagt: HALLO, <N>!
+
+

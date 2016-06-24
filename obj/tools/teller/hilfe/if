@@ -1,0 +1,22 @@
+BEFEHL:
+	if
+	
+ARGUMENTE:
+	wenn sonst bedingung(TOS)
+	
+FUNKTION:
+	Wenn der TOS Null ist, liefere das drittoberste Element vom Stack,
+	sonst das zweitoberste. Dieser Befehl ist insbesondere im Zusammen-
+	hang mit "evaluate" interessant.
+	
+BEISPIEL:
+	,"bla" "blubb" 0 if
+		Liefert "blubb"
+	,"bla" "bluibb" 1 if
+		Liefert "bla"
+	,"Q" "R" test if evaluate
+		Werte Q aus, wenn der Wert "test" nicht null ist.
+		Anderenfalls werte R aus.
+
+SIEHE AUCH:
+	"evaluate", "funktionen"

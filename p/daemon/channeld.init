@@ -1,0 +1,65 @@
+# CHANNEL MASTER INIT FILE
+# To create a new channel:
+# <name>:<recv>:<send>:<flags>:<info>:<master>
+Allgemein:   0: 0: 0:Allgemeine Unterhaltungsebene
+Abenteuer:   0: 0: 0:Fragen die Abenteuer betreffen:	/secure/questmaster
+Grats:	     0: 0: 0:Gratulationen zu geloesten Abenteuern etc
+Beileid:     0: 0: 0:Beileidsbekundungen jeglicher Art
+Fraternitas: 0: 0: 0:Fraternitas dono Archmagorum
+Tod:         0:-1: 0:Wer stirbt wann?:/room/death/death_room
+TdT:         15:15:1:Tod den Testies!:/room/death/death_room
+Moerder:     0:-1: 0:Guck mal wer da spricht...:	/std/corpse
+Seher:       1: 1: 1:Diskussionsebene fuer Seher
+ZT:          0: 0: 0:Nuetzliche Tips fuer die Zaubertranksuche
+#
+# Guild channels
+#
+Klerus:      0: 0: 0:Die Priester:			/gilden/klerus
+Bierschuettler: 0: 0: 0:Die Bierschuettler:		/gilden/bierschuettler
+Werwoelfe:   0: 0: 0:Die Werwoelfe:                     /gilden/werwoelfe
+AbGilde:     0: 0: 0:Abenteurer, und solche, die es werden wollen: /gilden/abenteurer
+Zauberer:    0: 0: 0:Die Zauberer:			/gilden/zauberer
+Tanjian:     0: 0: 0:Die Tanjian:                       /gilden/tanjian
+Karate:      0: 0: 0:Die Karateka:			/gilden/karate
+Chaos:       0: 0: 0:Chaoten...:			/gilden/chaos
+Trves:       0: 0: 0:Neues vom Koru Tschakar Struv:     /p/kaempfer/std/k_master
+Magus:       0: 0: 0:Der magische Convent zu Castalla Rosso:  /gilden/magus
+Dunkelelfen: 0: 0: 0:Die Dunkelelfen:			/gilden/dunkelelfen
+Uruk-Hai:    0: 0: 0:Fuer echte Orks:			/gilden/urukhai
+#
+# Wizard channels
+#
+Magier:     15:15: 1:Diskussionsebene fuer Magier
+Erzmagier:  60:60: 1:Erzmagier
+Goetter:   100:100: 1:Goetter
+LPC:        15:15: 1:Fragen zur Programmierung und LPC
+#
+Debug:      20:60: 1:Debug und Fehlermeldungen:		/p/daemon/debug
+Entwicklung: 20:60:1:Fehler rund um Eigenentwicklungen: /p/daemon/debug
+Warnungen:   20:60:1:Laufzeit-Warnungen:		/p/daemon/debug
+Snoop:      60:-1: 1:Wer snoopt denn hier?:		/secure/simul_efun/simul_efun
+FTP:        60:-1: 1:Wer macht denn FTP?:		/secure/bbmaster
+#
+# Intermud channels
+#
+Intermud:    0: 5: 2:Intermud chat (Englisch):		/secure/udp/channel
+Intercode:  20:20: 3:Programmierfragen (Englisch):	/secure/udp/channel
+Interadmin: 45:55: 3:Administration (Englisch):		/secure/udp/channel
+D-chat:	     0: 5: 2:Verbindet Deutsche MUDs:		/secure/udp/channel
+D-linux:     0: 5: 2:Linux im D-Chat:    		/secure/udp/channel
+D-tv-alles:  0: 5: 2:Deutsches TV Programm:		/secure/udp/channel
+D-news:      0: 5: 2:Deutsches Nachrichten:		/secure/udp/channel
+D-code:	    20:20: 3:MUD Programmier Forum:		/secure/udp/channel
+D-adm:      60:60: 3:Deutschsprachige Administration:	/secure/udp/channel
+#
+# special
+#
+Wissenschaft:0: 0: 0:Wissenschaftliche Dispute
+Kultur:	     0: 0: 0:Kulturelle Ereignisse und Erguesse
+Sport:	     0: 0: 0:Sport und Spiel
+Anfaenger:   0: 0: 0:Die Ebene fuer Anfaengerfragen
+twitter:     0: 0: 1:Ein Vogel im Mud?: /secure/misc/twitter
+#
+# Gebietspezifisches
+#
+Metzelorakel:0: 0: 0:Fuer die Metzelwuetigen:		/d/ebene/arathorn/orakel/secure/schamane

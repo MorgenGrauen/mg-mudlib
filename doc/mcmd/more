@@ -1,0 +1,42 @@
+
+more
+----
+
+ MAGIERKOMMANDO:
+    more <datei> [...]
+
+ ARGUMENTE:
+
+     <datei> [...]
+        Dateiname(n)
+
+ BESCHREIBUNG:
+    Die Datei(en) <datei> wird/werden stueckchenweise angezeigt. Nach jeder
+    ausgegebenen Seite wird gestoppt und es koennen verschiedene Aktionen
+    durchgefuehrt werden:
+
+     <RETURN>, f, F
+               Eine Seite vorwaerts
+     d, D      Eine halbe Seite vorwaerts
+     u, U      Eine halbe Seite zurueck
+     b, B      Eine Seite zurueck
+     <zeile>   Springe zu Zeile <zeile>
+     ?         Hilfetext ausgeben
+     q, x      Anzeige der aktuellen Datei abbrechen
+     /<regexp>
+               regulaeren Ausdruck <regexp> suchen
+
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Die Laenge einer Seite kann man mit dem Befehl `zeilen' einstellen.
+
+ BEISPIELE:
+
+    > more /std/npc.c
+    > more *.h
+
+ SIEHE AUCH:
+    cat, head, tail, zeilen
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

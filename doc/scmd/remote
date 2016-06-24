@@ -1,0 +1,53 @@
+
+remote
+------
+
+ SEHERKOMMANDO (erst nach Bestehen der Kristallkugelquest verfuegbar):
+    remote <spieler> <text>
+    r: <spieler> <text>
+    r; <spieler> <text>
+
+ ARGUMENTE:
+
+     <spieler>
+        Name des Ziels.
+     <text>
+        Ein beliebiger Text.
+
+ BESCHREIBUNG:
+    Der Text <text> wird an den Spieler <spieler> ausgegeben. Dem Text wird
+    dabei der eigene Name vorangestellt, und zwar bei `remote' und `r:' im
+    Nominativ und bei `r;' im Genitiv.
+
+    Die Ausgabe erfolgt in folgender Form:
+
+    <eigener Name> text aus der Ferne.
+
+    Das "aus der Ferne" laesst sich durch den Platzhalter # auch an beliebiger
+    Stelle in <text> einbauen.
+
+    Wenn man statt des "aus der Ferne" lieber ein "in der Ferne" haben moechte,
+    so kann man den Platzhalter ^ verwenden.
+
+    Falls man den Platzhalter selber ausgeben moechte, kann man ihn einfach
+    verdoppeln. Aus ## wird dann # und aus ^^ wird ^.
+
+ BEISPIELE:
+    Wenn Wargon mit seinem Tester Saphis unzufrieden ist, kommt es ab und an
+    zu folgenden unschoenen Szenen:
+
+    Wargons Eingaben:
+    > r; saphis Zorn trifft Dich
+    > r: saphis gibt Dir # einen Tritt
+    > r: saphis aergert sich ^ ueber Dich
+
+    Und die Ausgaben bei Saphis:
+    > Wargons Zorn trifft Dich aus der Ferne.
+    > Wargon gibt Dir aus der Ferne einen Tritt.
+    > Wargon aergert sich in der Ferne ueber Dich.
+
+ SIEHE AUCH:
+    emote, echo, verben
+
+ LETZTE AeNDERUNG:
+    Mon, 02.07.2001, 19:00:00 von Tiamak

@@ -1,0 +1,37 @@
+Magier-Manpage
+
+Gildentestie "Katzenkrieger".
+
+
+Es gibt in der Katzenkriegergilde eine Funktion, mit der man einen
+Testspieler erschaffen kann, welcher der Katzenkriegergilde angehoert.
+Die Funktion heisst "make_testplayer" und erwartet als einzigen Parameter
+ein Spieler-Objekt.
+
+
+
+Die Funktion verhaelt sich wie folgt.
+
+Der Spieler muss ein Testspieler sein.
+Der Spieler sollte in die Gilde eintreten koennen.
+Der Spieler lernt alle Spells und Skills der Gilde, die er auf seinem
+derzeitigen Spielerlevel lernen kann.
+Die Spells haben je den hoechstmoeglichen Skillwert, den der Spieler auf
+seinem Level erreichen kann, es sei denn, er kannte den Spell zuvor schon.
+Dann bleibt der Spell unveraendert.
+
+
+
+Um einen Testspieler zu erschaffen, geht man wie folgt vor.
+
+Man nehme einen (eigenen!) Testspieler, z.B. "bambs".
+Man setze ihm das gewuenschte Spielerlevel, z.B. 11
+  xcall bambs->SetProp(P_LEVEL, 11);
+Man gehe in den Gildenraum der Katzenkrieger.
+  goto /gilden/katzenkrieger
+Man rufe die Funktion auf, die einen Katzenkrieger aus dem Testspieler macht.
+  xcall $h->make_testplayer(find_player("bambs"));
+Der Testspieler sollte nun Katzenkrieger sein.
+
+******************************************************************************
+Letzte Aenderung: Tue Jan  7 23:03:16 2003 durch Bambi

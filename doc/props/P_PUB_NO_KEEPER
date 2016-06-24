@@ -1,0 +1,19 @@
+NAME:
+	P_PUB_NO_KEEPER				"pub_no_keeper"
+
+DEFINIERT IN:
+	/sys/pub.h
+
+BESCHREIBUNG:
+        In diese Property kann man einen String schreiben, der ausgegeben
+        wird, wenn der in P_KEEPER eingetragene NPC nicht anwesend ist.
+
+BEMERKUNGEN:
+        Die Standardmeldung ist:
+        "Es ist niemand anwesend, der Dich bedienen koennte.\n"
+
+SIEHE AUCH:
+	/std/room/pub.c
+
+----------------------------------------------------------------------------
+Last modified: Son Apr 11 19:28:00 2010 by Caldra

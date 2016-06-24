@@ -1,0 +1,32 @@
+QueryPronoun()
+
+FUNKTION:
+     string QueryPronoun(int casus);
+
+DEFINIERT IN:
+     /std/thing/language.c
+
+ARGUMENTE:
+     casus
+          Der Fall, in dem das Personalpronomen verlangt wird.
+
+BESCHREIBUNG:
+     Es wird ein Personalpronomen ("er", "sie", "es") im entsprechenden Fall
+     fuer dieses Objekt berechnet.
+
+RUeCKGABEWERT:
+     Das Pronomen im entsprechenden Fall.
+
+BEISPIELE:
+
+     printf("Du versucht, %s zu nehmen, aber %s ist zu schwer.\n",
+           ob->name(WEN), ob->QueryPronoun(WER));
+
+     Hier wird immer das richtige Pronomen verwendet, egal, welches
+     Geschlecht das Objekt ob hat.
+
+SIEHE AUCH:
+     SuggestArticle(), QueryPossPronoun(), /std/thing/language.c
+     QueryOwn()
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:23:14 1996 by Wargon

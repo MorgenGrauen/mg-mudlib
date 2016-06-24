@@ -1,0 +1,65 @@
+NAME
+        strings
+
+DESCRIPTION
+        A string is a data type in LPC.
+
+        It consists of several ASCII characters (letters), numbers
+        and special characters. ASCII characters may contain of
+        values between -128 and 127 (e.g. 'A' (65) or '5' (53)), but
+        0 is not allowed (because strings are 'null terminated',
+        which means that marks the end of a string).
+
+        Notations for strings:
+        "abc" + "def" "ghi" + 5 + "jkl" + to_string( ({'m','n'}) )
+        == "abcdefghi5jklmn"
+
+        Special characters must be escaped with a leading '\':
+          \n   (new line)
+          \t   (tabulator)
+          \b   (backspace)
+          ...
+
+        The single characters can be accessed like an array:
+          string s;
+          int i,j;
+
+          s="test";
+
+          s[0]       (ASCII Code (value) of the first character)     ='t'
+          s[<1]      (last character)                                ='t'
+          s[0..0]    (string composed of the first char)             ="t"
+          s[1..<2]   (string from second to character before last)   ="es"
+          s[2..]     (string from third to last character)           ="st"
+          ...
+
+        String manipulations:
+          s[0]=s[0]-32    ("test" -> "Test")
+          s[1..<2]="o"    ("test" -> "tot")
+          ...
+
+FUNCTIONS
+        int strlen(string str)
+        int member(string s, int elem)
+        int strstr (string str, string str2, int pos)
+        int to_int(string)
+        mixed *to_array(string)
+        string to_string(mixed)
+        string upperstring(string str)
+        string lowerstring(string str)
+        string lower_case(string str)
+        string capitalize(string str)
+        string break_string(string str, int width, int space, int leave_lfs)
+        string sprintf(string fmt, ...)
+        int sscanf(string str, string fmt, mixed var1, mixed var2, ...)
+        string *new_explode(string str, string del)
+        string *explode(string str, string del);
+        string implode(mixed *arr, string del)
+        string *regexplode (string text, string pattern)
+        string *regexp(string *list, string pattern)
+
+SEE ALSO
+        arrays, integers, mappings, operators, types
+
+LAST CHANGED
+        12. Mar 2004 Gloinson

@@ -1,0 +1,65 @@
+
+Forscherpunkte
+==============
+
+ FORSCHERPUNKTE:
+    Damit die Spieler beim Erkunden neuer Gebiete auch an Ortskenntnis
+    gewinnen, muessen an bestimmten Stellen Forscherpunkte (FP) vergeben
+    werden. Dazu ist in den meisten Faellen keine Aenderung an den Objekten
+    selbst noetig, die Punkte muessen jedoch von einem Erzmagier in die
+    FP-Liste eingetragen werden.
+
+    DIE FORSCHERPUNKTE MUESSEN EINGETRAGEN WERDEN, BEVOR DAS GEBIET DEN
+    SPIELERN ZUGAENGLICH GEMACHT WIRD!
+
+    Die Testphase ist eine gute Gelegenheit, sich darueber Gedanken zu machen,
+    wo welche FP vergeben werden koennten.
+
+    Fuer das Eintragen der Forscherpunkte ist derzeit Miril zustaendig.
+
+ WAS FUeR FP KANN ICH VERGEBEN?
+    Folgende Typen von Forscherpunkten stehen zur Verfuegung:
+
+     * Details. Darunter fallen auch SpecialDetails.
+     * ReadDetails.
+     * Sounds und Smells.
+     * Kommandos, soweit sie mit AddCmd() angemeldet werden.
+       Kommandos, die mit add_action() angemeldet werden, koennen aus
+       technischen Gruenden nicht beruecksichtigt werden.
+       Kommandos, die als FPs eingetragen sind, geben genau dann den
+       FP, wenn 1 zurueckgegeben wird.
+     * Ausgaenge bei Raeumen. Darunter fallen auch SpecialExits.
+     * Infos bei NPCs. Das Defaultinfo laesst sich allerdings nicht ohne
+       weiteres verwenden.
+     * Getraenke und Speisen in Kneipen.
+     * Besondere Aktionen sind auch moeglich, dazu muss jedoch noch etwas am
+       Code hinzugefuegt werden. Diese Art von Forscherpunkten sollte man nach
+       Moeglichkeit meiden.
+
+    Pro Objekt laesst sich nur ein FP vergeben. Die FP-Dichte sollte etwa bei
+    einem FP pro zehn Raeume liegen.
+
+    In Questgebieten sollten die FP NICHT fuer Details oder Aktionen vergeben
+    werden, die einen direkt in der Quest weiterbringen, sondern eher fuer
+    solche, die zu den entscheidenen Stellen fuehren. Damit werden Spieler,
+    die sich alles genau ansehen, belohnt, wohingegen Komplettloeser, die nur
+    das noetigste eingeben, leer ausgehen.
+
+ WIE SAG ICHS MEINEM ERZMAGIER?
+    Um die FP eintragen zu koennen, brauchen die Erzmagier eine Liste mit den
+    noetigen Informationen. Zu den noetigen Informationen gehoeren:
+
+     * der Dateiname des Objektes
+     * die Art des FP
+     * die Schluesselwoerter, mit denen der FP angesprochen werden soll
+
+    Die Schluesselwoerter sind normalerweise die Schluessel, die bei den
+    jeweiligen AddXXX()-Aufrufen im Objekt angegeben werden.
+
+    Beispiel:
+
+    /players/wargon/workroom: detail wand, waende
+    /players/wargon/mon/errol: info drachen
+
+ LETZTE AeNDERUNG:
+	Thu, 2013-04-04 von Humni

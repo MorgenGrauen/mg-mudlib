@@ -1,0 +1,11 @@
+BEFEHLE:
+	snoop
+
+ARGUMENTE:
+	keine
+
+FUNKTION:
+	Zeige laufende Snoopvorgaenge an.
+
+	Wenn der Snooper einen hoeheren Magierlevel als man selbst hat,
+	wird der Snoop nicht angezeigt.

@@ -1,0 +1,18 @@
+BEFEHL:
+	stack, stk
+	
+ARGUMENTE:
+	STACK
+	
+FUNKTION:
+	Zeige alle Dinge an, die auf dem Stack liegen.
+	
+BEISPIEL:
+	,me here; 1 2 array stk
+	Ergibt (zum Beispiel):
+	0: ({
+	     1
+	     2
+	   })
+	1: /room/gilde (ein Raum)
+	2: /std/shells/magier#7691 (Atamur)

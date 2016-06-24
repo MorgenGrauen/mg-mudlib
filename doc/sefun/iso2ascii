@@ -1,0 +1,17 @@
+FUNKTION:
+	public string iso2ascii( string str );
+
+ARGUMENTE:
+	str
+	  String, in welchem Zeichen ersetzt werden sollen.
+
+BESCHREIBUNG:
+	In dem String werden alle Nicht-ASCII-Zeichen durch ASCII-Zeichen
+	ersetzt, und zwar Umlaute in der bekannten Form und alle anderen
+	durch ein Fragezeichen.
+
+RUeCKGABEWERT:
+	String mit ASCII-Zeichen.
+
+----------------------------------------------------------------------------
+Last modified: Fri Jul  6 19:36:09 2001 by Patryn

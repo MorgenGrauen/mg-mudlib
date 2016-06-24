@@ -1,0 +1,18 @@
+
+pwd
+---
+
+ MAGIERKOMMANDO:
+    pwd
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Der aktuelle Pfad wird angezeigt.
+
+ SIEHE AUCH:
+    cd, prompt, ls
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

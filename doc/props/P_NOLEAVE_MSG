@@ -1,0 +1,33 @@
+NAME:
+    P_NOLEAVE_MSG                      "noleave_msg"                      
+
+DEFINIERT IN:
+    /sys/thing/moving.h
+
+BESCHREIBUNG:
+     Diese Property enthaelt eine Meldung, die ausgegeben wird, wenn
+     jemand versucht, ein Objekt aus einem Behaelter zu entfernen und der
+     Behaelter dieses im PreventLeave() verhindert.
+     Die Property ist im verhindernden Behaelter zu setzen.
+     Ist diese Property nicht oder auf einen nicht-String-Wert gesetzt,
+     so wird die Standardmeldung ausgegeben.
+     ("Du kannst <Objekt> nicht nehmen.")
+     Der String in der Property wird noch durch replace_personal()
+     verarbeitet, das zu bewegende Objekt wird als erstes, der verhindernde
+     Behaelter als zweites Objekt angegeben. Danach wird der String auf 78
+     Zeichen umgebrochen.
+     Das Setzen eines leeren Strings unterdrueckt die Ausgabe einer Meldung
+     ganz.
+
+BEISPIELE:
+     Nur Bierschüttler sollen eine Bierflasche aus einem Kasten nehmen
+     koennen, neben einer entsprechenden Behandlung im PreventLeave setzt man
+     dazu die Property:
+     SetProp(P_NOLEAVE_MSG, "Nur Bierschuettler duerfen das!");
+
+SIEHE AUCH:
+     Aehnliches: P_TOO_HEAVY_MSG, P_ENV_TOO_HEAVY_MSG, P_TOO_MANY_MSG,
+                 P_NOINSERT_MSG, P_NODROP, P_NOGET 
+     Erfolg:     P_PICK_MSG, P_DROP_MSG, P_GIVE_MSG, P_PUT_MSG,
+                 P_WEAR_MSG, P_WIELD_MSG
+     Sonstiges:  replace_personal(E), /std/living/put_and_get.c

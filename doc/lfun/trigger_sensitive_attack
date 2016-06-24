@@ -1,0 +1,75 @@
+trigger_sensitive_attack()
+
+FUNKTION:
+     varargs void trigger_sensitive_attack(object enemy, string key, int
+     dam, mixed spell, mixed *options);
+
+DEFINIERT IN:
+     eigenen sensitiven Objekten, wird aufgerufen von
+     /std/living/inventory.c
+
+ARGUMENTE:
+     enemy
+          Der Gegner, der die Aktion ausgeloest hat.
+     key
+          Der ausloesende Schadenstyp.
+     dam
+          Der angerichtete Schaden.
+     spell
+          Wie bei Defend().
+     options
+          Array mit den in P_SENSITIVE angegebenen Optionen fuer diese
+          Aktion.
+
+BESCHREIBUNG:
+     Wenn der bei einem Angriff zugefuegte Schaden den in P_SENSITIVE
+     angegebenen Grenzwert uebersteigt sowie der als Schluessel angegebene
+     Schadenstyp in den Schaedenstypen des Angriffes vorkommt, wird diese
+     Funktion aufgerufen und kann entsprechend reagieren.
+
+RUeCKGABEWERT:
+     keiner
+
+BEISPIELE:
+     Eine Fackel, die sich bei Feuerattacken selbst entzuendet und bei
+     Wasserattacken verloescht, koennte man wie folgt implementieren:
+
+     inherit "/std/lightsource.c"
+
+     #include <properties.h>
+     #include <sensitive.h>
+     #include <combat.h>
+
+     create()
+     {
+       ::create();
+
+       SetProp(...); // die ueblichen Eigenschaften definieren
+
+       SetProp(P_SENSITIVE,
+           //  Ereignis          Key       Grenze (keine Optionen)
+         ({ ({ SENSITIVE_ATTACK, DT_FIRE,  100 }),
+            ({ SENSITIVE_ATTACK, DT_WATER, 100 }) }) );
+     }
+
+     varargs void
+     trigger_sensitive_attack(object enemy, string key,
+                              int dam, mixed spell)
+     {
+       // Es soll nicht verschwiegen werden, dass das Entzuenden und
+       // Loeschen einer Lichtquelle so leider nicht funktioniert...
+       if (key == DT_FIRE && !QueryProp(P_LIGHTED)) {
+         SetProp(P_LIGHTED, 1);
+         tell_object(environment(), "Die Fackel faengt Feuer.\n");
+       }
+       else if (key == DT_WATER && QueryProp(P_LIGHTED)) {
+         SetProp(P_LIGHTED, 0);
+         tell_object(environment(), "Die Fackel verlischt.\n");
+       }
+     }
+
+SIEHE AUCH:
+     trigger_sensitive_inv(), sensitive Objekte
+
+----------------------------------------------------------------------------
+Last modified: Sun May 19 15:56:25 1996 by Wargon

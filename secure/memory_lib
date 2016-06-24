@@ -1,0 +1,9 @@
+# Objekte die in dieser Datei stehen, haben die Berechtigung 
+# /secure/memory.c zu nutzen.
+#
+# Diese Datei wird mit dem Mudlib-Release verteilt, daher duerfen
+# hier nur Objekte aufgenommen werden die zur Standard-Mudlib
+# gehoeren
+/p/daemon/channeld
+/p/daemon/traveld
+/secure/shadowmaster

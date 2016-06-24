@@ -1,0 +1,41 @@
+Was ist zu tun, wenn ich jemanden bei einem Regelverstoss erwische?
+===================================================================
+
+        Grundsaetzlich solltet ihr den Sheriff, einen der Deputies oder
+        einen Erzmagier benachrichtigen.
+
+        Ist kein Magier aus dieser Gruppe anwesend oder sind diese nicht
+        ansprechbar, so empfiehlt sich die folgende Handlungsweise.
+
+        Sprecht den Spieler auf sein Fehlverhalten an und weist ihn darauf
+        hin, dass dies an den Sheriff gemeldet wird, damit er die
+        Gelegenheit hat seine Sicht der Situation festzuhalten und
+        ebenfalls an den Sheriff zu senden.
+        Dieser Hinweis sollte deutlich erfolgen und auch eventuelle Taub-
+        oder Blindheit beruecksichtigen, es empfiehlt sich tell_object()
+        bzw. echoto zu verwenden.
+
+        Sollte der Spieler nicht reagieren und mit seinem Verhalten andere
+        Spieler im Spiel beeintraechtigen, so sollte er nach /room/jail
+        befoerdert werden. Verwendet dazu bitte die Methode move im
+        Player, anstatt ins Jail zu gehen und ihn dann zu transen. Bei
+        letzterem setzt Ihr euch selbst fest.
+
+        Bitte seht von Zaps, Disconnects oder Aehnlichem ab, soweit andere
+        Moeglichkeiten bleiben. Bei den, durchaus nicht unueblichen,
+        obszoenen Level-1-Rufern ist ein Disconnect durchaus angebracht.
+
+        Sendet dem Sheriff eine kurze Beschreibung der Situation und was
+        Ihr unternommen habt.
+
+        Bitte ueberprueft sorgfaeltig bevor Ihr handelt, ob es sich
+        ueberhaupt um einen Regelverstoss handelt und ob die Situation
+        nicht auch ohne obige Eingriffe geklaert werden kann.
+
+
+ SIEHE AUCH:
+    leitfaden
+
+ LETZTE AeNDERUNG:
+    Wed, 30.08.2000, 11:35:00 von Muadib
+

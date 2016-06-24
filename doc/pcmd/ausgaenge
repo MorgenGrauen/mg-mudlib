@@ -1,0 +1,28 @@
+
+ausgaenge
+---------
+
+ KOMMANDO:
+    ausgaenge [auto]
+    ausgang [auto]
+    aus [auto]
+
+ ARGUMENTE:
+
+     auto (optional)
+        Schaltet automatische Ausgangsanzeige aus/ein
+
+ BESCHREIBUNG:
+    Mit `ausgaenge' werden alle unmittelbar sichtbaren Ausgaenge aus dem Raum,
+    in dem man sich gerade befindet, ausgegeben. Dieser Befehl ist von Nutzen,
+    wenn man sich die Raumbeschreibung nicht durchlesen will. Mit `ausgang
+    auto' werden die unmittelbar sichtbaren Ausgaenge automatisch ausgegeben,
+    ein weiteres `ausgang auto' schaltet die automatische Anzeige wieder ab.
+
+    *Aber*: Es gibt Raeume, die versteckte Ausgaenge haben!
+
+ SIEHE AUCH:
+    schau (an), kurz, bewegung
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

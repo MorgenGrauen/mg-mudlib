@@ -1,0 +1,24 @@
+Materialid:
+MAT_NUTTREE              "nuttree"
+
+Name:
+"Nussbaumholz" "Nussbaumholzes" "Nussbaumholz" "Nussbaumholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+hell, polierfaehig
+
+Erkennbarkeit:
+MAT_MISC_DECIDUOUS_WOOD:15
+MAT_NUTTREE
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_DECIDUOUS_WOOD:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

@@ -1,0 +1,95 @@
+
+                          Scheidung einer MG-Ehe
+                          ======================
+
+  Die Hochzeit im MorgenGrauen ist ein sehr unterschiedlich durchgefuehrtes
+  Ritual, das mit der Hilfe von NPCs oder auch Spielern vorgenommen werden
+  kann. Aufgrund dieser Vielfalt muessen einige Dinge beachtet werden, wenn
+  man eine Hochzeit rueckgaengig machen will.
+
+  Da dabei auch Properties im Spieler geloescht, ggf. Logfiles editiert und
+  Objekte im Spielerinventar zerstoert werden muessen, empfiehlt es sich,
+  diesen Vorgang von einem Magier mit entsprechender Erfahrung und insbeson-
+  dere den noetigen Schreibrechten in der Unterwelt durchfuehren zu lassen.
+
+  1) Grundsaetzliches zur Hochzeit
+ 
+     a) P_MARRIED:
+
+        Property im Spieler, die den Namen des Ehepartners als lowercase 
+        String enthaelt (UID, z.B. "boing"). Diese Property wird von allen 
+        Objekten, die eine Hochzeit durchfuehren koennen, identisch
+        verwendet.
+
+     b) Priester:
+
+        Neben Mitgliedern der Klerus-Gilde koennen Hochzeiten von folgenden
+        NPCs durchgefuehrt werden:
+        /d/unterwelt/chris/monster/priester.c     (Kapelle in der Unterwelt)
+        /d/polar/files.chaos/feuerwehr/mon/cl2_xruur.c       (Chaospriester)
+
+     c) Verlobungs- und Eheringe:
+        
+        Als Eheringe kommen verschiedene Objekte im MG zum Einsatz:
+        /d/unterwelt/chris/objekte/ring.c       (Ring vom Unterweltpriester)
+        /d/polar/files.chaos/feuerwehr/obj/cl2_ehering.c    (schwarzer Dorn)
+        /gilden/files.klerus/ehering.c                (Ring der Klerusgilde)
+
+        Zusaetzlich existiert noch ein Verlobungsring von Rikus:
+        /players/rikus/obj/verlring.c
+        Ein verheirateter Spieler kann diesen Ring zusaetzlich im Inventar
+        haben. Er wird bei der eigentlichen Hochzeit nicht zerstoert.
+
+        Die beiden Ehepartner sowie das Datum des Hochzeitstags werden 
+        zusaetzlich zur Spieler-Property (s. 1a) als Autoload-Daten 
+        in den Ringen abgespeichert.
+
+     d) Logfiles:
+ 
+        Je nachdem, welcher Priester die Hochzeit durchfuehrt, wird der
+        erfolgreiche Abschluss der Zeremonie in unterschiedlichen Logs
+        protokolliert.
+
+        - Die Bluthochzeit der Chaoten in
+          /d/polar/files.chaos/feuerwehr/save/BuchDerHassenden
+        - Die Hochzeit der Kleriker in
+          /log/klerus/HEIRAT
+        - Die Hochzeit in der Unterwelt-Kapelle in
+          /d/unterwelt/chris/HOCHZEITSBUCH
+          und
+          /log/hochzeiten.chris
+
+  2) Vorgehensweise zur Aufloesung der Ehe
+
+     a) Loeschen von P_MARRIED in _beiden_ Spielern (SetProp(P_MARRIED,0))
+        und anschliessendes Speichern des Spielers
+
+     Ist der zweite Spieler netztot, kann die Property direkt gesetzt werden.
+     Sollte der zweite Spieler nicht existieren, weil er inzwischen 
+     geloescht wurde, reicht es, die Property im verbleibenden Spieler 
+     zu aendern (dies wird haeufig auch der Grund der Bitte um Scheidung
+     sein).
+
+     Sollte der zweite Spieler in der laufenden Uptime noch nicht eingeloggt
+     gewesen sein, kann die Property nur von einem Erzmagier mit Hilfe 
+     der Funktion __create_player_dummy() zurueckgesetzt werden.
+
+     b) Zerstoeren _beider_ Eheringe. Falls jedoch von dem Ehepartner 
+        kein Spielerobjekt existiert, ist es nicht moeglich, dessen 
+        Ehering zu zerstoeren.
+
+     c) zerstoeren evtl. vorhandener Verlobungsringe, falls gewuenscht.
+
+     d) Im Fall von Hochzeiten, die in der Unterweltkapelle durchgefuehrt
+        wurden, ist es offenbar Tradition, dass die Scheidung dort in Form
+        eines Zusatzes zum Logfile-Eintrag nachgetragen wird. Beispiel:
+        [...] "Cassandra und Viper  (ges.: Don, 02. Nov 1995, Wargon)"
+        Dies soll auch in Zukunft beibehalten werden. Fuer die Aenderung
+        sind Schreibrechte in der Region Unterwelt erforderlich.
+
+
+  SIEHE AUCH:
+     Properties:  P_MARRIED
+     Klerusgilde: man traue (/doc/g.klerus/traue)
+
+Arathorn, 04.01.2010

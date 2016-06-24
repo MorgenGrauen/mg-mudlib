@@ -1,0 +1,27 @@
+P_REFERENCE_OBJECT
+NAME:
+     P_REFERENCE_OBJECT            "reference_object"
+
+DEFINIERT IN:
+     /sys/player/description.h
+
+BESCHREIBUNG:
+     In dieser Propertie wird das aktuelle Bezugsobjekt eines Spielers 
+     gespeichert. Untersucht der Spieler ein Monster, so ist dies das 
+     Monsterobjekt, untersucht der Spieler sich selber, ist es das 
+     Spielerobjekt.
+
+     Der Inhalt dieser Propertie besteht also immer aus dem zuletzt 
+     betrachteten Objekt. Sei es ein Raum, eine Ruestung, ein Monster oder 
+     was auch immer. Bewegungsbefehle und andere Kommandos werden nicht 
+     beruecksichtigt.
+
+     Einzig wenn der Spieler 'schau' tippt, wird der Inhalt der Propertie 
+     geloescht und betraegt 0.
+
+SIEHE AUCH:
+     Sonstiges:		P_INT_LONG, P_LONG, P_SHORT
+			int_long(), long(), short(), make_invlist()
+
+----------------------------------------------------------------------------
+Letzte Aenderung: 29.06.02, 23:50:00 h, von Tilly

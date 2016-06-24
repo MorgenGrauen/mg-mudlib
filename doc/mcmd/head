@@ -1,0 +1,20 @@
+
+head
+----
+
+ MAGIERKOMMANDO:
+    head <datei>
+
+ ARGUMENTE:
+
+     <datei>
+        Die auszugebende Datei
+
+ BESCHREIBUNG:
+    Die ersten zehn Zeilen der Datei <datei> werden ausgegeben.
+
+ SIEHE AUCH:
+    cat, tail, more
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

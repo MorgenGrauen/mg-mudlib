@@ -1,0 +1,32 @@
+
+Kaempfen
+========
+
+     Kaempfen, auch allgemein als Metzeln bekannt ist eine der Lieblings-
+     sportarten diverser Gilden und aktiver Spieler. Dabei sucht man sich
+     einen moeglichst interessant ausgestatteten NPC, bringt ihn um und
+     benutzt dessen ehemaliges Hab und Gut um einen weiteren NPC zu toeten.
+     Das ist beliebig iterierbar.
+
+     Ein Kampf ist in Kampfrunden aufgeteilt, die durch den Herzschlag
+     bestimmt sind. Benutzt man eine Waffe oder hat Haende frei, so greift
+     man mit diesen einen Gegner an, dessen Haut und Ruestung schuetzt
+     davor. Dann greifen der oder die Gegner an.
+
+     In jeder Kampfrunde kann man zusaetzlich mit Zauberei oder Objekten
+     Schaden verursachen oder den Kampf beeinflussen. Wie oft das moeglich
+     ist, haengt von Seherstatus, (Seher)level und eigener Geschwindigkeit
+     ab.
+
+     Gerade schwierigere Monster koennen nur im Team besiegt werden. In
+     der Parallelwelt, die nur fuer Seher erreichbar ist, sind die Monster
+     manchmal auch noch etwas staerker oder hinterhaeltiger.
+
+ SIEHE AUCH:
+     Verwandt: toete, stop, report, team
+     Anderes:  heilung, leben, tod 
+               zauberei, waffenfertigkeiten
+               balance, abenteuer
+
+ LETZTE AeNDERUNG:
+    14. Maerz 2004 Gloinson

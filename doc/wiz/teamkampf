@@ -1,0 +1,113 @@
+
+Teamkampf im MorgenGrauen
+=========================
+
+Zum Teamkampf im MG gehoeren zwei Objekte: Das Lebewesen, das im Team ist,
+sowie das Teamobjekt. Ersteres erbt seine Funktionalitaet aus
+
+/std/living/team.c
+
+das Teamobjekt ist ein clone von
+
+/obj/team.c
+
+Allerdings sollte man immer das #define fuer diesen Pfad nutzen, welches
+in /sys/living/team.h definiert ist: TEAM_OBJECT
+
+Darueberhinaus gibt es in diesem Verzeichnis noch den Teammaster.
+
+
+Alle relevanten Funktionen und Properties sind im Teammitglied abrufbar und
+liefern Informationen ueber den Teamkampf.
+
+
+UEBERSICHT ueber die Properties und Funktionen des Teamkampfs
+=============================================================
+
+Properties des Teammitglieds:
+----------------------------
+P_TEAM                 - Teamobjekt
+P_TEAM_NEWMEMBER       - Spieler moechte ins Team hiervon aufgenommen werden.
+P_TEAM_ATTACK_CMD      - Angriffsbefehl des Spielers, nicht setzbar.
+P_TEAM_AUTOFOLLOW      - Folgewunsch des Spielers, nicht setzbar.
+P_TEAM_WANTED_ROW      - Gewuenschte Reihe des Spielers.
+P_TEAM_WIMPY_ROW       - Fluchtreihe des Spielers.
+P_TEAM_LEADER          - Spieler ist Anfuehrer dieses Teams.
+P_TEAM_ASSOC_MEMBERS   - Alle zugeordneten NPCs bzw. der Spieler dem dieser
+                         NPC zugeordnet ist.
+P_TEAM_COLORS          - Grenzwerte fuer farbige Anzeige.
+
+Funktionen des Teammitglieds:
+----------------------------
+TeamPrefix()           - "[Team Teamname] " falls Teammitglied, "" sonst.
+IsTeamLeader()         - Test ob Spieler Anfuehrer eines Teams ist.
+IsTeamMove()           - Test ob Angriffsbewegung gerade ausgefuehrt wird.
+TeamMembers()          - Teammitglieder.
+PresentPosition()      - Aktuelle Reihennummer des Spielers.
+PresentTeamPositions() - Reihennummern aller anwesenden Teammitglieder.
+PresentTeamRows()      - Reihen aller anwesenden Teammitglieder.
+PresentEnemyRows()     - Reihen aller anwesenden Feindteams zusammen.
+SelectNearEnemy()      - Waehlt direkt angreifbaren Feind aus.
+SelectFarEnemy()       - Waehlt Feind aus hinteren Reihen aus.
+InsertEnemyTeam()      - Macht alle Mitglieder von Team des Feindes zu
+                         Feinden aller Mitglieder des eigenen Teams.
+AssocMember()          - Assoziiert einen HilfsNPC mit einem Spieler.
+DeAssocMember()        - Hebt Assoziation zwischen NPC und Spieler auf.
+TeamFlee()             - Spieler wird veranlasst in Fluchtreihe zu wechseln.
+
+Funktionen des Teamobjekts:
+--------------------------
+SwapRows()             - Spieler tauschen die Reihen
+
+
+BEISPIEL:
+  Man moechte von einem Spieler, welcher sich in einem Team befindet, alle
+  Teammitglieder sowie deren Anzahl ermitteln, die VOR diesem Spieler stehen.
+
+  Im abfragenden Objekt muss man zunaechst die Headerdatei des Teamkampfs
+  includen:
+
+  #include "/sys/living/team.h"
+
+
+  void fun( object pl )
+  {
+   int act_row,all;
+   mixed *rows;
+   object team,*team_members;
+
+   team=pl->QueryProp(P_TEAM);           // liefert das Teamobjekt
+
+   act_row=pl->PresentPosition();        // aktuelle Position ermitteln
+
+   team_members=({});
+
+   if ( objectp(team) && (act_row > 1) )
+    {
+     rows=team->PresentRows(ENV(pl));    // die Reihen werden als mixed-array
+                                         // uebergeben
+
+     foreach ( int i : act_row )
+      team_members+=rows[i];             // die Reihen werden komplett ins
+                                         // neue Array uebertragen
+    }
+
+   all=sizeof(team_members);             // Anzahl der Teammitglieder, die
+                                         // vor dem Spieler stehen
+  }
+
+
+SIEHE AUCH:
+        Properties: P_TEAM, P_ASSOC_MEMBERS, P_TEAM_ATTACK_CMD,
+                    P_TEAM_AUTOFOLLOW, P_TEAM_COLORS, P_TEAM_LEADER,
+                    P_TEAM_NEWMEMBER, P_TEAM_WANTED_ROW, P_TEAM_WIMPY_ROW
+        Bewegung:   IsTeamMove, TeamFlee
+        Mitglieder: IsTeamLeader, TeamMembers
+        Kampf:      AssocMember, DeAssocMember, InsertEnemyTeam
+                    SelectNearEnemy, SelectFarEnemy
+        Positionen: PresentPosition, PresentRows, PresentEnemyRows,
+                    PresentTeamPosition, SwapRows
+        Sonstiges:  TeamPrefix, teamkampf_intern
+
+----------------------------------------------------------------------------
+Last modified: 16-08-2010, Gabylon

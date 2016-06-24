@@ -1,0 +1,66 @@
+ Das Questsystem wird in MorgenGrauen von einem zentralen Questhandler
+gesteuert. Dieser stellt die folgenden Funktionen zur Verfuegung:
+
+AddQuest(string questname, int questpoints, int experience,
+         string *allowedobj, string hint, int difficulty, int needed)
+ Diese Funktion definiert eine Quest und gibt sie zur Benutzung durch die
+ Spieler frei. Sie darf nur von Erzmagiern aufgerufen werden.
+ Bedeutung der Parameter:
+   questname gibt den Namen der zu definierenden Quest an. Es darf bereits
+             eine Quest dieses Namens geben, ihre Parameter werden dann
+             geaendert.
+   questpoints gibt die Zahl der Questpunkte an, die der Spieler fuer die
+               Loesung dieser Quest angerechnet bekommt. Muss >0 sein.
+   experience gibt die Zahl der Erfahrungspunkte an, die der Spieler fuer
+              eine Quest bekommen kann. DIESE ZAHL KANN <0 SEIN!
+   allowedobj ist ein Array mit den Filenamen der Objekte, die diese Quest als
+              durch einen Spieler geloest kennzeichnen duerfen. Darueberhinaus
+              duerfen Erzmagier dies immer tun.
+   hint ist ein String, der Tips zur Loesung der Quest enthaelt. Dieser String
+        wird dem Spieler vom Orakel als Hinweis gegeben.
+   difficulty ist eine Zahl zwischen 0 und 20, die den "Schwierigkeitsgrad"
+              der Quest angibt. 0 hat eine besondere Bedeutung, naemlich die,
+              das keine Einschaetzung vorliegt.
+   needed legt fest, ob die Quest von einem Spieler geloest werden muss, be-
+          vor er Magier werden kann. Falls needed !=0 ist, MUSS er die Quest
+          loesen, unabhaengig von der 90%-Regel.
+
+RemoveQuest(string questname);
+ Gegenstueck zu AddQuest, loescht eine Quest. Kann natuerlich ebenfalls nur
+ von Erzmagiern aufgerufen werden. DIE SPIELER, DIE DIE QUEST SCHON GELOEST
+ HABEN, BEHALTEN DIE ENTSPRECHENDEN QUESTPUNKTE !!
+
+QueryReadyForWiz(object player)
+ Dieser Funktion muss ein Playerobjekt uebergeben bekommen und prueft, ob
+ der Spieler seitens der Quests bereit ist zur Aufstufung zum Magier, dh
+ ob er 90% der QP sowie alle zwingend vorgeschriebenen Quests (siehe
+ AddQuest, Parameter needed) geloest hat. Falls dies der Fall ist, liefert
+ die Funktion eine 1 zurueck. Wenn er die 90% nicht hat, eine -1. Falls
+ ihm noetige Quests fehlen, eine Liste der nicht geloesten, noetigen Quests.
+
+QueryQuest(questname)
+ Liefert eine -1, falls keine Quest dieses Names eingetragen ist, sonst
+ einen Array mit den Daten der Quest, in der Reihenfolge, in der sie in
+ AddQuest eingegeben werden. Dabei ist questpoints das erste Arrayelement.
+
+QueryAdvanceExp(object player)
+ Stellt fest, ob der Spieler player genuegend Questpunkte hat, um seine
+ Erfahrung zu erhoehen.
+
+-----------------------------------------------------------------------------
+ Weiterhin enthaelt jedes Playerobjekt ein Quest-Modul, das die folgenden
+Funktionen offeriert:
+
+GiveQuest(string questname)
+ Markiert eine Quest bei dem Player als geloest. Es wird getestet, ob die
+ Aktion von einem "allowed_object" vorgenommen wird. Die Questpunkte werden
+ entsprechend geupdated.
+
+QueryQuests()
+ Gibt eine Alist mit den Namen der vom Player geloesten Quests zurueck.
+
+QueryQP()
+ Gibt die Anzahl der vom Player erreichten Questpunkte zurueck.
+
+QueryQuest(string questname)
+ Stellt fest, ob ein Spieler die Quest geloest hat oder nicht.

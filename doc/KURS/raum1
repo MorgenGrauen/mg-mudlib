@@ -1,0 +1,137 @@
+
+	PROGRAMMIERUNG VON RAEUMEN - TEIL 1
+	von Don Rumata, MudAdm des MorgenGrauens
+	=============================================================
+
+	Ein Raum ist sehr einfach zu programmieren. Man fuellt
+	ihn mit den Informationen, die man in ihm haben will.
+
+	Am besten erklaert sich alles an einem Beispiel. Zu den
+	Funktionen sind in /doc/efuns und /doc/lfuns weitere
+	Informationen erhaeltlich.
+
+	Nachfolgend kannst Du einen (zugegebeneermassen ueber-
+	ausfuehrlich) dokumentierten Beispielraum finden.
+	In /doc/beispiele/raum1.c kannst Du den selben Raum
+	noch einmal (ohne Kommentare) finden. Den Raum
+	kannst Du uebrigens auch betreten.
+
+/* beispielraum.c von Rumata */
+
+inherit "std/room";
+	// Alle Raeume muessen diese Zeile enthalten, da in dem
+	// Standardraum wichtige Funktionen definiert werden, die
+	// innerhalb des Spieles benoetigt werden.
+
+#include <properties.h>
+	// In diesem File sind die Namen der Properties definiert.
+	// Fuer naehre Informationen kannst Du in
+	// /doc/concepts/properties und in /doc/properties.h
+	// nachschauen, da es sehr viele verschiedene Properties
+	// gibt.
+
+#include <language.h>
+	// Diese Module enthalten alle Definitionen im Zusammenhang
+	// mit Sprache. Siehe /doc/language.h
+
+create()
+// Diese Funktion wird automatisch aufgerufen, wenn der Raum geladen
+// wird. Das passiert beim Kommando "load /doc/beispiel/bspraum1" oder
+// wenn ein Spieler den Raum als erster betritt.
+{
+	::create();
+	// Diese Funktion darf NIEMALS fehlen! Sie sorgt dafuer, dass
+	// der Raum auch die allgemeine Initialisierung durchfuehrt,
+	// da diese hier die der "Mutter-Klasse" std/room ueberlaedt.
+
+	SetProp( P_INT_SHORT, "Ein kleines Schreibzimmer" );
+	SetProp( P_INT_LONG,
+		"Du stehst in einem kleinen Schreibzimmer.\n"
+	+	"Es gehoerte wohl irgendwann einmal einem Magier, aber nun\n"
+	+	"ist dieser Raum verwaist und rottet vor sich hin.\n"
+	+	"Ein grosser Schreibtisch in der Mitte des Raumes scheint\n"
+	+	"noch einigermassen gut erhalten zu sein. Durch die Tuer\n"
+	+	"im Norden faellt etwas Licht hinein.\n"
+	);
+	SetProp( P_LIGHT, 1 );
+	SetProp( P_INDOORS, 1 );
+	// Diese Properties MUESSEN in JEDEM Raum gesetzt werden.
+	// P_INT_SHORT	= Beschreibung fuer Spieler im "kurz"-Modus.
+	// P_INT_LONG	= Beschreibung fuer Spieler im "lang"-Modus.
+	// P_LIGHT	= 1 fuer Hell, 0 fuer Dunkel
+	// P_INDOORS	= 1, wenn man den Himmel nicht sehen kann.
+
+	AddDetail( ({ "schreibtisch", "tisch" }),
+		"Auf dem Tisch liegt eine dicke Staubschicht.\n"
+	+	"Eine Schublade findest Du ebenfalls.\n"
+	);
+	AddDetail( ({ "staub", "staubschicht", "schicht" }),
+		"Du malst gelangweilt einige Kreise in den Staub.\n"
+	);
+	AddDetail( "schublade",
+		"So sehr Du Dich anstrengst; Du kannst sie nicht bewegen.\n"
+	);
+	AddDetail( "tuer" ,
+		"Sie steht seit Jahren offen und ist in dieser Lage\n"
+	+	"hoffnungslos festgerostet.\n"
+	);
+	// Details sind Dinge, die man sich in einem Raum anschauen
+	// aber nicht nehmen kann. Je mehr Details ein Raum hat, destso
+	// schoener ist er. Schaut sich ein Spieler ein Detail an,
+	// so bekommt der die angegebene Beschreibung.
+
+	AddRoomCmd( ({ "schliesse", "oeffne", "bewege",
+		"schliess", "beweg" }), "beweg_etwas" );
+	// RoomCommands sind Befehle, die man in diesem ausfuehren kann.
+	// Es wird die angegebene Funktion ausgefuehrt.
+	// WICHTIG: Als Verben sollten immer die IMPERATIVE benutzt
+	//	werden! Also nicht "lese", sondern "lies".
+	
+	AddExit( "norden", "players/rumata/workroom" );
+	// Definition eines Ausgangs. Das zeite Argument bestimmt den
+	// Raum, den ein Spieler erreicht, wenn er in die angegebene
+	// Richtung geht.
+
+}
+
+beweg_etwas( str )
+// Wenn ein Spieler ein Kommando ausfuehrt, so wird alles, was hinter
+// dem Verb steht als String uebergeben, es landet also hier in "str".
+// WICHTIG: Wenn der Befehl abgearbeitet wird, MUSS er eine 1 zurueck-
+//          geben. Wenn der Befehl nichts Sinnvolles tuen konnte, eine 0.
+{
+	notify_fail( "Was willst Du denn bewegen ?" );
+	// Meldung, die der Spieler bekommt, wenn ausser dem Raum auch
+	// kein anderes Objekt den Befehl verarbeiten konnte.
+	if( str == "tuer" )
+	{
+		write( "Die Tuer ist hoffnungslos festgerostet.\n" );
+		// Write gibt eine Meldung an den Spieler (und nur an ihn)
+		// aus.
+		return 1;
+		// Das Kommando bewirkt zwar aus Sicht des Spielers
+		// nichts, aber es konnte abgearbeitet werden.
+		// Also gib eine 1 zurueck.
+	}
+	if ( str == "lade" || str == "schublade" )
+	{
+		write( "Die Schublade klemmt einfach nur.\n" );
+		return 1;
+	}
+	if ( query_verb() == "bewege" &&
+		( str == "tisch" || str == "schreibtisch" ) )
+	{
+		write(
+			"Der Tisch scheint am Boden festgeschraubt zu sein.\n"
+		);
+		say(
+			this_player()->name(WER,2)+" zerrt am Schreibtisch.\n"
+		);
+		// say gibt eine Meldung an alle Spieler im selben
+		// Raum wie der Spieler (aber nicht an ihn selbst) aus.
+		return 1;
+	}
+	return 0;
+	// Der Raum konnte nichts mit dem Kommando anfangen, also gib
+	// eine 0 zurueck.
+}

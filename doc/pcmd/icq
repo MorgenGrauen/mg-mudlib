@@ -1,0 +1,21 @@
+
+icq
+---
+
+ KOMMANDO:
+    icq [<nummer>]
+
+ ARGUMENTE:
+
+     <nummer> (optional)
+        Die neue Nummer
+
+ BESCHREIBUNG:
+    Wenn Du eine ICQ-Nummer hast kannst Du sie mit diesem
+    Kommando eintragen.
+    Ohne <nummer> wird die aktuelle Nummer angezeigt, ist sie 'keine',
+    so wird die Nummer geloescht.
+
+ SIEHE AUCH:
+    Persoenliche Details: email, url, messenger, ort
+    Sonstiges:            finger

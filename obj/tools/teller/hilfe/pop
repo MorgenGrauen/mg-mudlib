@@ -1,0 +1,8 @@
+BEFEHL:
+	pop
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Nimm das oberste Element vom Stack.

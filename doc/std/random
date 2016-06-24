@@ -1,0 +1,71 @@
+Es gibt im MG zwei Quellen von Pseudo-Zufallszahlen.
+
+1) random()
+  Diese efun liefert eine Zufallszahl aus dem Pseudo-Zufallszahlengenerator
+  (PRNG) des Drivers. (s. Manpage).
+  Wenn keine besonderen Gruenden vorliegen, sollte immer diese verwendet
+  werden.
+
+
+2) /std/util/rand-glfsr.c
+  Falls jemand aus irgendeinem Grund eine Sequenz von Pseudo-Zufallszahlen
+  braucht, die spaeter reproduzierbar sein soll (d.h. der Seed muss
+  konfigurierbar sein), gibt es unter /std/util/rand-glfsr.c einen simplen,
+  nicht allzu guten und sehr ineffizienten Pseudo-Zufallszahlengenerator.
+
+Interface:
+* public varargs void init(int seed, int newp)
+  Setzt das Seed (und das Erzeugungspolynom, wenn gewuenscht, wovon ich
+  aber abraten wuerde). Der Seed darf nicht 0 sein.
+* public void InitWithUUID(string uuid)
+  Berechnet einen Seed aus der uuid und initialisiert den PRNG damit (und dem
+  Default-Polynom).
+* public int nextbit()
+  Liefert ein zufaelliges Bit (also 0 oder 1).
+* public int nextbits(int count)
+  Liefert <count> Bits (max 64) in einem int.
+* public int random(int n)
+  Liefert eine Zufallszahl zwischen 0 und n-1, in welcher 32 bits an 
+  Pseudozufall stecken.
+  Das Seed von der Blueprint wird vermutlich staendig veraendert (d.h.
+  verlasst euch nicht drauf, dass es konstant bleibt), wollt ihr eine
+  'private' Instanz mit eurem Seed, clont das Objekt (aber verliert den Clone
+  nicht).
+
+  Und um es nochmal zu sagen:
+  Die IMHO einzige sinnvolle Anwendung ist, wenn man aus irgendeinem Grund
+  das seed selber waehlen muss, damit man die Sequenz von Pseudozufall immer
+  wieder reproduzieren kann.
+  In allen anderen Faellen nehmt besser das random() vom Driver.
+
+Der PRNG benutzt ein Linear Feedback Shift Register (in Galois-Variante). Die
+Periodenlaenge des per Default benutzten Erzeugngspolynoms ist 2^32 - 1, d.h.
+nach 4294967295 Bits wiederholt sich die Sequenz.
+Das Default-Polynom ist:
+x^32 + x^31 + x^28 + x^27 + x^24 + x^23 + x^20 + x^19 + x^16 + x^15 + x^12
+     + x^11 + x^8 + x^7 + x^5 + x^3 + 1
+(Zahlenwert: 0x1999999a8)
+
+Wer ein anderes Polynom will, kann das per init() konfigurieren, sollte sich
+aber schlau machen, welche sinnvoll nutzbar sind.
+
+
+Ein paar statistische Daten eines Stroms von 40960 Bits:
+Value Char Occurrences Fraction
+  0            20474   0.499854
+  1            20486   0.500146
+
+Total:         40960   1.000000
+
+Entropy = 1.000000 bits per bit.
+
+Optimum compression would reduce the size
+of this 40960 bit file by 0 percent.
+
+Chi square distribution for 40960 samples is 0.00, and randomly
+would exceed this value 95.27 percent of the times.
+
+Arithmetic mean value of data bits is 0.5001 (0.5 = random).
+Monte Carlo value for Pi is 3.109026964 (error 1.04 percent).
+Serial correlation coefficient is -0.008399 (totally uncorrelated = 0.0).
+

@@ -1,0 +1,25 @@
+KOMMANDO:
+	Selbstloeschung
+
+ARGUMENTE:
+	keine
+
+BESCHREIBUNG:
+	Der Charakter wird unwiderruflich aus dem Spiel entfernt. Auch evtl.
+	noch vorhandene Briefe werden entfernt.
+	Wenn man Seher oder Magier ist, wird der Name des Charakters
+	zusaetzlich gebanisht, damit sich nicht aus Versehen ein Neuling mit
+	einem beruehmten oder aber auch beruechtigten Namen einloggt, was
+	sicher zu einiger Verwirrung fuehren wuerde.
+	Will man nur auf absehbare (oder auch unabsehbare) Zeit nicht mehr 
+	spielen, so sollte man besser den Befehl 'Spielpause' benutzen.
+
+	Als letzten Vorschlag: Wenn Du Dich zu diesem Schritt entschlossen hast,
+	ueberlege Dir, ob Du den Mitspielern, die Du kennst, nicht noch eine
+	Mitteilung schicken magst, sie koennten sich sonst Sorgen machen. 
+
+SIEHE AUCH:
+	spieldauer, spielpause, loeschskript
+
+----------------------------------------------------------------------------
+Letzte Aenderung: 14.02.2007 von Zesstra

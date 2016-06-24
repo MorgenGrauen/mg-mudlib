@@ -1,0 +1,50 @@
+QueryUser()
+
+FUNKTION:
+     public object QueryUser()
+
+DEFINIERT IN:
+     /std/npc/combat.c
+     /std/clothing/wear.c
+     /std/weapon/combat.c
+     alle Objekte, in denen es darueber hinaus noetig ist
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Liefert den aktuellen Nutzer (Lebewesen) eines Items oder NPCs.
+     
+     Diese Funktion wird z.B. von get_killing_player() benutzt, um
+     herauszufinden, zu welchem Spieler denn das Objekt gehoert, was den
+     toedlichen Schaden verursacht hat.
+
+     Im Falle eines NPCs ist dies standardmaessig der Spieler, bei dem der
+     NPC als Helfer-NPC eingetragen ist (s. RegisterHelperNPC).
+     Im Falle einer Ruestung ist es das Lebewesen, welches sie gerade traegt.
+     Im Falle einer Waffe ist es das Lebewesen, welches sie gerade gezueckt
+     hat.
+     Alle anderen Objekte enthalten keinen Default fuer diese Funktion.
+
+RUeCKGABEWERT:
+     Das nutzende Lebewesen, falls es ermittelt werden konnte, sonst 0.
+
+BEMERKUNGEN:
+     Sollte in allen Objekten definiert werden, welche Lebewesen Schaden
+     zufuegen, ohne dass das verursachende Lebewesen dabei als Feind im
+     Defend() angeben wird.
+     Der gelieferte Nutzer muss explizit kein Spieler sein. Es waere z.B.
+     moeglich, dass von einem Spieler kontrollierter NPC einen Bumerang nutzt.
+
+BEISPIELE:
+     Ein von einem Spieler beschworenes Wesen wirft einen Bumerang nach einem
+     Feind.
+     Dann liefert QueryUser() im Bumerang den NPC als Nutzer und
+     QueryUser() im NPC wiederum den Spieler.
+     
+SIEHE AUCH:
+     RegisterHelperNPC(), get_killer_player()
+     P_WORN, P_WIELDED
+----------------------------------------------------------------------------
+12.11.2013, Zesstra
+

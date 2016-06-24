@@ -1,0 +1,25 @@
+#!/usr/local/bin/perl
+
+$mode = 0;
+$T1="mixed|float|int|string|object|void|quoted_array|symbol|closure|mapping";
+$T2="mixed \*|float \*|int \*|string \*|object \*|void \*|quoted_array \*|symbol \*|closure \*|mixed \&";
+$TYPES="\($T1|$T2\)";
+
+while( <> ) {
+	chop $_;
+	if( $mode == 0 && $_ eq "%efuns" ) {
+		$mode = 1;
+	} elsif( $mode == 1 && $_ eq "%xcodes" ) {
+		$mode = 2;
+	} elsif( $_ =~ "#endif" && $mode == 3 ) {
+		$mode = 1;
+	} elsif( $mode == 1 ) {
+		if( $_ =~ m"#ifndef NATIVE" || $_ =~ m"#ifdef MALLOC_malloc" ) {
+			$mode = 3;
+		} elsif( $_ ne "" && $_ !~ m"^.\*" && $_ !~ "^#" ) {
+			s/default: \w*//;
+			s/$TYPES/mixed/g;
+			print "$_\n";
+		}
+	}
+}

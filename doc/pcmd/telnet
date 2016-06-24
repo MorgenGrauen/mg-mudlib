@@ -1,0 +1,34 @@
+
+telnet
+------
+
+ KOMMANDO:
+    telnet <kommando> <argumente>
+
+ ARGUMENTE:
+
+     <kommando>
+        Eines von den unten angebenen Kommandos, um bestimmte Aspekte der
+        Kommunikation des Muds mit dem Client einzustellen.
+
+     <arguments>
+        Argumente fuer das jeweilige telnet Kommando
+
+ BESCHREIBUNG:
+    Dies ist ein Sammelkommando, um Einfluss auf die Eigenschaften der
+    Kommunikation vom Mud mit dem Client nehmen zu koennen oder sich diese
+    anzeigen zu lassen.
+    Moegliche Kommandos sind:
+    * keepalive
+      Stellt ein, dass regelmaessig Daten vom MG zum Client geschickt werden,
+      damit die Verbindung aufrechterhalten wird.
+      Fuer Details s. Hilfeseite telnet_keepalive
+    * rttime
+      Ausgabe der letzten gemessenen "round-trip time" vom MG zum Client
+      in Mikrosekunden (1s == 1000000 Mikrosekunden)
+
+ SIEHE AUCH:
+    telnegs, telnet keepalive, telnet gmcp
+
+ LETZTE AeNDERUNG:
+    03.02.2013, Zesstra

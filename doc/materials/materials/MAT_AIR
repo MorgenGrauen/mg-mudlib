@@ -1,0 +1,19 @@
+Materialid:
+MAT_AIR                  "air"
+
+Name:
+"Luft" "Luft" "Luft" "Luft"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_GAS:100
+MATGROUP_INVIS:100
+MATGROUP_ELEMENTAL:100

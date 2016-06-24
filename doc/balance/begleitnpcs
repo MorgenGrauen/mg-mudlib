@@ -1,0 +1,22 @@
+BEGLEITNPCS
+-----------
+
+Manche NPCs unterstuetzen den Spieler im Kampf und laufen mit ihm mit.
+Als Regeln fuer diese NPCs hat die Balance folgende Regeln aufgestellt:
+
+a. NPCs _muessen_ sich im Spieler registrieren.
+b. Man darf nur einen Kampfhelfer zur gleichen Zeit beschwoeren, ausnahmen
+koennen statische NPCs nach Absprache sein.
+c. Kein Kampfhelfer darf eine staerkere Resistenz als -0.5 haben
+d. Ist ein Kampfhelfer in einer bestimmten Kathegorie (Angriff, verteidigung
+...) deutlich besser als Durchschnittliche Gilden-NPCs, muss er entsprechende
+Nachteile mitbringen. Denkbar waeren z.B.: Kurze Haltbarkeit, teuer in der
+Anschaffung, teuer im Unterhalt, kann nicht betankt/geheilt/bewegt werden, hat
+nur wenig LP, grosse Anfaelligkeiten usw.
+e. Im Normalfall sollten Begleit-NPCs nicht in Teams eintreten. Eine Ausnahme
+koennte z.B. ein Bogenschuetze, der sich in die zweite Reihe stellt oder etwas
+in der Art sein. 
+
+Zum Registrieren der NPCs siehe RegisterHelperNPC und UnregisterHelperNPC.
+
+2011-02-22, Humni

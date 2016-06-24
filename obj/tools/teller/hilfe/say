@@ -1,0 +1,17 @@
+BEFEHL:
+	say
+
+ARGUMENTE:
+	keine
+
+FUNKTION:
+	Schalte die Meldung, die andere Spieler bekommen, wenn man
+	mit den Tellern arbeitet, aus oder an.
+
+	Ist man unsichtbar, gibt es in keinem Fall eine Meldung.
+
+	Durch Anschauen der Teller kann man feststellen, ob Mispieler
+	die Meldungen bekommen.
+
+SIEHE AUCH:
+	"names", "inform"

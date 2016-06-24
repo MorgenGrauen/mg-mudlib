@@ -1,0 +1,26 @@
+
+shutdown
+--------
+
+ ERZMAGIERKOMMANDO:
+    shutdown <grund>
+
+ ARGUMENTE:
+
+     <grund>
+        Der Grund fuer den Neustart
+
+ BESCHREIBUNG:
+    Mit diesem Befehl wird das Spiel SOFORT heruntergefahren. Man sollte
+    diesen Befehl nur benutzen, wenn es wirklich dringend notwendig ist; fuer
+    einen Neustart mit Verzoegerung steht Armageddon immer gern zur
+    Verfuegung. Er sollte eigentlich immer gewaehlt werden, da die Spieler
+    dann auch Zeit haben, sich auf den Neustart einzustellen.
+
+    Dieser Befehl steht nur Erzmagiern und Goettern zur Verfuegung.
+
+ SIEHE AUCH:
+    `/obj/shut' (Armageddon)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

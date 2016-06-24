@@ -1,0 +1,30 @@
+
+weg
+---
+
+ KOMMANDO:
+    weg [<text>]
+
+ ARGUMENTE:
+
+     <text>
+        Erklaert die Abwesenheit
+
+ BESCHREIBUNG:
+    Ist man einmal fuer laengere Zeit nicht anwesend und kann nicht auf
+    Mitteilungen reagieren, so kann man den Grund mit diesem Kommando kund und
+    zu wissen tun.
+
+    Wenn Dir nun jemand etwas mitteilt, erhaelt er die Meldung
+
+    <name> ist gerade nicht da: <text>
+
+    und braucht sich nicht zu wundern, wieso keine Antwort kommt.
+
+    Ohne Argument wird die Kennzeichnung wieder aufgehoben.
+
+ SIEHE AUCH:
+    teile (mit), erzaehle, wegmeldung
+
+ LETZTE AeNDERUNG:
+    25. Apr 2011 Gloinson

@@ -1,0 +1,32 @@
+KOMMANDO:
+	senderwiederholung [<Status>]
+
+ARGUMENTE:
+	<Status>
+             : aktuellen Status anzeigen  
+	  EIN: Senderwiederholung einschalten.
+	  AUS: Senderwiederholung ausschalten.
+
+BESCHREIBUNG:
+        Bei der Kommunikation per teile mit und sag wird der Sender vor dem
+        mitgeteilten Text dargestellt. Bisher erfolgte das vor jeder Zeile.
+        Mit 'senderwiederholung aus' wird der Sender nur noch einmal darge-
+        stellt. Entweder am Anfang der Zeile, wenn es nur eine Zeile ins-
+        gesamt ist. Oder vor dem Text, wenn es mehrere Zeilen sind.
+
+BEISPIEL:
+         'senderwiederholung ein' (standard)
+         Ennox teilt Dir mit: das ist ein
+         Ennox teilt Dir mit: laengerer Beispieltext
+         Ennox teilt Dir mit: fuer 'senderwiederholung'
+
+         'senderwiederholung aus'
+         Ennox teilt Dir mit: 
+          das ist ein laengerer Beispieltext 
+          fuer 'senderwiederholung'
+
+SIEHE AUCH:
+	teile mit, sage, klingelton, grafik aus, ebenen
+
+LETZTE AENDERUNG:
+   16. Mai 2007  Ennox

@@ -1,0 +1,24 @@
+
+setmmout
+--------
+
+ SEHERKOMMANDO:
+    setmmout [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        Die neue Ausgangsmeldung.
+
+ BESCHREIBUNG:
+    Mit diesem Kommando kann die Meldung definiert werden, die andere Spieler
+    sehen, wenn man aus dem Raum teleportiert wird. Dabei wird dem Text <text>
+    noch Dein Name vorangestellt.
+
+    Laesst man <text> weg, wird wieder die Defaultmeldung verwendet.
+
+ SIEHE AUCH:
+    setmout, setmmin, setmin, review
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,59 @@
+
+ RESISTANCE MODIFIER:
+    Soll ein Objekt in einem Spieler ResistanceModifier setzen, gelten
+    folgende Regeln:
+
+    a) Es muss sich um eine Ruestung handeln (in ganz seltenen Faellen
+       werden auch Waffen mit dieser Moeglichkeit erlaubt). Bei Ruestungen
+       muss _nicht_ AddResistanceModifier() benutzt werden, sondern es 
+       genuegt, P_RESISTANCE_STRENGTH in der Ruestung zu setzen.  Dabei 
+       werden _anders_ als bei AddResistanceModifer() Prozentwerte der 
+       maximal erlaubten Resistenz fuer den entsprechenden Ruestungstyp 
+       angegeben. Diese werden beim Tragen der Ruestung automatisch
+       in tatsaechliche Resistenzen des Traegers umgerechnet.
+       (Beispiel siehe "man P_RESISTANCE_STRENGTHS").
+
+    b) Das Objekt muss natuerlich genehmigt werden.
+
+    c) Die Summe aller Resistenzen darf max. -0.15 betragen. Ausserdem
+       muessen zu jedem Schadenstyp gleichzeitig Empfindlichkeiten in
+       mindestens gleicher Staerke bei einem anderen Schadenstyp gesetzt
+       werden oder die Resistenzen muessen mit anderen Nachteilen (z.B.
+       Aufloesung des Objekte bei Angriff mit einem bestimmten Schadenstyp)
+       ausgeglichen werden.
+       
+       Bei Ruestungen darf maximal eine relative Resistenz von 
+       (logischerweise) 100% eingetragen werden. 100% in der Property
+       P_RESISTANCE_STRENGTH einer Ruestung bedeuten folgende Resistenzen
+       im Traeger:
+       
+       AT_ARMOR,
+       AT_SHIELD : -0.15
+       
+       AT_CLOAK,
+       AT_RING,
+       AT_AMULET : -0.10
+       
+       AT_MISC   : nicht gestattet!
+
+       andere    : -0.05
+       
+    d) Zur leichteren 'Identifizierbarkeit' sollten die ResistanceModifier
+       sollten die gesetzten Modifier auch in dem setzenden Objekt als
+       P_RESISTANCE_STRENGTHS gesetzt werden. Bei Ruestungen MUSS dies
+       geschehen (siehe a) ).
+
+    e) Es duerfen keine mechanischen Resistenzen gesetzt werden. Schutz
+       vor mechanischen Angriffen wird durch die Ruestungen sowieso 
+       schon gewaehrt (im Gegensatz zu Schutz vor nichtmechanischen). Und
+       NEIN, da gibt es keine Ausnahmen!
+
+ SIEHE AUCH
+
+     balance, ruestungen, waffen, fernwaffen, uniques, npcs,
+     attributsveraenderungen, kampfobjekte, grenzwerte
+
+
+------------------------------------------------------------------------------
+ LETZTE AeNDERUNG:
+    2003-08-29, Zook.

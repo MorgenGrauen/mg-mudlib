@@ -1,0 +1,28 @@
+drop_obj()
+
+FUNKTION
+    int drop_obj(object ob);
+
+DEFINIERT IN:
+
+    /std/living/put_and_get.c
+
+ARGUMENTE:
+
+    ob  Das Objekt, das von dem Lebewesen, in dem diese Funktion aufgerufen
+        wird, fallengelassen werden soll.
+
+BESCHREIBUNG:
+
+    Das Lebewesen, in dem diese Funktion aufgerufen werden soll, laesst
+    den angegebenen Gegenstand fallen, wenn dies moeglich ist.
+
+RUeCKGABEWERT:
+    1, wenn das Objekt fallen gelassen wurde oder dies nicht moeglich war.
+    (in diesem Fall wird auch direkt eine Textausgabe ausgegeben)
+    0 sonst, in diesem Fall wird in notify_fail eine passende Ausgabe
+    plaziert.
+
+SIEHE AUCH:
+
+    find_obs(), give_obj(), pick_obj(), put_obj(), /std/living/put_and_get.c

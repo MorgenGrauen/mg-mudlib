@@ -1,0 +1,23 @@
+
+ausruestung
+--------
+
+ KOMMANDO:
+    ausruestung [-k] [farben]
+
+ ARGUMENTE:
+    farben  -  startet die Farbkonfiguration.
+    -k      -  gibt eine Kurzvariante ohne ASCII-Grafik aus.
+
+ BESCHREIBUNG:
+    Zeigt eine graphische Ausgabe der getragenen Ausruestung an.
+    Mittels des Arguments -k wird unabhaengig von 'grafik ein/aus' eine
+    kuerzere Version ohne ASCII-Grafik angezeigt.
+    Die Farbkonfiguration erlaubt, die Darstellung fuer ungewoehnlich
+    eingestellte terminals anzupassen.
+    
+ SIEHE AUCH:
+    behalte, inventur
+
+ LETZTE AeNDERUNG:
+    14.08.2009, Zesstra

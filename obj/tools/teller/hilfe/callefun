@@ -1,0 +1,25 @@
+BEFEHL:
+	`funktion, ``funktion oder
+	-*funktion, --*funktion
+
+ARGUMENTE:
+	Alle Stackelemente bis zum letzten Lock.
+	funktion -- Name einer efun.
+
+FUNKTION:
+	Rufe die angegebene efun auf, und uebergebe alle Stackelemente
+	bis zum letzten Lock als Argumente. Entferne den Lock.
+	Wenn die efun mit doppelten Backquotes oder Minuszeichen ('``' oder
+	'--*') aufgerufen wurde, lege das Ergebnis auf den Stack. (Bei
+	einfachem '`' also nicht.)
+
+BEISPIEL:
+	,me `environment
+	Enspricht:
+	environment( this_player() );
+
+WARNUNG:
+	Man sollte vorher nachschauen, ob nicht noch etwas auf dem Stack
+	liegt, denn wenn kein Lock da ist, werden zuaetzlich noch
+	ungewunschte Argumente mituebergeben.
+	Deshalb besser so: ,,me ``environment

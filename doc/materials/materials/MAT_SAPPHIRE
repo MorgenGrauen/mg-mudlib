@@ -1,0 +1,21 @@
+Materialid:
+MAT_SAPPHIRE             "sapphire"
+
+Name:
+"Saphir" "Saphirs" "Saphir" "Saphir"
+
+Geschlecht:
+M
+
+Beschreibung:
+blau
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_SAPPHIRE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

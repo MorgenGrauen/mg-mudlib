@@ -1,0 +1,200 @@
+
+Hallo, willkommen in den unendlichen Weiten der Regionsverzeichnisse!
+
+Du moechtest in einer Region mitprogrammieren? Prima, neue kreative 
+Mitarbeiter sind jederzeit willkommen! Du bist herzlich eingeladen, mit 
+Deinen Ideen zur Entwicklung beizutragen.
+
+Um die Programmierung und anschliessende Abnahme fuer alle Beteiligten
+moeglichst reibungslos zu gestalten, seien Dir die in dieser Hilfeseite
+genannten Dinge ans Herz gelegt. Diese lassen sich in folgende Kategorien
+einteilen:
+
+1) Formales zum Codestil
+2) Inhaltliche Anforderungen
+3) Was nicht akzeptiert wird
+4) Was ist vor dem Anschluss zu beachten?
+
+
+1) Formales zum Codestil
+
+o  #pragma strong_types,save_types soll in allen Files verwendet werden,
+   ab Driver-Version LD_3.5.x wird auch rrtt_checks dringend empfohlen.
+
+o  Der Code soll keine Zeilen mit mehr als 78 Zeichen enthalten.
+
+o  Der Code soll sauber eingerueckt und sorgfaeltig formatiert sein, aber
+   bitte ohne Tabulatoren.
+
+o  Verwende keine Lambda-Closures! Was auch immer Du vorhast: Es geht
+   ohne. Es sei ausdruecklich auf die Moeglichkeit von inline-Closures
+   verwiesen, wenn Du unbedingt vermeiden willst, eine separate Funktion
+   zu schreiben.
+
+o  Kommentiere Deinen Code! Insbesondere dort, wo komplexere Objekt-
+   Interaktionen stattfinden, oder wo implizit besondere Eigenschaften
+   (z.B. der Mudlib, oder mathematische "Features") genutzt werden, die im
+   Code nicht auf den ersten Blick ersichtlich oder durchschaubar sind.
+   Daumenregel: "Wenn Du laenger als eine Minute ueber eine Zeile nachdenken
+   musstest, kommentiere sie." ;-) Rechne immer damit, dass jemand, der
+   Deinen Code liest, keine Ahnung hat, was Du da eigentlich tust. :-)
+
+o  Wirf bitte nach Abschluss der Arbeiten Platzhalter-Code raus (z.B. leere
+   AddDetail()-Anweisungen) und entferne nicht fuer das Gebiet benoetigte
+   Dateien aus den Verzeichnissen.
+
+o  Speicherung von Daten in secure-Verzeichnissen soll bitte nur sehr
+   sparsam erfolgen und nur in Abstimmung mit dem RM.
+
+o  save_object() bitte sehr sparsam verwenden (nicht bei jeder Daten-
+   aenderung, bei Bedarf in reset/remove).
+
+o  Wenn Defines zum Einsatz kommen, verwende sie bitte moeglichst sparsam
+   und sorge dafuer, dass Defines klar als solche erkennbar sind. Ausser in
+   Faellen, wo es gar nicht anders geht, solltest Du keine Code-Defines
+   verwenden, die mehr umfassen als einfache Funktionsaufrufe wie z.B.
+      #define TP this_player()
+   Fuer uebliche Standardfaelle existiert bereits eine Headerdatei in der 
+   Mudlib unter /sys/defines.h. 
+
+o  Solltest Du bestimmte Ereignisse in Deinem Gebiet loggen wollen (z.B.
+   (Mini-)Questabschluesse oder besondere Kills), dann benutze bitte 
+   log_file(), so dass die Logfiles nach /log/ geschrieben werden. Zusaetzlich
+   werden so erstellte Logfiles automatisch bei Erreichen einer bestimmten
+   Dateigroesse rotiert, so dass sich der Platzverbrauch in Grenzen haelt.
+   Das Protokollieren mittels write_file() in Regionsverzeichnissen unter 
+   /d/ ist grundsaetzlich NICHT erwuenscht. 
+   Nach Absprache KANN es fuer SELTENE und WICHTIGE Meldungen erlaubt werden,
+   mittels write_file(() nach /log/ zu schreiben.
+
+o  Wenn Du in Deinem Gebiet Daten oder Code ablegst, der nicht fuer 
+   jedermanns Augen bestimmt ist (Questloesungen, Gebietskarten, Savefiles
+   von questrelevanten (Master-)Objekten), solltest Du in Abstimmung mit
+   Deinem Regionsmagier ueberlegen, diese in ein ./secure/-Verzeichnis
+   zu verschieben, damit sichergestellt ist, dass auch tatsaechlich nur
+   berechtigte Magier darauf Zugriff erhalten. Denn bedenke, dass Lese-
+   und Schreibrechte nur fuer Codedateien geprueft werden, jedoch nicht
+   fuer beliebige sonstige Textdateien.
+
+o  Es sei ausdruecklich auf die Manpages "goodstyle", "effizienz", etc.
+   verwiesen.
+
+
+Das soll jetzt nicht heissen, dass der Anschluss von Code kategorisch
+abgelehnt werden wird, der diese Formalien nicht erfuellt. (Ausnahme: Lambda-
+Closures werden in den Regionen nicht mehr akzeptiert.) Ich moechte aber
+wirklich nachdruecklich darum bitten, sie aus einem einfachen Grund
+einzubauen: Du wirst nicht immer der einzige sein, der Deinen Code lesen und
+warten muss, auch in Deiner Abwesenheit koennen Bugs auftreten. Und dann ist
+es wesentlich einfacher, einen Minimalstandard zu haben, der es allen
+ermoeglicht, den Code auch im MG zu lesen und dort zu fixen. Denn nicht immer
+wird es moeglich sein, sich Dateien herunterzuladen und lokal zu bearbeiten.
+
+Zum Bugfixing an dieser Stelle aus aktuellem Anlass eine Anmerkung: Es wird
+von jedem aktiven Regionsmitarbeiter erwartet, dass er einen Fehlerteufel
+(/obj/tools/fehlerteufel) besitzt und dessen Fehlerliste regelmaessig
+durchsieht und aufgetretene Fehler und Warnungen behebt. (Okt. 2007)
+
+
+2) Inhaltliche Anforderungen:
+
+o  Wenn Du ein komplett neues Gebiet schreiben moechtest, das in einer Region 
+   seinen Platz finden soll, sprich bitte die thematische Ausrichtung mit
+   dem RM ab, bevor Du anfaengst, Code zu schreiben. Falls von Deinen Ideen
+   irgendetwas nicht hierher passen sollte, laesst sich das mit wesentlich
+   weniger Frust im Vorfeld klaeren, als wenn hinterher das halbe Gebiet
+   umgebaut werden muesste. Sollte sich die konzeptionelle Ausrichtung 
+   oder der Umfang waehrend der Programmierung grundlegend aendern, besprich
+   dies bitte kurz mit dem RM.
+
+o  Ob neue oder alte Rechtschreibung, ist im wesentlichen Dir selbst ueber-
+   lassen, jedoch waere es schoen, wenn Du die Spieler-Anreden wie "frueher"
+   ueblich gross schreiben wuerdest ("Du", "Dich", "Dein").
+
+o  Es muessen in jedem Raum gewisse Standarddetails vorhanden sein, z.B.
+   Boden, Decke, Waende, Himmel (Sonne, Wolken), etc. Dies kann man sehr
+   bequem mit dem "Otester" pruefen.
+   Es sei aber ausdruecklich darauf hingewiesen, dass der Otester keinesfalls
+   benutzt werden sollte, um saemtliche vorhandenen Substantive bis ins
+   kleinste zu beschreiben. Es ist schoen, wenn Objekte moeglichst voll-
+   staendig beschrieben werden, aber man sollte es auch nicht uebertreiben.
+
+o  Was bitte nur in Ausnahmefaellen gemacht werden sollte, ist, Details, 
+   Infos oder Lang-/Kurzbeschreibungen aus Standardraeumen zu inheriten.
+
+o  Falls Du Beschreibungen/Ausgaben in ASCII-Grafik einbinden moechtest, achte
+   bitte darauf, dass Du auf jeden Fall einen kurzen Alternativtext mit-
+   lieferst und diesen ausgibst, wenn der Spieler P_NO_ASCII_ART gesetzt hat.
+   Es besteht immer die Moeglichkeit, dass Spieler mit Sehschwaeche oder
+   Blinde Deine Objekte anschauen, und diese kommen mit Objekten in reiner
+   ASCII-Grafik nicht zurecht.
+   (Siehe auch die Manpage zu P_NO_ASCII_ART und "hilfe grafik".)
+
+o  Eine Anmerkung zu den Schadensarten DT_HOLY und DT_UNHOLY soll nicht
+   unerwaehnt bleiben: Es wird von vielen Spielern und Magiern als logisch
+   und atmosphaerisch nicht begruendbar empfunden, wenn Gegenstaende oder
+   NPCs diese beiden Schadensarten gleichermassen einsetzen bzw. verursachen
+   koennen. Vergleichbares gilt fuer die gleichzeitige Abwehr beider 
+   Schadensarten. Wenngleich bisher diesbezueglich keine klare Einigung
+   erzielt werden konnte, soll an dieser Stelle dennoch empfohlen werden,
+   von einer gleichzeitigen Nutzung von DT_HOLY und DT_UNHOLY abzusehen.
+   Der zustaendige Regionsmagier muss aber auf jeden Fall in Kenntnis
+   gesetzt werden und entsprechende Objekte zur Pruefung vorgelegt bekommen,
+   falls diese Nutzung dennoch fuer unumgaenglich gehalten wird.
+
+
+3) Was keinesfalls akzeptiert wird
+
+o  Files, die in /players liegen, incl. Headerfiles. Dies erschwert das
+   Reparieren von Bugs ungemein und bringt eine gewisse Unuebersichtlichkeit
+   mit sich. Bitte auch nichts aus /players inheriten (Ausnahmen hiervon sind 
+   aufgrund eines neuen Driver-Features nur noch mit Hilfe eines Erzmagiers 
+   moeglich. Kurz gesagt: es gibt eine Whitelist von Objekten, die das 
+   duerfen. Alle anderen duerfen das per Default nicht.).
+
+
+4) Was ist vor dem Anschluss zu beachten?
+
+o  Code muss vollstaendig fertig sein. Das heisst insbesondere, dass 
+   Debug- und nicht mehr benoetigter Code entfernt wurde und dass alle 
+   erforderlichen Kommentare vorhanden sind.
+
+o  Abnahme durch den RM und ggf. den fuer Gesellenstuecke zustaendigen EM
+   muss erledigt sein. Regionsmagier sind angehalten, eigene Gebiete, die zum
+   Anschluss in der eigenen Region geplant sind, von anderen Magiern abnehmen
+   lassen.
+
+o  Der Magier ist angehalten, das Gebiet durch Testspieler testen zu lassen
+   (siehe hierzu die Testspieler-Regeln). Ob ein Spieltest als Voraussetzung
+   fuer die Abnahme gefordert wird, entscheidet der zustaendige RM. Er kann
+   den Test auch selbst durchfuehren oder ganz darauf verzichten.
+
+o  Quests und Miniquests muessen vom zustaendigen Quest-EM getestet,
+   eingetragen und aktiviert worden sein.
+
+o  Feedback der Testspieler und testenden Magier sollte umgesetzt sein.
+
+o  Forscherpunkte muessen vom zustaendigen EM eingetragen worden sein.
+
+o  Balance-Genehmigungen (Objekte, Heilung, ggf. Gildenbalance) muessen 
+   vorliegen; die genehmigten Eckparameter sollen nachvollziehbar im 
+   Gebietsverzeichnis dokumentiert sein: entweder im jeweiligen File, oder
+   als Textfile z.B. in einem Doku-Verzeichnis.
+
+o  Kraeuter fuer den Kraeuterskill muessen genehmigt und eingetragen worden 
+   sein (dies kann jeder EM mit dem Kraeutertool erledigen).
+
+o  Hinweis: Erstkills muessen NICHT ZWINGEND vom zustaendigen EM eingetragen
+   worden sein. Die Erstkill-NPCs werden automatisch in einer vorlaeufigen
+   Liste gesammelt und vom EM entweder freigegeben oder abgelehnt. Auch
+   Sonder-Stufenpunkte fuer EKs muessen nicht vor dem Anschluss beantragt
+   oder genehmigt worden sein, auch diese Eintragung laesst sich erledigen,
+   wenn der betreffende NPC das erste Mal getoetet wurde.
+
+o  Auch die fuer den Ruestungsskill so beliebten Ruestungen muessen nicht
+   vor dem Anschluss eingetragen werden. Neue Ruestungen werden automatisch
+   beim zustaendigen Masterobjekt angemeldet, sobald sie das erste Mal
+   repariert werden.
+
+Und nun viel Spass bei der Programmierung! 
+

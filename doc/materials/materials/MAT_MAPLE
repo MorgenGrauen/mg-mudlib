@@ -1,0 +1,24 @@
+Materialid:
+MAT_MAPLE                "maple"
+
+Name:
+"Ahornholz" "Ahornholzes" "Ahornholz" "Ahornholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_DECIDUOUS_WOOD:25
+MAT_MAPLE
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_DECIDUOUS_WOOD:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

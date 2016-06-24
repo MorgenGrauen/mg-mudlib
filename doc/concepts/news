@@ -1,0 +1,88 @@
+CONCEPT:
+	news
+
+
+DESCRIPTION:
+	This document describes the news system used in Nightfall.
+	News is intended to provide a general system for bulletin
+	boards and similar objects. It is similar to the Usenet
+	news system. Articles are stored in a central area, /news.
+	Articles (Messages) are stored as files within this
+	directory. Only the news demon object is allowed to write
+	and read in the /news directory. Interfaceing to the
+	news demon is done via interface functions in the news
+	demon.
+	
+	Typically news are read and written by a bulletin
+	board object or by a newsreader. Player buletin boards
+	should of course be limited to specific news groups.
+	A newsreader might be intelligent in that it autmatically
+	shows new messages. Groups may be moderated, then only the
+	moderator can write there. There are also flags whether a
+	board is a wiz_only board and who may remove messages.
+
+	Security is in several levels. It may be 0, then every
+	effective userid might read and write and delete articles,
+	although the news demon will still look for the match of
+	the sender field with certain group requirements. This level
+	of security is to make it possible to create groups
+	accessible by bulletin boards which have no euid.
+
+	Security level 1 means that euid check is done, for reading
+	and writing. This still allows for bulltin boards, but those
+	must have root euid and thus the ability to seteuid to the
+	euid of the object using the bulletin board (normally the
+	player). This feature requires native gamedriver mode.
+
+	Saved news file format (formal notation):
+
+	int security;	/* wheter euid check is done, 0 or 1 */
+	mixed *accesslist = ({
+	   mixed *readaccess;    /* who can read messages */
+	   mixed *writeaccess;   /* who can write messages */
+	   mixed *deleteaccess;  /* who can delete messages */
+	   mixed *controlaccess; /* who can control the accesslist */
+	})
+	mixed *messages = ({
+	   mixed *msg1; mixed *msg2; ... mixed *msgN;
+	})
+
+	An access entry can be be one of the following:
+	- an effective userid (string)
+	- one of the keywords "wizard", "all", "author"
+	- a wizard level (integer) which is required minimal
+	- an array of one of the plain types above (Alternative).
+
+	A message looks as follows:
+
+	mixed *message = ({
+	   string author;       /* who wrote the message */
+	   string subject;      /* the subject */
+	   string *groups;      /* news groups where this was posted */
+	   int date;            /* date of message written */
+	   string messageid;    /* a unique string */
+	   string *referenceid; /* list of references */
+	   int expire;          /* when message expires */
+	   string body;         /* the contents of the message */
+	})
+
+	The news demon (/secure/news, or /obj/news) provides the
+	following functions:
+
+	int success = PostMessage(mixed *message)
+	  Tells the demon to insert the message in the news database.
+	  Depending on security level, euid or message.author is
+	  checked if this is allowed.
+
+	int success = DeleteMessage(string *groups, string messageid)
+	  Remove a message from the database.
+
+	mixed *messagelist = ReadMessageHeaders(string group)
+	  Get all message headers (complete info, but without
+	  body) of newsgroup <group>.
+
+	mixed *message = ReadMessage(string *groups, string messageid)
+	  Retrieve a message from the database.
+
+
+SEE ALSO:

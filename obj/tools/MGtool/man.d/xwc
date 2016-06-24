@@ -1,0 +1,22 @@
+SYNOPSIS
+      xwc [-clw] <file>
+	  or
+	  xwc [-clw]    (when reading from a pipe)
+
+DESCRIPTION
+      xwc counts the number of bytes, whitespace-separated words, and new-
+      lines in a given file, or reading from a pipe. It prints one line
+      of counts, and if the file name was given as an argument, it prints
+      the filename following the counts. The counts are printed in the
+      order: lines, words, bytes.
+      By default, wc prints all three counts.
+
+OPTIONS:
+      -c print character count
+
+      -l print line count
+
+      -w print word count
+      
+EXAMPLES
+

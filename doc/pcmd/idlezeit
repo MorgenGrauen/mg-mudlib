@@ -1,0 +1,19 @@
+
+idlezeit
+--------
+
+ KOMMANDO:
+    idlezeit <name>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Spielers
+
+ BESCHREIBUNG:
+    Dieser Befehl gibt die Zeit aus, die ein Spieler passiv ist.
+    Dann muss man nicht jedes mal den Spieler fingern, wenn man wissen
+    will, ob er gerade ansprechbar ist oder nicht.
+
+ LETZTE AeNDERUNG:
+    Mit, 25. Feb 2004, 12:46:00 von Rikus

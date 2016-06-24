@@ -1,0 +1,22 @@
+Materialid:
+MAT_MISC_WOOD            "misc_wood"
+
+Name:
+"Holz" "Holzes" "Holz" "Holz"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

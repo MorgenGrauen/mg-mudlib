@@ -1,0 +1,23 @@
+GetReputations
+FUNKTION:
+     public mapping GetReputations()
+
+DEFINIERT IN:
+     /std/player/reputation.c
+
+BESCHREIBUNG:
+     Liefert ein Mapping aller im Spieler gespeicherten Reputationen und ihrer
+     Werte zurueck.
+
+RUeCKGABEWERT:
+     Mapping ([(string)repid: (int)wert])
+
+BEISPIELE:
+     s. repuation
+
+SIEHE AUCH:
+     reputation
+     GetReputation(), GetReputations()
+
+ZULETZT GEAeNDERT:
+06.04.2009, Zesstra

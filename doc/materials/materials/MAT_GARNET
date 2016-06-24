@@ -1,0 +1,20 @@
+Materialid:
+MAT_GARNET               "garnet"
+
+Name:
+"Granat" "Granats" "Granat" "Granat"
+
+Geschlecht:
+M
+
+Beschreibung:
+rot, Edelstein: Karfunkel
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100
+MATGROUP_JEWEL:100

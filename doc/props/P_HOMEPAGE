@@ -1,0 +1,8 @@
+NAME:
+    P_HOMEPAGE                    "homepage"                    
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     Die Homepage eines Spielers (mit dem Befehl 'url' zu setzen).

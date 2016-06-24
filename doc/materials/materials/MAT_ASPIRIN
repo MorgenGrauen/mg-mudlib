@@ -1,0 +1,19 @@
+Materialid:
+MAT_ASPIRIN              "aspirin"
+
+Name:
+"Aspirin" "Aspirins" "Aspirin" "Aspirin"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_SALT:50
+MAT_ASPIRIN
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100
+MATGROUP_DRUG:100

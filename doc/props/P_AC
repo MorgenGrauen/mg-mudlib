@@ -1,0 +1,28 @@
+P_AC
+
+NAME:
+     P_AC "ac"
+
+DEFINIERT IN:
+     <armour.h>
+
+BESCHREIBUNG:
+     Diese Property beschreibt die Ruestungsklasse (engl: armour class),
+     also den Schutz, den die Ruestung dem Traeger verleiht. Je hoeher der
+     Wert (als Zahl), um so besser ist die Ruestung. Negative Werte bewirken
+     negativen Schutz, d.h. der Schaden wird vergroessert statt verringert.
+
+BEMERKUNGEN:
+     Query- und Setmethoden auf P_AC sollten unbedingt vermieden werden. Sie
+     fuehren in der Regel zu massiven Inkonsistenzen im Mechanismus der
+     Ruestungsbeschaedigung und -reparatur.
+     Fuer jeden Ruestungstyp ist in <combat.h> eine Obergrenze definiert,
+     die man nicht ueberschreiten darf.
+     Ruestungen vom Typ AT_MISC haben immer AC 0 und werden mit keinen 
+     hoeheren Werten genemigt.
+
+SIEHE AUCH:
+     /std/armour.c, P_DAMAGED, Damage() P_TOTAL_AC
+
+----------------------------------------------------------------------------
+02.10.2007, Zesstra

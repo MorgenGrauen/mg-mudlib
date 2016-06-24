@@ -1,0 +1,94 @@
+Mit Fernwaffen sind uebrigens ausnahmslos Waffen gemeint, die Munition 
+benoetigen, nicht etwa Speere oder dergleichen. Alle Fernwaffen sind 
+ausnahmslos genehmigungspflichtig, das gilt auch fuer jegliche Munition. 
+     
+Properties in Fernwaffen und ihre Bedeutung:
+
+     P_WC
+        Vorsicht mit dieser Property. Bei Fernwaffen gibt sie _nur_ den
+        Schaden bei Zweckentfremdung der Waffe als Knueppel an. 
+        Dementsprechend ist dieser Wert extrem niedrig zu halten.
+        Standardwert ist hier 30, der auch nur in Ausnahmefaellen 
+        ueberschritten werden sollte. Kaum eine Armbrust oder ein Bogen 
+        taugt nunmal als grossartige Nahkampfwaffe.
+
+     P_QUALITY
+        Wird nur beim Nahkampf mit der Waffe beachtet. Standardmaessig auf
+        100 gesetzt, da Boegen und Armbrueste leicht beschaedigt werden,
+        wenn man damit auf jemanden einpruegelt.
+
+     P_HIT_FUNC 
+        HitFunc fuer den _Nahkampf_. Hat beim Schuss mit der Waffe keinen
+        Einfluss. 
+                
+     P_NR_HANDS
+        Boegen und Armbrueste sind in jedem Fall zweihaendig. Einhaendige
+        Fernwaffen sind aber denkbar (Schlingen zum Schleudern kleiner 
+        Steine z.B.)
+        
+     P_SHOOTING_WC
+        Die Basis-Waffenklasse der Fernwaffe. Zu ihr wird die Waffenklasse
+        der Munition addiert, um den endgueltigen Angriffswert beim Schuss
+        zu berechnen.
+     
+     P_RANGE 
+        Reichweite der Waffe in Metern. Wichtig, wenn aus Containern 
+        (Wachtuermen, Schiffen, etc.) nach aussen geschossen wird.
+        Damit das funktioniert, muss dieser Wert hoeher sein als der
+        im Container definierte (steht dort in der P_SHOOTING_AREA).
+    
+     P_STRETCH_TIME
+        Anzahl der Runden, die zum Laden/Spannen der Waffe benoetigt
+        werden. 1 ist hier der Standardwert, das bedeutet, es kann jede
+        Runde geschossen werden.
+     
+     P_AMMUNITION
+        Benoetigter Munitionstyp. Hier ist eine der moeglichen Konstanten
+        (MUN_*) einzusetzen (z.B. MUN_ARROW fuer Boegen).
+     
+     P_NOGET
+        Hat bei Fernwaffen eine zusaetzliche Bedeutung. Wenn gesetzt, muss
+        die Waffen nicht gezueckt werden, um sie abfeuern zu koennen. Das
+        ist z.B. fuer Katapulte gedacht, die im Raum stehen.
+        
+     Fuer die Munition gibt es kein Standardobjekt. Wichtig ist nur, dass 
+     die entsprechenden Properties gesetzt sind. Normalerweise sollte die 
+     Munition natuerlich eine Unit sein, aber auch Einzelobjekte (ein
+     besonderer Pfeil oder ein grosser Stein fuer ein Katapult) sind 
+     moeglich.
+
+Properties fuer die Munition sind:
+     
+     P_SHOOTING_WC
+        Die Waffenklasse der Munition. Wird zur WC der Waffe addiert.
+        
+     P_DAM_TYPE
+        Schadenstyp der Munition. Sollte normalerweise DT_PIERCE fuer 
+        Pfeile aller Art und DT_BLUDGEON fuer stumpfe Munition wie Steine
+        sein. Magische Schadensarten sind aber natuerlich moeglich.
+        
+     P_HIT_FUNC
+        HitFunc, die beim Schuss mit der Munition benutzt wird.
+        
+     Ausserdem muss in der Munition mittels AddId() der entsprechende
+     Munitionstyp gesetzt werden, z.B. MUN_ARROW.
+
+Genehmigungsgrenzen:
+-------------------
+     Alle Waffen dieser Art sind grundsaetzlich genehmigungspflichtig.
+     Folgende Werte sollten allerdings Obergrenzen darstellen, die
+     im Normalfall nicht zu Ueberschreiten sind:
+     
+     Waffe kann jede Runde abgefeuert werden:  P_SHOOTING_WC 100
+     Waffe braucht eine Ladezeit            :  P_SHOOTING_WC 130
+     
+     Die Obergrenze fuer Munition liegt bei :  P_SHOOTING_WC 60.
+
+     Vorsichtig mit P_SHOOTING_AREA in Raeumen/Containern. 
+
+     Bisher ist dieses Schiessen von Raum zu Raum weitestgehend ungetestet,
+     und es ist nicht klar, welche Probleme das verursachen kann. Wenn 
+     eventuelle Ziele keine Moeglichkeit haben, sich zu wehren oder 
+     wegzulaufen, ist schnell jegliche Balance dahin. Die Regionsmagier
+     haben bei Abnahme von Gebieten darauf zu achten, dass diese Property
+     nur in wenigen, gut begruendeten Raeumen gesetzt wird.

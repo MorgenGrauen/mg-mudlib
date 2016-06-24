@@ -1,0 +1,213 @@
+Der Scoremaster
+===============
+
+BESCHREIBUNG
+
+  Funktion: Verwaltung der Erstkill-Stufenpunkte, die fuer das Toeten von
+  NPCs vergeben werden. Fuer alle NPCs, die mehr als 200000 XP
+  (SCORE_LOW_MARK) geben, wird ein Stufenpunkt vergeben. Ab 600000 XP
+  (SCORE_HIGH_MARK) sind es 2 Stufenpunkte. Ueber diese Werte hinausgehende
+  Punkte muessen beantragt und manuell ueber den Scoremaster eingetragen
+  werden.
+
+  Jeder NPC, der mindestens einen Stufenpunkt gibt, wird automatisch in
+  eine Liste temporaerer EKs eingetragen, die vom EK-Maintainer einzeln
+  bestaetigt werden muessen. Dieses Verfahren ist erforderlich, weil der
+  bis vor einiger Zeit eingesetzte Mechanismus, EKs automatisch einzutragen,
+  dazu gefuehrt hat, dass eigentlich nicht als EK vorgesehene oder erlaubte,
+  aber auch laengst wieder abgehaengte oder gar nie angeschlossene NPCs
+  eingetragen waren. Da aus dem Scoremaster auch die von Brumni in der
+  Fraternitas ausgegebenen EK-Tips abgefragt werden, ist das natuerlich fatal
+  fuer Spieler, wenn sie Tips bekommen, die sie nicht erreichen koennen.
+
+  Die Liste der Erstkills ist ein Mapping, das als Keys eine fortlaufende
+  Nummer enthaelt, zu der jeweils die Daten des NPCs zugeordnet sind. Diese
+  Nummer dient vor allem auch zur Indizierung des Bitstrings im Spieler,
+  in dem die Erstkills gespeichert werden.
+
+  Diese Datei dokumentiert die Funktionalitaet des Scoremasters fuer die
+  Benutzung durch EM und EK-Maintainer, jedoch nicht die vollstaendige
+  interne Arbeitsweise und Verwaltung der Daten.
+
+  Inhaltsverzeichnis dieser Dokumentation
+  1) Neueintragung von EKs
+  2) Verwaltung der unbestaetigten EKs
+  3) Aenderungen an bestehenden EKs
+  4) Spielerbezogene Daten verwalten
+  5) Daten von NPCs abfragen
+  6) Permanentes Loeschen von EKs
+  7) Verwaltung der EK-Tips von Brumni
+  8) Sonstige Funktionen (nur von NPCs gerufen)
+
+
+RUECKGABEWERTE:
+
+  SCORE_INVALID_ARG   -1
+  SCORE_NO_PERMISSION -2
+
+
+FUNKTIONEN
+
+1) Neueintragung von EKs
+
+  NewNPC(string key, int score)
+  AddNPC(string key, int score) [veraltet, leitet an NewNPC weiter]
+        Neuen NPC eintragen, key ist hierbei der Pfad, score die Punktzahl
+        Die ID des EKs wird automatisch ausgewaehlt, indem der naechste
+        freie Platz im Mapping belegt wird.
+
+
+2) Verwaltung der unbestaetigten EKs
+
+  ConfirmScore(mixed key)
+        unbestaetigten EK mit der Nummer oder dem Pfad "key" genehmigen
+    =>  EK in den Spielern setzen und Statistik hochzaehlen,
+    =>  EK aus der Liste der unbestaetigten EKs in die Liste der aktiven
+        uebertragen,
+
+  RejectScore(mixed key)
+        unbestaetigten EK mit der Nummer oder dem Pfad "key" ablehnen
+    =>  Eintrag aus der Liste der unbestaetigten EKs loeschen
+    =>  Bit-Nr. in die Liste der freien Nummern eintragen
+
+  DumpUnconfirmedScores()
+        unbestaetigte NPCs an den abfragenden Magier ausgeben
+
+
+3) Aenderungen an bestehenden EKs
+
+  SetScore(mixed key, int score)
+        Punktzahl fuer bereits eingetragenen NPC aendern, key ist der Pfad
+        oder die NPC-Nummer, score die neue Punktzahl
+
+  RemoveScore(mixed key)
+        Setzt die Punktzahl auf 0. Solche EKs koennen spaeter durch Angabe
+        einer neuen Punktzahl reaktiviert werden.
+        Alternativ kann fuer diese Funktion auch SetScore(mixed key, 0)
+        verwendet werden.
+        key kann hierbei der Pfad oder die NPC-Nummer sein
+
+  MoveScore(mixed oldkey, string newpath)
+        Verlegt einen EK
+        oldkey ist der aktuelle Pfad oder die Nummer
+        newpath ist der neue Pfad
+
+
+4) Spielerbezogene Daten verwalten
+
+  HasKill(mixed pl, mixed npc)
+        fragt ab, ob der Spieler "pl" den Kill "npc" hat
+        pl kann hierbei der Spielername oder das Spielerobjekt sein,
+        npc der Pfad oder dessen Nummer
+
+  SetScoreBit(string pl, int bit)
+        Mit dieser Funktion wird dem Spieler "pl" der EK mit der Nummer
+        "bit" gutgeschrieben.
+
+  ClearScoreBit(string pl, int bit)
+        Mit dieser Funktion wird dem Spieler "pl" der EK mit der Nummer
+        "bit" permanent ausgetragen.
+
+  QueryKillPoints(mixed pl)
+        liefert die Anzahl der Stufenpunkte zurueck, die dem Spieler pl
+        durch die aktiven EKs gutgeschrieben wurden
+
+  getFreeEKsForPlayer(object player)
+        liefert alle EKs, die aktiv sind, und die der Spieler noch nicht
+        hat, in einem Mapping entsprechend der Liste "npcs" zurueck.
+
+  QueryAllKills(string pl)
+        liefert alle Kills des Spielers als Bitstring zurueck, auch solche,
+        die momentan ausgetragen/deaktiviert sind
+        pl ist hierbei der Spielername als String
+
+  QueryKills(string pl)
+        liefert die aktiven Kills des Spielers als Bitstring zurueck
+        pl ist hierbei der Spielername als String
+
+
+5) Daten von NPCs abfragen
+
+  QueryNPCbyNumber(int num)
+        liefert die Daten des NPCs mit der Nummer "num" als Array zurueck
+
+  QueryNPCbyObject(object o)
+        liefert die Daten des NPCs mit dem Objekt "o" als Array zurueck
+
+
+6) Permanentes Loeschen von EKs
+
+  MarkEKForLiquidation(mixed key)
+        entfernt einen EK endgueltig und unwiderruflich und gibt die Nr.
+        wieder frei.
+        Technisch wird der EK erstmal in eine Liste eingetragen. Im Reset
+        iteriert der Master ueber alle Spieler-Savefiles und loescht den EK
+        aus allen Spielern. Nach Abschluss wird der Eintrag in "npcs"
+        geloescht und seine Nr. in die Liste freier Nummern eingetragen.
+
+  UnmarkEKForLiquidation(mixed key)
+        Entfernt die Loeschmarkierung von einem EK
+    =>  Dies geht nur, solange nach einem MarkEKForLiquidation() noch kein
+        reset() gelaufen ist!
+
+  QueryLiquidationMarks()
+        Fragt die fuer Loeschung vorgesehenen EKs ab.
+
+  RestoreEK(string key, int bit, int score)
+        restauriert die Daten eines frueher geloeschten, in den Spielern noch
+        enthaltenen EKs. Moeglich nur dann, wenn der EK frueher mal geloescht
+        wurde, aber in den Bitstrings in den Spielern noch eingetragen ist.
+        Es werden Pfad, Nr. und Punkte benoetigt.
+        Fuer nach dem Umbau des Scoremasters geloeschte EKs nicht mehr
+        moeglich, weil diese permanent aus den Bitstrings ausgetragen wird.
+
+
+7) Verwaltung der EK-Tips von Brumni
+
+  addTip(mixed key,string tip)
+        Traegt fuer den NPC mit der Nummer oder dem Pfad "key" einen EK-Tip-
+        Text fuer Brumni ein.
+
+  changeTip(mixed key,string tip)
+        Aendert den durch Brumni auszugebenden EK-Tip fuer den NPC mit der
+        Nummer oder dem Pfad "key". Der neue Tip wird dabei als 2. Parameter
+        "tip" uebergeben.
+
+  removeTip(mixed key)
+        Loescht den durch Brumni auszugebenden EK-Tip-Spruch. Der Tip als
+        solcher bleibt bestehen - anschliessend wird wieder der Standard-
+        Spruch ausgegeben.
+
+  getTip(mixed key)
+        Gibt den Tip-Spruch fuer den NPC mit der Nummer oder dem Pfad
+        "key" zurueck, oder den Standard-Spruch. Liefert fuer nicht
+        eingetragenen "key" den Leerstring zurueck.
+
+  QueryTipObjects(mixed player)
+        Gibt die Objektnamen der EK-Tips des jeweiligen Spielers zurueck.
+
+  allTipsForPlayer(object player)
+        Gibt den Gesamtstring aller Tips des Spielers "player" zurueck.
+
+  playerMayGetTip(object player)
+        Fragt ab, ob der Spieler "player" einen Tip bekommen kann.
+
+  giveTipForPlayer(object player)
+        Waehlt einen zufaelligen EK aus, den der Spieler noch nicht hat, und
+        traegt diesen im Master in die Liste ein, die mit allTipsForPlayer()
+        abgefragt werden kann.
+
+
+8) Sonstige Funktionen (nur von NPCs gerufen)
+
+  GiveKill(object pl, int bit)
+        schreibt dem Spieler "pl" den EK mit der Nummer "bit" gut.
+        Diese Funktion wird ausschliesslich aus NPCs heraus gerufen.
+
+  QueryNPC(int score)
+        Wird vom getoeteten NPC gerufen, um zu ermitteln, ob dieser einen
+        Erstkill gibt. Wenn der EK noch nicht existiert, wird dieser im
+        Master zunaechst in der Liste der unbestaetigten EKs eingetragen
+        Direkte Abfrage dieser Funktion von aussen z.B. durch Magier nicht
+         moeglich, weil nicht sinnvoll.
+

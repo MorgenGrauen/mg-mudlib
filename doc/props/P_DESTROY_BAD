@@ -1,0 +1,29 @@
+NAME:
+     P_DESTROY_BAD                 "std_food_destroy_bad"
+
+DEFINIERT IN:
+     <sys/food.h>
+
+BESCHREIBUNG:
+     Speichert den Wert fuer das Verhalten, wenn eine Speise verdirbt.
+     Dieses Verhalten wird in make_bad() umgesetzt.
+     
+     DESTROY_BAD   : Die Speise wird beim Verderben zerstoert
+                     bzw. der Behaelter wird geleert
+     DESTROY_NEVER : Die Speise wird beim Verderben nicht zerstoert
+     pos. Integer  : Anzahl der Sekunden, die zwischen Verderben
+                     und Zerstoeren der Speise liegen sollen
+     
+BEMERKUNGEN:
+     Ist ein positiver Integer-Wert in dieser Property gespeichert, wird nach
+     Ausfuehren der Methode make_bad() nach Ablauf der angegebenen Sekunden
+     ein weiterer Reset ausgeloest, der make_destroy() aufruft.
+     
+DEFAULT:
+     Initial ist diese Property auf DESTROY_BAD gesetzt.
+
+SIEHE AUCH:
+     /std/food.c, wiz/food
+
+------------------------------------------------------------------------------
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra

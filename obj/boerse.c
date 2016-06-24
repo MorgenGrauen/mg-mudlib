@@ -1,0 +1,2 @@
+#pragma no_clone
+

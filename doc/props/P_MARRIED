@@ -1,0 +1,12 @@
+NAME:
+    P_MARRIED                     "married"                     
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Enthaelt einen String mit der uid des Partners
+     (sofern vorhanden)
+
+SIEHE AUCH:
+     scheidung

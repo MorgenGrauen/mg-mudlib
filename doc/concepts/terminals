@@ -1,0 +1,18 @@
+terminals
+ BESCHREIBUNG:
+     Ein Spieler kann sein Terminal mit "stty" in verschiedene Modi
+     schalten. Mit ANSI-Escape-Sequenzen kann man dementsprechend dann
+     diesem Spieler farbige, unterstrichene, blinkende Texte auf den
+     Bildschirm zaubern, wenn dieser es unterstuetzt.
+
+     Die derzeit unterstuetzten Terminals sind:
+	dumb:   bitte keine Escapesequenzen nutzen ...
+	vt100:  versteht reverse, bold, blinking
+	ansi:   versteht vt100 und Farben
+
+     Die nutzbaren Farbcodes sind unter /sys/ansi.h definiert.
+
+ SIEHE AUCH:
+     P_TTY, stty
+
+ 21. Maerz 2004 Gloinson

@@ -1,0 +1,23 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+	int send_udp(string host, int port, string message)
+
+DESCRIPTION:
+	Sends The message in an UDP packet to the given host and port
+	number. Causes a privilege violation.
+	Returns 1 on success, 0 on failure.
+
+HISTORY
+  LDMud 3.2.9 renamed this efun to send_udp(), and also changed the
+  privilege violation string and the apply names. This old version
+  is available if the driver is compiled with USE_DEPRECATED.
+  Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SEE ALSO:
+	receive_udp(M)
+
+29.10.2006 Zesstra

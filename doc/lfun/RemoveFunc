@@ -1,0 +1,87 @@
+RemoveFunc()
+
+FUNKTION:
+     int RemoveFunc(object ruest, int info, object user);
+
+DEFINIERT IN:
+     eigenen Objekten (fuer /std/clothing/wear)
+
+ARGUMENTE:
+     ruest (object)
+          Die Ruestung/Kleidung, die ausgezogen werden soll.
+     info (int)
+          Bei (info&M_SILENT) wird keine Meldung ueber das Ausziehen
+          ausgegeben.
+          Bei (info&M_NOCHECK) wird die Kleidung ausgezogen, egal was diese
+          Funktion zurueckgibt. Dies tritt insbesondere dann auf, wenn der
+          Spieler, der die Ruestung traegt, stirbt und die Ruestung in
+          die Leiche bewegt wird.
+     user (object)
+          Das Lebewesen, welches die Ruestung/Kleidung gerade traegt und sie
+          ausziehen will.
+
+BESCHREIBUNG:
+     Mit dieser Funktion kann man pruefen, ob sich das Kleidungsstueck bzw.
+     Ruestung <ruest> von this_player() ausziehen laesst oder nicht.
+     Kann die Ruestung ausgezogen werden, so muss ein Wert ungleich 0
+     zurueckgegeben werden.
+     
+     Diese Funktion meldet nur einen _Wunsch_ an. Dieser kann ignoriert
+     werden (z.B. bei bestimmten Bewegungen, Tod des Spielers etc.).
+     Unabhaengig vom Wert dieser Funktion kann das Ausziehen noch Scheitern
+     oder Erzwungen werden.
+     Wenn ihr sicher sein wollt, dass der Spieler ein Objekt angezogen hat,
+     benutzt bitte InformUnwear().
+
+RUeCKGABEWERT:
+     0, wenn sich die Ruestung nicht ausziehen laesst, ansonsten ungleich 0.
+
+BEMERKUNGEN:
+     Verfluchte Ruestungen, die sich erst nach Entfernung des Fluches wieder
+     ausziehen lassen, sollte man besser mit P_CURSED realisieren (man spart
+     die RemoveFunc() ein).
+     Bitte nicht drauf verlassen, dass this_player() das ausziehende Lebewesen
+     ist.
+     Die Reihenfolge der Argumente ist etwas unschoen, aber leider wurde <user>
+     erheblich spaeter hinzugefuegt und es war unmoeglich, einige hundert
+     Objekte zu aendern.
+
+BEISPIELE:
+     Ein Umhang, den man nur mit guter Einstellung wieder ausziehen kann:
+
+     inherit "std/armour.c";
+
+     #include <properties.h>
+     #include <moving.h>
+
+     create()
+     {
+       ::create();
+
+       SetProp(P_ARMOUR_TYPE, AT_CLOAK);
+       /* zig weitere SetProp's, um den Umhang zu konfigurieren */
+
+       /* RemoveFunc() ist im Umhang selbst zu finden */
+       SetProp(P_REMOVE_FUNC, this_object());
+     }
+
+     int RemoveFunc(object me, int info, object user)
+     {
+       if (user->QueryProp(P_ALIGN) >= 0 || (info&M_NOCHECK))
+         return 1;   /* gute Charaktere koennen den Umhang ausziehen */
+
+       /* Ansonsten geben wir evtl. einen entsprechenden Hinweis aus: */
+       if (!(info&M_SILENT))
+           write( "Der Umhang wird von Deiner Bosheit so sehr "
+                 +"angezogen, dass Du ihn\nnicht mehr ausziehen kannst!\n");
+       return 0;
+     }
+
+SIEHE AUCH:
+     P_WEAR_MSG, P_UNWEAR_MSG, P_WIELD_MSG, P_UNWIELD_MSG
+     DoUnwear(), DoWear(), InformWear(), InformUnwear()
+     /std/clothing/wear.c
+
+----------------------------------------------------------------------------
+02.07.2013, Zesstra
+

@@ -1,0 +1,25 @@
+Start()
+
+FUNKTION:
+     varargs void Start(int pos);
+
+DEFINIERT IN:
+     /std/transport.c
+
+ARGUMENTE:
+     pos
+          Fahrplanstation, an der begonnen werden soll.
+
+BESCHREIBUNG:
+     Diese Funktion schickt den Transporter auf die Strecke. Dabei beginnt
+     der Weg an der mit pos bezeichneten Stelle im Fahrplan. Default ist 0,
+     d.h. der Transporter beginnt seinen Weg an der ersten Fahrplanposition.
+
+RUeCKGABEWERT:
+     keiner
+
+SIEHE AUCH:
+     Halt(), /std/transport.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:25:30 1996 by Wargon

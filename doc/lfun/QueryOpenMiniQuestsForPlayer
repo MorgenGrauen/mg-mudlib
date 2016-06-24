@@ -1,0 +1,54 @@
+FUNKTION:
+    mapping QueryOpenMiniQuestsForPlayer(object player)
+
+DEFINIERT IN:
+    /secure/questmaster
+
+BESCHREIBUNG:
+    Diese Funktion gibt die Liste der offenen Miniquests des Spielers als
+    Mapping zurueck.
+
+ARGUMENTE:
+    player - das interessierende Spielerobjekt
+
+RUECKGABEWERTE:
+    Mapping mit der Liste der Miniquests, fuer die das abfragende Objekt
+    zustaendig ist, oder leeres Mapping, wenn der Spieler keine MQs mehr
+    offen hat.
+
+    Die Liste enthaelt die Miniquestnummer als Key. Diesem sind zwei Werte
+    zugeordnet: zum einen ein Miniquest-Aufgabentext, und zum anderen -
+    falls der Spieler eine der Vorbedingungen fuer die Miniquest nicht
+    erfuellt - ein Hinweistext, der Auskunft gibt, welche Bedingung noch
+    zu erfuellen ist ("Seherstatus fehlt"). Diese Hinweistexte entsprechen
+    denen aus check_restrictions() in /std/restriction_checker.c. Der 
+    jeweils andere Text wird auf 0 gesetzt.
+
+    Die Struktur des Mappings ist daher folgende:
+      ([ MQ-Nummer : <Aufgabenstellung> ; <Hinderungsgrund> ])
+    
+    Beispiel: ein Spieler hat die Miniquests 18 und 49 noch nicht geloest,
+    erfuellt aber nur fuer Miniquest 49 die Anforderungen. Miniquest 18
+    erfordert den Seherstatus. Dann saehe das Mapping so aus:
+      ([ 18 : 0                    ; "Dazu musst Du erst Seher werden.\n",
+         49 : "Aufgabentext_zu_49" ; 0 ])
+
+    Jedes abfragende Objekt muss daher dieses Mapping zunaecht geeignet
+    auf seinen Inhalt pruefen, um zu ermitteln, welche Meldung jeweils
+    auszugeben ist.
+
+BEMERKUNGEN:
+    Das abfragende Objekt muss von einem Erzmagier oder Gott (z.B. dem
+    zustaendigen Quest-EM) im Questmaster als zugriffsberechtigt bei den-
+    jenigen Miniquests eingetragen sein, fuer die es die entsprechenden
+    Miniquest-Hinweise ausgeben darf. Diese Berechtigung ist mit dem 
+    Quest-EM abzustimmen. Anderen Objekten wird ein leeres Mapping zurueck-
+    gegeben.
+
+SIEHE AUCH:
+    AddMiniQuest(L), ChangeMiniQuest(L)
+    P_RESTRICTIONS
+    erzmagier
+
+----------------------------------------------------------------------------
+Last modified: 6. Juni 2014, Arathorn.

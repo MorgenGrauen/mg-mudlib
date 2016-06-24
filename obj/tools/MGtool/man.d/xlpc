@@ -1,0 +1,20 @@
+SYNOPSIS
+      xlpc <lpc code>
+
+DESCRIPTION
+      Execute pure LPC code. "me" and "here" are predefined objects. Also the
+      <properties.h> will be included. The function "get(string)" can be used
+      for accessing objects. If the execution returns an object the variable
+      "$result" will set to this object.
+
+EXAMPLES
+      xlpc int i;object *o;o=users();for(i=0;i<sizeof(o);i++)o[i]->
+           SetProp(P_FROG,1);
+      (Let all users be slimy frogs :)
+
+      xlpc int i;object *o;o=users();for(i=0;i<sizeof(o);i++)
+	   o[i]->SetProp(P_TITLE,get("$me")->QueryProp(P_TITLE));
+      (Give all users your prefered title. Take a look of the use of get().)
+
+      Both commands must be written in one line of course!
+

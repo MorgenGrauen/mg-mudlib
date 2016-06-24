@@ -1,0 +1,21 @@
+Materialid:
+MAT_CANNABIS             "cannabis"
+
+Name:
+"Hanf" "Hanfs" "Hanf" "Hanf"
+
+Geschlecht:
+M
+
+Beschreibung:
+auch THC
+
+Erkennbarkeit:
+MAT_MISC_HERBAL:33
+MAT_CANNABIS
+
+Gruppenzugehoerigkeit:
+MATGROUP_HERBAL:100
+MATGROUP_FLEXIBLE:100
+MATGROUP_SOLID:100
+MATGROUP_DRUG:100

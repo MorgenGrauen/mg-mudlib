@@ -1,0 +1,54 @@
+QuerySpell()
+FUNKTION:
+    mapping QuerySpell(string spell)
+
+DEFINIERT IN:
+    /std/gilden_ob.c
+
+ARGUMENTE:
+    string spell       Name des Spells
+
+BESCHREIBUNG:
+    Liefert fuer diesen Spell die Gilden- und Spellbookinformationen
+    zusammengefasst in ein Mapping zurueck.
+    Die Gildeninformationen haben dabei Vorrang (d.h. eine Lernrestriktion
+    im Spellbook wird benutzt, bei unterschiedlichen Werten fuer das gleiche
+    Attribut geht der Wert in der Gilde vor).
+
+BEISPIEL:
+    // /gilden/klerus->QuerySpell("entfluche") gibt zB zurueck:
+    ([SI_SPELLFATIGUE: 2,
+      SI_SP_LOW_MSG:   "Deine Konzentration reicht nicht aus, das Interesse "
+                       "der Goetter zu "wecken.\n",
+      SI_TIME_MSG:     "So schnell koennen sich die Goetter nicht wieder um "
+                       "Dich kuemmern!\n",
+      SI_SKILLLEARN:   5,
+      OFFSET(SI_SKILLLEARN):15
+      SI_SKILLRESTR_LEARN:
+      ([P_LEVEL:       7,
+        P_GUILD_LEVEL: LVL_WANDER,
+        SR_FUN:        #'gilden/klerus->glaubensTest]),
+      SI_DIFFICULTY:   100,
+      SI_SKILLINFO:    "Wanderprediger ab Stufe 7",
+      SI_SKILLINFO_LONG:
+        "Um jemanden von einem laestigen Sprachfluch zu befreien, "
+        "sollte man diese Anrufung benutzen [...]",
+      SP_NAME:         "entfluche",
+      SI_SKILLRESTR_USE: ([ SR_FREE_HANDS : 0 ]),
+      SI_MAGIC_TYPE:   ({MT_SAKRAL})
+      SI_GOD:          LEMBOLD,
+      SI_SKILLRESTR_USE:     ([SR_FUN:#'gilden/klerus->spellTest()]),
+      OFFSET(SI_SKILLLEARN): #'gilden/klerus->learnOffset,
+      OFFSET(SI_SPELLCOST):  #'gilden/klerus->costOffset,
+      FACTOR(SI_SPELLCOST):  #'gilden/klerus->costFactor])
+
+SIEHE AUCH:
+    GObj Lernen:    LearnSkill, LearnSpell, InitialSkillAbility
+    * Anzeigen:     SkillListe
+    * Verwalten:    AddSkill, AddSpell, QuerySkill
+    * Nutzen:       UseSpell (gilde)
+    * Properties:   P_GUILD_SKILLS, P_GLOBAL_SKILLPROPS
+    Gildenfkt.:     GuildRating
+    * Ein/Austritt: beitreten, bei_oder_aus_treten, austreten
+
+3. Okt 2011 Gloinson

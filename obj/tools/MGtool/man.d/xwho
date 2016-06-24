@@ -1,0 +1,17 @@
+SYNOPSIS
+      xwho [mail|ip|race|guild|domain|stats|cmdavg]
+
+DESCRIPTION
+      Without any argument this command behaves like the normal people
+      command. With the argument "mail" it will list all players with their
+      email address. With the argument "ip" it will list all players with
+      their host name and ip number. If the argument is "race" or "guild"
+      you will get a list of all players with these attributes. "domain"
+      will show the domain(s) of the current players. And with "stats" it
+      will print some stats information of all players.
+      The argument "cmdavg" list the value of _query_command_average()
+      for every user sorted in increasing order.
+
+EXAMPLES
+      xwho
+      xwho ip

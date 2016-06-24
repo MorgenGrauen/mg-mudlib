@@ -1,0 +1,44 @@
+give_notify()
+FUNKTION:
+     void show_notify(object obj)
+
+DEFINIERT IN:
+     /std/living/put_and_get.c
+
+ARGUMENTE:
+     obj - dem Lebewesen gezeigtes Objekt
+
+RUeCKGABEWERT:
+     keiner
+
+BESCHREIBUNG:
+     Diese Funktion wird automatisch immer dann aufgerufen, wenn einem
+     Lebewesen (welches kein Spielercharakter ist) ein Objekt gezeigt wird.
+     Dies funktioniert nur dann, wenn der Standardbefehl der Spielershell
+     verwendet wird ("zeige <name> <gegenstand>"). Selbstgebautes "zeige"
+     funktioniert nicht.
+
+BEISPIEL:
+     Oftmals will man in Quests erreichen, dass einem NPC ein bestimmtes
+     Item als Beweis der Erfuellung einer bestimmten Aufgabe vorgezeigt
+     wird. Folgendermassen kann dies realisiert werden:
+
+     void quest_ok(object obj) { ...
+       // z.B. Vernichtung des Questobjektes und Questtexte
+       // Questbelohnung und Questanerkennung, etc.
+     }
+
+     void show_notify(object obj) {
+       if(obj->id("\nquestitem")) // Ist das das geforderte Questobjekt?
+         quest_ok(obj);
+     }
+
+BEMERKUNGEN:
+     Da es nur um das Vorzeigen von Gegenstaenden geht, die nicht den 
+     Besitzer wechseln, sind Mechanismen wie P_REJECT in diesem Fall 
+     nicht erforderlich.
+
+SIEHE AUCH:
+     give_notify(), /std/npc/put_and_get.c, /std/living/put_and_get.c
+
+22. Oktober 2013 Arathorn

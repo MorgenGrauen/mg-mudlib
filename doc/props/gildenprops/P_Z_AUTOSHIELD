@@ -1,0 +1,26 @@
+P_Z_AUTOSHIELD
+
+NAME:
+     P_Z_AUTOSHIELD				"z_autoshield"
+
+DEFINIERT IN:
+     /p/zauberer/wiznpc.h
+
+BESCHREIBUNG:
+     Mit dieser Property  kann man einen automatischen 
+     Schutzzauber in Zauberer-NPCs einstellen, dessen 
+     Vorhandensein dann in jeder Kampfrunde ueberprueft
+     wird, z.B. "schutz","schutzhuelle","zauberschild".
+
+BEMERKUNGEN:
+     "zauberschild" ist ein Magisterspruch und kann nur in 
+     bestimmten Zeitabstaenden benutzt werden. Wer also als
+     Autoshield nur Zauberschild benutzt, blockiert damit
+     alle anderen Spells, solange der Magisterspruch nicht
+     gesprochen werden kann.
+     Abhilfe: _query_next_master_spell_time()  return 0; }
+
+SIEHE AUCH:
+     /p/zauberer/text/wiznpc.doku
+
+21.Okt 2006 Chagall

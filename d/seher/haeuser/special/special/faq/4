@@ -1,0 +1,34 @@
+4. SEHERLEVEL
+A propos Levels- zwar ist man nun Seher, aber dennoch kann man
+auch weiterhin seine Stufen erhoehen - allerdings mit etwas mehr
+Aufwand als frueher :(( - die Levels  und ihre EP-Anforderungen:
+
+
+Stufe   Erfahrung          Stufe   Erfahrung          Stufe   Erfahrung
+========================================================================
+21       1500000           26      11000000           31      80000000
+22       2250000           27      17000000           32     100000000
+23       3375000           28      25000000           33     125000000
+24       5062500           29      40000000           34     150000000
+25       7600000           30      60000000           35     175000000
+                                                      36     200000000
+
+Die Bedeutung der Levels ist insofern hoch, als dass die Erfolgs-
+chance der Zaubersprueche in den neuen Gilden von dem Level des
+Spielers abhaengig ist. So ist es grundsaetzlich nur moeglich, die maximale
+Erfolgswarscheinlichkeit eines Zauberspruches erst dann zu erreichen, wenn
+man Seherlevel 30 erreicht hat. Berechnet wird das ganze wie folgt:
+Bei Level 20 betraegt die Erfolgswarscheinlichkeit 80 Prozent. Pro Level
+ueber 20 steigt die Warscheinlichkeit dann um weitere 2 Prozent, erreicht
+also bei Level 30 100 Prozent.
+Dies fuehrt im Ergebnis dazu, dass ein Zauberspruch, den man an sich zu 90%
+beherrscht, in Level 25 nur mit einer Warscheinlichkeit von 81 Prozent
+gelingt (90% Beherrschen des Spruches * 90% Warscheinlichkeit aus Level 25).
+Allerdings gilt diese Formel so global nur fuer Standard-Zaubersprueche (ins-
+besondere die in der Abenteurergilde); die Magier der einzelnen Gilden
+koennen durch den Schwierigkeitsgrad eines Zauberspruches bestimmen, ob
+dieser mit hoeherer oder niedrigerer Warscheinlichkeit gelingt, als durch die
+oben angefuehrte Rechnung vorgesehen. In der Karategilde ist es sogar so
+geregelt, dass der Level an sich fuer die Erfolgswarscheinlichkeit eines
+Spruches unerheblich ist.
+

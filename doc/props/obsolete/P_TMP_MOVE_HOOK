@@ -1,0 +1,42 @@
+********************* VERALTETE PROPERTY ******************************
+* Diese Property ist veraltet. Bitte nicht mehr in neuem Code nutzen. *
+***********************************************************************
+NAME:
+    P_TMP_MOVE_HOOK             "move_hook"
+
+DEFINIERT IN:
+    /sys/new_skills.h
+
+BESCHREIBUNG:
+    Mindestens 3-elementiges Array ({zeitpunkt, objekt, funktion, ...}).
+    Die Funktion wird im 'objekt' mit den gleichen Parametern wie move()
+    nach der Abfrage auf P_NO_TPORT aufgerufen, wenn der 'zeitpunkt'
+    noch nicht ueberschritten ist. Wenn die Funktion etwas anderes als ein
+    5-elementiges Array ({dest, methods, direction, textout, textin})
+    oder -1 zurueckgibt, wird move() normal ausgefuehrt, ansonsten werden die
+    5 move-Parameter durch die Array-Eintraege ersetzt bzw. wird bei einem
+    Rueckgabewert von -1 das move() abgebrochen. In letzterem Fall ist
+    die Funktion dafuer verantwortlich, eine entspr. Meldung an den
+    Spieler auszugeben!
+
+HINWEIS:
+    Falls man einem Spieler einen Move-Hook setzt, ist es ratsam, im
+    Move-Hook zu pruefen, ob das Spielerobjekt nach Abarbeitung der Hook-
+    Funktion noch lebt. Ansonsten wird ein doppeltes move() ausgefuehrt:
+    in den Todesraum und direkt wieder zurueck zur Leiche.
+
+BEMERKUNGEN:
+     - Bitte das neuere Hooksystem (s. Manpage std/hooks) benutzen.
+     - falls die Zeit abgelaufen oder das Objekt zerstoert ist, wird die
+       Property auf 0 gesetzt
+     - vor dem Setzen immer auf die Existenz eines gueltigen Hooks
+       pruefen, einfaches Ueberschreiben fuehrt einerseits zu Fehlern
+       im Code anderer und ist andererseits unfair gegenueber ihnen
+
+SIEHE AUCH:
+     Bewegung:	move(L), NotifyMove(), PreventMove()
+     Hooks:	P_TMP_DIE_HOOK, P_TMP_DEFEND_HOOK, P_TMP_ATTACK_HOOK
+     neue Hooks: std/hooks
+
+----------------------------------------------------------------------------
+08.12.2008, Zesstra

@@ -1,0 +1,149 @@
+add_action(E)
+FUNKTION:
+     void add_action(string fun, string cmd)
+     void add_action(string fun, string cmd, int flag)
+
+ARGUMENTE:
+     fun
+	gerufene Methode
+     cmd
+	ausloesendes Verb
+     flag
+	Flag fuer unscharfe Interpretation
+
+BESCHREIBUNG:
+     Generell: Das Verhalten dieser efun wird durch AddCmd aus
+               /std/thing/commands.c komfortabler widergespiegelt.
+               Darauf sollte man zurueckgreifen.
+
+     Legt fuer "cmd" (ein Kommandoverb) eine im entsprechenden Objekt
+     zu rufende Methode fest.
+
+     Diese Methode bekommt die Argumente als String uebergeben und
+     muss 0 (fuer einen Fehler) oder 1 (fuer Erfolg) zurueckgeben.
+
+     Der Parser durchsucht bei einer Spielereingabe die Liste der
+     eingetragenen Kommandos nach passenden Kommandos und ruft die
+     zugehoerigen Methoden in den Objekten bis eine der Methoden
+     1 zurueckgibt oder die Liste durchlaufen wurde. In dem Fall
+     kommt die Fehlermeldung (notify_fail()) zum Einsatz.
+
+     Mit Werten != 0 fuer "flag" legt man eine unscharfe Auswertung
+     fest, im Beispiel: Die Methode "action_fun" bei einem
+      add_action("action_fun", "hops", 1);
+     wird sowohl beim Kommando "hops" als auch bei Kommandos wie
+     "hopse", "hopseblub", ... gerufen werden.
+     Dieses Flag sollte vorsichtig verwendet werden.
+
+     Es gibt drei moegliche Verhaltensweise, die per "flag" eingeschaltet
+     werden koennen:
+     Wenn das Argument <flag> AA_SHORT (d.h. 1) ist, koennen Argumente von
+     cmd ohne einen Leerschlag an cmd angehaengt sein. An die Funktion fun
+     werden alle Zeichen nach dem ersten Leerschlag als Argument
+     uebergeben.
+
+     Wenn <flag> AA_NOSPACE (d.h. 2) ist, koennen die Argumente wiederum
+     ohne Leerschlag ans Verb angehaengt sein. Im Unterschied zu AA_SHORT
+     werden alle Zeichen nach dem Verb als Argument an die Funktion
+     uebergeben. Die Zeichen, welche nicht durch einen Leerschlag vom
+     Verb getrennt sind, werden ZUSAETZLICH von query_verb() zurueck
+     gegeben.
+
+     Wenn <flag> AA_IMM_ARGS (3) ist, werden alle Zeichen nach dem Verb
+     als Argument uebergeben, nicht aber von query_verb() beruecksichtigt.
+
+
+BEMERKUNGEN:
+     (1) add_action() sollte immer innerhalb von init() benutzt werden
+     (2) das definierende Objekt muss im inventory des Spielers oder
+         environment() des kommandogebenden Lebewesens sein
+     (3) im init() spaeter eingetragene Kommandos oder spaeter hinzu-
+         kommende Objekte werden bei der Kommandoauswertung VOR den
+         alten beruecksichtigt
+         (Daher bewegt sich das Xtool der Magier regelmaessing neu in
+          das Inventory, um immer "erstes" Objekt zu sein.)
+
+BEISPIELE:
+     // ein Kommando in einem Schirm
+     void init() {
+      ::init();
+      add_action("action_oeffne", "oeffne");
+     }
+
+     int action_oeffne(string str) {
+      if(stringp(str) && id(str))	// Argument da und bin ich gemeint?
+       write("Du oeffnest den Schirm.\n");
+       say(break_string(this_player()->Name(WER)+" oeffnet einen Schirm.",78));
+       return 1;
+      }
+      notify_fail("Was willst Du oeffnen?\n");
+      return 0;
+     }
+
+     // frueher beliebt um Spieler lahmzulegen, da es _alle_ Kommandos 
+     // triggert -> siehe heute jedoch dafuer eher P_DISABLE_COMMANDS
+     // Achtung: siehe Implikation von (3)
+     add_action("action_nothing", "",1 );
+     ...
+     int action_nothing(string str) {
+      write("Dir sind die Haende gebunden.\n");
+      return 1;
+     }
+
+     Beispiele fuer die Verwendung des Argumentes "flag":
+      add_action("disfunc", "disconnect", AA_NOSPACE);
+
+        Die Funktion disfunc() wird aufgerufen, wenn der Spieler "disconnect"
+        oder eine Abkuerzung davon (zum Beispiel "di" oder "discon") eingibt.
+        Laengere Worte (zum Beispiel "disconnecting") werden NICHT erkannt.
+        Um rauszufinden, was der Spieler tatsaechlich eingegeben hat, muss
+        query_verb() aufgerufen werden.
+
+      add_action("fun", "cmd");
+      add_action("fun", "scmd", AA_SHORT);
+      add_action("fun", "ncmd", AA_NOSPACE);
+      add_action("fun", "icmd", AA_IMM_ARGS);
+
+        Die folgende Tabelle zeigt, was die oben aufgefuehrten Kommandos bzw.
+        <flag> fuer Werte an query_verb() und als Argumente an die Funktion
+        fun uebergeben:
+        |-------------------|--------------|----------------------------|
+        | Eingabe           | query_verb() | Argument der Funktion fun  |
+        |-------------------|--------------|----------------------------|
+        | "cmd"             | "cmd"        | 0                          |
+        | "cmd bla fasel"   | "cmd"        | "bla fasel"                |
+        |-------------------|--------------|----------------------------|
+        | "scmd"            | "scmd"       | 0                          |
+        | "scmd bla"        | "scmd"       | "bla"                      |
+        | "scmdbla"         | "scmdbla"    | 0                          |
+        | "scmd bla fasel"  | "scmd"       | "bla fasel"                |
+        | "scmdbla fasel"   | "scmdbla"    | "fasel"                    |
+        |-------------------|--------------|----------------------------|
+        | "ncmd"            | "ncmd"       | 0                          |
+        | "ncmd bla"        | "ncmd"       | " bla"                     |
+        | "ncmdbla"         | "ncmdbla"    | "bla"                      |
+        | "ncmd bla fasel"  | "ncmd"       | " bla fasel"               |
+        | "ncmdbla fasel"   | "ncmdbla"    | "bla fasel"                |
+        |-------------------|--------------|----------------------------|
+        | "icmd"            | "icmd"       | 0                          |
+        | "icmd bla"        | "icmd"       | " bla"                     |
+        | "icmdbla"         | "icmd"       | "bla"                      |
+        | "icmd bla fasel"  | "icmd"       | " bla fasel"               |
+        | "icmdbla fasel"   | "icmd"       | "bla fasel"                |
+        |-------------------|--------------|----------------------------|
+
+
+GESCHICHTE
+        Das Argument <flag> < 0 wird seit 3.2@127 unterstuetzt, aber erst ab
+        LDMud 3.2.8 richtig implementiert. LDMud 3.2.9 fuehrte das AA_IMM_ARGS
+        Flag ein. Ab LDMud 3.5 kann man Closures als Funktionen uebergeben.
+
+SIEHE AUCH:
+			remove_action(E), init(E), enable_commands(E)
+     Fehlermeldung:	notify_fail(E), _notify_fail(E)
+     Argumentstring:	query_verb(E), _unparsed_args(L)
+     obsolet:		add_verb(E), add_xverb(E)
+     alternativ:	AddAction(L), AddCmd(L)
+                        P_DISABLE_COMMANDS
+
+24. Maerz 2004 Gloinson@MG

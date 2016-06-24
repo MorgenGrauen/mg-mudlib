@@ -1,0 +1,47 @@
+SetProp()
+FUNKTION:
+     public mixed SetProp(string name, mixed Value);
+
+DEFINIERT IN:
+     /std/thing/properties.c
+     /sys/thing/properties.h (Prototyp)
+
+ARGUMENTE:
+     name	- Property, deren Wert veraendert werden soll.
+     Value	- Wert, auf den der Inhalt der Property gesetzt werden soll
+
+BESCHREIBUNG:
+     Der Datenwert der Property 'name' wird auf den Wert 'Value' gesetzt.
+
+     Existiert eine F_SET_METHOD oder eine _set_'name'()-Methode fuer
+     diese Property, so wird diese aufgerufen und ihr 'Value' uebergeben.
+     Eine F_SET_METHOD hat dabei Vorrang vor _set_'name'(), d.h.
+     _set_'name'() wird nach erfolgreicher F_QUERY_METHOD nicht mehr
+     gerufen.
+
+     (Diese Methoden nutzen dann Set(), um den Datenwert der Property
+      'name' zu aendern. Teilweise werden aber auch interne Variablen so
+      oeffentlich gemacht und sind nicht in der ueber Set/Query verfuegbaren
+      Property 'name' abgelegt.)
+
+RUeCKGABEWERT:
+     Der Wert, der nun in der Property gespeichert ist.
+     In der Regel ist das 'Value'. Wenn die Property ueber eine SET_METHOD
+     oder eine _set_'name'()-Funktion verfuegt und diese 'Value' aendert
+     (zum Beispiel, indem sie 'Value' an einen bestimmten erlaubten
+     Wertebereich anpasst), kann der Rueckgabewert jedoch auch veraendert
+     sein.
+
+     Wenn die Property nicht veraendert werden darf, wird -1 zurueckgegeben.
+
+BEISPIELE:
+     // geben wir dem Zwerg eine Kurzbeschreibung
+     SetProp(P_SHORT, "Ein kleiner Zwerg");
+
+SIEHE AUCH:
+     Aehnliches:	QueryProp(L), Set(L), Query(L)
+     Generell:		SetProperties(L), QueryProperties(L)
+     Konzept:		properties, /std/thing/properties.c
+
+15.Dez 2004 Gloinson
+

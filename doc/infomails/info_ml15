@@ -1,0 +1,74 @@
+Herzlich willkommen im Kreise der Magier!
+Hallo @WER1,
+
+ich nehme an, dass Dir Dein Sponsor bereits einige Hinweise und Tips
+und vor allen Dingen den weiteren Ablauf Deines Magierdaseins hier im MG
+erlaeutert hat. Trotzdem moechte ich Dir auch noch ein paar Hinweise
+geben, damit nichts schief geht.
+
+Zum einen findest Du zusaetzliche Informationen in den Hilfeseiten zu
+"magier" und "gesellenstueck". Lies Dir die einmal in Ruhe durch und wenn
+Du dazu noch weitere Fragen hast, kannst Du Dich gerne an Deinen Sponsor 
+wenden.
+
+Des weiteren hast Du momentan nur Leserechte in /doc, das ist das 
+Verzeichnis, in dem die gesamte Dokumentation des Morgengrauens
+abgelegt ist. Du kannst Dir die Dateien mit Hilfe des Befehls "man"
+anzeigen lassen. Eine Uebersicht ueber die Struktur der Dokumentation und
+die Themen der einzelnen Unterverzeichnisse verschafft Dir der Befehl
+"more /doc/README".
+Unter /doc/beispiele/ befinden sich ein paar Beispiele der Programmierung 
+mit LPC - auch wenn leider nicht alle auf dem aktuellsten Stand sind.
+
+Der Befehl "man <begriff>" durchsucht alle diese Verzeichnisse automatisch
+nach dem angegebenen Begriff, der z.B. eine Mudlib-Funktion sein kann.
+Wenn er eine passende Manpage gefunden hat, wird Dir diese angezeigt.
+Probier doch z.B. einfach mal "man AddExit" aus, um zu erfahren, wie Du
+in einem Raum einen Ausgang anlegst, oder schau mit "man P_KILL_MSG" nach,
+wie Du Deinem NPC beibringst, seinen Gegner auf der Ebene "Tod" angemessen
+zu verspotten. Auf diese Weise kannst Du Dir einen ersten Ueberblick ueber
+die Funktionalitaet und Arbeitsweise der Mudlib und des Drivers verschaffen.
+Wie immer gilt aber, dass Dein Sponsor, oder auch die anderen Magier Dir
+gerne weiterhelfen, wenn etwas unklar bleiben sollte. Scheue Dich bitte
+nicht, einfach jemanden zu fragen.
+
+Zum Ablauf Deines Gesellenstuecks moechte ich zunaechst nur soviel sagen,
+dass Du erst auf Magierlevel 20 ein eigenes Home-Verzeichnis bekommen wirst,
+in dem Du dann arbeiten kannst. Vorher musst Du den Erzmagiern, insbesondere
+dem fuer die Gesellenstuecke zustaendigen (wer das ist, bekommst Du mittels
+"hilfe erzmagier" heraus), Dein Konzept fuer dieses Gesellenstueck 
+erlaeutern. Sei dabei ruhig ein wenig ausfuehrlicher und schreib ein wenig
+etwas zu sammen. Falls Du ein neues Gebiet schreiben moechtest, ist eine 
+kleine ASCII-Karte als Gebietsueberblick immer gern gesehen.
+
+Ein wichtiger Hinweis zum Konzept: Sprich bitte rechtzeitig mit dem
+zustaendigen Regionsmagier der Region, die Dein GS aufnehmen soll, Deinem
+Sponsor und auch mit dem GS-EM Dein Gesellenstueck ab. Bitte teile uns auch 
+mit, wenn Du waehrend der Programmierung Aenderungen vornimmst. Je besser
+wir uns im Vorfeld absprechen, desto weniger Probleme treten bei der 
+Abnahme durch die beteiligten Instanzen auf. Es hat sich ausserdem gezeigt,
+dass man saemtliche (und damit meine ich wirklich _alle_) Absprachen 
+bezueglich des Konzepts sauber dokumentieren sollte, z.B. per Mail.
+
+Bei der Ausarbeitung eines Konzeptes ist Dir gerne Dein Sponsor oder 
+auch der Regionsmagier behilflich - jeder von denen hat selber schon
+ein GS-Konzept eingereicht und sollte etwas dazu sagen koennen. Falls
+Dir noch ein wenig die Ideen abgehen, schau doch einfach mal auf das
+Projektbrett in der Abenteurer-Gilde: dort sind haeufig Gesellenstueck-
+Projekte ausgeschrieben.
+
+Wenn Dein Konzept vorliegt und vom Umfang und Schwierigkeit her fuer 
+ausreichend befunden wurde, so wirst Du nach ca. 8 Tagen auf Magierlevel
+20 befoerdert.
+Wenn Du noch Fragen hast, Sorgen, Noete o.ae. so stehen Dir Dein Sponsor,
+jeder andere Magier und der GS-EM natuerlich auch gerne zur Verfuegung.
+
+Ich wuensche Dir im Namen der Magierschaft viel Spass beim Programmieren 
+und hoffe, dass Du schon bald eine Mail mit Deinem Konzept an die Erzmagier
+absenden wirst!
+
+Viele Gruesse, Dein Merlin.
+
+P.S.: Wenn Du magst, kannst Du auch gerne die Ebenen -magier und -lpc 
+      betreten, um dort ein wenig mitzulesen oder Deine eigenen Fragen
+      loszuwerden.

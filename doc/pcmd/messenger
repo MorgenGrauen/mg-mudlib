@@ -1,0 +1,37 @@
+
+messenger
+---------
+
+ KOMMANDO:
+    messenger [<id>]
+
+ ARGUMENTE:
+
+     <id> (optional)
+        Die neue Messenger-ID
+
+ BESCHREIBUNG:
+    Wenn Du einen Messenger-Dienst benutzt, so kannst Du dort
+    Deine ID eintragen. Es wird einfach der Text gespeichert, den
+    Du uebergibst und dann beim finger-Befehl angezeigt. Du solltest
+    also mit hinzuschreiben, um welchen Dienst es sich handelt. 
+
+    Wird kein Parameter uebergeben, so wird der aktuelle Eintrag
+    angezeigt. Gibst Du "keine" oder "loeschen" an, wird der
+    Eintrag geloescht.
+
+    Hinweis zum Zusammenspiel mit dem Befehl ICQ. Hast Du zugleich
+    auch eine ICQ-Nummer gesetzt, so wird diese automatisch im
+    Finger-Befehl mit angegeben. 
+
+ BEISPIELE:
+
+    messenger ICQ: 1234   
+    messenger MSN: foo@bar.com
+
+ SIEHE AUCH:
+    Persoenliche Details: email, url, icq, ort
+    Sonstiges:            finger
+
+ LETZTE AENDERUNG:
+    2006-01-05 von Zook.

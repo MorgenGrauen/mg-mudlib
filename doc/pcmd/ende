@@ -1,0 +1,28 @@
+
+ende
+----
+
+ KOMMANDO:
+    ende
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Man verlaesst das Spiel sofort und auf der Stelle (siehe aber auch unter
+    BEMERKUNGEN). Alle Gegenstaende werden fallen gelassen, nur autoladene
+    Gegenstaende (z.B. Geld) behaeltst Du ueber das Spielende hinaus. Wenn Du
+    Dich wieder einloggst, startest Du an Deinem lokalen Startpunkt.
+
+    Der aktuelle Spielstand wird vor dem Verlassen automatisch abgespeichert.
+
+ BEMERKUNGEN:
+    Da einige Leute diesen Befehl gebrauchten, um sich im Kampf Vorteile zu
+    verschaffen, funktioniert der `ende'-Befehl erst zwei Minuten nach der
+    letzten Kampfhandlung.
+
+ SIEHE AUCH:
+    speichern, schlafe (ein)
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 15:05:00 von Wargon

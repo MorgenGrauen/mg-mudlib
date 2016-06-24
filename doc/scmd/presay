@@ -1,0 +1,26 @@
+
+presay
+------
+
+ SEHERKOMMANDO:
+    presay <text>
+
+ ARGUMENTE:
+
+     <text>
+        Der Text fuer das Presay.
+
+ BESCHREIBUNG:
+    Das Presay wird in der Kurzbeschreibung des Charakters vor den Namen
+    gesetzt.
+
+    `presay' ohne <text> loescht das momentan gesetzte Presay.
+
+    Magier koennen erreichen, dass ihr Presay auch bei den
+    Kommunikationsbefehlen mit ausgegeben wird.
+
+ SIEHE AUCH:
+    titel, showpresay (nur Magier)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

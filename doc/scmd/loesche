@@ -1,0 +1,64 @@
+
+loesche
+-------
+
+ SEHERHAUSKOMMANDO:
+    loesche detail <det>
+    loesche lesbares detail <det>
+    loesche befehl <bef>
+    loesche alles
+    loesche alle <was>
+
+ ARGUMENTE:
+
+     <det>
+        Liste der zu loeschenden (lesbaren) Details.
+     <bef>
+        Liste der zu loeschenden Befehle.
+     <was>
+        `befehle', `details' oder `lesbare details'
+
+ BESCHREIBUNG:
+    Dieser Befehl dient zum Loeschen von Details und Befehlen. Die einzelnen
+    Anwendungen:
+
+     loesche detail <det>
+     loesche lesbares detail <det>
+        Loescht das (lesbare) Detail <det>. Es koennen auch mehrere (lesbare)
+        Details auf einmal geloescht werden; man muss sie dann mit Kommata
+        voneinander trennen.
+
+     loesche befehl <bef>
+        Loescht den Befehl <bef>. Wenn es sich bei <bef> um ein einfaches Verb
+        handelt, werden alle Befehle zu diesem Verb geloescht. Handelt es sich
+        um ein Verb mit Parameter, so wird nur dieser ganz spezielle Befehl
+        geloescht.
+
+     loesche alles
+        Es werden ALLE Details, lesbaren Details und Befehle auf einen Schlag
+        geloescht. Dazu muss man noch die nachfolgende Sicherheitsabfrage mit
+        `ja' beantworten.
+
+     loesche alle [befehle|details|lesbaren details]
+        Es werden alle Beschreibungen der jeweiligen Sparte geloescht. Auch
+        hier gibt es eine Sicherheitsabfrage, die mit `ja' beantwortet werden
+        muss.
+
+ BEISPIELE:
+    Die Details `wand' und `waende' sollen geloescht werden:
+
+    > loesche detail wand, waende
+
+    Alle druecke-Befehle sollen geloescht werden:
+
+    > loesche befehl druecke
+
+    Nur die Befehle druecke knopf und druecke platte sollen geloescht werden:
+
+    > loesche befehl druecke knopf, druecke platte
+
+ SIEHE AUCH:
+    aendere, beschreibe
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,26 @@
+KOMMANDO:
+	ton [<Status>]
+
+ARGUMENTE:
+	<Status>
+	  EIN: Ton einschalten.
+	  AUS: Ton ausschalten.
+
+BESCHREIBUNG:
+	Die meisten Terminals koennen einfache Pieptoene erklingen lassen,
+	was auch an einigen Stellen hier im MUD zum Einsatz kommt.
+	Genannt seien hierbei vorrangig 'erwarte' und 'wecke', welche einen
+	Grossteil der zweifelhaften Geraeuschkulisse ausmachen. Nun ist es
+	nicht immer guenstig, die schwer arbeitenden Menschen in einem
+	Rechenzentrum mit offensichtlich nicht studienbezogenen Toenen zu
+	stoeren. Wer nicht die Moeglichkeit hat, diese stoerenden Laute am
+	Computer direkt abzuschalten, dem sei mit diesem Befehl geholfen:
+	  'ton EIN' - Es werden Toene vom MUD erzeugt (Standard).
+	  'ton AUS' - Es werden keine Toene vom MUD erzeugt.
+	'ton' ohne Parameter zeigt den aktuellen Status.
+
+SIEHE AUCH:
+	erwarte, wecke
+
+----------------------------------------------------------------------------
+11.11.2006 Zesstra

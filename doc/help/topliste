@@ -1,0 +1,21 @@
+
+ TOPLISTEN:
+ ==========
+
+    In (fast) jeder Kneipe im Morgengrauen findet man eine Topliste.
+    Auf dieser Topliste stehen die 100 Spieler, die die meisten
+    Stufenpunkte haben.
+    Wer - aus welchen Gruenden auch immer - darauf verzichten moechte,
+    in dieser Topliste aufzutauchen (wenn er/sie denn gut genug dafuer
+    ist), kann sich selbst mit dem Kommando
+
+        topliste nein
+
+    fuer die Topliste sperren. Mit dem Kommando
+
+        topliste ja
+
+    wird dies wieder rueckgaengig gemacht.
+
+ LETZTE AeNDERUNG:
+    Son, 30.8.1998, 22:10:00 von Paracelsus

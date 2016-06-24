@@ -1,0 +1,39 @@
+
+Reset
+=====
+
+    Resets sind ein Ereignis fuer alle Objekte (also Wesen, Raeume, Waffen
+    und Ruestungen).
+    Dabei werden diese (oft) auf einen bestimmten Zustand zurueckgesetzt
+    oder es werden Aktionen, wie zB Heilung durch Amulette durchgefuehrt.
+
+    Speziell bei Raeumen werden im Reset:
+      1. Objekte des Raumes neuerzeugt:
+         * sowohl herumliegende Objekte, welche entfernt wurden
+         * als auch getoetete NPCs, die jetzt wiederbelebt werden
+      2. Tueren geschlossen/geoeffnet (je nach Ursprungszustand).
+      3. gleiche, herumliegende Objekte im Raum aufgeraeumt.
+         (danach gibt es maximal 3 gleiche Objekte, das findet nur bei
+          Spielerabwesenheit statt)
+
+    Speziell 1. ist interessant, weil in einem Reset mit einem Mal wieder
+    dieses fiese Blockademonster auftaucht oder endlich der heissersehnte
+    Questgegenstand erlangbar ist.
+
+    Normalerweise ist die Zeit zwischen zwei Resets 30+random(30) Minuten.
+    Allerdings veraendern Magier diese Werte gern mal.
+
+ BEMERKUNGEN:
+    Beruehmt-beruechtigt ist der sogenannte Boing-Reset:
+    Aus technischen Gruenden fand frueher ein Reset in einem das erste Mal
+    seit langer Zeit betretenen (und damit geladenen) Raum sehr frueh nach
+    diesem Betreten statt.
+    Insbesondere in der SSP (also Boings Gebiet) fand man sich dadurch
+    ploetzlich erneut in der Gesellschaft eines doch gerade eben hoeflich
+    hinfortkomplimentierten Blockademonsters wieder.
+
+ SIEHE AUCH:
+    abk, reboot, abenteuer
+
+21.10.2014, Zesstra
+

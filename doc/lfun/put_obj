@@ -1,0 +1,30 @@
+put_obj()
+
+FUNKTION
+    int put_obj(object ob, object where)
+
+DEFINIERT IN:
+
+    /std/living/put_and_get.c
+
+ARGUMENTE:
+
+    ob      Das Objekt, das irgendwo hineingelegt werden soll.
+    where   Das (tote) Objekt, in das etwas hineingelegt werden soll.
+
+BESCHREIBUNG:
+
+    Das Lebewesen, in dem diese Funktion aufgerufen werden soll, legt
+    den angegebenen Gegenstand (ob) in das angegebene Zielobjekt (where).
+    Dabei sollte es sich bei where um einen Container/Raum handeln.
+    Ist where ein Lebewesen, verwendet man besser give_obj().
+
+RUeCKGABEWERT:
+    1, wenn das Objekt weggelegt wurde oder dies nicht moeglich war. (in diesem
+    Fall wird auch direkt eine Textausgabe ausgegeben)
+    0 sonst, in diesem Fall wird in notify_fail eine passende Ausgabe
+    plaziert
+
+SIEHE AUCH:
+
+    drop_obj(), find_obs(), give_obj(), pick_obj(), /std/living/put_and_get.c

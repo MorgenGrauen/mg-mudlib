@@ -1,0 +1,6 @@
+SYNOPSIS
+      xids <object>
+
+DESCRIPTION
+      Show the user id and the effective user id of the <object>.
+

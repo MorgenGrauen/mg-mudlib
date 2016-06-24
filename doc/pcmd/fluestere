@@ -1,0 +1,25 @@
+
+fluestere
+---------
+
+ KOMMANDO:
+    fluestere <wem> zu <text>
+
+ ARGUMENTE:
+
+     <wem>
+        Das Lebwesen, dem Du etwas zufluestern willst
+     <text>
+        Der zu fluesternde Text
+
+ BESCHREIBUNG:
+    Gibt eine Mitteilung an das angegebene Lebewesen (meistens ein Spieler),
+    die niemand anderes hoeren kann. Das Lebewesen muss sich im selben Raum
+    befinden.
+
+ SIEHE AUCH:
+    sage, frage, antworte, teile (mit), gespraech, rufe, ebenen, weg,
+    ignoriere, kobold
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

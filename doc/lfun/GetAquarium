@@ -1,0 +1,37 @@
+GetAquarium()
+
+FUNKTION:
+     varargs public string* GetAquarium(object angel)
+
+ARGUMENTE:
+     Das optionale Argument <angel> ist die Angel selbst.
+
+BESCHREIBUNG:
+     Die Funktion wird beim Angeln in Raeumen gerufen, wenn diese als 
+     Gewaessertyp W_USER gesetzt haben (siehe Manpage zu P_WATER).
+     Aus der zurueckgegebenen Liste der Pfade wird einer zufaellig aus-
+     gewaehlt und das Objekt geclont. 
+
+RUECKGABEWERT:
+     String-Array mit Pfadnamen zu den in diesem Raum fangbaren Fischen.
+
+BEMERKUNG:
+     Man kann die Fangchancen durch Mehrfachnennung einzelner Eintraege 
+     modifizieren. Es muss sich bei den Eintraegen um lad- und clonebare
+     Objekte handeln.
+     Fuer selbstprogrammierte Fische ist das Basisobjekt 
+     /std/items/fishing/fish zu verwenden. Einige vorgefertigte Fische 
+     finden sich darueber hinaus in /items/fishing/aquarium/
+
+BEISPIEL:
+     varargs string* GetAquarium(object angel) {
+       return ({"/d/dschungel/rikus/q4e/obj/stichling",
+                "/d/dschungel/rikus/q4e/obj/karpfen",
+                "/p/seher/partymonster/obj/fisch"});
+     }
+
+SIEHE AUCH:
+    Properties: P_WATER, P_FISH
+
+-----------------------------------------------------------------------------
+zuletzt geaendert: 2014-Sep-02, Arathorn

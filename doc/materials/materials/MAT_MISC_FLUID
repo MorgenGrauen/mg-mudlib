@@ -1,0 +1,17 @@
+Materialid:
+MAT_MISC_FLUID           "misc_fluid"
+
+Name:
+"Fluessigkeit" "Fluessigkeits" "Fluessigkeit" "Fluessigkeit"
+
+Geschlecht:
+F
+
+Beschreibung:
+allg. Fluessigkeit
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100

@@ -1,0 +1,58 @@
+Version 2.0 des Sequencers von Don Rumata 2.7.93
+
+Manchmal soll ein NPC (Monster) eine Serie von Taetigkeiten
+hintereinander weg ausgefuerht werden. Dieses kann man
+mit diesem Mudul relativ einfach realisieren.
+
+Folgende Ereignisse koennen eine Sequenz ausloesen:
+
+	TellEvent: Es wird etwas in dem Raum, in dem der npc sich
+		befindet, gesagt.
+	GiveEvent: Es wird dem npc etwas gegeben.
+
+Weitere Ereignisse koennen durch den Befehl Load() selber
+programmiert werden.
+
+Wie sieht ein Programm aus?
+
+	Ein Programm ist eine Liste von Befehlen.
+	Jeder Befehl ist eine Liste, bestehend aus einem Kommando
+	und einer Zahl.
+	Das Kommendo wird aehnlich der Befehle, die ein Spieler ein-
+	gibt ausgefuehrt.
+	Vorsicht: NPCs koennen nur einen Teil der Befehle, die ein
+	Spieler kann, dafuer aber immer 'echo' und 'emote'.
+	Die Zahl gibt die Anzahl der Sekunden an, in der der naechste
+	Befehl ausgefuehrt wird.
+
+Folgende Funktionen sind im Modul implementiert:
+
+	Vorbereiten von Funktionen, die eine Sequenz ausloesen:
+
+	RegisterTell( funktion, programm )
+		Wenn dem npc etwas gesagt wird, so wird die gesagte Meldung
+		an die Funktion uebergeben. Gibt die Funktionen nicht 0
+		zurueck, wird das Programm gestartet.
+		
+	RegisterGive( funktion, programm )
+		Wird dem npc etwas gegeben, so wird das Objekt an die
+		Funktion uebergeben. Gibt die Funktion nicht 0 zurueck, so
+		wird das Programm gestartet.
+
+	Load( programm )
+		Starte das angegebene Programm.
+
+Anederungen an bestehenden Std-Funktionen:
+
+	give_notify() gibt eine 1 zurueck, wenn das Objekt akzeptiert
+		wurde. (Es muss - falls gewuenscht - dann von Hand zuruech-
+		gegeben werden. (give_obj(ob,this_player())) in dieser
+		Funktion.
+
+	Mittels add_action() kann man im create() des NPCs eigene
+	Verben fuer den NPC einfuehren.
+
+Es kann immer nur eine Funktion (egal ob via Tell, Give oder Load) angemeldet
+sein. Es kann immer nur ein Programm gleichzeitig laufen.
+
+Ideen und Bugreports an Rumata

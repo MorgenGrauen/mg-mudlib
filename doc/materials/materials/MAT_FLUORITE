@@ -1,0 +1,21 @@
+Materialid:
+MAT_FLUORITE             "fluorite"
+
+Name:
+"Flussspat" "Flussspates" "Flussspat" "Flussspat"
+
+Geschlecht:
+M
+
+Beschreibung:
+oft fluoreszierend
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:33
+MAT_ORTHOKLAS:50
+MAT_FLUORITE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

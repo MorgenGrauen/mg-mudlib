@@ -1,0 +1,633 @@
+Inhaltsverzeichnis:
+
+1.. Kurzuebersicht der Files
+2.. Der Hausverwalter
+3.. Sonderrechte
+4.. Die Tools
+4a... Der Hausmeister
+4b... liste.c
+4c... haustool.c
+5.. Das Haus
+5a... Aussenansicht    - haus.c
+5b... Die Raeume       - raum.c
+5c... Der Eingangsraum - raum0.c
+5d... Die Truhe        - truhe.c
+6.. Seherbank/Hauserwerb
+7.. Beschreibungen
+7a... Details/ReadDetails/Lang- und Kurzbeschreibung
+7b... Ausgaenge
+7c... Licht
+7d... Befehle
+8.. Rueckmeldungen
+9.. Hilfeseiten
+
+1. Kurzuebersicht der Files
+===========================
+
+/d/seher/haeuser/
+
+  /* Am allerwichtigsten: */
+  haus.h .................... Definitionen, die ueberall benutzt werden
+  access_rights.c ........... Die Leute mit Hauszugriff
+
+  /* Keine Haeuser ohne Verwaltung */
+  hausverwalter.c ........... Die Zentralstelle der Seherhaeuser
+  HAEUSER ................... Infos ueber Hausbesitzer (Wer, wo, wie gross)
+
+  save/
+    haeuser.o ................. Das Savefile des Hausverwalters
+
+  tools/ .................... Sammelplatz fuer Tools zu den Haeusern
+    hausmeister.c ............. Verlegen, Abreissen, .c-Files erstellen
+    haus.apx .................. Fuer .c-File eines Hauses
+    liste.c ................... Zeigt geloeschte und ge-Wiz-te Hausbesitzer
+    haustool.c ................ (obsolete)
+
+  /* Erwerb eines Hauses/Raumes */
+  seherbank.c ............... Das Bankgebaeude
+
+  queue.c ................... Die Schlangen vor den Schaltern
+  queue.h
+
+  sb_antrag.c ............... Schalter zum Beantragen eines Vertrages
+  sb_einzahlung.c ........... Schalter zum Einzahlen einer Rate
+  sb_ausgabe.c .............. Schalter zum Abholen eines Hauses
+
+  bausparvertrag.c .......... Auf dem Vertrag werden die Raten vermerkt
+  kommentar.c ............... Kommentare zum unklaren Vertragstext
+
+  txt/ ...................... Hier stehen die eigentlichen Vertragstexte
+    vertrag.txt ............... a) fuer einen Haus-Vertrag
+    vertrag_raum.txt .......... b) fuer einen Ausbauvertrag
+    kommentar.txt ............. c) erklaerende Bemerkungen zu den Texten
+
+  block.c ................... Der Block verwaltet die laufende Rate
+  /std/player/shadows/block_shadow.c
+
+  traghaus.c ................ Das bekommt man am Ausgabeschalter
+
+  log/ ...................... Logging der Bank, des Blocks, des Vertrages
+
+  /* Die Haeuser selbst */
+  virtual_compiler.c ........ Ordnet die Haeuser passend zu
+  haus.c .................... Die Aussenansicht des Hauses
+  raum.c .................... Allgemeine Funktionen der Raeume
+  raum0.c ................... Der Eingangsraum hat einige Zusatzfeatures
+  modules/ .................. Hilfsmodule:
+    haustuer.c ................ Beschreibung der Haustuer, Oeffnen/Schliessen
+    losa.c .................... Erweitertes Laden und Speichern der Raeume
+    usercmd.c ................. Alles fuer benutzerdefinierte Befehle
+  truhe.c ................... Die Truhe
+
+  save/
+    name.o .................... Savefile der Aussenansicht des Hauses
+    name0.o ................... Savefile von Raum 0
+		   usw.
+    name9.o ................... Savefile von Raum 9
+    nametruhe.o ............... Savefile der Truhe
+
+  special/ .................. Besondere Objekte
+    rj.c ...................... "Romeo und Julia" von Etain
+    rom_jul/ .................. Hier liegen die Seiten der Geschichte
+    seherfaq.c ................ Die Seher-FAQ von Ryne
+    faq/ ...................... Die Seiten der FAQ
+
+  rep/ ...................... Hier landen die 'typo'-Meldungen der Haeuser
+
+  doc/ ...................... Hilfeseiten (nach /doc/scmd kopieren)
+    hausbau ................... Allgemeine Informationen
+    seherhaus ...........
+    instanthaus ........
+
+    aendere .......
+    ausgang ........
+    befehl ..........
+    beschreibe .......
+    erlaube ...........
+    kopiere ............
+    licht ...............
+    loesche ................... Seiten zu den einzelnen Befehlen
+    meldungen ...........
+    notiz ..............
+    schiebe ...........
+    sperre ...........
+    spion ...........
+    uebersicht .....
+    verbiete ......
+    werfe ........
+
+/sys/player/base.h .......... Hier ist "HAUSVERWALTER" definiert
+
+2. Der Hausverwalter
+====================
+
+Dies ist die Zentralstelle der Seherhaeuser. Hier werden wichtige Daten
+der Hausbesitzer verwaltet, naemlich:
+- der Ort, an dem das Haus steht
+- die Zahl der zusaetzlichen Raeume, ueber die das Haus verfuegt
+- die Leute, die im Haus Sonderrechte besitzen
+
+Die Funktionen des Hausverwalters werden von diversen Objekten aus auf-
+gerufen. Im Einzelnen waeren da:
+
+secure() - intern
+  Sicherheitsabfrage fuer einige Funktionen des Hausverwalters. Zugelassen
+  sind EMs und die Leute, die im access_rights.c stehen, ausserdem das
+  Instanthaus (fuer NeuesHaus()) und der Ausgabeschalter (fuer NeuerRaum()).
+
+dump() - intern
+  Bringt die Datei "HAEUSER" auf den neuesten Stand (nachdem ein neues Haus
+  oder ein neuer Raum dazugekommen ist oder ein Haus verlegt bzw. geloescht
+  wurde).
+
+check_exits() - intern
+  Beim Verlegen und Abreissen von Haeusern ist es noetig, dass Ausgaenge in
+  Nachbarhaeuser entfernt werden. Dafuer sorgt diese Funktion.
+
+NeuesHaus() - traghaus.c
+  Ein neues Seherhaus wird geschaffen: es wird im ObjectDaemon angemeldet,
+  die Truhe wird im Eingangsraum plaziert, und die "HAEUSER"-Datei wird auf
+  den neuesten Stand gebracht.
+  Wenn Du zu Testzwecken ein Haus haben willst, kannst Du die Funktion auch
+  von Hand aufrufen.
+
+NeuerRaum() - sb_ausgabe.c
+  Einem Haus wird ein neuer Raum hinzgefuegt.
+  Maximal sind 10 Raeume (raum0-raum9) erlaubt.
+
+_LadeHaus() - virtual_compiler.c
+  Wenn der potentielle Besitzer wirklich ein Haus hat und sich dessen
+  Environment laden laesst, wird das Haus erstellt und zuruekgegeben.
+
+_LadeRaum() - virtual_compiler.c
+  Aehnlich wie _LadeHaus(), nur fuer den Raum mit der gewuenschten Nummer.
+  Beim Eingangsraum wird noch der Ausgang nach draussen gesetzt.
+
+FindeHaus() - hausverwalter.c, sb_antrag.c, hausmeister.c, /std/player/base.c
+  Gibt das Hausobjekt zurueck oder 0, falls der Spieler kein Haus hat.
+  Das Haus wird ggf. geladen.
+
+LoescheHaus() - hausmeister.c
+  Ein Haus wird abgerissen: Es wird im ObjectDaemon abgemeldet, saemtliche
+  Savefiles werden geloescht, ebenso das .rep-File des Hausbesitzers.
+
+  Rueckgabewerte:
+   1 - alles OK, das Haus ist weg
+  -1 - secure() schlug fehl.
+
+VerlegeHaus() - hausmeister.c
+  Ein Haus wird an einen neuen Ort verlegt: Es wird im ObjectDaemon ab- und
+  am neuen Ort wieder angemeldet, und der Ausgang nach draussen wird
+  angepasst.
+
+  Rueckgabewerte:
+     1 - alles Ok, das Haus steht jetzt woanders
+  -111 - secure() schlug fehl.
+    -1 - der angebliche Besitzer hat gar kein Haus
+    -2 - das Haus steht gar nicht da, wo es sein sollte
+    -3 - der Zielraum existiert nicht
+    -4 - im Zielraum kann nicht gebaut werden
+    -5 - es gibt Ausgaenge in benachbarte Seherhaeuser (diese werden beim
+	 Verlegen nicht automatisch geloescht; das muss der Hausbesitzer
+	 selbst machen)
+
+Unbebaubar() - hausverwalter.c, traghaus.c
+  Diese Funktion ermittelt, ob in einem Raum ein Haus gebaut werden kann, und
+  wenn nein, warum nicht.
+
+  Rueckgabewerte:
+    0 - OK, es darf gebaut werden
+    1 - der Zielraum ist entweder ein geclontes Objekt (und damit zumindest
+	nach dem naechsten Reboot auf immer verloren) oder ein Objekt, dass
+	von einem virtual_compiler erzeugt wurde (der ObjectDaemon wird zu
+	einem Zeitpunkt abgefragt, an dem das VC-Objekt noch nicht seinen
+	endgueltigen Namen hat).
+    2 - Im Zielraum ist P_INDOORS gesetzt (wenn in so einem Raum trotzdem
+	gebaut werden soll, weil es zum Beispiel eine grosse Hoehle o.ae.
+	ist, kann man P_INDORRS immer noch temporaer auf 0 setzen).
+    3 - Im Zielraum ist P_HAUS_ERLAUBT nicht gesetzt.
+
+Erlaube() - raum0.c
+  Einem oder mehreren Spielern werden Sonderrechte im Haus eingeraeumt.
+  Zurueckgegeben wird die neue erlaube-Liste.
+
+Verbiete() - raum0.c
+  Einem oder mehreren Spielern werden die Rechte entzogen.
+  Zurueckgegeben wird die neue erlaube-Liste.
+
+HausProp() - haus.c, raum.c, raum0.c, sb_antrag.c, hausmeister.c
+  Mit dieser Funktion koennen die Informationen ueber einen Hausbesitzer
+  abgefragt werden. Moeglich sind:
+  HP_ENV     - der Raum, in dem das Haus steht
+  HP_ROOMS   - die Zahl der zusaetzlichen Raeume, ueber die das Haus verfuegt
+  HP_ALLOWED - Array mit den Leuten, die Sonderrechte geniessen
+
+PCrunch() - raum.c, losa.c, hausmeister.c
+  Um Platz beim Speichern zu sparen, werden Details, ReadDetails und Befehle,
+  die den gleichen Text ergeben, zusammengepackt. Beim Hausmeister hat das
+  den Effekt, dass im generierten Quelltext z.B.
+    AddDetail( ({ "foo", "bar" }), "blafasel\n");
+  steht anstelle von
+    AddDetail( "foo", "blafasel\n");
+    AddDetail( "bar", "blafasel\n");
+
+3. Sonderrechte
+===============
+
+Der Hausbesitzer kann von seinem Eingangsraum aus anderen Leuten Rechte in
+seinem Haus einraeumen. Dazu dient der Befehl "erlaube". Leute mit Sonder-
+rechten koennen:
+- das Haus auf- und abschliessen
+- die Truhe oeffnen (schliessen darf sie jeder)
+- netztot im Haus bleiben
+- Rueckmeldungen aus dem Reportfile ansehen (aber nicht aendern)
+
+Ausserdem muss man Sonderrechte in einem Nachbarhaus haben, wenn man von
+seinem Haus einen Ausgang dorthin legen will.
+
+Das Array mit den Namen der Berechtigten erhaelt man vom Hausverwalter per
+HausProp(<owner>, HP_ALLOWED). In dem Array stehen die User-IDs der Leute,
+allerdings mit grossem Anfangsbuchstaben.
+
+4. Die Tools
+============
+
+4a. Der Hausmeister
+-------------------
+
+Der Hausmeister erlaubt das einfache Abreissen und Verlegen von Haeusern
+sowie das Generieren von LPC-Quelltext aus den Savefiles. Dazu stellt er
+drei Kommandos zur Verfuegung:
+
+verlege <name> nach <ziel>
+  Das Haus des Spielers <name> wird in den Raum <ziel> verlegt. <ziel> ist
+  dabei entweder der Filename des Zielraumes oder "hier", wenn das Haus
+  zu Deinem aktuellen Standort verlegt werden soll.
+  Sollte das Verlegen fehlschlagen (siehe VerlegeHaus() im Hausverwalter)
+  meldet sich der Hausmeister entsprechend.
+
+reisse <name> ab
+  Das Haus des Spielers <name> wird abgerissen.
+  ACHTUNG! Es gibt keine Sicherheitsabfrage!
+
+generiere <name> [<nr>] [soft | ganz]
+  Generiert aus dem Savefile ein LPC-File.
+  Ohne Angabe einer Nummer wird die Aussenansicht generiert, ansonsten der
+  Raum mit der entsprechenden Nummer.
+  Ausser wenn "soft" angegeben wurde, werden die Dateien in das Verzeichnis
+  "rep/" geschrieben, und zwar als "<name>haus.c", "<name>raum0.c" etc.
+  Befindet sich die Truhe in dem generierten Raum, wird auch noch eine Datei
+  "<name>truhe.c" angelegt.
+  Die Dateien sind im wesentlichen fuer Magier gedacht, die ihre Haeuser als
+  LPC-Files unter Eigenregie weiterfuehren wollen/sollen. Ausgaenge sind
+  relativ zu "/players/<name>/seherhaus".
+  Mit dem Parameter "ganz" laesst sich das gesamte Haus auf einen Schlag
+  umwandeln.
+  "soft" stammt noch aus der Zeit, als ich die Typos der Seher selber fixen
+  musste. Das Haus oder der Raum wird dabei in die Datei PATH+"fixed.c"
+  geschrieben.
+
+4b. liste.c
+-----------
+
+Ab und zu sollte man mal nachsehen, welche Seher sich geloescht haben oder
+zu Magiern wurden. Die Haeuser von geloeschten Sehern sollten ebenfalls
+geloescht werden; Magier koennen ihre Haeuser als normale LPC-Objekte
+weiterfuehren (sobald die Level 21 oder 25 haben).
+
+Die Liste zeigt an, welche Leute betroffen sind. Dazu muss sie einfach nur
+geladen werden.
+
+Zwei Ausnahmen gibt es:
+- Krigi hat sich zwar geloescht, er hat aber darum gebeten, dass sein Haus
+  weiter bestehen kann (er ist jetzt Dauergast)
+- Fraggle ist zwar Magier, hat sein Haus aber mal zu Testzwecken bekommen
+
+4c. haustool.c
+--------------
+
+Dieses Teil ist mittlerweile ueberholt; es stammt noch aus der Zeit, als
+'typo'- und aehnliche Meldungen noch in meinem eigenen .rep-File landeten
+und ich den Kram auch abarbeiten musste. Mit dem Tool konnte ich die Mel-
+dungen aus meinem .rep-File ansehen und eine Benachrichtigung an den Haus-
+besitzer generieren.
+
+
+5. Das Haus
+===========
+
+Das Haus selbst zerfaellt, was die Beschreibungen angeht, in drei grosse
+Bereiche: den von aussen sichtbaren Teil, die Raeume im Inneren, und die
+Truhe. Bei den Raeumen hat der Eingangsraum noch ein paar Sonderfunktionen.
+
+5a. Aussenansicht
+-----------------
+
+Dies ist das Objekt, das im ObjectDaemon angemeldet wird ("<name>haus").
+Der Hausbesitzer kann folgende Eigenschaften beschreiben:
+- die Langbeschreibung (P_LONG)
+- eine Zeile, wie die Haustuer aussehen soll (H_DOOR)
+- die Zustaende der Haustuer (offen, geschlossen, abgeschlossen; H_DOORLSTAT)
+
+Ausserdem stehen folgende Kommandos zur Verfuegung:
+- betritt/betrete <haus>
+  Sollte klar sein. Geht nur, wenn das Haus offen ist.
+- klopfe an <haus> an
+  Das Klopfen hoert man im ganze Haus
+- notiz <text>
+  Der Hausbesitzer kann damit eine kurze Notiz an der Haustuer anbringen.
+
+modules/haustuer.c stellt die Befehle zum Oeffnen und Schliessen des Hauses
+zur Verfuegung. Aufgeschlossen werden kann das Haus nur von Leuten mit
+spezieller Genehmigung.
+
+Wenn die Kurzbeschreibung geaendert werden soll, muss das ein Magier machen.
+Offizieller Ansprechpartner dafuer ist der Hausmaintainer (also DU :-)
+Man sollte dabei darauf achten, dass die Beschreibung a) in die Umgebung und
+b) allgemein in eine Fantasywelt passt (das ist leider nicht bei allen
+Haeusern der Fall...)
+Wenn die Kurzbeschreibung geaendert wird, sollten ggf. auch noch die IDs, der
+Name und das Geschlecht angepasst werden.
+Um ein Haus unsichtbar zu machen, muss P_SHORT auf 0 gesetzt werden.
+Wenn noch andere Seherhaeuser im gleichen Raum stehen, und in der Beschrei-
+bung des geaenderten Hauses nichts mehr auf ein "haus" hinweist, kann und
+sollte die ID "haus" entfernt werden.
+Um die Aenderungen zu sichern, muss im Haus Save() aufgerufen werden.
+
+Zwei IDs sollten nie entfernt werden: "sehe\rhaus" und "\n<name>haus"
+
+
+5b. Die Raeume
+--------------
+
+Programmtechnisch befinden sich hier hauptsaechlich Funktionen zum Beschrei-
+ben des Raumes, Hinzufuegen und Entfernen des Lichtes, An- und Abschalten
+des Lichtes und Einsehen des .rep-Files.
+Ausserdem kann man Personen, Gegenstaende oder alles aus dem Haus werfen.
+
+Auch die Raeume haben die ID "sehe\rhaus".
+
+Erwaehnenswerte Funktionen:
+
+normstr()
+  Ersetzt @@ in den Beschreibungen durch ** (damit kein process_string()
+  ausgefuehrt werden kann)
+
+brk()
+  Erzeugt aus einer durch Kommata getrennten Liste ein Array von Strings
+
+befCheck()
+  Faengt verbotene Befehle ab (Kommandos, die Leerzeichen enthalten; nicht
+  gesetzte Ausgaenge; alle Kommandos, die der Raum definiert, ausser
+  "oeffne", "schliess", "schliesse")
+
+owner_check()
+  Darf der Spieler das? Falls ohne Argument aufgerufen, ist die Aktion nur
+  erlaubt, wenn this_player() der Hausbesitzer ist.
+  Mit Argument wird auch die erlaube-Liste geprueft.
+
+arr_out()
+  Gibt ein Array von Strings aus oder zurueck, je nach Anwendung
+
+clean_up()
+  Sorgt dafuer, dass nur leere Raeume weggeraeumt werden
+
+BecomesNetDead()
+  Netztote verlassen das Haus (soweit sie nicht auf der erlaube-Liste stehen)
+
+init()/int_long()
+  Meldungen ueber unsichtbare Magier
+
+lies()
+  ReadDetails werden mit More() ausgegeben
+
+Die Befehle zur Beschreibung darf nur der Hausbesitzer benutzen. Den Befehl
+"uebersicht" koennen auch die Magier, die im access_rights.c stehen, ver-
+wenden.
+Naeheres zu den moeglichen Beschreibungen folgen unten.
+
+
+5c. Der Eingangsraum
+--------------------
+
+Der Eingangsraum stellt zusaetzlich noch folgende Befehle und Moeglichkeiten
+zur Verfuegung:
+
+- Oeffnen, Schliessen und Abschliessen des Hauses von innen
+- Einraeumen und Entziehen von Sonderrechten mit "erlaube" und "verbiete"
+- Benutzen des Gucklochs in der Tuer mit dem Befehl "spion"
+- Mitteilung ueber angesammelte 'typo'-Meldungen seit dem letzten Betreten
+- "uebersicht" zeigt zusaetzlich die Leute auf der erlaube-Liste
+
+
+5d. Die Truhe
+-------------
+
+Die Truhe kann unendlich viele Gegenstaende aufnehmen.
+Aendern lassen sich Geschlecht, Name, Adjektive (aus diesen dreien wird die
+Kurzbeschreibung zusammengesetzt), IDs, Langbeschreibung und Material.
+Die ID "\t\ruhe" ist IMMER gesetzt.
+Die Truhe laesst sich innerhalb des Hauses frei verschieben. In dem Raum,
+in dem sie steht, ist die Property H_CHEST auf 1 gesetzt.
+Typomeldungen der Truhe gehen in das Reportfile des Hausbesitzers.
+
+Problem: Ab und zu geben einige Spezialisten bei der Beschreibung der IDs
+schon die Langbeschreibung ein. Danach koennen sie die Truhe nicht mehr
+ansprechen.
+Loesung: Von Hand eine ID setzen und die Truhe mit Save() speichern.
+
+Ideen: Zustand der Truhe (geoeffnet/geschlossen) beschreibbar machen und
+optional ganz weglassen. Machbar ueber H_DOORLSTAT. In short() sind schon
+die entsprechenden Vorkehrungen getroffen; "beschreibe truhe status" wird
+auch schon abgefragt, aber noch nicht ausgewertet. Ausserdem muesste die
+Kurzbeschreibung dann explizit angegeben werden.
+
+Oeffnen koennen die Truhe nur Leute mit Erlaubnis. Schliessen kann sie
+jeder. Verschieben kann sie nur der Hausbesitzer.
+
+Die Daten der Truhe werden in _set_owner() geladen. Dieser Funktion wiederum
+wird von dem Raum aufgerufen, in dem die Truhe steht (modules/losa::Load()).
+
+
+6. Seherbank/Hauserwerb
+=======================
+
+Die Bank steht in Drachenhort. Wesentliche Bestandteile sind drei Schalter
+mit entsprechenden Warteschlangen.
+
+Der Antragsschalter - sb_antrag.c
+  Hier erhaelt man die Vertraege fuer ein Haus oder einen neuen Raum. Einen
+  Ausbauvertrag bekommt man allerdings erst dann, wenn das Haus schon steht.
+  Vertraege werden nur an Seher ausgehaendigt, die keinen PK haben.
+
+Der Vertrag - bausparvertrag.c
+  Erhaeltlich am Antragsschalter.
+  Der Vertrag muss auch am Antragsschalter unterschrieben werden. Die Unter-
+  schrift wird mit Blut bestaetigt, wodurch ein reduce_hit_point(50) faellig
+  wird. ;)
+  Auf ihm wird jede eingezahlte Rate vermerkt.
+  Will man doch kein Haus, kann man den Vertrag jederzeit zerreissen. Die
+  eingezahlten EP sind dann allerdings weg.
+  Nach der Unterschrift bekommt man den Master-Block ueberreicht.
+
+Der Master-Block - block.c
+  Der Block nimmt die aktuellen Raten auf. Dazu dient der block_shadow
+  (in /std/player/shadows/), der immer dann aktiviert wird, wenn man den
+  Block anzieht (er ist eine AT_MISC-Ruestung, schuetzt also nicht).
+  Der Shadow leitet AddExp()-Aufrufe an dem Block um. Bei mindestens
+  30-40 EP wird alles bis auf den Mindestanteil auf den Block eingezahlt,
+  und der Mindestanteil kommt dem Spieler zugute.
+
+Der Einzahlungsschalter - sb_einzahlung.c
+  Ist die Master-Block voll, kann man ihn hier vorlegen. Die Rate wird dann
+  auf den Vertrag gebucht, und man bekommt einen neuen Block fuer die
+  naechste Rate (soweit man noch nicht fertig ist).
+
+Der Ausgabeschalter - sb_ausgabe.c
+  Hat man alle Raten eingezahlt, kann man hier nach Vorlage des Vertrags die
+  Fruechte seiner Arbeit ernten.
+  Handelte es sich um einen Hausvertrag, bekommt man ein Instanthaus ausge-
+  haendigt.
+  Handelte es sich um einen Ausbauvertrag, wird die Raumzahl des Hauses um
+  eins erhoeht (man bekommt kein Objekt in die Hand; vielmehr kann man in
+  seinem Haus jetzt einen Ausgang in den neuen Raum legen).
+  ALLERDINGS: Um Haus oder Raum auszugeben, muessen in der Zentralbank
+  mindestens 30000 Muenzen vorhanden sein (damit deckt die Seherbank die
+  Materialkosten). Solange nicht genug Geld da ist, gibts auch kein Haus.
+  Der Seher hat zwei Alternativen: a) warten, bis genug Geld da ist, oder
+  b) zum Ende der Welt reisen und das Geld in den Geldspeicher der Zentral-
+  bank werfen.
+
+Eine Rate umfasst 80000 EP.
+Es gibt zwei Vertragsvarianten: sanft und schnell.
+Bei der sanften Variante hat man 4 Stunden Zeit, um die Rate zu sammeln, bei
+der schnellen Variante sind es 2 Stunden.
+Diese Zeiten werden nach Online-Zeit gemessen, nicht nach RL-Zeit. :)
+Fuer ein Haus benoetigt man bei den sanften Variante 30 Raten, bei der
+schnellen Variante 25 Raten.
+Fuer einen Raum sind es 12 Raten bei der sanften und 10 Raten bei der
+schnellen Variante.
+Ueberzieht man die Zeit, erhoeht sich die Ratenhoehe um 60% auf 128000 EP.
+Man hat bei beiden Varianten eine Stunde Zeit, die Rate noch zu erfuellen.
+Schafft man es nicht, verfaellt der Vertrag => alles ist weg.
+Das Zeitlimit gilt nur fuer das Fuellen des Blocks. Wenn er erst man voll
+ist, braucht man nicht innerhab des Limits zur Bank, um den naechsten
+Block zu holen.
+
+7. Beschreibungen
+=================
+
+Folgende Aspekte der Raumbeschreibung lassen sich veraendern:
+
+- Details      "beschreibe detail <det>"                     P_DETAILS
+- ReadDetails  "beschreibe lesbares detail <det>"            P_READ_DETAILS
+- Langbeschr.  "beschreibe haus/raum lang" (auch aussen)     P_(INT_)LONG
+- Kurzbeschr.  "beschreibe haus/raum kurz"                   P_INT_SHORT
+- Ausgaenge    "ausgang <richtung> <nr>" / "sperre richtung" P_EXITS
+- Licht        "licht an/aus"                                P_LIGHT
+- Befehle      "beschreibe befehl <bef>"                     H_COMMANDS
+
+Details, ReadDetails und Befehle lassen sich auch kopieren, allerdings immer
+nur innerhalb der jeweiligen Propertygruppe (es laesst sich also kein Detail
+zu den ReadDetails kopieren).
+
+Ausserdem lassen sich Details, ReadDetails, Befehle und die Langbeschreibung
+aendern. Das laeuft aehnlich wie beim Beschreiben, allerdings wird der
+aktuell vorhandene Text als Vorgabe verwendet.
+
+
+7a. Details/ReadDetails/Lang- und Kurzbeschreibung
+--------------------------------------------------
+
+Hier passiert nicht viel mit dem eingegebenen Text. @@ werden durch **
+ersetzt, damit nicht aus Versehen oder beabsichtigt process_string()
+ausgeloest wird.
+
+Bei der Kurzbeschreibung wird noch geprueft, ob sie laenger als 75 Zeichen
+oder eine Zeile ist (falls ja, wird sie nicht uebernommen).
+
+Moegliche Erweiterungen: Rassenspezifische Details (das muss bisher ueber
+Bfehle gemacht werden), und da AddSmells()/AddSounds() jetzt "offiziell" in
+sind, vielleicht auch die Moeglichkeit, Gerueche und Geraeusche zu
+beschreiben.
+
+7b. Ausgaenge
+-------------
+
+Moegliche Ausgaenge sind die acht Himmelsrichtungen, "oben" und "unten".
+Legt man einen Ausgang an, wird automatisch im Zielraum ein Ausgang in die
+entsprechende Rueckrichtung angelegt.
+Das Anlegen klappt nur, wenn es noch keinen Ausgang in diese Richtung gibt,
+und im Zielraum noch keinen Ausgang in die Rueckrichtung.
+Soll ein Ausgang in ein benachbartes Seherhaus gelegt werden, muss man dort
+darueberhinaus auf der erlaube-Liste stehen.
+Beim Sperren eines Ausgangs wird der entsprechende Ausgang im Zielraum
+automatisch mit entfernt.
+
+Der Grund fuer dieses symmetrische Verhalten liegt darin, dass man auf diese
+Weise keine Spieler in seinem Haus einsperren kann (Ausgang in einen Raum,
+ohne dass es zurueck geht).
+Um die Ausgaenge einander einfach zuordnen zu koennen, sind auch keine selbst
+erfundenen Richtungen moeglich (koennte man allerdings implementieren, indem
+man explizit nach der Rueckrichtung fragt).
+
+
+7c. Licht
+---------
+
+P_LIGHT wird so gesetzt, dass es im Haus mit dem momentanen Lichtlevel gerade
+dunkel oder hell wird. Hat man also nen Gesamtlichtlevel von 20 (durch
+genuegend Lichtkugeln o.ae.) und macht "licht aus", wird P_LIGHT auf -20
+gesetzt.
+
+
+7d. Befehle
+-----------
+
+Um die Auswertung zu vereinfachen, werden die Platzhalter in den Befehls-
+texten in kuerzere Token umgewandelt (Funktion preparse()).
+Die Auswertung erfolgt von modules/usercmd.c aus.
+
+In preparse() werden im wesentlichen die Faelle fuer Namen, Personal- und
+Possessivpronomina in die Zahlen umgesetzt, die den entsprechenden
+Funktionen (name(), QueryPronoun(), QueryPossPronoun()) uebergeben werden.
+Ausgewertet werden sie von usercmd::ucFilter().
+
+Die Auswertung rassenspezifischer Texte muss angepasst werden, wenn neue
+Rassen ins MG kommen. Betroffen davon ist usercmd::ucText().
+Die rassenspezifischen Texte werden durch Platzhalter der Form @RX vonein-
+ander getrennt, wobei X ein Buchstabe fuer die Rasse ist.
+Bei einer neuen Rasse muesste dieser Buchstabe in der regexplode-Zeile am
+Anfang von ucText() in den eckigen Klammern eingefuegt werden, und eine
+entsprechende Abfrage in die switch()-Anweisung rein.
+Und natuerlich sollte die Hilfeseite ("befehl") geupdated werden :)
+
+Bisher sind reine Textausgabebefehle moeglich.
+Einige Seher haben sich weitere Moeglichkeiten gewuenscht, z.B. so etwas
+wie SpecialDetails oder SpecialExits. Dafuer muesste man Zustaende setzen
+und aendern koennen (Property H_VARS oder so?). Allerdings wird dadurch
+die Beschreibung an sich wieder komplizierter.
+
+
+8. Rueckmeldungen
+=================
+
+Die Raeume, die Aussenansicht des Hauses und die Truhe haben eine Funktion
+SmartLog(). Diese Funktion wird von /std/player/base::smart_log() aus auf-
+gerufen und uebernimmt das Loggen der Typo-, Idee- und Fehlermeldungen.
+Die Meldungen werden int "rep/<name>.rep" abgelegt.
+Der Hausbesitzer wird jeweils beim Betreten des Eingangsraumes informiert,
+wie viele Rueckmeldungen sich seit dem letzten Betreten angesammelt haben.
+Ansehen kann er sich die Meldungen mit dem Befehl "meldungen", und mit
+"aendere" oder "beschreibe" kann er die Typos beheben.
+Mit "aendere meldungen" kann er die abgearbeiteten Meldungen aus seinem
+.rep-File entfernen.
+
+
+9. Hilfeseiten
+==============
+
+Die "Arbeitsversionen" der Seiten liegen in doc/, die "offiziellen" Versionen
+in /doc/scmd.
+"beschreibe befehl" hat eine Extraseite ("hilfe befehl"), weil die Seite fuer
+"beschreibe" sonst zu gross waere.

@@ -1,0 +1,11 @@
+SYNOPSIS
+      xsort [-r] <file>
+	  or
+	  xsort [-r]    (when reading from a pipe)
+
+DESCRIPTION
+      xsort sort all lines of a given file in increasing/decreasing order.
+	  If no file is given it reads from a pipe.
+
+EXAMPLES
+      xsort -r workroom.c sorts all lines of workroom.c in reverse order.

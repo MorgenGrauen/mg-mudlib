@@ -1,0 +1,30 @@
+KOMMANDO:
+        Zweitiemarkierung [Status]
+
+ARGUMENTE:
+        Status
+          Hier gibt man an, ob und wie Spieler jemanden als Zweitie
+          erkennen:
+          * unsichtbar - kein Spieler sieht, ob man Zweitie ist
+          * sichtbar   - Spieler sieht, dass man Zweitie ist, aber nicht
+                          wessen Zweitie man ist
+          * Name       - alle Spieler sehen, wessen Zweitie man ist
+
+BESCHREIBUNG:
+        Jeder Spieler im MUD ist verpflichtet, seine Zweities zu markieren,
+        um damit Verantwortlichkeiten besser zuordnen zu koennen.
+        Es ist jedoch nicht noetig, dass andere Spieler diese Information
+        erhalten, da dies nur fuer Magier interessant ist. Dieser Befehl
+        ermoeglicht es nun, diese Information vor anderen Spielern ganz oder
+        auch nur teilweise zu verbergen.
+        Man kann angeben, ob man als Zweitie erkannt wird und ob sogar
+        erkannt wird, wessen Zweitie man ist.
+        Die Standardeinstellung ist hierbei, dass andere Spieler erkennen,
+        ob man Zweitie ist, nicht jedoch, wessen Zweitie man ist.
+
+SIEHE AUCH:
+        regeln, Zweitspieler, Testspieler, Magier
+
+----------------------------------------------------------------------------
+Last modified: Son, 27. Okt 2002, 10:00:00, Vanion
+

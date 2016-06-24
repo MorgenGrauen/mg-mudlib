@@ -1,0 +1,90 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+map_array(E)
+
+FUNKTION:
+     mixed *map(mixed *arr, string fun, object ob [, mixed extra])
+     mixed *map(mixed *arr, closure cl [, mixed extra])
+
+PARAMETER:
+     arr	- zu mappendes Array
+     fun/cl	- zu rufende Methode/Closure
+     ob		- Objekt/Dateiname, an dem Methode gerufen werden soll
+     extra	- weitere Parameter fuer Methode/Closure
+
+BESCHREIBUNG:
+     Mapped die Elemente aus 'arr' durch die Methode 'fun' oder die Closure 'cl'
+     in ein neues Array.
+     Fuer jedes Element aus 'arr' wird 'fun' oder 'cl' mit dem Element als
+     erstem Parameter [und folgend den optionalen Extra-Parametern] gerufen
+     bzw. 'map' mit dem Element indiziert.
+
+     Der Rueckgabewert der Methode/Closure wird in an der Indexposition des
+     Elementes in das neue Array eingetragen.
+
+     Verwendung von Methoden:
+	Wenn bei der Angabe von 'fun' kein Objekt 'ob' in Form eines Strings
+	oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+	Es koennen sowohl Lfun-Closures als auch Lambda-Closures verwendet
+	werden. Lfun-Closures koennen, wenn im selben Objekt vorhanden auch
+	'private' oder/und 'static' deklariert sein, muessen aber zu dem
+	Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+
+RUeCKGABEWERT:
+     Array mit Rueckgabewerten der Methode/Closure.
+
+BEISPIELE:
+     ### ersetze Strings durch ihre Grosschreibung ###
+     map(({"abc","cde"}), #'capitalize); == ({"Abc","Cde"})
+
+
+     ### ersetze in einem Spielerobjektarray die Objekte durch ihre UID ###
+     // Folgend identische Resultate, aber andere Ansaetze:
+
+     #1: mit der Efun etuid direkt (ideal hier)
+     map(users(), #'getuid);
+
+     #2,3: mit Mapmethode
+     string make_uid(object o) {
+      return getuid(o);
+     }
+      #2: als LFun-Aufruf der Mapmethode
+      map(users(), "make_uid");
+      map(users(), "make_uid", this_object());
+
+      #3: als Lfun-Closure-Aufruf der Mapmethode
+      map(users(), #'make_uid);
+
+     #4: mit Lambda-Closure (langsamer, nicht fuer alle leserlich)
+     map(users(), lambda(({'x}), ({#'getuid, 'x})));
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i;
+     mixed *ret; mixed *input;
+
+     i=sizeof(input);
+     ret=allocate(i);
+     while(i--)
+       ret[i]=ob->fun(input[i] [, extra1, extra2, ...]));
+       // ret[i]=funcall(cl, input[i] [, extra1, extra2, ...]);
+
+HISTORY
+    Since LDMud 3.2.6 obsoleted by map().
+    Since LDMud 3.2.9, not available if driver is compiled without
+      USE_DEPRECATED.
+    Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SIEHE AUCH:
+     Arrays:		filter_array(E)
+     Objektarrays:	filter_objects(E), map_objects(E)
+     Mappings:		filter(E), map(E)
+
+     Sonstiges:		sort_array(E), unique_array()
+			alist, transpose_array(E)
+
+29.10.2006 Zesstra

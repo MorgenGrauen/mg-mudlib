@@ -1,0 +1,57 @@
+P_HANDS
+NAME:
+     P_HANDS                    "hands"
+
+DEFINIERT IN:
+     /sys/living/combat.h
+
+BESCHREIBUNG:
+     Diese Property enthaelt ein dreielementiges Array mit
+     den folgenden Eintraegen:
+     1. Element: String mit der Meldung, wenn ohne Waffen angegriffen
+                 wird.
+     2. Element: Waffenklasse, wenn ohne Waffen angegriffen wird.
+     3. Element: Array mit Schadensarten (frueher auch: Schadensart)
+
+     eim Setzen dieser Property wird auch P_TOTAL_WC mit veraendert,
+     wenn das Lebewesen keine Waffe gezueckt hat. Steckt das Lebewesen
+     eine gezueckte Waffe weg, so wird ebenfalls P_TOTAL_WC mit der
+     Waffenklasse aus P_HANDS aktualisiert. Zueckt das Lebewesen eine
+     Waffe, so wird P_TOTAL_WC mit der Waffenklasse der Waffe (P_WC)
+     ueberschrieben. Die Property P_TOTAL_WC enthaelt somit immer die
+     aktuelle Angriffsstaerke des Lebewesen.
+
+BEMERKUNGEN
+     In alten Objekten kann es vorkommen, dass das dritte Element (Angabe des
+     Schadenstyps) fehlt. Dies ist eine Altlast, die Angabe des Schadenstypes
+     ist NICHT optional.)
+
+BEISPIEL:
+     Ein starker Tausendfuessler mit Schlagschaden:
+
+       SetProp(P_HANDS,({" mit tausend kleinen Fuesschen",1000, 
+                         ({DT_BLUDGEON}) }));
+
+
+     Ein Saeurededaemon:
+       SetProp(P_HANDS,
+         ({
+           " mit saeuretriefenden Klauen",
+           250,
+           ({DT_RIP, DT_ACID})
+         })
+       );
+
+     Hier wurden gleich zwei Schadensarten angegeben, also wird
+     Mischschaden verursacht. Man sollte es jedoch nicht zu sehr
+     uebertreiben! Mehr als zwei oder drei gleichzeitig verwendete
+     Schadensarten lassen sich kaum mehr begruenden.
+
+SIEHE AUCH:
+     P_HANDS_USED_BY
+     P_MAX_HANDS, P_USED_HANDS, P_FREE_HANDS
+     UseHands, FreeHands
+     P_TOTAL_WC, P_WC
+     /std/living/combat.c, /std/weapon/combat.c, /sys/combat.h
+
+22.02.2014 Zesstra

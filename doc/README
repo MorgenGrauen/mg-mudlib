@@ -1,0 +1,54 @@
+In diesem Verzeichnis befindet sich alles, was das MorgenGrauen an
+Dokumentation zu bieten hat. Obwohl hier schon so einiges zu finden ist,
+ist die Dokumentation noch lange nicht komplett.
+Zum Teil werden die Verzeichnisse noch umstrukturiert. Was genau wo zu
+finden ist, steht unten sowie in den .readme-Dateien der jeweiligen
+Verzeichnisse.
+
+Die Hilfeseiten werden parallel im ASCII- und im HTML-Format gefuehrt.
+Die HTML-Seiten sind unter http://mg.mud.de/help/ zu finden.
+
+Bei Aenderungen an den Seiten achtet bitte auf Korrektheit. Im Zweifelsfall
+schreibt eine Mail an einen aktiven H oder EM.
+
+Die Unterverzeichnisse und Dateien hier haben folgende Bedeutungen:
+
+* Dokumentation von Befehlen und Themen innerhalb des Spiels
+  (mehr oder weniger komplett ueberarbeitet)
+   o help/   - allgemeine Themen, die ALLE betreffen
+   o pcmd/   - die Befehle, die alle Spieler beherrschen
+   o scmd/   - Seherbefehle und Hilfen zum Hausbau
+   o mcmd/   - hier sind die Magierbefehle beschrieben
+   o wiz/    - allgemeine Themen fuer Magier
+   o g.*/    - Hilfeseiten, die zur Gilde XYZ gehoeren
+   o hilfe.* - Uebersichtsseiten mit den entsprechenden Befehlen
+   o balance/- Uebersicht ueber balancerelevante Themen und Regeln
+
+* Uebersicht ueber Objekte und Funktionen MudLib (nie vollstaendig)
+   o efun/   - Funktionen, die der GameDriver zur Verfuegung stellt
+   o lfun/   - Funktionen, die die Objekte der MudLib zur Verfuegung stellen
+   o master/ - Funktionen, die das Masterobjekt zur Verfuegung stellt
+
+   o std/    - Die Objekte des Basis-MudLib
+   o obj/    - Einige hilfreiche Zusatzobjekte
+
+   o props/  - Die Properties
+   o props/properties.h
+	     - Kurzuebersicht der Properties (Einzelseiten sind aktueller)
+
+* Sonstiges
+   o 3.0/         - einige SEHR alte Hilfeseiten ueber LPmuds im Allgemeinen
+   o beispiele/   - Beispielobjekte und -raeume, muss dringend gefuellt werden
+   o concepts/    - Grundkonzepte von LPC
+   o driver/      - Befehle und Kommandozeile des GameDrivers
+   o ed/          - ein paar Hilfeseiten fuer den 'ed'itor
+   o Grundlagen/  - ein paar grundlegende Informationen; landet vielleicht
+                    mal im Kurs (s.u.)
+   o KURS/        - Hier soll mal ein MG-spezifischer LPC-Kurs hin. Der Kurs
+                    in den Unterverzeichnissen LPC-KURS/ und LPC-KURS2/ ist
+                    a) in englisch und b) nicht unbedingt fuer das
+                    Programmieren im MG geeignet. Fuers Lernen von LPC sollte
+                    er aber ausreichen.
+   o LPC/         - Datentypen und Sprachelemente von LPC
+   o misc/        - alles, was sonst nirgendwo passt
+

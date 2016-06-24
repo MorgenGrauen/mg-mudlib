@@ -1,0 +1,355 @@
+Manpage zu Todesfallen. Technischer Leitfaden.
+
+
+Diese Manpage richtet sich an (Jung)magier, die Todesfallen nutzen wollen,
+um verschiedenste Dinge in ihren Gebieten damit zu erreichen. Dabei soll hier
+nicht diskutiert werden, wo welche Art von Todesfalle Sinn macht (oder auch
+nicht), sondern es sollen technische Aspekte bei der Programmierung einer
+solchen (Todes)falle aufgezeigt werden.
+
+
+Kapitel 1. Das Umfeld einer Todesfalle.
+
+Eine Todesfalle kann wie in spaeteren Kapiteln beschrieben, leicht umgesetzt
+werden. Damit sie sich auch so verhaelt wie sie soll, werden hier einige
+Sicherheitsaspekte behandelt, die durchgegangen werden sollten.
+
+
+Kapitel 1.1 Wer hat die Todesfalle ausgeloest?
+
+Die meisten Todesfallen werden durch ein Kommando ausgeloest, welches der
+Spieler ausfuehrt. Z.B.
+	druecke grossen roten knopf mit der aufschrift "todesfalle ausloesen"
+In diesem Fall existiert in der aufgerufenen Funktion die Moeglichkeit, ueber
+die Funktion this_player() den aktuell "gueltigen" Spieler auszufischen.
+Hierbei ist zu beachten, dass auch NPCs von dieser Funktion zurueckgegeben
+werden koennen. Auch im init() eines Raumes wird in this_player() der Spieler
+zurueckgegeben. Hierbei ist jedoch zu beachten, dass man immer schauen sollte,
+ob this_player() auch tatsaechlich ein Objekt zurueckliefert. Dies ist
+wichtig, da das init() (oder auch andere Funktionen) durch Gegenstaende, wie
+den Bumerang ausgeloest werden koennen. In diesem Fall steht in this_player()
+ueblicherweise kein Objekt. Die Sicherheitsabfrage sollte also wie folgt
+aussehen:
+
+    object spieler;
+    spieler = this_player();
+    if (spieler) // Ein Lebewesen?
+    {
+      ...
+    }
+    // else: Die Falle nicht ausloesen, da kein Lebewesen.
+
+
+Kapitel 1.2 Wer soll die Todesfalle nicht ausloesen?
+
+Oft kommt es vor, dass eine schoene Todesfalle von Gott und der Welt
+ausgeloest wird. Normalerweise moechte man aber nicht, dass "Gott" oder andere
+besondere Personengruppen diese Falle ausloesen. In den folgenden
+Unterkapiteln werden Abfragen gezeigt, um Personengruppen auszuschliessen.
+
+
+Kapitel 1.2.1 Todesfallen, die nicht auf Geister reagieren.
+
+Ueblicherweise sollen Todesfallen bei den Ausloesern Schaden verursachen. Bei
+Geistern laeuft dies jedoch ins Leere. Man koennte nun auf die Idee kommen,
+alternativ auf Geister zu reagieren.
+
+
+Kapitel 1.2.1.1 Nicht auf Geister reagieren.
+
+Angenommen, man hat einen Spieler (siehe oben), der im Begriff ist, die Falle
+auszuloesen. Man sollte nun pruefen, ob er ein Geist ist. Falls er kein Geist
+ist, kann man wie gewuenscht (Todesfalle) reagieren. Falls nicht, sollte man
+eine passende Meldung ausgeben. Z.B. "Als Geist hast Du nicht die notwendige
+Kraft, diesen Knopf zu druecken." Die technische Abfrage, ob ein Spieler ein
+Geist ist, sieht wie folgt aus.
+
+    if (!spieler->QueryProp(P_GHOST))
+    {
+        // ist _kein_ Geist, also Todesfalle.
+    }
+    else
+    {
+        // Alternativer Text, da Geist.
+    }
+
+
+Kapitel 1.2.1.2 Geister entgeistern.
+
+Da ausschliesslich die Rassenstartraeume entgeistern sollen, wurde dieser
+Punkt herausgenommen. Also: Es ist unerwuenscht, Geister zu entgeistern, um
+eine Todesfalle korrekt auszuloesen.
+
+
+Kapitel 1.2.1.3 Alternative fuer Geister.
+
+Rollenspieltechnisch gesehen macht es in den allerwenigsten Faellen Sinn,
+alternativ auf einen Geist zu reagieren. Der Vollstaendigkeit halber sei diese
+Loesung trotzdem erwaehnt. Ein Programmbeispiel sollte ohne grosse Muehe durch
+die schon vorhandenen Beispiele erstellt werden koennen.
+
+
+Kapitel 1.2.2 Gaeste und kleine Spieler.
+
+Rollenspieltechnisch macht es oft keinen Sinn, auf Gaeste oder kleine Spieler
+anders zu reagieren, als auf "den Rest". Moechte man jedoch einen besonderen
+Schutz fuer kleine Spieler einbauen ("Du hast zu grosse Angst, diesen grossen,
+roten Knopf zu druecken.") oder moechte man Gast-Sterbe-Testern den Hahn 
+zudrehen (die Weicheier!), so sind folgende Abfragen unter Umstaenden
+sinnvoll.
+
+  // Gast?
+  if (spieler->QueryGuest())
+  {
+      // Ist ein Gast...
+  }
+  else
+  {
+      // Todesfalle. Kein Gast.
+  }
+  
+  // Kleiner Spieler?
+  // In diesem Beispiel Abfrage des Spielerlevels.
+  if (spieler->QueryProp(P_LEVEL) < 10)
+  {
+      // Spielerlevel < 10 haben zuviel Angst.
+  }
+  else
+  {
+      // Spielerlevel >= 10 koennen hier ruhig die Todesfalle ausloesen.
+  }
+
+
+Kapitel 1.2.3 Magier
+
+Ueblicherweise sind Magier unsterblich und soll(t)en auch nicht
+(versehentlich) Todesfallen ausloesen. Dies ist vor allem dann der Fall, wenn
+"zufaellig" im gleichen Raum stehende Spieler Meldungen bekommen wuerden und
+dadurch gewarnt werden. Die technische Umsetzung, dass Magier Todesfallen
+nicht ausloesen, sieht wie folgt aus. Die Abfrage beruecksichtigt
+"mschau aus". Das heisst, Magier koennen sterben, wenn sie mschau aus gemacht
+haben.
+
+    #include <wizlevels.h>
+
+    if(IS_LEARNER(spieler) && spieler->QueryProp(P_WANTS_TO_LEARN))
+    {
+      // Magier: Man soll ihm mitteilen, dass er diese Aktion als Magier nicht
+      // tun darf.
+    }
+    else
+    {
+      // Kein Magier. => Todesfalle.
+    }
+
+
+Kapitel 1.3 Wichtige Punkte einer nicht sinnfreien Todesfalle.
+
+Eine Todesfalle ist, wie in Kapitel 2 gezeigt, eigentlich eine einfache Sache.
+Kombiniert mit den schon gezeitgten Sicherheitsabfragen hat man ueblicherweise
+ein gueltiges Opfer. Allgemeine Dinge, wie beispielsweise "Das Opfer sollte
+ein environment haben" werden hier uebergangen und nur die wesentlichen Dinge
+genannt, die beim potentiellen Toeten eines Spielers von Belang sind.
+
+
+Kapitel 1.3.1 Wo ist der Spieler?
+
+Ganz wichtig bei Todesfallen ist die Frage, wo sich der Spieler befindet.
+Wird eine Todesfalle in init() ausgeloest, dann befindet sich der Spieler
+schon in dem entsprechenden Raum, dessen init() nun ausgefuehrt wird. Das
+bedeutet, wenn der Spieler stirbt, sind seine Sachen zunaechst einmal in dem
+betreffenden Raum. In seltenen Faellen spielt es wirklich eine Rolle, wo sich
+der Spieler befindet und er hat eigentlich immer ein environment, in das seine
+Leiche dann kommt. Dennoch sollte man bei Todesfallen testen, wo sich der
+Spieler befindet. Wenn der Spieler die Falle im Vorraus oder von woanders
+ausloesen kann, dann macht es nicht immer Sinn, die Falle tatsaechlich
+auszuloesen oder dem Spieler den Effekt "zuzumuten".
+Eine einfache Abfrage, ob sich der Spieler im gleichen Raum befindet, sieht so
+aus:
+
+    if (environment(spieler) && (environment(spieler) == this_object()))
+    {
+        // Spieler hat ein environment und das environment ist dieser Raum.
+    }
+    
+
+Kapitel 1.3.2 Wer toetet den Spieler?
+
+Ueblicherweise toetet man einen Spieler mit den in Kapitel 2 genannten
+Moeglichkeiten. In diesen Moeglichkeiten ist das toetende Objekt der Raum.
+Da aber nun der Raum keinen Namen hat, muss man diesem Raum einige Properties
+setzen, die ueblicherweise erst einmal nur NPCs haben. Die Properties regeln,
+"wer" in Kampfmeldungen, Angriffen und Todesmeldungen als Angreifer oder
+Killer steht. Setzt man diese Werte direkt vor der Ausfuehrung einer
+Todesfalle, dann kann man mehrere Todesfallen in einem Raum mit verschiedenen
+Meldungen versehen.
+
+    SetProp(P_NAME, "Ein gleissender Feuerball"); // Der Angreifer-Name
+    SetProp(P_KILL_NAME, "Ein gleissender Feuerball");
+        // Name fuer den Todeskanal.
+
+
+Kapitel 1.4 Gimmicks
+
+Der Vollstaendigkeit halber soll noch erwaehnt werden, dass man in der
+Property P_ENEMY_DEATH_SEQUENCE das File einer (eigenen) Todessequenz ablegen
+kann.
+
+
+Kapitel 2 Technische Umsetzung von Todesfallen.
+
+Den Tod durch oder den Angriff auf einen Spieler mittels einer Todesfalle kann
+man auf verschiedene Weise bewerkstelligen. Die wichtigsten Moeglichkeiten
+werden in den folgenden Unterkapiteln kurz erlaeutert. Es wird ausserdem auf
+einige technische Feinheiten eingegangen, die zu beachten sind.
+
+
+Kapitel 2.1 Tod durch die()
+
+Die einfachste Moeglichkeit, einen Spieler sicher sterben zu lassen, ist der
+Aufruf von die(). Die spaeter genannten Moeglichkeiten mit Ausnahme des
+Faketods bewirken letztendlich auch einen Aufruf von die(), sollte der Spieler
+sich nicht ausreichend dagegen geschuetzt haben. Bei dem direkten Aufruf kann
+sich der Spieler nicht dagegen wehren. (Ausnahme: Geist sein, siehe oben.)
+Die technische Umsetzung sieht wie folgt aus. Eventuelle Parameter fuer die()
+sind der manpage fuer die() zu entnehmen.
+
+    spieler->die(); // Jetzt ist der Spieler tot.
+
+
+Kapitel 2.2 Todesfalle mit do_damage()
+
+Die zweite Form der Todesfalle ist nicht ganz so aggressiv, wie die erste.
+Hier wird dem Spieler eine feste oder zufaellige Zahl an Schadenspunkten 
+zugefuegt. Der erlittene Schaden ist dabei nicht von Ruestung oder sonstigem
+Schutz abhaengig, sondern der Schaden betraegt dem uebergebenen Wert. Ist der
+uebergebene Wert hoeher als die Zahl der Lebenspunkte des Spielers, so stirbt
+der Spieler. Nachlesen kann man dies in der manpage zu do_damage().
+Diese Form der Todesfalle ist vermutlich die am haeufigsten verbreitete, da
+der Magier am einfachsten die Konsequenzen ueberblicken kann, ohne den Spieler
+zwingend zu toeten. Wichtig bei dieser Umsetzung ist, dass der Spieler keine
+Angriffsmeldung oder dergleichen sieht. Er bekommt hoechstenfalls mit, dass er
+ueberhaupt Schaden erhalten hat. Daher sollte vor dem Zufuegen des Schadens
+eine Meldung ausgegeben werden, die dem Spieler anzeigt, weshalb er Schaden
+bekam. (Bsp. "Ein Feuerball rast auf Dich zu und trifft Dich.")
+Die technische Umsetzung sieht wie folgt aus:
+
+    tell_object(spieler, "Ein Feuerball trifft Dich von hinten.\n");
+    spieler->do_damage(10, this_object());
+                         // Spieler erhaelt genau 10 Schadenspunkte und
+                         // stirbt, wenn er dadurch unter 0 HP kommt.
+
+Kapitel 2.2.1 Angepasste Todesfalle mit do_damage()
+
+Moechte man, dass die Staerke der Todesfalle abhaengig vom Spieler ist, dann
+kann man den in do_damage() uebergebenen Schaden abhaengig vom Spieler machen.
+Dies ist in Gebieten sinnvoll, in denen Anfaenger und groessere Spieler
+gleichermassen gefordert sein sollen (z.B. Quest). Folgendes Beispiel zeigt,
+wie man eine Todesfalle macht, die dem Spieler etwa 1/4 seiner maximalen HP
+abzieht.
+    
+    spieler->do_damage(spieler->QueryProp(P_MAX_HP) / 4);
+
+
+Kapitel 2.3 Todesfalle mit reduce_hit_point
+
+Mittels reduce_hit_point() ist es moeglich, eine nicht toedliche "Todes"-Falle
+zu entwickeln. Dies kann genutzt werden, wenn man eine eigentlich toedliche
+Falle machen will, die Auswirkungen eines Todes dem Spieler gegenueber aber zu
+aggressiv waeren. Hierbei ist zu beachten, dass ein negativer Wert eine
+Heilung bewirken wuerde. Daher ist zuvor eine Sicherheitsabfrage zu machen.
+Wie bei do_damage() ist eine Meldung auszugeben, da reduce_hit_point eine
+solche nicht generiert. Alles zusammen saehe der Part wie folgt aus:
+
+    int schaden;
+    tell_object(spieler, "Ein Feuerball trifft Dich.\n");
+    // Hier den Schaden berechnen;
+    // Z.B. schaden = 3;
+    if (schaden < 1) schaden = 1; // Es soll mindestens 1 Schadenspunkt geben!
+    spieler->reduce_hit_point(schaden);
+
+
+Kapitel 2.4 Faketode
+
+Faketode sind keine Tode im eigentlichen Sinn, da der Spieler von den
+meisten negativen Auswirkungen verschont bleibt. Ein Faketod ist im Grunde
+keine komplizierte Sache und eignet sich hervorragend fuer Anfaengergebiete.
+Verschiedenen Auspraegungen (Bsp. Gibt es eine Leiche mit der Ausruestung des
+Spielers oder behaelt er die Ausruestung?) gemein ist die Tatsache, dass der
+Spieler augenscheinlich gestorben ist, jedoch kein die() aufgerufen wird. Es
+werden todesbedingt also keine Attribute abgezogen, die Erfahrungspunkte
+bleiben unangetastet usw, usf.
+Die technische Umsetzung sieht wie folgt aus. Dabei ist zu beachten, dass der
+Spieler Geist werden muss. Zuvor sollte wie bei den vorhergehenden Methoden
+der Kill-Name etc. gesetzt werden.
+
+    spieler->SetProp(P_GHOST,1);
+    clone_object("/room/death/death_mark")->move(spieler);
+
+
+Kapitel 2.4.1 Bedingte Faketode.
+
+Man kann die Technik von Kapitel 2.3 mit den Faketoden kombinieren, indem man
+testet, ob der Spieler auf oder unter 0 Lebenspunkte kommen wuerde, wenn man
+anstatt reduce_hitpoint do_damage() machen wuerde und dann zusaetzlich zum
+Abziehen der LP noch einen Faketod ausfuehrt. Dabei sind zwei Dinge zu
+beachten:
+Erstens sollte man keine zwei Meldungen ausgeben, also der Spieler sollte
+keine zwei Feuerbaelle auf sich zufliegen sehen, obwohl nur einer da ist.
+Zweitens sollte man nicht vergessen, dem Spieler dennoch die LP abzuziehen,
+weil der Spieler ansonsten nach dem Entgeistern anstatt 1 LP noch soviele hat,
+wie vor dem Feuerball-Angriff.
+Die technische Umsetzung dieser Kombination wird an dieser Stelle nicht naeher
+erlaeutert, da das Vorgehen aus den vorigen Kapiteln klar ist.
+
+
+Kapitel 2.5 Angriff mittels Defend()
+
+Eine realistische, wenn auch teilweise heikle Moeglichkeit fuer eine
+Todesfalle ist der Aufruf der Defend()-Funktion des Spielers. Der Vorteil
+von Defend ist, dass man unter Angabe der korrekten Parameter den Schutz der
+Ruestungen eines Spielers oder auch die Gildenfaehigkeiten beruecksichtigt
+werden. Daraus folgt, dass der als Beispiel verwendete Feuerball von einem vor
+Feuer schuetzenden Objekt abgeschwaecht wuerde. Anwendungstechnisch gibt es
+erst einmal keine Probleme, sofern einige wichtige Punkte beachtet werden, auf
+die hier nun eingegangen wird. Einziger Nachteil besteht nur in der mangelnden
+Erfahrung der einzutragenden Schadenswerte, da diese nicht 1:1 an die
+Schadenspunkte gekoppelt sind, die an den Spieler weitergereicht werden.
+Die technische Umsetzung fuer den Angriff eines Spielers durch eine Todesfalle
+ueber Defend sieht wie folgt aus:
+
+    #include <new_skills.h>
+
+    int schaden;
+    schaden = 500+random(500); // Diese Werte machen u.U. viel Schaden.
+
+    spieler->Defend(
+        100,
+        DT_FIRE,
+        ([
+            SP_SHOW_DAMAGE:0,
+            SP_PHYSICAL_ATTACK:1
+        ]),
+        this_object()
+    );
+
+Wichtig sind hierbei folgende Punkte:
+    1. Man sollte SP_SHOW_DAMAGE:0 im Mapping angeben, wenn man die Meldung
+       z.B. "Ein Feuerball trifft Dich von hinten.\n" selbst ausgeben will.
+       Tut man dies nicht, muss im Raum zusaetzlich P_GENDER, P_NAME, etc.
+       auf einen sinnvollen Wert gesetzt werden, beispielsweise P_GENDER auf
+       MALE und P_NAME auf "Feuerball".
+    2. SP_PHYSICAL_ATTACK:1 sollte gesetzt werden, wenn des Spielers Ruestung
+       fuer die Verteidigung beruecksichtigt werden soll. Genaueres findet man
+       auf der Manpage von Defend().
+    3. this_object() sollte immer angegeben werden, damit der Raum der
+       Angreifer ist, anstatt ein nicht naeher bestimmtes Objekt. Dies koennte
+       dann beispielsweise der Spieler selbst sein, was dazu fuehrt, dass im
+       Falle eines Todes der Spieler als Killer von sich selbst genannt wird,
+       anstatt "Ein Feuerball".
+
+
+
+
+----------------------------------------------------------------------------
+Last modified: Wed Feb 13 17:00:54 2002 by Bambi

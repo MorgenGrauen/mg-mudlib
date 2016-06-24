@@ -1,0 +1,26 @@
+
+Buecher
+=======
+
+    Im MorgenGrauen gibt es viele Buecher, die man mit 'lies buch' lesen kann.
+    Bei standardisierten Buechern kann man die folgenden Kommandos benutzen:
+
+     oeffne buch
+        Zum Oeffnen des Buches; die meisten Buecher sind anfaenglich
+        geschlossen.
+
+     schliesse buch
+        Zum Schliessen des Buches; wenn man das Buch ausgelesen hat, schliesst
+        man es automatisch.
+
+     lies buch
+        Wenn das Buch geschlossen ist, zeigt dieses Kommando die Titelseite;
+        ist es offen, zeigt es die Seite, auf der es aufgeschlagen ist, und
+        blaettert um. Wird das Ende des Buches erreicht, wird es geschlossen.
+
+     blaettere zu seite <n>
+        Mit diesem Kommando kann man im Buch vorwaerts- und rueckwaerts
+        blaettern, natuerlich nur, wenn das Buch geoeffnet ist.
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

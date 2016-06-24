@@ -1,0 +1,42 @@
+P_PEACE_HISTORY
+
+NAME:
+     P_PEACE_HISTORY      "_peace_history"
+
+DEFINIERT IN:
+     /sys/living/combat.h
+
+BESCHREIBUNG:
+    In dieser Prop wird nach Gilden getrennt gespeichet, wie oft das Lebewesen
+    in letzter Zeit befriedet worden ist. Diese Information geht in die
+    Chance auf eine zukuenftige Befriedung ein.
+    Die Zaehler werden im Durchschnitt alle 2700s um 2-3 reduziert.
+    Die Datenstruktur ist ein Array, welches einen Zeitstempel als erstes
+    Element und ein Mapping als zweites enthaelt. Das Mapping enthaelt unter
+    den Gildennamen als Keys den ganzzahligen Zaehler erfolgreicher
+    Befriedungen von Spielern dieser Gilde.
+
+BEMERKUNGEN:
+    * Diese Property sollte niemals direkt geaendert werden. Bitte greift also
+      nur lesend darauf zu. Sollte hiermit Schindluder getrieben werden,
+      werden die Daten vor externer Aenderung geschuetzt.
+    * Die Datenstruktur in dieser Prop kann in Zukunft u.U. geaendert werden.
+      Daher aendert sie am besten auch nicht im eigenen NPC oder seid darauf
+      gefasst, irgendwann Hand anlegen zu muessen.
+    * Die Aktualisierung (auch die Reduktion) findet im Zuge eines
+      QueryPacify() statt, nicht im Reset des Lebewesens.
+
+BEISPIEL:
+    In P_PEACE_HISTORY steht:
+    ({1209654597, (["zauberer": 3, "klerus": 4]) })
+    Bei der Berechnung der naechsten Befriede-Chance gehen bei Zauberern also
+    3 erfolgreiche Versuche, bei Klerikern 4 erfolgreiche Versuche ein.
+    Der Zeitwert an erster Stelle des Arrays wird der bei der Berechnung der
+    naechsten Reduktion der Zaehler beruecksichtigt. (Genaues: s. combat.c)
+
+SIEHE AUCH:
+     P_PEACE_ACCEPT
+     QueryPacify()
+     /std/living/combat.c
+
+01.05.2008, Zesstra

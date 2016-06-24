@@ -1,0 +1,21 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+	int query_udp_port(void)
+
+DESCRIPTION:
+	Returns the port number that is used for the inter mud
+	protocol.
+
+HISTORY
+  LDMud 3.2.9 renamed this efun to query_udp_port(). This version
+  is available if the driver is compiled with USE_DEPRECATED.
+  Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SEE ALSO:
+	send_udp(E), receive_udp(M)
+
+29.10.2006 Zesstra

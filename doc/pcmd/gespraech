@@ -1,0 +1,25 @@
+
+gespraech
+---------
+
+ KOMMANDO:
+    gespraech 
+
+ ARGUMENTE:
+    <-s> (optional, auch: -still, -silent geht)
+
+ BESCHREIBUNG:
+    Alle weiteren Eingaben werden genauso unmittelbar an alle Spieler im
+    selben Raum weitergegeben, als wenn man den sage-Befehl benutzt haette.
+
+    Wird als Argument '-s' (fuer still/silent) angegeben, werden Deine Eingaben
+    nicht in Form von "Du sagst: ..." Dir selber angezeigt.
+
+    Nach Eingabe von "**" koennen wieder beliebige Befehle eingegeben werden.
+
+ SIEHE AUCH:
+    sage, frage, antworte, fluestere, teile (mit), rufe, ebenen, weg,
+    ignoriere, kobold
+
+ LETZTE AeNDERUNG:
+    10.08.2009, Zesstra

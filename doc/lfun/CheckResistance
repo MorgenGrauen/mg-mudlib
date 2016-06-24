@@ -1,0 +1,20 @@
+CheckResistance()
+
+FUNKTION:
+	CheckRessistance(string* dam_type_list)
+
+ARGUMENTE:
+	dam_type_list: Liste der Schadensarten, die geprueft werden
+
+BESCHREIBUNG:
+	Diese Funktion ueberprueft, gegen welche der angegebenen
+	Schadensarten das Lebewesen resistent oder verletzlich ist und
+	gibt einen Faktor zurueck, der mit dem Schaden multipliziert wird.
+	Dieser Faktor betraegt normalerweise 1, bei bei jeder Resistenz
+	wird er halbiert und bei jeder Verletzlichkeit verdoppelt.
+
+RUECKGABEWERT:
+	Ein Faktor, der mit dem Schaden multipliziert wird, vom Typ "float".
+
+SIEHE AUCH:
+	"Defend"

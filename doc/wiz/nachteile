@@ -1,0 +1,51 @@
+----------------------------------------------------------------------------
+NACHTEILE
+----------------------------------------------------------------------------
+Bei der Genehmigung von Objekten im Balanceteam kommt immer wieder die Frage
+auf, welche Nachteile das Objekt denn hat, wenn es schon so viele Vorteile
+besitzt. Generell gilt, dass starke Objekte nur dann genehmigt werden, wenn
+sie auch ueber entsprechend grosse Nachteile verfuegen.
+
+Daher hier mal eine kleine Auflistung dessen, was als solcher betrachtet
+wird:
+
+- Gewicht (nicht bei Keulen fuer Kleriker)
+
+- Anfaelligkeiten gegen Schadenarten
+
+- LP-KP-Abzug (Obergrenzen, jede Runde, jeder Reset)
+- Absenken der Maxwerte von LP, KP
+- Absenken von Attributen
+- Absenken von SA_SPEED, SA_QUALITY usw.
+
+- Schaden/Nutzen abhaengig vom Alignment
+- Generelle Restriktionen
+
+- Objekt muss an einer bestimmten Stelle (z.B. durch das Toeten einen NPC)
+  aufgeladen werden
+- wiederkehrende Kosten (ausser LP/KP auch sowas wie Geld/Items/Aufgabe)
+
+- Behinderung anderer Objekte
+- Belegung von Slots (Set)
+
+- Skillobjekt
+
+- Begrenzte Haltbarkeit
+- Abnutzung (z.B. P_QUALITY, oder einfach durch Zeit/Nichtbenutzung)
+- Umstaende, die das Objekt zerstoeren
+- Begrenzte Wirkung (z.B. Waffe wirkt nur gegen eine Rasse)
+
+- Unique
+- Unique mit begrenzter Anzahl
+
+Generell sollten Paraobjekte die Restriktion Seher besitzen, da sie auch nur
+von Sehern geholt werden koennen. Aehnliche Restriktionen sollten fuer 
+Objekte aus Gebieten gelten, die erst ab einer gewissen Stufe betreten 
+werden koennen.
+
+Objekte, die nur in eng begrenzten Gebieten wirken (z.B. Questitems wie der 
+Spinnentoeter) muessen bei der Balance nicht beantragt werden, selbst wenn
+sie Werte besitzen, die die Balancegrenzen ueberschreiten.
+
+----------------------------------------------------------------------------
+Letzte Aenderung: 18.10.2005 - Miril

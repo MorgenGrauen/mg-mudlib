@@ -1,0 +1,81 @@
+NAME:
+		*** KNETE ***
+
+BESCHREIBUNG:
+	Die Knete ist ein in LPC geschriebener Lisp-Interpreter. Dieser hat
+	die besondere Eigenschaft, die Lisp-Quellen direkt in den vom 
+	Amylaar GameDriver angebotenen closures zu uebersetzen. Dadurch ist
+	mit der Knete alles das moeglich, was auch mit LPC moeglich ist.
+	Es ist ein generisches, frei programmierbares Hilfsmittel.
+
+	Die Knete befindet sich unter: "/obj/tools/lisp"
+
+FUNKTIONSBESCHREIBUNG:
+	Die Knete kann im Prinzip fast alles, was ein einfacher Lisp-
+	Interpreter kann. Ausnahmen sind Tupel (Bsp: (1 . 2)), welche nicht
+	implementiert sind. Die Grundlegenden Funktionen, wie define, setq,
+	cons, cdr, car etc werden beim Laden der Knete angezeigt. Je nach
+	Zeit, werden eventuelle auch weitere Standardfunktionen hinzu-
+	kommen, um die Knete moeglichst common-lisp kompatibel zu machen.
+
+BENUTZUNG:
+	Zu allererst sollte man wissen, dass dies hier keine Einfuehrung in
+	Lisp ist oder sein soll! Die wichtigsten Merkmal der Knete werden
+	aufgefuehrt an einigen kleinen Beispielen. Wer Lisp kennenlernen
+	moechte kann dies mit den handelsueblichen Buechern tun.
+
+	Wer dennoch basteln moechte: Lisp ist eine Sprache in Prefixnotation,
+	d.h. der Funktionsname steht immer als erstes und dann kommen die
+	Argumente. Ein Ausdruck ist mit den ihn umgebenden Klammern komplett.
+	  Beispiel: (+ 1 1) ;;; errechnet die Summe aus 1 und 1
+	Solche Klammerausdruecke koennen beliebig geschachtelt werden.
+	  Beispiel: (+ 1 (+ (+ 1 1) 1))
+
+	Es stehen alle efuns, sowie einige lfuns zur Verfuegung! Zu den efuns
+	gehoeren auch +,-,*,/,%,!,[,[<,[<.. etc, also alle Operatoren von LPC.
+
+	Die Knete hat zwei Modi:
+		a) Laden von Lisp aus einer Datei
+		b) Verarbeiten von Eingaben aus der Kommandozeile
+
+	Zu a)
+	  Mit der Funktion "load" koennen Dateien eingelesen und interpretiert
+	  werden. Die Funktion hat nur ein Argument, und das ist der Dateiname.
+
+	  Beispiel: (load "/players/hate/lisp.l")
+	
+	Zu b)
+	  Wenn die Knete gecloned wurde, koennen jederzeit Lispausdruecke
+	  eingegeben werden, welche dann interpretiert werden. Dabei sollte
+	  beachtet werden, dass die aeusserste Klammer nicht notwendig ist!
+
+	  Beispiel: (+ 1 (+ 1 1)) koennte man auch schreiben als:
+	            + 1 (+ 1 1)
+
+	  Dies ist vor allem dann interessant, wenn man die Moeglichkeiten
+	  der Knete als alias-Werkzeug in betracht zieht. Somit ist es
+	  moeglich, eine Funktion zu schreiben und diese dann wie ein alias
+	  zu benutzen.
+
+	  Beispiel: (defun who () (users)) ;;; gibt das users array aus
+	             Jetzt muss nur noch who eingegeben werden und das
+		     array wird ausgegeben.
+
+	  Da Lisp wesentlich komplexere Ausdruecke ermoeglicht, als der
+	  normale alias-Interpreter, liegen die Vorteile auf der Hand.
+
+KONFIGURATION:
+	Die Knete laesst sich fuer jeden Nutzer konfigurieren, indem sie eine
+	Datei "/players/<name>/lisp.l" aus dessen Heimatverzeichnis laedt.
+
+	Ein Beispiel, was man damit machen kann befindet sich unter:
+	  "/players/hate/lisp.l"
+	Die MUD Spezifischen Teile und Abfragen koennen ignoeriert werden.
+
+BUGS:
+	Es gibt momentan noch ein Problem, wenn auf der Kommandozeile
+	Klammern fehlen. Dann kommt eine Meldung: "*Missing 2 )"
+	In diesem Fall einfach zweimal hintereinander ) auf jeweils einer
+	einzelnen Zeile eingeben! Dieses Problem tritt vor allem dann auf,
+	wenn man zum Beispiel ein :( eingibt.
+

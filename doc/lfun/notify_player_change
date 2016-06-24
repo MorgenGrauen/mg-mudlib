@@ -1,0 +1,56 @@
+void notify_player_change(string/object who, int rein [, int invis])
+
+FUNKTION:
+    void /notify_player_change(object who, int rein)
+    void /std/player/base::notify_player_change(string who, int rein,
+                                                int invis)
+  
+GERUFEN VON:
+    /std/player/base.c (d.h. alle Spielershells/-Objekte)
+
+ARGUMENTE:
+    string who
+      getuid() eines Spielers
+    object who
+      Spieler-Objekt
+    int rein
+      0 fuer das MUD verlassende, 1 fuer hereinkommende Spieler
+    int invis
+      1 fuer unsichtbare Spieler (Magier)
+
+BESCHREIBUNG:
+    Diese Funktion wird von Lebewesen fuer hereinkommende und das Spiel
+    verlassende Spieler an verschiedenen Stellen aufgerufen:
+    
+    * in anderen Spielern mit notify_player_change() mit drei Parametern
+      - dies dient fuer die "erwarte"-Funktionalitaet
+    * in der Gilde des Spielern mit zwei Parameter
+      - damit koennen Gilden notwendige Anpassungen vornehmen
+
+    Diese Funktionen werden auch gerufen, wenn Magier "invis -e" bzw.
+    "vis e" benutzen.
+
+BEISPIELE:
+    // in einer Gilde:
+    void notify_player_change(object pl, int rein) {
+      if (rein && objectp(pl)) {
+        // Checks, ob Spielerskills in Ordnung sind
+        mapping bete = pl->QuerySkill("bete");
+        
+        if (!mappingp(bete)) {
+          if (IS_LEARNER(pl) || pl->QueryProp(P_TESTPLAYER)) {
+            tell_object(pl, break_string(
+              "Du bist ein kaputter Test-Kleriker ...", 78,
+              "Arkshat teilt dir mit: "));
+            // notduerftige Reparaturen
+          } else
+            raise_error("Klerus: Kaputter oder gesetzer Kleriker!\n");
+        }
+      }
+    }
+
+SIEHE AUCH:
+    RegisterEvent mit (EVT_LIB_LOGIN, EVT_LIB_LOGOUT)
+    erwarte
+
+1. Sep 2011 Gloinson

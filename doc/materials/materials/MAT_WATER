@@ -1,0 +1,18 @@
+Materialid:
+MAT_WATER                "water"
+
+Name:
+"Wasser" "Wassers" "Wasser" "Wasser"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_ELEMENTAL:100
+MATGROUP_FLUID:100

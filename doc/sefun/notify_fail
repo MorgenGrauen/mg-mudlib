@@ -1,0 +1,85 @@
+FUNKTION:
+     #include <notify_fail.h>
+
+     varargs void notify_fail(string str, int prio)
+     varargs void notify_fail(closure cl, int prio)
+
+ARGUMENTE:
+     str   Meldung die an den Spieler anstatt des 'Wie bitte' ausgegeben
+           werden soll
+     cl    Closure, die bei Fehlschlag ausgefuehrt werden soll
+     prio  Prioritaet dieses Objekts bei diesem Setzen der Meldung
+
+BESCHREIBUNG:
+     Merkt sich den angegebenen str und gibt ihn im Falle einer inkorrekten
+     Eingabe des Spielers anstatt eines 'Wie bitte' aus.
+
+     Gedacht ist notify_fail, um dem Spieler eine bessere Hilfestellung
+     bei Kommandos / Eingaben zu geben, um ihn u.U. auf die richtige
+     Syntax hinzuweisen.
+
+     Wird notify_fail mehrfach (durch verschiedene Objekte o.ae.) auf-
+     gerufen, wird der letzte erfolgreiche Aufruf gewertet. Eine Meldung wird
+     dann tatsaechlich gesetzt, wenn die Prioritaet dieses Objekts gleich
+     gross oder groesser ist als die Prioritaet des Objekts, was das bisher
+     gueltige notify_fail() gesetzt hat. Folgende Prioritaeten sind
+     vordefiniert und werden automatisch ermittelt:
+     NF_NL_OWN    100         // eigenes Objekt (soul) ueberschreibt kaum was
+     NF_NL_THING  100000
+     NF_NL_ROOM   1000000     // Raeume ueberschreiben sonstigen Krams
+     NF_NL_LIVING 10000000    // Lebewesen ueberschreiben auch Raeume
+     2 weitere vordefinierte koennen von Magier angegeben werden:
+     NF_NL_NONE   -1          // wird von allem ueberschrieben
+     NF_NL_MAX    __INT_MAX__ // hoechste Prioritaet, ueberschreibt alles
+
+     Wird eine Closure als Argument gegeben, wird sie im Fehlerfall
+     (also erst wenn ein Kommando endgueltig fehlgeschlagen hat)
+     ausgefuehrt und hat die Fehlermeldung als Resultat
+     zurueckzugeben. Die Closure erhaelt als Argument den
+     originalen Befehlsgeber; in der Regel dies ist this_player(),
+     was aber vom MODIFY_CMD hook geaendert werden kann.
+
+     notify_fail() erkennt verschachtelte Kommandos (siehe Efun
+     command()), und ein notify_fail() in einem Unterkommando
+     hat keinen Einfluss auf das uebergeordnete Kommando.
+
+BEMERKUNGEN:
+     - solange man sich nicht absolut sicher ist, dass ein bestimmtes Objekt
+       mit dem Kommando gemeint ist (Identifikation ueber id()), sollte man
+       - notify_fail(str); return 0;
+       nutzen anstatt mit
+       - write(str) return 1;
+       die Kommandoauswertung abzubrechen (und anderen Objekten die Chance
+       zu nehmen das Kommando zu erfuellen)
+     - Kommandos werden uebrigens oft erst vom betretenen Raum, dann von den
+       Objekten abgearbeitet (je nachdem wann diese dazukamen)
+     - die Prioritaet wird momentan nicht gespeichert, sie ist nur beim Setzen
+       relevant. Will spaeter ein anderes Objekt eine Meldung setzen, wird
+       fuer das eigene Objekt die Standardprioritaet ermittelt, auch wenn man
+       eine andere hier uebergeben hat
+     - Die NF_NL_* sind in /sys/notify_fail.h defniert.
+
+BEISPIELE:
+     Ein Raum erwartet die korrekte Eingabe von 'iss suppe':
+
+     int iss_cmd(string str){
+       // zu Anfang der Funktion das notify_fail definieren
+       notify_fail("Moechtest Du vielleicht von der Suppe essen?\n");
+
+       // Spieler hat nur 'iss' ohne Parameter eingegeben oder einen anderen
+       // Parameter angegeben ... Abbruch!
+       // Falls kein weiteres Objekt das Kommando erfuellt oder das
+       // notify_fail() mit einer eigenen Meldung ueberschreibt, wird obige
+       // Meldung an den Spieler ausgegeben.
+
+       if(!str || str!="suppe") return 0;
+       // ab hier ist die Eingabe dann wirklich 'suppe' und die Funktion
+       // kann beliebig fortgefuehrt werden
+       ...
+       return   1;
+
+SIEHE AUCH:
+     add_action(E), AddCmd(L), AddAction(L),
+     query_verb(E), query_notify_fail(E)
+
+8.Aug 2007 Gloinson

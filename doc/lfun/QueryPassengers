@@ -1,0 +1,29 @@
+QueryPassengers()
+
+FUNKTION:
+     object *QueryPassengers();
+
+DEFINIERT IN:
+     /std/transport.c
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Diese Funktion ermittelt die momentan auf dem Transporter befindlichen
+     Passagiere.
+
+RUeCKGABEWERT:
+     Array von Objekten mit den Passagieren.
+
+BEMERKUNGEN:
+     Es werden nur die Passagiere zurueckgegeben, die sich in dem
+     eigentlichen Transporterobjekt befinden! Wenn der Transporter noch um
+     zusaetzliche Raeume vergroessert wird, werden unter Umstaenden nicht
+     alle Passagiere erfasst!
+
+SIEHE AUCH:
+     /std/transport.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:22:48 1996 by Wargon

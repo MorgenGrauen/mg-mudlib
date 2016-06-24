@@ -1,0 +1,17 @@
+Materialid:
+MAT_DUST                 "dust"
+
+Name:
+"Staub" "Staubs" "Staub" "Staub"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

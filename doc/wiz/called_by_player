@@ -1,0 +1,8 @@
+void BecomesNetDead(object player) wird im Raum aufgerufen, wenn dort ein
+	Spieler netztot wird. player ist der Spieler.
+
+void PlayerQuit(object player) wird im Raum aufgerufen, wenn darin ein
+	Spieler quittet.
+
+void exit() wird im Raum aufgerufen, wenn ein Lebewesen rausgemoved wird.
+	Das Lebewesen ist previous_object()

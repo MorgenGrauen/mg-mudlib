@@ -1,0 +1,22 @@
+Materialid:
+MAT_DIAMOND              "diamond"
+
+Name:
+"Diamant" "Diamants" "Diamant" "Diamant"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:0
+MAT_CRYSTAL:25
+MAT_DIAMOND
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

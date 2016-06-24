@@ -1,0 +1,223 @@
+FOOD, DRINK & ALCOHOL
+=====================
+
+    Es wird empfohlen, jede tragbare Heilung ueber "/std/food"
+    zu implementieren. Hier braucht man nur wenige Properties setzen, um
+    sicherzugehen, dass die Heilung korrekt verlaeuft.
+
+    Bitte bei der Realisierung von tragbaren Tanken IMMER mit der Balance
+    sprechen. Die Heilung unterliegt genauer Kontrolle. Ewig haltbare Speisen
+    sind sowieso genehmigungspflichtig und nur mit guter Begruendung und
+    strengen Auflagen erlaubt.
+
+FEATURES:
+    Unterstuetzt wird das Konsumieren von Speisen per Essen oder Trinken auch
+    in mehreren Portionen. Die Speisen verderben und werden vernichtet.
+    Es sind Lebensmittel mit Behaelter moeglich, so dass dieser leer
+    zurueckbleibt, wenn der Inhalt gegessen oder vernichtet wurde.
+    Die Wirkung von Speisen kann neben der Zufuehrung von Lebens- und Konzen-
+    trationspunkten erweitert werden. Die Wirkung verdorbener Speisen kann 
+    getrennt definiert werden.
+    Wert und Gewicht der Speise werden in Abhaengigkeit der Restmengen immer
+    korrekt berechnet.
+
+REALISIERUNG:
+    Die Realisierung der Timer laeuft ueber die Resets der Speise. Callouts
+    werden lediglich verwendet, um den Aufruf des Resets zu garantieren.
+    Es wird auch geprueft, dass der Aufruf der Resets per Hand nichts
+    durcheinander bringt.
+
+    Des Weiteren ist sichergestellt, dass der Spieler nicht mit Futter in
+    Beruehrung kommt, dessen Timer zum Verderben initialisiert ist.
+
+    Das Konzept ist dem Heilungskonzept der Kneipen angepasst worden.
+    Dem entsprechend sind die Properties sehr aehnlich.
+
+PROPERTIES:
+
+      P_PORTIONS : Anzahl der Portionen (wie oft kann man abbeissen / 
+                   einen Schluck nehmen)
+
+          P_FOOD : Fuellgrad der Speise pro Portion, muss gesetzt sein, wenn
+                   P_DRINK nicht gesetzt ist
+         P_DRINK : Fuellgrad der Fluessigkeit pro Portion, muss gesetzt sein,
+                   wenn P_FOOD nicht gesetzt ist
+       P_ALCOHOL : Alkohollevel pro Portion 
+
+        P_WEIGHT : Gewicht pro Portion (bei QueryProp(P_WEIGHT) wird das
+                   komplette Gewicht aller Portionen + eventuell Behaelter 
+                   zurueckgegeben)
+         P_VALUE : Wert pro Portion  (bei QueryProp(P_VALUE) wird der
+                   komplette Wert aller Portionen + eventuell Behaelter 
+                   zurueckgegeben)
+
+            P_HP : Anzahl der LP, die prop Portion geheilt/geschwaecht werden
+            P_SP : Anzahl der KP, die prop Portion geheilt/geschwaecht werden
+  P_DISTRIBUTION : Verteilung der Heilung auf die Heartbeats
+                   (siehe Hilfe zu H_DISTRIBUTION in consume)
+
+      P_LIFETIME : Zeit in Sekunden, bis die Speise verdirbt (>0)
+                   Zaehlt ab der ersten Inbesitznahme durch einen Spieler
+P_RESET_LIFETIME : Zeit in Resets, bis die Speise verdirbt (>0)
+                   Die Laenge der einzelnen Resets wird wie ueblich berechnet
+                   und P_LIFETIME entsprechend auf durchschnittlich
+                   P_RESET_LIFETIME * 45 * 60 gesetzt.
+                   (existiert, da bisher meistens in Resets gerechnet wurde)
+                   Sollte sinnvollerweise nur als SetProp(P_RESET_LIFETIME)
+                   verwendet werden, kann aber auch abgefragt werden
+
+   P_EMPTY_PROPS : Mapping mit Werten des Behaelters
+                   Alle hier angegebenen Werte (ausser P_PORTIONS) werden
+                   in der Speise gesetzt, wenn die letzte Portion konsumiert
+                   wurde. Wenn diese Prop leer ist, wird das Objekt zerstoert,
+                   wenn keine Portionen mehr da sind.
+                   Achtung: es werden keine closures unterstuetzt! 
+           P_IDS :   Wert in P_EMPTY_PROPS
+                     Liste der IDs des leeren Behaelters
+                     Achtung: es werden keine closures unterstuetzt!
+    P_ADJECTIVES :   Wert in P_EMPTY_PROPS
+                     Liste der Adjektive des leeren Behaelters
+                     Achtung: es werden keine closures unterstuetzt!
+         P_VALUE :   Wert in P_EMPTY_PROPS
+                     Wert des leeren Behaelters
+        P_WEIGHT :   Wert in P_EMPTY_PROPS
+                     Gewicht des leeren Behaelters
+
+        P_NO_BAD : Flag, ob die Speise verderben kann
+                   Darf nur in Absprache mit der Balance auf 1 gesetzt werden!
+
+   P_DESTROY_BAD : Wert, was beim Verderben mit dem Object passiert
+                   DESTROY_BAD   = Die Speise wird beim Verderben zerstoert
+                                   bzw. der Behaelter wird geleert (default)
+                   DESTROY_NEVER = Die Speise wird beim Verderben nicht
+                                   zerstoert
+                   pos. integer  = Anzahl der Sekunden, die zwischen Verderben
+                                   und Zerstoeren der Speise liegen sollen
+
+MESSAGES: (durchlaufen replace_personal() und koennen somit Platzhalter
+          fuer Speise (1. Argument) und Konsument (2. Argument) enthalten)
+
+   P_CONSUME_MSG : fuer den Raum, wenn konsumiert wird
+     P_EATER_MSG : an den Konsumenten
+     P_EMPTY_MSG : wenn leere Behaelter konsumiert werden
+    P_NOFOOD_MSG : wenn Getraenke gegessen werden
+   P_NODRINK_MSG : wenn Futter getrunken wird
+       P_BAD_MSG : wenn Speisen verderben
+    P_REMOVE_MSG : wenn Speisen vernichtet werden
+                   (nur wenn sie nicht beim Verderben vernichtet werden)
+       P_ENV_MSG : wenn im Raum liegende Speisen konsumiert werden
+                   (ist diese Prop leer, geht das sogar!)
+ P_FOOD_FULL_MSG : wenn man nix mehr essen kann
+P_DRINK_FULL_MSG : wenn man nix mehr trinken kann
+  P_ALC_FULL_MSG : wenn man keinen Alkohol mehr vertraegt
+
+METHODEN:
+             consume : wird beim Konsumieren aufgerufen, wenn klar ist,
+                       dass was zum Konsumieren da ist.
+                       gibt das Ergebnis von try_consume() zurueck
+         try_consume : bereitet die Daten auf und fuehrt living->consume() aus
+                       kann zur Pruefung mit testonly-Flag aufgerufen werden
+                       gibt das Ergebnis von living->consume() zurueck
+     success_consume : wird von consume() aufgerufen, wenn Konsumieren klappt
+                       gibt die Meldungen zum Konsumieren aus
+      failed_consume : wird aufgerufen, wenn Konsumieren nicht klappt
+                       gibt den Grund fuer den Fehlschlag aus
+                       (je nach Ergebnis von living->consume())
+                       
+         consume_bad : Aendert die Daten fuer living->consume(), wenn eine
+                       verdorbene Speise konsumiert wird
+                       Standard: Heilung wirkt nicht, Vergiftung +1
+            make_bad : wird aufgerufen, wenn die Speise gerade verdirbt
+                       Gibt die Meldungen beim Verderben aus
+                       Vernichtet das Objekt, wenn das gewollt ist 
+                       Die Methode wird auch aufgerufen, wenn nur noch der
+                       Behaelter existiert! Also den Test is_not_empty() nicht
+                       vergessen!
+        make_destroy : wird aufgerufen, wenn die Speise bereits verdorben ist
+                       und die Zeit aus P_DESTROY_BAD abgelaufen ist.
+                       Gibt die Meldung zum Zerstoeren aus und ruft
+                       make_empty aus, um die Speise bzw. den Inhalt des
+                       Behaelters zu zerstoeren. Ausserdem wird der Reset
+                       abgeschaltet.
+                       Die Methode wird auch aufgerufen, wenn nur noch der
+                       Behaelter existiert! Also den Test is_not_empty() nicht
+                       vergessen!
+                       
+          make_empty : wird aufgerufen, wenn die letzte Portion konsumiert wird
+                       Macht aus einem vollen Behaelter einen leeren oder
+                       vernichtet das Objekt. Der Behaelter verdirbt also im
+                       Normalfall nicht!
+
+                init : Startet den Timer zum Verderben der Speise
+                       (start_lifetime()), wenn sich das Objekt in einem
+                       Spieler befindet.
+                       Prueft, ob Laufzeiten fehlerhafterweise nicht beendet
+                       wurden und holt es dann nach
+          NotifyMove : Startet den Timer zum Verderben der Speise
+                       (start_lifetime()) auch, wenn die Speise in einen
+                       Spieler bewegt wird, ohne dass init() aufgerufen
+                       wurde.
+               reset : wird fuer 3 Situationen verwendet:
+                       1: Das Futter wurde bewegt, der Timer aber noch nicht 
+                          initialisiert -> es wird geprueft, ob der Timer
+                          gestartet werden muss.
+                       2: Der Timer ist abgelaufen ->
+                          laesst die Speise verderben und vernichtet sie
+                          gegebenenfalls
+                       3: Der Timer nach dem Verderben ist abgelaufen ->
+                          vernichtet die Speise
+                       Es wird immer geprueft, ob die Resets zeitgerecht
+		       aufgerufen wurden und die Aktionen nicht zur falschen
+		       Zeit passieren
+
+        is_not_empty : Flag, ob noch Portionen vorhanden sind
+        is_drinkable : Flag, ob Speise trinkbar ist
+                       (nur wenn P_DRINK gesetzt und P_FOOD NICHT gesetzt ist)
+          is_eatable : Flag ob Speise essbar ist
+                       (wenn P_FOOD gesetzt (P_DRINK ist egal))
+              is_bad : Flag, ob Speise verdorben ist
+
+get_current_lifetime : Zeit in Sekunden, wie lange der Timer zum Verderben
+                       laeuft (ist immer 0, wenn P_NO_BAD gesetzt ist)
+      start_lifetime : startet den Timer zum Verderben der Speise falls keine
+                       Gruende dagegen sprechen, wird intern aufgerufen, kann
+                       aber in speziellen Situationen auch manuell aufgerufen
+                       werden (siehe oben unter REALISIERUNG)
+             message : es werden Meldungen zu Statusaenderungen verarbeitet
+                       und korrekt ausgegeben. Es wird der Name der auszu-
+                       gebenen Property uebergeben.
+                       Es werden alle notwendigen Ersetzungen per
+                       replace_personal gemacht und geprueft, ob dem Besitzer
+                       oder dem Raum die Meldung ausgegeben werden muss.
+                       Hierueber sollten nur Meldungen ausgegeben werden, die
+                       durch Aenderungen an der Speise im Reset ausgeloest
+                       werden, also im reset selbst und in den make_*-Methoden.
+
+
+STANDARD:
+    Wenn man nichts in seinem Futter ueberschreibt, dann hat es
+    folgendes Standardverhalten.
+    Es muss immer P_FOOD oder P_DRINK explizit groesser 0 gesetzt werden,
+    sonst laesst sich das Lebensmittel nicht konsumieren!
+
+    - Haltbarkeit: 1 Reset (30 + random(30) Minuten)
+    - der Ablauf der Haltbarkeit startet, sobald ein Spieler die Speise nimmt
+    - Wenn die Speise schlecht wird, wird sie zerstoert
+    - Die Speise hat keinen Behaelter
+    - Es gibt nur einen Schluck/Bissen, dann ist die Speise weg
+    - Gewicht: 50 Gramm / Wert: 10 Muenzen
+    - Man heilt weder LP noch KP
+    - Man wuerde ansonsten 5 LP/KP pro Heartbeat heilen
+    - Man kann die Speise nur konsumieren, wenn man sie in der Hand haelt
+    - Wenn man die verdorbene Speise konsumieren koennte, wuerde man nicht
+      heilen sondern vergiftet werden (P_POISON+1)
+
+BEISPIELE:
+    Beispiele zu tragbaren Speisen und Getraenken kann man unter
+    doc/beispiele/food/ nachschauen
+
+SIEHE AUCH:
+    consume, wiz/heilung, 
+
+LETZTE AeNDERUNG:
+    25.09.2010, Caldra

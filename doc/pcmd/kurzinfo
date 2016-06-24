@@ -1,0 +1,17 @@
+
+kurzinfo
+--------
+
+ KOMMANDO:
+    kurzinfo
+    kurzinfo -k
+
+ BESCHREIBUNG:
+    Dieses Kommando gibt Deine aktuellen Lebens- und Konzentrationspunkte aus.
+    'kurzinfo -k' gibt eine verkuerzte Angabe ohne ASCII-Graphik aus, genauso 
+    als haettest Du deren Ausgabe mit 'grafik aus' abgeschaltet.
+
+ SIEHE AUCH:
+    info 		
+
+ 09.08.2009, Zesstra

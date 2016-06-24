@@ -1,0 +1,37 @@
+
+cd
+--
+
+ MAGIERKOMMANDO:
+    cd [ - ] [ -l ] [ -s ] [ <Verzeichnis> ]
+
+ ARGUMENTE:
+
+     <Verzeichnis>  neuer Pfad, der gesetzt werden soll
+
+ BESCHREIBUNG:
+    Das aktuelle Verzeichnis wird auf <Verzeichnis> gesetzt.
+
+    Laesst man <Verzeichnis> weg, wird das aktuelle Verzeichnis auf das
+    Heimatverzeichnis gesetzt. Bei einem Magier mit Magierlevel 15 ist dies
+    das Verzeichnis `/doc', ab Magierlevel 20 das Verzeichnis
+    `/players/<Magiername>'.
+
+    Bei Eindeutigkeit koennen Platzhalter verwendet werden. Die Befehle 
+    cd /std/player/shadows und cd /*/pl*/sh* bewirken dasselbe.
+
+    Mit der Option - wird direkt ins letzte Verzeichnis gewechselt.
+
+    Mit den Optionen -l und -s kann man die Behandlung von `.readme'-Dateien
+    im Zielverzeichnis einstellen. Mit der Option -s wird die Ausgabe der
+    `.readme'-Dateien verhindert, mit -l dagegen erlaubt.
+
+    Ueber die Variable 'CD_SHORT' kann eingestellt werden, ob `.readme'-
+    Dateien grundsaetzlich unterdrueckt werden sollen. Dazu einfach 
+    'set CD_SHORT 1' eingeben
+
+ SIEHE AUCH:
+    prompt, pwd, ls, set
+
+ LETZTE AENDERUNG:
+    03.06.2015, Bugfix

@@ -1,0 +1,51 @@
+
+wer
+---
+
+ KOMMANDO:
+    wer [<mud>|<option>]
+
+ ARGUMENTE:
+
+     <mud> (optional)
+        Ein MUD-Name aus der `muds'-Liste
+
+    <optionen> (optional)
+        -s  zeigt statt der Gilde die Herkunft des Mudders an
+        -k  Kurzform der Liste; statt Presay+Titel nur Name, dafuer aber
+            Gilde und Herkunft
+
+ BESCHREIBUNG:
+    Es wird angezeigt, wer sich gerade im MorgenGrauen (oder alternativ im MUD
+    <mud>) befindet. Das Format der Liste fremder MUDs haengt immer von dem
+    jeweiligen MUD ab; in der Liste des MorgenGrauen wird jeder Anwesende wie
+    folgt aufgefuehrt:
+
+    [X] Presay Name Titel - Rasse/Gilde
+
+    Die Buchstaben in eckigen Klammern am Anfang bedeuten:
+
+     [s]   Spieler
+     [S]   Seher
+     [z]   Zweitspieler
+
+     [t]   Testspieler
+     [T]   Testspieler mit Seherlevel
+
+     [L]   Magierlehrling
+     [m]   Vollmagier, ohne Region
+     [M]   Vollmagier, mit Region
+     [H]   Hilfsmagier
+     [R]   Regionschef
+     [W]   Weiser
+     [E]   Erzmagier
+     [G]   Gott
+
+    Die Liste wird in drei Schritten sortiert (von grob nach fein):
+    Magierlevel -> Spielerlevel -> alphabetisch.
+
+ SIEHE AUCH:
+    kwer, kkwer, muds
+
+ LETZTE AeNDERUNG:
+    Wed, 05.04.2000, 01:00:00 von Tiamak

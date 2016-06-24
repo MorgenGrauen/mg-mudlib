@@ -1,0 +1,65 @@
+QuerySkillBonus()
+
+FUNKTION:
+     int QuerySkillBonus(object caster, object target, mapping sinfo)
+
+DEFINIERT IN:
+     beliebigen Objekten
+
+ARGUMENTE:
+     object caster
+          der Benutzer eines Skills/Spells (Lebewesen)
+     object target
+          das Ziel eines Skills/Spells (beliebiges Objekt oder 0)
+     mapping sinfo
+          das Skillinfomapping
+
+BESCHREIBUNG:
+     Diese Funktion wird von der Gilde des Casters im Environment und ggf.
+     auch im Ziel eines Skills/Spells gerufen.
+     Die Gilde uebergibt neben Caster und Ziel ein Mapping mit Skillinfos (s.
+     SI Konstanten aus new_skills.h fuer Details), welches alle wesentlichen
+     Informationen ueber den benutzten Skill/Spell enthaelt.
+
+     QuerySkillBonus() liefert einen Bonus (oder Malus) zurueck, den der
+     Aufrufer als Faktor in der Berechnung des Effekts des Skills
+     beruecksichtigen kann (aber nicht muss).
+     Der Bonus/Malus wird hierbei als ganzzahliger 0.01-Prozentwert aufgefasst
+     (10000 == 100% == keine Veraenderung, 1 == 0.01%).
+
+     Diese Funktion kann in beliebigen Objekten (re-)definiert werden. Im
+     Falle mobiler Objekte oder anhaltender Effekte ist jedoch eine
+     Balancegenehmigung erforderlich, sofern kampfrelevante Skills beeinflusst
+     werden.
+     Eine flaechendeckende Reduzierung von Skills/Gildenfaehigkeiten ist
+     explizit _nicht_ erwuenscht und soll auf einzelne Raeume und Objekte
+     beschraenkt sein.
+
+BEMERKUNGEN:
+     Das Mapping <sinfo> kann in dieser Funktion geaendert werden. Dieses kann
+     allerdings sehr weitreichende Folgen haben, speziell bei mangelnden
+     Kenntnissen ueber Interna des Skillsystems. Daher bitte von Aenderungen
+     absehen bzw. vorher mit dem jeweiligen Gildenmagier und/oder der
+     Gildenbalance abklaeren.
+     Die Bedeutung der Werte in <sinfo> kann je nach Gilde variieren. Im
+     Zweifelsfall bitte bei den jeweiligen Gildenmagiern nachfragen. 
+     Die Gilde kann diese Funktion rufen, muss aber nicht. Ebenso kann sie das
+     Ergebnis beruecksichtigen, muss aber nicht.
+
+BEISPIELE:
+     In einem Raum sollen Heilzauber besonders effizient sein:
+     int QuerySkillBonus(object caster, object target, mapping sinfo) {
+        if (pointerp(sinfo[SI_MAGIC_TYPE])
+            && member(sinfo[SI_MAGIC_TYPE], MT_HEILUNG) > -1)
+        {
+            return 12000 + random(3000); // bonus von 120-150%
+        }
+        return 10000;
+     }
+
+SIEHE AUCH:
+     gilden-doku
+     <new_skills.h>
+
+LETZTE AeNDERUNG:
+19.08.2013, Zesstra

@@ -1,0 +1,32 @@
+SetGramsPerUnits()
+
+FUNKTION:
+     void SetGramsPerUnits(int grams, int units);
+
+DEFINIERT IN:
+     /std/unit.c
+
+ARGUMENTE:
+     grams
+          Gewicht in Gramm
+     units
+          Zahl der Einheiten
+
+BESCHREIBUNG:
+     Es wird festgelegt, wieviel eine bestimmte Menge der Einheiten wiegt.
+     Eine einzelne Einheit wiegt grams/units Gramm.
+
+RUeCKGABEWERT:
+     keiner
+
+BEISPIELE:
+     Vier Einheiten sollen 3 Gramm wiegen:
+
+     SetGramsPerUnits(3,4);
+
+SIEHE AUCH:
+     SetCoinsPerUnits(), QueryCoinsPerUnits(), QueryGramsPerUnits(),
+     /std/unit.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:25:09 1996 by Wargon

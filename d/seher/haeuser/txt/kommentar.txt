@@ -1,0 +1,68 @@
+		    Jof'sche Kurz-Kommentare
+
+	    Kommentar zum Bausparvertrag fuer Seher
+
+bearbeitet von:
+
+Aufsichtsratsvorschwitzender Dr. fac. ju. Beldin
+Oberjurisdiktionsschrat Dr. hcl. Olim
+
+Zu Art. 1  (Gegenstand des Vertrages):	Du zahlst Erfahrung ein
+und bekommst am Ende (vielleicht) Dein Haus dafuer.  Die Erfah-
+rungspunkte sind auf jeden Fall erstmal weg.
+
+Zu Art. 2 (Parteien): Es gibt zwei Parteien, Dich und die Bank.
+Die Bank ist immer gleichberechtigter als Du.
+
+Zu Art. 3 (Wohnstaette): Ein Haus.
+
+Zu Art. 4 (Finanzierung):
+
+ Abs.1 (Kapitalvolumen)  Insgesamt  kostet das Haus 2544000  EP
+ (Option A) bzw. 2120000 EP (Option B).
+
+ Abs.2 (Ratenzahlung/Laufzeit)	Du musst  immer 80000  pro Rate
+ zahlen. Dabei hast Du zwei Moeglichkeiten:
+
+ A: 4  Stunden	Zeit  fuer jede  Rate. Zeit  auch  fuer  andere
+ Aktivitaeten  im Mud  ausser zu Metzeln.  Als Strafe darfst Du
+ dafuer insgesamt etwas mehr loehnen als bei Option B.
+ B: 2 Stunden  Zeit  fuer  jede  Rate.	Brutal,  aber  Du  bist
+ schneller  fertig mit	dem Kram. Waehl, unterschreib,	und die
+ Zeit laeuft bis alles eingezahlt ist.
+
+ Abs.3 (Zinsertrag)  6% Zinsen d.h.  Du musst nicht den  ganzen
+ Betrag  (2544000 bzw. 2120000	EP),  sondern  nur  einen  Teil
+ (2400000 bzw. 2000000 EP) zahlen.
+
+ Abs.4 (Einzahlung)  Die Erfahrung,  die die Bank interessiert,
+ musst Du  beim Metzeln  und Questen aufbringen.  Worauf Du den
+ Schwerpunkt legst, bleibt Dir ganz selbst ueberlassen. Es wird
+ waehrend des Kampfes automatisch  ein Teil der Dir zustehenden
+ Erfahrung auf den  BLOCK umgebucht.  Diesen musst Du dazu aber
+ erst einmal anziehen. Vor dem Kampf.  Du kannst natuerlich nur
+ soviel Erfahrung im Block speichern, wie Deine Rate zulaesst.
+
+ Abs.5 (Saeumniss)  Es gibt zwei  Moeglichkeiten  bei der  Bank
+ mehr Erfahrung zu lassen:
+ 1. Du	ueberziehst  eine  Ratenfrist  ->  Eine  Vertragsstrafe
+ i.H.v. 48000 EP (60%) ist  innerhalb von 2 bzw. 1 Onlinestunde
+ beizubringen.
+ 2. Du	ueberziehst  auch  die	Strafe -> Deine gesamte  bisher
+ eingezahlte Erfahrung ist VERLOREN.
+
+Zu Art. 5 (Unterschrift):  Du musst den Vertrag  unterschreiben
+(SYNTAX: unterschreibe vertrag).
+
+Zu Art. 6 (Erfuellung des Vertrages):  Wenn Du alles eingezahlt
+hast bekommst Du Dein Haus.
+
+Zu Art. 7 (Ansprueche  des Kunden): Du	hast keine  Ansprueche.
+Genau das steht auch in den AGB.
+
+Zu Anhang A: Du  kannst  das  Haus  in	einem  gewissen  Rahmen
+veraendern.
+
+Zu Anhang B: Mumpitz!  Keine  Garantie	fuer  gar  nichts  (Die
+GfgWbmbH ist eine 100% Tochter der MorgenGrauen-Bank)!
+

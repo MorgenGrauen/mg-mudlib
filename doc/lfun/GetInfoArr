@@ -1,0 +1,31 @@
+GetInfoArr()
+FUNKTION:
+     static mixed *GetInfoArr(string str)
+
+DEFINIERT IN:
+     /std/npc/info.c
+
+ARGUMENTE:
+     string str	 - Schluesselwort der Frage
+
+BESCHREIBUNG:
+     Sucht nach einem Schluesselwort in den abgelegten Antworten
+     und gibt die Informationen oder einen 0er-Array zurück.
+
+BEMERKUNGEN:
+     Ueberschreibbar :)
+
+RUECKGABEWERT:
+     Siehe Parameter von AddInfo:
+
+     Array mit:
+     ({ <Infostring> (0 fuer keine Antwort),
+        <Indent-String> (Default: 0),
+        <Silent> (Default: 0),
+        <Casebased> (Default: 0)
+     })
+
+SIEHE AUCH:
+     Verwandt: AddInfo, do_frage
+
+31.Mar 2007 Gloinson

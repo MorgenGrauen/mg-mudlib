@@ -1,0 +1,13 @@
+SYNOPSIS
+      xproc [-c] [-l] [-m] [-u] [-v]
+
+DESCRIPTION
+      xproc prints information from the /proc filesystem to the screen.
+      The format is totally unformatted! (I can't help it for now...) 
+      Without any option, it display the machines load averages.
+
+      -c: cpu information
+      -l: load averages
+      -m: memory usage
+      -u: machine's uptime
+      -v: kernel version

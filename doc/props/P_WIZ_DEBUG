@@ -1,0 +1,20 @@
+NAME:
+    P_WIZ_DEBUG                    "std_p_wizdebug"
+
+DEFINIERT IN:
+    /sys/player/comm.h
+
+BESCHREIBUNG:
+     Gesetzt, wenn der Magier (oder ein Testspieler) Debugmeldungen wahrnehmen
+     moechte.
+     Debugmeldungen sind Nachrichten, die mit dem Typ MT_DEBUG an ReceiveMsg()
+     uebergeben werden.
+     
+     Die Werte von P_WIZ_DEBUG sind zur Zeit 0 oder 1, das kann sich aber
+     jederzeit aendern.
+     Magier aendern diese Prop bitte ueber "mschau".
+
+SIEHE AUCH:
+     mschau
+     P_WANTS_TO_LEARN
+

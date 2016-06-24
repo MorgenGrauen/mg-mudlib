@@ -1,0 +1,38 @@
+
+tmhist
+-----------
+
+ KOMMANDO:
+    tmhist
+    tmhist aus
+    tmhist namen
+    tmhist ein
+    tmhist <spielername>
+    tmhist <nr>
+
+ BESCHREIBUNG:
+    Ohne Argument wird die aktuelle Teile-mit-History ausgegeben.
+    'tmhist aus' schaltet die Speicherung komplett aus,
+    'tmhist namen' speichert nur die Namen der Gespraechspartner und einige
+    statistische Daten.
+    'tmhist ein' speichert Namen der Gespraechspartner sowie die Inhalte der
+    Gespraeche.
+    'tmhist <name>' gibt das Gespraech mit dem angegebenen Spieler wieder,
+    sofern so ein Gespraech existiert und der Inhalt gespeichert wurde.
+    'tmhist <nr>' gibt das Gespraech mit der Nummer <nr> in der History
+    wieder.
+
+    Die Gespraechsinhalte werden beim Ausloggen mittels 'schlafe ein'
+    innerhalb von ca. 4s geloescht, bei 'ende' sofort. Bricht die Verbindung
+    zum MorgenGrauen ab, werden die Gespraechsinhalte nach 15min geloescht.
+    Es werden max. 20 Gespraeche mit jeweils max. 50 Nachrichten gespeichert.
+
+    Alle mit dem Befehl 'rfluester' mitgeteilten Mitteilungen werden nicht
+    gespeichert.
+
+ SIEHE AUCH:
+    erwidere, sage, frage, antworte, fluestere, gespraech, rufe, ebenen, weg,
+    ignoriere, kobold, muds, senderwiederholung, klingelton, teile, rfluestere
+
+ LETZTE AeNDERUNG:
+    Sa, 09.08.2008, Zesstra

@@ -1,0 +1,28 @@
+
+email
+-----
+
+ KOMMANDO:
+    email [<adresse>]
+
+ ARGUMENTE:
+
+     <adresse> (optional)
+        Die neue Adresse
+
+ BESCHREIBUNG:
+    Ohne Argumente gibt `email' die aktuelle EMail-Adresse aus. Mit Argument
+    wird sie auf die neue Adresse gesetzt.
+
+    Hinweis: eine gueltige EMail-Adresse erleichtert es _erheblich_ im
+    Bedarfsfall ein neues Passwort fuer den Charakter zu setzen. In vielen
+    Faellen ist dies ohne EMail-Adresse nicht moeglich.
+
+SIEHE AUCH:
+    Einstellungen:        emailanzeige
+    Persoenliche Details: email, url, icq, messenger, ort
+    Sonstiges:            finger, wer, kwer
+
+LETZTE AeNDERUNG:
+    12.09.2011, Zesstra
+

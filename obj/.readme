@@ -1,0 +1,5 @@
+In diesem Verzeichnis bekommen alle Objekte die UID des erzeugers (was
+dementsprechend bis Gott geht), daher duerfen hier nur EM+ schreiben und hier
+angeschlossener Code sollte sehr gruendlich geprueft werden.
+Fuer global verfuegbare Items in Spielerhaenden sollte /items/ verwendet
+werden.

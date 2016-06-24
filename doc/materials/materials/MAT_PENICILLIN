@@ -1,0 +1,21 @@
+Materialid:
+MAT_PENICILLIN           "penicillin"
+
+Name:
+"Penicillin" "Penicillins" "Penicillin" "Penicillin"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_CHALK:50
+MAT_PENICILLIN
+
+Gruppenzugehoerigkeit:
+MATGROUP_BIO:100
+MATGROUP_DEAD:100
+MATGROUP_DRUG:100
+MATGROUP_SOLID:100

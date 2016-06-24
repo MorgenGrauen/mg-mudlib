@@ -1,0 +1,47 @@
+AddWizardForUID()
+
+FUNKTION:
+    string* AddWizardForUID(string uid, string wizard);
+
+DEFINIERT IN:
+    /secure/master/userinfo.c
+
+ARGUMENTE:
+    uid
+      Die UID, fuer die man einen (weiteren) verantwortlichen Magier
+      explizit eintragen moechte.
+    wizard
+      Der Magier, den man eintragen moechte.
+
+BESCHREIBUNG:
+    Die Funktion traegt einen Magier 'wizard' explizit als verantwortlichen
+    Magier fuer die UID 'uid' ein. Hierbei kann 'uid' sogar der Name eines
+		anderen Magiers sein, dessen UIDs 'wizard' sozusagen "adoptiert".
+
+		Berechtigt zum Eintragen von Magiern fuer bestimmte UIDs sind alle Magier,
+    die (implizit oder explizit) verantwortlich fuer die jeweilige UID sind.
+    Z.B. kann Zesstra ohne weiteres jemand weiteren als verantwortlich fuer
+    d.inseln.zesstra eintragen.
+
+RUeCKGABEWERT:
+    Zurueckgeliefert wird ein Array von Strings, jedes Element ist eine UID,
+    fuer die dier Magier jetzt explizit eingetragen ist.
+
+BEMERKUNGEN:
+    Es ist nicht noetig, z.B. Zesstra als verantwortlich fuer d.inseln.zesstra
+    einzutragen, da sie ohnehin schon implizit dafuer zustaendig ist. Auch
+    fuer RMs bzw. GMs muss ihre Region bzw. Gilde nicht explizit eingetragen 
+    werden.
+
+BEISPIELE:
+    master()->AddWizardForUID("p.waterluh","zook");
+		
+		string *uids = master()->AddWizardForUID("jof","zook");
+    printf("Zook ist nun explizit zustaendig fuer: %s\n",CountUp(uids));
+
+SIEHE AUCH:
+    QueryWizardsForUID(), QueryUIDsForWizard,
+		RemoveWizardFromUID()
+
+20.02.2007, Zesstra
+

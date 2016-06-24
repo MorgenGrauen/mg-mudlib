@@ -1,0 +1,41 @@
+
+zeilen
+------
+
+ KOMMANDO:
+    zeilen [<zahl>]
+    zeilen auto[ -<zahl>]
+    zeilen abs[olut] | rel[ativ]
+
+ ARGUMENTE:
+
+     <zahl>
+        Eine ganze Zahl zwischen 0 und 100
+
+ BESCHREIBUNG:
+    Hiermit kann man die Anzahl der Zeilen einstellen, nach der ein `more'
+    (z.B. in der Topliste) anhaelt.
+
+    Bei 0 haelt das `more' nicht an.
+
+    Mit der Einstellung `auto' wird die Zeilenzahl automatisch ermittelt,
+    sofern Dein Telnet dies unterstuetzt (siehe auch `hilfe telnegs').
+    Um nach dem `more' noch etwas Platz zu haben, kann man z.B. mit
+    `zeilen auto -3' die Zeilenzahl bei automatischer Einstellung verkleinern.
+
+    Mit `zeilen' wird der derzeitig eingestellte Wert angezeigt.
+    Defaultmaessig ist <zahl> auf 20 gesetzt.
+
+    Normalerweise wird in der Promptzeile des `more' eine relative Angabe
+    gemacht, wieviel Prozent des Textes man schon gesehen hat. Mit
+    `zeilen absolut' (auch als `zeilen abs' abkuerzbar) kann man auf eine
+    alternative Darstellung umschalten. Dabei werden die Nummer der untersten
+    angezeigten Zeile sowie die Gesamtzeilenzahl des Textes angezeigt.
+
+    Mit `zeilen rel' kann man wieder auf die relative Anzeige zurueckschalten.
+
+ SIEHE AUCH:
+    telnegs
+
+ LETZTE AeNDERUNG:
+    Sun, 07.11.1999, 23:30:00 von Tiamak

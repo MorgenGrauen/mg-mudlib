@@ -1,0 +1,19 @@
+Materialid:
+MAT_QUARTZ               "quartz"
+
+Name:
+"Quarz" "Quarzes" "Quarz" "Quarz"
+
+Geschlecht:
+M
+
+Beschreibung:
+klar bis grau, auch gelb
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

@@ -1,0 +1,52 @@
+AddFixedObject()
+
+FUNKTION:
+        varargs void AddFixedObject(string str, int val, mixed ids);
+
+DEFINIERT IN:
+        /std/room/shop.c
+
+ARGUMENTE:
+        str
+          Der absolute Filename eines Objekts, das in quasi beliebiger Menge
+          vom betreffenden Laden verkauft werden soll.
+        val
+          Sofern angegeben der angenommene Wert des Objekts. Falls val nicht
+          angegeben oder 0 ist, wird der Wert aus dem angegebenen Objekt
+          selbst ermittelt.
+          Der Verkaufspreis ist 3 * Wert des Objekts.
+        ids
+          String oder Stringarray mit der ID oder den IDs, ueber die man das
+          Objekt im Laden ansprechen kann. Falls nicht angegeben, wird die
+          ID-Liste aus der blueprint des Objekts ausgelesen.
+
+BESCHREIBUNG:
+        Mit dieser Funktion kann man einem Laden mitteilen, dass ein Objekt
+        in ihm in unbegrenzter Anzahl verkauft werden soll.
+        WICHTIG: Das zu verkaufende Objekt sollte dies insofern unterstuetzen, 
+        dass die Blueprint die notwendigen Informationen
+        (P_SHORT, P_IDS, P_VALUE, P_LONG, P_NAME) beinhaltet. Dies bedeutet im
+        einfachsten Fall, dass im create() auf
+          if (!clonep()) return;
+        verzichtet wird.
+
+RUeCKGABEWERT:
+        keiner
+        
+BEISPIELE:
+        AddFixedObject("/obj/fackel", 5000, "fackel");
+          Der Laden verkauft Fackeln zum Preis von 3*5000 Goldmuenzen und man
+          kann die Fackel (ausser ueber die Inventarnummer) nur mittels der
+          id "fackel" kaufen.
+          
+        AddFixedObject("/obj/fackel");
+          Der Laden verkauft Fackeln zum dreifachen Wert dessen, was im Objekt
+          /obj/fackel.c angegeben ist (derzeit sind das 5 Muenzen) und laesst
+          alle IDs zu, die in /obj/fackel.c angegeben sind. Derzeit ist das
+          auch nur "fackel".
+
+SIEHE AUCH:
+	RemoveFixedObject(), SetStorageRoom(), /std/store.c
+        
+----------------------------------------------------------------------------
+Letzte Aenderung: Sat Nov  9 12:59:25 2002 durch Bambi

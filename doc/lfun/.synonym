@@ -1,0 +1,14 @@
+A_CON QueryAttribute
+A_DEX QueryAttribute
+A_INT QueryAttribute
+A_STR QueryAttribute
+pathd SearchPath
+qpp QueryPossPronoun
+SP_NAME Defend
+SP_NO_ACTIVE_DEFENSE Defend
+SP_NO_ENEMY Defend
+SP_PHYSICAL_ATTACK Defend
+SP_RECURSIVE Defend
+SP_REDUCE_ARMOUR Defend
+SP_SHOW_DAMAGE Defend
+TestIgnoreExt TestIgnore

@@ -1,0 +1,6 @@
+SYNOPSIS
+      xdclean <object>
+
+DESCRIPTION
+      Same as xclean, but makes a deep clean.
+

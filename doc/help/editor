@@ -1,0 +1,129 @@
+
+Der Editor
+==========
+
+    Der Editor wird von der Zeitung, der Post und in den Seherhaeusern
+    verwendet. Es besteht keine Trennung zwischen Eingabe- und Kommandomodus;
+    Befehle werden mit einer Tilde (~) als erstem Zeichen in der Zeile
+    eingeleitet (Ausnahmen: ., ** und !<cmd>).
+
+    Der Editor versteht folgende Befehle:
+
+     Allgemeine Kommandos
+
+         . oder **
+            Der eingegebene Text wird uebernommen, der Editor beendet.
+
+         !<cmd>
+            Das Kommando <cmd> wird ausgefuehrt, als wenn Du gerade nicht
+            schreiben wuerdest.
+
+         ~q
+            Abbruch. Schon eingegebener Text ist verloren; in der Post/MPA
+            wird kein Artikel erzeugt.
+
+         ~h
+            Eine Hilfeseite wird angezeigt (quasi eine Kurzform dieser Seite)
+
+         ~!
+            Der Editor wird voruebergehend verlassen.
+            Man kann mit dem Befehl ~r weiterschreiben (das ~r ist als
+            normales Kommando ausserhalb des Editors einzugeben!)
+
+         ~r
+            Der gesamte bisher geschriebene Text wird angezeigt.
+         ~R
+            Wie ~r, es werden jedoch noch Zeilennummern mit ausgegeben.
+
+         ~z
+            Der Textausschnitt um den Cursor herum wird angezeigt.
+         ~Z
+            wie ~z, es werden jedoch noch Zeilennummern mit ausgegeben.
+
+         ~s
+            Es werden Statusinformationen angezeigt.
+
+         ~b
+            Es wird zwischen Flattersatz (default) und Blocksatz umgeschaltet
+
+        Nur fuer Magier:
+
+         ~i <filename>
+            Die Datei <filename> wird an der momentanen Cursorposition in den
+            Text eingefuegt.
+            Aus Kompatibilitaetsgruenden kann man auch ~r <filename> nehmen.
+
+     Zeilenorientierte Kommandos
+
+         ~d
+            Die letzte Zeile wird geloescht (Text-, nicht Eingabezeile).
+
+         ~v
+            Es wird zwischen dem Einfuegemodus (default) und dem
+            Ueberschreibmodus umgeschaltet.
+
+         ~s !s1!s2!
+            Ersetzt das erste Vorkommnis des Strings s1 durch den String s2 in
+            der aktuellen Zeile.
+            Statt durch ! koennen die Strings auch durch beliebige andere
+            Zeichen getrennt werden, die weder in s1 noch in s2 vorkommen.
+            Mit der Form ~s !s1!s2!p wird die geaenderte Zeile direkt
+            angezeigt.
+
+         ~f
+            Formatiert die aktuelle Zeile neu.
+
+     Cursorkommandos
+
+         ~cu
+            Der Cursor wird um eine Zeile nach oben bewegt.
+         ~cd
+            Der Cursor wird um eine Zeile nach unten bewegt.
+
+         ~ct
+            Der Cursor wird an den Anfang des Textes bewegt.
+         ~cb
+            Der Cursor wird an das Ende des Textes bewegt.
+
+         ~cs
+            Der Cursor wird an den Anfang des markierten Blocks bewegt.
+         ~ce
+            Der Cursor wird an das Ende des markierten Blocks bewegt.
+
+         ~c<nr>
+            Der Cursor wird in die Zeile <nr> bewegt.
+         ~c+<nr>
+            Der Cursor wird um <nr> Zeilen nach oben bewegt.
+         ~c-<nr>
+            Der Cursor wird um <nr> Zeilen nach unten bewegt.
+
+     Blockorientierte Kommandos
+
+         ~bs
+            Der Blockanfang wird auf die aktuelle Zeile gesetzt.
+         ~bs<nr>
+            Der Blockanfang wird auf die Zeile <nr> gesetzt.
+
+         ~be
+            Das Blockende wird auf die aktuelle Zeile gesetzt.
+         ~be<nr>
+            Das Blockende wird auf die Zeile <nr> gesetzt.
+
+         ~F
+            Der markierte Block wird neu formatiert.
+
+         ~D
+            Der markierte Block wird geloescht.
+
+         ~m
+            Der markierte Block wird an die aktuelle Cursorposition
+            verschoben.
+
+    Alles andere gilt als Text. Ueberlange Zeilen werden auf eine maximale
+    Laenge von 78 Zeichen umgebrochen.
+
+    Nach ~!, oder wenn man beim Schreiben netztot wird, kann man mit ~r wieder
+    in den Editor einsteigen.
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

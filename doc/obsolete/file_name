@@ -1,0 +1,36 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+  string object_name()
+  string object_name(object ob)
+
+DESCRIPTION:
+  Get the file name of an object or if no argument is given of the current
+  object. If the object is a cloned object, then it will not have a
+  corresponding file name, but rather a new name based on the original
+  file name.
+  The returned name always begins with '/' (absolute path),
+	except when the parser runs in COMPAT (-o) mode.
+
+EXAMPLES:
+  find_object(object_name(ob)) == ob
+  This is guaranteed to be true for all objects ob that are not
+  destructed.
+  
+  sizeof(explode(object_name(ob), "#")) == 1
+  This is always true if ob is a blue print.
+
+HISTORY
+  In LDMud 3.2.6 renamed to object_name(), this old name is
+  available as alias.
+  Since LDMud 3.2.9, not available if driver is compiled without
+  USE_DEPRECATED.
+  Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SEE ALSO:
+   find_object(E)
+
+29.10.2006 Zesstra

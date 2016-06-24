@@ -1,0 +1,10 @@
+NAME:
+    P_HP_DELAY                 "hp_delay"                     
+
+DEFINIERT IN:
+    /sys/living/life.h
+
+BESCHREIBUNG:
+     Anzahl der heart_beats, bis P_HP um einen Punkt regeneriert.
+     Aenderungen dieser Property in Spielern beduerfen der 
+     Genehmigung des EM fuer Balance.

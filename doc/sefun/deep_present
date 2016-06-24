@@ -1,0 +1,21 @@
+FUNKTION:
+        object deep_present(string what)
+        object deep_present(object what)
+        object deep_present(string what, object ob)
+        object deep_present(object what, object ob)
+
+ARGUMENTE:
+        what - Objekt oder ID des Objektes, nach dem gesucht werden soll
+        ob - Objekt, in dem gesucht werden soll
+
+BESCHREIBUNG:
+        deep_present() sucht in this_object() (oder in ob, falls angegeben)
+        nach dem Objekt what oder einem Objekt, das auf what anspricht.
+        Im Gegensatz zu present() wird aber das komplette Inventory berueck-
+        sichtigt (also zB. auch der Inhalt von Beuteln).
+
+RUECKGABEWERT:
+        das gefundene Objekt oder 0
+
+SIEHE AUCH:
+        present(E)

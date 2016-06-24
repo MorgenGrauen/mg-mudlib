@@ -1,0 +1,23 @@
+NAME:
+	P_VALID_GUILDS			"valid_guilds"                
+
+DEFINIERT IN:
+	/sys/new_skills.h
+
+BESCHREIBUNG:
+	Diese Property enthaelt die zugelassenen Gilden in Form von
+	kleingeschriebenen Gildennamen, welche in einem Array
+	zusammengefasst sind. Sie ist nur fuer den Gildenmaster selbst von
+	Bedeutung.
+
+BEISPIELE:
+	Abfrage der zugelassenen Gilden:
+	  find_object("/obj/gildenmaster")->QueryProp(P_VALID_GUILDS)
+	Das ergibt zum Beispiel:
+          ({"abenteurer","zauberer","klerus","kaempfer"})
+
+SIEHE AUCH:
+	P_GUILD, /obj/gildenmaster.c
+
+----------------------------------------------------------------------------
+Last modified: Wed Jan 14 19:17:06 1998 by Patryn

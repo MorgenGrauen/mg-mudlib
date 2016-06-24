@@ -1,0 +1,56 @@
+NAME:
+    P_ATTRIBUTES_MODIFIER         "attributes_modifier"
+
+DEFINIERT IN:
+    /sys/living/attributes.h
+
+BESCHREIBUNG:
+    In dieser Property werden Attribut-Modifikatoren gespeichert, die
+    laengere Zeit wirksam sein sollen, tlw. auch ueber einen Reboot
+    hinweg.
+    Intern werden die Modifikatoren in einem Mapping der Form
+
+        ([ Setzer-Key : ([ A_xy : Wert, ... ]) , ... ])
+
+    gespeichert. Das Setzen folg hingegen in der Form
+
+        spieler->SetProp(P_ATTRIBUTES_MODIFIER, ([ A_xy : Wert, ... ]));
+    oder
+        spieler->SetProp(P_ATTRIBUTES_MODIFIER, ({ Setzer-Key, ([ ... ]) }));
+
+    Bei der ersten Variante wird hierbei der Filename des setzenden Objektes
+    als Setzer-Key genommen.
+    Es koennen also durchaus von mehreren Objekten Modifier gesetzt werden.
+    Bekannte Modifier sind:
+
+        #death      Attribut-Abzug durch Todesfolgen      (Mudlib)
+        #drain      Statabzug durch NPCs                  (Paracelsus)
+        #frosch     Staerken-Abzug bei Froeschen          (Mudlib)
+
+BEMERKUNGEN:
+    Keine echte Property, _query_attributes_modifier() und
+    _set_attributes_modifier() sind in /std/living/attributes.c
+    implementiert
+    - SetProp/QueryProp nutzen!
+    - Wenn ein Modifier nicht mehr gebracht wird, nicht die Attributswerte auf
+      0 setzen, sondern den ganzen Eintrag! also:
+      SetProp(P_ATTRIBUTES_MODIFIER, ([]) );
+      oder: SetProp(P_ATTRIBUTES_MODIFIER, 0 ); 
+      aber nicht: SetProp(P_ATTRIBUTES_MODIFIER, ([A_STR:0]));
+
+BEISPIELE:
+    // ein Bonus ... 'ende'-fest (muss also per uid gesichert werden)
+    player->SetProp(P_ATTRIBUTES_MODIFIER,
+                    ({"g_klerus_segen", ([A_CON:5, A_INT:5])}));
+    ...
+    player->SetProp(P_ATTRIBUTES_MODIFIER, ({"g_klerus_segen", 0}));
+
+SIEHE AUCH:
+	QueryAttribute(), QueryRealAttribute(), QueryAttributeOffset(),
+	SetAttribute(), SetRealAttribute(), UpdateAttributes(),
+	SetTimedAttrModifier(), QueryTimedAttrModifier(),
+	DeleteTimedAttrModifier(),
+	P_ATTRIBUTES, P_ATTRIBUTES_OFFSETS, P_TIMED_ATTR_MOD,
+	P_X_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
+----------------------------------------------------------------------------
+Last modified: Tue Jul 27 20:00:20 2004 by Muadib

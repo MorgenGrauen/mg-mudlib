@@ -1,0 +1,35 @@
+P_CURSED
+
+NAME:
+     P_CURSED "cursed"
+
+DEFINIERT IN:
+     <properties.h>
+
+BESCHREIBUNG:
+     Ruestungen und Waffen, die sich, einmal angezogen bzw. gezueckt, nicht
+     wieder entfernen lassen sollen, kann man ueber diese Property
+     realisieren. Die Waffe oder Ruestung hat dann in der Regel negative
+     Auswirkungen auf den Traeger...
+
+     Setzt man diese Property auf eine Zahl ungleich 0, so bekommt man bei
+     dem Versuch, den verfluchten Gegenstand auszuziehen bzw. wegzustecken
+     eine Defaultmeldung.
+
+     Traegt man dagegen einen String ein, so wird dieser beim Versuch, den
+     Gegenstand loszuwerden, ausgegeben.
+
+BEMERKUNGEN:
+     Der 'Fluch' wird erst wirksam, wenn das Opfer die Waffe zueckt bzw. die
+     Ruestung anzieht. Ist dies erst einmal geschehen, helfen nur noch
+     Zaubersprueche oder fluchbrechende Institutionen.
+
+     Moechte man, dass der Gegenstand entfluchbar ist, dann sollte er auch
+     ansprechbar sein (gueltige ID, nicht unsichtbar), da das durch derzeitige
+     Entfluchmoeglichkeiten vorausgesetzt wird.
+
+SIEHE AUCH:
+     /std/armour.c, /std/weapon.c
+
+----------------------------------------------------------------------------
+Last modified: Sun May 19 14:45:28 1996 by Wargon

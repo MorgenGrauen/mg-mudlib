@@ -1,0 +1,46 @@
+NAME:
+	P_QUEST_ITEM				"quest_item" 
+
+DEFINIERT IN:
+	/sys/quest_items.h
+
+BESCHREIBUNG:
+        Diese Property gibt an, ob es sich bei dem Objekt um ein Quest-
+	relevantes Objekt handelt.
+	
+BEISPIEL:
+        Ein Schwert (Notung) koennte folgendermassen definiert sein:
+
+	create()
+	{
+	  ::create() ;
+	  SetProp(P_SHORT, "Notung das neidliche Schwert") ;
+	  SetProp(P_LONG, "Das aus seinen Truemmern neu geschmiedete Schwert " 
+	                  "Notung.\n");
+
+	  SetProp(P_NAME, "Notung");
+	  SetProp(P_GENDER, NEUTER);
+	  SetProp(P_ARTICLE,0);
+	  AddId(({"notung","schwert","Notung", "\nNotung"}));
+	
+	  SetProp(P_WEAPON_TYPE, WT_SWORD);
+	  SetProp(P_DAM_TYPE, DT_BLUDGEON);
+
+	  SetProp(P_QUEST_ITEM,QI_OBJ);
+	  ...
+	}
+	    
+	Andere Magier koennen nun auf Notung Ruecksicht nehmen, und zum
+	Beispiel davon absehen, es bei einem NPC-Spell zu destructen.
+
+BEMERKUNGEN:
+        Alle questrelevanten Objekte sollten auf diese Weise markiert werden.
+	
+	Questrelevante Objekte anderer Magier sollten immer mit Vorsicht 
+	behandelt werden.
+
+SIEHE AUCH:
+	"/sys/quest_items.h"
+
+----------------------------------------------------------------------------
+Last modified: Thu Jul 10 07:08:32 2003 by Vanion

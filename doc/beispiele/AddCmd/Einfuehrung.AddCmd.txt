@@ -1,0 +1,174 @@
+Hallo MitmagierInnen *g*,
+
+Ok, dann gehts mal ein bischen zur Sache:
+
+/std/thing/commands.c wurde so erweitert, dass man auch komplexe Syntax
+direkt im AddCmd vorparsen kann.
+
+Dazu ein kurzes Beispiel:
+-------------------------
+
+In einem Objekt (ein Busch) findet sich folgende Syntaxdefinition.
+
+ AddCmd("pfluecke|ernte&fruechte|beeren&@ID","cmd_pfluecken",
+        "Was willst Du denn @verben?|Wo willst Du denn die Beeren @verben?");
+
+Der erste Parameter definiert die Syntax. Das Zeichen & trennt verschiedene
+zu parsende Items:
+
+1. pfluecke|ernte
+2. fruechte|beeren
+3. @ID
+
+Unter 1. finden sich die Verben - das sind die gleichen, die man in der
+alten Version auch belegen konnte. Die Regel reagiert also auf "pfluecke"
+oder auf "ernte".
+
+Alle weiteren Regeln muessen erfuellt werden, damit der zweite Parameter
+(die Funktion) aufgerufen wird. @ID steht dabei fuer die ID des Objektes,
+in dem das AddCmd steht. Hier also der Busch.
+
+Dazu einige Beispiele:
+
+a) > pfluecke beeren
+ -> erfuellt 1 und 2. Aber nicht 3. => Fehlermeldung.
+
+b) > ernte von busch
+ -> erfuellt 1 und 3, jedoch 2 nicht. => Fehlermeldung.
+
+c) > pfluecke fruechte von busch
+ -> erfuellt 1, 2 und 3 -> busch->cmd_pfluecken() wird aufgerufen. Das "von"
+    ist Fuellwerk. Davon kann beliebig viel im String sein. Sie werden 
+    ignoriert.
+    Es sind also auch unsinnige Syntaxe richtig, solange der String die 
+    Items erufellt.
+
+Im Fall c) wird das Verhalten des Busches durch die Funktion "cmd_pfluecken"
+definiert, wie auch in der alten Version von AddCmd.
+
+Was passiert aber in den Faellen a) und b)? Dafuer ist der dritte
+Parameter da:
+  "Was willst Du denn @VERBen?|Wo willst Du denn die Beeren @VERBen?");
+
+Hier sind zwei Fehlermeldungen, durch | getrennt, definiert:
+
+x) Was willst Du denn @VERBen?
+y) Wo willst Du denn die Beeren @VERBen?
+
+Erst wird geprueft, ob 2. erfuellt ist. Falls nicht, gibt es Fehlermeldung x)
+Dann wird auf 3. geprueft. Ist das nicht erfuellt (aber 2. schon) gibt es
+Fehlermeldung y).
+
+Im Fall a sind 1 und 2 erfuellt. Demnach wird y) ausgegeben. @VERB wird
+dabei durch das benutzte Verb ersetzt (das abschliessende en, bzw e wird
+abgeschnitten):
+ Wo willst Du denn die Beeren pfluecken?
+
+Im Fall b ist 1 erufellt, 2 aber schon nicht. Daher gibt es Fehlermeldung
+x). Auf 3. wird nicht mehr geprueft.
+ Was willst Du denn ernten?
+
+Wie schon erwaehnt erfuellt c) alle Bedingungen und es gibt keine Ausgabe -
+Statt dessen kann man das Pfluecken in der Funktion abhandeln.
+
+In den Faellen 1 und 2 wird die Fehlermeldung ueber notify_fail()
+abgehandelt. Ergo wird hier anderen Befehlen von anderen Objekten noch
+eine Chance gegeben. Gleiches gilt fuer die Funktion cmd_pfluecken(), wenn
+deren Rueckgabewert 0 ist. Auch hier gibt es die Analogie zum alten AddCmd.
+
+Gibt cmd_pfluecken() einen Wert ungleich 0 zurueck, wird die Suche nach
+der richtigen Syntax danach abgebrochen, so dass auch kein anderes Objekt
+mehr gefragt wird (wie gehabt).
+
+Das ist auch fuer Forscherpunkte wichtig. FP werden generell nur bei einem
+Rueckgabewert ungleich 0 vergeben.
+
+Eine kleine Erweiterung der Beispielsyntax:
+-------------------------------------------
+
+ AddCmd("pfluecke|ernte&fruechte|beeren&@ID@\impossible",0,
+  "Was willst Du denn @VERBen?|Wo willst Du denn die Beeren @VERBen?|"
+  "Du pflueckst ein paar Beeren und isst sie auf.^@WER isst ein paar
+  Beeren.");
+
+Eine neue Regel:
+
+4. \impossible
+
+Und eine neue Fehlermeldung:
+z) Du pflueckst ein paar Beeren und isst sie auf.^@WER isst ein paar Beeren.
+
+Zur Regel:
+
+Die Regel ist nicht erfuellbar, da Spieler das \i nicht erzeugen
+koennen. Zwangslaeufig gibt es auch keine Funktion, die aufgerufen werden
+koennte.
+
+Dafuer gibt es eine Fehlermeldung, die ein neues Element enthaelt. Das
+^. Wird diese Meldung ausgegeben ist das genau wie ein return 1 in der
+Funktion. Die Syntax wird als richtig anerkannt. (Es kann hierfuer also
+auch FP geben).
+
+Der Text vor dem ^ geht an den Spieler, alles dahinter geht an die Spieler
+im Raum. Steht hinter dem ^ nichts, gibt es keine Raummeldung.
+
+Auf diese Weise kann man leicht ein Raumkommando erstellen, dass nur
+Textausgaben macht, aber keine Funktionalitaet enthaelt. Es ist keine
+eigenstaendige Funktion mit irgendwelchem eigenen Parsing mehr noetig.
+
+Das @WER wird durch this_player()->Name() ersetzt, so dass man auch einen
+Persoenlichen bezug in den Meldungen herstellen kann.
+
+Abwaertskompatibel
+------------------
+
+Die Erweiterungen von AddCmd erlauben ein einfacheres Erstellen von
+Standard-Kommandos, ohne dass man sich mit dem Parsen in Funktionen
+beschaeftigen muss.
+
+Die Aenderung ist vollstaendig abwaertskompatibel. Wer sich also sagt,
+das das alles viel zu kompliziert sei, kann weiterhin:
+
+ AddCmd(({"pfluecke","ernte"}),"cmd_pfluecken");
+
+benutzen. Das Verhalten ist haargenau das selbe wie bisher. Dementsprechend
+ist auch kaum Aufwand beim Einpflegen dieser Aenderung notwendig.
+
+Zur Beachtung
+-------------
+
+Ueberall, wo direkt auf P_COMMANDS zugegriffen wird, kann es prinzipiell
+zu Problemen kommen, da sich die Struktur des Mappings und der Zugriff
+darauf geaendert hat.
+
+Im Folgeartikel findet sich eine Liste mit allen Objekten, die das machen. In
+den oeffentlichen Verzeichnissen werde ich mich mit den Magiern in Verbindung
+setzen oder selbst kontrollieren, ob Aenderungen notwendig sind.
+
+Objekte in den Players-Verzeichnissen werde ich nur in Ausnahmefaellen
+anpassen. Zur Erinnerung: Angeschlossenes gehoert nicht nach /players/.
+
+Der Code ist auf Kompatibilitaet mit dem alten System ausgelegt, dennoch
+gibt es ein paar Aenderungen. Zum Beispiel ist P_COMMANDS keine echte
+Property mehr sondern eine lokale Variable. Demzufolge wird P_COMMANDS
+bei "xprop" nicht mehr angezeigt. Die Schnittstelle wird durch _set_
+und _query_funktionen realisiert. Die Mappings werden _immer_ als Kopien
+rausgegeben, so dass man damit nicht versehentlich Unsinn machen kann.
+
+Schlusswort
+-----------
+
+Dieser Artikel stellt nur eine Einleitung in die Aenderung und deren
+Moeglichkeiten dar und ist keinesfalls vollstaendig. Wer mehr darueber wissen
+will, ist eingeladen, sich die Manpage zu "AddCmd" und zu den Beispielen
+"AddCmd_bsp" anzuschauen.
+
+Die Seiten sind aus dem Regenbogen "geliehen" und werden in den kommenden
+Tagen noch auf die Beduerfnisse des Morgengrauen angepasst.
+
+Mein Dank geht an Gloinson, der die Idee hatte, die Anpassungen vorzunehmen
+und Migration des Codes ins MorgenGrauen uebernommen hat.
+
+Falls nun noch Fragen sind, nur zu! :)
+
+V*,

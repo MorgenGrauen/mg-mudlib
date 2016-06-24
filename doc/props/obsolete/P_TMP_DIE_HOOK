@@ -1,0 +1,70 @@
+********************* VERALTETE PROPERTY ******************************
+* Diese Property ist veraltet. Bitte nicht mehr in neuem Code nutzen. *
+***********************************************************************
+P_TMP_DIE_HOOK
+
+NAME:
+    P_TMP_DIE_HOOK                "die_hook"
+
+DEFINIERT IN:
+    /sys/new_skills.h
+
+BESCHREIBUNG:
+     Mittels dieser Property kann der Tod eines Livings abgewendet werden.
+
+     Es wird an dem Living die Property als mindestens 3-elementiges Array
+     ({zeitpunkt, objekt, methode, ...})
+     gesetzt und die Methode 'methode' wird dann waehrend des die() des
+     Lebewesens in 'objekt' aufgerufen, solange time()<'zeitpunkt'.
+     Bei Geistern wird der Hook nicht gerufen.
+
+     Der Methode wird ein int uebergeben, ob das Living Opfer von Gift
+     (P_POISON) war.
+
+     Gibt die Funktion einen Wert != 0 zurueck, wird die() sofort abgebrochen
+     und das Living stirbt nicht.
+
+BEMERKUNGEN:
+    - Bitte das neuere Hooksystem (s. Manpage std/hooks) benutzen.
+    - falls die Zeit abgelaufen oder das Objekt zerstoert ist, wird die
+      Property auf 0 gesetzt
+    - vor dem Setzen immer auf die Existenz eines gueltigen Hooks
+      pruefen, einfaches Ueberschreiben fuehrt einerseits zu Fehlern
+      im Code anderer und ist andererseits unfair gegenueber ihnen
+
+BEISPIELE:
+     *** ein besonderer Giftschutz .. wirkt beim Tod ***
+     // pruefen, ob nicht ein anderer Modifier existiert
+     if(!pointerp(tmp=TP->QueryProp(P_TMP_DIE_HOOK)) ||
+        sizeof(tmp)<3 || tmp[0]<=time()) {
+       TP->SetProp(P_TMP_DIE_HOOK,
+	           ({time()+120+random(10), this_object(), "prevent_die"}));
+
+     // die gerufene Methode
+     int prevent_die(int poison) {
+       int ret;
+
+       if(poison) {
+         tell_object(previous_object(),
+           "Ein Zauber reinigt im Moment des Todes dein Blut!\n");
+         tell_object(environment(previous_object()),
+           previous_object()->Name(WER,1)+" wird von Lichtern umhuellt.\n",
+           ({previous_object()}));
+
+         ret=1;
+       }
+
+       // wir helfen nur einmal ... und ein Tod vernichtet die Hilfe auch
+       previous_object()->SetProp(P_TMP_DIE_HOOK, 0);
+
+       return ret;
+     }
+
+SIEHE AUCH:
+     Tod:	die(L)
+     Sonstiges: P_POISON, P_KILLS, P_GHOST
+     Hooks:	P_TMP_MOVE_HOOK, P_TMP_ATTACK_HOOK, P_TMP_DEFEND_HOOK
+     neue Hooks: std/hooks
+
+08.12.2008, Zesstra
+

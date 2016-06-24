@@ -1,0 +1,29 @@
+_unparsed_args()
+FUNKTION:
+     varargs string _unparsed_args(int level)
+
+DEFINIERT IN:
+     /std/player/command.c:
+
+ARGUMENTE:
+     level
+          Gibt an, wieviel des Textes "weggeparsed" werden soll.
+
+BESCHREIBUNG:
+     Gibt den Text des letzten Befehls des Spielers (ohne das Befehlswort
+     selbst) zurueck. "level" gibt dabei an, wieviel geparsed wird:
+     level = 0 : Gar kein Parsing.
+                 -> entspricht einem query_command()
+     level = 1 : Der Text wird in Kleinbuchstaben umgewandelt, doppelte
+                 Leerzeichen werden entfernt.
+     level = 2 : Semikoli, Kommata und Doppelpunkte werden in Leerzeichen
+		 umgewandelt, doppelte Leerzeichen und Artikel (der, die,
+		 das, ein,...) werden entfernt.
+
+RUeCKGABEWERT:
+     Der geparste Text.
+
+SIEHE AUCH:
+     query_command()
+
+7.Aug 2007 Gloinson

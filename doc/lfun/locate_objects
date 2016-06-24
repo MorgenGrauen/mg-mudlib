@@ -1,0 +1,54 @@
+locate_objects()
+
+FUNKTION:
+     object *locate_objects(string desc, int info);
+
+DEFINIERT IN:
+     /std/container/restrictions.c
+
+ARGUMENTE:
+     desc
+          Die Umschreibung des gesuchten Objektes.
+
+     info
+          Ist ungleich 0, wenn diese Funktion von /std/living/put_and_get.c
+          aus aufgerufen wurde.
+
+BESCHREIBUNG:
+     Diese Funktion erweitert die Funktionalitaet von present_objects()
+     insofern, als dass es moeglich ist, auch noch Behaelter innerhalb des
+     Behaelters zu durchsuchen. Das genaue Verhalten haengt von desc ab:
+
+     Ist desc von der Form "<id>", so wird das Ergebnis von
+     present_objects(desc) zurueckgegeben.
+
+     Ist desc von der Form "<gesucht> in <id>", so wird in allen Objekten,
+     die von present_objects("<id>") erfasst wurden,
+     locate_objects("<desc>") aufgerufen. Zurueckgegeben werden alle auf
+     diese Weise gefundenen Objekte.
+
+RUeCKGABEWERT:
+     Array von Objekten, die auf die oben geschilderte Art und Weise
+     ermittelt wurden. Konnte kein Objekt ermittelt werden, wird ein leeres
+     Array zurueckgegeben.
+
+BEMERKUNGEN:
+     Theoretisch sollte es moeglich sein, ueber desc rekursiv mehrere
+     Behaelterebenen erfassen zu koennen (etwa mit "schwert in beutel in
+     beutel in wargon"). In der aktuellen Implementierung klappt das jedoch
+     nicht; nach dem ersten "in" ist Schluss!
+
+BEISPIELE:
+     Was steckt alles dem Beutel, den der Spieler bei sich traegt?
+
+     object *obs;
+     obs = this_player()->locate_objects("alles in beutel");
+
+     Traegt der Spieler keinen Beutel bei sich oder ist dieser leer, so wird
+     ein leeres Array zurueckgegeben.
+
+SIEHE AUCH:
+     present_objects(), /std/container/restrictions.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:20:36 1996 by Wargon

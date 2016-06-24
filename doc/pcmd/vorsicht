@@ -1,0 +1,35 @@
+
+vorsicht
+--------
+
+ KOMMANDO:
+    vorsicht <lp>
+
+ ARGUMENTE:
+
+     <lp>
+        Zahl zwischen 0 und der max. Zahl Deiner Lebenspunkte
+
+ BESCHREIBUNG:
+    Schaltet den `Vorsichtsmodus' ein. Wenn Du Dich im Vorsichtsmodus
+    befindest, rennen Deine Beine mit Dir fort, sobald Deine Lebenspunkte
+    unter den angegebenen Wert gesunken sind, und Du mit dem naechsten Schlag
+    in der naechsten Kampfrunde an der Reihe bist.
+
+    Die Begruessungsschlaege, die man eventuell austeilt oder einsteckt,
+    fallen *nicht* in eine Kampfrunde. Entsprechend wird der Vorsichtsmodus
+    hier auch *nicht* aktiv!
+
+    Der Defaultmodus ist der Prinz-Eisenherz-Modus `vorsicht 0'.
+
+    Der Vorsichtsmodus funktioniert nicht immer. Er kann Dich zwar retten,
+    wenn Du eine langsame Verbindung oder muede Finger besitzt, aber es kann
+    immer passieren, dass ein Monster Dir mehr Lebenspunkte nimmt als Du noch
+    hast. Manchmal finden Deine Beine auch keinen Fluchtweg.
+
+ SIEHE AUCH:
+    toete, report
+    (nur Seher): fluchtrichtung
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

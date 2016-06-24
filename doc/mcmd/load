@@ -1,0 +1,23 @@
+
+load
+----
+
+ MAGIERKOMMANDO:
+    load <datei> [...]
+
+ ARGUMENTE:
+
+     <datei> [...]  Ein oder mehrere Dateinamen
+
+ BESCHREIBUNG:
+    Das Objekt, welches in <datei> definiert ist, wird geladen. Wenn es bereits
+    geladen ist, passiert nichts.
+
+    Raeume koennen auch geladen werden, indem man sie betritt. Die Blueprint
+    eines Objektes kann auch durch Clonen des Objektes geladen werden.
+
+ SIEHE AUCH:
+    clone, destruct, upd
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon

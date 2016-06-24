@@ -1,0 +1,27 @@
+
+zwinge
+------
+
+ MAGIERKOMMANDO:
+    zwinge <name> [zu] <kommando>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Lebewesens
+     <kommando>
+        Die auzufuehrende Aktion
+
+ BESCHREIBUNG:
+    Das angegebene Lebewesen wird dazu gezwungen, die angegebene Aktion
+    auszufuehren. Allerdings beherrschen insbesondere NPCs nicht alle Befehle.
+
+    Spieler duerfen mit diesem Befehl nicht beeinflusst werden!
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung.
+
+ SIEHE AUCH:
+    vertrag
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:55:24 von Wargon

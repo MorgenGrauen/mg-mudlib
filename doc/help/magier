@@ -1,0 +1,130 @@
+
+MAGIER
+======
+
+    In MorgenGrauen erweitern Magier das MUD. Ausserdem haben sie viele
+    Moeglichkeiten, die Spieler nicht haben.
+
+     Wer kann Magier werden?
+        Magier kann jeder werden, der die Anforderungen zur Seher-Werdung
+        erfuellt; siehe dazu die Hilfeseite 'seher'.
+        Soll ein Charakter Magier werden, der selber kein Seher ist, aber der
+        Erstspieler dieses Spielers ist Seher, ist dies mit Genehmigung der
+        EMs moeglich. Hierzu muss den EMs (in Absprache mit dem zukuenftigen
+        Sponsor) ein GS-Konzept vorgestellt werden (in diesem Fall bitte 
+        auch Abschnitt 'Magierwerdung mit einem nicht-Seher' unten beachten).
+
+     Muss ich Magier werden?
+        Wer keine Lust hat, Magier zu werden und lieber noch spielen moechte,
+        kann mit diesen Voraussetzungen Seher werden. Als Seher hat man auch
+        ein paar zusaetzliche Faehigkeiten.
+
+     Wie werde ich Magier?
+        Wenn Du die Voraussetzungen erfuellst, um Magier zu werden, musst Du
+        einen Magier finden, der Dich unterstuetzt. Dieser Magier soll den
+        neuen Magier in seine Moeglichkeiten einweisen und fuer Fragen offen
+        sein. D.h. es sollte am besten ein Magier sein, den Du schon kennst
+        und von dem Du Hilfe erwarten kannst.
+
+        Wenn Du so einen Magier gefunden hast, fragst Du ihn, ob er Dich zu
+        einem neuen Magier ausbildet. Von dem Magier bekommst Du dann einen
+        Vertrag, den Du sorgfaeltig lesen solltest. Wenn Du dann immer noch
+        Magier werden willst, unterschreibst Du den Vertrag. Danach gehst Du
+        mit dem Vertrag zu Merlin (erstmal suchen) und der Magier, von dem
+        Du den Vertrag hast, bittet Merlin, Dich zum Magier zu machen.
+
+        Danach solltest Du von dem Magier eine Einfuehrung erhalten,
+        desweiteren wird Dir Merlin ein Mail mit nuetzlichen Informationen
+        schicken.
+
+     Und was dann?
+        Du beginnst Dein Magierdasein als Lehrling (Lv 15). Du hast noch kein
+        eigenes Verzeichnis, in dem Du programmieren kannst, und Du kannst
+        auch nicht in allen Verzeichnissen lesen. Du kannst Dich allerdings
+        schon einmal mit den Einschraenkungen des Magierlebens (siehe Vertrag)
+        sowie mit der MudLib vertraut machen. Dazu hast Du Leserechte in den
+        Verzeichnissen `/doc', `/std', `/secure' und `/sys'.
+
+        Wenn Du zu diesem Zeitpunkt erkennst, dass der Magierstatus wohl doch
+        nichts fuer Dich ist, kannst Du Dich immer noch an einen Erzmagier
+        wenden, damit er Dich wieder zum Spieler macht. Hiermit solltest Du
+        jedoch nicht zulangen warten, da hierzu eine aeltere Kopie Deines
+        ehemaligen Spielers noetig ist.
+
+        Wenn Du allerdings merkst, dass Du gerne etwas programmieren moech-
+        test, dann melde Dich (mit mail erzmagier) unter Angabe eines kurzen
+        Abrisses, wie Du Deinen weiteren Werdegang als Magier vorstellst bei
+        den Erzmagiern, damit sie Dich auf die naechste Magierstufe (Lv 20)
+        befoerdern. Die Bearbeitugnszeit dieser Mail liegt bei ein bis zwei
+        Wochen. Auf dieser Stufe bekommst Du ein eigenes Verzeichnis samt
+        Workroom, und Du kannst Deine ersten eigenen Programmierversuche
+        starten.
+
+        Wenn Du auch nach Deinen ersten mehr oder weniger erfolgreichen
+        Programmierversuchen noch immer nicht die Flinte ins Korn geworfen
+        hast, dann solltest Du Dir einmal Gedanken darueber machen, was Du
+        im MorgenGrauen genau programmieren moechtest. Der zustaendige
+        Regionsmagier wird Dich bei der Ausarbeitung Deines Konzeptes gerne
+        beraten. Bevor Du anfaengst zu programmieren, solltest Du mit
+        Deinem genauen Konzept noch einmal bei einem zustaendigen
+        Erzmagier nachfragen, ob es als Gesellenstueck ausreicht.
+
+        Sobald Dein Regionsmagier und Du der Meinung seid, dass Deine
+        Sachen fertig sind, koennt Ihr Euch damit an einen der fuer
+        die Abnahme von Gesellenstuecken zustaendigen Erzmagier (siehe
+        Hilfe Erzmagier) wenden. Dieser wird sich Deine Arbeit ansehen und
+        dann entscheiden, ob sie fuer ein Gesellenstueck im MorgenGrauen
+        ausreichend ist. Beachte bitte, dass vor einer solchen Genehmigung
+        durch die zustaendigen Erzmagier von Dir noch keine Objekte
+        unter eigenem Namen angeschlossen werden koennen/duerfen.
+
+        Sofern Du die Regeln fuer Gesellenstuecke erfuellt hast, wird Dich
+        der zustaendige Erzmagier zu einem Vollmagier machen. Erst dann
+        kannst Du auch in anderen Teilen der MudLib einen Blick in den
+        Quellcode anderer Magier werfen. Ausserdem bekommst Du ein eigenes
+        Verzeichnis in der Region, in der Du mitarbeiten moechtest. Dort
+        kannst Du Deine Sachen ausgiebig testen und spaeter dann auch von
+        Deinem Regionsmagier anschliessen lassen.
+
+
+Magierwerdung mit einem nicht-Seher
+-----------------------------------
+
+      * Die Berufung eines nicht-Seher-Charakters zum Magier ist moeglich,
+        sofern der betreffende RL-Spieler bereits einen Seher hat.
+      * Die Berufung eines solchen Charakters zum Magier ist nur in Absprache
+        mit den EMs moeglich. Bei konkreten Anfragen an EMs muss eine erste 
+        Idee angegeben werden, was man sich als GS vorstellt.
+      * Ein vernuenftiges, d.h. zustimmungsfaehiges Konzept muss _vor_
+        Magierwerdung den EMs vorgstellt werden.. An dieses werden die sonst
+        ueblichen Anforderungen bzgl. Umfang und Komplexitaet gestellt. Das
+        Konzept wird von EMs genehmigt, bevor die Berufung zum Magier
+        erfolgt.
+      * Nach Sponsorn des Charakters entfaellt die sonst uebliche Wartezeit
+        von 1-2 Wochen (weil die EMs ja vorher zugestimmt haben) und der
+        Char kann direkt auf Level 20 befoerdert werden.
+      * Das GS muss innerhalb von 6 Monaten nach Magierwerdung fertiggestellt 
+        werden.
+        Die Fertigstellung ist definiert als Einreichung an den RM zur 
+        Abnahme.
+        Dies darf natuerlich keine pro-forma Einreichung von halbfertigem 
+        Zeugs sein.
+      * Eine Verlaengerung dieser Frist kann durch einen von den EMs be-
+        nannten EM (idR EM Gesellenstuecke) genehmigt werden, sofern ihm
+        dies sinnvoll erscheint ("begruendete Faelle", fast fertig, etc.).
+        In Zweifelsfaellen wird die Verlaengerung von den EMs diskutiert.
+      * Muss das GS nach Abnahme durch den RM und/oder den EM Gesellenstuecke
+        nachgebessert werden, sollte dieses innerhalb von 2 Monaten geschehen.
+        Verlaengerungen: s.o.
+      * Bei Nicht-Einhaltung der Frist erfolgt die Loeschung des Charakters 
+        oder Dauerspielpausen auf Magierlevel 15.
+      * Der Spieler unterliegt auch nach Loeschung dem Magiervertrag insofern,
+        als dass er ueber etwaige als Magier gewonnene Interna von nicht-
+        oeffentlichem Code Stillschweigen zu wahren hat.
+
+ SIEHE AUCH:
+    stufen, magierstufen, abenteuer, konzept, gesellenstueck
+    seher, regionen, gildenmagier, erzmagier, goetter
+
+ LETZTE AeNDERUNG: 2015-05-30 von Zook
+

@@ -1,0 +1,43 @@
+NAME:
+     P_NO_XP                    "no_xp"
+
+DEFINIERT IN:
+     /sys/living/life.h
+
+BESCHREIBUNG:
+     Im Normalfall bekommt man im Kampf gegen einen Gegner fuer Treffer
+     und beim Toeten eine XP-Gutschrift.
+
+     Ist P_NO_XP gesetzt, so erhält man keinerlei XP-Gutschriften
+     für den Kampf oder den Tod des NPCs.
+
+BEISPIEL:
+     Folgendermassen unterbindet man die Vergabe von Erfahrungspunkte
+     fuer den Angriff eines NPC's:
+
+       include "/sys/living/life.h"
+       inherit "std/npc";
+       void create() {
+         ::create();
+         ...
+         SetProp(P_NO_XP,1);
+       }
+
+     Damit kann P_XP trotzdem einen Wert im NPC haben, der
+     Erstkillstufenpunkte fuer Lebewesen automatisch eintraegt!
+
+     Auch fuer das kurzzeitige Unterbinden der Vergabe von
+     Erfahrungspunkten ist diese Property sinnvoller, als P_XP im NPC
+     auf 0 zu setzen.
+
+BEMERKUNGEN:
+     Auch die Vergabe von Erstkillstufenpunkten kann explizit unterbunden
+     werden. Hierfuer gibt es die aehnlich geartete Property P_NO_SCORE.
+
+SIEHE AUCH:
+     Funktionen:  AddExp(), DistributeExp(), do_damage()
+     Properties:  P_XP, P_LAST_XP
+     Verwandt:    P_NO_SCORE
+     Sonstiges:   P_TOTAL_WC, create_default_npc()
+
+14.Feb 2007 Gloinson

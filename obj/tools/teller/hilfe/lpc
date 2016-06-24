@@ -1,0 +1,21 @@
+BEFEHL:
+	@ text
+	@@ text
+	
+ARGUMENTE:
+	text -- der ganze(!) Rest der Eingabezeile.
+	Der Stack bis zum letzten Lock.
+	
+FUNKTION:
+	Fuehre den LPC-Code <text> direkt aus. Dabei koennen die Argumente
+	vom Stack mit @<nummer>@ eingesetzt werden. Wichtig, wenn man ein
+	Ergebnis weiterberechnen will, muss man auch ein 'return' um
+	LPC-Code benutzt haben.
+
+	Bei der Ausfuehrung werden nicht alle Include-Dateien eingeladen.
+	
+BEISPIEL:
+	,me @ write( @0@->name(WER)+"\n" )
+	Gibt Deinen Namen aus.
+	,me @@ return @0@->name(WER)
+	Gibt den Namen zurueck und legt ihn auf den Stack.

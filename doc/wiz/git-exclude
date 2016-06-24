@@ -1,0 +1,27 @@
+Beim Import von Verzeichnissen aus dem Mud in ein git Repository und bei der
+Synchronisierung zwischen Repositories und Mudlib werden die folgenden
+Verzeichnisse und Dateien komplett ignoriert.
+
+# fuer div. SCMs benutzte Verzeichnisse
+- .svn/
+- .git/
+- .gitignore
+- CVS/
+# Savefiles
+- *.o
+# logs and rep files
+- *.log
+- log/
+- *.rep
+- *.err
+# backups of editors
+- *~
+- *.swp
+# this should als never be imported - marks a directory to be imported.
+- git-mud-import
+# keine gepackten Archive
+- *.gz
+- *.bz2
+- *.zip
+- *.tar
+

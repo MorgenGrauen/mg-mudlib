@@ -1,0 +1,22 @@
+
+  ----------------------------SEHERHILFSSEITE------------------------------
+
+Als Seher hat man einige zusaetzliche Befehle. Zu den folgenden Befehlen
+kann man mit "hilfe <thema>" eine Erlaeuterung erhalten.
+
+Kommunikation:			    |  Kampf
+    remote,			    |      fluchtrichtung, sethands, review
+    echo (nach Architektenquest)    |
+				    |
+Bewegungsmeldungen:		    |  Aussehen:
+    setmin, setmout, setmmin,	    |      titel, extralook, presay
+    setmmout, review		    |
+
+Hausbau:
+    hausbau, instanthaus, seherhaus,
+    aendere, ausgang, beschreibe, erlaube, kopiere, licht, loesche,
+    meldungen, notiz, schiebe, sperre, spion, uebersicht, verbiete, werfe
+
+Anderes:
+    fehlermeldung, review
+

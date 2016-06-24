@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_INVIS           "misc_invis"
+
+Name:
+"" "" "" ""
+
+Geschlecht:
+F
+
+Beschreibung:
+allg. unsichtbares Material
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MISC:100
+MATGROUP_INVIS:100

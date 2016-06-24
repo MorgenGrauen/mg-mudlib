@@ -1,0 +1,16 @@
+BEFEHL:
+	cleanof, clnof
+
+ARGUMENTE:
+	Die zwei obersten Stackelemente.
+
+FUNKTION:
+	Zerstoere alle Objekte in dem zweiten Objekt auf dem Stack,
+	die sich unter dem Namen, der in TOS steht, angesprochen fuehlen.
+	Die Objekte werden aber nur removed, das das der empfohlene Weg
+	ist, Objekte zu zerstoeren. Sollen die Objekte wirklich hart zerstoert
+	werden, so kann man ein Rufzeichen an den Befehl anhaengen.
+	(Also 'cleanof!'.)
+
+SIEHE AUCH:
+	"remove", "destruct"

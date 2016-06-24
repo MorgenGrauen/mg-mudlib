@@ -1,0 +1,40 @@
+NAME
+        integers
+
+DESCRIPTION
+        int is the fastest data type in LPC.
+
+        An integer contains a whole number between
+        -2147483648 and 2147483647.
+
+        Operations with integers:
+          +  plus               &   AND    << SHIFT right
+          -  minus              |   OR     >> SHIFT left
+          *  multiply           ^   XOR
+          /  divide (whole)     ~   NOT    =  Assign value
+          %  divide (modulo)    +=  add    -= subtract        
+
+        The result of a boolean expression is also an integer:
+          0 (false)
+          1 (true)
+
+        Boolean operators are:
+          !  (not)
+          == (equal)
+          || (or)
+          && (and)
+
+FUNCTIONS
+        int to_int(string)
+        int to_int(float)
+        int sscanf(string str, string fmt, mixed var1, mixed var2, ...)
+        void printf(string format, ...)
+
+REMARKS
+        Single characters in strings are also integers.
+
+SEE ALSO
+        arrays, mappings, operators, strings, types
+
+LAST CHANGED
+        Wednesday, 7th May, 2003, by Amaryllis

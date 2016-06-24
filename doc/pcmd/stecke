@@ -1,0 +1,31 @@
+
+stecke
+------
+
+ KOMMANDO:
+    stecke <objekt> in <behaelter>
+    stecke <waffe> weg/zurueck
+
+ ARGUMENTE:
+
+     <objekt>
+        Ein beliebiges Objekt in Deiner Reichweite
+     <behaelter>
+        Ein Behaelter
+     <waffe>
+        Die Waffe, die Du gezueckt hast
+
+ BESCHREIBUNG:
+    `stecke (in)' ist das allgemeine Kommando, um Gegenstaende in einem
+    Behaelter zu deponieren. Behaelter koennen nicht alles aufnehmen, aber
+    meist ist es leichter, schwere Gegenstaende in einem Behaelter zu
+    transportieren.
+
+    `stecke (weg)' ist das allgemeine Kommando, um zum Kampf gezueckte Waffen
+    wieder abzulegen.
+
+ SIEHE AUCH:
+    nimm, zuecke
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,25 @@
+BEFEHL:
+	roomupdate, rupdate, rupd, rup
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zerstoere den Raum und lade ihn neu, damit Aenderungen der Files
+	aktiv werden koennen. Sorge dafuer, dass die Objekte in dem alten Raum
+	in den neuen hinuebergerettet werden. (Diese Eigenschaft kann mittels
+	des Sternchens ('*') abgeschaltet werden.)
+	
+	Gebe dem Raum jedoch Gelegenheit, Aufraeumarbeiten zu taetigen. Soll
+	der Raum wirklich hart zerstoert werden, so ist ein Rufzeichen an den
+	Befehl anzuhaengen. (also `rupdate!', ein Stern muss vor dem Rufzeichen
+	stehen, also `rupdate*!' und nicht `rupdate!*'.)
+	Wichtig: Raeume, die keine Blueprint sind, koennen nicht mit diesem
+	Befehl aktualisiert werden.
+
+BEISPIELE:
+	,here rupdate
+	Aktualisiert den Raum, in dem der Magier sich befindet.
+
+SIEHE AUCH:
+	"update"

@@ -1,0 +1,45 @@
+
+syntaxsammlung
+-------------
+
+ KOMMANDO:
+    syntaxsammlung [ja | nein]
+
+ ARGUMENTE:
+    nichts, ja oder nein
+
+ BESCHREIBUNG:
+    Um Befehle im MG flexibler zu machen und Spieler und Magier zu entlasten,
+    indem das Spiel besser die Absicht des Spielers bei einem Befehl erkennt,
+    sammeln wir (anonyme) Statistiken ueber Befehle, welche von Spielern
+    benutzt werden, sofern Spieler damit einverstanden sind.
+    Mit diesem Befehl kannst Du also mithelfen, Syntaxen im MG zu verbessern.
+
+    Wenn Du einverstanden bist, speichern wir anonym (d.h. ohne Deinen
+    Charnamen), welche Deiner Befehle erfolgreich und nicht erfolgreich waren.
+    Uebliche Kommunikationsbefehle (z.B. sage, teile-mit, rfluester, ebenen,
+    teamrufe, mrufe, rufe) werden dabei nicht gespeichert.
+    
+    Mit 'syntaxsammlung ja' kannst Du die Speicherung einschalten, mit
+    'syntaxsammlung nein' kannst Du sie ausschalten.
+
+    Die gesammelten Daten koennen nur von Erzmagiern oder Goettern eingesehen
+    werden. Allerdings kann es sein, dass diese anderen Magiern Beispiele aus
+    der Sammlung zeigen, sofern das Beispiel keinen Rueckschluss auf einen
+    Spieler zulaesst.
+
+    Uebrigens sind vor allem Kommandos beim Forschen interessant, weniger
+    beim Metzeln, Ideln, Chatten etc. (Kommunikation s.o.)
+    Daher werden zur Zeit nur Befehle erfasst, welche mehr als 2 Woerter
+    enthalten.
+
+    Ein Beispiel, was gespeichert wird:
+    Befehl                   |Gegend|Erfolg|Anzahl|FP
+    unt jeden zweiten vorhang|ebene |0     |1     |0
+
+    Erfolg ist alles, was kein Notifyfail ausloest, Anzahl, wie oft diese Syntax
+    schonmal benutzt wurde und FP, ob diese Syntax (irgendwo) einen FP gegeben
+    hat.
+
+ LETZTE AeNDERUNG:
+    18.06.2016, Zesstra

@@ -1,0 +1,19 @@
+Materialid:
+MAT_BONE                 "bone"
+
+Name:
+"Knochen" "Knochens" "Knochen" "Knochen"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_BIO:100
+MATGROUP_SOLID:100
+MATGROUP_DEAD:100

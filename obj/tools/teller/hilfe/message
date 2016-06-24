@@ -1,0 +1,13 @@
+KOMMANDO:
+	message [to <spieler>]
+	msg [to <spieler>]
+
+FUNKTION:
+	Wenn man ganze Textbloecke sagen moechte, kann man das mit diesem
+	Befehl tun. Nach Eingabe von 'message' wird jede Eingabe direkt fuer
+	alle im Raum sichtbar oder fuer den angegebenen Spieler ausgegeben.
+	Mit '**' kann man wieder auf normale Eingabe zurueckschalten.
+
+ACHTUNG:
+	Dieser Befehl gehoert nicht zu denen, die mittels ',' eingeleitet
+	werden.

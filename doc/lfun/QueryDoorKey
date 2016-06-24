@@ -1,0 +1,48 @@
+FUNKTION:
+     mixed QueryDoorKey();
+
+DEFINIERT IN:
+     versch. Schluesseln
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Diese Funktion wird in einem Schluessel aufgerufen, wenn man mit diesem
+     eine Tuer auf- oder abschliessen will. Anhand des Rueckgabewertes wird
+     entschieden, ob der Schluessel passt oder nicht.
+
+RUECKGABEWERT:
+     String oder Array von Strings der Raumpfade, deren gemeinsame Tueren
+     sich mit diesem Schluessel auf- bzw. abschliessen lassen. Die Keys sind
+     dabei die Raumpfade, getrennt durch ein ":". Dabei muessen die Pfade
+     in lexikographischer (alphabetischer) Reihenfolge sortiert sein:
+
+     "<name_raum_1>:<name_raum_2>"
+
+BEISPIELE:
+     Ein Schluessel, mit dem sich eine einzige Tuer oeffnen laesst (falls es
+     jemals eine Tuer zwischen Karate- und Abenteurergilde geben sollte...):
+
+     string QueryDoorKey()
+     {
+       return "/gilden/abenteurer:/gilden/karate";
+     }
+
+     Ein Schluessel, der in mehreren Tueren passt:
+
+     string* QueryDoorKey()
+     {
+       return ({ "/gilden/abenteurer:/players/wargon/workroom",
+                 "/gilden/abenteurer:/gilden/karate",
+                 "/players/jof/workroom:/players/wargon/workroom"
+              });
+     }
+
+
+SIEHE AUCH:
+    NewDoor(), QueryDoorStatus(), SetDoorStatus(), P_DOOR_INFOS,
+    /std/room/doors.c, /obj/doormaster.c, GetPhiolenInfos(), QueryAllDoors()
+
+-----------------------------------------------------------------------------
+Letzte Aenderung: Don, 08.05.2014, Gabylon

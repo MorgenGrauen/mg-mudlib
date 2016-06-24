@@ -1,0 +1,21 @@
+Materialid:
+MAT_OCTARINE             "octarine"
+
+Name:
+"Oktarin" "Oktarins" "Oktarin" "Oktarin"
+
+Geschlecht:
+M
+
+Beschreibung:
+magischer Muell :)
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MAGIC:100
+MATGROUP_STONE:100
+MATGROUP_JEWEL:100
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100

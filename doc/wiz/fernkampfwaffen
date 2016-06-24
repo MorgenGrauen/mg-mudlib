@@ -1,0 +1,128 @@
+Zusammenfassung zu Fernkampfwaffen
+==================================
+
+  Schusswaffe:
+  ============
+    Standardobjekt: /std/ranged_weapon.c
+
+    P_WC:           gibt den Schaden im Nahkampf an (wenn man damit auf einen
+                    Gegner einpruegelt. Default 30.
+    P_QUALITY:      nur beim Nahkampf relevant. Default 100.
+    P_NR_HANDS:     Boegen und Armbrueste sind in jedem Fall zweihaendig.
+    P_SHOOTING_WC:  Die Basis-Waffenklasse der Fernwaffe.
+    P_RANGE:        Reichweite der Waffe. Default 50.
+    P_STRETCH_TIME: Anzahl der Runden, die zum Laden/Spannen der Waffe
+                    benoetigt werden. Default 1.
+    P_AMMUNITION:   Benoetigter Munitionstyp.
+
+    Eine HitFunc wirkt sich auf die P_WC aus, nicht auf P_SHOOTING_WC!
+
+    Methoden:
+    static int cmd_shoot(string str);
+    * Befehlsauswertung und Schussvorbereitung, wird durch
+      AddCmd( ({"schiess", "schiesse"}), "cmd_shoot");
+      verknuepft
+
+    static int shoot_dam(mapping shoot);
+    * Schadensermittlung
+
+    static string FindRangedTarget(string str, mapping shoot);
+    * Gegnerermittlung
+
+  Munition:
+  =========
+    Standardobjekt: Nutzung von /std/unit ist empfohlen
+
+    P_SHOOTING_WC: legt die Munitionsstaerke fest
+    P_DAM_TYPE:    legt die Schadensart des Schussangriffs fest
+
+    Eine HitFunc in der Munition wirkt sich auf P_SHOOTING_WC aus!
+
+  Allgemeines:
+  ============
+    In der Waffe legt man ueber P_AMMUNITION fest, welche Art Munition
+    damit verschossen werden kann. In der Munition muss diese Munition
+    auch als ID gesetzt werden.
+
+    Ueber P_STRETCH_TIME legt man fest, alle wieviel Runden die
+    Fernkampfwaffe abgefeuert werden kann (default: 1).
+
+    Der verursachte Schaden wird aus der Staerke der Fernkampfwaffe
+    und der Staerke der Munition bestimmt. In beiden wird diese in der
+    Property P_SHOOTING_WC angegeben.
+
+    Zusaetzlich kann man in P_RANGE die Reichweite der Fernkampfwaffe
+    festlegen. Hat man einen Raum A, der sich innerhalb eines anderen
+    Raumes befindet (z.B. Transporter), so kann man mittels P_SHOOTING_AREA
+    dessen 'Groesse' festlegen. Mit einer Waffe, deren P_RANGE mindestens
+    gleich diesem Zahlenwert ist, kann aus diesem Raum heraus geschossen
+    werden.
+    Alternativ kann man in A einen anderen Raum B)in die Property
+    P_TARGET_AREA schreiben.
+
+BEISPIEL:
+    // #1 siehe auch /doc/beispiele/fernwaffen fuer ladbaren Code
+
+    // #2 eine einfache, aber gute Schleuder
+    inherit "/std/ranged_weapon";
+
+    void create() {
+      if (!clonep(this_object())) return;
+      ::create();
+
+      SetProp(P_SHORT, "Eine Schleuder");
+      SetProp(P_INFO,
+        "Die Syntax lautet: schleuder <geschoss> auf <ziel>\n");
+      // sonstige Objektprops ...
+
+      RemoveCmd(({"schiess", "schiesse"})); // entferne Default-Kommando
+      AddCmd(({"schleuder", "schleudere"}), #'cmd_shoot);
+
+      SetProp(P_WC, 10);          // eine Schleuder ist erstmal harmlos
+      SetProp(P_DAM_TYPE, DT_WHIP);
+
+      SetProp(P_SHOOTING_WC, 90); // ziemlich gute Schleuder
+      SetProp(P_NR_HANDS, 1);     // einhaendig
+      SetProp(P_WEAPON_TYPE, WT_RANGED_WEAPON);
+      SetProp(P_AMMUNITION, MUN_STONE);
+      SetProp(P_STRETCH_TIME, 1);
+      SetProp(P_RANGE, 30);       // 30 weit kann man damit nur schleudern
+    }
+
+    // #3 passende Munition
+    inherit "/std/unit";
+
+    void create() {
+      if (!clonep(this_object())) return;
+      ::create();
+
+      SetProp(P_NAME, ({"Schleuderstein", "Schleudersteine"}) );
+      SetProp(P_LONG, break_string(
+        "Hervorragend geformte Schleudersteine aus Murmelnit.", 78));
+      SetProp(P_GENDER, MALE);
+      SetProp(P_AMOUNT, 1);
+      SetProp(P_SHOOTING_WC, 50);
+      SetProp(P_DAM_TYPE, ({DT_BLUDGEON}));
+      SetProp(P_WEAPON_TYPE, WT_AMMU);
+      SetProp(P_MATERIAL, MAT_STONE);
+
+      SetGramsPerUnits(60,1);
+      SetCoinsPerUnits(25,1);
+
+      AddId(MUN_STONE);
+      AddSingularId(({"stein", "schleuderstein"}));
+      AddPluralId(({"steine", "schleudersteine"}));
+      AddClass(CL_AMMUNITION);
+    }
+
+SIEHE AUCH:
+    Generell:  P_SHOOTING_WC, P_STRETCH_TIME, P_AMMUNITION
+    Methoden:  FindRangedTarget(L), shoot_dam(L)
+    Gebiet:    P_RANGE, P_SHOOTING_AREA, P_TARGET_AREA
+    Waffen:    P_WEAPON_TYPE, P_WC, P_EQUIP_TIME, P_NR_HANDS
+    Kampf:     Attack(L), Defend(L), P_DISABLE_ATTACK, P_ATTACK_BUSY
+    Team:      PresentPosition(L)
+    Sonstiges: P_NOGET
+    Balance:   fernwaffen, waffen, balance
+
+29.Jul 2014 Gloinson

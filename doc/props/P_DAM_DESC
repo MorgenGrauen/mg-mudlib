@@ -1,0 +1,35 @@
+P_DAM_DESC
+
+NAME:
+     P_DAM_DESC "dam_desc"
+
+DEFINIERT IN:
+     <weapon/description.h>
+
+BESCHREIBUNG:
+     In dieser Property befindet sich ein String oder String-Array, durch 
+     den die Langbeschreibung einer Ruestung oder Waffe ergaenzt wird,
+     wenn diese Beschaedigt ist.
+
+BEMERKUNGEN:
+     Wird ein String gesetzt, so wird dieser angezeigt, wenn die Waffe
+     mehr als die Haelfte beschaedigt ist. Bei einem Array wird der
+     Text entsprechend dem Grad der Beschaedigung ausgewaehlt; das Array
+     muss in der Reihenfolge zunehmender Beschaedigung sortiert sein.
+     
+     Bei Waffen ist P_DAM_DESC defaultmaessig auf DFLT_DAM_DESC gesetzt,
+     bei Ruestungen auf 0.
+
+BEISPIELE:
+     SetProp(P_DAM_DESC,"ist beschaedigt");
+     SetProp(P_DAM_DESC,({
+         "ist etwas beschaedigt",
+         "ist beschaedigt",
+         "ist beschaedigt",
+         "ist sehr beschaedigt"}) );
+
+SIEHE AUCH:
+     /std/weapon/description.c
+
+----------------------------------------------------------------------------
+Last modified: Mon Oct 14 15:29:00 1996 by Paracelsus

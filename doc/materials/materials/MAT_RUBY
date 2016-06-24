@@ -1,0 +1,21 @@
+Materialid:
+MAT_RUBY                 "ruby"
+
+Name:
+"Rubin" "Rubins" "Rubin" "Rubin"
+
+Geschlecht:
+M
+
+Beschreibung:
+rot
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_RUBY
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

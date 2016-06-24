@@ -1,0 +1,22 @@
+KOMMANDO:
+        telnegs [einstellung]
+
+ARGUMENTE:
+        einstellung
+          * ein - Schaltet die Anzeige ein
+          * aus - Schaltet die Anzeige aus
+
+          Wird kein Argument angegeben, wird die aktuelle Einstellung
+          angezeigt.
+    
+BESCHREIBUNG:
+          Man kann festlegen, ob man Aenderungen der Fenstergroesse
+          angezeigt bekommen will oder nicht. Dies setzt voraus, dass
+          man ein Telnet benutzt, das Telnetnegotiations unterstuetzt.
+
+
+SIEHE AUCH:
+        zeilen, telnet
+----------------------------------------------------------------------------
+Last modified: Sun Nov  7 23:00:00 1999 by Tiamak
+

@@ -1,0 +1,8 @@
+NAME:
+    P_TOTAL_WEIGHT                "total_weight"                
+
+DEFINIERT IN:
+    /sys/thing/restrictions.h
+
+BESCHREIBUNG:
+     Gewicht incl. Inhalt in Gramm. P_WEIGHT_PERCENT wird beruecksichtigt.

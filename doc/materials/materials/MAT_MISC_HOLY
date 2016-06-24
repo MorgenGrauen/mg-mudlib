@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_HOLY            "misc_holy"
+
+Name:
+"heiliges Material" "heiligen Materials" "heiligem Material" "heiligen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_HOLY:100
+MATGROUP_SOLID:100

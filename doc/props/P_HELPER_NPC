@@ -1,0 +1,30 @@
+P_HELPER_NPC
+
+NAME:
+     P_HELPER_NPC             "std:helper_npc
+
+DEFINIERT IN:
+     /sys/living/combat.h
+
+BESCHREIBUNG:
+    Mit dieser Prop laesst sich herausfinden, ob ein NPC einem Spieler hilft
+    bzw. welche NPC einem Spieler helfen.
+    Wird diese Prop in einem NPC abgefragt, enthaelt sie ein Array 
+      ({ spielerobjekt, flags }) oder 0.
+    Wird diese Prop in einem Spieler abgefragt, enthaelt sie ein Mapping
+      ([npcobjekt1: flags1, npc-objekt2: flags2]).
+
+    <flags> ist ein Integer, der eine Reihe von ver-oder-ten Konstanten (s.
+    RegisterHelperNPC) enthalten kann.
+
+BEMERKUNGEN:
+    Diese Prop wird automatisch von RegisterHelperNPC() und
+    UnregisterHelperNPC() verwaltet. Bitte aendert sie nicht per Hand.
+
+BEISPIEL:
+    s. RegisterHelperNPC().
+
+SIEHE AUCH:
+     RegisterHelperNPC(), UnregisterHelperNPC()
+
+10.03.2009, Zesstra

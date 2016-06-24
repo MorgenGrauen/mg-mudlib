@@ -1,0 +1,20 @@
+Materialid:
+MAT_SULFUR               "S"
+
+Name:
+"Schwefel" "Schwefels" "Schwefel" "Schwefel"
+
+Geschlecht:
+M
+
+Beschreibung:
+gelb
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

@@ -1,0 +1,19 @@
+
+vis
+---
+
+ MAGIERKOMMANDO:
+    vis [e]
+
+ ARGUMENTE:
+    Wird der Paramater ´e` angegeben, erhalten die Mitspieler die
+    Erwartemeldungen wie beim Einloggen.
+
+ BESCHREIBUNG:
+    Falls Du unsichtbar warst, wirst Du nun wieder sichtbar.
+
+ SIEHE AUCH:
+    invis
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

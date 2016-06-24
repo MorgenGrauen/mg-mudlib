@@ -1,0 +1,17 @@
+Materialid:
+MAT_PARFUM               "parfum"
+
+Name:
+"Parfuem" "Parfuems" "Parfuem" "Parfuem"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100

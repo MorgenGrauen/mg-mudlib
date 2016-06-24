@@ -1,0 +1,23 @@
+
+sallow
+------
+
+ MAGIERKOMMANDO:
+    sallow <name>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Magiers
+
+ BESCHREIBUNG:
+    Du erlaubst dem Magier <name> Dich zu snoopen.
+
+    Dies ist nur noetig, wenn ein Magier von gleichem oder geringerem Level
+    Dich snoopen soll.
+
+ SIEHE AUCH:
+    snoop
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

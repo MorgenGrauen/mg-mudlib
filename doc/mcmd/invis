@@ -1,0 +1,26 @@
+
+invis
+-----
+
+ MAGIERKOMMANDO:
+    invis [e]
+
+ ARGUMENTE:
+    Wird der Paramater ´e` angegeben, erhalten die Mitspieler die
+    Erwartemeldungen wie beim Ausloggen.
+
+ BESCHREIBUNG:
+    Du wirst unsichtbar. Kein Spieler kann Dich jetzt mehr sehen.
+
+    Jeder Magier sollte sich ueberlegen, wann es sinnvoll ist, unsichtbar zu
+    sein, und wann er besser sichtbar ist.
+
+    Es besteht ausserdem die Moeglichkeit, sich direkt unsichtbar einzuloggen
+    (auch wenn man beim letzten Ausloggen sichtbar war). Dazu muss man bei der
+    Passwortabfrage als ersten Buchstaben ein - eingeben.
+
+ SIEHE AUCH:
+    vis
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

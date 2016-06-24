@@ -1,0 +1,49 @@
+Synchronisation zwischen git-Repositories und Mud
+=================================================
+
+I. Push von aussen ins Mud.
+
+Am Ende es Pushes (im sog. post-update hook) wird ein Script gestartet,
+was folgendes macht:
+
+1) Wenn fuer die Synchronisation mit dem Mud aktiv ist, wird mit der Mudlib
+   gesynct. Wenn nicht: Ende
+2) Zunaechst wird in einem lokalen Clone des git-Repositories ein temporaerer
+   Branch zum Mergen von Aenderungen aus dem Mud angelegt (auto-mud-sync),
+   welcher bei dem Tag last-auto-mud-sync startet und dieser Branch
+   ausgecheckt.
+3) Mit Hilfe von rsync werden alle Aenderungen aus der Mudlib hereinkopiert.
+4) Wenn Aenderungen existieren, wird ein neuer Commit auf dem Branch gemacht.
+5) Anschliessend wird Branch master ausgecheckt.
+6) Wenn es Aenderungen gab, die in 4) commitet wurden, wird jetzt der Branch
+   auto-mud-sync mit diesem Commit in master gemergt.
+   Kommt es hierbei zu Konflikten, werden die _automatisch_ zugunsten des
+   Standes der git-Repositories aufgeloest, d.h. es gehen ggf. Aenderungen aus
+   dem Mud verloren. Es kann hierbei daher passieren, dass von 8 im Mud
+   geaenderten Zeilen nur 6 uebernommen werden, weil 2 Zeilen in Konflikt mit
+   den Aenderungen im git-Repository stehen. Daher ist es wichtig, das
+   Ergebnis dieses Merges im Nachhinein zu pruefen und ggf. zu korrigieren!
+7) Falls es Aenderungen gab, wird jetzt der in 7) erstellte Merge-Commit ins
+   git-Repository gepusht.
+8) Der jetzt gemergte Stand wird per rsync ins Mud kopiert.
+9) Das Tag last-auto-mud-sync wird aktualisiert.
+
+
+II. Automatischer regelmaessiger Commit vom Mud
+
+Jeden Tag um 05:11 wird via cronjob und das Script ~/scripts/git-autocommit
+fuer jedes Repo in ~/git-repositories/ das unter I. beschriebene Script
+~/scripts/git-sync2lib ausgefuehrt.
+
+
+III. Import von Verzeichnissen aus dem Mud
+
+Zu jeder vollen Stunde wird in allen Verzeichnissen unter /d/, /p/ und
+/players/ die Datei 'git-mud-import' gesucht. Alle Verzeichnisse, in denen
+diese existiert, werden in gitolite importiert und gleichzeitig auch ein Clone
+in ~/git-repositories/ erstellt, d.h. dass die Synchronisationsmassnahmen
+unter I. und II. fuer dieses neue git-Repository aktiv sind.
+
+LETZTE AeNDERUNG:
+05.04.2011, Zesstra
+

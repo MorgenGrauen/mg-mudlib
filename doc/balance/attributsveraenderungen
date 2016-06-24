@@ -1,0 +1,47 @@
+
+ ATTRIBUTVERAENDERUNGEN
+
+    Positive Veraenderungen an Spielerattributen sind auf jeden Fall von
+    der Balance zu genehmigen. Dabei gelten folgende Regeln:
+
+   - Soll eine Attributveraenderung durch das Tragen/Zuecken von Ruestungen
+    oder Waffen ausgeloest werden, geschieht dies ueber das Setzen der
+    Property P_M_ATTR_MOD. Auch negative Veraenderungen sind von der Balance
+    zu genehmigen, da diese Property mit P_X_ATTR_MOD interagiert.
+   - Soll schon der Besitz eines Objektes die Attributveraenderung
+    ausloesen, muss P_X_ATTR_MOD gesetzt werden. Auch negative 
+    Veraenderungen sind von der Balance zu genehmigen, da diese Property 
+    mit P_M_ATTR_MOD interagiert.
+   - Soll eine Attributveraenderung ohne Beruecksichtigung der Properties
+    P_M_ATTR_MOD und P_X_ATTR_MOD verändert werden, geschieht das ueber die
+    Property P_TIMED_ATTR_MOD. 
+
+
+    Attributveraenderungen sind mit der Balance abzuklaeren.
+
+    Als Regeln sieht die Balance vor:
+    - Bei Objekten mit einem einzelnen Bonus darf +10 nicht ueberschritten 
+    werden.
+    - Bei Objekten mit einem einzigen Malus darf -4 nicht unterschritten
+    werden.
+    - Bei Objekten mit mehreren positiven oder negativen Veraenderungen
+    darf die Summe +4 bzw. -4 nicht ueber/unterschreiten.
+    - Es duerfen nicht mehr als 2 Attribute in einem Objekt geaendert
+    werden. Die Differenz darf 6 nicht ueberschreiten.
+    - Ja hoeher die Attributsveraenderung, um so schlechter sollte das
+    Objekt sonst sein (keine AC 50 mit Ausdauer +10 oder auch -4).
+    - Alle Objekte, die Attribute veraendern, muessen Ruestungs- oder
+    Waffenslots belegen. Ausnahme sind Krankheiten, die der Spieler
+    nicht steuern kann und Aehnliches. Damit sind auch Stellen verboten,
+    an der Spieler derartige Krankheiten gezielt bekommen und loswerden
+    kann. Im Zweifel entscheidet die Balance.
+
+ SIEHE AUCH
+
+     balance, ruestungen, waffen, fernwaffen, uniques, npcs,
+     resistenzen, kampfobjekte, grenzwerte
+
+
+------------------------------------------------------------------------------
+Last modified: Thu 2011-06-10 by Humni
+

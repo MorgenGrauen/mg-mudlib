@@ -1,0 +1,19 @@
+BEFEHL:
+	array, arr
+
+ARGUMENTE:
+	Alle Stackelemente bis zum letzten Lock.
+
+FUNKTION:
+	Alle Elemente werden zu einem Array zusammengefuegt. Der Lock
+	wird entfernt und das Array wieder auf den Stack gelegt.
+
+BEISPIELE:
+	,me "zap_msg", "Du kochst @@wen@@.\n" "@@ich@@ kocht @@wen@@.\n"
+	"@@ich@@ kocht Dich.\n" array !SetProp
+		Wandelt die drei Strings in ein Array um. Danach wird im
+		Spieler die Zapp-Meldung neu gesetzt. Das obige muss
+		natuerlich in einer Zeile eingegeben werden.
+
+SPIEHE AUCH:
+	"split", "lock"

@@ -1,0 +1,16 @@
+SYNOPSIS
+      xcallouts [search pattern]
+	  or
+	  xcallouts    (when writing to a pipe)
+
+DESCRIPTION
+      With no argument it shows all your callouts. With a regexp as argument,
+      all matching callouts will be printed. When writing to a pipe, all
+	  call_outs will be printed and the search pattern is not allowed.
+
+EXAMPLES
+      xcallouts obj   Show all callouts with the string "obj" in it.
+      xcallouts .     Show all callouts. Please never do this if it isn't
+                      really neccessary. It just costs time - and what do you
+                      want to do with this mass of information?
+

@@ -1,0 +1,40 @@
+
+verfolge
+--------
+
+ MAGIERKOMMANDO:
+    verfolge [<name>]
+
+ ARGUMENTE:
+
+    <name> (optional)
+       Name eines eingeloggten Spielers oder eines NPCs. Der angegebene
+       Name muss eindeutig sein, jedoch reichen die Anfangsbuchstaben aus.
+       Wenn das der Fall ist, wird zuerst nach einem Spieler dieses Namens
+       gesucht, danach nach einem NPC im selben Raum wie der Magier, 
+       anschliessend nach einem NPC irgendwo sonst im Mud. Falls sich das 
+       Zielobjekt nicht im selben Raum wie der Magier befindet, wird er
+       hinbewegt.
+
+       Der Magier kann sich nicht selbst verfolgen.
+
+       Es werden nur Lebewesen gefunden, die ein Environment haben, denn
+       nur diese koennen sinnvoll verfolgt werden.
+
+ BESCHREIBUNG:
+    Du verfolgst den Spieler oder den NPC <name> durch das ganze MUD.
+
+    'verfolge' ohne Parameter bricht eine aktive Verfolgung ab.
+
+ BEISPIEL:
+    'verfolge hum' beginnt die Verfolgung einer Hummel. Wenn jedoch Humni
+    eingeloggt sein sollte, ist die Eingabe nicht eindeutig und es wird
+    eine Fehlermeldung ausgegeben. In diesem Fall koennte man die Angabe 
+    durch Hinzufuegen eines Zeichens praezisieren, beispielsweise 
+    'verfolge humm'.
+
+ SIEHE AUCH:
+    goto, snoop
+
+ LETZTE AeNDERUNG:
+    Thu, 21.04.2016 von Arathorn

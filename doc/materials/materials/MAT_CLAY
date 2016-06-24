@@ -1,0 +1,17 @@
+Materialid:
+MAT_CLAY                 "clay"
+
+Name:
+"Ton" "Tons" "Ton" "Ton"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

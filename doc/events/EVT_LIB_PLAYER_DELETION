@@ -1,0 +1,32 @@
+EVENT: 
+   EVT_LIB_PLAYER_DELETION
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/player/base.c
+
+BESCHREIBUNG:
+   Dieser Event wird vom Spielerobjekt ausgeloest, wenn sich ein Spieler
+   mittels "selbstloeschung" loescht. Der Event wird umittelbar vor der
+   Zerstoerung des Spielerobjekts ausgeloest.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_PLNAME:       (string) UID/Name des geloeschten Spielers,
+      E_ENVIRONMENT:  (object) letztes Environment des Spielers,
+      E_GUILDNAME:    (string) Name der letzten Gilde des Spielers,,
+    ])
+
+BEMERKUNGEN:
+   Wenn Spieler vom Loeschscript erfasst oder vom Sheriff oder einem EM
+   geloescht werden, wird dieser Event natuerlich nicht ausgeloest.
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+   EVT_LIB_PLAYER_CREATION
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

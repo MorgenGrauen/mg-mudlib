@@ -1,0 +1,23 @@
+
+sage
+----
+
+ KOMMANDO:
+    sage <text>
+
+ ARGUMENTE:
+
+     <text>
+        Was man so zu sagen hat
+
+ BESCHREIBUNG:
+    Der Text <text> wird an alle Spieler im selben Raum ausgegeben. Ueberlange
+    Zeilen werden umgebrochen, und vor jede Zeile wird noch
+    `<Dein_Name> sagt: ' gesetzt.
+
+ SIEHE AUCH:
+    frage, antworte, fluestere, teile (mit), gespraech, rufe, ebenen, weg,
+    ignoriere, kobold, klingelton, senderwiederholung
+
+ LETZTE AeNDERUNG:
+    01.07.2007 von Ennox

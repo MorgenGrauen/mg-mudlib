@@ -1,0 +1,18 @@
+NAME:
+    P_SECOND_MARK                 "second_mark"
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     Gibt an, wie mit der Zweitie-Markierung eines Spielers umgegangen wird.
+
+     -1  'unsichtbare' Markierung; im wer/kwer wird bei diesem Zweitie s
+         oder S angezeigt.
+
+      0  'sichtbare' Markierung; im wer/kwer wird bei diesem Zweitie z oder
+         Z angezeigt. Der Name des Ersties ist beim Fingern jedoch nur
+         fuer Magier sichtbar.
+
+      1  Markierung 'sichtbar + Name'; wie 0, nur dass beim Fingern alle
+         Spieler den Namen des Ersties sehen koennen.

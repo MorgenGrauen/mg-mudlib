@@ -1,0 +1,30 @@
+
+ersetzungsanzeige
+-----------------
+
+ KOMMANDO:
+    ersetzungsanzeige <stufe>
+
+ ARGUMENTE:
+
+     <stufe>
+        0, 1 oder 2
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kann man sich die Ersetzungen bei der Benutzung von
+    Befehlsgeschichte und Aliasen anzeigen lassen.
+
+    `ersetzungsanzeige 1' zeigt dabei die Ersetzungen der History an und
+    `ersetzungsanzeige 2' die Ersetzungen von History und Aliasen.
+
+    Mit `ersetzungsanzeige 0' schaltet man die Anzeige wieder ab.
+
+    Dieser Befehl ist hauptsaechlich dann nuetzlich, wenn man sich davon
+    ueberzeugen will, ob eine anscheinend richtige Syntax z.B. von einem
+    laengst vergessenen Alias verhunzt wird.
+
+ SIEHE AUCH:
+    alias, history
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

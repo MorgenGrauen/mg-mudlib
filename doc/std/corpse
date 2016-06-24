@@ -1,0 +1,76 @@
+OBJEKT:
+      corpse
+
+
+SYNOPSIS:
+      inherit "std/corpse";
+
+
+BESCHREIBUNG:
+      Die Standardleiche ist ein spezieller Container. Er beinhaltet die
+      zurueckgelassene Ausruestung gestorbener NPCs und Spieler.
+      Die Standardleiche verfault mit der Zeit und stellt ein paar
+      Funktionalitaeten zur Verfuegung, naemlich das Essen der Leiche
+      und das Verspotten auf dem Moerderkanal.
+      Die Funktion
+        void Identify( object ob );
+      wird im die() eines Livings aufgerufen, damit die Leiche Informationen
+      aus dem Living auslesen kann, ehe dieser endgueltig stirbt. Schreibt
+      man eine eigene Leiche, dann ist dies die geeignete Moeglichkeit, der
+      Leiche Informationen zukommen zu lassen.
+
+
+BEISPIELE:
+      // Eine eigene Leiche.
+      #inherit "std/corpse";
+
+      void create()
+      {
+        ::create();
+        // Irgendwas eigenes...
+      }
+
+      /*
+       * Dieser Funktion wird der getoetete Living uebergeben.
+       */
+      void Identify(object ob)
+      {
+        ::Identify(ob);
+        if (ob)
+        {
+          ob->QueryProp("meine_tolle_property");
+        }
+      }
+
+      /*
+       * Das ist die für "iss leiche" aufgerufene Funktion.
+       */
+      int mampf( string str )
+      {
+        notify_fail("Was willst Du essen?\n");
+        if (!str || !id(str) ) return 0;
+        tell_object(this_player(), "Diese Leiche kann man nicht essen.\n");
+        return 1;
+      }
+
+
+
+BEMERKUNG:
+      Man kann eigene Leichen schreiben, die von der Standardleiche erben
+      oder auch nicht. Man sollte dann aber die im die() aufgerufenen
+      Funktionen implementieren:
+        corpse->Identify(object ob);
+	corpse->SetProp(***); // Fuer P_HEAL
+	corpse->move(***); // Um sie ins environment() des Toten zu bekommen.
+      Die Leiche sollte, muss aber kein Container sein, damit die Ausruestung
+      hineinbewegt werden kann.
+      Wenn man nicht von der Standardleiche erbt, kommt sie nicht auf -Moerder
+      und man kann sie nicht verspotten. Damit dies geht, muss (!) man von der
+      Standardleiche erben.
+
+SIEHE AUCH:
+      P_NOCORPSE, P_CORPSE, P_HEAL, QueryHealInfo()
+
+
+----------------------------------------------------------------------------
+Letzte Aenderung: 31.03.2008, Arathorn

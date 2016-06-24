@@ -1,0 +1,24 @@
+Hier findest du vor allem abstrakte Basisklassen fuer alle Objekte.
+
+armour[.c]      - die Basisklasse fuer Ruestungen
+clothing[.c]    - die Basisklasse fuer (Be)Kleidung
+container[.c]   - container-Basisobjekt
+corpse.c        - die Leiche von Spielern und NPCs
+gilde.c         - Basisklasse fuer die Filialen der ADV-Gilde
+inpc[.c]        - Basisklasse fuer intelligenten NPC [IN ENTWICKLUNG]
+laden.c         - Basisklasse fuer den Laden
+living          - Basisklassen fuer Lebewesen
+npc[.c]         - Basisklasse fuer Non-Player-Characters
+player          - Basis fuer Spielerobjekte, siehe shells
+pub.c           - Basisklasse fuer Kneipen
+room[.c]        - davon leiten sich alle Raeume ab
+shells          - da stehen die Player-Objekte drin
+store.c         - Basisklasse fuer Lagerraeume - passt zu Laden.c
+thing[.c]       - Basisklasse fuer ALLES Objekte
+unit.c          - Klasse fuer Mehrfach-Objekte wie das Geld
+weapon[.c]      - Basisklasse fuer Waffen
+
+Bitte Objekt hier nicht mit 'upd -l', 'xload' o.ae. laden! Zum "Neuladen" nur
+die Blueprint destructen (z.B. per upd), sie werden automatisch bei Bedarf
+neugeladen.
+

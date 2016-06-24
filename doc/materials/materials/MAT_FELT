@@ -1,0 +1,21 @@
+Materialid:
+MAT_FELT                 "felt"
+
+Name:
+"Filz" "Filzes" "Filz" "Filz"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_CLOTH:100
+MATGROUP_BIO:100
+MATGROUP_FLEXIBLE:100
+MATGROUP_SOLID:100

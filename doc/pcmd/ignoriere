@@ -1,0 +1,134 @@
+
+ignoriere
+---------
+
+ KOMMANDO:
+    ignoriere <spieler> | <spieler>.<aktion> | .<aktion>
+    ignoriere <spieler>@<mud> | <spieler>@ | @<mud>
+    ignoriere <spieler>.<aktion>.<einschraenkung>
+    ignoriere
+
+ ARGUMENTE:
+
+     <aktion>
+        Die zu ignorierende Aktion (Kommando)
+     <spieler>
+        Name des zu ignorierenden Spielers
+     <mud>
+        Name eines MUDs
+     <einschraenkung>
+        Dies kann die ignorierte Aktion nochmal einschraenken (s.u.)
+
+ BESCHREIBUNG:
+    Wenn Dir jemand maechtig auf die Nerven geht oder Dir einige Aktionen
+    nicht in den Kram passen, kannst Du Dich mit diesem Kommando vor den
+    Auswirkungen schuetzen.
+
+    Folgende Moeglichkeiten bestehen:
+
+     'ignoriere <spieler>'
+        Saemtliche Meldungen, die der Spieler <spieler> erzeugt, werden
+        unterdrueckt. Dies ist eine sehr drastische Massnahme!
+
+     'ignoriere .<aktion>'
+        Alle Meldungen, die <aktion> erzeugt, werden unterdrueckt. Es wird
+        meistens jedoch auf die genaue Schreibweise geachtet (Ausnahmen s.u.);
+        wenn man also niemals geweckt werden will, muss man sowohl `.wecke'
+        als auch `.weck' ignorieren!
+
+     'ignoriere <spieler>.<aktion>'
+        Eine Kombination der obigen Moeglichkeiten: Die Aktion <aktion>
+        wird nur dann ignoriert, wenn sie vom Spieler <spieler> kommt. Andere
+        Meldungen von <spieler> werden jedoch weiterhin akzeptiert.
+
+     'ignoriere <spieler>.ebenen.<ebene>'
+     'ignoriere <spieler>.ebenen'
+        So kann man die Aeusserungen eines Spielers auf einer bestimmten Ebene
+        oder auf allen Ebenen ignorieren, ohne ihn gleich komplett zu
+        ignorieren.
+        Ein Beispiel waere 'ignoriere tilly.ebenen.allgemein'. Damit bekommt
+        man nur die Aeusserungen auf der Ebene <Allgemein> nicht mit, alle
+        anderen schon.
+        BTW: das funktioniert zur Zeit nicht fuer Spieler aus anderen Muds.
+     
+     'ignoriere <spieler>.mail'
+        Ignoriert Post (mudinterne Mail), die von <spieler> abgesandt wurde.
+
+     'ignoriere <spieler>.news'
+        Ignoriert MPA-Artikel von <spieler> bei nn. (Nicht bei gezieltem Lesen
+        von Artikeln.)
+
+     'ignoriere <spieler>@<mud>'
+        Alle Mitteilungen des Spielers <spieler> aus dem Mud <mud> werden
+        abgeblockt.
+
+     'ignoriere <spieler>@'
+        Die Mitteilungen von allen Spielern namens <spieler> in anderen Muds
+        werden abgeblockt. Dies ist eine sehr drastische Massnahme, die man
+        sich gut ueberlegen sollte. Schliesslich koennen sich hinter dem
+        gleichen Namen in unterschiedlichen Muds auch unterschiedliche Leute
+        verbergen!
+
+     'ignoriere @<mud>'
+        Es werden saemtliche Mitteilungen aus dem Mud <mud> ignoriert. Auch
+        dies ist eine recht drastische Massnahme!
+
+     'ignoriere'
+        Die Liste der ignorierten Aktionen und Spieler wird angezeigt.
+
+    Folgende Aktionen gibt es, welche auch andere Schreibweisen umfassen:
+      sage (sage, sag, '), emote (emotes, remotes), rufe (rufe, ruf),
+      teilemit (teile-mits), ... (Liste noch unvollstaendig)
+
+    Will man einen Eintrag wieder entfernen, muss man einfach noch einmal das
+    entsprechende `ignoriere'-Kommando eingeben.
+
+    Neben Kommunikationskommandos von Spieler zu Spieler lassen sich auch noch
+    folgende Dinge abwehren (allen diesen Faellen laesst sich ein Spielername
+    voranstellen, wenn man das nur bei einem bestimmten Spieler ignorieren
+    will):
+
+     Spendieren in der Kneipe
+
+         * .spendiere
+         * .spendiere.getraenke
+         * .spendiere.alkohol
+         * .spendiere.essen
+
+     Gefunden werden durch andere Spieler
+     
+         Hiermit wird verhindert, dass fremde Spieler den eigenen
+         Aufenthaltsort ermitteln koennen (noch nicht vollstaendig
+         implementiert).
+         * .finde (schliesst alle nachfolgenden ein)
+         * .finde.glaswuerfel
+         * .finde.feldstecher
+
+     Verschiedenes
+
+         * .shout
+           Die Aktion 'shout' ist nicht das gleiche wie 'rufe', sondern
+           umfasst Meldungen aus den Regionen, wie die Ankunft der Hydra oder
+           das Loesen bestimmter Quests.
+         * .maus.<verb>
+         * .knuddelmaus.<verb>
+           Diese beiden ignorieren die Diddlmaus.
+
+     Meldungen aus den Arenen
+
+         * .arena (alle u.g.)
+         * .arena.seherwettbewerb (Seherwettbewerb Wuestenarena)
+         * .arena.gladiator (Herausforderung Gladiatoren)
+         * .arena.duell (Duellaufforderungen der Wuestenarena)
+         * .arena.fegefeuer (Duellankuendigungen Fegefeuer)
+         * .arena.fegefeuerscroll (Kampfscroll Fefefeuer)
+         * .arena.fegefeuerduell (Duellaufforderungen Fegefeuer)
+         * .arena.schlachtfeld (Schlachtfeld im verl. Land)
+
+ SIEHE AUCH:
+    sage, frage, antworte, fluestere, teile (mit), gespraech, rufe, ebenen,
+    weg, kobold
+
+ LETZTE AENDERUNG:
+    02.10.2013, Zesstra
+

@@ -1,0 +1,151 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+filter_array(E)
+
+FUNKTION:
+     mixed *filter_array(mixed *arr, string fun, string|object ob
+                         [, mixed extra, ...])
+     mixed *filter_array(mixed *arr, closure cl [, mixed extra, ...])
+     mixed *filter_array(mixed *arr, mapping map)
+
+PARAMETER:
+     arr	- zu filterndes Array
+     fun/cl	- zu rufende Methode/Closure
+     map	- filterndes Mapping
+     ob		- Objekt/Dateiname, an dem Methode gerufen werden soll
+     extra	- weitere Parameter fuer Methode/Closure
+
+BESCHREIBUNG:
+     Filtert die Elemente aus 'arr' durch die Methode 'fun', die Closure 'cl'
+     oder das Mapping 'map' in ein neues Array.
+     Fuer jedes Element aus 'arr' wird 'fun' oder 'cl' mit dem Element als
+     erstem Parameter [und folgend den optionalen Extra-Parametern] gerufen
+     bzw. 'map' mit dem Element indiziert.
+
+     Wenn der Aufruf
+	ob->fun(element [, extra1, extra2, ...]) bzw.
+	funcall(cl, element [, extra1, extra2, ...])
+     als Rueckgabewert !=0 zurueckgibt oder das Element als Schluessel im
+     Mapping enthalten ist:
+	member(map, element) == 1
+     dann wird das Element in das neue Array aufgenommen, sonst nicht.
+
+
+     Verwendung von Methoden:
+	Wenn bei der Angabe von 'fun' kein Objekt 'ob' in Form eines Strings
+	oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+	Es koennen sowohl Lfun-Closures als auch Lambda-Closures verwendet
+	werden. Lfun-Closures koennen, wenn im selben Objekt vorhanden auch
+	'private' oder/und 'static' deklariert sein, muessen aber zu dem
+	Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+
+RUeCKGABEWERT:
+     Gefiltertes Array mit Filterbedingung erfuellenden Elementen.
+
+BEMERKUNGEN:
+     (1) Achtung, die Elemente in 'arr' werden nicht tief kopiert, sind sie
+     also selbst Arrays oder Mappings, so fuehrt eine spaetere Aenderung im
+     Rueckgabe-Arrays zur Aenderung im Ursprungsarray:
+
+     int *i, *j;
+     i=({({1,2,3}),({4,5,6})});
+     j=filter_array(i, #'sizeof);	// filtert leere Arrays heraus
+     j[0][0]=8;
+
+     fuehrt zu: i==j==({({8,2,3}),({4,5,6})});
+
+     (2) Das Kopieren in das Rueckgabemapping erfolgt fuer jedes Element nach
+     Ausfuehrung der Filtermethode. Aenderungen der Werte im Array in dieser
+     Methode (globale Variable/Uebergabe als Referenz an filter_array)
+     schlagen sich also im Rueckgabearray nieder.
+
+BEISPIEL:
+     ### Filtere alle Lebewesen in einem Raum in ein Array ###
+     filter_array(all_inventory(this_object()),#'living);
+
+
+     ### Filtere alle tauben Spieler im Raum in ein Array ###
+     static int filter_isdeaf(object who) {
+       return(living(who) && who->QueryProp(P_DEAF));
+     }
+     ...
+     filter_array(all_inventory(this_object()), #'filter_isdeaf);
+
+
+     ### Filtern von Idlern (>=1 Sekunde idle) ###
+     // Folgend identische Resultate, aber andere Ansaetze:
+
+     #1: nutzt die Efun query_idle() als Lfun-Closure (ideal hier)
+     idle_usr = filter_array(users(), #'query_idle );
+
+     #2,3: mit Filtermethode
+     int check_if_idle(object user) {
+      return query_idle(user);
+     }
+      #2: filtert mittels der Lfun im selben Objekt die Idler in das
+          Rueckgabearrays
+      idle_usr = filter_array(users(), "check_if_idle");
+      idle_usr = filter_array(users(), "check_if_idle", this_object());
+
+      #3: ruft die Lfun check_if_idle() als Lfun-Closure (Funktionspointer)
+      idle_usr = filter_array(users(), #'check_if_idle );
+
+     #4: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
+     idle_usr = filter_array(users(), lambda(({'u}), ({#'query_idle, 'u})));
+
+
+     ### Filtern von Idlern (>=20 Sekunden idle) mit Extraparameter ###
+     // Folgend identische Resultate, aber andere Ansaetze:
+
+     #1: die Efun koennen wir nicht mehr direkt nutzen, weil sie
+         diesen Parameter nicht unterstuetzt
+     // idle_usr = filter_array(users(), #'query_idle );
+
+     #2,3: mit Filtermethode ... mit neuem Parameter
+     int check_if_idle(object user, int length) {
+      return query_idle(user)>length;
+     }
+      #2: filtert mittels der Lfun im selben Objekt die Idler in das
+          Rueckgabearrays ... mit drittem Parameter!
+      idle_usr = filter_array(users(), "check_if_idle", this_object(), 20);
+
+      #3: ruft die Lfun check_if_idle() als Lfun-Closure (Funktionspointer)
+      idle_usr = filter_array(users(), #'check_if_idle, 20);
+
+     #4: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
+     idle_usr =
+       filter_array(users(),
+         lambda(({'u, 'l}), ({#'>,({#'query_idle, 'u}),'l})),
+         20);
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i;
+     mixed *ret; mixed *input;
+
+     ret=allocate(0);
+     i=sizeof(input);
+     while(i--)
+       if(ob->fun(input[i] [, extra1, extra2, ...]))
+       // if(funcall(cl, input[i] [, extra1, extra2, ...]))
+       // if(member(map, input[i]))
+         ret+=({input[i]});
+HISTORY
+    Since LDMud 3.2.6 obsoleted by efun filter().
+    Since LDMud 3.2.9, not available if driver is compiled without
+      USE_DEPRECATED.
+    Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SIEHE AUCH:
+     Arrays:		fmap_array(E)
+     Objektarrays:	filter_objects(E), map_objects(E)
+     Mappings:		filter(E), map(E)
+
+     Sonstiges:		sort_array(E), unique_array()
+			alist, transpose_array(E)
+
+29.10.2006 Zesstra

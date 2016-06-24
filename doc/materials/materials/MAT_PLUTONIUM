@@ -1,0 +1,20 @@
+Materialid:
+MAT_PLUTONIUM            "Pu"
+
+Name:
+"Plutonium" "Plutoniums" "Plutonium" "Plutonium"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_DUST:65
+MAT_PLUTONIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_RADIOACTIVE:100
+MATGROUP_POISONOUS:100
+MATGROUP_SOLID:100

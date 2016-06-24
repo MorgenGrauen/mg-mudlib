@@ -1,0 +1,44 @@
+ResizeRingBuffer()
+
+FUNKTION:
+    protected struct std_ringbuffer buf RingBufferPut(
+                                                   struct std_ringbuffer buf, 
+                                                   int size);
+
+DEFINIERT IN:
+    /std/util/ringbuffer.c
+    /sys/util/ringbuffer.h
+    
+ARGUMENTE:
+    buf  - Ringpuffer, dessen Groesse geaendert werden soll
+    size - neue Groesse (int) 
+
+BESCHREIBUNG:
+    Diese Funktion erstellt einen neuen Ringpuffer der Groesse <size>, welcher
+    den gleichen Modus hat wie <buf> und die gleichen Daten enthaelt.
+    Ist der neue Puffer kleiner als <buf>, so kommt es hierbei zu
+    Datenverlust.
+    <buf> wird nicht veraendert. Ist die Groesse von <buf> gleich der
+    neuen gewuenschten Groesse, wird letztendlich der Ringpuffer kopiert. 
+    Je nach Groesse von <buf> und Wert von <size> kann dies eine teure
+    Angelegenheit sein.
+
+RUeCKGABEWERT:
+    Der neue Ringpuffer mit Groesse <size>.
+
+BEISPIELE:
+    // Ringpuffer anlegen:
+    struct std_ringbuffer buffer = CreateRingBuffer(5, MODE_FIFO);
+    // 5 Werte reinschreiben:
+    foreach(int i: 5) RingBufferPut(buffer, i);
+    // Groesse aendern
+    buffer = ResizeRingBuffer(buffer, 10);
+    // Daten als Array ermitteln:
+    mixed array = RingBufferGet(buffer);
+    // array enthaelt: ({0,0,0,0,0,0,1,2,3,4})
+
+SIEHE AUCH:
+    RingBufferGet(), RingBufferPut(), CreateRingBuffer()
+
+23.05.2008, Zesstra
+

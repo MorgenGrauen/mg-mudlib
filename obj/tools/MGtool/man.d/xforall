@@ -1,0 +1,29 @@
+SYNOPSIS
+      xforall <filepattern> <command>
+
+DESCRIPTION
+      Execute <command> for all matching files. The <command> string can
+      contain replacment marks. Currently there are five of these marks:
+      - "!!" this mark stands for the full file name.
+      - "!e" stands for the extension of the file name.
+      - "!f" stands for the file name without extension and directory name.
+      - "!h" stands for the full directory name of the files.
+      - "!r" stands for the full file name without file extension.
+      - "!t" stands for the file name without the directory name.
+
+      If the full file name would be "/directory/file.ext" then
+      "!!" equals "/directory/file.ext"
+      "!e" equals "ext"
+      "!f" equals "file"
+      "!h" equals "/directory"
+      "!r" equals "/directory/file"
+      "!t" equals "file.ext"
+
+EXAMPLES
+      xforall ~/room/*.c xcall !r->reset();
+      Call the reset() function in all your rooms.
+
+      xforall ~/obj/* mv !! !h/oldobj/!f.!e.old
+      Move all files from your "obj" dir into the "obj/oldobj" dir and change
+      the extensions.
+

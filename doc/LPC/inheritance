@@ -1,0 +1,181 @@
+KONZEPT
+     inheritance
+
+BESCHREIBUNG
+     Mittels Vererbung kann man das Verhalten und/oder die implementierten
+     Methoden eines Objektes in ein neues Objekt hineinerben.
+
+     1. Wozu ist Vererbung gut
+     1.1. Erben von Implementationen: Strukturieren von Bibliotheken
+     Mit Vererbung der Implementation koennen aufeinander aufbauende und gut
+     wart-/nutzbare Strukturen geschaffen werden:
+     
+     /std/thing/description beinhaltet
+     - wie ein Objekt aussieht/welche Details es gibt
+     - wie man das Objekt finden/identifizieren kann
+     /std/thing/moving beinhaltet
+     - wie man ein Objekt bewegen kann
+     /std/thing erbt
+     - /std/thing/description und
+     - /std/thing/moving
+     - damit den Code aus beiden Objekten (und noch andere)
+
+     Sowohl thing/description als auch thing/moving sind nicht als
+     eigenstaendige Objekte sinnvoll nutzbar, sind abstrakt.
+
+     1.2. Erben von Schnittstellen und Verhalten      
+     Durch das Erben von /std/thing werden Schnittstelle und auch
+     Verhalten von /std/thing geerbt:
+     
+     -- keks.c --
+     inherit "/std/thing";
+     --
+     
+     Dadurch koennen jetzt andere Objekte, wie NPCs oder Spieler mit dem
+     Keks-Objekt so interagieren, als wenn es ein /std/thing waere.
+
+     Morgengrauen stellt eine grosse Bibliothek von miteinander sinnvoll
+     agierenden Objekten unter /std zur Verfuegung, Die dort verfuegbaren
+     Objekte sind groesstenteils selbsterklaerend, wie /std/npc,
+     /std/armour oder /std/weapon.
+
+     Das Keks-Objekt muss erweitert werden, wenn es sich vom normalen
+     Ding unterscheiden soll. Typischerweise geschieht das durch
+     Ueberschreiben der Initialisierungmethode namens "create". 
+       
+     2. Ueberschreiben/Erweitern von Verhalten/Methoden
+     2.1. Ueberschreiben
+     Um das Verhalten von geerbten Methoden zu erweitern, muss diese
+     ueberschrieben werden:
+     
+     -- keks.c --
+     ...
+     void create() {
+       SetProp(P_NAME, "Keks");
+       SetProp(P_GENDER, MALE);
+       AddId(({"keks"}));
+     }
+     --
+     
+     Allerdings wuerde jetzt der normale Code von "create" in /std/thing
+     nicht mehr ausgefuehrt werden. Mit dem 'scope'-Operator :: wird
+     innerhalb einer ueberschriebenen Methode auf deren bisherige
+     Implementation zugegriffen:
+
+     -- keks.c --
+     ...
+     void create() {
+       ::create();
+       SetProp(P_NAME, "Keks");
+       SetProp(P_GENDER, MALE);
+       AddId(({"keks"}));
+     }
+     --
+
+     Auf geerbte globale Variablen kann normal zugegriffen werden, wenn 
+     diese nicht vor direktem Zugriff durch erbende Objekte geschuetzt
+     wurden. Also in ihrer Sichtbarkeit veraendert wurde.
+     
+     Ueberschreiben von Methoden in den davon erbenden Objekten kann durch
+     das Schluesselwort 'nomask' verboten werden.
+
+     2.2. Sichtbarkeit von Methoden und Variablen
+     Es ist moeglich, Methoden und Variablen mit einem Modifikator fuer
+     ihre Sichtbarkeit zu versehen, der auch bei der Vererbung zum
+     Tragen kommt:
+     - 'public' Methoden sind von aussen/innen in Eltern/Kind zugreifbar
+     - 'protected' Methoden sind nur von innen in Eltern/Kind zugreifbar
+     - 'private' Methoden sind nur von innen in Eltern zugreifbar
+                 (also nur im definierenden Objekt selbst)   
+
+     2.3 Laufzeit-Polymorphie (vielgestaltes Verhalten)
+     Methoden werden in LPC immer erst zum Zeitpunkt ihres Aufrufs
+     gebunden, also nicht schon beim Laden. Beispielsweise koennen
+     wir unseren Keks essbar machen:
+
+     -- keks.c --
+     ...
+     void create() {
+       ...
+       AddCmd("iss&@ID", "action_essen", "Was willst du essen?");
+     }
+     
+     int action_essen() {
+       if(this_player()->eat_food(1, 0, 
+                                 "Du bekommst "+QueryPronoun(WEN)+
+				 " nicht mehr hineingestopft.\n")>0) {
+         write("Du isst "+name(WEN,1)+".\n");
+         say(this_player()->Name(WER)+" isst "+name(WEN)+".\n");
+         remove();
+       }
+       return 1;
+     }
+     --
+     
+     und jetzt in einem davon erbenden Kruemelkeks diesen beim Entfernen
+     im "remove" kruemeln lassen:
+     
+     -- kruemelkeks.c --
+     inherit "/doc/beispiele/inherit/keks.c";
+     ...
+     varargs int remove(int silent) {
+       if(!silent && living(environment()))
+         tell_object(environment(), Name(WER,1)+
+	                            " kruemelt ein letztes Mal.\n");
+       return ::remove(silent);
+     }
+     --
+     
+     Trotzdem wir "action_essen" nicht modifiziert haben, wird von dieser
+     Methode in einem Kruemelkeks immer automatisch die aktuelle und
+     kruemelende "remove" aufgerufen.
+
+     3. Multiple Inheritance
+     In LPC ist multiple Vererbung moeglich. Das heisst, man kann von 
+     mehreren Objekten erben. Das kann zu Konflikten fuehren, zum Beispiel 
+     wenn eine Methode in zwei Objekten von denen geerbt wurde vorkommt. 
+     
+     Diese Konflikte sollte man dann "per Hand" loesen in dem man diese 
+     spezielle Methode ueberschreibt und mittels des scope-Operators die 
+     gewuenschte(n) geerbt(en) Methode(n) aufruft:
+
+     inherit "/std/weapon";
+     inherit "/std/lightsource";
+
+     void create() {
+       weapon::create();
+       lightsource::create();
+       ...
+     }
+
+     void init() {
+       weapon::init();
+       lightsource::init();
+       // oder sehr generell und unkontrolliert:
+       // "*"::init();
+     }
+
+     Schwerwiegende Konflikte koennen auftreten, wenn eine gleichnamige
+     Variable aus verschiedenen Objekten geerbt wird. Die Variablen
+     existieren im letztlich erbenden Objekt zweimal und die verschiedenen
+     geerbten Methoden greifen auf ihre jeweilige Variante zu.
+
+     Beispiel ist die sog. "Masche" oder der "Diamond of Death": 
+
+                        A    (Ursprungsobjekt mit globaler Variable x)   
+                       / \
+                      B   C  (B, C erben von A und manipulieren beide x)
+                       \ /
+                        D    (D erbt von B und A)
+
+     Mit dem Schluesselwort 'virtual' kann die Doppelung beim Erben
+     in B und C unterbunden werden.
+
+SIEHE AUCH:
+     inherit
+     private, protected, public, nomask
+     virtual
+     objekte, oop
+     /doc/beispiele/inherit
+
+2.Feb 2008 Gloinson

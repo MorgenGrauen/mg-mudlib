@@ -1,0 +1,21 @@
+Materialid:
+MAT_LAZURITE             "lazurite"
+
+Name:
+"Lapislazuli" "Lapislazulis" "Lapislazuli" "Lapislazuli"
+
+Geschlecht:
+M
+
+Beschreibung:
+tiefblau (ultramarin)
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:20
+MAT_LAZURITE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100
+MATGROUP_JEWEL:100

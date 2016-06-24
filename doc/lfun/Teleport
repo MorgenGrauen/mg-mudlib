@@ -1,0 +1,28 @@
+Teleport()
+
+FUNKTION:
+    int Teleport(string ziel)
+
+ARGUMENTE:
+    ziel: Nummer des Sehertors, zu dem teleportiert werden soll.
+
+BESCHREIBUNG:
+    Teleportiert den Seher (this_player()) zu dem Tor mit der angegebenen
+    Nummer. Falls keine Nummer angegeben wird, wird mit ShowDoors() die
+    Liste der bekannten Tore angezeigt und auf die Eingabe einer Nummer
+    gewartet.
+
+RUECKGABEWERT:
+    0, falls der Seher nicht neben einem Tor steht, dass er kennt.
+    1  sonst.
+
+BEMERKUNGEN:
+    Der Seher muss in einem Raum stehen, in dem sich ein Sehertor befindet,
+    dass er kennt. Der Seher muss auch das angegebene Ziel kennen.
+    Diese Funktion wird von /d/seher/portale/sehertormaster definiert.
+
+BEISPIELE:
+    /d/seher/portale/sehertormaster->Teleport(1)
+
+SIEHE AUCH:
+    DiscoverDoor, DoorIsKnown, ShowDoors, GetDoorsMapping

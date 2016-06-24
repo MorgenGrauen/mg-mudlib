@@ -1,0 +1,73 @@
+CONCEPT:
+	mail
+
+
+DESCRIPTION:
+	This document describes the mail system used in Nightfall.
+	The idea is to make a central mail handling object which
+	accepts and distributes mail between users. Mail is stored in
+	the /mail directory. save_object is used to save mail
+	information in mail files in this directory. Only the mail
+	demon object and the owner of the mail file can access it.
+
+	A number of mail readers will probably available which access
+	the mail files. A typical mail user agent has commands to
+	read mail contained in the user's mail file, to reply to
+	messages, to forward, delete, save them. A folder structure
+	can be implemented. Outgoing mail is given to the mail demon
+	object by the user agent for distribution. The mailreader
+	should implement multiple recipients - carbon copy, cc and
+	blind carbon copy, bcc. Carbon copy means alternate recipients
+	to which the message should be sent. Blind carbon copy is the
+	same, but the recipients won't be listed in the received
+	message.
+
+	Save file format (sort of formal notation):
+
+	mixed *folders = ({
+	   ({ string name1; string name2; ... string nameN; })
+	   ({ mixed *msgs1; mixed *msgs2; ... mixed *msgsN; })
+	})
+
+	The array variable <folders> contains a number of folder
+	structures containing the actual messages. There are special
+	folders which are reserved: mail, newmail. New mail will
+	be delivered into the newmail folder. This is the only hard
+	coded requirement (the mail demon will simply deposit new
+	mail there). The folder name 'mail' should be used for read
+	mail. Other folders can be dynamically created by the user
+	agent.
+
+	Each msgs field is an array of messages:
+
+	mixed *msgs = ({ mixed *message1; ... mixed *messageM })
+
+	A message is represented as an array with the following fields:
+
+	mixed *message = ({
+	   string from;
+	   string sender;
+	   string recipient;
+	   string *cc;
+	   string *bcc;
+	   string subject;
+	   string date;
+	   string id;
+	   string body;
+	})
+
+	The mailer demon (/secure/mailer, or /obj/mailer) provides
+	the following functions:
+
+	DeliverMail(mixed *message)
+	  Hand a mail message over to the mailer demon. The mailer
+	  demon extracts recipients from the recipient, cc and bcc
+	  fields and removes the bcc information. It then deposits
+	  the message to the mail files of all recipients. A valid
+	  message is shown above.
+
+	int FingerMail(string user)
+	  Gives the number of unread messages a user has.
+
+
+SEE ALSO:

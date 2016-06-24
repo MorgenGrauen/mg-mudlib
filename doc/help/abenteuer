@@ -1,0 +1,41 @@
+
+Abenteuer
+=========
+
+    Um im MorgenGrauen zu etwas zu kommen, muss man Abenteuer (in
+    englischsprachigen MUDs als 'Quests' bekannt) loesen. Fuer bestandene
+    Abenteuer bekommt man Abenteuerpunkte. Nur wer genug Abenteuerpunkte
+    bekommen hat, kann Magier oder Seher werden. Je komplizierter ein
+    Abenteuer zu loesen ist, desto mehr Abenteuerpunkte bekommt man beim
+    Bestehen.
+
+    Einige Abenteuer sind nicht nur schwer, sondern auch gefaehrlich. Diese
+    sollten nur von Spielern auf einer hohen Stufe in Angriff genommen werden.
+
+    Eine Liste aller vorhandenen Abenteuer kann man in den Gilden mit dem
+    Befehl 'liste' bekommen. Dort werden auch die Punkte fuer das Abenteuer
+    angezeigt. Die Abenteuer sind in der Liste in etwa nach der
+    Gefaehrlichkeit sortiert. Die Stufe, die dort angegeben ist, bezieht sich
+    nicht allein auf die Spielerstufe, sondern kann auch als Hinweis auf die
+    durchschnittlichen Attribute verstanden werden, die man zum Loesen des
+    Abenteuers aufweisen sollte.
+
+    In der Hochebene ist ein alter Wanderer zu finden, der einem sagen kann,
+    worin die Aufgabe bei den Abenteuern besteht. Er sagt (wird einmal sagen),
+    ob das Abenteuer nicht zu gefaehrlich fuer den Spieler ist.
+
+ TECHNISCHER HINWEIS:
+    Wenn man ein Abenteuer durchspielt, sollte man nicht einschlafen (seine
+    Verbindung zum MorgenGrauen kappen), da nicht garantiert werden kann, dass
+    das Abenteuer auch nach dem Wiedererwachen noch weitergespielt werden
+    kann.
+
+    Manchmal ist ein Gegenstand/Quest-NPC gerade nicht da, zB weil ein
+    Mitspieler die Quest geloest oder den NPC getoetet hat. Dann musst du
+    bis zum naechsten Reset warten.
+
+ SIEHE AUCH:
+    abenteuerliste, stufen, stufenpunkte, schlafe, kampf, reset
+
+1.11.2012, Zesstra
+

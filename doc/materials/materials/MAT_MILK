@@ -1,0 +1,17 @@
+Materialid:
+MAT_MILK                 "milk"
+
+Name:
+"Milch" "Milch" "Milch" "Milch"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100

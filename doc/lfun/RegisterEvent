@@ -1,0 +1,82 @@
+
+FUNKTION:
+     int RegisterEvent(string eid, string fun, object listener);
+
+DEFINIERT IN:
+     /p/daemon/eventd.c
+DEKLARIERT IN:
+     /sys/events.h
+
+ARGUMENTE:
+     string eid,
+       Die ID des Events, fuer den man sich registrieren will. Da dieser
+       String fuer alle Events jeweils eindeutig sein muss, empfiehlt es sich,
+       fuer eigene Events z.B. als Praefix den eigenen Magiernamen zu nehmen,
+       z.B. "zesstra_vulkanausbruch".
+       ACHTUNG: IDs, die mit '_evt_lib_' beginnen, sind AUSSCHLIESSLICH der
+       Mudlib vorbehalten!
+     string fun,
+       Name der Funktion, die im Objekt listener bei Auftreten des Events
+       gerufen werden soll.
+     object listener,
+       Das Objekt, das als Lauscher fuer diesen Event registriert werden soll.
+
+BESCHREIBUNG:
+     Das Objekt 'listener' wird als Lauscher dieses Events registriert. Ab
+     diesem Moment wird immer dann, wenn ein Event mit der ID 'eid' ausgeloest
+     wird, in 'listener' die Funktion 'fun' aufgerufen (zeitverzoegert, meist
+     0-2s).
+     
+     Die Funktion wird dabei immer mit 3 Argumenten aufgerufen:
+     listener->fun(eid, triggerob, data);
+     Hierbei ist 'eid' die jeweilige Event-ID und 'triggerob' ist das Objekt,
+     welches den Event ausloeste. 
+     'data' kann jeder LPC-Datentyp sein und enthaelt die Daten, die das
+     triggernde Objekt an alle Listener uebermitteln will (damit sind Datentyp
+     und Inhalt komplett abhaengig vom Event!)
+
+     Existiert bisher noch kein Event mit der ID 'eid', wird implizit ein
+     neuer Event erstellt, der erstmal nur das sich gerade registrierende
+     Objekt als Lauscher hat.
+
+
+RUeCKGABEWERT:
+     1 fuer Erfolg, <=0 fuer Misserfolg.
+     1   - Erfolg, 'listener' wurde eingetragen.
+     -1  - falsche Argumente wurden uebergeben
+     -2  - nicht-oeffentlicher Event und 'listener' wurde nicht fuer diesen
+           Event freigegeben (momentan gibt es noch keine nicht-oeffentlichen
+           Events)
+     -3  - 'fun' in 'listener' ist nicht vorhanden oder nicht von aussen 
+           aufrufbar (protected, static, private).
+     
+BEMERKUNGEN:
+     Wenn 'listener' bereits fuer den Event registriert wird, wird die alte
+     Registrierung ueberschrieben (als ggf. gilt dann der jetzt uebergebene
+     Funktionsname).
+     Die Funktion 'fun' sollte sparsam mit den Eval-Ticks umgehen. Momentan
+     ist die max. Menge an Ticks auf 30000 beschraenkt. Dies kann bei
+     Problemen auch jederzeit reduziert werden!
+     Der EVENTD merkt sich Event-Lauscher nicht ueber Reboots hinaus.
+     Sollte sich eine Blueprint anmelden, sich zerstoeren und neugeladen
+     werden, ist die neue Blueprint noch angemeldet, weil das neue Objekt
+     unter dem alten Namen wiedergefunden wird. Dies gilt _nicht_ fuer
+     Clones!
+
+BEISPIELE:
+     1. Ein Objekt moechte ueber Spielertode informiert werden:
+          EVENTD->RegisterEvent(EVT_LIB_PLAYER_DEATH, "spieler_ist_tot", 
+                                this_object());
+        Ab jetzt wird im Objekt jedes Mal, wenn ein Spieler stirbt, die 
+        Funktion "spieler_ist_tot" aufgerufen.
+
+     2. Ein Objekt will informiert werden, wenn der Event
+        "boing_zwergenkoenig_angriff" ausgeloest wird:
+           EVENTD->RegisterEvent("boing_zwergenkoenig_angriff","alarm",
+                                  this_object());
+
+SIEHE AUCH:
+     events, eventd, UnregisterEvent(), TriggerEvent()
+
+----------------------------------------------------------------------------
+Last modified: 15.08.2007, Zesstra

@@ -1,0 +1,51 @@
+NAME:
+	P_STORE_CONSUME			"store_consume"
+
+DEFINIERT IN:
+	/sys/bank.h
+
+BESCHREIBUNG:
+	Diese Property ist entscheidend dafuer, wieviel Prozent an Objekten
+	bei jedem Reset in einem Lager eines Ladens vernichtet werden. Dies
+	geschieht aus Speicher- und Laggruenden. Es verbleibt dabei jedoch
+	eine Grundmenge an Objekten, deren Anzahl in der Property
+	P_MIN_STOCK festgehalten ist. Standardwert fuer P_STORE_CONSUME ist
+	hierbei 30%, aber in oft benutzten Laeden kann man dort ruhig einen
+	hoeheren Wert eintragen. Erlaubt sind Werte zwischen 0% und 100%.
+	Aufgeraeumt werden jedoch keine Objekte, die mittels AddItem() im
+	Lager eingebunden wurden. Mittels der Ladenfunktion AddFixedObject()
+	als staendig verfuegbar markierte Objekte werden natuerlich auch
+	nicht beruecksichtigt.
+	Beide hier erwaehnten Properties sollten ueberigens nur mittels
+	QueryProp/SetProp ausgelesen bzw. veraendert werden.
+
+BEISPIEL:
+	Ein eigener haeufig benutzter Laden koennte ein Lager in folgender
+	Form erhalten:
+	  // myStore
+	  #include <bank.h>
+	  inherit "std/store";
+	  void create()
+	  { ::create();
+	    SetProp(P_STORE_CONSUME,90);
+	    // keine weiteren Beschreibungen, Spieler sollen da drin
+	    // schliesslich nicht rumwuseln
+	  }
+	Um das Lager dem Laden zuzuweisen, nutzt man folgendes:
+	  // myShop
+	  inherit "std/laden";
+	  void create()
+	  { ::create();
+	    SetStorageRoom("pfad/myStore");
+	    // Beschreibungen folgen
+	    ...
+	  }
+	Es werden hierbei waehrend jedes Lager-Resets 90% der im Lager
+	befindlichen Objekte vernichtet.
+
+SIEHE AUCH:
+	P_MIN_STOCK, SetStorageRoom(), /std/store.c, /std/shop.c
+	AddItem(), RemoveItem(), AddFixedObject(), RemoveFixedObject()
+
+----------------------------------------------------------------------------
+Last modified: 19-Jun-2015, Arathorn 

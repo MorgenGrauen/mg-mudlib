@@ -1,0 +1,58 @@
+NAME:
+	P_ATTRIBUTES			"attributes"
+
+DEFINIERT IN:
+	/sys/living/attributes.h
+
+BESCHREIBUNG:
+	Diese Property enthaelt ein Mapping mit den Attributen des
+	Lebewesens. Die Schluessel kennzeichnen hierbei das jeweilige
+	Attribut. Die verschiedenen Standardattribute findet man in
+	/sys/living/attributes.h, welche derzeit folgende Moeglichkeiten
+	bieten:	- A_STR (Kraft)
+		- A_INT (Intelligenz)
+		- A_DEX (Geschick)
+		- A_CON (Konstitution)
+	Sie werden automatisch an verschiedenen Stellen in der MUDLib
+	ausgewertet, zum Beispiel bestimmt A_INT die maximal moeglichen
+	Konzentrationspunkte und A_CON die maximal moeglichen Lebenspunkte.
+
+BEMERKUNGEN:
+        Keine echte Property, _query_attributes() und _set_attributes() sind 
+        in /std/living/attributes.c implementiert.
+
+	Es bietet sich an, zum Erfragen der Attributwerte die Funktion
+	QueryAttribute() zu nutzen, da es auch moegliche Offsets gibt,
+	so beispielsweise ueber die Properties P_ATTRIBUTES_OFFSETS bzw.
+	P_ATTRIBUTES_MODIFIER im Lebewesen selbst, oder auch ueber
+	P_X_ATTR_MOD bzw. P_M_ATTR_MOD in Objekten im Lebewesen.
+	Kurzfristige zeit- oder objektgebundene Attributveraenderungen
+	koennen ueber die Property P_TIMED_ATTR_MOD realisiert werden.
+
+	Es gibt auch zahlreiche andere Dienstfunktionen fuer diesen sehr
+	balancekritischen Bereich, siehe unten.
+
+BEISPIEL:
+	Ein moegliches Ergebnis fuer einen frischen Level 1 Spieler waere:
+	  QueryProp(P_ATTRIBUTES);
+	  Ergebnis: (["int":1,"con":1,"str":1,"dex":1])
+	Hinzu kommen eventuell moegliche Rassenboni, die mittels
+	P_ATTRIBUTE_OFFSETS realisiert werden, Zwerge sind beispielsweise
+	recht stark:
+	  QueryProp(P_ATTRIBUTES_OFFSETS);
+	  Ergebnis: (["int":1,"con":1,"str":1,"dex":3])
+	Jetzt bekaeme man (sofern keine weiteren Offsets realisiert sind)
+	mittels QueryAttribute() insgesamt:
+	  QueryAttribute(A_DEX);
+	  Ergebnis: 4
+
+SIEHE AUCH:
+	QueryAttribute(), QueryRealAttribute(), QueryAttributeOffset(),
+	SetAttribute(), SetRealAttribute(), UpdateAttributes(),
+	SetTimedAttrModifier(), QueryTimedAttrModifier(),
+	DeleteTimedAttrModifier(),
+	P_ATTRIBUTES_OFFSETS, P_ATTRIBUTES_MODIFIER,P_TIMED_ATTR_MOD,
+	P_X_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
+
+----------------------------------------------------------------------------
+Last modified: Tue Jul 27 20:00:20 2004 by Muadib

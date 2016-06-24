@@ -1,0 +1,21 @@
+save_me(L)
+FUNKTION:
+    void save_me(mixed value_items)
+
+DEFINIERT IN:
+    /std/player/base.c
+
+ARGUMENTE:
+    value_items
+       Ungleich 0, wenn Wert der Gegenstaende berechnet werden soll.
+
+BESCHREIBUNG:
+    Speichert einen Spieler, seine Autoloader, bestimmt sein GuildRating
+    und berechnet/speichert auf Anforderung den Wert der getragenen
+    Gegenstaende.
+
+SIEHE AUCH:
+    Props:       P_CARRIED_VALUE, P_AUTOLOADOBJ, P_LAST_LOGOUT
+    Kommandos:   save, ende
+
+1.September 2008 Gloinson

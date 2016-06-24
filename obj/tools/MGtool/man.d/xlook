@@ -1,0 +1,7 @@
+SYNOPSIS
+      xlook [object]
+
+DESCRIPTION
+      Look at the object. If the argument is ommitted, look inside the
+      current room.
+

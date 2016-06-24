@@ -1,0 +1,19 @@
+Materialid:
+MAT_CHITIN               "chitin"
+
+Name:
+"Chitin" "Chitins" "Chitin" "Chitin"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_BIO:100
+MATGROUP_SOLID:100
+MATGROUP_DEAD:100

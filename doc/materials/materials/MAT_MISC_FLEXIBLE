@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_FLEXIBLE        "misc_flexible"
+
+Name:
+"biegsames Material" "biegsamen Materials" "biegsamem Material" "biegsamen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLEXIBLE:100
+MATGROUP_SOLID:100

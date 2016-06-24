@@ -1,0 +1,80 @@
+WearFunc()
+
+FUNKTION:
+     int WearFunc(object ruest, int silent, object user);
+
+DEFINIERT IN:
+     eigenen Objekten (fuer /std/clothing/wear)
+
+ARGUMENTE:
+     ruest (object)
+          Die Ruestung/Kleidung, die angezogen werden soll.
+     silent (int)
+          Ob dabei eine Meldung ausgegeben wird.
+     user (object)
+          Das Lebewesen, welches die Ruestung/Kleidung anziehen will.
+
+BESCHREIBUNG:
+     Mit dieser Funktion kann man pruefen, ob sich das Kleidungsstueck bzw.
+     Ruestung <ruest> von this_player() anziehen laesst oder nicht.
+     Kann die Ruestung angezogen werden, so muss ein Wert ungleich 0
+     zurueckgegeben werden.
+
+RUeCKGABEWERT:
+     0, wenn sich die Ruestung nicht anziehen laesst, ansonsten ungleich 0.
+
+BEMERKUNGEN:
+     Bitte nicht darauf verlassen, dass der Spieler das Objekt auch wirklich
+     anzieht, wenn man hier 1 zurueckgibt.
+     Speziell bei Schilden kann das Anziehen trotz eines Rueckgabewertes 
+     != 0 immer noch schief gehen, wenn der Spieler keine Hand mehr frei hat.
+     Wenn ihr sicher sein wollt, dass der Spieler ein Objekt angezogen hat,
+     benutzt bitte InformWear().
+     Bitte nicht drauf verlassen, dass this_player() das ausziehende Lebewesen
+     ist.
+     Die Reihenfolge der Argumente ist etwas unschoen, aber leider wurde <user>
+     erheblich spaeter hinzugefuegt und es war unmoeglich, einige hundert
+     Objekte zu aendern.
+
+BEISPIELE:
+     Ein Helm, der nur von Elfen getragen werden kann:
+
+     inherit "std/armour.c";
+
+     #include <properties.h>
+
+     create()
+     {
+       ::create();
+
+       SetProp(P_ARMOUR_TYPE, AT_HELMET);
+       /* zig weitere SetProp's, um den Helm zu konfigurieren */
+
+       /* WearFunc() ist im Helm selbst zu finden */
+       SetProp(P_WEAR_FUNC, this_object());
+     }
+
+     int WearFunc(object me, int silent, object user)
+     {
+       if (user->QueryProp(P_RACE) == "Elf")
+         return 1;   /* Elfen duerfen den Helm tragen */
+
+       /* Die anderen Rassen sollten zumindest erfahren koennen, wieso
+          sie den Helm nicht tragen koennen... */
+       if (!silent)
+           write( "Der Helm rutscht Dir immer ueber Deine runden "
+                 +"Ohren.\n" );
+       return 0;
+     }
+
+     Gibt jetzt ein Nicht-Elf "trage helm" ein, so bekommt er die Meldung
+     "Der Helm rutscht Dir immer ueber Deine runden Ohren.", Elfen dagegen
+     passt das Teil wie angegossen.
+
+SIEHE AUCH:
+     P_WEAR_MSG, P_UNWEAR_MSG, P_WIELD_MSG, P_UNWIELD_MSG
+     DoWear(), DoUnwear(), InformUnwear(), InformWear()
+     /std/clothing/wear.c
+
+----------------------------------------------------------------------------
+02.02.2009, Zesstra

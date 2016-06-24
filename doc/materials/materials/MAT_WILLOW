@@ -1,0 +1,25 @@
+Materialid:
+MAT_WILLOW               "willow"
+
+Name:
+"Weidenholz" "Weidenholzes" "Weidenholz" "Weidenholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+weich und flexibel
+
+Erkennbarkeit:
+MAT_MISC_DECIDUOUS_WOOD:5
+MAT_WILLOW
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_DECIDUOUS_WOOD:100
+MATGROUP_FLEXIBLE:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

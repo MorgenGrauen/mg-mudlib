@@ -1,0 +1,69 @@
+SetChats()
+
+FUNKTION:
+	void SetChats(int chance,mixed strs);
+
+DEFINIERT IN:
+	/std/npc/chat.c
+
+ARGUMENTE:
+	chance
+	  Prozentuale Wahrscheinlichkeit einer Ausgabe
+	strs
+	  Stringarray mit den Monsterchats
+
+BESCHREIBUNG:
+	Der NPC gibt mit der Wahrscheinlichkeit <chance> pro Heartbeat einen
+	zufaellig gewaehlten Text aus dem Array <strs> von sich.
+	Die Arrayelemente koennen auch Closures oder
+	process_string()-Funktionen ("@@func@@") enthalten, die dann
+	aufgerufen werden und deren Rueckgabewerte das Monster dann ausgibt.
+	 (Fuer keine Ausgabe dann Leerstring "" zurueckgeben!)
+	In diesen Funktionen ist this_player() das Monster selbst!
+	Fuer Zeilenumbrueche ist immer selbst zu sorgen.
+
+RUECKGABEWERT:
+	keiner
+
+BEISPIELE:
+	Ein einfaches Beispiel:
+	  // Prototype fuer Closure.
+	  static string info1();
+	  void create()
+	  { ...
+	    SetChats(20,
+	   ({"Der Ork sagt: Hau ab, bevor ich Dich fresse.\n",
+	     "Der Ork grinst Dich unverschaemt an.\n",
+	     "Der Ork wedelt mit seinem Saebel vor Deinem Gesicht herum.\n",
+	     "Der Ork droht Dir mit der Faust.\n",
+             #'info1,
+	     "@@info2@@"}));
+          }
+	  // Funktion als Closure. Prototype notwendig!
+	  static string info1()
+	  { if(QueryProp(P_HP)<QueryProp(P_ALIGN))
+	      return"Gleich werde ich von hier fliehen!\n";
+	    return"";
+	  }
+	  // Funktion als process_string().
+	  string info2()
+	  { return QueryProp(P_HP)==QueryProp(P_MAX_HP)?
+	 "Der Ork grinst: Mir geht es fantastisch!\n":
+	 "Der Ork seufzt: Mir ging es wirklich schon mal besser.\n";
+	  }
+
+BEMERKUNGEN:
+	Im Kampf werden keine Chats ausgegeben. Es ist dann SetAttackChats()
+	zu verwenden.
+	Funktionen als process_string() sollte man nicht mehr verwenden.
+	<chance> wird in der Property P_CHAT_CHANCE abgelegt. Um einen NPC
+	voruebergehend 'stillzulegen', kann man P_CHAT_CHANCE auf 0 setzen.
+  Wenn kein Spieler anwesend ist, haben NPC in der Regel keinen Heartbeat,
+  weswegen dann auch die Chats ausgeschaltet sind.
+  Spieler koennen NPC 'stillen', d.h. Chats und AttackChats abschalten.
+
+SIEHE AUCH:
+	P_CHAT_CHANCE, SetAttackChats(), process_string()
+
+----------------------------------------------------------------------------
+Last modified: Sat Jan 18 18:48:06 2003 by Patryn

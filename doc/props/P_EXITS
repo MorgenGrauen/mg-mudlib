@@ -1,0 +1,9 @@
+NAME:
+    P_EXITS                       "exits"                       
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Mapping aller unmittelbar sichtbaren Ausgaenge mit zugehoerigen
+     Nachbarraeumen. Sollte nur mittels AddExit() benutzt werden.

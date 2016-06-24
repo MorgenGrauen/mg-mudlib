@@ -1,0 +1,38 @@
+P_QUALITY
+
+NAME:
+     P_QUALITY "quality"
+
+DEFINIERT IN:
+     <combat.h>
+
+BESCHREIBUNG:
+     Ruestungen und Waffen koennen im Eifer des Gefechts beschaedigt werden.
+     Setzt man die Property P_QUALITY auf einen Wert n (n>0), so wird
+     eine Waffe (Ruestung) bei jedem n-ten Schlag (Treffer) beschaedigt,
+     d.h. P_WC (P_AC) wird um 1 erniedrigt und P_DAMAGED um 1 erhoeht.
+
+BEISPIEL:
+     inherit "/std/weapon";
+
+     ...
+     #include <combat.h>
+
+     create()
+     {
+       ...
+       SetProp(P_QUALITY,200);
+       ...
+     }
+
+     Diese Waffe wuerde bei jedem 200. Schlag etwas beschaedigt.
+
+BEMERKUNG:
+     Defaultmaessig ist P_QUALITY auf 0 gesetzt, d.h. die entspr.
+     Waffe/Ruestung wird nicht beschaedigt.
+
+SIEHE AUCH:
+     /std/armour.c, /std/weapon.c, TakeFlaw(), QueryFlaw(), Damage()
+
+----------------------------------------------------------------------------
+Last modified: Thu May 22 10:42:39 1997 by Paracelsus

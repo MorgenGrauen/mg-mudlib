@@ -1,0 +1,15 @@
+SYNOPSIS
+      xset [$<name>=<object>]
+
+DESCRIPTION
+      Without an argument all current variable settings will be shown and
+      destructed objects removed from the list of variables.
+      With argument the specified variable will be set.
+
+EXAMPLES
+      xset $deep=deepthought
+      xset $xtool=$me.xtool
+      xset $god=$deep
+      xset $last_result=$result
+      xset $3=^$1.3
+

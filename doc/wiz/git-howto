@@ -1,0 +1,111 @@
+Git-Benutzung im MorgenGrauen
+=============================
+
+0. Einleitung
+  Hier soll kurz beschrieben werden, wie man nun an die Repositories auf dem
+  Mudrechner rankommt.
+  Es wird an dieser Stelle vorausgesetzt, dass der Leser/Magier
+  grundsaetzlich weiss, was Git ist und wie es benutzt wird. Hier sollen
+  lediglich Besonderheiten im Zusammenhang mit dem MG erlaeutert werden.
+  Ebenso wird vorausgesetzt, dass der Magier Git und einen SSH-Client auf
+  seinem Rechner installiert hat.
+
+  Wer jetzt noch nix von Git weiss, sei auf die reichhaltig im Netz
+  verfuegbare Doku verwiesen: s. a. git-links.
+
+
+1. Zugriffsrechte auf Git-Repositories
+  Zunaechst muss man sich als Git-Nutzer eintragen lassen. Hierzu braucht man
+  ein SSH-Schluesselpaar, welches man z.B. mittels ssh-keygen erstellen
+  kann. Den _oeffentlichen_ Schluessel (.pub am Ende) legt man dann als
+  <magier>.pub in sein Homeverzeichnis und spricht einen EM (z.B. Zesstra)
+  an.
+
+  Mittels des Befehls
+  > ssh git@mg.mud.de info
+  kann man sich anzeigen lassen, auf welche existierenden Repositories man
+  welche Zugriffsrechte hat (R: lesen, W: schreiben). Beispiel:
+    R   W   (zesstra) d/inseln/zesstra/vulkanweg
+  In diesem Fall hat der Benutzer Lese- und Schreibrechte auf
+  d/inseln/zesstra/vulkanweg. Das Repository gehoert zesstra.
+
+  Zusaetzlich umfasst die Ausgabe auch die Zugriffsrechte aller _moeglichen_
+  (aber noch nicht existierenden) Repos.
+  Wichtig ist hier das Erstellungsrecht (C). Beispiel:
+  C  R   W  d/unterwelt/zesstra/[a-zA-Z]{1}[a-zA-Z0-9_.\-]*
+  Hier hat der Benutzer auf alle Repos unterhalb von d/unterwelt/zesstra/
+  (wobei alle diese Repos mit einem Buchstaben beginnen und ansonsten nur
+   Buchstaben, Zahlen, _, . und - enthalten duerfen) Lese-, Schreib- und
+  Erstellungsrechte.
+
+2. Ein existierendes Repository clonen
+  Dies erfolgt ganz simpel mit dem Befehl:
+  > git clone git@mg.mud.de:players/zesstra/testgebiet <zielverzeichnis>
+  Das Zielverzeichnis ist hierbei beliebig. Empfehlung: alle MG-Repos in
+  einem Verzeichnis sammeln und dort die Verzeichnisstruktur aus dem Mud
+  beibehalten:
+  > git clone git@mg.mud.de:players/zesstra/testgebiet
+    players/zesstra/testgebiet
+  Damit Aenderungen spaeter auch Euren Magiernamen tragen, geht nun bitte in
+  Euer geclontes Repo und setzt Namen und eMail-Adresse:
+  > git config user.name "Magier"
+  > git config user.email "user@example.com"
+  
+3. Ein neues Repository erstellen.
+    Voraussetzung: das Verzeichnis im Mud existiert.
+    Dies geht, wenn ihr Schreibzugriff auf das Verzeichnis im Mud habt. Legt
+    einfach in dem Verzeichnis eine Datei namens "git-mud-import" an (Inhalt
+    ist egal) und wartet bis zur naechsten vollen Stunde.
+    ACHTUNG: das Verzeichnis im Mud darf NICHT leer sein, sondern muss min.
+    eine Datei (ggf. in einem Unterverzeichnis) enthalten!
+ 
+  Anmerkungen:
+  Existiert ein Repo bereits, ist ein automatischer Import aus dem Mud nicht
+  mehr moeglich.
+  Bei einem "git clone" auf ein noch nicht existierendes Repo wird das 
+  das Repo automatisch angelegt - dieses Repo wird dann aber nicht mit
+  dem Mud synchronisiert!
+  Daher: erst (erfolgreich) importieren, dann clonen. 
+
+4. Arbeiten mit dem Repo
+  Hierzu sei zuerst einmal auf die allgemein im Netz verfuegbare Dokumentation
+  zu Git und natuerlich seine Manpages verwiesen.
+  Einen beispielhaften Arbeitsablauf findet sich in der Manpage git-workflow.
+
+5. Synchronisation mit dem Mud
+  Repos koennen bei einem 'git push' von aussen automatisch die Aenderungen
+  des master-Branches ins Mud uebertragen. Desweiteren koennen Aenderungen
+  aus dem Mud automatisch in das Repo importiert werden.
+  Auf diese Weise ist das Verwenden von FTP fast ueberfluessig.
+  Details sind in der Manpage git-sync angegeben.
+
+6. Loeschen von Repositories
+  Git-Repos, die von euch selber GEHOEREN (Schreibrechte allein reichen nicht)
+  koennen geloescht und - zumindest eine Weile auch wieder restauriert werden.
+
+6.1. Loeschen
+  > ssh git@mg.mud.de D trash players/caldra/nebelberge
+  players/caldra/nebelberge moved to trashcan.
+
+6.2. Muelleimer anzeigen
+  > ssh git@mg.mud.de D list-trash
+  players/caldra/nebelberge/2011-11-28_22:35:55
+
+6.3. Restaurieren
+  > ssh git@mg.mud.de D restore players/caldra/nebelberge/2011-11-28_22:35:55
+  players/caldra/nebelberge/2011-11-28_22:35:55 restored to
+  players/caldra/nebelberge
+
+  Es versteht sich von selbst, dass Ihr mit diesem Mittel sehr zurueckhaltend
+  umgehen solltet. Bei Missbrauch wird ggf. ein Backup eingespielt und diese
+  Moeglichkeit wieder geloescht.
+
+SIEHE AUCH:
+  git-repositories: Repository-Verwaltung im Mud
+  git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-faq: haeufig gestellte Fragen/Probleme
+  git-links: Verweise ins WWW
+
+29.01.2013 Gloinson
+Letzte Aenderung: 02.07.2014 Notstrom

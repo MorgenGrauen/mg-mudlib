@@ -1,0 +1,34 @@
+Abenteuerliste
+==============
+
+ Die Liste der spielbaren Abenteuer haengt in jeder Gilde im MorgenGrauen aus.
+ Sie ist mit dem Kommando "liste" abrufbar.
+
+ Die in der Liste verwendeten Abkuerzungen werden im Folgenden erlaeutert:
+ 
+ AP       = Fuer die Quest vergebene Abenteuerpunkte
+ Klasse   = Subjektive Einstufung innerhalb der Gruppe bzgl. Arbeitsaufwand,
+            Dauer oder Gefahren
+ Attribut = Keines    -> Keine besonderen Charakteristika
+            Fleissig  -> Vornehmlich Sammeln, Auffinden von Items oder von
+                         Informationen
+            Heroisch  -> Heldentat, die Mut, Kampfbereitschaft und eine
+                         gewisse Bereitschaft zum Forschen braucht
+            Episch    -> Grosse Anforderungen an Ausdauer und Mut, grosser
+                         Aufwand fuer das Erforschen der Loesung, Kaempfe
+                         mittlerer Haerte
+            Legendaer -> Barden preisen die Einsatzbereitschaft der Helden,
+                         recht grosse Gefahr fuer Leib und Leben, mitunter
+                         lange Questzeit
+ Stufe    = Vor dem / steht die empfohlene Stufe fuer die Quest. Diese ist 
+            keine Voraussetzung, ausser bei Seherquests, die teilweise den
+            Status voraussetzen.
+            Nach dem / stehen die Durchschnittsstufen der loesenden Spieler.
+ Autor    = Magier, der die Quest geschrieben hat
+
+
+ SIEHE AUCH:
+    abenteuer, stufen, stufenpunkte, schlafe, kampf, reset
+
+26.05.2016, Zesstra
+

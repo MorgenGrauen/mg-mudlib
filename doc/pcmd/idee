@@ -1,0 +1,45 @@
+idee
+----
+
+KOMMANDO:
+    idee <text>
+    idee <objekt>:<text>
+
+ARGUMENTE:
+
+    <text>
+        Eine Mitteilung
+    <objekt>
+        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+
+BESCHREIBUNG:
+    Speichert eine Mitteilung ueber eine Idee, wie man das Spiel verbessern
+    oder verschoenern kann. Beispiele waeren weitere Details in Raeumen oder
+    an Objekten; Vorschlaege zur Verbesserung der Syntax an bestimmten
+    Stellen; Ideen, wie man das Ambiente eines Raumes noch verbessern kann.
+    Die Magier werden versuchen, alle Mitteilungen in die Tat umzusetzen,
+    soweit sie ihnen sinnvoll erscheinen :)
+
+    Wenn Du einen Tippfehler gefunden hast, so kannst Du den Verantwortlichen
+    mit diesem Befehl davon unterrichten.
+    Alle Vorschlaege sind *herzlich willkommen*; zoegere also nicht, wenn Du
+    eine gute Idee hast!
+
+    Wenn Du eine Idee fuer ein bestimmten Objekt oder NPC hast, kannst Du
+    dieses/diesen hinter einem Doppelpunkt angeben, damit der fuer das Objekt
+    verantwortliche Magier die Meldung bekommt.
+    Wenn das Objekt nicht zu finden ist, wird die ganze Eingabe als
+    Meldung aufgefasst.
+
+BEMERKUNG:
+    Der Befehl 'idee' bezieht sich bei Nichtangabe eines Bezugsobjektes
+    auf das letzte betrachtete Objekt. Hast Du also ein Objekt untersucht,
+    dann wird die Meldung fuer diese Objekt abgegeben. Hast Du aber den
+    Raum untersucht oder 'schau' eingegeben, wird die Meldung fuer Deinen
+    momentanen Raum abgesetzt.
+
+SIEHE AUCH:
+    bug, typo, detail, bezugsobjekt
+
+LETZTE AeNDERUNG:
+    12. Okt 2011 Gloinson

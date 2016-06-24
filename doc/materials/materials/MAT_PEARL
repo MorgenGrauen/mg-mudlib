@@ -1,0 +1,20 @@
+Materialid:
+MAT_PEARL                "pearl"
+
+Name:
+"Perle" "Perle" "Perle" "Perle"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_BIO:100
+MATGROUP_DEAD:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100

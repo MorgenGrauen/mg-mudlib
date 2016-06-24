@@ -1,0 +1,62 @@
+NAME:
+    P_LIGHT                       "light"
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+    Gibt den Lichtlevel eines Objektes an, d.h. wie hell das Objekt von sich
+    aus leuchtet. Moechte man den gesamten Lichtlevel haben der von einem
+    Objekt ausgeht, so sollte man P_TOTAL_LIGHT nehmen, das den Inhalt eines
+    Containers direkt mit verrechnet.
+
+    Bitte _nur_ ueber SetProp bzw. QueryProp zugreifen, da es fuer die
+    Berechnung wichtig ist, das in allen Containern P_LAST_CONTENT_CHANGE
+    gesetzt wird um ein neuberechnen des Lichtlevels auszuloesen!
+
+ANMERKUNG:
+    Um ein ungefaehres Gefuehl davon zu bekommen was ein Lichtlevel in
+    etwa bedeutet hier einige allgemeine Beispiele von Gegenstaenden.
+    Grundsaetzlich sollten Lichtlevel <0 und >2 nur in Ruecksprache mit dem
+    Balanceteam benutzt werden.
+
+    Lichtlevel -1,  z.B. ein schwarzer Ring, von dem eine kleine dunkle Aura
+                    ausgeht, die den Spieler umgibt.
+    Lichtlevel  0,  der Gegenstand beeinflusst das Licht ueberhaupt nicht
+    Lichtlevel  1,  der Spieler haelt eine kleine Lichtquelle in Haenden,
+                    dieses kann ein Leuchtpfirsich, eine Fackel oder ein
+                    Feuerschwert oder aehnliches sein.
+    Lichtlevel  2,  eine etwas groessere Lichtquelle, die aber immer noch
+                    nicht den Raum beleuchtet sondern lediglich dem Spieler
+                    einen Lichtschein gewaehrt mit dem er sehen kann.
+    Lichtlevel >2,  extrem helle Lichtquellen, die den gesamten Raum
+                    ausleuchten, in der Regel wohl eher magischer Natur.
+                    Solche Lichtquellen sollten sich mit der Zeit
+                    verbrauchen, dem Spieler Schaden zufuegen oder
+                    aehnliches, damit die Spieler nicht defaultmaessig mit
+                    einer solchen Lichtquelle durchs MG ziehn.
+
+    Daraus ergeben sich dann folgende Konsequenzen fuer Raeume:
+    Lichtlevel  >1: Der Raum ist sehr hell erleuchtet und kann von Spielern
+                    nicht oder nur sehr schwer abgedunkelt werden. Ein Wert
+                    von 2-3 kann interessant sein, wenn die NPCs im Raum
+                    ueber keine Nachtsicht verfuegen. Ueber ein Abdunkeln des
+                    Raumes kann der Spieler dann doch den Nachtkampf nutzen.
+    Lichtlevel   1: Der Raum ist erleuchtet und die Spieler koennen ohne
+                    weitere Lichtquellen sehen...
+    Lichtlevel   0: Ein dunkler Raum in dem man mit jeder Fackel sehen kann.
+    Lichtlevel  -1: man benoetigt zwei einfache Lichtquellen oder Nachtsicht
+                    um in diesem Raum etwas sehen zu koennen.
+    Lichtlevel  -2: Man benoetigt schon eine besondere Lichtquelle um in
+                    diesem Raum noch etwas sehen zu koennen. Solche
+                    Lichtquellen sind nichts fuer Anfaenger oder mittlere
+                    Spieler da sie schwer zu beschaffen und in der Regel
+                    auch einige Handicaps haben.
+    Lichtlevel <-2: Der Raum ist wirklich absolut stockduster und
+                    Lichtquellen die solch einen Raum ausleuchten koennen,
+                    sind ausserordentlich selten und haben immer ihre
+                    Tuecken. Diese Lichtlevel sollten nur mit Vorsicht
+                    genossen werden.
+
+SIEHE AUCH:
+    P_TOTAL_LIGHT, P_INT_LIGHT, P_PLAYER_LIGHT, P_LIGHT_MODIFIER, CannotSee()

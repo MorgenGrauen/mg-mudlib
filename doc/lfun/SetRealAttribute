@@ -1,0 +1,31 @@
+SetRealAttribute()
+FUNKTION:
+     int SetRealAttribute(string attr, int val)
+
+DEFINIERT IN:
+     /std/living/attributes.c
+
+ARGUMENTE:
+     attr       - zu setzendes Attribut
+     val        - Wert
+
+BESCHREIBUNG:
+     Setzt den realen Wert des Attributes, d.h. das reine Attribut,
+     wenn moeglich. Lediglich eine Alias-Methode fuer SetAttr().
+     (QueryAttribute() gibt also val + etwaige Offsets/Modifier zurueck)
+
+RUeCKGABEWERT:
+     Den gesetzten Wert.
+
+BEMERKUNGEN:
+     Bitte nicht auf Spieler anwenden!
+
+SIEHE AUCH:
+	QueryAttribute(), QueryRealAttribute(), QueryAttributeOffset(),
+	SetAttribute(), SetRealAttribute(), UpdateAttributes(),
+	SetTimedAttrModifier(), QueryTimedAttrModifier(), 
+	DeleteTimedAttrModifier(),
+	P_ATTRIBUTES, P_ATTRIBUTES_OFFSETS, P_TIMED_ATTR_MOD,
+	P_X_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
+----------------------------------------------------------------------------
+Last modified: Tue Jul 27 20:00:20 2004 by Muadib

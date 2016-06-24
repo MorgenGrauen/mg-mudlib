@@ -1,0 +1,14 @@
+SYNOPSIS:
+        mixed *m_values(mapping map)
+        mixed *m_values(mapping map, int index)
+
+DESCRIPTION:
+       If index is 0 or not given, return an array with the first values of 
+       mapping 'map'.
+       For values of index >0, return an array with the corresponding higher
+       values of mapping 'map', i.e. m_values(map,2) returns the third 
+       values.
+
+SEE ALSO:
+       mappingp(E), mkmapping(E), m_indices(E), m_delete(E),
+       sizeof(E), widthof(E), mappings(LPC)

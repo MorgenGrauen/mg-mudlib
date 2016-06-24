@@ -1,0 +1,15 @@
+SYNOPSIS
+      xprops [-f|-m] <object>
+
+DESCRIPTION
+      Prints out all properties of <object> which are currently defined
+      in /sys/properties.h.
+
+OPTIONS
+      -f  List property flags verbose
+
+      -m  List property methods
+
+EXAMPLE
+      xprops $me
+

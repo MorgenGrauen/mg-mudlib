@@ -1,0 +1,18 @@
+Materialid:
+MAT_CARBON               "C"
+
+Name:
+"Kohlenstoff" "Kohlenstoffs" "Kohlenstoff" "Kohlenstoff"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100

@@ -1,0 +1,21 @@
+In der Zweitie-DB werden alle Chars verwaltet, die als Zweitie von irgendeinem anderen markiert sind. (Zur Zeit: nur die seit Herbst 2014 eingeloggten.)
+
+Direkte Abfrage der Zweitie-DB (fuer Erzmagier):
+
+Die Zweitie-DB liegt unter
+secure/ARCH/second.sqlite
+Das verwaltende Objekt im Mud ist /secure/zweities
+
+Auf der Shell fragt man die DB recht simpel so ab:
+sqlite3 -column -header secure/ARCH/second.sqlite
+
+Alle Zweities von Arathorn ermitteln:
+select * from zweities where erstie='arathorn';
+
+Erstie von Ahab ermitteln:
+select erstie from zweities where name='ahab';
+
+Diese select-Anweisungen lassen sich (als EM) auch im Mud absetzen:
+xcall /secure/zweities->sql_query(
+    "select * from zweities where erstie='arathorn';")
+

@@ -1,0 +1,18 @@
+SYNOPSIS
+      xhbeats [search pattern]
+      or
+	  xhbeats     (when writing to a pipe)
+
+DESCRIPTION
+      With no argument it shows all your objects which have a running heart
+      beat. With a regexp as argument, all matching objects will be printed.
+	  When writing to a pipe, all hearbeats will be printed and a search
+	  pattern is not allowed.
+
+EXAMPLES
+      xhbeats obj   Show all objects which have a running heart beat at the
+                    object names with the string "obj" in it.
+      xhbeats .     Show all callouts. Please don't do this if it isn't
+                    really neccessary. It just costs time - and what do you
+                    want to do with this information?
+

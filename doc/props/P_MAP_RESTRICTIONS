@@ -1,0 +1,39 @@
+NAME:
+    P_MAP_RESTRICTIONS                      "lib_p_map_restrictions"
+
+DEFINIERT IN:
+    /sys/rooms.h
+
+BESCHREIBUNG:
+     Mit dieser Property laesst sich beeinflussen, welche Informationen ueber
+     den Raum das Morgengrauen dem Client zukommen laesst (zur Zeit nur via
+     GMCP, aber es mag irgendwann auch andere Wege geben).
+     Beispielsweise sollen vielleicht in einem Labyrinth keine eindeutigen
+     Raum-IDs uebermittelt werden.
+
+     Als Werte duerfen alle MR_-Konstanten aus <rooms.h> verwendet werden.
+     Diese duerfen auch ver-ODER-t werden, wenn mehr als eine davon gelten
+     soll.
+
+     Moegliche Werte:
+       MR_NOUID - verhindert, dass die eindeutige Raum-ID uebertragen wird.
+       MR_NOINFO - verhindert, dass ueberhaupt irgendetwas an den Client
+                   uebermittelt wird. Damit kriegt er ggf. auch nicht mit,
+                   dass er Raum gewechselt wurde. Ist fuer Sequenzraeume
+                   gedacht. Bitte SEHR sparsam einsetzen.
+
+     Die Verwendung dieser Property sollte der Ausnahmefall sein!
+
+BEISPIEL:
+     (in einem Raum)
+     SetProp(P_MAP_RESTRICTIONS, MR_NOUID);
+
+     Nun bekommt der Client zwar die Kurzbeschreibung des Raums, die Region
+     und die sichtbaren Ausgaenge, aber keine UID mehr uebermittelt.
+
+SIEHE AUCH:
+     gmcp
+
+----------------------------------------------------------------------------
+23.02.2013, Zesstra
+

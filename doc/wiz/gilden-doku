@@ -1,0 +1,496 @@
+Gilden 
+*******
+
+Gilden sind dazu da, Spielern besondere Faehigkeiten zu verleihen. Dies
+koennen Zaubersprueche (Spells) sein, es kann aber auch andere Faehigkeiten
+(Skills) geben. Als Spell gilt jede Faehigkeit, die ein Spieler mit einem
+Befehl direkt aufrufen muss. Damit auch andere Gilden die gleichen
+Zaubersprueche verwenden koennen, muessen die Sprueche in eigenen
+Spellbooks abgelegt werden. Eine Gilde kann Sprueche aus beliebigen
+Spellbooks verwenden und diese ggf. leicht modifizieren. 
+
+Gildenobjekt 
+=============
+
+Eine Gilde muss ein Objekt haben, bei dem der Spieler der Gilde beitreten
+bzw. austreten und die Faehigkeiten der Gilde erwerben kann. Gewoehnlich
+ist dies ein Raum, der "/std/gilden_room" inheritet, es kann aber auch ein
+anderes Objekt sein, fuer diesen Fall ist "/std/gilden_ob" vorgesehen. 
+
+Die Beitrittsbedingungen fuer die Gilde werden in Form eines 
+Restriction-Mappings in der Property P_GILDEN_RESTRICTIONS
+abgelegt. 
+
+Das Spellbook, in dem die Spells der Gilde stehen, muss in
+P_GUILD_DEFAULT_SPELLBOOK genannt sein. Es wird automatisch
+"/spellbooks/" vorne an den Namen angefuegt. Die Spells, die aus diesem
+Spellbook verwendet werden sollen, koennen dann einfach mit
+AddSpell(name) ausgewaehlt werden. Wenn ein Spruch modifiziert werden
+soll so kann ein Mapping mit zusaetzlichen Informationen als zweites
+Argument angegeben werden. In diesem kann man dann auch ein anderes
+Spellbook als das Default-Spellbook mit ([SI_SPELLBOOK:name])
+angeben. In P_GLOBAL_SKILLPROPS kann ein Mapping angegeben
+werden, das alle Spells und Skills modifiziert. P_GLOBAL_SKILLPROPS
+und P_GILDEN_DEFAULT_SPELLBOOK muessen uebrigens gesetzt
+werden bevor mit AddSpell/Skill Spells oder Skills hinzugefuegt werden. 
+
+Fuer andere Faehigkeiten sind AddSkill und LearnSkill vorgesehen.
+LearnSkill wird im Gegensatz zu LearnSpell jedoch nicht automatisch vom
+/std/gilden_room mit "lerne" aufgerufen, weil i.A. diese Faehigkeiten auf
+andere Art erworben werden, z.B. beim Gildeneintritt oder durch
+Trainingsstunden. Mit LearnSkill kann man nur solche Faehigkeiten
+erwerben, die mit AddSkill angefuegt wurden. 
+
+Skills werden ueblicherweise durch den Aufruf von UseSkill im Spieler
+verwendet. Wenn der Spieler in einer Gilde ist und eine Funktion unter
+SI_SKILLFUNC zu finden ist, so wird diese im Gildenobjekt aufgerufen,
+sonst wird versucht StdSkill_Name im Spieler aufzurufen. Wenn auch das
+fehlschlaegt wird nur der Wert unter SI_ABILITY zurueckgegeben. 
+
+Es stehen folgende Funktionen zur Benutzung zur Verfuegung: 
+
+ o QuerySpell(name)
+   Liefert die Informationen zu diesem Spell 
+ o QuerySkill(name)
+   Liefert die Informationen zu dieser Faehigkeit 
+ o AddSpell(name,info)
+   Spell wird hinzugefuegt 
+ o AddSkill(name,info)
+   Faehigkeit wird zugefuegt 
+ o LearnSpell(name)
+   Spieler lernt den angegebenen Spell, falls moeglich. Liste der Spells
+   wird ausgegeben, falls keiner angegeben ist. 
+ o LearnSkill(name)
+   Spieler erwirbt diese Faehigkeit, falls moeglich. Liste aller
+   Faehigkeiten wird ausgegeben, falls keine angegeben ist. 
+ o GildenName()
+   Liefert den Namen dieser Gilde. 
+ o InitialSkillAbility(info,spieler)
+   Rechnet den Anfangswert fuer SI_SKILLABILITY aus. 
+ o SkillListe(x)
+   Es wird angezeigt, welche Spells/Skills der Spieler lernen kann.
+   Dabei bedeutet x: 
+    o 1: Nur Spells anzeigen 
+    o 2: Nur Skills anzeigen 
+    o 3: Beides anzeigen 
+
+Von diesen Funktionen stehen in /std/gilden_room automatisch
+bei_oder_austreten und LearnSpell dem Spieler zur Verfuegung. 
+
+Spellbook 
+==========
+
+Spellbooks stellen die Spells zur Verfuegung, die Spieler oder Monster
+verwenden koennen. Alle Spellbooks sollten /std/spellbook inheriten. In der
+einfachsten Form kann ein Spell wie folgt hinzugefuegt werden: 
+AddSpell(verb,kosten,level)
+Dabei ist "verb" sowohl der Name des Verbs, mit dem der Spruch
+aufgerufen werden soll, wie auch der Name der Funktion, die dabei
+aufgerufen wird. "kosten" sind die Magiepunkte, die fuer den Spruch
+benoetigt werden und "level" ist der Spielerlevel, der noetig ist, um diesen
+Spruch zu lernen. 
+
+In der flexibleren Form werden Spells mit 
+AddSpell(verb,kosten,info)
+hinzugefuegt. Dabei ist "info" ein Mapping, in dem alle anderen 
+Spell-Informationen stehen. Dabei kann z.B. eine andere Funktion als das
+Verb als Eintrag 
+SI_SKILLFUNC:name
+angegeben werden. Wenn zum Lernen eine bestimmte Stufe erforderlich ist
+so muss 
+SI_SKILLRESTR_LEARN:([P_LEVEL:level])
+eingetragen sein. Es sollten alle Werte, von denen ein Spell abhaengt, in dem
+Mapping eingetragen sein. Dadurch haben Gilden die Moeglichkeit, Spells
+mit Offsets und Faktoren zu modifizieren. 
+
+In P_GLOBAL_SKILLPROPS kann ein Mapping stehen, dass bei jedem
+Spell zum Info addiert wird. Dieses sollte gesetzt werden, bevor die Spells
+mit AddSpell hinzugefuegt werden. 
+
+Die Benutzung von Spells laeuft wie folgt ab: 
+
+ o Zuerst wird ueberprueft, ob der Spieler den Spruch verwenden darf.
+   Dazu wird die Funktion CanTrySpell aufgerufen. Diese prueft
+   normalerweise, ob der Spieler kein Geist ist und ob er die
+   Einschraenkungen erfuellt, die als SI_SKILLRESTR_USE
+   angegeben sind. 
+ o Als naechstes wird geprueft, ob der Spieler noch genug Magiepunkte
+   hat. Diese stehen im Mapping unter SI_SPELLCOST. 
+ o Als letztes wird geprueft, ob der Spieler noch erschoepft ist von
+   seinem letzten Spruch. 
+ o Nun wird die eigentliche Funktion des Spells aufgerufen, wenn es die
+   Umgebung zulaesst. Die Funktion muss einen positiven Wert
+   zurueckgeben, wenn der Spruch gelungen ist, und einen negativen,
+   wenn er misslungen ist. Falls der Spruch aus irgend einem Grund
+   nicht anwendbar ist soll 0 zurueckgegeben werden. 
+ o Bei Erfolg oder Misserfolg werden die Magiepunkte abgezogen und
+   der Spieler ist fuer die naechste Zeit erschoepft. Die Zeitspanne ist
+   im Mapping unter SI_SPELLFATIGUE zu finden. 
+ o Bei Erfolg wird die Funktion "Erfolg" aufgerufen, bei Misserfolg
+   die Funktion "Misserfolg" 
+ o Die Funktion "Misserfolg" ruft normalerweise die Funktion "Learn"
+   auf, damit der Spieler aus seinen Fehlern lernt. 
+
+Die eigentliche Spellfunktion sollte, falls der Spell anwendbar ist, mit
+SpellSuccess pruefen, ob er erfolgreich ist oder nicht. Dabei gelten Werte
+groesser Null als Erfolg. In der Spellfunktion sollten, falls moeglich, 
+SkillAttribute des Spielers sowie Faktoren und Offsets beruecksichtigt
+werden. Fuer beides stehen einfach zu handhabende Funktionen zur
+Verfuegung. Dies ist zwar etwas mehr Arbeit, dafuer geschehen dann Dinge
+wie Interaktionen zwischen den Spells fast automatisch. 
+
+Folgende Funktionen stellt das Standard-Spellbook zur Verfuegung: 
+
+ o QuerySpell(name)
+   Liefert Informations-Mapping zu diesem Spell. 
+ o AddSpell(name,kosten,info)
+   Fuegt Spell mit angegebenen Kosten und dem
+   Informations-Mapping ins Spellbook ein. 
+ o TryAttackSpell(opfer,schaden,typen,is_spell,caster,info)
+   Versucht den Angriffs-Spruch auf den Gegner anzuwenden. Die
+   mittleren 4 Werte sind die, die auch bei Defend uebergeben werden.
+   Dabei wird die Abwehrfaehigkeit des Gegners gegen Magie und das
+   Skill-Attribut SA_DAMAGE automatisch beruecksichtigt. 
+ o TryDefaultAttackSpell(opfer,caster,info,is_spell)
+   Wie TryAttackSpell, nur werden Schaden und Schadenstypen
+   automatisch aus dem Informations-Mapping entnommen. Bei beiden
+   Funktionen sollte als is_spell uebrigens ein String stehen, z.B.
+   "Feuerball", damit es leichter moeglich ist, Monster zu schreiben, die
+   auf diese reagieren. 
+ o SpellSuccess(caster,info)
+   Ermittelt, ob der Spell funktioniert oder fehlschlaegt. Dabei wird
+   auch eine evtl. vorhandene Spellcasting-Faehigkeit (SK_CASTING)
+   beruecksichtigt. Ohne Spellcasting-Faehigkeit liegt das Ergebnis
+   zwischen -MAX_ABILITY und +MAX_ABILITY, mit dieser
+   Faehigkeit koennen die Werte zwischen -2*MAX_ABILITY und
+   +2*MAX_ABILITY liegen. Werte kleiner oder gleich Null sollen
+   als Fehlschlag interpretiert werden. 
+   Wer will, kann Werte ueber +MAX_ABILITY als besonders gut
+   gelungene Spells interpretieren und bei Werten unter
+   -MAX_ABILITY unangenehme Wirkungen ausloesen, z.B. kann
+   sich der Spell dann gegen den Spieler richten... 
+   Wenn ein Spieler die Spellcasting-Faehigkeit hat und ein Spruch
+   besonders gut gelingt, so freut er sich und verbessert diese
+   Faehigkeit. 
+ o CanTrySpell(caster,info)
+   Ermittelt, ob der Spieler den Spruch anwenden darf. Normalerweise
+   ist diese der Fall, wenn er kein Geist ist und die Bedingungen
+   erfuellt, die unter SI_SKILLRESTR_USE im Mapping eingetragen
+   sind. 
+ o Learn(caster,spell,info)
+   Diese Funktion wird normalerweise bei Misserfolg aufgerufen,
+   damit der Spieler aus seinen Fehlern lernt. Dabei wird
+   ueblicherweise die Intelligenz des Spielers beruecksichtigt. Fuer je 2
+   Stufen A_INT bekommt der Spieler SI_SKILLLEARN hinzu. 
+
+   Moechte man ein anderes Attribut zum lernen verwenden kann man dies
+   in Form eines Mappings in SI_LEARN_ATTRIBUTE tun.
+
+   SI_LEARN_ATTRIBUTE:([A_STR:1]) macht das Lernen rein staerkeabhaengig,
+   SI_LEARN_ATTRIBUTE:([A_STR:1,A_INT:2]) bildet den gewichteten Mittelwert
+   von STR und zweifacher INT.  
+
+ o Erfolg(caster,spell,info)
+   Diese Funktion wird bei Erfolg aufgerufen. 
+ o Misserfolg (caster,spell,info)
+   Diese Funktion wird bei Misserfolg aufgerufen. 
+ o FindVictim(wen,spieler,msg)
+   "wen" wird in der Umgebung des Spielers gesucht. Falls diese
+   Variable Null ist wird zufaellig ein Feind ausgewaehlt. Falls
+   niemand gefunden wird, so wird "msg" ausgegeben. 
+ o FindLivingVictim(wen,spieler,msg)
+   Wie FindVictim, nur wird zusaetzlich ueberprueft, ob es ein
+   Lebewesen ist. 
+ o FindEnemyVictim(wen,spieler,msg)
+   Wie FindLivingVictim, nur der Spieler selbst wird ausgenommen
+   und wenn es vorher noch kein Feind war, so wird Kill aufgerufen
+   damit es hinterher garantiert einer ist. 
+ o FindGroup(spieler,wen)
+   Bei Spielern findet die Funktion alle Monster im Raum, wenn "wen"
+   negativ ist, alle Spieler wenn "wen" positiv ist und alle Lebewesen
+   wenn "wen" Null ist. Bei Monstern ist es genau umgekehrt. Es sollte
+   jedoch FindGroupP mit 100% verwendet werden. 
+ o FindGroupN(spieler,wen,n)
+   Wie FindGroup, jedoch maximal n Personen. Das Skill-Attribut
+   SA_EXTENSION wird automatisch beruecksichtigt. 
+ o FindGroupP(spieler,wen,prozent)
+   Wie FindGroup, jedoch jede Person mit der angegebenen
+   Wahrscheinlichkeit. Das Skill-Attribut SA_EXTENSION wird
+   automatisch beruecksichtigt. 
+
+Neue Funktionen im Living 
+==========================
+
+ o QuerySkillAttribute(name)
+   Hiermit kann das Skill-Attribut mit dem angegebenen Namen
+   abgefragt werden. 
+ o SetSkillAttribute(caster,name,wert,dauer,func)
+   Hiermit kann das angegebene Skill-Attribut vom caster fuer die
+   angegebene Dauer auf einen Wert gesetzt werden. Es kann eine
+   Funktion angegeben werden, die den Wert statt dessen liefern soll. 
+ o QuerySkill(name)
+   Dies liefert die spielerspezifischen Skill-Informationen. 
+ o QuerySkillAbility(name)
+   Dies liefert von den Skill-Informationen nur SI_ABILITY. 
+ o ModifySkill(name,info,diff)
+   Modifiziert die Skill-Informationen. Wenn "info" ein Mapping ist,
+   so wird es zu dem alten Mapping "addiert" (also die angegebenen
+   Werte geaendert), wenn nur ein Wert angegeben ist, wird
+   angenommen dass es sich dabei um SI_ABILITY handelt. 
+ o LearnSkill(name,add,diff)
+   Addiert den angegebenen Wert zu SI_ABILITY. Dabei ist "diff" der
+   Schwierigkeitsgrad von diesem Spell/Skill. Durch den
+   Schwierigkeitsgrad SI_ABILITY abhaengig vom Level begrenzt. 
+ o UseSpell(arg,spell)
+   Das Lebewesen benutzt den Spell mit den angegebenen Argumenten.
+   Wenn kein Spell angegeben ist, so wird query_verb() verwendet. 
+ o UseSkill(skill,arg)
+   Das Lebewesen benutzt die Faehigkeit. 
+
+Neue Properties/Funktionen in Living/Combat 
+============================================
+
+Einige Sprueche erfordern es, das Verhalten bei Attack und Defend ziemlich
+weitreichend zu aendern. Dafuer wurden folgende Properties und
+Funktionen eingebaut: 
+
+ o P_TMP_ATTACK_HOOK
+   Hier kann ein Array der Form ({Endzeitpunkt,Objekt,Funktion})
+   stehen. Solange der Endzeitpunkt noch nicht ueberschritten wurde
+   und das angegebene Objekt existiert, wird anstelle von Attack die
+   Funktion in dem Objekt aufgerufen. Wenn die Funktion 0 liefert
+   wird der Rest von Attack nicht mehr ausgefuehrt. 
+ o P_TMP_DEFEND_HOOK
+   Wie P_ATTACK_HOOK, nur mit Defend. Damit sind z.B.
+   Sprueche moeglich, die fuer kurze Zeit eine magische Schutzhuelle
+   erschaffen. Wenn die Funktion 0 liefert wird der Rest von Defend
+   nicht mehr ausgefuehrt. Wenn es ein Array der Form
+   ({damage,dt,is_spell}) ergibt wird es wie bei DefendOther
+   interpretiert. 
+ o P_DEFENDERS
+   Liste von Lebewesen, die mit InformDefend(enemy) informiert
+   werden sollen, sobald ein neuer Feind hinzukommt. Bei einem
+   zufaellig ausgewaehltem Lebewesen aus dieser Liste wird ausserdem
+   DefendOther mit den Argumenten von Defend aufgerufen. 
+ o AddDefender(friend)
+   Fuegt Lebewesen in P_DEFENDERS ein, wenn es noch nicht in der
+   Liste ist. 
+ o InformDefend(enemy)
+   Siehe oben. 
+ o DefendOther(dam,dt,is_spell,enemy)
+   Mit dieser Funktion kann man Lebewesen erschaffen, die Schaden
+   von anderen abwenden oder modifizieren. Wenn diese Funktion ein
+   Array ({dam,dt,is_spell}) zurueckgibt so werden bei dem zu
+   verteidigenden Lebewesen diese Werte genommen anstelle der alten.
+   Man kann also z.B. ein Monster erschaffen, das ein
+   feuerempfindliches anderes Monster verteidigt, indem es z.B.
+   Feuerbaelle in Eishagel verwandelt. 
+
+Standard-Skills 
+================
+
+Folgende Faehigkeiten werden schon beruecksichtigt und sind auch
+vordefiniert. Wenn sie unveraendert uebernommen werden sollen muss nur
+SI_ABILITY gesetzt werden. 
+
+ o SK_SWORDFIGHTING
+   Schwertkampf. Bis zu 33+A_STR+A_DEX Aufschlag bei
+   Schwertern, wenn jemand diese Faehigkeit zu 100% hat. 
+ o SK_WEAPONLESS
+   Kampf mit blossen Haenden. Bis zu 100+A_STR+3*A_DEX
+   Aufschlag. 
+ o SK_TWOHANDED
+   Kampf mit zweihaendigen Waffen. Bis zu 33+A_STR Aufschlag. 
+ o SK_NIGHTVISION
+   Wer diese Faehigkeit zu 100% hat braucht 20 Sekunden pro
+   fehlendem Lichtlevel um sich an die Dunkelheit zu gewoehnen. 
+ o SK_BOOZE
+   Mit 100% dieser Faehigkeit wird bei jedem alkoholischen Getraenk
+   80% vom Alkoholgehalt abgezogen. 
+
+Folgende Faehigkeiten werden beruecksichtigt, sind aber nicht vordefiniert: 
+
+ o SK_MAGIC_ATTACK
+   Wenn diese Faehigkeit vorhanden ist, wird die Funktion unter
+   SI_SKILLFUNC im Gildenobjekt aufgerufen, falls der Spieler sonst
+   mit blossen Haenden angreifen wuerde. Wenn dabei ein Mapping
+   zurueckgegeben wird, so werden die Werte von
+   SI_SKILLDAMAGE, SI_SKILLDAMAGE_TYPE und
+   SI_SKILLDAMAGE_MSG genommen anstelle der Werte in
+   P_HANDS. 
+ o SK_MAGIC_DEFENSE
+   Wenn hier unter SI_SKILLFUNC eine Funktion eingetragen ist, so
+   wird sie bei Defend im Gildenobjekt aufgerufen und bekommt im
+   Informations-Mapping SI_SKILLDAMAGE,
+   SI_SKILLDAMAGE_TYPE und SI_SPELL uebergeben. Wenn sie
+   ein Mapping zurueckgibt werden hieraus SI_SKILLDAMAGE und
+   SI_SKILLDAMAGE_TYPE entnommen und ersetzen die alten
+   Werte von "dam" und "dam_type". 
+ o FIGHT(Waffentyp)
+   Falls diese Faehigkeit vorhanden ist wird der entsprechenden
+   Funktion in SI_SKILLDAMAGE der bisherige Schaden uebergeben.
+   Falls sie ein Mapping zurueckliefert wird an dieser Stelle auch der
+   neue Schaden erwartet. 
+ o SK_FIGHT
+   Wie Fight(Waffentyp), nur wird diese Faehigkeit, falls vorhanden,
+   bei jeder Waffe benutzt und kann auch zusaetzlich andere Werte fuer
+   SI_SKILLDAMAGE_TYPE ergeben. Waffe und Waffentyp werden
+   uebrigens in SI_WEAPON und SI_WEAPON_TYPE uebergeben. 
+ o SK_CASTING
+   Spellcasting. Die Wahrscheinlichkeit, dass der Spell gelingt, steigt
+   bei 100% dieser Faehigkeit auf das Doppelte. Nur mit dieser
+   Faehigkeit ist es moeglich, ueber die Maximalgrenzen zu kommen,
+   so dass dann auch Spells besonders gut gelingen koennen. 
+
+Temporaere Property-Aenderungen 
+================================
+
+Oft muessen Spells irgendwo Properties fuer kurze Zeit veraendern, wie
+z.B. P_LIGHT oder P_NOMAGIC in Raeumen. Fuer diesen Zweck kann
+man in /obj/tmp_prop_master die Funktion SetTmpProp aufrufen. Diese
+Funktion erwartet das Objekt, in dem die Property zu setzen ist, den Namen
+der Property, den zeitweiligen Wert und den Zeitpunkt, bis zu dem diese
+Aenderung gelten soll. 
+
+Skill Informationen 
+++++++++++++++++++++
+
+In den Informationsmappings zu den Spells/Skills sollten alle (zusaetzlich)
+noetigen Informationen stehen, denn nur wenn z.B. ein Feuerball in einem
+Spellbook als Schaden 300 eingetragen hat und diesen Wert dem Mapping
+entnimmt, kann eine andere Gilde diesen Spruch recyclen und mit Schaden
+400 anbieten, natuerlich sollte er dann auch in der Gilde mehr kosten. 
+
+SIEHE AUCH: skill_info_liste
+
+Faktoren und Offsets 
+---------------------
+
+Man kann in dem Informations-Mapping zu jedem numerischen Wert
+"Name" noch zwei zusaetzliche Werte FACTOR("Name") und
+OFFSET("Name") eintragen und diese Werte automatisch zur eigentlichen
+Wertbestimmung beruecksichtigen. Mit folgenden Funktionen sollte man
+im Spellbook dem Mapping Werte entnehmen: 
+
+ o GetValue(name,map,spieler) 
+ o GetOffset(name,map,spieler)
+   OFFSET(name). 
+ o GetFactor(name,map,spieler)
+   Ergibt FACTOR(name), falls ungleich Null, sonst 100. 
+ o GetFValue(name,map,spieler)
+   Ergibt (Wert*Faktor)/100. 
+ o GetValueO(name,map,spieler)
+   Ergibt Wert+Offset. 
+ o GetFValueO(name,map,spieler)
+   Ergibt (Wert*Faktor)/100+Offset. 
+
+Nach Moeglichkeit sollte man davon im Spellbook GetFValueO benutzen,
+wenn es angebracht ist. Auf jeden Fall sollten von den drei Werten
+moeglicht viele auf eine angemessene Weise beruecksichtigt werden, denn
+dadurch bekommt das Gildenobjekt feinere Kontrollmoeglichkeiten, wenn
+ein Spruch modifiziert werden soll. Es ist dann fuer die Gilde aeusserst
+einfach festzulegen, dass z.B. Zwerge bei allen Angriffsspruechen 20%
+mehr Schaden verursachen und beim Feuerball Elfen einen hoeheren
+garantierten Wert hinzubekommen. 
+
+Funktionen 
+-----------
+
+Wenn ein Spellbook eine der oben angesprochenen Funktionen benutz, um
+einen numerischen Wert zu ermitteln und anstelle des Wertes steht etwas,
+das als Funktion interprtiert werden kann, so wird diese Funktion
+ausgewertet und das Ergebnis als Wert genommen. Als Funktion
+interpretiert werden kann: 
+
+ o Eine Closure 
+ o Ein Array ({objekt,funktionsname}) oder ({objektname,funktionsname}) 
+ o Ein Funktionsname. Hierbei sollte man sich jedoch darueber im
+   klaren sein, in welchem Objekt versucht wird die Funktion
+   aufzurufen. Ueblicherweise geschieht dies im Spellbook, jedoch
+   werden SI_DIFFICULTY, SI_SKILLLEARN und SI_SPELLCOST
+   auch beim Lernen benoetigt und dies geschieht vom Gildenobjekt
+   aus. Wenn bei diesen 3 Eintraegen eine Funktion den Wert liefern
+   soll, so muss sie in eine der drei anderen Formen eingetragen werden,
+   damit das richtige Objekt ermittelt werden kann. 
+
+SIEHE AUCH: execute_anything
+   
+Fuer nicht-numerische Werte kann man GetData verwenden. Dabei werden
+jedoch nur closures automatisch ausgewertet. 
+
+Skill Attribute 
+++++++++++++++++
+
+Skill-Attribute sind Attribute, die alle anderen Skills beeinflussen koennen.
+Normalerweise sind alle Skill-Attribute 100%, sie koennen jedoch fuer
+kurze Zeit auf andere Werte zwischen 10% und 1000% gesetzt werden. Bei
+der Abfrage der Attribute werden 3 Werte beruecksichtigt: 
+
+ o Wert, der vom Lebewesen selbst gesetzt wurde. 
+ o Wert, der von einem anderen unter 100% gesetzt wurde. Wenn
+   mehrere andere Lebewesen den Wert unter 100% gesetzt haben so
+   gilt die Aenderung von dem mit dem hoechsten Level. Eine solche
+   Aenderung wird ueblicherweise von einem Gegner veranlasst. 
+ o Wert, der von einem anderen ueber 100% gesetzt wurde. Auch hier
+   gilt die Aenderung von dem Lebewesen mit dem hoechsten Level. 
+
+Wenn z.B. ein Spieler seine Geschwindigkeit fuer zwei Minuten auf 200%
+und ein Monster sie fuer eine Minute auf 25% setzt, so ist sie eine Minute
+lang 50% und die naechste Minute 200% bevor sie wieder auf 100% gesetzt
+wird. 
+
+SIEHE AUCH: ModifySkillAttribute
+
+Restriction Mappings 
++++++++++++++++++++++
+
+Mit Restriction Mappings koennen Einschraenkungen auesserst einfach
+angegeben werden. In dem Mapping wird einfach nur angegeben, was durch
+welchen Wert eingeschraenkt werden soll. Wenn z.B. mindestens Level 15
+und Intelligenz 10 verlangt wird, so ist das Mapping
+([P_LEVEL:15,A_INT:10]). Folgende Einschraenkungen koennen verlangt
+werden: 
+
+SIEHE AUCH: check_restrictions
+
+Einschraenkungen werden mit check_restrictions(spieler,mapping)
+ueberprueft. Die Funktion liefert 0 zurueck wenn der Spieler alle
+Einschraenkungen erfuellt und einen String mit der Begruendung, falls eine
+Einschraenkung nicht erfuellt ist. 
+
+Programmierrichtlinien 
+=======================
+
+ o In Spellbooks moeglichst oft Faktoren und Offsets beruecksichtigen. 
+ o Die Skill-Attribute beruecksichtigen, falls moeglich. 
+ o Alles Spells muessen eine Verzoegerungszeit haben, in der kein
+   weiterer Spell anwendbar ist. Hiervon kann es Ausnahmen geben, wenn
+   das Gildenkonzept es anders vorsieht (z.B. bei den Kaempfern) oder
+   sonst reguliert.
+ o Kostenlose Spells sollte es nicht geben. Falls doch, dann nur mit sehr
+   hoher Verzoegerungszeit, sonst lassen die Leute nur ihr Frontend
+   spielen. 
+ o Jeder Skill sollte eine levelabhaengige maximale Faehigkeit haben.
+   D.h., wenn SI_DIFFICULTY gesetzt ist sollte der Wert groesser als
+   -100 sein. 
+ o Spells duerfen nicht Monster beliebig hoher Staerke einfach
+   umhauen. Es sollte nur bis zu einer Maximalstaerke moeglich sein. 
+ o Der Schaden, den ein Spruch bewirkt, darf von der Staerke nicht
+   groesser sein, als der, den eine Waffe mit WC 25*SP bewirken
+   wuerde. Auch hier sollte man ein wenig gesunden Menschenverstand
+   spielen lassen - es kommt auch immer drauf an, ob ein Angriff
+   magisch ist oder physikalisch.
+ o Die Heilung sollte nicht die dafuer noetigen SP ueberschreiten. 
+   Ausnahmen fuer explizite Heilgilden (Klerus) kann es geben.
+
+Auswirkung von SI_DIFFICULTY 
+-----------------------------
+
+Folgende Maximalwerte sind fuer SI_ABILITY bei den angegebenen Leveln
+moeglich, wenn SI_DIFFICULTY auf den Wert in der linken Spalte gesetzt
+ist. 
+
+SIEHE AUCH: LimitAbility oder /std/living/skills::LimitAbility
+
+5. Okt 2011 Gloinson
+ 

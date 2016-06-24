@@ -1,0 +1,9 @@
+Properties in Waffen fuer Trves und ihre Hoechstwerte:
+-----------------------------------------------------
+
+K_THROWING_WEAPON         Waffenwurf            ==> Max:  50
+K_BRAWLING_WC             Waffenschlag          ==> Max:  30
+K_WEAPON_SHATTER          Waffenbruch           ==> Max:  50
+K_DISTRACTING_WEAPON      Finte / Waffentrick   ==> Max:  50
+K_CRITICAL_HIT            Todesstoss            ==> Max: 100
+

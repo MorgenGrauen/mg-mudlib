@@ -1,0 +1,112 @@
+Allgemeines und generelles zu Waffen:
+------------------------------------
+
+   P_WC
+        Die WC sollte einigermassen "realistisch" gewaehlt werden. Die
+        Verantwortung hierfuer obliegt den jeweiligen RMs. Sie sollte
+        zwischen ca. 35 und 200 liegen. Auf jeden Fall sind die aktuellen
+        Genehmigungsgrenzen zu beachten. Sollte die WC diese Grenzen
+        ueberschreiten, unterliegt die Waffe ausser der Genehmigung durch
+        den RM der Beurteilung durch das Waffengremium.
+
+   P_NR_HANDS
+        Waffen ueber einer effektiven WC von 150 muessen zweihaendig sein.
+        Ausnahmen koennen unter Umstaenden genehmigt werden, zum Beispiel
+        wenn die Waffe schwer erreichbar oder zahlenmaessig begrenzt, eine
+        Questbelohnung etc. ist. Alle einhaendigen Waffen ueber WC 140 sind
+        in jedem Fall genehmigen zu lassen.
+
+        Messer muessen generell einhaendig sein!
+
+   P_WEIGHT 
+        Bitte realistisch halten. Damit ist *nicht* das RL-Gewicht
+        gemeint, sondern man sollte am besten vergleichbare Waffen des
+        MG als Massstab nutzen. Da hier z.T. gravierende Diskrepanzen 
+        bestehen, evtl. mal mehrere vergleichen. Die Verantwortung 
+        hierfuer obliegt den RMs.
+
+        Waffen mit einem Gewicht von ueber 4000 Gramm sollten normalerweise
+        auch zweihaendig sein oder muessen der Balance vorgelegt werden.
+	
+   P_VALUE
+      Wie bei P_WEIGHT sind die RMs gefragt: Augenmass zaehlt. Werte
+      ueber 10000 oder so sind zwar nett, aber sinnlos und unrealistisch.
+
+   P_DAM_TYPE
+      Jede Waffe, die aus physikalischem Material besteht (also faktisch
+      alles mit Hardware) *muss* einen physikalischen Schadenstyp haben.
+
+   P_WEAPON_TYPE
+      WT_SWORD, WT_AXE,  WT_CLUB, WT_SPEAR, WT_KNIFE, WT_AMMU, WT_MAGIC,
+      WT_WHIP, WT_STAFF, WT_MISC, WT_RANGED_WEAPON 
+
+   P_DAMAGED
+      Diese Property (sie gibt den Grad der Beschaedigung einer Waffe
+      oder Ruestung an) sollte man _nicht_ per Hand setzen. Stattdessen
+      ruft man in der Waffe Damage(int) auf. Ein positiver Parameter
+      bedeutet eine Beschaedigung, ein negativer Reparatur um diesen
+      Wert. In der Funktion werden alle notwendigen Bedingungen
+      geprueft (minimale/maximale Waffenklasse etc).
+
+   P_EFFECTIVE_WC
+      Hier kann die evtl durch eine HitFunc veraenderte WC angegeben
+      werden. Der Durchschnittswert soll da stehen. Die Kaempfergilde
+      kann das in gewissen Grenzen abschaetzen und es wird auch fuer
+      die Guete von Zusatzangriffen von Gilden genutzt.
+
+   P_EFFECTIVE_AC
+      Fuer Paradewaffen setzen. Werte unbedingt mit Boing absprechen!
+
+   P_NOBUY
+      Waffen ab WC 150 werden beim Verkauf im Laden zurueckbehalten. Es
+      sollte aber auch fuer Waffen, die HitFuncs enthalten, P_NOBUY
+      gesetzt werden.
+
+Spezialwaffen/Waffen mit Sonderfunktion
+
+   ** ALLE Waffen mit HitFunc oder entsprechender Fkt. muessen   **
+   ** genehmigt werden!                                          **
+
+   Solche Waffen muessen ueber ein P_INFO verfuegen und irgendwo in ihrer
+   Beschreibung oder im P_INFO mindestens eine Andeutung ueber die
+   Herkunft oder den Grund ihrer besonderen Faehigkeit haben.
+
+   Auch Spezialwaffen sollten nach Moeglichkeit nicht ueber eine
+   EFFECTIVE_WC von 200 hinausgehen. Der Return-Wert der HitFunc, sofern
+   er von 0 abweicht, MUSS per random() zurueckgegeben werden, da er ohne
+   weiteres random() auf die WC aufaddiert wird.
+
+   Zu beachten ist, dass man bei Waffen, die nur fuer NPCs mehr Schaden 
+   machen sollen, nicht (nur) ueber P_RACE prueft, ob der Benutzer ein 
+   solcher ist. Es ist denkbar, dass Spieler ihre Rasse temporaer ver-
+   aendern koennen. Waffen die nur dann besser zuschlagen, wenn es
+   keinem Spieler zuguten kommen kann (!interactive, nicht zueckbar 
+   durch Hilfs-NPC etc.), muessen nicht genehnigt werden.
+
+   Waffen, die Monster vergiften (also nicht nur P_DAM_TYPE DT_POISON
+   haben) sind zwar nicht grundsaetzlich verboten, aber doch unerwuenscht.
+   Sie sind auf jeden Fall genehmigungspflichtig. Ausserdem sollte die
+   Wahrscheinlichkeit einer Vergiftung pro Kampfrunde max. bei 1% liegen.
+
+Parierwaffen
+       
+   Parierwaffen sind Waffen, die die Verteidigung unterstuetzen.  
+   Eine Waffe wird als Parierwaffe verwendet, wenn die Property
+   P_PARRY gesetzt ist. Folgende Werte sind moeglich:
+       
+   PARRY_NOT     Die ist KEINE Parierwaffe (=default).
+       
+   PARRY_ONLY    Dies ist eine reine Parierwaffe.
+
+   PARRY_TOO     Diese Waffe wird sowohl als Parierwaffe als auch
+                 als Angriffswaffe benutzt
+       
+   Die Schutzwirkung der Parierwaffe wird wie bei Ruestungen ueber die
+   Property P_AC gesetzt. Ueber die Property P_DEFEND_FUNC kann wie
+   bei Ruestungen eine DefendFunc gesetzt werden.
+       
+   Waffen mit PARRY_ONLY unterliegen den gleichen P_AC-Grenzwerten
+   wie Ruestungen vom Typ AT_SHIELD. Waffen mit PARRY_TOO oder einer
+   DefendFunc muessen generell genehmigt werden.
+
+---------- LETZTE AENDERUNG: Humni, 2011-10-12

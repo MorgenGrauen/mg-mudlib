@@ -1,0 +1,30 @@
+
+people
+------
+
+ MAGIERKOMMANDO:
+    people
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Dieses Kommando listet Informationen ueber alle eingeloggten Spieler und
+    Magier auf:
+
+     * von welcher Internetnummer sie kommen
+     * den aktuellen Namen.
+     * den Magierlevel
+     * das Alter
+     * Idle flag `I', wenn der Spieler laenger als 5 Minuten nichts mehr
+       gemacht hat
+     * wo er ist
+
+    Ausserdem wird die Anzahl der aktiven Spieler, die Anzahl der Kommandos
+    pro Sekunde und die Anzahl der kompilierten Zeilen pro Sekunde angezeigt.
+
+ SIEHE AUCH:
+    wer, pwho
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

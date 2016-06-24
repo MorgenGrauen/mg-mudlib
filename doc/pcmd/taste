@@ -1,0 +1,47 @@
+
+taste (ab)
+beruehre
+--------------
+
+KOMMANDO
+    taste
+    taste <was> [an <objekt> | am <objekt>] [in mir | im raum] [ab]
+    beruehre <was> [an <objekt> | am <objekt>] [in mir | im raum]
+
+ARGUMENTE
+    <objekt>
+      Ein Gegenstand bzw. Lebewesen, das man abtasten will.
+
+BESCHREIBUNG
+    "taste" ist das allgemeine Kommando, um (ab)tastbare Details an
+    Gegenstaenden, Lebewesen oder in Raeumen wahrzunehmen. Hierbei
+    laesst "taste" ohne Argumente den Spieler ungezielt im Raum rumtasten, in
+    dem er sich derzeit befindets. Ob man hierbei ueberhaupt irgendwas
+    wahrnimmt, haengt vom Magier des Raumes ab.
+    An allen anderen Gegenstaenden bzw. Lebewesen im selben Raum oder im
+    eigenen Inventar kann man mit "taste (an)" ebenfalls tasten. Nicht immer
+    kann man jedoch etwas (er)tasten.
+
+    Da bei Objekten mit gleichen tastbaren/fuehlbaren Details zuerst an im
+    Raum liegende Objekte abgetastet werden, kann man an Sachen, die man bei
+    sich traegt, auf alle Faelle mit dem Zusatz "in mir" abtasten.
+
+    Ertastbare Details wurden im Morgengrauen erst 2010 standardisiert.
+    Erwartet nicht, dass es in allen Raeumen / an allen Gegenstaenden tastbare
+    Details gibt - sie sind eher selten.
+
+BEISPIELE
+    taste boden ab
+    taste boden (identisch zu "taste boden ab")
+
+    taste rucksack in mir ab
+    taste baumstumpf im raum ab
+    taste schnalle an rucksack in mir ab
+
+SIEHE AUCH:
+    bezugspunkt
+    schau, rieche, lausche, lies
+
+LETZTE AENDERUNGEN:
+    13.03.2016, Zesstra
+

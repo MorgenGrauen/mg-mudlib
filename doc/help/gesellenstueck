@@ -1,0 +1,76 @@
+
+GESELLENSTUECK
+==============
+
+      Im MorgenGrauen musst Du als Jungmagier erst ein Gesellenstueck
+      abliefern, bevor Du von den zustaendigen Erzmagiern zum Vollmagier
+      befoerdert wirst. Bis dahin bist Du noch Lehrling und hast nur ein-
+      geschraenkte Leserechte.
+
+      Diese Einschraenkung der Leserechte soll Dich keinesfalls bei Deiner
+      Arbeit behindern - wenn Du Fragen zur Programmierung hast, die durch
+      die Beispiele im Verzeichnis '/doc' nicht beantwortet werden, so
+      kannst Du Dich jederzeit an Deinen Sponsor wenden, um weitere
+      Beispiel-Dateien zu bekommen.
+
+      Bei der Gestaltung Deines Gesellenstueckes kannst Du Deiner Phantasie
+      vollkommen freien Lauf lassen, Es gibt fuer das Gesellenstueck im MG 
+      keine festen Regeln wie "mindestens 20 Raeume und fuenf NPCs". Dein 
+      Gesellenstueck sollte jedoch etwas neues sein und keine Ueberarbeitung
+      von bestehendem Code, weil es LPC-Anfaengern erfahrungsgemaess
+      schwerer faellt, sich in fremden Code einzulesen. Ausserdem soll
+      ja klar erkennbar sein, dass das Neue tatsaechlich komplett von Dir
+      selbst stammt.
+
+      Ein kleiner Punkt sei als Denkanstoss erwaehnt: Wie waere es, wenn 
+      Du etwas fuer Anfaenger schreibst und nicht das x-te Super-Duper 
+      Seher-Team Metzelgebiet? Versuche ein Gebiet zu schreiben, an dem 
+      viele Spieler ihre Freude haben koennen und nicht nur die sehr hohen 
+      Seher. 
+
+      Genauso gut kannst Du eine neue Quest programmieren oder (gerade auch
+      in Teamarbeit) eine neue Gilde. Letzteres ist allerdings nicht fuer
+      LPC-Anfaenger zu empfehlen. Es muss nichtmal unbedingt ein "Standard-
+      Gesellenstueck" sein. 
+
+      Die Erzmagier sind auch anderen hier nicht aufgefuehrten Ideen immer 
+      aufgeschlossen gegenueber - sprich sie einfach einmal an und erzaehle,
+      was Du so an Vorstellungen davon hast, was Du im MorgenGrauen 
+      programmieren moechtest.        
+ 
+      Bevor Du Dich an das Programmieren begibst, solltest Du das Konzept
+      fuer Dein Gesellenstueck mit einem der zustaendigen Erzmagier
+      abklaeren, um sicherzugehen, dass es als Gesellenstueck ausreicht.
+      
+      Um Dein Gesellenstueck bewerten zu lassen, wendest Du Dich bitte an
+      einen der in der Hilfe als zustaendig angegebenen Erzmagier.
+      Du kannst auch gerne danach fragen, was von den anderen Jungmagiern 
+      bisher so an Gesellenstuecken abgegeben wurde, um Dir einen kleinen 
+      Ueberblick zu verschaffen, was ungefaehr von Dir erwartet wird.
+
+      Feste Grenzwerte vorzugeben, ab wann ein Gesellenstueck ausreichend 
+      ist, kann nicht im Sinne dieser Regelung sein. Daher gibt es an dieser
+      Stelle auch nur einige wenige grobe Richtlinien:
+
+      - ein Gesellenstueck sollte eine Bereicherung fuer das MorgenGrauen
+        sein - also kein lieblos hingeklatschtes Gebiet, bei dem man sofort
+        merkt, dass es nur zur Befoerderung zum Vollmagier taugen sollte.
+
+      - man sollte dem Gesellenstueck ansehen koennen, dass einiges an
+        Arbeit dahinter steckt, und dass es nicht "mal eben" an einem
+        Wochenende zusammengestrickt wurde.
+
+      - mittlerweile gibt es im MorgenGrauen gewisse Qualitaets-Standards,
+        was neue Gebiete angeht. Dazu gehoert u.a., dass die Raeume nicht
+        alle gleich aussehen (Copy&Paste laesst gruessen), gewisse
+        Standard-Details ueberall beschrieben sind etc. Dieser Standard gilt
+        selbstverstaendlich auch fuer Gesellenstuecke.
+
+      Bei weitergehenden Fragen wende Dich einfach an einen der in der Hilfe 
+      als Ansprechpartner angegebenen Erzmagier.
+
+ SIEHE AUCH:
+    erzmagier, regionsmagier, magier
+
+ LETZTE AeNDERUNG:
+    Mon, 28. AUG 2000, 22:30:00 von Wim.

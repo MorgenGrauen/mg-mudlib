@@ -1,0 +1,40 @@
+
+fluchtrichtung
+--------------
+
+ SEHERKOMMANDO:
+    fluchtrichtung <befehl>
+
+ ARGUMENTE:
+
+     <befehl>
+        Der Befehl fuer die bevorzugte Fluchtrichtung.
+
+ BESCHREIBUNG:
+    Setzt die bevorzugte Fluchtrichtung fuer den Vorsichtsmodus.
+
+    Diese Richtung wird bei der Flucht mit einer gewissen Wahrscheinlichkeit
+    als erstes ausprobiert, falls moeglich. Die Wahrscheinlichkeit betraegt
+    60% bei Stufe 30 und nimmt mit jeder weiteren Stufe um ca. 1,3 Prozent-
+    punkte zu.
+
+    Falls die Flucht in diese Richtung nicht gelingt, werden die anderen
+    Richtungen wie bisher ausprobiert.
+
+ BEISPIELE:
+    Wenn man bevorzugt nach Osten fliehen will:
+
+    > fluchtrichtung osten
+        oder
+    > fluchtrichtung o
+
+    Wenn man "traditionell" fluechten will, dies aber kommentieren moechte,
+    kann man auch folgendes nehmen:
+
+    > fluchtrichtung sag Oh, shit!
+
+ SIEHE AUCH:
+    vorsicht, report
+
+ LETZTE AeNDERUNG:
+    Mit, 07.01.2004,  von Rikus

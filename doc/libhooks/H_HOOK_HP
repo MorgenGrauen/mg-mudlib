@@ -1,0 +1,28 @@
+HOOK:
+   H_HOOK_HP
+
+DEFINIERT IN:
+   /sys/hook.h
+
+AUSGELOeST VON:
+   /std/living/life.c
+
+BESCHREIBUNG:
+   Wird ausgeloest, wenn sich die P_HP eines Spielers aendern.
+   Dieser Hook laeuft nach der Aenderung der Lebenspunkte. Es ist nicht
+   moeglich, diesen Hook abzubrechen oder die Lebenspunkte zu aendern.
+
+EVENT-DATEN:
+   Es werden die neuen Lebenspunkte des Spielers uebergebe.
+
+RUeCKGABEWERTE:
+   ({ <status>, <daten> })
+      <status>  : H_NO_MOD
+      <daten>   : Lebenspunkte
+
+SIEHE AUCH:
+   HRegisterToHook(), HUnregisterFromHook(), HookFlow()
+
+-----------------------------------------------------------------------------
+7.2.2016, Zesstra
+

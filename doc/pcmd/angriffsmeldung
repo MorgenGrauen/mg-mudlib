@@ -1,0 +1,54 @@
+
+angriffsmeldung
+---------------
+
+ KOMMANDO:
+    angriffsmeldung an/ein | aus
+
+ BESCHREIBUNG:
+    Schaltet die Anzeige der Angriffsmeldung:
+    > Du greifst XYZ mit ABC an.
+    fuer jede Kampfrunde ein oder aus.
+    
+    Ist "angriffsmeldung" ausgeschaltet, bekommt man nur neue
+    Angriffsmeldungen (zB bei Waffenwechseln) von sich angezeigt.
+
+    Ist sie eingeschaltet, bekommt man in jeder Kampfrunde auch
+    die eigene Angriffsmeldung angezeigt.
+
+ BEISPIEL:
+    > angriffsmeldung an
+    Du siehst saemtliche Angriffsmeldungen von Dir.
+    > toete grille
+    Ok.
+    Du greifst die Grille mit blossen Haenden an.   <--
+    Du triffst eine Grille hart.
+    Die Grille greift Dich an.
+    Eine Grille kitzelt Dich am Bauch.
+    Du greifst die Grille mit blossen Haenden an.   <--
+    Du triffst eine Grille hart.
+    Die Grille greift Dich an.
+    Eine Grille verfehlt Dich.
+    Du greifst die Grille mit blossen Haenden an.   <--
+    Du triffst eine Grille sehr hart.
+
+    > angriffsmeldung aus
+    Du siehst nur neue Angriffsmeldungen von Dir.
+    > toete grille
+    Ok.
+    Du greifst die Grille mit blossen Haenden an.   <--
+    Du triffst eine Grille hart.
+    Die Grille greift Dich an.
+    Eine Grille verfehlt Dich.
+    Du triffst eine Grille hart.
+    Eine Grille verfehlt Dich.
+    Du triffst eine Grille hart.
+    Eine Grille verfehlt Dich.
+    Du triffst eine Grille hart.
+    > zueck dolch
+    Du zueckst den Trolldolch.
+    Du greifst die Grille mit dem Trolldolch an.    <--
+    Du kratzt eine Grille.
+
+ LETZTE AeNDERUNG:
+    1.September 2008 Gloinson

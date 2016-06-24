@@ -1,0 +1,33 @@
+FUNKTION:
+	mixed QueryEnemies();
+
+DEFINIERT IN:
+	/std/living/combat.c
+
+ARGUMENTE:
+	keine
+
+RUeCKGABEWERT:
+	Array mit Array aus bekannten Gegnern und Array aus Zeiten
+
+BESCHREIBUNG:
+	Diese Funktion enthaelt ein Array, das zwei Elemente enthaelt, die
+	wiederum Arrays sind:
+	  1. Array: Die bekannten Gegner als Objektpointer.
+	  2. Array: Die zugeordneten Zeiten, wie lange ein Gegner noch als
+	            solcher bekannt sein soll.
+	Im Normalfall wird ein Gegner dann bekannt, wenn man gezielt
+	jemanden atackiert, oder wenn man einen Angriff abwehren muss.
+	Dann wird der Gegner intern abgespeichert, und es wird eine Zeit
+	gesetzt, die dann runtergezaehlt wird. Ist die Zeit auf 0, so wird
+	der Gegner wieder automatisch ausgetragen.
+	(Standardmaessig betraegt diese Zeit 600 Sekunden (300 Heartbeats).)
+	Man kann sich die Gegner auch in Form eines Mappings zurueckgeben
+	lassen. Dies erreicht man mittels der Funktion GetEnemies().
+
+SIEHE AUCH:
+	Kill(), Attack(), Defend(), do_my_heart_beat(), PresentEnemies(),
+	GetEnemies(), SelectEnemy(), QueryPreferedEnemy(), P_PREFERED_ENEMY
+
+----------------------------------------------------------------------------
+29.12.2007, Zesstra

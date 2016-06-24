@@ -1,0 +1,31 @@
+NAME:
+    P_SIZE                        "size"                        
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Groesse des Lebewesens bzw. Laenge der Waffe (in cm).
+
+     Wird keine Waffenlaenge explizit angegeben, so sind die Defaultwerte
+     fuer die entsprechenden Waffentypen folgende:
+
+    	WT_SWORD  : 100
+    	WT_AXE    :  80
+    	WT_CLUB   :  80
+    	WT_SPEAR  : 180
+    	WT_KNIFE  :  20
+    	WT_WHIP   : 200
+    	WT_STAFF  : 150
+
+BEMERKUNGEN:
+     1. Uebertreibt es bitte mit der Groesse nicht, auch sehr grosse NPCs 
+        sollten nicht ueber 1000000 liegen. Sonst kriegt die Karategilde 
+        Probleme.
+     2. Negative Werte fuer P_SIZE sind nicht moeglich, da dies zum einen
+        voellig unsinnig ist und zum anderen evtl. zu Problemen mit Waffen
+        fuehrt, die Schaden in Abhaengigkeit von P_SIZE machen und sich
+        darauf verlassen, dass nur positive Werte vorkommen.
+
+LETZTE AENDERUNG:
+    2006-09-29, von Zesstra

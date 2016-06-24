@@ -1,0 +1,83 @@
+Haeufig gestellte Fragen zum Thema Git im Morgengrauen
+======================================================
+
+* Was muss ich machen, damit mein Git-Repo automatisch mit dem MG
+* synchronisiert wird?
+  Eine Synchronisation findet automatisch statt, wenn man einen Import eines
+  Verzeichnisses aus dem Mud durchfuehrt.
+  Macht man dies nicht, sondern erstellt sich unabhaengig vom Mud das Repo,
+  muss man sich an einen Erzmagier mit Shellzugang wenden.
+
+* Aufnahme als Regionsmitarbeiter/Regionsmagier/Weiser/Erzmagier/Gott
+  Dies ist zurzeit nur durch einen EM moeglich.
+
+* Wie benutze ich Git unter Windows?
+  GitHub hat eine Anleitung fuer msysgit, welche im wesentlichen auch fuers MG
+  brauchbar ist:
+  http://help.github.com/win-set-up-git/
+  Eine weitere Moeglichkeit ist hier angeben:
+  http://rogerdudler.github.io/git-guide/
+  Einige in Frage kommende Git-Pakete sind hier kurz vorgestellt:
+  http://www.makeuseof.com/tag/5-windows-git-clients-git-job/
+  Eine Anleitung fuer die Nutzung von Putty als SSH-Client unter Windows
+  findet sich in contrib/putty.mkd auf https://github.com/sitaramc/gitolite/
+
+* Wie kann ich mir die Geschichte meines Repos graphisch anzeigen lassen?
+  Da gibt es verschiedene Loesungen, vor allem auch abhaengig vom
+  Betriebssystem. Auf allen geht vermutlich 'gitk' und 'git gui'.
+  Auf MacOS gibt es auch 'GitX'.
+
+* Kann man Aenderungen/Diffs/ farbig markiert anzeigen?
+  > git log -p --color-words
+  Alternativ kann man .git/config folgende Parameter setzen:
+  [color]
+  	color.diff=auto
+	color.grep=auto
+	color.status=auto
+
+  Wenn man es generell bunt haben will, setzt man einfach
+  [color]
+  	color.ui=auto
+
+  in die Konfigurationsdatei.
+
+* Warum soll ich denn die color-Einstellungen auf auto und nicht true setzen?
+  Der Wert auto bewirkt, dass git nur dann die Ausgaben einfaerbt, wenn diese
+  nach STDOUT gehen. Ansonsten bekommt man den ASCII-kodierten Farbstring in
+  die Ausgabedatei geschrieben.
+
+* Wie kann ich eine Repository loeschen?
+  Zur Zeit ist dies nur durch einen EM mit Shellzugang auf dem MG-Rechner
+  moeglich.
+
+* Kann ich an einem Gebiet, fuer das ich keinen Schreibzugriff habe, helfen
+* einen Bug zu fixen?
+  Ja - sofern Du Leserechte auf das Repository hast. Du kannst das Repo dann
+  forken, d.h. eine Kopie erstellen. Die beste Methode hierfuer ist
+  > ssh git@mg.mud.de fork d/gebirge/zook/wald players/zesstra/public/zwald
+  Hierbei wird ein Clone des Repos erstellt und sich gemerkt, welches das
+  Original war. In Deinem Repo kannst Du nun einen Bugfix machen. Bist Du
+  fertig, sagst Du dem Gebietsmagier (oder einem zustaendigen RM) Bescheid und
+  bittest ihn, den entsprechenden Branch (z.B. syntax_bugfix) zu pullen.
+
+* Wie vermeide ich einen 'merge commit', wenn ich lokale Aenderungen in einem
+* Zweig habe, in den ich Aenderungen aus dem MG pullen moechte?
+  Eine Moeglichkeit hierfuer ist das Pullen mit 'git pull --rebase', um git
+  einen implizites Rebase beim Pull durchfuehren zu lassen.
+
+
+Was ist git?
+Wo krieg ich git her?
+Wie kann ich das Repository clonen?
+Wie kann ich ein Changelog anzeigen lassen?
+Wie kann ich ein Changelog mit Diff anzeigen lassen?
+
+SIEHE AUCH:
+  git-repositories: Repository-Verwaltung im Mud
+  git-howto: Wie git benutzt wird
+  git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-links: Verweise ins WWW
+
+10.03.2015 Amaryllis
+

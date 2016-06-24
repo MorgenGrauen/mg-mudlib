@@ -1,0 +1,45 @@
+
+snoop
+-----
+
+ MAGIERKOMMANDO:
+    snoop <name> [<flags>]
+    snoop
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Spielers
+     <flags> (optional)
+        'l' und/oder 'f'
+
+ BESCHREIBUNG:
+    Du siehst und hoerst alles aus der Sicht des Spielers <name>. Das kann
+    auch ein Magier sein, wenn er einen kleineren Level hat als Du.
+
+    Die Flags haben folgende Bedeutung:
+
+     f (force)
+        Falls der Spieler schon von einem Magier mit niedrigerem Level
+        gesnooped wird, wird diesem der Snoop weggenommen (ein Spieler kann
+        immer nur von *einem* Magier gleichzeitig gesnooped werden).
+
+        Ohne das Flag wird nur eine Mitteilung ausgegeben, dass der Spieler
+        schon gesnooped wird.
+
+     l (locked)
+        Gibt man dieses Flag an, so koennen Magier mit kleinerem Level den
+        Spieler nicht snoopen, waehrend man selbst es gerade tut.
+
+        Laesst man das Flag weg, und ein Magier mit kleinerem Level will den
+        gleichen Spieler snoopen, so wird er gewissermassen dazwischen
+        geklinkt: Der Spieler wird nun von diesem Magier gesnooped, und der
+        Magier wiederum von Dir.
+
+    Mit der zweiten Form (ohne Argumente) wird das Snoopen wieder beendet.
+
+ SIEHE AUCH:
+    sallow, vertrag, snoop()
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:55:04 von Wargon

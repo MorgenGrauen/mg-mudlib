@@ -1,0 +1,23 @@
+CheckFindRestrictions
+
+FUNKTION:
+    varargs int CheckFindRestrictions(object ob, mixed restr, closure qp)
+ 
+DEFINIERT IN:
+    /std/room/shop.c
+ 
+ARGUMENTE:
+    ob     - Objekt
+    restr  - zusaetzliches Argument
+    qp     - symbol_function("QueryProp",ob)
+
+BESCHREIBUNG:
+    Funktion, die FindBestWeapon / FindBestArmours einschraenkt.
+    Wird in Wert ungleich 0 zurueckgeliefert, so wird das Objekt
+    nicht genommen.
+
+RUECKGABEWERT:
+    Normalerweise 0
+
+SIEHE AUCH:
+    FindBestWeapon(), FindBestArmours()

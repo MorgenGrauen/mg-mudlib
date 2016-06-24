@@ -1,0 +1,21 @@
+FUNKTION
+     void unshadow()
+
+BESCHREIBUNG
+     Das aufrufende Objekt wird als Shadow von allen anderen Objekten
+     entfernt, denen es uebergeworfen war. Wenn dem aufrufenden Objekt
+     selbst ein Shadow uebergeworfen war, wird dieser entfernt.
+     Man sollte diese (s)efun rufen, bevor man den Schatten zerstoert.
+
+BEISPIELE
+     // B beschattet A
+     void b::stop_shadowing() {
+       unshadow();
+     }
+
+SIEHE AUCH
+     Generell:	     shadow(E)
+     Rechte:	     query_allow_shadow(M), query_prevent_shadow(L)
+     Informationen:  query_shadowing(E)
+
+20.08.2009, Zesstra

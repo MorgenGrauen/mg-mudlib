@@ -1,0 +1,33 @@
+SetEnemies()
+
+FUNKTION:
+     mapping SetEnemies(object *myenemies);
+
+DEFINIERT IN:
+     /std/living/combat.c
+
+ARGUMENTE:
+     myenemies
+	  Array: ({Gegnerarray, Zeitenarray})
+
+RUeCKGABEWERT:
+     Internes Mapping mit bekannten Gegnern und Zeiten.
+
+BESCHREIBUNG:
+     Normalerweise fuegt man einzelne Gegner mittels InsertEnemy() ein und
+     loescht alte Feinde mittels StopHuntFor().
+
+     Um jedoch mit einem Schlag viele Veraenderungen vorzunehmen, kann man
+     die Funktion SetEnemies() nutzen.
+
+     Ihr uebergibt man ein Array mit einem Array mit den gewuenschten Gegnern
+     als und einem zweiten, gleichgrossen Array mit den Zeiten, wie lange
+     diese Gegner aktuell sein sollen, als Eintraege.
+
+     Die Funktion traegt diese Werte als Gegner mit entsprechender
+     Feindeszeit ein.
+
+SIEHE AUCH:
+     InsertEnemy(), StopHuntFor(), SelectEnemy(), PresentEnemies()
+
+10.Feb 2005 Gloinson

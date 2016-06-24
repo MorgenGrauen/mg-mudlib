@@ -1,0 +1,21 @@
+Materialid:
+MAT_OPAL                 "opal"
+
+Name:
+"Opal" "Opals" "Opal" "Opal"
+
+Geschlecht:
+M
+
+Beschreibung:
+weiss, rot, blau, bunt
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_OPAL
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

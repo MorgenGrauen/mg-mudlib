@@ -1,0 +1,29 @@
+
+in
+--
+
+ MAGIERKOMMANDO:
+    in <raum> <kommando>
+
+ ARGUMENTE:
+
+     <raum>
+        Dateiname eines Raumes
+     <kommando>
+        das auzufuehrende Kommando
+
+ BESCHREIBUNG:
+    Du wirst, unsichtbar fuer die Anwesenden, in den Raum <raum>
+    transportiert, fuehrst das Kommando <kommando> aus und gelangst
+    automatisch wieder in den Raum zurueck, in dem Du vorher warst.
+
+ BEISPIELE:
+    Ein Blick auf die aktuelle Liste der Abenteuer:
+
+    > in /gilden/abenteurer liste
+
+ SIEHE AUCH:
+    at, goto
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

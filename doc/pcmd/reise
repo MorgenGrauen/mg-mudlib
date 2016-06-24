@@ -1,0 +1,103 @@
+KOMMANDO:
+        reise
+        reise route
+        reise [mit transportmittel] nach|zu|zum|zur|ins|ans (zielort)
+        reise aus|nicht
+
+ARGUMENTE:
+        <transportmittel>       Ein Transportmittel Deiner Wahl
+        <zielort>               Dein Reiseziel
+
+FUNKTION:
+       Wenn Du Dein Reiseziel (oder das Verkehrsmittel) bereits
+       kennst, kannst Du mit diesem Befehl Deine Reise einfacher
+       gestalten.
+       
+       Benutzt Du den reise-Befehl, so wirst Du automatisch ein
+       Transportmittel betreten (falls dies moeglich ist) und es
+       am Zielort (falls angegeben) auch wieder verlassen.
+
+       Folgende Argumente / Funktionen werden unterstuetzt:
+
+reise 
+       Deine aktuelle Reiseroute wird ausgegeben. Du kannst sie mit
+       o.g. Argumenten immer wieder aendern.
+
+reise route:
+       Damit kannst Du feststellen, welche Verkehrsmittel verkehren 
+       und welche Routen sie anbieten.
+
+reise mit <xxx> nach|zu|zum|zur|ins|ans <zzz>:
+       Die wohl genaueste Moeglichkeit, eine Reiseroute festzulegen.
+
+       xxx steht hier fuer eine eindeutige Kennzeichnung des Transport-
+       mittels (z.B. 'piratenschiff' statt 'schiff').
+
+       zzz benennt den genauen Zielort (z.B. 'sonneninsel' statt 'insel').
+
+       Passen mehrere Transporter (oder Zielorte) auf die von Dir 
+       angebenen Namen, so wird der naechstmoegliche Transporter und
+       das naechstgelegene Ziel ausgewaehlt.
+
+       Die Bezeichnung fuer <zzz> reagiert teilweise nicht auf unter-
+       schiedliche Schreibweisen. Am besten, Du nimmst immer die, die 
+       auch bei 'reise route' angegeben wird.
+
+reise mit <xxx>:
+       Hier legst Du nur fest, WOMIT Du fahren willst. Du faehrst solange
+       mit xxx, bis Du den Transporter eigenhaendig verlaesst, oder einen 
+       Zielort mittels 'reise nach zzz' angibst.
+
+reise nach <zzz>:
+       Hier legst Du nur fest, WOHIN Du fahren willst. Das Transportmittel
+       wird automatisch ermittelt, wobei anwesende Transporter natuerlich
+       bevorzugt werden.
+
+       Da <zzz> nicht immer auf unterschiedliche Schreibweisen reagiert, 
+       nimmst Du am besten die Bezeichnung, die auch bei 'reise route'
+       angegeben wird.
+
+reise aus|nicht:
+       Mit diesem Befehl loeschst Du Deine Reiseroute. Du musst das
+       gewuenschte Transportmittel dann wieder per Hand betreten und 
+       verlassen.
+
+BEMERKUNGEN:
+       Eine festgelegte Reiseroute ist nur dort wirksam, wo Du sie 
+       festgelegt hast. Nach erfolgreicher Reise wird sie automatisch 
+       geloescht, ansonsten bleibt sie bis zum expliziten Loeschen 
+       bestehen.
+
+       Nicht jedes Transportmittel / Ziel kann mittels 'reise' ausge-
+       waehlt werden. Es besteht keinerlei Anspruch darauf, das 'reise'
+       ueberall zu funktionieren hat.
+
+BEISPIELE:
+       reise ins verlorene land
+       
+       reise ans ende der welt
+       reise zum ende der welt
+       
+       reise nach port vain
+  
+       Einige Zielorte sind auch per Kuerzel zu erreichen:
+       - Verlorenes Land: vland
+       - Werwolfinsel: wwi
+       - Port Vain: pv
+       - Akhar Nth'tar: ti
+       - Insel am Ende der Welt: edw, iaedw, weltende
+       - Feuerinsel: fi
+       - Magieinsel: minsel
+       - Insel der Toten: idt, toteninsel
+
+       Generell sollten die Namen als Reiseziele verwendet werden, die
+       auch bei 'reise route' angezeigt werden. Gleiches gilt natuerlich
+       auch fuer die Namen der Transporter. So ist eine zielgenaue und 
+       perfekte Reise schon vorprogrammiert.
+
+       Mit ein bisschen Geduld und Testen wirst Du sicher schnell raus-
+       bekommen, wie Du welchem Befehl einsetzen musst um an Dein Ziel 
+       zu gelangen.
+     
+LETZTE AENDERUNG:
+       2015-Jan-18, Arathorn 

@@ -1,0 +1,22 @@
+NAME:
+    P_MAX_OBJECTS                  "max_objects"                  
+
+DEFINIERT IN:
+    /sys/container.h
+
+BESCHREIBUNG:
+     Maximale Anzahl an Objekten, die in einen Container passen.
+     P_MAX_OBJECTS sollte im Normfall zwischen 0 - 100 liegen.
+
+BEMERKUNGEN:
+     Soll es sich um einen herausragenden Container handeln, der zum
+     Beispiel das Gewicht um mehr als 50% reduziert, sollte P_MAX_OBJECTS
+     einen kleineren Wert haben. Das Verhaeltnis von P_MAX_WEIGHT,
+     P_WEIGHT_PERCENT und dieser Property sollte stimmen.
+
+BEISPIELE:
+     Als Beispiel sollte man sich das Postpaket ansehen und sich an dessen
+     Werten orientieren (/p/service/loco/obj/parcel).
+
+SIEHE AUCH:
+     P_MAX_WEIGHT, P_WEIGHT_PERCENT, P_LIGHT_TRANSPARENCY, container

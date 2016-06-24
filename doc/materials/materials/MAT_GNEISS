@@ -1,0 +1,19 @@
+Materialid:
+MAT_GNEISS               "gneiss"
+
+Name:
+"Gneiss" "Gneisss" "Gneiss" "Gneiss"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_STONE:35
+MAT_GNEISS
+
+Gruppenzugehoerigkeit:
+MATGROUP_STONE:100
+MATGROUP_SOLID:100

@@ -1,0 +1,41 @@
+FUNKTION:
+        int find_call_out(string func)
+        int find_call_out(closure cl)
+
+BESCHREIBUNG:
+        Findet den ersten call_out() auf die Funktion 'func' im aktuellen Objekt
+        (bzw. auf die Closure 'cl') der ausgefuehrt werden soll.
+        Zurueck gegeben wird die verbleibende Zeit bis zum Aufruf in Sekunden.
+        Wenn kein call_out() gefunden wird, wird -1 zurueck gegeben.
+
+BEISPIELE:
+        // Findet sich kein call_out auf die Funktion 'func', so kann er
+        // gestartet werden. (Wichtig falls der call_out nicht mehrfach
+        // aufgerufen werden soll).
+ 
+        if(find_call_out("func")==-1)
+          call_out("func",5);
+
+        // Alle call_out auf Funktion 'func' werden gefunden und gestoppt.
+        // (Beispielsweise weil ein Spieler den Raum verlaesst oder sich
+        // disconnectet).
+
+        while(find_call_out("func") > -1)
+          remove_call_out("func");
+
+        // Die Suche nach call_out()s auf Closures funktioniert nur, wenn der
+        // genaue Wert der Closure gesucht wird.
+
+        // Das funktioniert:
+            closure cl = symbol_function("main", obj);
+            call_out(cl, 2);
+            find_call_out(cl);
+
+        // Das funktioniert nicht:
+            call_out(symbol_function("main", obj), 2);
+            find_call_out(symbol_function("main", obj));
+
+SIEHE AUCH:
+        call_out(E), remove_call_out(E), call_out_info(E)
+
+4.Aug 2007 Gloinson

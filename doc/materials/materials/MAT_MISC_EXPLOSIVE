@@ -1,0 +1,19 @@
+Materialid:
+MAT_MISC_EXPLOSIVE       "misc_explosive"
+
+Name:
+"explosives Material" "explosiven Materials" "explosivem Material" "explosiven Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+allg. Sprengstoffe
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MISC:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_EXPLOSIVE:100

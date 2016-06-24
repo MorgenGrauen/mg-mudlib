@@ -1,0 +1,36 @@
+EVENT: 
+   EVT_LIB_PLAYER_DEATH
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/living/life.c
+
+BESCHREIBUNG:
+   Dieser Event wird immer dann von einem Spielerobjekt ausgeloest, wenn 
+   der Spieler  gerade getoetet wurde (um genau zu sein: im die()).
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:        (object) Objekt des getoeteten Spielers,
+      E_PLNAME:        (string) UID/Playername des getoeteten Spielers, 
+      E_ENVIRONMENT:   (object) Environment des Opfer beim Tod,
+      E_TIME:          (int) Zeitstempel des Todes,
+      P_LAST_KILLER:   (object) Der Killer, s. Property
+      P_LAST_DAMAGE:   (int) s. Property,
+      P_LAST_DAMTYPES: (string *) s. Property,
+      P_LAST_DEATH_PROPS: (mixed) s. Property
+      E_EXTERNAL_DEATH:(int) Flag, ob die() von aussen gerufen,
+      E_POISON_DEATH:  (int) Flag, ob der Tod durch Gift ausgeloest,
+      E_CORPSE:        (object) Leiche, sofern es eine gibt
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+21.08.2007, Zesstra
+

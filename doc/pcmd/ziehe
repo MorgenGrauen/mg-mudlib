@@ -1,0 +1,29 @@
+
+ziehe
+-----
+
+ KOMMANDO:
+    ziehe <kleidung> an | aus
+    ziehe <waffe> hervor
+
+ ARGUMENTE:
+
+     <kleidung>
+        Ein Kleidungsstueck
+     <waffe>
+        Eine Waffe
+
+ BESCHREIBUNG:
+    `ziehe (an/aus)' ist das allgemeine Kommando, um Kleidung an- und
+    abzulegen. Robuste Kleidung bietet nur dann Schutz gegen Angriffe, wenn
+    sie angezogen wurde.
+
+    `ziehe (hervor)' ist das allgemeine Kommando, um eine Waffe zum Kampf in
+    die Hand zu nehmen; nur wenn die Waffe hervorgezogen wurde, wird sie im
+    Kampf zum Angriff eingesetzt.
+
+ SIEHE AUCH:
+    trage, zuecke, stecke (weg)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

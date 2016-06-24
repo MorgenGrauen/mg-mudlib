@@ -1,0 +1,12 @@
+SYNOPSIS
+        string geteuid(object ob);
+
+BESCHREIBUNG
+        Liefert die effektive User-ID des Objekts <obj> (normalerweise ein
+        Magier oder eine Domain). Objekte, die durch <obj> geclonet werden,
+        erhalten diese User-ID. Die effektive User-ID wird auch fuer
+        Zugriffschecks verwendet. Wenn <obj> nicht angegeben wird, wird
+        standardmaessig this_object() verwendet.
+
+SIEHE AUCH
+        seteuid(E), getuid(E), getuuid(E), export_uid(E)

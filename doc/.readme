@@ -1,0 +1,25 @@
+Dokumentation von Befehlen und Themen innerhalb des Spiels:
+ * help/  - allgemeine Themen, die ALLE betreffen
+ * pcmd/  - die Befehle, ueber die man schon als einfacher Spieler verfuegt
+ * scmd/  - Seherbefehle und Hilfen zum Hausbau
+ * mcmd/  - hier sind die Magierbefehle beschrieben
+ * wiz/   - allgemeine Themen fuer Magier
+ * g.XYZ/ - Hilfeseiten, die zur Gilde XYZ gehoeren
+
+Uebersicht ueber Objekte und Funktionen MudLib
+ * efun/   - Funktionen, die der GameDriver zur Verfuegung stellt
+ * lfun/   - Funktionen, die die Objekte der MudLib zur Verfuegung stellen
+ * master/ - Funktionen, die das Masterobject zur Verfuegung stellt
+
+ * std/    - Die Objekte des Basis-MudLib
+ * obj/    - Einige hilfreiche Zusatzobjekte
+
+ * props/  - Die Properties
+
+ Allgemeines
+ * beispiele/ - einige hilfreiche Beispiele fuer den Start ins Magierleben
+
+Bei Aenderungen bitte Gloinson Bescheid geben oder eine Mail an
+Doku@MorgenGrauen schicken. Eine genauere Uebersicht ueber das
+Hilfsverzeichnis findest Du in der Datei /doc/README.
+

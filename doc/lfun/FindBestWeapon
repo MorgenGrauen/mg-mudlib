@@ -1,0 +1,33 @@
+FindBestWeapon()
+
+FUNKTION:
+    varargs object FindBestWeapon(mixed type, int maxmon, int maxw, int hands,
+                                  int minwc, mixed restr)
+ 
+DEFINIERT IN:
+    /std/room/shop.c
+ 
+ARGUMENTE:
+    type   - gewuenschter Waffentyp / Waffentypen
+    maxmon - Geld das ausgegeben werden darf
+    maxw   - Maximales Gewicht
+    hands  - Anzahl Haende, die die Waffe belegen darf
+    minwc  - minimale gewuenschte Waffenklasse
+    restr  - zusaetzliches Argument fuer CheckFindRestrictions()
+
+BESCHREIBUNG:
+    Sucht die beste Waffe, die der Laden verkaufen kann.
+ 
+RUECKGABEWERT:
+    Die beste Waffe :-)
+ 
+BEMERKUNG:
+    Die Qualitaet der Waffe wird mit EvalWeapon() bestimmt.
+    Haben zwei Waffen die gleiche Qualitaet, wird die preiswertere genommen.
+ 
+BEISPIEL:
+    FindBestWeapon(WT_SWORD,5000,1)
+    Bestes einhaendiges Schwert unter 5000 Muenzen.
+
+SIEHE AUCH:
+    FindBestArmours(), CheckFindRestrictions(), EvalWeapon()

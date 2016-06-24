@@ -1,0 +1,334 @@
+RM - HOWTO
+**********
+
+Vorlaeufiges Inhaltsverzeichnis:
+
+1) Allgemeines
+   - Fehlerteufel
+   - Logtool
+   - Kommentierung von Aenderungen
+   - eigene Anschluesse
+2) Abnahme von Code/Gebieten
+   - Balance/Genehmigungen
+   - Konzeptionelle Eignung
+   - formale Pruefung
+   - Gemeinschaftsarbeiten
+3) Verlegung von Dateien
+4) Seherhaeuser
+   - Sonderwuensche/Unsichtbarkeit
+   - anderer Befehl zum Betreten
+   - Verweise auf Beispielcode
+5) Debuggen von Code
+6) besondere Funktionen/Funktionaelitaeten
+   - catch_tell() / ReceiveMsg()
+   - move()
+   - Attack() / Defend()
+   - call_out()
+   - remove() / destruct()
+   - for()-Schleifen
+   - write_file()
+   - Verwalten von charakterbezogenen Daten
+
+1) Allgemeines
+==============
+
+o Um stets einen Ueberblick ueber die in Deiner Region (hoffentlich selten)
+  auftretenden Bugs und Warnungen zu behalten, solltest Du einen
+  Fehlerteufel (/obj/tools/fehlerteufel.c) besitzen, bedienen koennen und
+  regelmaessig dessen Listen durchsehen. Deinen Regionsmitarbeitern solltest
+  Du, allein schon, um zusaetzliche Arbeit fuer Dich selbst zu reduzieren,
+  dieses Werkzeug ebenfalls an die Hand geben und sie auffordern, ihren
+  Kram moeglichst umfassend selbst zu reparieren.
+  Neuen Magiern wird dieses Tool uebrigens automatisch von Merlin in die
+  Hand gedrueckt, so dass sie sich vom ersten Tag an daran gewoehnen koennen.
+
+o Es ist empfehlenswert, das Logtool zu besitzen (/obj/tools/logtool.c) und
+  in diesem fuer jedes Repfile eines Regionsmitarbeiters einen Eintrag vor-
+  zusehen. Warum das? Es ist bereits vorgekommen, dass Spieler ernsthaft
+  argumentiert haben, sie duerften einen von ihnen entdeckten Bug ausnutzen,
+  weil sie ihn ja gemeldet haetten (im Repfile!), er aber nicht repariert
+  worden sei (was nicht verwundert, da er im Repfile in der Mehrzahl der
+  Faelle weit unterhalb des Wahrnehmungshorizonts der allermeisten
+  Regionsmagier schwebt).
+
+o Wenn Du in fremdem Code Aenderungen vornehmen musst, die mehr beruehren
+  als nur ein paar Tippfehler in Details oder Infos, dann kommentiere den
+  defekten Code aus und fuege den reparierten mit Kommentar ein. Es reicht
+  an dieser Stelle aus, Deinen Namen und das Datum zu vermerken. In den
+  Header der Datei solltest Du unbedingt ein Changelog einfuegen, in dem
+  das Datum der Aenderung, der Name des Ausfuehrenden (Deiner) sowie die
+  vorgenommene Aenderung mit Begruendung bzw. u.U. Bug-ID aus dem Fehler-
+  teufel einzutragen ist. Wir haben im MG leider keinen wirkungsvollen
+  Debugger und Bugtracker-Mechanismus, so dass wir zur Erhaltung einer
+  gewissen Code-Hygiene Bugfixes mit Hilfe solcher Eintragungen dokumentieren
+  und rueckverfolgen muessen. Insbesondere ist ein solcher Eintrag wichtig,
+  um im Falle von Folge-Bugs die Ursache schneller zu finden.
+
+o Willst Du in Deiner eigenen Region ein Gebiet anschliessen, solltest Du
+  diesen vor Anschluss entweder vom Co-RM oder von einem RM einer anderen
+  Region lesen lassen. Auch wenn Du ein guter Programmierer bist, findet ein
+  zweites Paar Augen oft Dinge, an die man nicht gedacht hat.
+
+
+2) Code wird zur Abnahme vorgelegt
+==================================
+
+o Bei Waffen und Ruestungen unbedingt auf Einhaltung der Balance-Vorgaben
+  achten.
+
+o Sofern ein Objekt eine Balance-Genehmigung besitzt, muss die BTOP-Nummer,
+  die die Balance als eindeutige ID fuer jeden Antrag vergibt, im Header
+  des betreffenden Objektes erkennbar eingetragen sein.
+
+o Vor Anschluss sollte man Ruecksprache mit verschiedenen Instanzen halten,
+  um sicherzustellen, dass der Magier alle wesentlichen Punkte
+  beruecksichtigt hat:
+  - liegen alle Balance-Genehmigungen vor?
+  - sind die FP eingetragen?
+  - sind die ZTs eingetragen und getestet?
+  - sind Sonder-EK-Stupse genehmigt und eingetragen?
+
+o Fuer neue Gebiete ist eine grundsaetzliche Pruefung des Konzepts auf
+  Regionstauglichkeit sinnvoll, damit nicht alteingesessene Institutionen
+  oder Orte ploetzlich zur zweiten Wahl abgewertet werden - beispielsweise
+  einen grossen, neuen Hauptort in der Ebene anzuschliessen, der Port Vain
+  voraussehbar den Rang ablaufen wuerde.
+
+o Alle NPCs sollten vor Anschluss einmal gekillt werden, um sie auf
+  grundsaetzliche Kampf-Funktionsfaehigkeit zu pruefen.
+
+o Haben NPCs Namen, sollte ueberlegt werden, diese Namen ggf. zu banishen.
+  (hilfe banish).
+
+o Es existiert ein Shell-Skript, mit dessen Hilfe man offensichtliche
+  Formfehler in einem kompletten Verzeichnis ermitteln kann (Umlaute im
+  Code, zu lange Zeilen etc.), wobei bezueglich der Formalien auch auf
+  den Regionsmitarbeiter-Leitfaden fuer neue Projekte verwiesen werden
+  soll. Das Skript hierzu ist auf Anfrage bei Zesstra erhaeltlich. Der
+  Regionsmagier hat hierbei die Entscheidungsfreiheit, die Berichte dieses
+  Skripts dem Programmierer des neuen Gebiets als Anhaltspunkte zur
+  Verfuegung zu stellen, oder die Abarbeitung der gemeldeten Punkte als
+  Voraussetzung vor dem Anschluss vorzuschreiben, aber auch jede Abstufung
+  dazwischen ist OK. :-)
+  Zusaetzlicher Tip: Das Skript differenziert zwischen eigentlich nicht
+  akzeptablen Konstrukten und zumindest fragwuerdigen, d.h. man kann diese
+  Unterscheidung an den Verantwortlichen mit entsprechenden Forderungen
+  weitergeben.
+  Das Skript ist unter ftp://mg.mud.de/Software/src_check/ erhaeltlich.
+
+o Sollte ein zur Abnahme anstehendes Projekt eine (grundsaetzlich
+  selbstverstaendlich zulaessige) Gemeinschaftsarbeit sein, sollte man
+  als Regionsmagier darauf bestehen, eine sauber getrennte Codebasis
+  in unterschiedlichen Verzeichnissen vorgelegt zu bekommen, oder aber
+  eine Auflistung, welcher Beitrag von welchem Magier stammt.
+  Wenn diese Auflistung sich bis auf Funktionsebene erstrecken sollte
+  (z.B. "DoWield() ist von X, Details von Y, DefendFunc von Z"), ist
+  das unschoen und an sich abzulehnen.
+
+
+3) Verlegung von Dateien
+========================
+
+o Sollte ein Objekt aus einer anderen Region bzw. allgemein aus einem
+  anderen Verzeichnis (z.B. /players) in Deine Region verlegt werden
+  muessen, sind VOR dem Umhaengen folgende Punkte zu beachten:
+  -- Forscherpunkte muessen umgetragen werden (EM ansprechen),
+  -- Erstkill-Stufenpunkte muessen umgetragen werden (EM ansprechen),
+  -- Zaubertraenke umtragen lassen (EM ansprechen),
+  -- in Padreics Ruestungsskill umtragen lassen (EM ansprechen),
+  -- evtl. im Gebiete vorhandene Seherhaeuser umziehen,
+  -- evtl. im Gebiet vorhandene Kraeuterskill-Kraeuter beruecksichtigen,
+  -- evtl. Briefempfaenger der Postquest beruecksichtigen,
+  -- ueber die Mudlib greppen lassen, um eventuell in anderen Regionen
+     verwendete Referenzen auf die alten Pfade des umziehenden Codes
+     zu finden und dort umzustellen. Hierbei sind in Ausnahmefaellen von
+     fiesem Code auch in Spielersavefiles gespeicherte Pfade zu
+     beruecksichtigen (*ARGL*).
+
+
+4) Seherhaeuser
+===============
+
+o Die Erlaubnis zum Bau eines Seherhauses in einem Gebiet haengt einzig und
+  allein von dem verantwortlichen Magier ab. Sollte dieser laenger nicht
+  erreichbar sein (auch nicht ueber externe Mail!), liegt die Entscheidung
+  beim Regionsmagier, der aber in jedem Fall die Eignung des Bauplatzes
+  in der Umgebung bewerten muss.
+
+o Fuer Sonderwuensche bezueglich Unsichtbarkeit von Seherhaeusern oder
+  besonderer Kommandos zum Betreten des Hauses sei auf die Datei
+  /doc/beispiele/misc/seherhaus.c verwiesen, wo die Vorgehensweise
+  erlaeutert wird. Ein Beispiel einer sehr umfangreichen Implementierung
+  findet sich in /d/ebene/room/hp_str8a.c.
+
+o Bei geaenderten Befehlen zum Betreten muss beachtet werden, dass bei einer
+  Standardimplementierung die Erlaube-Liste umgangen wird, d.h. ohne
+  besondere Vorkehrungen u.U. JEDER das Haus ungehindert betreten kann.
+  Es ist hingegen moeglich, die Erlaube-Liste abzufragen und entsprechend
+  zu behandeln, ein Beispiel hierfuer ist in /d/ebene/room/hp_str8a.c
+  nachzulesen (derzeit jedoch auf Spielerwunsch deaktiviert).
+
+
+5) Debuggen von Code
+====================
+
+o Nach dem Reparieren eines Objektes ist es meist erforderlich, das
+  betreffende Objekt neu zu laden. Falls es sich dabei um Objekte handelt,
+  die z.B. in einem Raum mittels AddItem() hinzugefuegt wurden (wie etwa
+  ein NPC), dann ist es am besten, die Datei mit dem Befehl
+  <upd -ad datei.c> zu aktualisieren und somit saemtliche Clones zu
+  zerstoeren. Wenn man mittels <upd -ar datei.c> die bestehenden Clones
+  ersetzen wuerde, wuerden diese aus der Item-Liste des clonenden Raumes
+  ausgetragen, so dass dieser Raum dann im reset() neue Items erzeugt und
+  diese in der Folge doppelt existieren wuerden.
+
+
+6) besondere Funktionen
+=======================
+
+Es kommt haeufig vor, dass Funktionen ueberschrieben werden muessen, und das
+ist auch normalerweise vollkommen normal und nicht beanstandenswert. Jedoch
+sollte man bei bestimmten Funktionen einiges Augenmerk auf die korrekte
+Ausfuehrung richten. Einige Beispiele sind nachfolgend aufgefuehrt:
+
+o catch_tell() / ReceiveMsg()
+  Die Reaktion von Objekten, insbesondere NPCs, auf eingehende Textmeldungen
+  laesst sich nutzen, um schoene und stimmungsvolle Gebiete mit dynamisch
+  reagierenden Bewohnern zu schaffen. Es laesst sich auf der dunklen Seite
+  der Macht hingegen auch verwenden, um ueble Konstrukte zu realisieren,
+  fuer die es seit Ewigkeiten geeignete Implementierungen gibt, und die
+  demzufolge niemals durch eine Endabnahme durch einen RM durchschluepfen
+  duerfen. Ein paar reale NPC-Beispiele aus der Praxis:
+
+  Schnipsel 1)
+
+  if (sscanf(str, "  %s greift den Priester %s",name1, dummy) == 2)
+  {
+    pl = find_player(lower_case(name1));
+    if (!pl || !living(pl))
+      return 1;
+    else
+      Kill(pl);
+  }
+  Zweck:     Simulation von AddDefender() und InformDefend()/DefendOther()
+  Kommentar: Absolutes No-Go! Mit Echo-Faehigkeiten von Spielern (Gilde oder
+             anderweitig) ist hiermit ein indirekter Playerkill moeglich.
+             Inakzeptable Implementierung.
+
+
+  Schnipsel 2)
+
+  if (sscanf(str, "%s sagt: %s\n", wer,was))
+  {
+    if (lower_case(was)=="ja" )
+      this_player()->move(zielraum, M_TPORT);
+  }
+  Zweck:     Ausloesen eines Kommandos, ohne "sage ..." als Befehl
+             ueberschreiben zu muessen.
+  Kommentar: Ausnutzbar als Remote-Fluchtteleport, indem man die Meldung
+             mittels teile-mit an den NPC sendet:
+             "Robert teilt Dir mit: sagt: ja", was ungeprueft ein move() 
+             zur Folge hat. Offensichtlich ebenso ungeeignet wie das 
+             vorige Beispiel.
+
+
+  Schnipsel 3)
+
+  if (sscanf(lower_case(str),"%s sagt: %sversteck%s",s1,s2,s3))
+    tell_room(environment(),sprintf("Der Fisch sagt: Das ist aber keine "
+      "grosse Hilfe, %s.\n",capitalize(s1)),({TO}));
+
+  sieht erstmal harmlos aus, fuehrt aber mit der Anweisung
+
+  SetChats(8, ({ "Der Fisch sagt: Wo kann ich mich nur verstecken?"}) );
+
+  dazu, dass der NPC dauernd mit sich selber schwatzt. Kein kritischer Bug
+  im eigentlichen Sinn, aber auf jeden Fall der Atmosphaere im Gebiet
+  sehr abtraeglich.
+
+o move()
+  Ueberschreiben von move() ist eine extrem heikle Angelegenheit, bei der
+  beim kleinsten Fehler massive Probleme resultieren koennen, jedoch meist
+  nicht offensichtlich ist, woher das resultiert. Als allgemeine Empfehlung
+  sollte gelten, dass move() NIE ueberschrieben wird, und wenn, dann muss
+  ausfuehrlich und aufmerksam geprueft werden, was da passiert, und ob der
+  gewuenschte Effekt nicht anders sauberer erreicht werden kann.
+  Als zusaetzlicher Hinweis sei auf NotifyMove() und PreventMove() verwiesen,
+  mit deren Hilfe sich die allermeisten Faelle erschlagen lassen, in denen
+  Magier faelschlicherweise glauben, move() ueberschreiben zu muessen.
+
+o Defend()/Attack()
+  hier ist ein beliebter Fehler einfach der, dass man am Ende der Funktion
+  ::Defend() bzw. ::Attack() ruft, aber im Codeblock vorher das Objekt
+  durch eigenen Tod oder anderes schon zerstoert wurde. Dann geht das schief.
+  Einfach mal hinschauen - es ist aber kein wirklich gravierender Fehler,
+  da sowas im Kampf meist ziemlich schnell auffaellt.
+
+o call_out()
+  Hierzu zwei Hinweise: zum einen fuehrt call_out("x",0) seit der Umstellung
+  auf LDmud als Driver nicht mehr implizit zu einem call_out("x",1), wie es
+  zuvor war, sondern tatsaechlich zu einem fast sofortigen Funktionsaufruf der
+  Funktion x() - mit allen Konsequenzen, inklusive eines "too long eval"-
+  Bugs. Wer eine echte Verzoegerung braucht, muss mindestens call_out("x",1)
+  verwenden.
+  Zum anderen wurde mit LDmud die Granularitaet des reset()-Aufrufes auf
+  Heartbeat-Genauigkeit (2 s) verfeinert, so dass man bequem laengere
+  Verzoegerungen auf die Verwendung von reset() umstellen kann.
+
+o Zerstoeren von Objekten mit remove() oder destruct()
+  Man sollte einen sehr kritischen Blick auf Konstrukte werfen, die
+  nach einem remove() noch weiteren Code ausfuehren (Ausnahme: echte efuns 
+  und Compiler-Konstrukte wie return).
+  Wenn man Objekte zerstoeren will oder muss, sollte man immer zuerst 
+  remove() verwenden. Destruct muss dem absoluten Ausnahmefall vorbehalten 
+  bleiben. Man sollte im Hinterkopf behalten, dass Objekte gute Gruende haben
+  koennen, sich einem remove() zu verweigern.
+
+o for()-Schleifen
+  Eigentlich keine Funktion, aber an dieser Stelle doch passend:
+  for()-Schleifen sollten generell durch foreach()-Konstruktionen ersetzt
+  werden, da dies signifikant und messbar schneller ist. Die naechst-
+  schnellere Variante waere etwa folgendes, sofern die Reihenfolge der
+  Abarbeitung unerheblich ist (i ist integer, arr ist ein mixed-Array):
+
+  for ( i=sizeof(arr); i--; ) {
+    tu_etwas_mit(arr[i]);
+  }
+
+o write_file()
+  Benutzung dieser Funktion nur in begruendeten Ausnahmefaellen abnehmen, da
+  keinerlei Begrenzung der Dateigroesse existiert. Insbesondere bei Logfiles
+  entstehen hierdurch im Laufe der Zeit Monsterdateien, die nur Plattenplatz
+  verbrauchen, aber kaum zu ueberschauen sind. Statt write_file() wird in
+  den allermeisten Faellen log_file() mit der Standardgroesse von 50 kB fuer
+  Logfile und eine ggf. vorhandene Altversion (*.OLD) ausreichend sein.
+
+o Verwalten von charakterbezogenen Daten
+  Als Beispiel seien hier Statusdaten fuer den Ablauf von Quests genannt,
+  oder Highscores in irgendwelchen Toplisten. Fuer die Umsetzung dieser
+  Datenerfassung werden typischerweise zwei Techniken eingesetzt. Zum
+  einen kann ein Masterobjekt erstellt werden, das die Daten sammelt und
+  mittels save_object() dauerhaft speichert. Zum anderen kann man auch
+  Daten in einer Property im Spieler ablegen und diese je nach Anwendungs-
+  fall auf SAVE setzen.
+
+  Bei der ersten Variante wird man ueblicherweise die UID oder UUID des 
+  Spielers als Indizierungsmerkmal verwenden. Der erste Fallstrick ist nun,
+  dass die UID bei Spielern (nicht Sehern) ggf. nach einer Selbstloeschung
+  neu vergeben werden kann, so dass die Daten inkonsistent werden bzw. der
+  Spieler scheinbar schon in Eurem Master eingetragen ist, obwohl es sich
+  eigentlich um jemand ganz anderes handelt.
+  Als Abhilfemassnahme bietet sich folgendes an: 
+  a) UUID verwenden, da diese fuer jeden Spieler eindeutig ist.
+  b) Hinweis: find_player() kann auch mit UUIDs umgehen und das zugehoerige
+     Spielerobjekt ermitteln.
+  c) Man sollte ggf. auf das Mudlib-Event EVT_LIB_PLAYER_DELETION lauschen, 
+     um Spieler auszutragen, die sich loeschen, wodurch die zugehoerigen
+     Daten obsolet werden.
+
+  Bei der zweiten Variante muss man verschiedene Dinge beruecksichtigen:
+  a) nicht endlos viele Properties machen, sondern pro Thema (z.B. Quest)
+     einfach eine.
+  b) nur die Properties speichern, bei denen das wirklich noetig ist.
+  c) Speichert man Properties und die Aufgabe wird erledigt, d.h. der 
+     Inhalt der Property obsolet, muss die Property wieder geloescht werden.

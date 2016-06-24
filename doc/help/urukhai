@@ -1,0 +1,28 @@
+
+Die Gilde der Urukhai
+---------------------
+
+In Orkhausen im Verlorenen Land gibt es die Gilde der Urukhai. Dies ist die
+Standardgilde der Orks.
+
+Allerdings koennen auch andere Spieler Urukhai werden. Nur Felinen werden
+nicht zugelassen, da die Katzenwesen einfach fehl am Platze waeren. Weitere
+Voraussetzungen, um ein Urukhai zu werden, gibt es nicht, allerdings sollte
+man die richtige Einstellung mitbringen und es gerne blutig moegen.
+
+Hragznor ist der Gildenmeister der Urukhai. Bei ihm kann man der Gilde 
+beitreten und die verschiedenen Sprueche lernen, er weiss auch vieles 
+ueber die Gilde.
+
+Orks koennen von Natur aus gut mit bestimmten Waffen kaempfen. Auch dazu
+weiss Hragznor mehr.
+
+SIEHE AUCH:
+beisse, nachtsicht, identifiziere, schaetz, ruelpse, wirbelwind,
+spucke, hammerfaust, steinhaut, riesenpranke, leichenfledder,
+furcht, trollstaerke
+
+ALS NICHT-URUKHAI MUSS MAN DAFUER FOLGENDE SYNTAX NUTZEN:
+hilfe gilde urukhai <zaubername>
+z.B. hilfe gilde urukhai nachtsicht
+

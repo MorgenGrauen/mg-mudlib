@@ -1,0 +1,21 @@
+QueryStorageRoom()
+
+Funktion:
+    string QueryStorageRoom()
+
+Definiert in:
+    /std/room/shop
+
+Rueckgabewert:
+    Dateiname des Lagers, in dem die aufgekauften Gegenstaende aufbewahrt 
+    werden.
+
+Siehe auch:
+    Funktionen:
+      AddFixedObject(), RemoveFixedObject(), SetStorageRoom(), 
+      QueryBuyValue(), QueryBuyFact(), sell_obj(), buy_obj()
+    Properties:
+      P_KEEPER, P_MIN_STOCK, P_STORE_CONSUME
+
+------------------------------------------------------------------------------
+Letzte Aenderung: 21.05.2014, Bugfix

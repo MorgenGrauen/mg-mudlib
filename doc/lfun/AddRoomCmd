@@ -1,0 +1,13 @@
+AddRoomCmd()
+
+SYNTAX:
+	AddRoomCmd( string kommando, string funktion );
+	AddRoomCmd( string *kommandos, string funktion );
+
+FUNKTION:
+	
+	Diese Funktion ist veraltet. Sie wird vollstaendig durch
+	die Funktion AddCmd ersetzt.
+
+SIEHE AUCH:
+	"AddCmd"

@@ -1,0 +1,32 @@
+
+riech(e) (an)
+--------------
+
+KOMMANDO
+	riech(e)
+	riech(e) <was> [an <objekt> | am <objekt>] [in mir | im raum]
+
+ARGUMENTE
+	<objekt>
+	  Ein Gegenstand bzw. Lebewesen, an dem riechen will.
+
+BESCHREIBUNG
+	`riech' bzw. `rieche' ist das allgemeine Kommando, um Gerueche
+	an Gegenstaenden, Lebewesen oder in Raeumen wahrzunehmen. Hierbei
+	laesst `riech(e)' ohne Argumente den Spieler die Hauptgerueche in
+	dem Raum wahrnehmen, in dem er sich derzeit befindet. An allen
+	anderen Gegenstaenden bzw. Lebewesen im selben Raum oder im eigenen
+	Inventar kann man mit `riech(e) (an)' ebenfalls Gerueche
+	wahrnehmen. Nicht immer kann man jedoch etwas Besonderes riechen.
+
+	Da bei Objekten mit gleichen Geruchsarten zuerst an im Raum
+	liegenden Objekt gerochen wird, kann man an Sachen, die man bei
+	sich traegt, auf alle Faelle mit dem Zusatz `in mir' riechen.
+
+SIEHE AUCH:
+  bezugspunkt
+  schau, lausche, taste, lies
+
+LETZTE AENDERUNGEN:
+  18.01.2013, Zesstra
+

@@ -1,0 +1,57 @@
+
+teile (mit)
+-----------
+
+ KOMMANDO:
+    teile <wem> mit <text>
+    teile .[<nr>] mit <text>
+    teile <wem>@<mud> mit <text>
+    (Abkuerzung: tm <wem> <text>)
+    
+    erzaehle <wem> <text>
+    erzaehle .[<nr>] <text>
+    erzaehle <wem>@<mud> <text>
+
+ ARGUMENTE:
+
+     <wem>
+        Name des Spielers, dem Du etwas erzaehlen willst
+     <nr>
+        Eine Nummer in der Mitteilungsgeschichte
+     <mud>
+        Name eines MUDs aus der `muds'-Liste
+     <text>
+        Die Mitteilung selbst
+
+ BESCHREIBUNG:
+    Sendet dem angegebenen Spieler eine Nachricht. Es spielt keine Rolle, wo
+    er sich im Spiel befindet. Mitteilen verbraucht *keine* Magiepunkte.
+
+    Mit `teile <wem>@<mud> mit <text>' kann man auch Spielern in anderen MUDs
+    etwas mitteilen. <mud> muss nicht der komplette Mudname sein; es genuegt
+    auch eine eindeutige Abkuerzung.
+
+    Das Kommando merkt sich, wem Du alles etwas mitteilst. Mit `tmhist' kannst
+    Du Dir ansehen, wem Du schon alles etwas mitgeteilt hast. Fuer weitere
+    Mitteilungen kannst Du anstelle des Namens auch die Nummer angeben, *aber
+    Achtung!* Die Liste wird danach wieder neu sortiert!
+
+    Bearbeitet der Spieler einen Text oder liest er irgendetwas, so werden
+    Mitteilungen u.U. gespeichert (dies wird mitgeteilt). Die gespeicherten
+    Mitteilungen erfaehrt der andere Spieler, wenn er mit dem Lesen oder
+    Bearbeiten fertig ist.
+
+    Sofern Du Deine Teile-mit-History (s. tmhist) eingeschaltet hast, werden
+    aus- und eingehende TMs gespeichert. Hat Dein Gespraechspartner seine
+    History eingeschaltet, wird ein TM, was Du ihm schickst, bei ihm
+    gespeichert. Moechtest Du dies nicht, kannst Du den Befehl 'rfluester'
+    verwenden, bei welchem in keinem Fall der Inhalt eines Gespraechs
+    gespeichert wird.
+
+ SIEHE AUCH:
+    erwidere, sage, frage, antworte, fluestere, gespraech, rufe, ebenen, weg,
+    ignoriere, kobold, muds, senderwiederholung, klingelton, tmhist,
+    rfluestere
+
+ LETZTE AeNDERUNG:
+    09.08.2008, Zesstra

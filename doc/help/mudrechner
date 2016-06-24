@@ -1,0 +1,31 @@
+Der Mudrechner
+==============
+
+     Das Mud laeuft seit 21. Feb 2010 auf:
+     - Dell 2950 mit 2 Netzteilen
+     - 2 * XEON 5420 2.5GHz, 8GB RAM, 70GB (RAID1) OS, 500 GB (RAID1) Daten
+     und ist ueber
+      - 1GB Ethernet (extern 1GB)
+     an das Internet angeschlossen.
+
+     Unter der Adresse mg.mud.de sind ebenfalls:
+      stunnel:  - zur Verschluesselung der Verbindung mit dem MUD
+      FTP:      - anonym
+                  - zum Hochladen von Partybildern
+                  - zum Zugriff auf Software (inklusive aktueller Mudlib)
+                - mit Magiername/Passwort
+                  - zum Zugriff auf das eigene Verzeichnis im MUD
+      git:      - mit hinterlegtem Schluessel (fuer Magier)
+                  - zum Zugriff auf saemtliche freien/eigenen git-Repositories
+      WWW:      - die Webseiten des MG
+     zu erreichen.
+
+ SIEHE AUCH:
+   lag, irc, stunnel, teamspeak, client, www
+
+ HISTORY:
+      Rechner bis 21. Feb 2010, (Stand 08. April 2004):
+      - Xeon CPU 2.40GHz 1024MB RAM, 36 + 70 GB Plattenplatz (SCSI)
+
+ LETZTE AeNDERUNG:
+     8. Nov 2012 Gloinson

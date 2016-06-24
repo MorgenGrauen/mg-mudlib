@@ -1,0 +1,19 @@
+
+wegmeldung
+------
+
+ KOMMANDO:
+    wegmeldung <name>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Spielers
+
+ BESCHREIBUNG:
+    Dieser Befehl gibt die Weg-Meldung eines Spieler aus, wenn dieser eine 
+    hat. Dann muss man nicht jedes mal den Spieler fingern, wenn man wissen
+    will, ob der grad weg ist oder nicht.
+
+ LETZTE AeNDERUNG:
+    Son, 11. Aug 2002, 19:07:00 von Vanion

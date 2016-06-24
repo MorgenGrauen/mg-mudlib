@@ -1,0 +1,1033 @@
+P_LIGHT
+// Greift auf den Lichtlevel zu. Handle with care !!!
+
+P_NAME
+// In dieser Property wird der Name des Objektes gespeichert. Er
+// sollte nur aus einem Wort bestehen. Der Name dient dazu, das
+// Objekt in einem Satz zu erwaehnen und wird auch dekliniert.
+
+P_NAME_ADJ
+// In dieser Property kann ein Adjektiv abgelegt werden, dass dann
+// bei der Ausgabe mittels name() mitbenutzt wird.
+// (In der Regel nicht noetig.)
+
+P_SHORT
+// In dieser Property wird die Kurzbeschreibung des Objektes
+// gespeichert, die beim Umschauen im Raum oder bei der Ausgabe
+// des Inventars ausgegeben wird. Fuer unsichtbare Objekte
+// sollte sie 0 sein.
+
+P_LONG
+// Unter dieser Property wird die Beschreibung gespeichert, die
+// bei der Untersuchung des Objektes ausgegeben wird.
+
+P_WEIGHT
+// Das Gewicht eines Objetes in Gramm.
+
+P_VALUE
+// Wert des Objektes in Goldmuenzen. Diesen Wert erhaelt man beim
+// Verkauf. Kaufen kostet ein Vielfaches hiervon.
+
+P_IDS
+// Hier werden die Bezeichnungen abgespeichert, unter denen sich das
+// Objekt angesprochen fuehlt.
+// Sollte nur mittels AddId( id ); gesetzt werden.
+
+P_ADJECTIVES
+// Hier werden Adjektive gespeichert, unter denen sich das Objekt
+// angesprochen fuehlt. So sind Kombinationen der Synonyme mit
+// mehreren Adjektiven moeglich. Ggf sollte auch der deklinierte
+// Fall des Adjektives eingegeben werden.
+// Sollte nur mittels AddAdjective( adjective ); gesetzt werden.
+
+P_INFO
+// Geheime Information, die ggf. ueber einen Zauberspruch
+// von Spielern ermittelt werden kann.
+
+P_READ_MSG
+// Hier koennen Informationen gespeichert werden, die beim Lesen
+// des Objektes ausgegeben werden.
+
+P_UID
+// Simulation des Zugriffs auf die uid.
+
+P_EUID
+// Simulation des Zugriffs auf die euid.
+
+P_AUTOLOADOBJ
+// Mit dieser Property werden Autoloadobjekte verwaltet.
+// Der Inhalt der Property sind die permanenten Eigenschaften des
+// Objektes, die der Spieler uebers ausloggen hinweg beibehaelt.
+// Beim Einloggen werden sie automatisch neu gesetzt. (ACHTUNG:
+// Die Property muss intern selbst verwaltet werden.)
+// Autoloadobjekte werden beim Ausloggen nicht fallengelassen!
+
+P_NOGET
+// Diese Property enthaelt eine Meldung, die ausgegeben wird, wenn
+// jemand versucht, dieses Objekt zu nehmen. Wird die Prop. auf einen
+// nicht-String-Wert gesetzt, so wird eine Defaultmeldung ausgegeben.
+
+P_NODROP
+// Diese Property enthaelt eine Meldung, die ausgegeben wird, wenn
+// jemand versucht, das Objekt fallen zu lassen. Wird die Prop.  auf einen
+// nicht-String-Wert gesetzt, so wird eine Defaultmeldung ausgegeben.
+
+P_NOBUY
+// Wenn diese Property gesetzt ist, wird das Objekt nach einem
+// Verkauf im Laden zerstoert, damit es nicht wieder von einem Spieler
+// gekauft werden kann.
+
+P_NEVERDROP
+// Objekte mit dieser Property werden beim Tod des Spielers nicht
+// in den Leichnam gelegt.
+// P_NODROP wird automatisch mitgesetzt.
+
+P_NR_HANDS
+// Anzahl der Haende, die man zur Benuztung des Objektes benoetigt.
+
+P_MAGIC
+// Dieses Objekt ist magisch.
+
+P_MAX_WEIGHT
+// Maximales Gewicht in Gramm, das in dem Container verstaut werden
+// kann.
+
+P_TOTAL_WEIGHT
+// Gewicht incl. Inhalt in Gramm. P_WEIGHT_PERCENT wird beruecksichtigt.
+
+P_TRANSPARENT
+// ist != 0, wenn hinein oder hinausgeschaut werden kann.
+
+P_CNT_STATUS
+// Status des Containers (offen, geschlossen, abgeschlossen)
+// siehe auch /sys/container.h
+
+P_WEIGHT_PERCENT
+// Diese Property gibt an, wieviel Prozent des Gewichts des Inhaltes
+// "nach aussen" wiedergegeben werden.
+
+P_INT_SHORT
+// Kurzbeschreibung, wenn man sich im Inneren des Containers
+// befindet.
+
+P_INT_LONG
+// Beschreibung, die man bekommt, wenn man sich in dem Container
+// umschaut.
+
+P_DETAILS
+// Diese Property enthaelt ein mapping, in der Objekte im Raum
+// definiert werden und Beschreibungen, die ausgegeben werden,
+// wenn man sich diese Details anschaut.
+
+P_SPECIAL_DETAILS
+// Mapping von Details, die beim Anschauen eine Funktion starten.
+
+P_READ_DETAILS
+// Details, die durch Lesen ermittelt werden koennen.
+
+P_ROOM_MSG
+// Liste mit Meldungen, die zufaellig im Raum ausgegeben werden.
+
+P_FUNC_MSG
+// Liste mit Funktionen, die zufaellig im Raum aufgerufen werden.
+
+P_MSG_PROB
+// Numerischer Wert fuer Wahrscheinlichkeit, mit der die Meldungen
+// und/oder die Funktionen ausgegeben/aufgerufen werden.
+
+P_EXITS
+// Mapping aller unmittelbar sichtbaren Ausgaenge mit zugehoerigen
+// Nachbarraeumen. Sollte nur mittels AddExit() benutzt werden.
+
+P_SPECIAL_EXITS
+// Dito, aber anstatt des Nachbarraums wird eine Funktion (im Raum)
+// angegebem, die bei Eingabe der Richtung ausgefuehrt wird.
+
+P_DOORS
+// *** OBSOLET! ***
+// Siehe P_DOOR_INFOS
+
+P_COMMANDS
+// Mapping von Kommandos, die im Objekt definiert sind.
+// Sollte nur mittels AddCmd() benutzt werden.
+
+P_ITEMS
+// Definition von Gegenstaenden, die in dem Raum liegen sollen.
+// Erklaerung in einem Extrafile.
+
+P_NO_TPORT
+// Kann folgende Werte annnehmen (definiert in moving.h):
+// NO_TPORT_IN	= Man kann nicht in den Raum hinein teleportieren.
+// NO_TPORT_OUT = Man kann nicht aus dem Raum hinaus teleportieren.
+// NO_TPORT	= Weder noch.
+
+P_INDOORS
+// Gesetzt, wenn von dem Raum aus der Himmel nicht sichtbar ist.
+// Dinge wie Wetter oder Mondaufgaenge werden in solchen Raeumen
+// nicht gezeigt.
+// Ausserdem
+
+P_NOMAGIC
+// Angabe in Prozent, mit welcher Wahrscheinlichkeit in einem
+// Raum nicht gezaubert werden kann. Bei NPC's zeigt es die
+// Resistenz gegen Magie an.
+// (Noch nicht implementiert)
+
+P_ORAKEL
+// Wenn diese Property gesetzt ist, kann der Wanderer in diesen
+// Raum hinein.
+
+P_ALIGN
+// Numerischer Wert fuer Gut- oder Boesheit des Wesens.
+
+P_RACE
+// String mit der Rasse des Wesens.
+
+P_GENDER
+// Grammatikalisches Geschlecht des Objektes:
+// (Definiert in language.h) MALE, FEMALE oder NEUTER
+
+P_ATTRIBUTES
+// Mapping mit den Attributen des Wesens.
+
+P_FOOD
+// Numerischer Wert fuer Saettigungsgrad des Wesens.
+
+P_DRINK
+// Numerischer Wert fuer Saettigung des Wesens mit Getraenken.
+
+P_ALCOHOL
+// Num. Wert fuer Besoffenheit.
+
+P_MAX_FOOD
+// Numerischer Wert fuer die maximale Saettigung des Wesens.
+
+P_MAX_DRINK
+// Numerischer Wert fuer die maximale 'Wassermenge' im Wesen.
+
+P_MAX_ALCOHOL
+// Numerischer Wert fuer die Alkoholvertraeglichkeit des Wesens.
+
+P_HP
+// Anzahl der Lebenspunkte des Wesens.
+
+P_SP
+// Anzahl der Magiepunkte des Wesens.
+
+P_MAX_HP
+// Maximale Anzahl der Lebenspunkte.
+
+P_MAX_SP
+// Maximale Anzahl der Magiepunkte.
+
+P_XP
+// Anzahl der Erfahrungspunkte.
+
+P_TOTAL_AC
+// Numerischer Wert der Abwehrstaerke des Wesens.
+
+P_TOTAL_WC
+// Numerischer Wert der Angriffsstaerke des Wesens.
+
+P_MSGIN
+// String mit der Meldung, die beim Verlassen eines Raumes mit M_GO
+// an die uebrigen Anwesenden ausgegeben wird.
+
+P_MSGOUT
+// String mit der Meldung, die beim Betreten eines Raumes mit M_GO
+// an die uebrigen Anwesenden ausgegeben wird.
+
+P_MMSGIN
+// String mit der Meldung, die beim Verlassen eines Raumes mit M_TPORT
+// an die uebrigen Anwesenden ausgegeben wird.
+
+P_MMSGOUT
+// String mit der Meldung, die beim Betreten eines Raumes mit M_TPORT
+// an die uebrigen Anwesenden ausgegeben wird.
+
+P_TITLE
+// Titel des Spielers. Erscheint hinter dem Namen in Kurz/Langbeschreibung.
+
+P_PRESAY
+// Presay des Spielers. Erscheint vor dem Namen in Kurz/Langbeschreibung.
+// Erscheint auch in name(), also in sag, ruf, teile mit usw.
+
+P_ZAP_MSG
+// Dreielementiges Array:
+// 1.) Meldung, die der Magier beim Zappen bekommt.
+// 2.) Meldung, die die Spieler im Raum beim Zappen bekommen.
+// 3.) Meldung, die das Opfer beim Zappen bekommt.
+// Mit @@wer@@, @@wessen@@, ... kann der Name des Opfers und mit
+// @@ich@@ der Name des Magiers in die Meldung eingewebt werden.
+
+P_TRANK_FINDEN
+// Wenn die Property auf 1 steht kann immer ein Zaubertrank gefunden
+// werden, auch wenn er nicht in der Liste des Spielers steht.
+
+P_AWAY
+// String der ausgegeben wird, wenn man weg ist und eine Mitteilung bekommt.
+
+P_IGNORE
+// Array der Spieler, deren Mitteilungen ignoriert werden.
+
+P_WEAPON
+// Momentan gezueckte Waffe.
+
+P_COMBATCMDS
+// Fuer den Kampf gebrauchbare Befehle spezieller Objekte (damit auch
+// Monster sie automatisch richtig anwenden koennen)
+// Der Inhalt von P_COMBATCMDS ist ein Mapping, der Key ist das Kommando,
+// um den Gegenstand zu benutzen (also z.B. "wirf flammenkugel"), und der
+// Value ein weiteres Mapping mit Zusatzinfos (definiert in /sys/combat.h).
+// Folgende Keys sind definiert:
+// - C_MIN, C_AVG, C_MAX:
+//   minimaler, mittlerer und maximaler Schaden, den das
+//   Objekt macht. Alle Angaben in LEBENSPUNKTEN, d.h. Defend-Einheiten/10.
+//   Bei einem Aufruf wie 'enemy->Defend(200+random(200), ...)' ist dann
+//   C_MIN=20, C_AVG=30, C_MAX=40.
+// - C_DTYPES:
+//   Array mit dem Schadenstyp oder den Schadenstypen. Beim Eisstab
+//   wuerde der Eintrag dann 'C_DTYPES:({DT_COLD})' lauten.
+// - C_HEAL:
+//   Sollte das Kampfobjekt ueber die Moeglichkeit verfuegen, den Anwender
+//   irgendwie zu heilen, so wird hier die Heilung in LP/MP eingetragen.
+//   Das funktioniert auch bei Objekten, die nur heilen, also sonst
+//   nichts mit Kampf zu tun haben.
+//   Im Lupinental z.B. gibt es Pfirsiche, die beim Essen 5LP heilen. Da
+//   kann man dann 'SetProp(P_COMBATCMDS, (["iss pfirsich":([C_HEAL:5])]))'
+//   eintragen.
+// Es sind auch mehrere Kommandos moeglich, z.B. bei Objekten, die sowohl
+// heilen als auch Kampfwirkung haben.
+
+P_ARMOURS
+// Liste der getragenen Schutzbekleidungen.
+
+P_HANDS
+// 3-elem. Array
+// 1. Elem.: String mit der Meldung, wenn ohne Waffen angegriffen wird.
+// 2. Elem.: Weaponclass, wenn ohne Waffen angegriffen wird.
+// 3. Elem.: Angriffs-typ, default ist DT_BLUDGEON
+
+P_RESISTANCE
+// Array mit Angriffsarten, gegen die das Lebewesen teilweise
+// resistent ist.
+
+P_VULNERABILITY
+// Array mit Angriffsarten, gegen die das Lebewesen empfindlich
+// ist.
+
+P_RESISTANCE_STRENGTHS
+// Mapping mit Schadensfaktoren minus 1.0 fuer jeden Schadenstyp
+// -0.5 entspricht also Resistance (Faktor 0.5)
+// 1.0 entspricht also Vulnerability (Faktor 2.0)
+
+P_MAX_HANDS
+// Anzahl der Haende, die ein Wesen hat.
+
+P_USED_HANDS
+// Anzahl der Haende in Benutztung
+
+P_ABILITIES
+// *** OBSOLET! ***
+// Siehe P_NEWSKILLS.
+
+P_ENEMY_DAMAGE
+// Gibt eine Kopie des Mappings zurueck, in dem vermerkt wird, wer
+// diesem Lebewesen welchen Schaden zugefuegt hat.
+
+P_NPC
+// Gesetzt bei Monstern.
+
+P_WIMPY
+// Numerischer Wert. Das Wesen flieht, wenn die Lebenspunkte
+// unter diesen Wert sinken.
+
+P_BRIEF
+// Ist gesetzt, wenn der Spieler nur die Kurzbeschreibung sehen will.
+
+P_HEAL
+// Numerischer Wert, der beim Verzehr dieses Objektes zu den
+// Lebenspunkten hinzugezaehlt wird. (kann auch negativ sein)
+// Der Wert sollte zwischen +4 und -4 liegen und bei leichten
+// Monstern 0 sein.
+
+P_DISABLE_ATTACK
+// Das Lebewesen kann nicht angreifen.
+
+P_DIE_MSG
+// String mit der Meldung, die ausgegeben wird, wenn das Wesen stirbt.
+// ist die Property nicht gesetzt, so nehme " faellt tot zu Boden.\n".
+
+P_KILLS
+// Anzahl der Spieler, die dieser Spieler schon getoetet hat.
+// Unerlaubte Manipulation ist ein SCHWERES VERGEHEN gegen
+// die Mudreglen.
+
+P_MAILADDR
+// EMailadresse des Spielers.
+
+P_CALLED_FROM_IP
+// Letzte IP-Adr, von der aus sich der Spieler eingeloggt hat.
+
+P_CURRENTDIR
+// Momentanes Verzeichnis in dem der Spieler ist. (nur fuer
+// Magier von Belang)
+
+P_AUTOLOAD
+// Mapping mit der Menge der Autoloadobjekte und den zugeh.
+// Properties.
+
+P_FROG
+// Gesetzt, wenn der Spieler ein Frosch ist.
+
+P_INVIS
+// Die Property P_INVIS dient dazu, Objekte (insbesondere Magier) als
+// unsichtbar zu kennzeichnen. Man sollte drei Arten von unsichtbaren
+// Objekten unterscheiden:
+// - Gegenstaende
+//   Gegenstaende macht man unsichtbar, indem man in ihnen die Property
+//   P_SHORT auf 0 setzt; will man ein Objekt unsichtbar machen, ohne
+//   seine Kurzbeschreibung zu aendern, kann man aber auch P_INVIS auf
+//   einen Wert ungleich 0 setzen.
+// - NPCs
+//   NPCs macht man ebenfalls unsichtbar, indem man in ihnen die Property
+//   P_SHORT auf 0 setzt. GGf. kann man auch noch die Property P_INVIS auf
+//   1 setzen.
+//   Der Unterschied: Bei gesetztem P_INVIS wird als Name 'Jemand' ver-
+//   wendet, ansonsten der normale Name des NPCs.
+// - Spieler / Magier
+//   Spieler und Magier macht man unsichtbar, indem man ihnen die Property
+//   P_INVIS auf einen Wert <>0 setzt.
+//   Spieler duerfen nicht unsichtbar gemacht werden!			 !
+//   Wird ein Magier unsichtbar gemacht, muss man ihm die Property	 !
+//   P_INVIS auf den Wert setzen, den die Property P_AGE zu diesem	 !
+//   Zeitpunkt hat (keine F_QUERY_METHOD !).				 !
+//   Setzt man die Property auf den Wert 1, so erhaelt ein Spieler,
+//   wenn er den entsp. Magier fingert, die Ausgabe: Alter: 00:00:02,
+//   was genauso verraeterisch ist, wie ein Alter, dass bei einem
+//   scheinbar nicht eingeloggten Magier immer weiter hochgezaehlt
+//   wird.
+
+P_GHOST
+// Gesetzt, wenn der Spieler tot ist.
+
+P_EXTRA_LOOK
+// String, der einen zusaetzlichen Text in der long()-Beschreibung
+// eines Spielers erzeugt.
+
+P_GUILD
+// Gilde, der der Spieler angehoert.
+// Der Name der Gilde ist hier als String definiert. Bei Spielern
+// ist der Wert dieser Property niemals 0 (Defaultmaessig gehoert
+// ein Spieler der Abenteurergilde an).
+
+P_LEVEL
+// Spieler-Level (!= Magierlevel)
+
+P_QUESTS
+// Liste der geloesten Quests.
+
+P_CAP_NAME
+// Name des Spielers, der dekliniert und ausgegen wird.
+// NOT YET IMPLEMENTED.
+
+P_TTY
+// Name der Terminalemulation, die der Spieler nutzt.
+// NOT YET IMPLEMENTED.
+
+P_SHOW_EXITS
+// Gesetzt, wenn der Spieler die offensichtlichen Ausgaenge
+// immer automatisch sehen will.
+
+P_CAN_EMOTE
+// Gesetzt, wenn der Spieler 'emoten' kann.
+
+P_EARMUFFS
+// Shouts von Magiern mit Level < earmuffs werden abgeblockt
+// (Nur fuer Magier)
+
+P_WANTS_TO_LEARN
+// Gesetzt, wenn der Magier die Filenamen sehen will.
+// (Nur fuer Magier). Wird diese Property auf 0 gesetzt, gehen auch
+// einige andere Dinge nicht mehr - verfolge zB. Eigentlich sollten
+// dann auch die Magierbefehle wie "goto" usw unterbunden werden -
+// das kommt vielleicht noch.
+
+P_TESTPLAYER
+// Gesetzt, wenn der Spieler nicht in der Bestenliste auftauchen soll.
+
+P_AGE
+// Alter des Spielers in Heart-Beats (1 HB == 2 Sekunden)
+
+P_BLIND
+// TRUE, wenn der Spieler nichts sehen kann.
+
+P_MARRIED
+// Enthaelt einen String mit der uid des Partners
+// (sofern vorhanden)
+
+P_WC
+// Numerischer Wert fuer die Staerke der Waffe.
+
+P_DAM_TYPE
+// String mit der Art der Verletzung.
+
+P_WEAPON_TYPE
+// Art der Waffe
+
+P_WIELDED
+// Flag ob die Waffe gezueckt ist.
+
+P_AC
+// Numerischer Wert fuer die Abwehrstaerke der Ruestung.
+
+P_ARMOUR_TYPE
+// String fuer Art der Ruestung; welcher Koerperteil wird
+// geschuetzt?
+
+P_WORN
+// Flag, ob die Ruestung im Moment getragen wird. Falls ja,
+// enthaelt die Property das Traegerobjekt.
+
+P_AMOUNT
+// Anzahl der Objekte, fuer die das Objekt steht.
+
+P_VALUE_PER_UNIT
+// Wert in Goldstuecken pro Untereinheit.
+
+P_WEIGHT_PER_UNIT
+// Gewicht in Gramm pro Untereinheit.
+
+P_FUEL
+// Numerischer Wert fuer die Zeitdauer, die die Lichtquelle noch
+// leuchten kann.
+
+P_LIGHTDESC
+// String mit der Bezeichnung des Leuchtvorgangs, den die Licht-
+// quelle ausfuehrt (leuchtend, brennend, gluehend ...)
+
+P_DO_DESTRUCT
+// Flag, ob sich die Lichtquelle am Ende der Leuchtzeit selbst
+// zerstoert. (Oder sogar mit String fuer die Meldung, die bei
+// der Zerstoerung angegeben wird?)
+
+P_LIGHTED
+// Flag, ob die Lichtquelle in Betrieb ist.
+
+P_CHATS
+// Alist mit Strings, die das Monster zufaellig ausgibt.
+
+P_CHAT_CHANCE
+// Wahrscheinlichkeit, mit der die Chats ausgegeben werden.
+
+P_ACHATS
+// Chats, die das Monster im Kampf ausgibt.
+
+P_ACHAT_CHANCE
+// Wahrscheinlichkeit fuer die Attack-Chat-Ausgabe.
+
+P_BODY
+// Numerischer Wert fuer die Abwehrstaerke des blanken Koerpers
+// des Wesens.
+
+P_HB
+// Diese Property wird gesetzt, wenn das Monster immer einen
+// heart_beat haben soll. (VORSICHT, nur wenn es WIRKLICH sein muss!)
+
+P_AGGRESSIVE
+// Gesetzt, wenn das Wesen von sich aus Angriffe startet.
+
+P_NOCORPSE
+// Gesetzt, wenn im Todesfall kein Leichnam erzeugt werden soll.
+
+P_REJECT
+// Ein Array aus 2 Elementen, das bestimmt, das der npc mit Dingen
+// tuen soll, die ihm gegeben werden.
+// Default, der npc behaelt die Dinge einfach.
+// Wenn gesetzt:
+// 1.Element: Art der Handlung. (aus <moving.h>)
+//	REJECT_GIVE: Der NPC gibt das Objekt zurueck.
+//	REJECT_DROP: Der NPC laesst das Objekt fallen.
+//	REJECT_KEEP: Der NPC behaelt das Objekt doch.
+// 2.Arrayelement: Meldung, mit der der NPC die Handlung kommentiert.
+
+P_ENTERMSG
+// Array mit zwei Meldungen, eine fuer den Raum, den der Spieler
+// verlaesst, und eine fuer den Transporter, in den er geht.
+
+P_LEAVEMSG
+// Array mit zwei Meldungen, eine fuer den Transporter, den er verlaesst,
+// und eine fuer den Raum in den er kommt.
+
+P_LEAVEFAIL
+// Meldung an ein Wesen, wenn es ausserhalb der Anlegezeiten den Transporter
+// verlassen will. Ist die Prop. ein Array, so wird das erste Element als
+// meldung an das Wesen, das zweite als Meldung an die Mitspieler im
+// Transporter geschickt.
+
+P_ENTERFAIL
+// Meldung an ein Wesen, wenn den vollen Transporter betreten will.
+// Ist die Prop. ein Array, so wird das erste Element als
+// meldung an das Wesen, das zweite als Meldung an die Mitspieler im
+// Raum geschickt.
+
+P_ARRIVEMSG
+// Meldung, wenn der Transporter anlegt.
+
+P_DEPARTMSG
+// Meldung, mit der ein Transporter ablegt.
+
+P_ENTERCMDS
+// Befehlsliste, die zum Betreten des Transporters fuehrt.
+
+P_LEAVECMDS
+// Befehlsliste, die zum Verlassen des Transporters fuehrt.
+
+P_MAX_PASSENGERS
+// Numerischer Wert fuer die maximale Anzahl von Wesen in dem Transporter.
+// 0 bedeutet unbeschaenkte Spielerzahl.
+
+P_ARTICLE
+// Gibt an, ob in der Beschreibung ein Artikel ausgegeben werden soll
+// oder nicht.
+
+P_LAST_COMMAND_ENV
+// Der Raum, in dem das letzte Kommando eingegeben wurde.
+
+P_NETDEAD_INFO
+// Hier kann ein Raum Informationen in einem Spieler zwischenspeichern, wenn
+// dieser in den Netztotenraum gemoved wird.
+
+P_FOLLOW_SILENT
+// Wenn diese Property 1 ist, wird der MOVE vom verfolge Silent ausge-
+// fuehrt.
+
+P_START_HOME
+// Raum, in dem der Spieler nach dem Einloggen landen soll
+
+P_CARRIED_VALUE
+// Entschaedigung, die der Spieler beim Einloggen erhaelt.
+
+P_PROMPT
+// Das Prompt (Nur fuer Magier).
+
+P_CANECHO
+// Zeigt an, ob der Seher "echo" benutzen kann oder nicht.
+
+P_POTIONROOMS
+// Alist mit den Nummern der Raeume, in denen der Spieler noch Zauber-
+// traenke finden kann.
+
+P_QP
+// Anzahl der Questpunkte, die ein Spieler hat.
+
+P_ENEMY_DEATH_SEQUENCE
+// Wenn man jemanden toetet, wird dieses in seine Todessequenz eingefuegt.
+
+P_CLONER
+// Enthaelt einen String mit dem Namen desjenigen, der das Objekt gecloned hat.
+
+P_RACE_DESCRIPTION
+// Beschreibung der Vor/Nachteile einer Rasse.
+
+P_DOOR_INFOS
+// Hat was mit den Tueren zu tun -> Muss Rochus mal dokumentieren
+
+P_ATTRIBUTES_OFFSETS
+// Mapping mit Offsets, die zu den Attributen addiert werden (koennen auch
+// negativ sein) - zB Rassenboni.
+
+P_DEADS
+// Anzahl der Tode des Spielers seit Einfuehrung dieser Property (irgendwann
+// im Dezember 94)
+
+P_LAST_LOGIN
+// Zeitpunkt des letzen Logins
+
+P_LAST_LOGOUT
+// Zeitpunkt des letzen Logouts
+
+P_SECOND
+// Spieler ist Zweitiea
+
+P_SCREENSIZE
+// Bildschirmgroesse in Zeilen (fuer More)
+
+P_FLAGS
+// Flags des Spielers
+
+P_CAN_FLAGS
+// Flags, ob Spieler echoen/emoten kann
+
+P_NEEDED_QP
+// APs, die man fuer den Seherstatus braucht
+
+P_INTERMUD
+// Obsolet?
+
+P_BUFFER
+// Enthaelt Kobold-Nachrichten
+
+P_CLASS
+// Enthaelt die Klasse (definiert in class.h), zu der ein Objekt gehoert.
+// Sollte nur mit AddClass() gesetzt werden.
+// Das setzen ist nur noetig, wenn die Klasse nicht schon aus den Ids
+// oder (bei Lebewesen) der Rasse ersichtlich ist.
+
+P_CONTENTS
+// *** OBSOLET! ***
+
+P_KILLER
+// ???
+
+P_MURDER_MSG
+// Welche Meldung soll auf dem Moerder-Kanal erscheinen?
+
+P_KILL_MSG
+// Meldung auf dem Todeskanal, wenn jemand von uns geotetet wird
+
+P_CORPSE
+// Welchen Corpse hinterlassen wir?
+
+P_WIMPY_DIRECTION
+// Fluchtrichtung
+
+P_POISON
+// Wie stark wir vergiftet sind (0-11)
+
+P_RACE_DESCRIPTION
+// Rassenbeschreibung, die man bei der Wahl der Rasse abrufen kann
+
+P_DEFAULT_INFO
+// NPC-Info-System: Default-Antwort auf dumme Fragen
+
+P_PURSUERS
+// Enthaelt Verfolger - nicht von Hand manipulieren!
+
+P_HP_HOOKS
+// Welche Objekte sollen bei HP-Aenderungen benachrichtigt werden?
+
+P_CURSED
+// Verfluchte Waffen/Ruestungen kann man nicht ausziehen/wegstecken
+
+P_SPELLS
+// NPC-Spells
+
+P_SPELLRATE
+// NPC-Spellrate (in %)
+
+P_INFORMME
+// Informieren ueber Spieler, die ins Mud kommen/aus dem Mud gehen?
+
+P_WAITFOR
+// Die Erwarte-Liste
+
+P_HAUS_ERLAUBT
+// Hier darf gebaut werden
+
+P_SHORT_CWD
+// .readme bei cd ausgeben oder nicht
+
+P_PARA
+// Nummer der Parallelwelt in der ein Spieler ist.
+
+P_LOG_INFO
+// Wenn diese Property gesetzt ist wird jede Frage, die ein
+// Monster nicht beantworten kann, im Report-File des
+// zustaendigen Magiers geloggt.
+
+P_COMBATCMDS
+// Befehle, die man mit Spezialwaffen ausfuehren kann und genauere
+// Informationen hierzu.
+
+P_DEAF
+// Der Spieler ist taub. Falls hier ein String steht, wird dieser bei
+// "teile ... mit" an den Mitteilenden ausgegeben, ansonsten kommt nur
+// "Soundso ist leider gerade taub.\n"
+
+P_ATTACK_BUSY
+// Kann der Spieler noch Spezialwaffen (zB Flammenkugel) einsetzen?
+
+P_PREFERED_ENEMY
+// Array: 1. Element: Wahrscheinlichkeit, dass einer der bevorzugten
+// Feinde (restliche Elemente) genommen wird.
+
+P_HISTMIN
+// Minimale Laenge, die eine Zeile haben muss, um in die History zu kommen
+
+P_SHOW_ALIAS_PROCESSING
+// Arbeit des Parsers beobachten (debugging)
+
+P_DEFAULT_NOTIFY_FAIL
+// Welche Fehlermeldung kommt, wenn kein Objekt ein notify_fail macht?
+
+P_IP_NAME
+// Rechnername des Interactives
+
+P_AUTH_INFO
+// Username des Spielers, wenn bei ihm ein AUTHD laeuft
+
+P_LAST_KILLER
+// Letzter Moerdes des Wesens
+
+P_CLONE_MSG
+// Meldung, die beim Clonen eines Obj ausgegegen wird (nur Magier)
+
+P_CMSG
+// *** OBSOLET! *** Siehe P_CLONE_MSG
+
+P_DESTRUCT_MSG
+// Meldung, die beim Destructen Obj ausgegegen wird (nur Magier)
+
+P_DMSG
+// *** OBSOLET! *** Siehe P_DESTRUCT_MSG
+
+P_READ_NEWS
+// Welche Artikel bereits gelesen wurde (frueher: in der MPA)
+
+P_LAST_CONTENT_CHANGE
+// Wann wurde zum letzten Mal was ins Obj gestopft oder rausgenommen?
+// Wichtig fuer den Weight-Cache
+
+P_MAX_POISON
+// Maximale Vergiftung
+
+P_DESCRIPTION
+// Beschreibung des Spielers
+
+P_KEEP_ON_SELL
+// Bei "verkaufe alles" wird das Objekt behalten.
+
+P_DESCRIPTION
+// Beschreibung des Spielers
+
+P_KEEP_ON_SELL
+// Objekt soll bei verkaufe alles behalten werden
+
+P_CLOCKMSG
+// Die Meldung wird zur vollen Stunde ausgegeben
+
+P_SIZE
+// Groesse des Lebewesens (in cm)
+
+P_AVERAGE_SIZE
+// Durchschnittliche Groesse eines Wesens dieser Rasse (derzeit nur Player)
+
+P_PERM_STRING
+// Fuer Sprachflueche. In dem Objekt, das in P_PERM_STRING vermerkt ist,
+// wird bei Sprachbefehlen permutate_string(str) aufgerufen und der
+// zurueckgegebene String statt dessen ausgegeben.
+
+P_RACESTRING
+// Gibt eine dem Geschlecht angepasste Beschreibung der Rasse zurueck
+// ("Zwerg" oder "Zwergin" etc.)
+
+P_WATER
+// Gewaessertyp. Erlaetuerungen in fishing.h
+
+P_FISH
+// Fischdichte. Erlaeuterungen in fishing.h
+
+P_SCREENSIZE
+// Zahl der Zeilen (wie mit dem "zeilen"-Befehl eingestellt).
+// Nur im Spielerobjekt sinnvoll ;)
+
+P_SKILLS
+// *** OBSOLET! ***
+// Siehe P_NEWSKILLS.
+
+P_VALID_GUILDS
+// Enthaelt die zugelassenen Gilden und ist nur fuer den Gildenmaster
+// von Bedeutung.
+
+P_GUILD_SKILLS
+// Gildenproperty
+// Enthaelt ein Mapping mit allen Spruechen und Faehigkeiten der Gilde.
+// Wird mit AddSkill()/AddSpell() modifiziert.
+
+P_GUILD_RESTRICTIONS
+// Gildenproperty
+// Enthaelt ein Mapping mit den Eintrittbeschraenkungen einer Gilde.
+
+P_GUILD_DEFAULT_SPELLBOOK
+// Gildenproperty
+// Der Name des Spellbooks, das von der Gilde standardmaessig verwendet
+// wird (kann bei Spells mit SI_SPELLBOOK ueberschrieben werden).
+
+P_GUILD_MALE_TITLES
+// Gildenproperty
+// Ein Mapping mit den Stufenbezeichnungen fuer maennliche Gildenmitglieder.
+// Als Key dient der Gildenlevel.
+
+P_GUILD_FEMALE_TITLES
+// Gildenproperty
+// Ein Mapping mit den Stufenbezeichnungen fuer weibliche Gildenmitglieder.
+// Als Key dient der Gildenlevel.
+
+P_GUILD_LEVELS
+// Gildenproperty
+// Ein Mapping mit den Stufenbeschraenkungen fuer die Gildenlevel.
+// Als Key dient der jeweilige Gildenlevel.
+
+P_SB_SPELLS
+// Spellbookproperty
+// Hier sind saemtliche Spells des Spellbooks vermerkt (wird mit AddSpell()
+// veraendert).
+
+P_GLOBAL_SKILLPROPS
+// Gilden- und Spellbookproperty
+// Eigenschaften, die ALLE Spells eines Spellbooks bzw. ALLE Skills und
+// Spells einer Gilde haben sollen.
+
+P_GUILD_LEVEL
+// Gildenlevel des Spielers (nicht unbedingt identisch mit dem Spielerlevel)
+
+P_GUILD_TITLE
+// Gildentitel, der dem Gildenlevel des Spielers entspricht. Wird nur
+// angezeigt, wenn P_TITLE=0 ist.
+
+P_GUILD_RATING
+// Einstufung des Spielers in der Gilde (zwischen 0 und 10000).
+// Wie sich die Einstufung zusammensetzt, ist Sache der jeweiligen Gilde.
+
+P_NEWSKILLS
+// Hier sind saemtliche Skills und Spells vermerkt, die der Spieler kennt.
+
+P_NEXT_SPELL_TIME
+// Wann kann das naechste Mal gezaubert werden?
+
+P_HIT_FUNC
+// Enthaelt das Objekt, das eine HitFunc() definiert
+// (fuer Waffen)
+
+P_WIELD_FUNC
+// Enthaelt das Objekt, das eine WieldFunc() definiert
+// (fuer Waffen)
+
+P_UNWIELD_FUNC
+// Enthaelt das Objekt, das eine UnwieldFunc() definiert
+// (fuer Waffen)
+
+P_DEFEND_FUNC
+// Enthaelt das Objekt, das eine DefendFunc() definiert
+// (fuer Ruestungen)
+
+P_WEAR_FUNC
+// Enthaelt das Objekt, das eine WearFunc() definiert
+// (fuer Ruestungen)
+
+P_REMOVE_FUNC
+// Enthaelt das Objekt, das eine RemoveFunc() definiert
+// (fuer Ruestungen)
+
+P_LEP
+// Levelpunkte eines Spielers
+// NICHT VON HAND SETZEN!!!
+
+P_LEP_MALUS
+// Malus auf die Levelpunkte
+// NICHT VON HAND SETZEN!!!
+
+P_ORIG_NAME
+// In einer Leiche der Name des Gestorbenen. (name(RAW))
+
+P_NO_GLOBAL_ATTACK
+// Falls diese Propertie in einem NPC gesetzt ist, wird dieser bei einem
+// "toete alle" nicht mit angegriffen
+// (das ist zB. bei BegleitNPCs ganz nuetzlich)
+
+P_DAMAGED
+// Grad der Beschaedigung einer Waffe/Ruestung.
+// Die Propertie sollte so gesetzt sein, dass P_DAMAGED + aktuelles P_WC/AC
+// die urspruengliche P_WC/AC ergibt
+
+P_EFFECTIVE_WC
+// Die durchschnittliche Wirkung einer Waffe, basierend auf P_WC und
+// einer ggf. vorhandenen HitFunc().
+
+P_EFFECTIVE_AC
+// Die durchschnittliche Wirkung einer Ruestung, basierend auf P_AC
+// und einer ggf. vorhandenen DefendFunc().
+
+P_HOMEPAGE
+// Die Homepage eines Spielers (mit dem Befehl 'url' zu setzen).
+
+P_TPORT_COST_IN
+// In einem Raum mit Sehertor: Kostenanteil, um sich in den Raum zu
+// teleportieren
+
+P_TPORT_COST_OUT
+// In einem Raum mit Sehertor: Kostenanteil, sich aus dem Raum heraus
+// zu teleportieren
+
+P_HIDE_EXITS
+// Ist diese Property in einem Raum auf einen Wert ungleich 0, gesetzt,
+// werden einem Spieler fuer diesen Raum keine Ausgaenge angezeigt.
+
+P_TMP_ATTACK_HOOK
+// Mindestens 3-elementiges Array ({zeitpunkt, objekt, funktion, ...}).
+// Die Funktion wird im 'objekt' mit dem Feind des Lebewesens als Parameter
+// zu Beginn von Attack() (des Lebewesens) aufgerufen, wenn der 'zeitpunkt'
+// noch nicht ueberschritten ist. Wenn die Funktion 0 zurueckgibt, wird
+// Attack() abgebrochen. Ueber optionale Arrayelemente koennen der Funktion
+// weitere Parameter uebergeben werden.
+
+P_TMP_DEFEND_HOOK
+// Mindestens 3-elementiges Array ({zeitpunkt, objekt, funktion, ...}).
+// Die Funktion wird im 'objekt' mit den gleichen Parametern wie Defend()
+// zu Beginn von Defend() (des Lebewesens) aufgerufen, wenn der 'zeitpunkt'
+// noch nicht ueberschritten ist. Wenn die Funktion 0 zurueckgibt, wird
+// Defend() abgebrochen, ansonsten wird als Rueckgabe ein 3-elementiges
+// Array ({schaden, schadenstypen, spell}) erwartet, die anstelle der
+// Defend() uebergebenen Werte verwendet werden. Ueber optionale Array-
+// elemente koennen der Funktion weitere Parameter uebergeben werden.
+
+P_TMP_DIE_HOOK
+// Mindestens 3-elementiges Array ({zeitpunkt, objekt, funktion, ...}).
+// Die Funktion wird im 'objekt' mit dem gleichen Parameter wie die()
+// zu Beginn von die() (des Lebewesens) aufgerufen, wenn der 'zeitpunkt'
+// noch nicht ueberschritten ist. Wenn die Funktion 1 zurueckgibt, wird
+// die() abgebrochen. Ueber optionale Arrayelemente koennen der Funktion
+// weitere Parameter uebergeben werden.
+
+P_DAM_DESC
+// Beschreibung beschaedigter Waffen/Ruestungen.
+
+P_LAST_DAMTYPES
+// Schadenstypen, mit denen das letzte do_damage() von Defend() aus
+// ausgeloest wurde (kann von Leichen abgefragt werden).
+// Entweder ein Array mit den Schadenstypen oder 0.
+
+P_TEAM
+// Teamobjekt, falls Spieler in einem Team ist.
+
+P_TEAM_NEWMEMBER
+// Spieler moechte ins Team von diesem Objekt aufgenommen werden.
+
+P_TEAM_ATTACK_CMD
+// Angriffsbefehl des Spielers, nicht setzbar.
+
+P_TEAM_AUTOFOLLOW
+// Folgewunsch des Spielers, nicht setzbar.
+
+P_TEAM_WANTED_ROW
+// Gewuenschte Reihe des Spielers (von 1 bis MAX_TEAMROWS)
+
+P_TEAM_WIMPY_ROW
+// Fluchtreihe des Spielers (von 1 bis MAX_TEAMROWS)
+// Wenn die Fluchtreihe <=1 ist ist die Flucht in eine hintere Reihe
+// deaktiviert.
+
+P_TEAM_LEADER
+// Teamobjekt, falls Spieler Anfuehrer eines Teams ist.
+
+P_TEAM_ASSOC_MEMBERS
+// Array mit den zugeordneten NPCs des Spielers bzw.
+// der Spieler, dem dieser NPC zugeordnet ist.
+// Zugeordnete NPCs sind automatisch im Team des Spielers.
+// Der Zugriff auf diese Property sollte ueber AssocMember()
+// bzw. DeAssocMember() erfolgen.
+
+P_TEAM_COLORS
+// Grenzwerte fuer farbige Anzeige im Teaminfo.
+// Array mit 4 Werten ({ lp_rot, lp_gelb, sp_rot, sp_gelb })

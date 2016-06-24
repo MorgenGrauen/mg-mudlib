@@ -1,0 +1,59 @@
+filter_objects(E)
+
+FUNKTION:
+     object *filter_objects(mixed *arr, string fun, [, mixed extra, ...])
+
+PARAMETER:
+     arr	- zu filterndes Array von Objekten/Objektpfaden
+     fun	- an Objekten zu rufende Methode
+     extra	- weitere Parameter fuer Methode
+
+BESCHREIBUNG:
+     Filtert die Elemente aus 'arr' durch den Aufruf der Methode 'fun' an
+     jedem der Elemente von 'arr'. 0-Eintraege werden ignoriert.
+
+     Wenn der Aufruf
+	arr[n]->fun([extra1, extra2, ...])
+     als Rueckgabewert !=0 zurueckgibt dann wird das Element in das neue
+     Array aufgenommen, sonst nicht.
+
+RUeCKGABEWERT:
+     Gefiltertes Array mit Filterbedingung erfuellenden Objekten.
+
+BEMERKUNGEN:
+     Werden Pfade angegeben, so wird versucht ein Objekt zu laden, falls
+     dieses nicht existiert.
+
+BEISPIEL:
+     // gibt alle tauben Personen wieder
+     deaf=filter_objects(users(), "QueryProp", P_DEAF);
+
+     // gibt alle blinden Personen wieder
+     blind=filter_objects(users(), "QueryProp", P_BLIND);
+
+     // filtert alle Objekte auf eine bestimmte ID (-> present)
+     idmatch=filter_objects(arr, "id", "irgendwasID");
+
+     // gibt alle Autoloader wieder
+     al=filter_objects(all_inventory(this_player()),
+                      "QueryProp", P_AUTOLOADOBJ);
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i;
+     object *ret; mixed *input;
+
+     ret=allocate(0);
+     i=sizeof(input);
+     while(i--)
+       if(input[i]->fun([extra1, extra2, ...]))
+         ret+=({input[i]});
+
+SIEHE AUCH:
+     Arrays:		filter(E), map(E)
+     Objektarrays:	map_objects(E)
+     Mappings:		filter_indices(E), map_indices(E)
+
+     Sonstiges:		sort_array(E), unique_array()
+			alist, transpose_array(E)
+
+20.Jan 2005 Gloinson

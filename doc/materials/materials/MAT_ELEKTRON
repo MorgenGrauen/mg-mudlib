@@ -1,0 +1,20 @@
+Materialid:
+MAT_ELEKTRON             "elektron"
+
+Name:
+"Elektron" "Elektrons" "Elektron" "Elektron"
+
+Geschlecht:
+N
+
+Beschreibung:
+bis 75% Gold, Rest Silber
+
+Erkennbarkeit:
+MAT_MISC_METAL:0
+MAT_GOLD:66
+MAT_ELEKTRON
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_SOLID:100

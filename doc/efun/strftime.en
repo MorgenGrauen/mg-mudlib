@@ -1,0 +1,122 @@
+SYNOPSIS
+     string strftime()
+     string strftime(string fmt)
+     string strftime(int clock)
+     string strftime(string fmt, int clock)
+     string strftime(string fmt, int clock, int localized)
+
+BESCHREIBUNG
+     Gibt, aehnliche wie ctime(), eine Zeit als formatierten String zurueck.
+     Hierbei kann ein String mit div. Platzhaltern vom Benutzer angegeben
+     werden (s.u.). Wird kein String angegeben, wird "%c" als Formatstring
+     benutzt.
+
+     Das Argument <clock> wird als Anzahl Sekunden seit dem 01.01.1970, 00:00
+     Uhr interpretiert. Wenn <clock> nicht angegeben wird, wird time()
+     verwendet.
+
+     Das Argument <localized> gibt an, ob die Ausgabe englisch (das sog.
+     klassische "C" locale) oder in der jeweiligen Landessprache (z.B.
+     deutsch) erfolgen soll. Hierbei haengt die Sprache allerdings von den auf
+     dem Mudrechner gesetzten Umgebungsvariablen LC_TIME oder LC_ALL ab, sie
+     kann nicht selber gewaehlt werden. Wird kein <localized> angegeben, wird
+     1 verwendet, was einer Ausgabe in Landessprache entspricht.
+
+BEMERKUNGEN:
+     Der zurueckgebene Ergebnisstring ist max. 511 Zeichen lang.
+     Im MG erfolgt momentan immer eine englische Ausgabe.
+
+PLATZHALTER:
+     Diese Funktion versteht alle Platzhalter, die die Funktion strftime() aus
+     der C-Standardbibliothek versteht. Momentan sind dies:
+     
+     %a
+        is replaced by the locale's abbreviated weekday name. 
+     %A
+        is replaced by the locale's full weekday name. 
+     %b
+        is replaced by the locale's abbreviated month name. 
+     %B
+        is replaced by the locale's full month name. 
+     %c
+        is replaced by the locale's appropriate date and time representation. 
+     %C
+        is replaced by the century number (the year divided by 100 and 
+        truncated to an integer) as a decimal number [00-99]. 
+     %d
+        is replaced by the day of the month as a decimal number [01,31].
+     %D
+        same as %m/%d/%y. 
+     %e
+        is replaced by the day of the month as a decimal number [1,31]; a 
+        single digit is preceded by a space. 
+     %h
+        same as %b. 
+     %H
+        is replaced by the hour (24-hour clock) as a decimal number 
+        [00,23]. 
+     %I
+        is replaced by the hour (12-hour clock) as a decimal number 
+        [01,12]. 
+     %j
+        is replaced by the day of the year as a decimal number 
+        [001,366]. 
+     %m
+        is replaced by the month as a decimal number [01,12]. 
+     %M
+        is replaced by the minute as a decimal number [00,59]. 
+     %n
+        is replaced by a newline character. 
+     %p
+        is replaced by the locale's equivalent of either a.m. or p.m. 
+     %r
+        is replaced by the time in a.m. and p.m. notation; in the POSIX 
+        locale this is equivalent to %I:%M:%S %p. 
+     %R
+        is replaced by the time in 24 hour notation (%H:%M). 
+     %S
+        is replaced by the second as a decimal number [00,61]. 
+     %t
+        is replaced by a tab character. 
+     %T
+        is replaced by the time (%H:%M:%S). 
+     %u
+        is replaced by the weekday as a decimal number [1,7], with 1 
+        representing Monday. 
+     %U
+        is replaced by the week number of the year (Sunday as the first day 
+        of the week) as a decimal number [00,53]. 
+     %V
+        is replaced by the week number of the year (Monday as the first day 
+        of the week) as a decimal number [01,53]. If the week containing 1 
+        January has four or more days in the new year, then it is considered 
+        week 1. Otherwise, it is the last week of the previous year, and the 
+        next week is week 1. 
+     %w
+        is replaced by the weekday as a decimal number [0,6], with 0 
+        representing Sunday. 
+     %W
+        is replaced by the week number of the year (Monday as the first day 
+        of the week) as a decimal number [00,53]. All days in a new year 
+        preceding the first Monday are considered to be in week 0. 
+     %x
+        is replaced by the locale's appropriate date representation. 
+     %X
+        is replaced by the locale's appropriate time representation. 
+     %y
+        is replaced by the year without century as a decimal number [00,99]. 
+     %Y
+        is replaced by the year with century as a decimal number. 
+     %Z
+        is replaced by the timezone name or abbreviation, or by no bytes if 
+        no timezone information exists. 
+     %%
+        is replaced by %.
+
+BEISPIEL
+     write(strftime("Heute ist %A, der %d. %B %Y.\n"))
+     ergibt z.B.
+     "Heute ist Montag, der 24. September 2007.\n"
+
+SIEHE AUCH
+     gmtime(E), localtime(E), mktime(), time(E), utime(E)

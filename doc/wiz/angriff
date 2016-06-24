@@ -1,0 +1,18 @@
+--------Angreifer
+Attack()
+	Holt die Waffe des Spielers.
+	Berechnet den Angriffstyp und gibt die
+	Angriffsmeldung aus.
+
+	Aufruf von:
+
+--------Verteidiger     
+Defend( hp, typ )
+	Gibt die Verteidigungsmeldung aus.
+	Berechnet die Anzahl der HP die abgezogen wird.
+
+	Aufruf von:
+
+do_damage( hp )
+
+	Berechnen der HP. Gegebenenfalls sterben etc.

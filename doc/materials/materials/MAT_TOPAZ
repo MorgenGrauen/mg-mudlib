@@ -1,0 +1,21 @@
+Materialid:
+MAT_TOPAZ                "topaz"
+
+Name:
+"Topas" "Topas" "Topas" "Topas"
+
+Geschlecht:
+M
+
+Beschreibung:
+gelb
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_TOPAZ
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

@@ -1,0 +1,8 @@
+SYNOPSIS
+      xdupdate <filename>
+
+DESCRIPTION
+     Update an object including all its inherited objects.
+
+EXAMPLE
+     xdupdate /std/player.c

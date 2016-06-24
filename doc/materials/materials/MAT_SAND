@@ -1,0 +1,17 @@
+Materialid:
+MAT_SAND                 "sand"
+
+Name:
+"Sand" "Sands" "Sand" "Sand"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

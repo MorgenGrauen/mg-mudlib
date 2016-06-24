@@ -1,0 +1,37 @@
+restore_spell_points()
+FUNKTION:
+    void restore_spell_points(int points)
+
+ARGUMENTE:
+    points: Anzahl der Konzentrationspunkte die gutgeschrieben werden sollen.
+
+BESCHREIBUNG:
+    Dem Lebewesen werden points Konzentrationspunkte gutgeschrieben. Falls
+    Punkte abgezogen werden sollen und das Lebewesen nicht ueber <points>
+    Konzentrationspunkte verfuegt, werden sie auf 0 gesetzt.
+
+RUECKGABEWERT:
+    Keiner
+
+BEISPIELE:
+    write("Das boese boese Monster schaut Dich suess an und gibt dir mehr "
+         +"Konzentration.\n");
+    this_player()->restore_spell_points(50);
+
+BEMERKUNGEN:
+    Da das Benutzen der Funktion eine Heilung bedeutet, sollte man bei
+    Verwendung auf jeden Fall Ruecksprache mit seinem RM nehmen, bzw
+    die Heilstelle bei der Heilungsbalance genehmigen lassen.
+
+    Bei Heilstellen sollte eine evtl. Heilung des Spielers mit der eigens
+    dafuer eingerichteten Funktion check_and_update_timed_key realisiert
+    werden.
+    Ansonsten bitte buffer_sp() benutzen und die Konzeptseite lesen!
+
+SIEHE AUCH:
+    Gegenpart:	reduce_spell_points(L)
+    Verwandt:	buffer_sp(L), restore_hit_points(L)
+    Props:	P_SP
+    Konzept:	heilung
+
+23.Feb.2004 Gloinson

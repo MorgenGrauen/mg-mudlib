@@ -1,0 +1,26 @@
+
+echoto
+------
+
+ MAGIERKOMMANDO:
+    echoto <name> <text>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines (eingeloggten) Spielers oder NPCs
+     <text>
+        ein beliebiger Text
+
+ BESCHREIBUNG:
+    Der Text <text> wird an das Lebewesen <name> geschickt.
+
+    Der Befehl sollte mit Sorgfalt behandelt werden. In diesem Zusammenhang
+    sei auch nochmal darauf hingewiesen, dass Echos in fremdem Namen nicht
+    erlaubt sind.
+
+ SIEHE AUCH:
+    vertrag, emote, echo, echoall, mecho, teile (mit)
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:54:38 von Wargon

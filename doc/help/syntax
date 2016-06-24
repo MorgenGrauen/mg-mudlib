@@ -1,0 +1,60 @@
+
+Die Syntax der Eingaben im MorgenGrauen
+=======================================
+
+    Eine Eingabe sollte im allgemeinen folgendermassen aussehen:
+
+    > <verb> [<objekt(e)>] [<adverb> [und <adverb>]]
+
+    Gross- und Kleinschreibung sowie Artikel koennen in den meisten Faellen
+    benutzt werden. Das Verb MUSS allerdings IMMER klein geschrieben werden!
+    Folgende Ausdruecke sollten also aequivalent sein:
+
+    > steck das Schwert in den Beutel
+    > steck schwert in beutel
+
+    Umlaute und andere Sonderzeichen (Zeichen mit ASCII-Codes >= 127) sind
+    verboten und werden durch `?' ersetzt.
+
+    Wenn nicht genau klar ist, welches Objekt gemeint ist, kann man das
+    gewuenschte Objekt mit einer angehaengten Nummer identifizieren:
+
+    > steck schwert 2 in beutel
+    > steck das 2. Schwert in den Beutel
+
+    Folgendes geht allerdings nicht:
+
+    > steck das zweite Schwert in den Beutel
+
+    Solltest Du irgendwo im Spiel auf eine Stelle stossen, wo keine
+    grammatikalisch richtige Eingabe erwartet wird, gib bitte einem Magier
+    Bescheid.
+
+    Wenn Du bei der Verwendung eines Adverbs in Zusammenhang mit einem Verb
+    Probleme hast, so vergewissere Dich, ob das Verb ueberhaupt die Verwendung
+    von Adverbien unterstuetzt.
+
+    Bei Verben, die die Verwendung von Adverbien unterstuetzen, kannst Du auch
+    einen Text nach Wahl benutzen und zwar folgendermassen:
+
+    > <verb> /<text_nach_wahl>
+
+    Viel Spass beim Ausprobieren.
+
+ BEISPIELE:
+
+    > nimm buch
+    > stecke buch in tasche
+    > ziehe schild an
+    > nimm schwert aus leichnam 2
+
+    > grinse
+    > grinse jamm und jofi (jamm und jofi muessen natuerlich
+                            in der "adverb"-Liste stehen.)
+    > grinse /was-neues-was-auch-nicht-in-der-"adverb"-Liste-steht
+
+ SIEHE AUCH:
+    verben, adverb, idee
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

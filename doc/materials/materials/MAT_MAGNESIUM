@@ -1,0 +1,21 @@
+Materialid:
+MAT_MAGNESIUM            "Mg"
+
+Name:
+"Magnesium" "Magnesiums" "Magnesium" "Magnesium"
+
+Geschlecht:
+N
+
+Beschreibung:
+brennbar
+
+Erkennbarkeit:
+MAT_MISC_METAL:0
+MAT_ALUMINIUM:30
+MAT_MAGNESIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100

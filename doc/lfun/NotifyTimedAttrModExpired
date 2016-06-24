@@ -1,0 +1,20 @@
+NotifyTimedAttrModExpired
+FUNKTION:
+     void NotifyTimedAttrModExpired(string key)
+
+DEFINIERT IN:
+     Push-Methode in notify-Objekten.
+
+ARGUMENTE:
+     string key		- der geloeschte Modifier
+
+BESCHREIBUNG:
+     Wird aus dem Lebewesen aus aufgerufen, in dem der entsprechenden
+     Modifier soeben ungueltig geworden ist.     
+
+SIEHE AUCH:
+     Properties: P_ATTRIBUTES, P_TIMED_ATTR_MOD
+     Methoden:	 SetTimedAttrModifier(L), DeleteTimedAttrModifier(L),
+		 QueryTimedAttrModifier(L)
+
+27. Juli 2004 Gloinson

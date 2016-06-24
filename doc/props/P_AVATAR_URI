@@ -1,0 +1,22 @@
+NAME:
+    P_AVATAR_URI                    "p_lib_avataruri"
+
+DEFINIERT IN:
+    /sys/living/description.h
+
+BESCHREIBUNG:
+    Lebewesen speichern in der Prop P_AVATAR_URI eine URI (string), welche auf
+    ein Bild im Netz verweist, welches ein Client fuer dieses Lebewesen
+    anzeigen kann.
+    Spieler koennen diese Avatar-URI mit dem Befehl 'avatar' anzeigen,
+    aendern und loeschen.
+    Avatar-URIs anderer Spieler lassen sich mit 'finger -a' ausgeben.
+
+BEMERKUNGEN:
+    Diese Property kann nur vom Spieler oder einem EM modifiziert werden.
+
+SIEHE AUCH:
+    avatar
+
+LETZTER AENDERUNG:
+    03.9.2011, Zesstra

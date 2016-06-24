@@ -1,0 +1,44 @@
+
+spruchermuedung
+--------
+
+KOMMANDO:
+    spruchermuedung <alt | neu | normal>
+
+ARGUMENT:
+    alt:    schaltet die ungenauere alte Spruchermuedung ein
+
+    neu:
+    normal: schaltet die neue (normale) Spruchermuedung ein
+
+BESCHREIBUNG:
+    Zaubersprueche (im weitesten Sinne, also auch z.B. wunder bei Klerikern
+    und Sonderangriffe bei Kaempfern erzwingen in der Regel eine kurze
+    (Ermuedungs-)Pause, bis man den naechsten Spruch sprechen kann.
+    Diese Pausen waren auch technischen Gruenden frueher immer Vielfache von
+    2s und kuerzere Pausen gab es nicht. Ausserdem begannen diese Pausen immer
+    zum Beginn einer Kampfrunde.
+    Seit einiger Zeit sind diese Pausen grundsaetzlich sekundengenau. Einige
+    Spieler finden dies jedoch zu ungewohnt. Diese koennen mit diesem Befehl
+    einen alternativen Modus fuer die Spruchermuedung einschalten, welcher das
+    alte Verhalten weitgehend wiederherstellt.
+
+    Aber: benutzt man die alte Spruchermuedung, werden alle Ermuedungspausen
+          auf Vielfache von 2s aufgerundet, d.h. sie werden ggf. laenger. Dies
+          gilt auch fuer etwaige Mali (z.B. wird aus einem Malus von 1s u.U.
+          ein Malus von 2s) und etwaige Boni sind oft unwirksam, weil sie auf
+          Vielfache von 2s abgerundet werden (z.B. -1s auf 0).
+          Ausserdem sind Sprueche auf Grundlage der sekundengenauen
+          Ermuedungspausen berechnet/balanciert.
+
+BEMERKUNGEN:
+    Kann nicht im Kampf oder vor Ablauf von 3min nach einem Kampf geaendert
+    werden.
+
+BEISPIELE:
+    spruchermuedung alt -> Ermuedungspausen werden 2s aufgerundet
+    spruchermuedung neu -> sekundengenaue Ermuedungspausen
+
+LETZTE AeNDERUNG:
+2010-03-02, Zesstra
+

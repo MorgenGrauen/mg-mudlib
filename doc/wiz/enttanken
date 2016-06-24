@@ -1,0 +1,99 @@
+Enttanken
+=========
+
+                               Generelles:
+                               **********
+
+ALLE Enttank-Moeglichkeiten MUESSEN ortsabhaenig sein.
+Ausnahmen KANN es fuer Questbelohnungen geben.
+
+Toiletten
+---------
+Toiletten rufen die Methoden "defuel_drink" bzw. "defuel_food" im Spieler auf.
+Es werden keine Parameter uebergeben. Rueckgabewerte sind entweder die Fehler
+NO_DEFUEL, wenn man nichts zu Enttanken hat, DEFUEL_TOO_LOW, wenn man nicht
+genug im Magen/Blase hat, DEFUEL_TOO_SOON, wenn man noch nicht
+wieder enttanken darf, ODER der enttankte Wert.
+Beispiel hierzu siehe "man defuel_food".
+
+Man darf DANN enttanken, wenn man mindestens den Fuellwert P_DEFUEL_LIMIT_FOOD
+bzw. P_DEFUEL_LIMIT_DRINK hat und das letzte Enttanken mindestens
+P_DEFUEL_TIME_FOOD bzw. P_DEFUEL_TIME_DRINK her ist.
+Ist dies der Fall, kann man P_DRINK/FOOD*P_DEFUEL_AMOUNT_DRINK/FOOD enttanken,
+wobei dies zur Haelfte ueber ein Random geglaettet wird.
+
+Wer regulaer ueber "defuel_drink" enttankt, enttankt auch automatisch eine
+gewisse Menge an Alkohol. Diese Menge ist von der enttankten Menge, von dem
+im Koerper sich befindenen Alkohol und vom Gewicht des Spielers abhaengig.
+
+Alle genannten Props sind rassenabhaengig.
+Die Berechnungen sind gekapselt in "defuel_food/drink".
+
+Andere Objekte
+--------------
+
+Hier bietet sich an, die zeitliche Nutzung der Enttanke spielerbezogen 
+mittels der Methode  check_and_update_timed_key zu steuern. Dabei sollte
+der zeitliche Abstand nicht zu knapp sein, in der Regel im Bereich von 
+ca. einer Stunde. Der eigentliche Enttankvorgang im Spieler geschieht 
+mittels eat_food, drink_soft oder drink_alcohol durch Uebergabe negativer 
+Werte. Der Betrag dieses Wertes sollte der Erreichbarkeit angemessen sein,
+d.h. leichter erreichbare Enttanken sollten auch nicht zu viel enttanken,
+wenn sie den Spieler komplett enttanken sollen, muessen sie entsprechend
+schwer zu erreichen sein.
+Da die Enttanken ortsabhaengig sind und in der Regel erst erforscht 
+werden muessen, ist eine weitere Begrenzung momentan nicht vorgesehen. 
+
+                              Spezifisches:
+                              ************
+
+----------------------------
+Rassenbeschreibungen fuer Berechnungen in "defuel_food/drink":
+----------------------------
+
+MENSCHEN
+sind wie immer nichts Besonderes und definieren das absolute Mittelmass.
+
+ZWERGE
+koennen mehr in Blase und Magen haben und koennen auch so richtig abladen.
+Dafuer muessen sie laenger warten, bis es sich lohnt, zu enttanken.
+
+ELFEN
+sind inkontinent und Kleinmengengeber.
+
+DUNKELELFEN
+sind von den Werten her in etwa wie Elfen.
+
+HOBBITS
+koennen essen bis zum Umfallen. Sie laden dann richtig ab, muessen aber auch
+entsprechend warten.
+
+FELINEN
+sind den Menschen aehnlich.
+
+ORKS
+sind auch nichts Besonderes. 
+
+Wer die genauen Werte einsehen moechte, moege in den shells nachgucken.
+
+                                Logisches:
+                                *********
+
+Jede (!) Moeglichkeit zur Enttankung, muss dem zustaendigen Magier
+fuer Heilungs-Balance gemeldet und von diesem genehmigt werden. Wer
+diesen Posten momentan innehat, kann dem MailAlias "heilungs_balance"
+entnommen werden.
+
+Siehe auch:
+----------
+     Tanken:    consume, drink_alcohol, eat_food, drink_soft
+     Heilung:   heal_self, restore_spell_points, restore_hit_points, 
+                buffer_hp, buffer_sp
+     Timing:    check_and_update_timed_key
+     Enttanken: defuel_drink, defuel_food
+     Props:     P_DRINK, P_FOOD, P_ALCOHOL, P_SP, P_HP,
+                P_DEFUEL_TIME_DRINK
+     Konzepte:  heilung, food
+
+----------------------------------------------------------------------------
+Last modified: 02.11.2005 - Miril

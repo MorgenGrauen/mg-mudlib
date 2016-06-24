@@ -1,0 +1,38 @@
+
+banish
+------
+
+ MAGIERKOMMANDO:
+    banish [-f] <name> [<grund>]
+
+ ARGUMENTE:
+
+    -f (optional)
+        Sperrung erzwingen
+     <name>
+        Der zu sperrende Name
+     <grund> (optional)
+        Der Grund der Sperre
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kann man bestimmte Namen sperren, so dass sich keine
+    Spieler mit gleichem Namen einloggen koennen. Sinnvoll ist dies z.B. bei
+    Namen von NPCs oder Oertlichkeiten, wo es ggf. zu Verwirrungen kommen
+    koennte.
+
+    Als gute Praxis sollte man in den Grund auch angeben, fuer welchen 
+    Magier der Name gesperrt wurde. 
+
+    Mit der Option -f kann man auch Namen von existenten Spielern banishen.
+    Diese koennen sich weiterhin noch einloggen, aber sobald der Spieler sich
+    loescht, ist der Name gesperrt.
+
+    Mit dem Grund 'loeschen' koennen gesperrte Namen wieder freigegeben werden.
+
+    Dieser Befehl kann nur von Regions- und hoeheren Magiern ausgefuehrt werden.
+
+ SIEHE AUCH:
+    mbanish, tbanish, sbanish
+
+ LETZTE AeNDERUNG:
+    Don,  2. Mai 2013, 11:45:08 von Zook

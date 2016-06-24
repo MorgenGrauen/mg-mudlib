@@ -1,0 +1,49 @@
+
+FUNKTION:
+     int UnregisterEvent(string eid, object listener);
+
+DEFINIERT IN:
+     /p/daemon/eventd.c
+DEKLARIERT IN:
+     /sys/events.h
+
+ARGUMENTE:
+     string eid,
+       Die ID des Events, vom dem man sich abmelden will.
+     object listener,
+       Das Objekt, das als Lauscher ausgetragen werden soll.
+
+BESCHREIBUNG:
+     Das Objekt 'listener' wird als Lauscher dieses Events ausgetragen. Ab
+     diesem Moment wird es bei Events vom Typ 'eid' nicht mehr informiert.     
+
+     Hat der Event 'eid' im Anschluss keine Lauscher mehr, wird er implizit
+     geloescht.
+
+RUeCKGABEWERT:
+     1 fuer Erfolg, <=0 fuer Misserfolg.
+     1   - Erfolg, 'listener' wurde eingetragen.
+     -1  - falsche Argumente uebergeben
+     -2  - 'listener' ist nicht fuer 'eid' registriert.
+    
+BEMERKUNGEN:
+     Wenn sich ein Objekt vor Zerstoerung nicht abmeldet, wird es ggf. beim
+     naechsten Auftreten von 'eid' automatisch ausgetragen.
+     Falls Blueprints nach Neuladen nicht automatisch angemeldet sein sollen,
+     sollten sie sich im remove() explizit abmelden.
+
+BEISPIELE:
+     1. Ein Objekt moechte nicht mehr ueber Spielertode informiert werden:
+          EVENTD->UnregisterEvent(EVT_LIB_PLAYER_DEATH, this_object());
+
+     2. Ein Objekt moechte sich bei Zerstoerung abmelden:
+       varargs int remove(int silent) {
+           ...
+           EVENTD->UnregisterEvent("zesstra_vulkanausbruch",this_object());
+       }
+
+SIEHE AUCH:
+     events, eventd, UnregisterEvent(), RegisterEvent()
+
+----------------------------------------------------------------------------
+Last modified: 15.08.2007, Zesstra

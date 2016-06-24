@@ -1,0 +1,41 @@
+QueryFlaw()
+
+FUNKTION:
+     mixed *QueryFlaw();
+
+DEFINIERT IN:
+     /std/armour/combat.c,
+     /std/weapon/combat.c
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     QueryFlaw() liefert Informationen ueber den Grad der Abnutzung der
+     Waffe bzw. Ruestung. Der Zustand wird als Array mit der Zahl der
+     TakeFlaw()-Aufrufe und dem Datum des ersten TakeFlaw()-Aufrufs
+     zurueckgegeben.
+
+RUeCKGABEWERT:
+     Ein Array mit drei Elementen:
+       1. der aktuelle Zaehlerstand
+       2. Zeit der ersten Benutzung
+       3. die Zeit der ersten Benutzung als String
+
+BEISPIELE:
+     Den aktuellen Abnutzungsgrad einer Ruestung kann man sich wie folgt
+     anzeigen lassen:
+
+     mixed *flaw;
+
+     flaw = ruestung->QueryFlaw();
+
+     printf("Zaehlerstand: %d, erster Schlag: %s\n", flaw[0], flaw[2]);
+     // oder analog:
+     printf("Zaehlerstand: %d, erster Schlag: %s\n", flaw[0], dtime(flaw[1]));
+
+SIEHE AUCH:
+     TakeFlaw(), /std/armour/combat.c, /std/weapon/combat.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:22:32 1996 by Wargon

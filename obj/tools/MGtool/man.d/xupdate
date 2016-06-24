@@ -1,0 +1,10 @@
+SYNOPSIS
+      xupdate <filename>
+
+DESCRIPTION
+     Update an object by first calling the lfun "remove()" of it and when
+     it still exists destruct it.
+
+EXAMPLE
+     xupdate obj/blub.c
+

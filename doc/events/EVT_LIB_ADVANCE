@@ -1,0 +1,30 @@
+EVENT: 
+   EVT_LIB_ADVANCE
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/gilde.c
+
+BESCHREIBUNG:
+   Dieses Event wird ausgeloest, wenn sich der Spielerlevel eines Spielers
+   aendert. (Momentan erhoeht er sich nur.)
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:         (object) Spielerobjekt
+      E_PLNAME:         (string) UID/Spielername
+      E_ENVIRONMENT:    (object) Environment des Spielers
+      E_GUILDNAME:      (string) Name der Gilde des Spielers
+      P_LEVEL:          (int) s. Prop, neuer Spielerlevel
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

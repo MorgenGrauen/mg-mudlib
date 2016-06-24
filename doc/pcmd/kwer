@@ -1,0 +1,90 @@
+
+kwer
+----
+
+ KOMMANDO:
+    kwer [[alle] [in <stadt>] [region <region>] [bei <spieler>] [spieler]
+         [seher] [magier] [erzmagier] [goetter] [mensch] [zwerg] [elf]
+         [feline] [hobbit] [regionsmitarbeiter|mitarbeiter <region>]
+         [regionsmagier <region>] [testies] [zweities] [magierzweities]
+         [erwartete] [gilde <gilde>] [gildenmagier <gilde>]
+	 [frosch] [idle] [idlezeit <min>] [icq] [cicerone]
+         [www|url] [ssl|stunnel] [und|oder|ausser] ...]
+
+ ARGUMENTE:
+
+     <stadt>
+        Name der gewuenschten Stadt (Herkunft des Login)
+     <region>
+        Name der gewuenschten Region (in Morgengrauen)
+     <spieler>
+        Name eines Spielers
+     <gilde>
+        Name einer Gilde
+
+ BESCHREIBUNG:
+    Es wird eine kurze Liste aller in MorgenGrauen anwesenden Spieler
+    ausgegeben, dabei werden erwartete Spieler mit einem vorgestellten
+    "*" markiert.
+    Bei aktiviertem ANSI sind Magier unterstrichen, erwartete Spieler
+    in rot und Froesche in gruen angezeigt.
+    
+
+    Die Buchstaben am Ende bedeuten:
+
+     [s]   Spieler
+     [S]   Seher
+
+     [z]   Zweitspieler
+     [Z]   Zweitspieler mit Seherlevel
+     [n]   unsichtbar markierter Zweitspieler
+     [N]   unsichtbar markierter Zweitspieler mit Seherlevel
+
+     [t]   Testspieler
+     [T]   Testspieler mit Seherlevel
+
+     [L]   Magierlehrling
+     [m]   Vollmagier, ohne Region
+     [M]   Vollmagier, mit Region
+     [H]   Hilfsmagier
+     [R]   Regionschef
+     [W]   Weiser
+     [E]   Erzmagier
+     [G]   Gott
+
+    Die Informationen [n] und [N] sowie die Liste der SSL-Nutzer bekommen 
+    nur Magier. Die direkte Abfrage der Magierzweities steht nur 
+    Erzmagiern zur Verfuegung.
+
+    Die Idle-Zeit ist an einem Buchstaben vor dem Level zu erkennen:
+   
+     [i]   > 2 Minuten
+     [I]   > 10 Minuten
+     [j]   > 30 Minuten
+     [J]   > 120 Minuten
+   
+    "Idle" bedeutet, laenger keine Taste zu betaetigen.
+
+     [w]   Der Spieler hat eine WEG-Meldung gesetzt.
+
+    Direkt vor der Idlezeit ist zu erkennen, ob der Spieler den
+    Hardcoremodus spielt:
+     [c]   Der Spieler spielt Hardcore und ist noch am Leben.
+     [+]   Der Spieler spielt Hardcore und ist bereits verstorben.
+
+    Man kann die Ausgabe auf gewisse Gruppen einschraenken, diese Gruppen
+    koennen mit `und', `oder' und `ausser' verknuepft werden. Dies geschieht
+    mit Linksklammerung (also `a oder b und c' wird als `(a oder b) und c'
+    interpretiert).
+
+ BEISPIELE:
+
+    > kwer alle ausser goetter
+    > kwer in muenster oder in koeln und seher
+
+ SIEHE AUCH:
+    wer, kkwer, ort
+
+ LETZTE AeNDERUNG:
+    2015-12-02, Arathorn
+

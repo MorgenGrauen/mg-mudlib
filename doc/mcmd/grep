@@ -1,0 +1,55 @@
+
+grep
+----
+
+ MAGIERKOMMANDO:
+    grep [ -chilnvrf ] <regexp> <name> [...]
+    grep [ -chilnvrmf ] <regexp> <name> [...] [<maske>]
+
+ ARGUMENTE:
+
+     <regexp>       regulaerer Suchausdruck
+     <name> [...]   Die zu durchsuchende(n) Datei(en) (oder Verzeichnisse)
+     <maske>        Maske, der eine Datei entsprechen muss (glob)
+
+ BESCHREIBUNG:
+    In den angegebenen Dateien wird nach dem regulaeren Ausdruck <regexp>
+    gesucht.
+
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Zusaetzlich koennen folgende Flags angegeben werden:
+
+     -c  Es wird nur die Zahl der gefundenen Zeilen pro Datei ausgegeben.
+     -h  Die Dateinamen werden nicht mit ausgegeben.
+     -i  Gross- und Kleinschreibung werden ignoriert.
+     -l  Die Dateinamen werden immer mit ausgegeben.
+     -n  Die Zeilennummern der gefundenen Zeilen werden ausgegeben.
+     -v  Es werden die Zeilen ausgegeben, in denen <regexp> *nicht* gefunden
+         wurde.
+     -r  Handelt es sich bei <name> um ein Verzeichnis, werden rekursiv
+         alle darin befindlichen Dateien durchsucht.
+     -m  Es werden nur Dateien durchsucht, die auf die Dateimaske <maske>
+         passen. Letztere wird in glob-Form angegeben.
+     -f  Alle Ausgaben von grep werden in die Datei grep.out im Verzeichnis
+         des Magiers (/players/magiername) ausgegeben.
+
+ BEMERKUNGEN:
+    Das Durchsuchen sehr langer Dateien oder von Verzeichnissen mit sehr
+    vielen Dateien sollte man moeglichst vermeiden, da dies sehr lagintensiv
+    ist.
+
+ BEISPIELE:
+
+    > grep P_N /sys/*.h
+    > grep -n ".*[ab]*" datei.c
+    > grep -rm "P_BLABLUBB" /std *.c -> sucht alle Dateien in /std, die
+                                        auf .c enden und P_BLABLUBB
+                                        enthalten 
+
+ SIEHE AUCH:
+    regexp(E), more, cat, head, tail
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon
+ 

@@ -1,0 +1,51 @@
+
+kobold
+------
+
+ KOMMANDO:
+    kobold [<schalter>]
+
+ ARGUMENTE:
+
+     <schalter> (optional)
+        `ein' oder `aus'
+
+ BESCHREIBUNG:
+    Der Kobold hat mehrere Funktionen, die mit dem Speichern von Mitteilungen
+    beim Bearbeiten oder Lesen eines Textes oder anderere Aktionen in
+    Zusammenhang stehen.
+
+    Mit `kobold ein' schaltet man den Kobold so ein, dass er sich jede
+    Mitteilung merkt, die waehrend einer der oben genannten Aktionen an einen
+    gesendet wurde. Wenn man damit fertig ist, kann dann mittels `kobold',
+    ohne Argumente, abgerufen werden, was er sich gemerkt hat. Das sollte aber
+    im Normalfall nicht noetig sein, da sich der Kobold automatisch meldet.
+
+    Jeder gespeicherten Meldung ist die Uhrzeit des Empfangs angehaengt.
+
+    Wuenscht man keine solche Ruhemassnahme, kann man den Kobold mit `kobold
+    aus' wieder abschalten und jede Mitteilung, Rufe und andere Meldungen
+    werden immer sofort weitergeleitet.
+
+    Standardmaessig ist der Kobold ausgeschaltet.
+
+    Der Kobold kann sich max. 255 Mitteilungen merken, sind diese
+    ueberschritten, gehen neuere Mitteilungen verloren!
+
+    Abgeblockt werden folgende Meldungen:
+    mrufe, Ebenen, Mitteilungen (erzaehle, teile mit)
+
+    Nicht abgeblockt werden folgende Meldungen:
+    sage, jegliche lokalen Emotionen sowie sonstige lokale (also im selben
+    Raum) erzeugte Meldungen, rufe, ...
+
+    *Merke*: Der Kobold funktioniert nur, wenn man einen Text liest und more
+    benutzt wird oder wenn man einen Text editiert (z.B. beim Postschreiben,
+    Artikelschreiben).
+
+ SIEHE AUCH:
+    rufe, teile (mit), weg, ebenen
+
+ LETZTE AeNDERUNG:
+    05.10.2013, Zesstra
+

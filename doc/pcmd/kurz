@@ -1,0 +1,20 @@
+
+kurz
+----
+
+ KOMMANDO:
+    kurz
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Schaltet auf den "Kurz"-Modus um. Wenn Du Dich im Kurzmodus befindest,
+    siehst Du nur eine kurze Beschreibung aller Raeume. Fuer eine laengere
+    Beschreibung kannst Du das Kommando `schau' benutzen.
+
+ SIEHE AUCH:
+    lang, ultrakurz, schau, ausgaenge
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,19 @@
+Materialid:
+MAT_MERCURY              "Hg"
+
+Name:
+"Quecksilber" "Quecksilbers" "Quecksilber" "Quecksilber"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_POISONOUS:100
+MATGROUP_FLUID:100

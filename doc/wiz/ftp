@@ -1,0 +1,41 @@
+FTP-Zugang fuer Magier (Zesstra, 12. Dez 2010, 23:17:52):
+Ok, wie in bekanntmachungen geschrieben, waren unsere (und die anderer Muds)
+Versuche bislang erfolglos, das mod_mud-Modul fuer den proftpd wieder ans
+Laufen zu bringen und ich habe als Zwischenloesung zumindest erstmal was
+anderes gebaut.
+
+Allerdings kann die aktuelle Loesung nicht 'live' beim Dateizugriff das Mud
+fragen, ob der User das auch darf. Daher sind alle Magier leider erstmal auf
+ihr Homeverzeichnis beschraenkt - dort duerfen sie natuerlich alles schreiben
+und lesen. Von dort/dorthin muss man dann im Mud mit cp/mv arbeiten.
+
+Wer seinen FTP-Zugang aktivieren will, muss - bis ich das in die Magiershell
+eingebaut habe - folgende zwei Schritte durchfuehren:
+1) xeval master()->update_ftp_access(getuid(this_interactive()), 1)
+   (Deaktivieren mit update_ftp_access(getuid(this_interactive()), 0)
+2) mit passwd ein neues PW setzen
+3) bis zur naechsten vollen Stunde warten
+
+Schritt 2) ist leider zwingend noetig, da wir das PW nicht im Klartext
+speichern und pure-ftpd unsere verschluesselten/gehashten Passwoerter nicht
+versteht. Deswegen muessen wir fuer FTP das PW anders speichern, was wir nur
+beim Neusetzen eines PWs koennen.
+
+Ich moechte euch noch um eins bitten: Wenn ihr was per FTP hin- und
+herschiebt, was dann weiter (z.B. nach /d) verschoben wird (oder von dort ihr
+euer Homeverzeichnis): loescht bitte den Kram aus eurem /players/<magier>
+wieder, denn a) geht das alles sonst ueberfluessig ins Backup und b) wird die
+Uebersicht deutlich schlechter, wenn man x Kopien des gleichen Krams im Mud
+verteilt hat.
+
+BTW: Dieser FTP-Zugang wird deaktiviert, falls sich ein Magier laenger als 2
+Wochen nicht im Mud einloggt, dann muesst ihr die Prozedur da oben
+wiederholen.
+
+Sorry fuer die Unannehmlichkeiten, aber so ists erstmal besser als gar nix.
+Falls wider Erwarten jemand beim mod_mud aushelfen mag, ist er uebrigens
+herzlich willkommen.
+
+Zesstra
+Stand: Februar 2011
+

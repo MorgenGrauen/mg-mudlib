@@ -1,0 +1,30 @@
+
+oropax
+------
+
+ MAGIERKOMMANDO:
+    oropax [<stufe>]
+
+ ARGUMENTE:
+
+     <stufe> (optional)
+        Magierlevel, ab dem Rufe durchgelassen werden
+
+ BESCHREIBUNG:
+    Du steckst Dir Oropax in die Ohren. Nun kannst Du nichts mehr hoeren, was
+    gerufen, gesagt oder Dir mitgeteilt wird. Das gilt allerdings nur fuer
+    Leute mit einem Magierlevel, der kleiner ist als <stufe>.
+
+    Die hoechstmoegliche Stufe ist Dein eigener Magierlevel.
+
+    Rufst Du den Befehl ohne Argument auf, wird das Oropax wieder entfernt.
+
+    Auf die Kommunikation ueber die Ebenen wirkt das Oropax nicht, da diese
+    Art der Kommunikation auf geistiger Ebene verlaeuft und nicht ueber den
+    Gehoergang.
+
+ SIEHE AUCH:
+    ignoriere
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

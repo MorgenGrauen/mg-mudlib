@@ -1,0 +1,17 @@
+Materialid:
+MAT_GLASS                "glass"
+
+Name:
+"Glas" "Glasses" "Glas" "Glas"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

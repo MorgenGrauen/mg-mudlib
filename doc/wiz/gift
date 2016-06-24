@@ -1,0 +1,132 @@
+Krankheiten, Gifte und Flueche
+==============================
+
+     Einmal abgesehen vom einfachen Setzen von P_POISON im Spieler lassen 
+     sich Gifte und Krankheiten auch als Objekte ausprogrammieren, die dem 
+     Spieler in mehr oder weniger regelmaessigen Abstaenden Lebenspunkte 
+     abziehen. Auch Flueche koennen nicht nur als P_CURSED in Waffen und 
+     Ruestungen, sondern auch als Objekte vorliegen, und dem Spieler das 
+     Leben schwermachen
+
+     Um ein Objekt als Gift zu kennzeichnen, wird die Klasse CL_POISON 
+     gesetzt, fuer eine Krankheit ist CL_DISEASE und fuer einen Fluch 
+     CL_CURSE zu setzen (mit AddClass, siehe dort). Zusaetzlich wird die 
+     Schwere der Erkrankung bzw. Vergiftung in der Property P_LEVEL 
+     abgelegt, wobei P_LEVEL einen Wert zwischen 1 und 100 haben sollte. 
+     Mitglieder der Klerikergilde und andere Heiler koennen dann je nach 
+     P_LEVEL den betroffenen Spieler mehr oder weniger gut heilen. (Kleriker 
+     koennen CL_POISON-Vergiftungen heilen, einige Heiler jedoch nicht.)
+
+     Eine eindeutige Unterscheidung zwischen Giften, Krankheiten und 
+     Fluechen zu treffen, ist schwer, denn die Grenzen verschwimmen. 
+     Trotzdem hier eine grobe Klassifizierung:
+
+     Gifte : bringt der Spieler sich meist selbst bei (in dem er z.B.
+             einen giftigen Pilz isst). Oft auch sind die Stellen, wo
+             ein Spieler sich vergiften kann, irgendwie gekennzeichnet,
+             so dass eine Vergiftung umgangen werden kann.
+
+             Bei Giften wird durch das Heilen der Level des Giftobjekts
+             abhaengig vom Erfolg gesenkt. Ist der Level <= 0, wird das
+             Objekt vom Kleriker-Spellbook entfernt. Heiler sollten das
+             aehnlich machen. Logisch waere es daher, den Schaden, den das
+             Objekt macht, vom momentanen Level abhaengig zu machen.
+
+     Krankheit: werden dem Spieler durch Fremdeinwirkung beigebracht, auch
+             durch Ansteckung bei einem anderen Spieler oder NPC.
+             Bei ansteckenden Krankheiten ist auf die Ansteckrate zu achten
+             und darauf, dass die Krankheit mit der Zeit auch wieder
+             ausstirbt. Also entweder bei jeder Generation der Krankheit
+             das Ansteckungsrisiko senken oder einmal infizierte Spieler
+             immunisieren. Es sollten sich 2 idelnde Spieler nicht immer
+             wieder gegenseitig bis in alle ewig anstecken koennen. Auch
+             ist darauf zu achten, dass Netztote nicht angesteckt werden
+             koennen bzw. Netztote niemanden anstecken, da sich sonst die
+             Krankheit im Netztotenraum verbreiten kann.
+
+             Das Heilen geschieht im Kleriker-Spellbook wie bei Gift.
+
+     Flueche: werden wie Krankheiten durch Fremdeinwirkung beigebracht
+             (der Spieler wird halt verflucht). Ausserdem ist die Wirkung 
+             von Fluechen oft nicht auf einfaches Abziehen von Lebenspunkten 
+             beschraenkt, sondern der Spieler kann z.B. nicht mehr richtig 
+             sprechen (Sprachfluch ueber P_PERM_STRING), ist in der Bewegung 
+             eingeschraenkt oder greift wahllos NPCs an.
+
+             Hier ist das Entfluchen durch einen Kleriker anders. Findet
+             das Spellbook ein CL_CURSE-Objekt im Inv des Spielers, wird
+             gegen das Level des Objekt gewuerfelt. Bei Erfolg wird das
+             Objekt entfernt, bei Misserfolg passiert nichts!
+
+             Als Anhaltspunkte fuer den Level:
+             - < Level 10 sind einfach zu entfluche
+             - 10 - 20 sind fuer kleine Kleriker schon enorm schwierig
+               fuer max. Kleriker gut zu entfluchen.
+             - ueber 20 gelingt es auch einem max. Kleriker nicht immer
+               beim ersten mal.
+             - ab 30 muss der max. Kleriker schon mal tanken gehen
+             - Ueber Level 40 liegt die Chance schon im Promillebereich!!!
+             - Level 100 laesst sich ueberhaupt nicht mehr entfluchen.
+
+             Will man dem Spieler also eine reelle (und nicht nur 
+             mathematische) Chance lassen, sollte der Fluchlevel unter 40 
+             bleiben.
+
+     Das Schadensobjekt selbst ist unsichtbar, meist autoload und loest die 
+     Schadensfunktion ueber Callouts aus.
+
+ BEISPIEL:
+     Hier ein Beispiel fuer einen Giftpilz (gefunden bei Silvana, in
+     /d/dschungel/silvana/weg/obj/pilz.c):
+     ----------------------------------------------------------------------
+     #pragma strong_types
+     #include "../pfad.h"
+
+     inherit "/std/thing";
+
+     void create() {
+       if(!clonep(TO)) {
+           set_next_reset(-1);
+           return;
+       }
+       ::create();
+
+       SetProp(P_SHORT,0);
+       SetProp(P_INVIS,1);
+       SetProp(P_LONG,0);
+       SetProp(P_NODROP,1);
+       SetProp(P_NEVERDROP,1);
+       SetProp(P_AUTOLOADOBJ,1);
+       SetProp(P_WEIGHT,0);
+       SetProp(P_NAME,"Pilzvergiftung");
+       SetProp(P_KILL_NAME,"Eine Pilzvergiftung");
+       SetProp(P_GENDER,FEMALE);
+       SetProp(P_ARTICLE,1);
+       SetProp(P_LEVEL,10);
+       call_out("next_step",2);
+       AddClass(CL_POISON);
+     }
+
+     void next_step();
+
+     void next_step() {
+       object pl;
+       if(!(pl=TOE) || !query_once_interactive(pl) ||
+          pl->QueryProp(P_GHOST)){
+         remove();
+         return ;
+       }
+       call_out(#'next_step ,5);
+       if(!interactive(pl)) return;
+       tell_object(pl,
+       		   "Dein Bauch schmerzt. Du windest Dich in Kraempfen.\n");
+       if(ENV(pl)) tell_room(ENV(pl),
+        pl->Name()+" windet sich vor Schmerzen am Boden.\n",({ pl }));
+       pl->do_damage(QueryProp(P_LEVEL)*2 + random(10),TO);
+     }
+
+ SIEHE AUCH:
+    P_POISON, P_CURSED, P_PERM_STRING
+
+ LETZTE AeNDERUNG:
+   11.08.2007, Zesstra

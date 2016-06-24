@@ -1,0 +1,40 @@
+Leave()
+
+FUNKTION:
+     int Leave();
+
+DEFINIERT IN:
+     /std/transport.c
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Wenn sich der Spieler auf einem Transporter befindet, und dieser sich
+     momentan an einer Haltestelle liegt, verlaesst der Spieler den
+     Transporter.
+
+RUeCKGABEWERT:
+     Null, wenn der Spieler den Transporter nicht verlassen konnte, sonst
+     ungleich Null.
+
+BEMERKUNGEN:
+     Es werden keine Tests durchgefuehrt, ob der Transporter ueberhaupt
+     angesprochen wurde! Das muss man selber machen.
+
+BEISPIELE:
+
+     int myLeave(string str)
+     {
+       if (str && id(str))
+         return Leave();
+
+       notify_fail("Was willst Du verlassen?\n");
+       return 0;
+     }
+
+SIEHE AUCH:
+     Enter(), /std/transport.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:20:30 1996 by Wargon

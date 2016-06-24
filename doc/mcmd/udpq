@@ -1,0 +1,47 @@
+
+udpq
+----
+
+ MAGIERKOMMANDO:
+    udpq <mud> <type>
+
+ ARGUMENTE:
+
+     <mud>
+        ein MUD aus der `muds'-Liste
+     <type>
+        Art der gewuenschten Information
+
+ BESCHREIBUNG:
+    Mit diesem Kommando kann man Informationen ueber den UDP-Service und den
+    INETD von anderen MUDs aus der `muds'-Liste abfragen.
+
+    Folgende Informationen (<type>) koennen abgefragt werden:
+
+     commands
+        UDP-Kommandos, die das MUD versteht
+     email
+        EMail-Adresse, mit der das MUD bzw. seine Administratoren zu erreichen
+        sind
+     hosts
+        Die Liste der Hosts, mit denen das MUD in Verbindung steht (im selben
+        Format wie `/etc/INETD_HOSTS'
+     inetd
+        Die Versionsnummer des verwendeten INETD
+     list
+        Die Liste der Informationen, die man mit dem `udpq'-Befehl von dem MUD
+        erhalten kann (das koennen mehr oder weniger Punkte sein, als in
+        dieser Liste hier vorhanden sind, je nach Version des INETD auf der
+        anderen Seite)
+     mud_port
+        Der Port, unter dem das MUD laeuft
+     time
+        Die Systemzeit des MUDs
+     version
+        Die Versionsnummer des verwendeten GameDrivers
+
+ SIEHE AUCH:
+    muds
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,30 @@
+EVENT: 
+   EVT_LIB_QUEST_SOLVED
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/player/quests.c
+
+BESCHREIBUNG:
+   Dieser Event wird vom Spielerobjekt ausgeloest, wenn der Spieler eine Quest
+   geloest hat.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:         (object) Spielerobjekt,
+      E_PLNAME:         (string) Spielername,
+      E_ENVIRONMENT:    (object) Environment des Spielers,
+      E_QUESTNAME:      (string) Name der Quest,
+      E_QP_GRANTED:     (int)    vergebene Abenteuerpunkte,
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+2014-Feb-03, Arathorn
+

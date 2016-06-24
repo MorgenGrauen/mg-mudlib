@@ -1,0 +1,24 @@
+RemoveInfo()
+FUNKTION:
+     void RemoveInfo(string key)
+
+DEFINIERT IN:
+     /std/npc/info.c
+
+ARGUMENTE:
+     key	zu loeschender Schluessel
+
+BESCHREIBUNG:
+     Loescht die Antwort zum entsprechenden Frageschluessel.
+
+BEISPIEL:
+     // erstellen und loeschen
+     AddInfo("gold","sagt: Ich habe keines.\n");
+     RemoveInfo("gold");
+
+SIEHE AUCH:
+     AddInfo(L), AddSpecialInfo(L)
+     P_PRE_INFO, P_DEFAULT_INFO
+     /std/npc/info.c
+
+17.Aug.2003 Gloinson

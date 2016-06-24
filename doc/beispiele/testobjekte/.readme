@@ -1,0 +1,13 @@
+
+Hier liegen Test-Objekte zu man-pages. Unterschieden wird momentan nur nach:
+- xxx_testobj -> das kann man laden und ggf clonen
+- xxx_testraum -> den kann man betreten
+
+Der Praefix deutet an, fuer welche Features (also man-pages) der Testcode geschrieben wurde. Die man-page selbst nennt diesen Dateinamen hier, insofern:
+* bitte mit Bedacht veraendern - pruefen, welche Funktionalitaet
+  beispielhaft gezeigt werden soll und das nicht loeschen
+* bitte Dateinamen nur veraendern, wenn ihr euch sicher seid, _alle_
+  darauf verweisenden man-pages ebenfalls geaendert zu haben
+
+Verantwortlich: Gloinson
+

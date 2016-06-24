@@ -1,0 +1,6 @@
+SYNOPSIS
+      xddes <object>
+
+DESCRIPTION
+      Same as xdes, but makes a deep destruct.
+

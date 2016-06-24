@@ -1,0 +1,32 @@
+NAME:
+    P_LEAVECMDS                   "leavecmds"                   
+
+DEFINIERT IN:
+    /sys/transport.h
+
+BESCHREIBUNG:
+    Ein Array mit Befehlen, die zum Verlassen des Transporters fuehren. 
+
+BEISPIEL:
+    SetProp(P_LEAVECMDS,({ "verlass","verlasse" }) );
+
+    Gibt der Spieler nun 'verlasse xxx' ein, so sorgt /std/transport.c 
+    dafuer, das der Spieler auch von oder aus dem Transporter bewegt 
+    wird. Vorausgesetzt natuerlich, er ist an einem Haltepunkt angelangt.
+
+BEMERKUNGEN:
+    Um /std/transport.c nicht aufzublaehen, werden weitere Argumente wie
+    etwa 'verlasse das|die|den xxx' _nicht_ unterstuetzt!
+
+    Hier muss der verantwortliche Magier schon eine eigene Loesung finden
+    und in seinen Transporter schreiben.
+
+    Sollen Kommandos zum Betreten UND Verlassen eines Transporters ver-
+    wendet werden koennen, muessen diese in P_TRAVEL_CMDS gesetzt werden.
+
+SIEHE AUCH:
+    P_LEAVEFAIL, P_ENTERFAIL, P_ENTERCMDS, P_TRAVEL_CMDS, transporter,
+
+LETZTE AENDERUNG:
+    Don, 24.01.2002, 10:15:07h von Tilly
+    

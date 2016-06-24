@@ -1,0 +1,487 @@
+
+
+ACHTUNG: DIESER LEITFADEN IST FURCHTBAR VERALTET! :-(
+
+
+DER LEITFADEN 'WIE SCHLIESSE ICH ERFOLGREICH MEIN GEBIET AN'.
+(in sieben Schritten zum Erfolg, von Tsunami und Feuerwehr)
+-------------------------------------------------------------
+
+Dieser Leitfaden ist absolut unverbindlich und kein Reglement. Die 
+Reihenfolge muss nicht eingehalten werden, und auch die Anmerkungen 
+zu den einzelnen Punkten sind nicht zwingend zu befolgen.
+
+Fuer Schnellleser:
+
+1) Raeume/Objekte/NPCs proggen
+2) Alles Testen und Mail an die Regionsmagier (RM) schicken.
+3) RMs pruefen Code und weisen auf moegliche Probleme hin.
+4) Antrag Balance verfassen ('goto /players/paracelsus/office').
+5) Forscherpunkte beantragen (hilfe erzmagier).
+6) Mail an RMs, dass nun alles i.O. ist.
+7) RMs schliessen Gebiet an.
+
+Nun etwas ausfuehrlicher.
+
+-------------------------------------------------------------
+P H A S E 1
+-------------------------------------------------------------
+Du bist nun also Magier, voller Ideen und Tatendrang. Bevor Du wild drauflos
+programmierst, ein paar Tips, um Dir und den zustaendigen RMs das Leben zu 
+erleichtern:
+
+Fertige Dir eine ASCII-Karte an, und schreibe einen kurzen Text, der Dein 
+neues Gebiet beschreibt. Frage schon mal Deinen RM, wo ungefaehr dieses
+neue Gebiet angeschlossen werden koennte. So kannst Du Dir ein paar Gedanken
+machen, wie die Anschlussraeume ausschauen koennten.
+
+Erstelle sinnvolle Unterverzeichnise: es hat sich folgendes bewaehrt:
+Ein Hauptverzeichnis mit dem Namen des Gebietes (kurz, wenns geht). Dort
+kommen dann die Unterverzeichnise rein: z.B. '+/doc +/mon +/obj +/rooms'. 
+In das '+/doc' kommen dann Deine Karten und Texte. Falls Du mit 
+'NotifyPlayerDeath()' Deine Kerben loggen willst, oder andere wichtige 
+Sachen loggen moechtest, dann schreibe diese Files in das '/log/<deinname>/' 
+Verzeichnis. 
+In das '+/mon' Verzeichnis kommen alle NPCs usw.
+
+Wenn Du ein Textfile aufrufen willst, dass den Inhalt der Unterverzeichnise
+beschreibt, so lege einfach eine '.readme' Datei im entsprechenden 
+Verzeichnis an. Dieses File wird bei jedem 'cd' aufgerufen.
+
+Bevor Du jetzt losschlaegst, ueberlege Dir ein Define-File, worin Du die
+ganzen Pfade definierst. Denn wenn Du zuerst alles in Deinem Player-
+Verzeichnis proggst, und vor Anschluss wird das Gebiet in das Regions-
+verzeichnis gemoved, will niemand die ganzen Pfadnamen abaendern.
+Ein Beispiel: in Dein 'gebiet.h' (gib ihm einen praktischen Namen der zu 
+Deinem Gebiet passt: eismine.h, hoehle.h oder keller.h usw) kaeme sowas 
+in der Art:
+
+#define EISMINE(x) ("/d/polar/tsunami/eismine/"+x)
+#define ROOM(x) (EISMINE("rooms/"+x))
+#define MON(x) (EISMINE("mon/"+x))
+#define OBJ(x) (EISMINE("obj/"+x))
+
+Dein Raum included dann das File: #include "../gebiet.h"
+Dein Ausgang in einen anderen Raum machst Du dann folgendermassen:
+AddExit("norden", ROOM("raum02"));
+
+Ein NPC wuerde somit folgendermassen in den Raum gestellt:
+AddItem(MON("eiself"), REFRESH_DESTRUCT);
+
+Wenn spaeter aus irgend einem Grund Dein Gebiet verschoben werden muss, dann
+kann der RM einfach die erste Zeile in 'gebiet.h' abaendern. Das spart Zeit
+und Nerven.
+
+Weiter bietet das Define-File die Moeglichkeit, laengere Befehle zu
+verkuerzen. Ein Beispiel: Du moechtest Namen des Spielers (gross geschrieben)
+ausgeben. Der Befehl dazu waere: this_player()->Name(WER)
+Das ist ziemlich lang. Definiere in Deinem Define-File doch einfach:
+#define TPN this_player()->Name(WER)
+und schon wird Dein Code etwas uebersichtlicher. Die Anwendung waere z.B.
+say(TPN+" popelt in der Nase.\n");
+
+Wenn Du automatische Zeilenumbrueche moechtest, dann schreibe folgendes
+in Dein Define File:
+#define BS(x) break_string(x, 78 , "", BS_LEAVE_MY_LFS)
+BS_LEAVE_MY_LFS bewirkt, dass Du immer noch selbst Zeilenumbrueche einbauen
+kannst mit \n. Und so wird BS dann benutzt:
+AddDetail( ({"wand","waende"}),BS(
+  "Die Waende bestehen wie alles hier aus purem Saphir. In die noerdliche "+
+  "Wand wurde ein schrecklich gezacktes und scharfkantiges Loch gesprengt."));
+
+Um dies zu benutzen musst Du allerdings noch #include <break_string.h> in das 
+Headerfile setzen (vor die #define BS(x)...)-Zeile), sonst kennt der 
+Precompiler den Ausdruck BS_LEAVE_MY_LFS nicht.
+
+Du wirst Dein Gebiet evtl. in Deinem Home-Verzeichnis (/players/...)
+schreiben, da Du noch nicht den Sprung zu Level 21 geschafft hast. Du
+solltest aber wissen, dass Deine RegionsmagierInnen nur Gebiete annehmen
+werden, welche im Regionsverzeichnis /d/.../dein_name/ gespeichert sind. Das
+ist wichtig, denn in Deinem Heim-Verzeichnis koennen sie nicht schreiben und
+so keine Fehler korrigieren. Denke daran! Benutze unbedingt die Defines,
+denn vor dem Anschluss wirst Du das Gebiet in das Regionsverzeichnis
+schieben muessen.
+
+Viele Spieler 'loggen', also speichern gerne Tode oder Aktionen von Spielern
+in ihren Heim-Verzeichnissen. Dieses Schreiben funktioniert nicht von
+Regionsverzeichnissen in Heim-Verzeichnisse. Benutze auch hier ein define!
+
+Nun kommen wir zum proggen. Falls Du noch nie programmiert hast, ist es
+sinnvoll, sich Beispielfiles anzuschauen. Wuehl Dich durch das '/doc'
+Verzeichnis oder noch besser: frag Deinen Papimagier/Deine Mamimagierin oder
+den RM, ob er Dir ein paar seiner Files zuschickt. Hast Du diese Huerde
+ueberwunden, kann es losgehen. Wenn Du anfaengst zu proggen und nicht weisst, 
+wie man einen bestimmten Befehl benutzt, kannst Du die 'man page' konsultieren 
+(das Manual = Online Hilfe). Tipp einfach 'man <befehl>' und schon kommt die 
+entsprechende Hilfeseite, falls vorhanden.
+
+Ein paar Worte zu den Raeumen: Details sind hier sehr wichtig.
+Mach viele Details und beschreibe sie nett. 'unt boden' -> 'Der ist unter Dir.'
+ist nicht sehr interessant. Ein Raum mit weniger als 20 Details wird
+mittlerweile als ungenuegend angesehen, auch wenn es noch ein paar Gebiete
+im MG gibt, wo die Raeume fast keine Details haben (diese Zahl schwankt
+natuerlich von Region zu Region -- trotzdem: je mehr Details, desto besser). 
+AddSmells und AddSounds solltest Du ebenfalls nicht vergessen. Der Spieler 
+von Welt will auch riechen und hoeren koennen. Wenn Du einen Raum erstellst, 
+ueberlege Dir auch witzige und/oder sinnvolle Befehle, die man in dem Raum 
+ausfuehren kann. Bei laengeren Prozeduren ist es fuer den RM hilfreich, wenn 
+Du im jeweiligen Raum einen kurzen Kommentar absetzt.
+
+Schau, dass Du ein atmosphaerisch schoenes Gebiet programmierst. Schau,
+dass es sich mit seiner Umgebung vertraegt. Bevor Du ein abgestuerztes
+Raumschiff von der Vega programmierst, frage lieber Deinen RM, denn
+wahrscheinlich passt es thematisch nicht in seine Region (welche Region auch
+immer es ist :-)).
+
+Achte darauf, dass die Toedlichkeit Deines Gebiets sich mit Deiner Umgebung
+vertraegt. Ueber-Schwere-Mega-Monster sollten von kleinen Spielern nicht
+problemlos erreicht werden koennen. Benutze nicht ganz so toedliche
+'Block-Monster', welche den Zugang versperren. So muss ein Spieler erst
+seine Wuerdigkeit beweisen, bevor er an die harten Monster kommt. Tigonen im
+Glockenwald sind KEINE gute Idee.
+
+Viele Magier finden es lustig, Spieler in ihren Gebieten durch Fallen
+sterben zu lassen. Das sind z.B. Knoepfe, die man drueckt, und die dann sofort
+this_player()->die() aufrufen. Nachdem vor einiger Zeit die Todesfolgen
+verschaerft wurden, sind derartige Fallen nicht mehr gern gesehen. Vermeide
+sie wenn moeglich. Spieler machen jeden Muell, aber lass sie nicht dafuer
+sterben, wenn Du es anders regeln kannst. Jede Todesfalle ist dem RM
+aufzuzueigen.
+
+Die Objekte: dazu gehoeren auch Waffen und Ruestungen, sowie alle anderen
+schraengen Dinge, die Dir noch so einfallen werden. Bevor Du Dir Deine
+erste Mega-Super-Alles-Kaputtschlag-Axt oder den Alle-Schaeden-Abwehr-Panzer
+zusammenbastelst, setz Dich hin, atme ruhig durch und tipp dann 'man balance'.
+Dort stehen alle wichtigen Eckdaten, die Du befolgen solltest. Und denk daran,
+nicht zuviele exklusiven Waffen und/oder Ruestungen in einem einigen Gebiet.
+Wenn Du grosse Objekte schreibst, ist hier auch wieder ein kleiner Kommentar
+im File sehr hilfreich fuer den RM. Denk daran, Du bist vielleicht irgendwann
+einmal nicht mehr erreichbar und dann ist es gut, wenn im File geschrieben
+steht, was das Programm ungefaehr macht.
+
+Jetzt kommen wir zu ein paar haeufigen Problemen:
+Erzeugst Du ein Objekt, das in einen Spieler geschoben wird, musst Du 
+unbedingt den Return-Wert abfragen, ob der Spieler das noch tragen kann:
+Ein Beispiel: Eine eigene Funktion 'nehmen'.
+In das create() vom Raum kommt:
+AddCmd(({"nimm","nehm","nehme"}),"nehmen");
+
+Die Funktion 'nehmen' erzeugt eine Zigarre. Sie prueft, ob einen Zigarre
+schon im Raum liegt, dann nimmt der Spieler diese. Falls keine Zigarre
+rumliegt, wird eine neue erzeugt und in den Spieler geschoben. 
+Damit ein Spieler nicht hunderte Zigarren erzeugen kann, wurde eine
+globale Variable 'int zaehler; zaehler=5; oben im create() vom Raum erstellt. 
+Nach einem Raumreset steht der Zaehler wieder auf 5, wenn man das in der
+reset() Funktion (siehe unten) definiert.
+
+nehmen(string str)
+{
+  object ob;
+
+   notify_fail("Was moechtest Du nehmen?\n");
+   if(!str) return 0;
+   if(str=="zigarre") {
+   if(present("zigarre",this_object())) return 0; 
+   // so wird die Zigarre IM Raum genommen
+
+     if (zaehler) {   
+       write(BS("Du nimmst eine Zigarre aus dem Fach."));
+       say(TPN+" nimmt eine Zigarre aus einem Fach.\n",this_player());
+       // TPN: siehe oben, Abschnitt 'Defines'
+       ob=clone_object(OBJ("zigarre"));
+       if (ob->move(this_player(),M_GET) !=1) {
+       // dieses '!=1' faengt ME_TOO_HEAVY, ME_TOO_MANY_OBJECTS, 
+       // und ME_CANT_BE_INSERTED ab
+
+           write("Du kannst die Zigarre nicht mehr tragen. Sie faellt zu "+
+           "Boden.\n");
+           ob->move(environment(TP),M_PUT);
+           }
+         zaehler--;
+         return 1;
+         }
+     write(BS("So ein Pech. Jemand hat die besten Stuecke bereits genommen."));
+     return 1;
+     }
+  // und damit man auch andere Sachen als Zigarren im Raum nehmen kann:
+  return 0;
+  
+}
+
+reset()
+{
+    ::reset();
+    // nach 30-45 min kann man wieder 5 neue Zigarren nehmen
+    zaehler=5;
+}
+
+Die NPCs. Es gibt (noch) keine Vorschrift, wie stark maximal NPCs sein duerfen,
+aber schau Dir trotzdem 'man balance' zu diesem Thema an.
+NPCs werden oft schmerzlich von ihren Magiern vernachlaessigt. Oft
+steht der grosse Drache auf dem Speicher, kann Dich in einem Schlag umhaun,
+weiss aber nicht einmal seinen Namen und besitzt nicht ein Detail. Kuemmer
+Dich um Deine NPCs. Gib ihnen eine schoene Beschreibung, lass sie etwas
+ueber sich erzaehlen, gib ihnen Details, gib ihnen Kleidung.
+
+Oft will man NPCs durch Gebiete laufen lassen, so dass sie mal Land und
+Leute kennenlernen. Das ist etwas rechnerlastig, und auch wenn wir jetzt
+jede Menge Power unter der Haube haben, sollte man einige Dinge beachten:
+* Es gibt einige sehr schoene Standard-Lauf-NPCs. Es bietet sich an, diese
+  zu benutzen. Sie haben alle noetigen Eigenschaften, unter anderem, dass sie 
+  stehen bleiben, wenn sie keine Spieler mehr antreffen. Das spart 
+  Performance. Ausserdem werden sie oft von einem Master gesteuert, und das 
+  spart call_outs.
+* Aufwendig ist besonders das Bewegen von NPCs. Rennende NPCs sind doch
+  oede. Lass sie sich langsam bewegen. Jedes schoene Gespraech mit einem NPC 
+  geht in die Hose, wenn der NPC staendig vor einem weglaeuft.
+
+Denke generell daran, uebersichtlich zu programmieren. Benutze nicht
+mehr als 78 Zeichen pro Zeile, fuege ruhig Leerzeilen ein, um die Struktur
+zu unterstreichen. Ruecke in Schleifen den Code ein paar (z.B. 3) Zeichen
+ein. Kommentare machen Deinen RM gluecklich! Wenn Du einst vielleicht nicht
+mehr da bist, wird irgend jemand Deinen Code warten muessen. Denk an den
+armen Kerl! Fuege bei Deinen Objekten einen Hinweis darauf ein, wovon und
+wofuer sie benutzt werden! Wenn Du die Wahl hast, Code in einer
+fuerchterlich effizienten, aber unuebersichtlichen Weise zu schreiben, oder
+etwas weniger effizient, aber intuitiv und einleuchtend, nimm die
+einleuchtende Weise. 
+
+Zaubertraenke, Gildenobjekte, Gildenquests
+
+Zaubertraenke
+
+Zaubertraenke sind wichtig, und obwohl es sie schon an vielen Stellen im MG
+gibt, sind sie immer noch gefragt. Man sollte beim Einbauen von ZTs daran
+denken, sie nicht tief in Quest-Gebieten zu verstecken, so dass ein Spieler
+keine Quest nochmal spielen muss, nur um den ZT zu bekommen. Ausserdem
+sollten sie nicht zu schwer versteckt werden. Ein Zaubertrank in einem Buch
+bekommt man z.B. durch:
+
+create() {
+...
+AddReadDetail("buch","@@det_buch@@");
+}
+
+string det_buch() 
+{
+ if (this_player()->FindPotion("Du findest Macht in diesem Buch...\n")) 
+   return "";
+ else
+   return "Du findest keine Macht in diesem Buch. Wie schade...\n";
+}
+
+Denke daran, auch einen Vers zu schreiben, welcher im Orakel den Tip fuer
+diesen ZT darstellt. Du kennst diese Verse sicher schon zur Genuege :-).
+Du musst den Zaubertrank spaeter zusammen mit den Forscherpunkten anmelden.
+
+Gilden- und Miniquests.
+
+Gildenquests sind kleine Aufgaben, nicht gross genug fuer richtige Quests,
+welche von den Mitgliedern einer Gilde geloest werden muessen, bevor sie
+aufsteigen koennen. Die Dinger sind voll im Kommen. Zauberer-, Kaempfer-
+oder Chaos-Gildenmagier sind immer hinter denen her. Quests wie 'Finde das
+verschollene Buch' oder 'Befreie den Verurteilten' lassen sich oft ohne
+grossen Aufwand in Gebiete einbauen. Sie garantieren auch eine gewisse
+permanente Besucherzahl im Gebiet :-)). Bevor man diese Quests einbaut,
+sollte man das prinzipielle OK der Gildenmagier holen, nachher muss man
+ihnen die Quest vorstellen, damit sie sie bewerten und freigeben.
+
+Will man eine kleine Aufgabe nicht gildenabhaengig, sondern fuer alle
+Spieler einbauen und dafuer Stufenpunkte vergeben, dann kann man die Aufgabe
+auch als Miniquest eintragen lassen, und zwar beim gleichen EM, der auch die
+FPs eintraegt. Es folgen Code-Beispiele fuer die Vergabe der Quests...
+
+int befreie(string wen) 
+{
+  notify_fail("Wen moechtest Du befreien?\n");
+  if (wer != "gefangener") 
+    return 0;
+  
+  // Hier werden die Stufenpunkte fuer die Miniquest vergeben...
+  // Falls man keine Miniquest angemeldet hat, laesst man das natuerlich weg
+  SCOREMASTER->GiveMiniQuest(this_player());
+
+  // Hier sind die Kaempfer. Der Code kann variieren...
+  call_other("/p/kaempfer/std/k_master","SetzeAufgabe",getuid(this_player()),
+    "Befreie den Gefangenen");
+
+  // Letztes Beispiel: Hier sind die Zauberer:
+  call_other("/p/zauberer/npc/test","GiveQuest",this_player(),
+    "Befreie den Gefangenen");
+  ...
+}
+
+Gildenobjekte
+
+Gildenobjekte wirken noch besser als Gildenquesten, um Spieler in Gebiete zu
+locken :-). Dies sollte jedoch kein Anlass sein, ein Gebiet mit derartigen
+Dingen zu ueberladen aber dafuer die Details und die Atmosphaere zu
+vergessen. Ganz generell gilt: Maessige Dich! Weniger ist mehr!
+
+Ganz generell sind Gildenobjekte z.B. Utensilien der Zauberer, Waffen mit
+Kaempfer-Boni fuer Kaempfer oder Kreiden etc. fuer Chaoten. Diese Objekte
+muessen natuerlich von den Gildenmagiern genehmigt werden, bevor das Gebiet
+angeschlossen wird. Sprecht frueh genug mit den Gildenmagiern. Sie werden
+euch sicher genug Beispiele fuer derartige Objekte geben, weshalb hier auf
+derartiges verzichtet wird.
+
+-------------------------------------------------------------
+P H A S E 2
+-------------------------------------------------------------
+Du hast nun alle Raeume/Objekte/NPCs erstellt. Nun geht es in die Testphase.
+Erzeuge Dir einen Testspieler, damit Du Deine Raummeldungen wie z.B. mittels
+tell_room() auf ihre Richtigkeit ueberpruefen kannst. Schau Dir in Ruhe
+Deine Sachen an und versuche, die unsinnigsten Sachen darin zu tun. Das werden
+die Spieler naemlich nachher auch machen. Ist Deiner Meinung nach alles OK,
+schreib eine Email an Deine zustaendigen RMs. Sehr hilfreich (fuer die RMs)
+waere eine zusaetzliche Liste (siehe auch Phase 4) mit:
+
+1) allen NPCs (welche Objekte tragen sie) und allfaellige Sonderfunktionen
+   ganz kurz erlaeutert.
+2) Eine Liste aller Objekte. Bei komplizierten Objekten eine kurze Beschreibung
+3) Eine Liste, in welchem Raum liegt welches Objekt/ZT/Heilstelle/NPC
+
+Diese Liste kannst Du natuerlich in Dein /doc Verzeichnis legen, was dann auch
+spaeter sehr hilfreich sein kann.
+
+Falls sich Deine RMs nicht melden, sprich sie an, mail ihnen nochmal.
+Vielleicht haben sie Deine Mail vergessen. RMs sind prinzipiell vergesslich.
+Sie unterhalten sich jedoch sicherlich gern mit Dir. Keine falsche
+Bescheidenheit, ran an den Feind.
+
+- Testspieler -   oder   - Zwischen Legalitaet und Wahnsinn -
+
+Kaum ein Magier kann die merkwuerdigen, oft widersinnigen und kranken
+Gedankengaenge eines Spielers nachvollziehen. Deshalb ist es eine gute
+Sache, sein Gebiet von Spielern testen zu lassen. Sie koennen die Staerke
+der NPCs gut einschaetzen und korrigieren, kennen die geheimen Kniffe der
+Gilden und machen generell das, woran man nie gedacht hat.
+
+Spielertesties sind so eine Sache. Als erstes muss man kompetente Spieler
+finden, welche bereit sind, das Gebiet zu testen. Dies ist nicht einfach,
+denn die wirklich guten Tester sind oft hoffnungslos ueberbelegt. Hat man
+einen willigen Spieler gefunden, kreiert man sich einen Testspieler, indem
+man einen neuen Spieler einloggt und im P_TESTPLAYER auf den eigenen Namen
+setzt. Das kannst Du z.B. so machen: 
+xcall testi->SetProp(P_TESTPLAYER,"<Magier>") wobei <Magier> Dein Name ist.
+
+Danach darf man ihn wild in Gilden eintreten lassen, ihm seine 
+Werte setzen und ihm Ausruestung clonen. Es gibt einige schoene
+Testspieler-Tools, mit denen sich Testies Ruestungen setzen und sich heilen
+koennen.
+
+Hat man Spieler und Testspieler, so kommt man an die legalen Probleme. Alles
+wichtige erfaehrt man durch 'hilfe testspieler'. Dort steht, dass
+Testspieler bei Erzmagiern angemeldet werden muessen, welche sie dann in ein
+Ueberwachungstool eintragen, so dass seine Handlungen geloggt werden. 
+Tatsache ist, dass sich aber kaum einer seine Testspieler bei einem
+Erzmagier anmeldet und die meisten EMs das selbst nicht tun. (Testies neuer
+Gilden moegen hier eine Ausnahme bilden).
+
+Generell beachte folgendes: Mach keine Spieler zu Testspielern, denen Du nicht
+traust oder die Du nicht kennst. Wenn ein Spieler mit seinen Tools durchs MG
+laeuft und Unsinn anstellt, bist Du mit Schuld, egal ob der Testie
+angemeldet ist oder nicht. Wenn Du einen Spieler durch ein Gebiet laufen
+laesst, bevor die FPs eingetragen wurden, dann ist das nicht legal, aber es
+wird keiner meckern, wenn Du ihn ueberwachst und somit aufpasst, dass er
+keinen Unsinn ausserhalb des Gebiets anstellt. Wenn Du einen Spieler durch
+ein Gebiet mit FPs laufen laesst und der Spieler die von ihm gefundenen FPs
+bekommen will, so musst Du ihn bei einem Erzmagier anmelden, denn FPs kann
+nur ein Erzmagier setzen.
+
+Oh, und schreibe Dir die Namen und Passwoerter Deiner Testspieler auf. Falls
+man mehrere hat, vergisst man verflucht schnell die Namen :-).
+
+-------------------------------------------------------------
+P H A S E 3
+-------------------------------------------------------------
+Die RMs schauen alle Files an, die Du erzeugt hast. Danach werden sie Dir
+eine Liste zurueckschicken mit allen Problemfaellen, die sie gefunden haben.
+Je nach Umfang Deines Gebietes kann das natuerlich etwas dauern.
+Hast Du die Informationen zurueckbekommen, kannst Du Dich an den Feinschliff
+machen. In der Zwischenzeit solltest Du Phase 4 und Phase 5 erledigen.
+
+-------------------------------------------------------------
+P H A S E 4
+-------------------------------------------------------------
+Falls Du Objekte hast, die genehmigungspflichtig sind (man balance), so musst
+Du einen Antrag an das Balanceteam stellen. In der Zwischenzeit sollte Dein
+Magierlevel so hoch sein, dass Du den Befehl 'goto' benutzen kannst. Es
+gibt einen Extra Raum fuer die Balanceantraege: 
+goto /players/paracelsus/office
+Dort gibt es dann eine gute Hilfeseite.
+Wichtiges zum Antrag: mach bitte nicht fuer jedes Objekt einen eigenen
+Antrag, sondern schreibe Dir einen grossen Antrag, in den alle Deine
+Objekte reinkommen, die der Balance vorgelegt werden muessen (siehe Phase 2:
+aus der Liste, die Du erstellt hast). Dazu solltest Du jedes Objekt kurz 
+beschreiben. Dazu kommen die wichtigsten Werte, bei Waffen z.B. Waffenart, 
+P_WC, P_NR_HANDS, P_DAM_TYPE, P_WEIGHT, und eine kurze Beschreibung der 
+Sonderfunktionen.
+Das Bewilligen Deiner Objekte kann eine ziemlich lange Zeit in Anspruch
+nehmen (Wochen). Hier nicht ungeduldig sein. Das dauert seine Zeit.
+Wenn Du Objekte proggst, die bestimmt durch die Balance muessen, gib doch
+Deinem RM fruehzeitig Bescheid, dass er sich das anguckt. Dann kannst Du 
+die Sachen bereits beantragen, und in der Zeit, bis die Antraege 
+bewilligt wurden, die anderen Dinge proggen. Dieser Ansatz gilt aber eher
+fuer Magier, die bereits etwas angeschlossen haben und neue Gebiete 
+erstellen. Fuer den Neuling ist es empfehlenswerter, alles fertigzumachen
+und dann zu beantragen. Grund: siehe oben: So kannst Du vorweisen, dass Du
+Dir Muehe gegeben hast, tolle Sachen auf die Beine zu stellen, und nicht
+einfach einen NPC in die Welt stellen willst, mit hunderten toller Objekte.
+
+-------------------------------------------------------------
+P H A S E 5
+-------------------------------------------------------------
+Gleichzeitig solltest Du die Forscherpunkte beantragen. Welcher Erzmagier
+dafuer zustaendig ist, findest Du mit 'man erzmagier' heraus. Die 
+Faustregel lautet: etwa 1 FP pro 10 Raeume. Vermeide FP fuer Details, damit
+die 'Untersuche-Skripte' keine Chance haben. Geh lieber so vor: 
+Detail: 'gras' -> 'Du wuerdest Dich am liebsten ins Gras legen.'
+Wenn der Spieler dann eintippt 'lieg ins gras' oder so aehnlich, gib dafuer
+den FP, aber nicht fuers Untersuchen vom Gras.
+Wofuer Du alles Forscherpunkte eintragen kannst, erfaehrst Du durch
+'hilfe forscherpunkte'.
+Mache ein paar Vorschlaege, und schick sie dann dem zustaendigen Erzmagier.
+Der wird aus Deinen Vorschlaegen ein paar rauspicken und anschliessen.
+Aber bevor Du das tust, muss Dein Gebiet zwingend schon im Regionsverzeichnis 
+liegen, damit keine FPs aus /players eingetragen werden.
+
+Gleichzeit mit den FPs meldest Du auch MiniQuests und Zaubertraenke
+bei diesem Erzmagier an. Du musst angeben, wieviele Stufenpunkte die
+Miniquest bringen soll und in welche der 3 Kategorien einfach/mittel/schwer
+Deine Zaubertraenke fallen.
+
+Denke daran, spaetestens jetzt die Gildenquests und Gildenobjekte bei den
+Gildenmagiern anzumelden. Unangemeldetes darf nicht angeschlossen werden.
+Wende Dich also frueh genug an diese Leute.
+
+-------------------------------------------------------------
+P H A S E 6
+-------------------------------------------------------------
+Ist alles von der Balance genehmigt worden, und sind die FP angeschlossen,
+solltest Du Deine RMs informieren. Falls Dein Gebiet immer noch im
+Heimverzeichnis liegt, wird es nun in dein Regionsverzeichnis
+verschoben. Du stehst nun kurz vor dem Anschliessen. Ueberleg Dir doch
+schon eine nette Botschaft, die Du dann in der MPA veroeffentlichen wirst.
+
+-------------------------------------------------------------
+P H A S E 7
+-------------------------------------------------------------
+GRATULATION! Du hast es geschafft! Aber jetzt nicht auf den Lohrbeeren
+ausruhen. Die ersten Spieler werden sich einfinden, und viele sind
+wandelnde Konversationslexikons, die auch den kleinsten Grammatikfehler 
+in Deinen Beschreibungen finden. Andere Spieler werden Dir neue Vorschlaege
+fuer commands zusenden, die in die entsprechenden Raeume passen wuerden.
+In /log/report/<magiername>.rep wird automatisch Dein Report-File erzeugt,
+in das die Spieler die gefundenen Typos, Bugs und sonstige Ideen reinschreiben.
+Schau Dir Dein Repfile an, und arbeite es ab so gut es geht.
+Nur so wird das Gebiet zu einem wirklich 'gepflegten' Gebiet.
+Denke daran, das rep-File nach dem Abarbeiten zu loeschen, sonst wird
+es zu voll.
+
+
+SIEHE AUCH:
+    balance, hilfe magier, /doc/wiz/
+
+----------------------------------------------------------------------------
+Last modified: 16:00 2003-02-22 by Humni

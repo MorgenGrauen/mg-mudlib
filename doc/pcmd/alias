@@ -1,0 +1,100 @@
+
+alias
+-----
+
+ KOMMANDO:
+    alias <alias> <befehl>
+    alias [ -a ] [ <alias> | <abk>* ]
+
+ ARGUMENTE:
+
+     <alias>
+        Der Name des Alias
+     <befehl>
+        Der Text, durch den das Alias ersetzt wird
+     <abk>
+        Die Abkuerzung eines Alias
+     -a
+        Option, um Aliase so auszugeben, wie man sie definiert
+
+ BESCHREIBUNG:
+    (Statt `alias' kann man auch `ali' verwenden!)
+
+    Mit diesem Kommando kann man sich Abkuerzungen fuer oft benutzte Befehle
+    erstellen sowie die schon definierten Aliase ansehen.
+
+    Definiert wird ein Alias mit dem ersten der obigen Kommandos. <alias> darf
+    dabei nur ein Wort umfassen, waehrend <befehl> beliebig lang sein darf.
+
+    Wenn Du von nun an das Alias eingibst, so fuehrst Du den ausgeschriebenen
+    Befehl wortwoertlich aus. Die folgenden Worte im ausgeschriebenen Befehl
+    haben jedoch eine besondere Bedeutung:
+
+     $*      Steht fuer alles, was auf das Alias folgt.
+     $<n>    Steht fuer das <n>te Wort nach dem Alias.
+     $<n>*   Steht fuer alle Worte ab dem <n>ten (einschliesslich).
+
+    Mit dem zweiten der obigen Kommandos kannst Du Dir die Aliase anzeigen
+    lassen. Ohne Parameter werden dabei saemtliche Aliase angezeigt, mit
+    `alias <alias>' wird die Definition von <alias> angezeigt, und mit `alias
+    <abk>*' werden alle Aliase gezeigt, die mit <abk> beginnen.
+
+    Nimmt man die Option -a hinzu (nur sinnvoll, wenn man sich Aliase anzeigen
+    laesst), so werden die Aliase so angezeigt, dass der Text cut-and-paste-
+    faehig ist, d.h. man kann den Text so als Befehl eingeben, wie er aus-
+    gegeben wird (z.B. um einem Zweitcharakter aliases des Erstcharakters zu
+    geben).
+
+    Soll das Zeichen "$" oder das Zeichen "&" im Alias vorkommen ("&" ist aus
+    historischen Gruenden genau wie "$" benutzbar), so muss es mit einem \
+    "gequoted" werden. Soll ein \ vorkommen, muss auch dieser gequoted werden
+    (\\).
+
+    Beginnt eine Befehlszeile mit einem "\", so werden die Aliase nicht
+    ersetzt. Wenn man als Aliasnamen einen auch sonst gueltigen Befehl
+    verwendet, kann man auf diese Weise auf den eigentlichen Befehl zugreifen.
+
+ BEISPIELE:
+    Erst mal ein paar (mehr oder weniger nuetzliche) Aliase anlegen:
+
+    > alias ul untersuche leiche
+    > alias tmh teile highlander mit $*
+    > alias tmz teile zook mit $*
+    > alias weg teile $1 mit Ich bin jetzt weg, \$ verdienen!
+
+    Wenn man sich die Aliase ansehen will:
+
+    > alias
+     tmh    = teile highlander mit $*
+     ul     = untersuche leiche
+     weg    = teile $1 mit Ich bin jetzt weg, \$ verdienen!
+
+    > alias weg
+     weg    = teile $1 mit Ich bin jetzt weg, \$ verdienen!
+
+    > alias tm*
+     tmh    = teile highlander mit $*
+     tmz    = teile zook mit $*
+
+    Und folgendermassen lassen sich die Aliase benutzen:
+
+    > tmh Hi Sheriff!
+    Du teilst Highlander mit: Hi Sheriff!
+
+    > tmz Oh mein Gott! :-)
+    Du teilst Zook mit: Oh mein Gott!
+
+    > weg boing
+    Du teilst Boing mit: Ich bin jetzt weg, $ verdienen!
+
+    > \weg Arbeiten...
+    Du bist jetzt als abwesend gekennzeichnet.
+
+    Das letzte Beispiel zeigt, wie man an einen Befehl kommt, der von einem
+    Alias "ueberladen" wurde.
+
+ SIEHE AUCH:
+    unalias, ersetzungsanzeige
+
+ LETZTE AeNDERUNG:
+    Thu, 11.03.1999, 15:30:00 von Highlander

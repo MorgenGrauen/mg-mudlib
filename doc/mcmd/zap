@@ -1,0 +1,25 @@
+
+zap
+---
+
+ MAGIERKOMMANDO:
+    zap <name>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Lebewesens
+
+ BESCHREIBUNG:
+    Das Lebewesen <name> wird mit einem Schlag getoetet. Dabei werden die
+    Meldungen aus der Property P_ZAP_MSG ausgegeben.
+
+    Spieler duerfen mit diesem Befehl nicht beeinflusst werden!
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung.
+
+ SIEHE AUCH:
+    vertrag, toete
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:55:20 von Wargon

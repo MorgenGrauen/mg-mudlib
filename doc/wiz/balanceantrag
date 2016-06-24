@@ -1,0 +1,133 @@
+Hilfe zu Balanceantraegen
+=========================
+
+Um die Arbeit der Balance zu erleichtern und damit die Wartezeit fuer die
+Magier zu verkuerzen, gibt es einige Dinge zu beachten. Das Ganze liest sich
+auf den ersten Blick sehr buerokratisch, ist es aber nicht. Die Anleitung soll
+nur so ausfuehrlich wie moeglich sein, um Missverstaendnissen vorzubeugen.
+Zuerst einmal gibt es grundsaetzlich zwei Arten von Antraegen:
+
+1. Eine Vorabanfrage
+
+Viele Magier scheuen die Arbeit, ein Objekt zu programmieren, das anschliessend
+nicht von der Balance genehmigt wird. Das ist verstaendlich und Vorabanfragen
+werden nicht minder beachtet als konkrete Antraege. Trotzdem sollte man so eine
+Anfrage sorgfaeltig formulieren. Sie sollte das Problem klar umreissen und
+moeglichst eindeutig sein. Auch ein Hinweis darauf, wo der Magier Probleme mit
+der Balancierung erwartet und in welchem Wertebereich eventuelle Zahlen
+erwartet werden, sollte nicht vergessen werden.
+
+Eine Antwort auf eine Vorabanfrage ist allerdings keine Genehmigung eines
+Objekts. Es ist lediglich als Information zu sehen, ob die Balancemitglieder 
+so ein Objekt ueberhaupt fuer genehmigungfaehig halten, gegebenenfalls mit
+angepassten Werten oder leicht veraenderten Eigenschaften. Mit einer Antwort
+auf eine Vorabanfrage wollen wir dem Wunsch der Magier entsprechen, zu
+erfahren, ob es sich lohnt, Arbeit in das Objekt zu investieren, bindend ist
+so eine Antwort allerdings nicht.
+
+2. Ein Antrag
+
+Hier geht es um die Festschreibung aller kampfrelevanten Eigenschaften,
+trotzdem sollten alle Eigenschaften, die Einfluss auf das Spielgeschehen haben,
+mit angegeben werden, auch wenn die Objektbalance nicht direkt fuer diese
+Eigenschaft zustaendig ist. Eine Waffe, die den Traeger ab und zu heilt,
+muss auch bei der Heilungsbalance beantragt werden, trotzdem darf diese
+Eigenschaft nicht vor der Objektbalance verschwiegen werden. Alle Werte
+sollten tabellarisch aufgefuehrt werden. Eine Uebersicht, ueber die von der
+Balance benoetigten Werte:
+
+Kurzbeschreibung:        P_SHORT
+Pfadangabe:              momentan und nach Anschluss
+Typ des Objekt:          Schwert, Hose, Ring...
+Waffen/Ruestungsklasse:  P_WC, P_AC
+Schadensart:             P_DAM_TYPE
+Benoetigte Haende:       P_NR_HANDS
+Wert:                    P_VALUE
+Gewicht:                 P_WEIGHT
+HitFunc:                 Mit Erlaeuterung der Umstaende,
+                         Begruendung und Werte/Wahrscheinlichkeiten
+Andere Boni:             Kaempfer, Zauberer, Heilungen, Resistenzen
+                         evtl mit rollensp. Begruendung
+Restriktionen:           P_RESTRICTIONS, Paralyse, Zeitbeschraenkungen 
+
+Eine Begruendung sollte die Eigenschaft rollenspieltechnisch einbetten und
+nicht beschreiben, warum das MG diese Eigenschaft in einem Objekt unbedingt
+noch braucht. Weiterhin sollte man die Erreichbarkeit kurz umreissen und die
+Haeufigkeit, mit der das Objekt an Spieler gelangt. Auch hierbei gilt, dass
+man das Objekt moeglichst kurz, aber eindeutig beschreibt.
+
+Die Genehmigung oder Ablehnung eines Antrags durch die Objektbalance ist
+bindend. Eigenschaften, die in der Antwort aufgefuehrt sind, sind
+festgeschrieben und beduerfen bei Aenderung eines Neuantrages (das geht in
+der Regel recht schnell, wenn der Magier nicht das Objekt komplett umkrempelt).
+Sollten nicht festgeschriebene Eigenschaften, die das Spielgeschehen
+beeinflussen (die es eigentlich nicht geben sollte), geaendert werden, muss die
+Balance informiert werden. Bei jeglichem Mailverkehr zu einem Objekt, sollte
+die btop Nummer angegeben werden, die in der ersten Mail zu dem Objekt
+angegeben sein sollte. Ist dies nicht der Fall, erfrage diese Nummer bitte bei
+einem der Teammitglieder. Nach Genehmigung des Objektes, sollte diese Nummer
+auch in den Kopf der Datei(en) geschrieben werden.
+
+Bei einem Antrag kommt es immer wieder zu Misverstaendnissen oder
+Zweideutigkeiten. Daher ist es die Regel, dass noch mal nachgefragt wird,
+wie denn genau etwas ablaufen oder implementiert werden soll. Eine schnelle
+Beantwortung dieser Fragen beschleunigt natuerlich auch den
+Genehmigungsprozess. Missfallen dem Balanceteam einzelne Eigenschaften,
+Implementierungen oder Werte, werden haeufig Vorschlaege gemacht, die die
+Akzeptanz eines Objektes durch die Balance entscheidend verbessern. Die
+Mitglieder bemuehen sich, den Genehmigungsprozess so reibungslos und
+konfliktarm wie moeglich ablaufen zu lassen. Solche Aenderungsvorschlage sind
+weder Belehrungen noch boese gemeint, sondern sollen dazu dienen die
+Balancierung zu vereinfachen, zu beschleunigen und Bedenken von
+Balancemitgliedern entgegenzukommen.
+
+Zum Schluss noch ein Antrag, wie er aussiehen koennte:
+
+Antrag fuer ein Zweihandschwert
+-------------------------------
+
+Name: Der Perforator
+Pfad: /d/region/magier/gebiet/obj/perforator.c
+      /d/region/magier/gebiet/obj/loch.c
+P_WEAPON_TYPE:  WT_SWORD
+P_WC:           200
+P_NR_HANDS:     2
+P_VALUE:        15000
+P_WEIGHT:       1500
+P_DAM_TYPE:     ({DT_PIERCE, DT_UNHOLY})
+HitFunc:        unter Umstaenden random(50)
+K_BRAWLING_WC:  25
+K_CRITICAL_HIT: 80
+
+Pseudo-Unique: Es gibt 10 Stueck, wird ein Elftes gebraucht, wird
+das mit der aeltesten Clonezeit zerstoert.
+
+Restriktionen: MiniQuest, Seher, Beteiligung beim Ermetzeln
+
+Beschreibung: Der Perforator perforiert den Gegner. Ist noch kein Loch
+in dem Gegner, wird eins reingepiekt und macht dabei zusaetzlich random(50)
+Schaden. Danach ist ein Loch im Gegner und er verliert jede Runde 10 +
+random(10) HP durch Blutverlust per reduce_hit_points() fuer 10 Runden.
+Ist der Traeger des Schwerts noch im Raum, bekommt er diesen Schaden
+gutgeschrieben, weil das Schwert das Blut trinkt. Ist das Loch weg, gibt es
+kein weiteres.
+
+Das Schwert hat ein schweres, mit Dornen versehenes Heft (BRAWLING_WC) und
+ist rasiermesserscharf, so dass es sich fuer einen Todesstoss gut eignet.
+Das Schwert hat einen Fluch, der es blutdurstig macht und DT_UNHOLY erklaert.
+
+Um das Schwert zu bekommen, braucht man eine Miniquest, die ca 20 AP geben
+wuerde. Am Ende kommt man an einen Endgegner, den man im Team hauen muss,
+alle Mitglieder muessen die Miniquest gerade machen. Zuecken kann das Schwert
+nur jemand, der die Miniquest schon hat und mindestens 20% des Schadens gemacht
+hat. Von dem Schwert gibt es immer nur 10 Stueck, das aelteste wird beim
+clonen des NPC zerstoert und ein Neues erschaffen.
+
+-----------------------------------
+
+ SIEHE AUCH
+
+ ruestungen, waffen, fernwaffen, uniques, npcs, objects, balance
+ attributsveraenderungen, resistenzen, kampfobjekte, grenzwerte, nachteile
+------------------------------------------------------------------------------
+letze Aenderung: 18.10.2005 23:41 - Miril

@@ -1,0 +1,82 @@
+Was sind 'virtuelle Objekte'?
+=============================
+Virtuelle Objekte sind Objekte fuer die es keine explizite Quelldatei gibt.
+Ansonsten sind die Objekte (fast) genauso wie alle anderen auch.
+
+Was macht ein Virtual Compiler?
+===============================
+Wenn der Driver ein Objekt "/pfad/objekt" laden soll, guckt er erstmal nach,
+ob es so ein File (/pfad/objekt.c) auf der Platte gibt. Wenn ja, laedt er es
+ganz normal. Wenn nicht, passiert folgendes:
+
+1. Der Driver fragt den Master der Mudlib nach dem Objekt.
+2. Der Master guckt im Verzeichnis "/pfad/" nach, ob es ein virtual_compiler.c
+   dort gibt. Wenn ja, wird dieses virtual_compiler.c gefragt, ob es sich 
+   dafuer zustaendig fuehlt, ein Objekt mit dem Namen "/pfad/objekt" zu 
+   erzeugen.
+3. Wenn sich der VC fuer zustaendig fuehlt, clont er ein Objekt (z.B. sein
+   Standardobjekt, "stdob.c"), konfiguriert es evtl. noch ein bisschen und 
+   gibt es an den Master zurueck. Das erzeugte Objekt heisst an dieser Stelle
+   z.B. "/pfad/stdob#42" (weil es ein Clon von "/pfad/stdob" ist).
+4. Der Master gibt dieses erzeugte Objekt an den Driver zurueck.
+5. Der Driver benennt das vom Master erhaltene Objekt "/pfad/stdob#42" um in
+   das gewuenschte Objekt "/pfad/objekt". Von diesem Moment an ist es, als ob
+   es ein File "/pfad/objekt.c" gaebe, was dieses Objekt definiert.
+
+Das ist grundsaetzlich das, was ein VC macht.
+
+Was macht der VC in /std/?
+==========================
+Erstmal das oben beschriebene. Fuer welchen Pfad sich dieser VC zustaendig
+fuehlt und welches Objekt er jeweils clonen soll, wird per P_COMPILER_PATH und
+P_STD_OBJECT konfiguriert.
+Zusaetzlich fuehrt er besagte Liste seiner erzeugten Objekte, damit bei einem
+'ls' auf das Verzeichnis diese Objekte mit angezeigt werden.
+Weiterhin zerstoert er alle diese Objekte in seinem eigenen Remove.
+Ausserdem hat er 2 Funktionen, mit denen er entscheiden kann, ob er fuer ein
+bestimmtes angefragtes Objekt zustaendig ist, Validate() und
+QueryValidObject() und eine Funktion CustomizeObject(), die einem frisch
+geclonten Objekt sagen kann, welchen Namen es spaeter einmal haben soll (s.
+jeweilige Manapages).
+
+Wie baut man sich seinen eigenen VC?
+====================================
+Sagen wir, ihr wollt einen VC bauen, der jedem Spieler seinen eigenen Raum
+gibt, damit jeder Spieler in diesem Raum ein Monster allein erlegen muss,
+ohne dass andere Spieler mit drin sind.
+Dann braucht ihr zuerst mal einen Raum, der die Vorlage fuer alle VC-Raeume
+sein soll, z.B. std_arena.c. Diesen legt ihr in das Verzeichnis, wo der VC hin
+soll, z.B. /d/region/magier/vc/.
+In diesem Verzeichnis legt ihr nun ein File virtual_compiler.c an, welches
+/std/virtual/v_compiler erbt.
+Im create() setzt ihr nun P_COMPILER_PATH auf "/d/region/magier/vc/" und
+P_STD_OBJECT auf "/d/region/magier/vc/std_arena".
+Soll euer VC keine Para-Raeume erzeugen, setzt ihr P_PARA auf ({}).
+Sodann muesst ihr ein Validate() formulieren (s. Manpage), welches prueft, ob
+ein spaeter gewuenschtes Objekt den richtigen Namen (ohne Pfad) hat, z.B.
+'arena|spielername' und in diesem Fall genau diesen Namen zurueckliefert und
+in anderen Faellen 0.
+Das wars. Zumindest in diesem einfachen Fall seid ihr im wesentlichen fertig.
+Ihr koennt einen Spieler nun mit
+  pl->move("/d/region/magier/vc/arena|spielername",M_GO)
+in 'seinen' persoenlichen Raum bewegen.
+
+Bitte beachtet allerdings noch die Hinweise und Beschreibungen in den Manpages
+zu den einzelnen Funktionen und Properties.
+
+
+Beispiele:
+==========
+1. /doc/beispiele/virtual/zesstra/virtual_compiler.c
+   VC, der jedem Spieler einen eigenen Raum gibt. Da hier der Inhalt aller
+   Raeume gleich ist (alle Spieler sollen gleiche Bedingungen haben), ist
+   keine Konfigurierung mit Hilfe von CustomizeObject() noetig.
+
+2. /doc/beispiele/virtual/hate/vr_compiler.c
+   Dies ist ein Beispiel fuer einen sehr allgemeinen VC, der es 
+   erlaubt anzugeben in welchem Bereich sich die x und y Koordinaten befinden
+   und dann Raeume erzeugt, welche Ausgaenge in alle vier Himmelsrichtungen 
+   haben.
+
+-----------------------------------------------------------------------------
+27.10.2007, Zesstra

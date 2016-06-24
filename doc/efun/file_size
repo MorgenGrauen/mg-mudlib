@@ -1,0 +1,35 @@
+FUNKTION:
+        int file_size(string file)
+
+BESCHREIBUNG:
+        Liefert die Groesse des Files in Bytes.
+
+RUECKGABEWERT:
+        Liefert die Dateigroesse in Bytes.
+
+        Davon abweichend kann auch folgendes als Rueckgabewert vor-
+        kommen:
+
+        FSIZE_NOFILE    Das File ist entweder nicht vorhanden oder das
+         (-1)           abfragende Objekt besitzt keine Leserechte dafuer.
+        FSIZE_DIR       Es handelt sich nicht um ein File sondern um
+         (-2)           ein Verzeichnis.
+
+BEISPIELE:
+        Ein Spieler soll seinen Plan abfragen koennen:
+
+        #include <sys/files.h>
+        if(file_size("/p/service/loco/plans/"+
+                     getuid(this_player())+".plan") <= FSIZE_NOFILE)
+        {
+          write("Du hast keinen eigenen Plan festgelegt.\n");
+          return 1;
+        }
+ 
+        this_player()->More(read_file("/p/service/loco/plans/"+
+                            getuid(this_player())+".plan");
+         
+SIEHE AUCH:
+        file_time(S), write_file(E), cat(E), get_dir(E), ls()
+
+03.08.2007, Zesstra

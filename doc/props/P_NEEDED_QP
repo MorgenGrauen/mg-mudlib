@@ -1,0 +1,15 @@
+NAME:
+    P_NEEDED_QP                   "needed_qp"                   
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     APs, die man fuer den Seherstatus braucht
+
+     Diese Property ist mittlerweile obsolet. Die
+     aktuell geltenden Seher-Anforderungen stehen in
+     /secure/lepmaster.h
+
+LETZTE AENDERUNG:
+     2006-09-30, Zook.

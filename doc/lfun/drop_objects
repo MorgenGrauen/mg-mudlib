@@ -1,0 +1,48 @@
+drop_objects()
+
+FUNKTION:
+    public varargs int drop_objects(string str, mixed msg);
+
+DEFINIERT IN:
+    /std/living/put_and_get.c
+
+ARGUMENTE:
+    string str
+        Was fallengelassen werden soll.
+    mixed msg
+        Eine optionale Meldung, die anstelle von P_DROP_MSG oder der
+        Standardmeldung verwendet wird, oder -1, um die Meldung zu
+        unterdruecken.
+
+BESCHREIBUNG:
+    Der Spieler oder NPC laesst die in <str> benannten Sachen fallen.
+    Kann er ein Objekt nicht fallenlassen, bekommt er eine entsprechende
+    Fehlermeldung. Wenn keine Objekte auf <str> passen, wird per
+    _notify_fail() eine Meldung gesetzt, aber noch nicht ausgegeben.
+
+RUECKGABEWERT:
+    Wenn <str> irgendwelche vorhandenen Sachen sind, 1, sonst 0.
+
+BEMERKUNG:
+    Wenn die Funktion 1 zurueckgibt, heisst das noch nicht, dass der Spieler
+    etwas fallengelassen hat! Er hat es nur versucht, d.h. auf jeden Fall eine
+    Meldung bekommen. Gibt die Funktion 0 zurueck, hat er noch keine bekommen.
+
+BEISPIEL:
+    private int cmd_opfern(string str)
+    {
+        notify_fail("WAS moechtest Du opfern?\n");
+
+        if (!this_player()->drop_objects(str, ({ "Du opferst @WEN2.",
+                                                 "@WER1 opfert @WENU2.\n" })))
+            return 0;
+
+        filter_objects(this_player()->moved_objects(), "remove");
+        return 1;
+    }
+
+SIEHE AUCH:
+    move(L), drop(L), P_DROP_MSG, find_objects(L), moved_objects(L)
+
+----------------------------------------------------------------------------
+Last modified: Fri Jul 25 10:59:37 2008 by Amynthor

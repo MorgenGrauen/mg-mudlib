@@ -1,0 +1,24 @@
+doWieldMessage()
+
+FUNKTION:
+	void doWieldMessage();
+
+DEFINIERT IN:
+	/std/weapon/combat.c
+
+ARGUMENTE:
+	keine
+
+BESCHREIBUNG:
+        Diese Funktion gibt beim Zuecken einer Waffe die entspr.
+        Meldung an den Benutzer und die Umgebung aus.
+
+RUeCKGABEWERT:
+	keiner
+
+SIEHE AUCH:
+        doWearMessage(), doUnwearMessage(), doUnwieldMessage()
+
+----------------------------------------------------------------------------
+Last modified: Sat Jun 26 15:33:00 1999 by Paracelsus
+

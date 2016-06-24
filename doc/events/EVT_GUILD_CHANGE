@@ -1,0 +1,31 @@
+EVENT: 
+   EVT_GUILD_CHANGE
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /secure/gildenmaster.c
+
+BESCHREIBUNG:
+   Dieser Event wird immer ausgeloest, wenn ein Spieler eine Gilde wechselt.
+   Da Spieler bei einem Gildenaustritt in ihrer Standardgilde landen, ist
+   jeder Aus- und Eintritt letztendlich ein Wechsel.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:         (object) Spielerobjekt, was die Gilde wechselte,
+      E_PLNAME:         (string) UID/Playername des Spielers,
+      E_ENVIRONMENT:    (object) Environment des Spielers,
+      E_GUILDNAME:      (string) neue Gilde,
+      E_LAST_GUILDNAME: (string) alte Gilde,
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

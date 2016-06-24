@@ -1,0 +1,19 @@
+Materialid:
+MAT_MISC_ACID            "misc_acid"
+
+Name:
+"Saeure" "Saeure" "Saeure" "Saeure"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_ACIDIC:100
+MATGROUP_FLUID:100
+MATGROUP_POISONOUS:100

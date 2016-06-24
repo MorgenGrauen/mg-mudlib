@@ -1,0 +1,22 @@
+NAME:
+    P_WIMPY_DIRECTION             "wimpy_dir"                   
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Fluchtrichtung eines Spielers oder NPCs
+
+BEMERKUNGEN:
+     Die Fluchtrichtung kann nicht nur ein Ausgang (sueden, osten, ...)
+     sein, sondern auch ein Kommando, welches der Spieler beim Anschlagen
+     ausfuehrt (z.b. <kletter seil hoch> oder <rufe Elender Mist!>).
+
+     Ausgefuehrt wird die Fluchtrichtung per command(), wenn die LP des 
+     Lebewesens unter die mit <vorsicht> angegebe LP-Grenze sinkt.
+
+SIEHE AUCH:
+     P_WIMPY
+
+----------------------------------------------------------------------------
+Letzte Aenderung: Mon Feb 12 17:46:47 2001 von Tilly

@@ -1,0 +1,48 @@
+UseSkill()
+FUNKTION:
+    public varargs mixed UseSkill(string skill, mapping args)
+
+DEFINIERT IN:
+    /std/living/skills.c
+
+ARGUMENTE:
+    string skill     Skill-Name
+    mapping args     Argumente (veraenderte Skillmapping-Informationen)
+
+BESCHREIBUNG:
+    Benutzt einen Skill. Dieser Skill sollte (als grossgeschriebener Skill)
+    im Living vorliegen und das Living darf kein Geist sein.
+    
+    Die Argumente 'args' werden temporaer auf das Skillmapping des Living
+    addiert (also nur fuer diesen Aufruf und SI_INHERIT gueltig).
+    
+    Eine ausfuehrbare Skill-Funktion zum Skill wird in folgender
+    Reihenfolge bestimmt:
+    - eine gesetzte SI_CLOSURE nutzen
+    - ein gesetztes SI_SKILLFUNC in der gesetzten Gilde nutzen
+    - im Living die Funktion "StdSkill_"+skill (zB Waffenskills) nutzen
+    - QuerySkillAbility() nutzen
+    Die so bestimmte Skill-Funktion wird dann als SI_CLOSURE im Spieler
+    gesetzt und ist bis zur Zerstoerung der entsprechenden Objekte gueltig.
+    Die Methode wird dann gerufen (der Skill also angewandt).
+    
+    Standardmaessig gibt ein UseSkill() also einfach den SI_SKILLABILITY-Wert
+    eines Skills zurueck, es sei denn, eine Funktion wurde fuer den Skill
+    an einer der oben genannten Stellen implementiert.
+    
+    Ein eventuell uebergeordneter Skill (SI_INHERIT) wird mit dem durch den
+    Aufruf der Skill-Funktion veraenderten Mapping mit UseSkill(skill, args)
+    ebenfalls noch ausgefuehrt, bevor das Resultat zurueckgegeben wird.
+
+SIEHE AUCH:
+    Skills Lernen:  LearnSkill, ModifySkill, LimitAbility
+    * Nutzung:      UseSpell
+    * Abfragen:     QuerySkill, QuerySkillAbility
+    * Modifikation: ModifySkillAttribute, QuerySkillAttribute,
+                    QuerySkillAttributeModifier, RemoveSkillAttributeModifier
+      * Properties: P_SKILL_ATTRIBUTES, P_SKILL_ATTRIBUTE_OFFSETS
+    * sonstig:      spruchermuedung, skill_info_liste
+    * Properties:   P_NEWSKILLS
+    Spellbook:      Learn, SpellSuccess, Erfolg, Misserfolg
+
+4. Okt 2011 Gloinson

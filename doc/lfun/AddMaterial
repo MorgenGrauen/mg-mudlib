@@ -1,0 +1,76 @@
+AddMaterial()
+FUNKTION:
+     private static varargs void AddMaterial(string mat, int gender,
+                                             mixed names, mixed groups,
+                                             mixed dif) {
+
+DEFINIERT IN:
+     /p/daemon/materialdb.c (MATERIALDB)
+
+ARGUMENTE:
+     string mat
+       Materialstring, definiert in <thing/material.h>
+
+     int gender
+       Geschlecht des einzutragenden Materials
+
+     mixed names
+       Name des Materials:
+       - "<Nominativ>" oder (meist nur Nom. und Gen. noetig)
+       - ({"<Nominativ>","<Genitiv>","<Dativ>","<Akkusativ>"})
+
+     mixed groups
+       Eingruppierung des Materials:
+       - MATGROUP_XXX oder ({MATGROUP_XXX,...})
+       - ([MAT_GROUP_XXX:xx,MATGROUP_YYY:yy,...])
+
+     mixed dif
+       Schwierigkeiten bei der Erkennbarkeit:
+       - int x oder ({MINMAT,x1,MATPOS1,x2,MATPOS2 ...})
+       - xn: Erkennbarkeitsschwierigkeit (100=100%) -100..100
+       - MINMAT: Erkennung zumindest als _dieses_ Material
+                 moeglich
+       - MATPOSn: moegliches Material, erkennbar, wenn
+                  Erkennbarkeitfaehigkeit>=xn
+                  -> das letzte MATPOS muss natuerlich
+                     string mat entsprechen
+
+BESCHREIBUNG:
+     Es wird in die Materialiendatenbank eine neues Material aufgenommen,
+     die Stringkonstante dafuer wird vorher in <thing/material.h> fest-
+     gelegt. Falls der Genitiv nicht Nominativ+"s" entspricht (z.B. "Seide"),
+     sollte dieser explizit angegeben werden.
+     Nach Neuladen der Datenbank ist dieses Material auch per MaterialName(),
+     'erkennbar' (siehe mixed dif, siehe Beispiel) bzw. seinen einzelnen
+     Gruppen zuordnbar.
+
+BEISPIELE:
+     AddMaterial(MAT_NITROGLYCERINE,NEUTER,"Nitroglycerin",
+                 ({MATGROUP_EXPLOSIVE,MATGROUP_FLUID}),
+                 ({MAT_OIL,25,MAT_MISC_EXPLOSIVE,50,MAT_NITROGLYCERINE}));
+
+     Damit wird das Material Nytroglycerin aufgenommen, ein explosiver
+     (damit entflammbarer) sowie fluessiger Stoff. Liegt die Erkennungs-
+     faehigkeit (MaterialName()) unter 25, wird es nur als Oel erkannt,
+     liegt sie unter 50, wird es zumindest als explosives Material erkannt,
+     liegt sie ueber 49, so wird es korrekt erkannt (wie schade :) ).
+
+BEMERKUNGEN:
+     Wird in der create() der Datenbank aufgerufen. Zu beachten:
+     - vor Eintrag eines _neuen_ Materials die Datenbank durchsuchen!
+     - bei den Materialiengruppen die automatischen Abhaengigkeiten in
+       AddMaterial() durchsehen!
+     - bitte Datenbank neu laden
+
+SIEHE AUCH:
+     Konzepte:	  material, materialerkennung
+     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste, materialgruppen
+     Master:	  ConvMaterialList(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

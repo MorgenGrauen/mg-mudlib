@@ -1,0 +1,28 @@
+
+meldungen
+---------
+
+ SEHERHAUSKOMMANDO:
+    meldungen
+    meldungen <nr>
+    meldungen hier
+
+ ARGUMENTE:
+
+     <nr>
+        Eine Raumnummer Deines Hauses
+
+ BESCHREIBUNG:
+    "meldungen" gibt die eingegangenen Rueckmeldungen von Spielern in Deinem
+    Haus aus (also Typo-, Idee- und Fehlermeldungen).
+
+    "meldungen <nr>" gibt nur die Meldungen aus Raum <nr> aus.
+
+    "meldungen hier" gibt nur die Meldungen aus dem Raum aus, in dem Du gerade
+    stehst.
+
+ SIEHE AUCH:
+    aendere, beschreibe
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

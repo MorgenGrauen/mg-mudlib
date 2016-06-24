@@ -1,0 +1,22 @@
+P_ADJECTIVES
+
+NAME:
+     P_ADJECTIVES "adjectives"
+
+DEFINIERT IN:
+     <thing/description.h>
+
+BESCHREIBUNG:
+     Hier steht ein Array von Strings, welche die Identifizierung des
+     Objektes ergaenzen. Die Verwaltung erfolgt ueber die Funktionen
+     AddAdjective() und RemoveAdjective().
+
+BEMERKUNGEN:
+     Man sollte an dieser Property nicht "von Hand" herumfummeln, sondern
+     immer die zugehoerigen Funktionen benutzen!
+
+SIEHE AUCH:
+     /std/thing/description.c, AddAdjective(), RemoveAdjective()
+
+----------------------------------------------------------------------------
+Last modified: Sun May 19 20:22:24 1996 by Wargon

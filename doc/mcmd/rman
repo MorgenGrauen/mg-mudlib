@@ -1,0 +1,28 @@
+
+rman
+---
+
+ MAGIERKOMMANDO:
+    rman <hilfsseite> <mudname>
+
+ ARGUMENTE:
+
+     <hilfsseite>   Name der gewuenschten Hilfeseite
+     <mudname>      Name eines bekannten Muds
+
+ BESCHREIBUNG:
+    An das Mud <mudname> wird eine Anfrage geschickt, ob es eine Hilfe-
+    Seite zum Thema <hilfsseite> bereitstellen kann. Die Antwort ist
+    vom Mud abhaengig.
+
+ BEISPIELE:
+   
+    Im Pk-Mud die Hilfeseite zu PKs anfordern:
+
+    > rman pk pk-mud
+
+ SIEHE AUCH:
+    hilfe man udpq
+
+ LETZTE AENDERUNG:
+    Die, 06.06.2003, 18:00:00 von Mandragon

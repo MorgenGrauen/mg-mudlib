@@ -1,0 +1,37 @@
+P_RESISTANCE
+NAME:
+     P_RESISTANCE                  "resistance"
+
+DEFINIERT IN:
+     /sys/living/combat.h
+
+WICHTIG:
+     DIESE PROPERTY IST VERALTET! BITTE P_RESISTANCE_STRENGTHS
+     VERWENDEN! AUCH FUNKTIONIERT Set() NICHT WIE ES SOLLTE.
+
+BESCHREIBUNG:
+     Hiermit koennen die Resistenzen eines Lebewesens sehr einfach gesetzt
+     werden. Es kann ein Array mit Schadensarten gesetzt werden, jeder
+     Eintrag eines Schadens verdoppelt die Resistenz gegen diesen.
+
+BEMERKUNGEN:
+     - P_RESISTANCE_STRENGTHS spiegelt diese Eintraege hier wieder
+     - um genauere Werte anzugeben einen AddResistanceModifier() oder
+       P_RESISTANCE_STRENGTHS benutzen.
+     - P_RESISTANCE kann und wird nicht aus P_RESISTANCE_STRENGTHS
+       upgedatet
+
+BEISPIELE:
+     // ein NPC mit halbierter Feuerempfindlichkeit und
+     // geviertelter Windempfindlichkeit
+     SetProp(P_RESISTANCE, ({DT_FIRE, DT_AIR, DT_AIR}));
+
+SIEHE AUCH:
+     simple Resistenz:	P_RESISTANCE
+     Modifikatoren:	AddResistanceModifier, RemoveResistanceModifier(),
+			P_RESISTANCE_MODIFIER
+     Hauptmapping:	P_RESISTANCE_STRENGTHS
+     Berechnung:	CheckResistance(), UpdateResistanceStrengths()
+     anderes:		balance, /std/armour/combat.c, /std/living/combat.c
+
+1.Dez 2004, Gloinson

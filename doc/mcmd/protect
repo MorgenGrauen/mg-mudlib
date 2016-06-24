@@ -1,0 +1,32 @@
+
+protect
+-------
+
+ MAGIERKOMMANDO:
+    protect <prop>
+
+ ARGUMENTE:
+
+     <prop>
+        Name der zu schuetzenden Property
+
+ BESCHREIBUNG:
+    Das Zustand des PROTECTED-Flags der Property <prop> wird umgeschaltet.
+
+    Man muss dabei allerdings beachten, dass man nicht den Namen der Property
+    aus `/sys/properties.h' verwenden darf, sondern den String nehmen muss,
+    der sich hinter dem P_XYZ verbirgt.
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung.
+
+ BEISPIELE:
+    Wenn Du verhindern willst, dass jemand anderes Deinen Titel (P_TITLE =
+    "title") aendern kann:
+
+    > protect title
+
+ SIEHE AUCH:
+    `/std/thing/properties.c'
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

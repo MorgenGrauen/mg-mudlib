@@ -1,0 +1,41 @@
+Das LAG
+=======
+
+    Das LAG ist das groesste und fieseste Monster des Morgengrauen. Selbst
+    Magier und Goetter sind machtlos. Es tritt auf den Plan, wenn ein Magier
+    mal wieder Unsinn fabriziert, ein Seher das eigene Haus bis zum
+    Dachspanten vollgemuellt oder ein sehr beliebter Mitspieler ein
+    "mail freunde" abgesetzt hat.
+
+    Ganz technisch betrachtet ist der Rechner ueberlastet und kann den
+    Mud-Prozess nicht mit gewohnter Geschwindigkeit ausfuehren. Dadurch
+    haengt dann natuerlich alles - der Vorteil jedoch ist, dass man im
+    Normalfall an Lag nicht stirbt, da auch alle Monster unter Zeitmangel
+    leiden.
+    Dahingegen ist das kleine Monster Netzlag hinterhaeltiger. Meist reicht
+    es aber, den Nachbarn vom Netzkabel herunterzuschubsen um es zu
+    vertreiben.
+
+
+    Es gibt einige Spielzeuge, mit denen man sich das Lag in Zahlen
+    anzeigen lassen kann. Am beliebtesten ist jedoch der Kanal <MasteR>:
+
+    [<MasteR>:Gloinson] l
+    [<MasteR>:<MasteR>] 7.80 cmds/s, 127.97 comp lines/s
+    [<MasteR>:<MasteR>] Lag: 0.5%/60, 0.8%/15, 1.2/5, 0.0%/1
+
+    Dabei bedeuten die Zahlen, um wieviel Prozent im Vergleich zur normalen
+    Zeit das MUD in den letzten 60/15/5/1 Minuten im Durchschnitt langsamer
+    war.
+    
+    Hierbei ist zu beachten, dass selbst der 1-Minutenwert nur alle 10s
+    berechnet wird. Tritt also gerade jetzt ein Lag auf und ihr fragt sofort
+    das Lag ab, ist es wahrscheinlich, dass es noch nicht im 1-Minutenwert
+    enthalten ist. Die anderen Werte werden entsprechend seltener neu
+    bestimmt.
+
+ SIEHE AUCH:
+    mudrechner, sterben, ebenen
+
+ LETZTE AeNDERUNG:
+    04.09.2010, Gloinson

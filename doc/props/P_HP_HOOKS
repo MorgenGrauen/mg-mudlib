@@ -1,0 +1,19 @@
+NAME:
+    P_HP_HOOKS                    "hp_hooks"                    
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Welche Objekte sollen bei HP-Aenderungen benachrichtigt werden?
+     Diese Property bitte NICHT manipulieren! Zum Ein- und Austragen stehen
+     hierfuer AddHpHook() und RemoveHpHook() bereit.
+
+BEMERKUNGEN:
+    Das neuere Hooksystem (s. Manpage std/hooks) stellt ebenfalls Hooks zur
+    Ueberwachung von P_HP bereit.
+
+SIEHE AUCH:
+    AddHpHook(), RemoveHpHook(),
+    NotifyHpChange()
+    std/hooks

@@ -1,0 +1,25 @@
+FindNearEnemyVictim()
+
+FUNKTION:
+	object FindNearEnemyVictim(string wen, object pl, string msg)
+
+DEFINIERT IN:
+	/std/spellbook.c
+
+ARGUMENTE:
+	wen - id des gewuenschten Gegners, SelectNearEnemy falls n/a.
+	pl  - Caster.
+	msg - Nachricht falls Gegner nicht anwesend ist.
+
+BESCHREIBUNG:
+	Findet einen im Nahkampf erreichbaren Gegner,
+	z.B. fuer einen Angriffsspruch.
+	
+RUECKGABEWERT:
+	Der Auserwaehlte :-)
+
+BEMERKUNGEN:
+	Der Gegner wird auf jeden Fall angegriffen.
+
+SIEHE AUCH:
+	teams, FindEnemyVictim, FindFarEnemyVictim, FindDistantEnemyVictim

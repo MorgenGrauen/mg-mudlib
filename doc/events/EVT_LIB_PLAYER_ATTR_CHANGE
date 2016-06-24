@@ -1,0 +1,24 @@
+EVENT: 
+   EVT_LIB_PLAYER_ATTR_CHANGE
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/living/life.c
+
+BESCHREIBUNG:
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ 
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

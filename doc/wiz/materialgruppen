@@ -1,0 +1,53 @@
+Materialgruppen
+===============
+
+  Die ebenfalls kommentierte Liste unter /sys/thing/material.h ist immer
+  aktueller als diese hier.
+
+  MATGROUP_SOLID          feste Dinge
+  MATGROUP_FLUID          Fluessigkeiten
+  MATGROUP_GAS            Gase
+
+  MATGROUP_WOOD           Hoelzer
+  MATGROUP_DECIDUOUS_WOOD Laubhoelzer
+  MATGROUP_CONIFER_WOOD   Nadelhoelzer
+  MATGROUP_TROPICAL_WOOD  Tropenhoelzer
+  MATGROUP_JEWEL          Edelsteine
+  MATGROUP_MINERAL        Mineralien
+  MATGROUP_STONE          Steine
+  MATGROUP_METAL          Metalle
+  MATGROUP_PRECIOUS_METAL Edelmetalle
+  MATGROUP_PAPER          Papier und Aehnliches
+  MATGROUP_CLOTH          Stoffe
+
+  MATGROUP_ELEMENTAL      (altertuemliche) Elemente
+  MATGROUP_BIO            Alles, was lebt oder lebte
+  MATGROUP_LIVING         Lebewesen
+  MATGROUP_HERBAL         Pflanzliches
+  MATGROUP_DEAD           Ueberreste von Lebewesen
+  MATGROUP_DRUG           Drogen, Heiltraenke
+
+  MATGROUP_INFLAMMABLE    Entflammbares
+  MATGROUP_EXPLOSIVE      Explosives
+  MATGROUP_POISONOUS      Giftiges
+  MATGROUP_MAGIC          Magisches
+  MATGROUP_RADIOACTIVE    Radioaktives
+  MATGROUP_ELECTRICAL     Elektrisches
+  MATGROUP_MAGNETIC       Magnetisches
+  MATGROUP_ACIDIC         Saures
+  MATGROUP_EATABLE        Essbares
+  MATGROUP_FLEXIBLE       Biegsames
+  MATGROUP_INVIS          Unsichtbares
+
+SIEHE AUCH:
+     Konzepte:	  material, materialerkennung
+     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste
+     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

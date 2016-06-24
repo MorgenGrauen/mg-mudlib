@@ -1,0 +1,9 @@
+BEFEHL:
+	dup
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Lege das Objekt, das oben auf dem Stack liegt, nocheinmal auf
+	den Stack, um es eventuell spaeter noch einmal wieder zu verwenden.

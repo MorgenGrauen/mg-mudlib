@@ -1,0 +1,18 @@
+SYNOPSIS:
+        void move_object(mixed item, mixed dest)
+
+        item->move(object dest, string methods)
+
+DESCRIPTION:
+	The item, which can be a object_name or an object, is moved into
+	it's new environment dest, which can also be object_name or an
+	object.  In native mode, the only object that can be moved
+	with move_object() is the calling object itself. This function
+	is only used to implement the lfun move().
+        
+        Use the lfun move() instead by inheriting standard objects.
+	move() must be called in the object to be moved. This gives
+	the moved object full control over its movement.
+
+SEE ALSO:
+        move(L), remove(L), init(L), transfer(E), native(C)

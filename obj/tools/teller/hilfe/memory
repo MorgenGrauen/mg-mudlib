@@ -1,0 +1,15 @@
+BEFEHL:
+	memory, mem
+
+ARGUMENTE:
+	Keine
+
+FUNKTION:
+	Zeige den Inhalt aller Variablen an, die man angelegt hat.
+	Normalerweise wird der Inhalt in der Form Name = Inhalt angezeigt.
+	Ist unter dem Namen eine Funktion gespeichert, wird
+		Name > Inhalt
+	angezeigt, um Funktionen von Strings unterscheiden zu koennen.
+
+SIEHE AUCH:
+	"vars", "funktionen"

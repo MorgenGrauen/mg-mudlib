@@ -1,0 +1,7 @@
+SYNOPSIS
+      xscan
+
+DESCRIPTION
+      Scan current room for netdead players and check variables.
+      (There will follow more checking routines like snoop, invis etc. :)
+

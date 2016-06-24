@@ -1,0 +1,54 @@
+AddMiniQuest()
+
+FUNKTION:
+    int AddMiniQuest(int stupse, string questgeber, string desc, int active,
+                     string titel, string erledigt, mapping voraussetzungen,
+                     string region, string *erlaubte)
+
+DEFINIERT IN:
+    /secure/questmaster
+
+BESCHREIBUNG:
+    Diese Funktion traegt eine neue Miniquest im Questmaster ein.
+
+ARGUMENTE:
+
+    stupse (>0)  - Anzahl Stufenpunkte, die fuer die MQ gutgeschrieben werden
+    questgeber   - Ladename des Objekts, das GiveMiniQuest() aufruft
+    desc         - Aufgabenbeschreibung der Miniquest
+    active (0/1) - ist die Miniquest aktiv, d.h. spielbar, oder nicht?
+    titel        - Titel der Miniquest, darf weder "in", noch "im" enthalten,
+                   weil dann der Eintrag in der Fraternitas-Bibliothek nicht
+                   gelesen werden kann.
+    erledigt     - Beschreibung der Miniquest, nachdem man sie erledigt hat
+                   Der Text kann in der Bibliothek der kleinen und grossen
+                   Heldentaten in der Fraternitas eingesehen werden.
+    voraussetzungen - Mapping im Format von P_RESTRICTIONS (s. dort), um
+                   die Voraussetzungen festzulegen, die ein Spieler 
+                   erfuellen muss, um die MQ ueberhaupt spielen zu koennen
+                   Wird fuer die regionsbezogenen Informationspunkte/-NPCs
+                   ausgewertet. 0 oder ([]) eintragen, wenn keine 
+                   Voraussetzungen bestehen.
+    region       - Zuordnung der Miniquest zu einer Region; wird fuer der
+                   Bibliothek der Fraternitas verwendet, um die MQs der
+                   einzelnen Regionen herauszufiltern.
+    erlaubte     - Array mit Ladenamen von Objekten, die berechtigt sind,
+                   die Daten der MQ abzufragen, um Spielern einen Hinweis
+                   darauf zu geben, die sie noch nicht bestanden haben.
+
+RUECKGABEWERTE:
+     1: Hat geklappt
+    -1: Parameterformat stimmt nicht (questgeber kein String oder Leerstring,
+        voraussetzungen kein Mapping, region oder titel keine Strings, 
+        erlaubte kein Array)
+    -2: weniger als 1 Stufenpunkt einzutragen versucht
+    -3: Das Array in "erlaubte" ist leer, oder zum angegebenen Questgeber
+        wurde keine Datei gefunden.
+    -4: Der angegebene Questgeber vergibt schon eine andere Miniquest
+
+
+SIEHE AUCH:
+    GiveMiniQuest(L), HasMiniQuest(L)
+    P_RESTRICTIONS
+    /secure/questmaster.c
+

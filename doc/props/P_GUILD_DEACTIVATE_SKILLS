@@ -1,0 +1,38 @@
+PROPERTY:
+
+  P_GUILD_DEACTIVATE_SKILLS     "guild_deactivate_skills"
+
+DEFINIERT IN: 
+
+  new_skills.h
+
+BESCHREIBUNG:
+
+  Diese Property erlaubt es, Gildenmitgliedern die benutzung von ANY-
+  Skills zu untersagen. Dies sind einerseits die allgemeinen Waffenskills,
+  andererseits koennte das auch der entgifte-Spruch der Duesterwald -
+  Quest sein.
+
+  Wert dieser Property ist ein Mapping, das als Keys die einzelnen
+  Skills und als Wert 1 enthaelt, wenn ein Skill deaktiviert
+  werden soll und 0, falls nicht.
+
+  Diese Property wird nur bei einem Neuerzeugen des Spielers neu 
+  ausgelesen, da es sonst zuviel Rechenzeit kostet.
+
+BEISPIEL:
+
+  Jede Gilde, die keine Waffenskills benutzen soll (oder selbst welche hat)
+  enthaelt folgenden Befehl:
+
+    SetProp(P_GUILD_DEACTIVATE_SKILLS,
+    ([FIGHT(WT_SWORD):1,
+    FIGHT(WT_AXE):1,
+    FIGHT(WT_CLUB):1,
+    FIGHT(WT_SPEAR):1,
+    FIGHT(WT_KNIFE):1,
+    FIGHT(WT_WHIP):1]));
+    
+LETZTE AENDERUNG: 
+
+2003-01-30, 14:15, Humni

@@ -1,0 +1,98 @@
+Materialien
+===========
+
+     Materialien in Morgengrauen koennen ueber die Property P_MATERIAL jedem 
+     Objekt im Spiel zugeordnet werden. Ueber die Materialiendatenbank 
+     stehen dafuer jede Menge Materialien zur Verfuegung. Wenn moeglich, 
+     sollten diese auch benutzt werden, es werden Defaultmaterialien 
+     gesetzt, diese entsprechen aber selten eurer Realitaet.
+
+     Die Materialiendatenbank /secure/materialdb.c haelt saemtliche 
+     Informationen ueber die verwendbaren Materialien, die unter 
+     /sys/thing/material.h aufgefuehrt sind. Es empfiehlt sich SEHR, Verweise
+     auf die MatDB nur in Form von MATERIALDB zu formulieren.
+     Sie verwaltet auch die Eigenschaften einzelner Materialien. Es gibt 
+     diverse Materialiengruppen wie "entflammbar", "Metall", "biologisches 
+     Material", denen die Materialien entsprechend zugeordnet sind. Diese 
+     Informationen koennen mit entsprechenden Methoden abgerufen/ausgewertet 
+     werden.
+     Darueber hinaus sind Materialien bei der Erkennung mit anderen 
+     Materialien verwechselbar. Wie das genau funktioniert, ist in "man 
+     materialerkennung" ausgefuehrt.
+
+     P_MATERIAL:
+       Die Property P_MATERIAL ist grundsaetzlich ein Mapping, in dem zu 
+       jedem Material der Anteil an dem Objekt stehen sollte, Z.B. kann 
+       ein Speer zu 80% aus Holz und zu 20% aus Metall (Speerspitze) 
+       bestehen:
+
+	SetProp(P_MATERIAL, ([MAT_MISC_METAL:20,MAT_MISC_WOOD:80]))
+
+       (Zur Vereinfachung ist es erlaubt, bei SetProp ein einzelnes Material 
+        oder ein Array aus Materialien anzugeben, beides wird automatisch 
+        umgewandelt in ein Mapping mit gleichen Anteilen aller Materialien.)
+
+     Defaults für P_MATERIAL:
+	Waffen generell:	   ([MAT_MISC_METAL:100])
+	Schwerter:		   ([MAT_MISC_METAL:100])
+    	Messer:			   ([MAT_MISC_METAL:80, MAT_MISC_WOOD:20])
+	Aexte:			   ([MAT_MISC_METAL:50, MAT_MISC_WOOD:50])
+	Speere:			   ([MAT_MISC_METAL:20, MAT_MISC_WOOD:80])
+	Keulen:			   ([MAT_MISC_WOOD:100])
+	Ruestungen generell:	   ([MAT_LEATHER:100])
+	Koerperruestungen, Helme,
+	Ringe, Amulette, Schilde:  ([MAT_MISC_METAL:100])
+	Umhaenge, Hosen:	   ([MAT_CLOTH:100])
+	Handschuhe, Schuhe:	   ([MAT_LEATHER:100])
+	andere Dinge:		   ([MAT_MISC:100])
+
+      Uebersicht ueber die Methoden an Objekten (/std/thing/description):
+	int QueryMaterial(string mat):
+	- gibt % des Materialanteils von mat am Objekt zurueck
+	int QueryMaterialGroup(string grp):
+	- gibt % des Materialgruppenanteils von grp am Objekt zurueck
+	string MaterialList(int casus, mixed idinf):
+	- gibt String mit Zusammensetzung des Objektes zurueck
+
+      Uebersicht ueber die Methoden am Master (MATERIALDB):
+	string *GetMatMembership(string mat):
+	- alle Gruppen, in denen das Material mat ist
+	string *GetGroupMembers(string grp):
+	- alle Materialien, die in der Gruppe grp sind
+	string MaterialName(string mat, int casus, mixed idinf):
+	- ergibt die spielerlesbare Angabe eines Materials mat
+	string GroupName(string grp):
+	- ergibt spielerlesbare Angabe der Gruppe grp
+	string ConvMaterialList(mixed mats, int casus, mixed idinf):
+  	- wird von MaterialList() mit den Materialien des Objektes gerufen
+	void Dump():
+  	- schreibt Materialien und Gruppen in /p/daemon/save/MATERIALS
+	string *AllMaterials():
+	- Liste aller aktuellen Materialien
+	string *AllGroups():
+	- Liste aller aktuellen Gruppen
+
+      Falls euch ein Material fehlt:
+	- falls es kein genau passendes Material gibt, sollte man das am 
+	  ehesten passende MAT_MISC-Material verwenden.
+	- falls es sich lohnen wuerde, das bisher noch nicht definierte 
+	  Material einzubauen (wenn es haeufig genug verwendet wird), bitte 
+	  Mail an einen EM (-> man AddMaterial() )
+	- verschiedene Eigenschaften lassen sich kombinieren. Z.B. besteht 
+	  ein (unbekanntes) explosives Gas zu 100% aus Gas und zu 100% aus 
+	  explosivem Material. Insofern kann man es mit
+          SetProp(P_MATERIAL, ([MAT_MISC_GAS:100, MAT_MISC_EXPLOSIVE:100]))
+          zusammensetzen.
+
+SIEHE AUCH:
+     Konzepte:	  materialerkennung
+     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste, materialgruppen
+     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

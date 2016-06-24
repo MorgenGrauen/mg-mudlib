@@ -1,0 +1,88 @@
+walk_mapping(E)
+
+FUNKTION:
+        void walk_mapping(mapping m, string fun [, mixed extra, ...])
+        void walk_mapping(mapping m, string fun, string|object ob
+                                                , mixed extra,...)
+        void walk_mapping(mapping m, closure cl, mixed extra,...)
+
+PARAMETER:
+     m		- durchzugehendes Mapping
+     fun/cl	- zu rufende Methode/Closure
+     ob		- Objekt/Dateiname, an dem Methode gerufen werden soll
+     extra	- weitere Parameter fuer Methode/Closure
+
+BESCHREIBUNG:
+     Ruft die Methode fuer jeden Eintrag im Mapping:
+      ob->func(key, value1, ..., valueN, extra,...)
+     beziehungsweise fuehrt die Closure fuer jeden dieser Eintraege aus:
+      funcall(cl, key, value1, ..., valueN, extra,...)
+
+     Die Schluessel werden als Wert uebergeben und die dazugehoerigen Werte
+     per Referenz, diese koennen somit also in der Funktion/Closure geaendert
+     werden.
+
+
+     Verwendung von Methoden:
+	Wenn bei der Angabe von 'fun' kein Objekt 'ob' in Form eines Strings
+	oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+	Es koennen sowohl Lfun-Closures als auch Lambda-Closures verwendet
+	werden. Lfun-Closures koennen, wenn im selben Objekt vorhanden auch
+	'private' oder/und 'static' deklariert sein, muessen aber zu dem
+	Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+
+BEISPIELE:
+     // Liste mit Spielern durchgehen ...
+     mapping x=([ [/human:liafar]:  20,
+		  [/dwarf:mesirii]: 50,
+		  [/elf:zarniya]:   40,
+		  [/feline:turbo]:  30]);
+
+     // ... und Werte aendern:
+     void add_val(object key, int val, int add) {
+       if(key->InFight())
+         val+=add;
+       else
+         val-=add;
+     }
+
+     // verschiedene Aufrufarten, identisches Resultat:
+     walk_mapping(x, "add_val", 0, 10);
+     walk_mapping(x, "add_val", this_object(), 10
+     walk_mapping(x, "add_val", "/players/jof/addierobjektmitmethode", 10);
+
+     walk_mapping(x, #'add_val, 10);
+
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     // so richtig aequivalent wird es nur mit einer Closure hier
+     int i, width;
+     mapping input;
+     mixed *index, *param;
+
+     width=get_type_info(input)[1];
+     param=allocate(width);
+     index=m_indices(input);
+     i=sizeof(index);
+     while(i--) {
+       j=width;
+       while(j-- > 1)
+         param[j]=input[index[i],j];
+       j[0]=index[i];
+
+       apply(cl, param);
+       // fun(index[i], input[index[i],0], input[index[i],1], ...);
+      }
+
+SIEHE AUCH:
+     Arrays:		filter(E), map(E)
+     Objektarrays:	filter_objects(E), map_objects(E)
+     Mappings:		filter_indices(E), map_indices(E)
+
+     Sonstiges:		m_contains(E)
+			member()
+			m_indices(E), m_values(E)
+
+20.Jan 2005 Gloinson

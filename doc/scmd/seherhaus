@@ -1,0 +1,58 @@
+
+Allgemeines zu Seherhaeusern
+============================
+
+ ALLGEMEIN:
+    Die eigenen vier Waende! Wer traeumt nicht davon? Eine Insel der
+    Privatsphaere in der laermenden Oeffentlichkeit des MorgenGrauen, ganz
+    nach eigenem Geschmack einricht- und ausbaubar!
+
+    Und wer hat sich nicht schon immer einmal gewuenscht, sich mit `ende'
+    ausloggen zu duerfen, ohne Angst um seine Ausruestung zu haben?
+
+    Ein weiterer Vorteil: Nach dem Ausloggen (also per `ende' oder nach einem
+    Reboot) betritt man beim naechsten Einloggen das Spiel in den eigenen vier
+    Waenden und nicht mehr am Startpunkt seiner Rasse.
+
+ SPEZIELLES:
+    Im Eingangsraum des Hauses befindet sich eine Truhe, in der man wichtige
+    Gegenstaende aufbewahren kann, ohne befuerchten zu muessen, dass sie von
+    zufaellig vorbeischauenden Spielern entwendet werden. Man sollte
+    allerdings nicht vergessen, die Truhe auch wieder zu schliessen, nachdem
+    man Sachen hineingelegt hat... ;^)
+
+    Sowohl Gegenstaende in der geschlossenen Truhe wie auch im abgeschlossenen
+    Haus sind zwar vor fremdem Zugriff geschuetzt, aber nach einem Reboot wie
+    ueblich verloren (und wie man leicht einsehen kann, gibt es dafuer auch
+    KEINE Entschaedigung!).
+
+    Erwirbt man im Laufe der Zeit weitere Raeume, um sein Haus auszubauen, so
+    wird die Numerierung der Raeume wichtig:
+    Der Eingangsraum hat die Nummer 0, die weiteren Raeume sind fortlaufend
+    von 1 bis 9 durchnumeriert.
+    Die Nummer des Raumes, in dem man sich gerade befindet, wird bei dem
+    Befehl `uebersicht' angezeigt.
+
+    Wenn man das Haus abgeschlossen hat, kann es niemand mehr betreten. Es ist
+    allerdings NICHT moeglich, jemanden im Haus einzusperren!
+
+    Beschreibungen etc. sind nur im *eigenen* Haus moeglich! Die einzige
+    Aenderung, die man an einem anderen Haus vornehmen kann, ist das Schaffen
+    einer Verbindung (siehe dazu das `ausgang'-Kommando).
+
+    Typo- und Ideemeldungen, die in Deinem Haus von anderen Spielern abgesetzt
+    werden, landen in einer Reportdatei, die Du mit dem Befehl `meldungen'
+    ansehen und mit dem `aendere'-Befehl bearbeiten kannst.
+
+    Jeder Raum des Seherhauses darf maximal 100 einzelne Objekte beinhalten.
+    Dabei gibt es zwei Unterscheidungen:
+       345 Muenzen.         --> Das ist ein Objekt.
+       Ein Titanring. (4)   --> Das sind 4 Objekte.
+
+ SIEHE AUCH:
+    aendere, ausgang, beschreibe, erlaube, hausbau, instanthaus, kopiere,
+    licht, loesche, meldungen, notiz, schiebe, sperre, spion, uebersicht,
+    verbiete, werfe
+
+ LETZTE AeNDERUNG:
+    Thu, 21.07.1997, 20:00:00 von Zook.

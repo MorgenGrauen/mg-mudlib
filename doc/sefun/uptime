@@ -1,0 +1,16 @@
+FUNKTION:
+        string uptime()
+
+ARGUMENTE:
+        keine
+
+BESCHREIBUNG:
+        Liefert die aktuelle Uptime des MorgenGrauens.
+
+RUECKGABEWERT:
+        Die Uptime als Zeitstring.
+
+BEISPIELE:
+        ut = uptime() => ut = "14 Tage, 9 Stunden, 3 Minuten und 7 Sekunden."
+
+SIEHE AUCH:

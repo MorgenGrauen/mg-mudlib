@@ -1,0 +1,19 @@
+P_SHOW_INV
+
+NAME:
+     P_SHOW_INV "show_inv"
+
+DEFINIERT IN:
+     <thing/description.h>
+
+BESCHREIBUNG:
+     Wenn diese Property auf einen Wert ungleich 0 gesetzt ist, wird das
+     Objekt, soweit es sich in einem Spieler befindet, in dessen
+     Langbeschreibung angezeigt. Zur Anzeige wird der Name des Objektes
+     verwendet.
+
+SIEHE AUCH:
+     /std/thing/description.c
+
+----------------------------------------------------------------------------
+Last modified: Sun May 19 20:36:05 1996 by Wargon

@@ -1,0 +1,57 @@
+process_string(E)
+FUNKTION:
+     string process_string(string str)
+     string process_string(closure cl)
+
+BESCHREIBUNG:
+     Durchsucht den String str nach Vorkommnissen von Substrings, die "Wert
+     durch Funktionsaufruf zu ersetzen" andeuten. Die Form ist: @@, gefolgt
+     durch einen impliziten Funktionsaufruf.
+
+     Der zu ersetzenden Substring hat die Form:
+     @@function[:filename][|argument1|argument2]@@
+
+     Die entsprechende Funktion muss einen String zurueckgeben, oder der
+     process_string() uebergebene String str wird nicht modifiziert.
+
+     process_string() arbeitet nicht rekursiv, object_name und argument sind
+     optionale Werte.
+
+     Falls eine Closure angegeben wurde, wird diese lediglich gerufen
+     und nicht gefiltert.
+
+ANMERKUNGEN:
+     - Die Funktion, die gerufen werden soll, _muss_ mit einem Buchstaben
+		   anfangen, '_' ist nicht moeglich!
+     - folgendes Properties und Details werden bei der Abfrage ueber
+       process_string() gefiltert:
+       P_LONG, P_SHORT, P_READ_MSG, AddReadDetail()-Details und NPC-Chats
+       P_INT_LONG ueber int_long(), P_INT_SHORT ueber int_short()
+     - die Nutzung kann zu Sicherheitsproblemen fuehren, siehe auch
+       process_call()
+
+BEISPIEL:
+     // komplette Ersetzung ...
+     SetProp(P_LONG,"@@current_long@@");
+     ...
+     string current_long() {
+      if(x) return(break_string("Die Beschreibung."));
+      else return(break_string("Die andere Beschreibung."));
+     }
+
+     -> bei Abfrage: "Die Beschreibung." oder "Die andere Beschreibung."
+
+
+     // Teilersetzung
+     SetProp(P_SHORT, "Ein @@farbenfun|huebsch@@ Ding");
+     ...
+     string farbenfun(string str) {
+      return(str+" "+"gelbes");
+     }
+
+     -> bei Abfrage: "Ein huebsch gelbes Ding."
+
+SIEHE AUCH:
+     notify_fail(E), process_call(E), replace_personal(E)
+
+22. Nov. 2006 Arathorn

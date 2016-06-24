@@ -1,0 +1,19 @@
+Materialid:
+MAT_NEUTRONIUM           "Neutr"
+
+Name:
+"Neutronium" "Neutroniums" "Neutronium" "Neutronium"
+
+Geschlecht:
+N
+
+Beschreibung:
+ultraschwer, unzerstoerbar
+
+Erkennbarkeit:
+MAT_MISC_METAL:-25
+MAT_NEUTRONIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_SOLID:100

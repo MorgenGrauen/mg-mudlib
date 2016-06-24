@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_POISON          "misc_poison"
+
+Name:
+"giftiges Material" "giftigen Materials" "giftigem Material" "giftigen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MISC:100
+MATGROUP_POISONOUS:100

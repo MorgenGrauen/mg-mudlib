@@ -1,0 +1,24 @@
+
+rmdir
+-----
+
+ MAGIERKOMMANDO:
+    rmdir [-v] <verz> [...]
+
+ ARGUMENTE:
+
+     <verz>  Das zu loeschende Verzeichnis (es koennen auch mehrere sein)
+
+ BESCHREIBUNG:
+    Die angegebenen Verzeichnisse werden geloescht. Die Verzeichnisse muessen
+    dazu leer sein.
+
+    Das Flag -v sorgt dafuer, das detaillierte Informationen ueber den Fort-
+    schritt ausgegeben werden.
+
+
+ SIEHE AUCH:
+    mkdir, rm
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon

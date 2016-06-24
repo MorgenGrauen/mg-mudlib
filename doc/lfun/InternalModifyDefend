@@ -1,0 +1,29 @@
+InternalModifyDefend(L)
+
+FUNKTION:
+     protected void InternalModifyDefend(int dam, mixed dt, mixed spell,
+				      object enemy)
+
+DEFINIERT IN:
+     /std/living/combat
+
+ARGUMENTE:
+     int dam             Staerke des abzuwehrenden Angriffs (in HP/10)
+     string/string* dt   Art(en) des Schadens, der angerichtet werden soll
+     int/mapping spell   0 fuer normale Angriffe (keine Zauber)
+                         1 fuer Zauber (Standardruestungen ignorieren)
+                         mapping fuer mehr Informationen
+     object enemy        der Feind/Schadenverursacher
+
+BESCHREIBUNG:
+     Dient dazu noch Aenderungen am Verhalten der Defend() vornehmen zu
+     koennen. Die Parameter werden alle per Referenz uebergeben, Aenderungen
+     wirken also direkt in der Defend()!
+     Einfach ueberschreiben, aber ::InternalModifyDefend(&..., &....) nicht
+     vergessen!
+
+SIEHE AUCH:
+     InternalModifyAttack(L)
+     Defend(L)
+
+28.03.2008, Zesstra

@@ -1,0 +1,40 @@
+RemoveFixedObject()
+
+FUNKTION:
+	void RemoveFixedObject(string filename);
+
+DEFINIERT IN:
+	/std/laden.c
+
+ARGUMENTE:
+	str
+	  Dateiname des Objektes, welches nicht mehr dauerhaft im Laden sein
+	  soll.
+
+RUeCKGABEWERT:
+        keiner
+
+BESCHREIBUNG:
+	Objekte, die mittels der Funktion AddFixedObject() im Laden
+	eingebunden werden, sind dort staendig verfuegbar. Um diesen Zustand
+	wieder aufzuheben, kann man sie mittels dieser Funktion wieder
+	entfernen. Eventuell im Lager befindliche Objekte dieser Art werden
+	hierbei nicht zerstoert und koennen durchaus noch gekauft werden,
+	bis sie alle sind. Danach gibt es sie dort nicht mehr!
+
+BEISPIELE:
+	Im allen Laeden gibt es schon ein Objekt, welches dort
+	standardmaessig erhaeltlich ist. Folgende Zeile sorgt dafuer:
+	  AddFixedObject("/obj/boerse",80,({"boerse","geldboerse"}));
+	Wenn man das in seinem Laden nicht wuenscht, kann man die Geldboerse
+	mittels folgender Zeile wieder aus dem Laden loeschen:
+	  RemoveFixedObject("/obj/boerse");
+	Es ist nicht moeglich, keine oder mehrere Objekte anzugeben, um auf
+	diese Weise alle bzw. mehrere Objekte als nicht mehr staendig
+	verfuegbar zu markieren.
+
+SIEHE AUCH:
+	AddFixedObject(), SetStorageRoom(), /std/store.c
+
+----------------------------------------------------------------------------
+Last modified: Thu Jun 18 14:19:19 1998 by Patryn

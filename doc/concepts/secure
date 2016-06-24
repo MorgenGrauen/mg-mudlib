@@ -1,0 +1,52 @@
+THEMA:
+	secure-Verzeichnisse
+
+FUNKTION:
+	Magier haben die Moeglichkeit in ihren Gilden oder Regions-
+	verzeichnissen /secure Verzeichnisse anzulegen, in denen Daten dann
+	vor Lesezugriffen anderer Magier geschuetzt sind. Leserechte in diesen
+	Verzeichnissen haben grundsaetzlich nur diejenigen, die dort auch
+	Schreibrechte haben. Diese Verzeichnisse sind fuer (Quest-)Raetsel oder
+	schwierige NPCs mit vielen Stufenpunkten gedacht. Diese Verzeichnisse
+	sind ausdruecklich _nicht_ dazu gedacht, dort ganze Gebiete oder Quests
+	abzulegen, da bei Problemen andere Magier nur noch sehr schwer helfen
+	koennen. Aus diesem Grund sind die Regionsmagier gehalten darauf zu
+	achten, dass diese Verzeichnisse nur mit Bedacht verwendet werden.
+	Sollte das ganze ausarten und uebertrieben werden, so wird der Schutz
+	der secure Verzeichnisse in den betroffenen Gebieten/Regionen wieder
+	aufgehoben!
+
+HINWEIS:
+	Es ist _nicht_ moeglich ganze Verzeichnisbaeume in ein secure/
+	Verzeichnis abzulegen. Anders formuliert:
+  Unterverzeichnisse von secure/ geniessen _keinen_ besonderen Schutz.
+
+BEISPIEL:
+
+	o richtiger Einsatz in einem fiktiven standard include file...
+
+	  #define HOME(x)    "/d/region/magiername/meingebiet/"+x
+	  #define NPC(x)     HOME("npc/"+x)
+     -> /d/region/magiername/meingebiet/npc/
+	  #define OBJ(x)     HOME("obj/"+x)
+     -> /d/region/magiername/meingebiet/obj/
+	  #define ROOM(x)    HOME("room/"+x)
+     -> /d/region/magiername/meingebiet/room/
+	  #define SECURE(x)  HOME("secure/"+x)
+     -> /d/region/magiername/meingebiet/secure/
+
+
+	o falscher (wirkungsloser) Einsatz mit einem Verzeichnisbaum:
+
+	  #define HOME(x)    "/d/region/magiername/meingebiet/secure/"+x
+	  #define NPC(x)     HOME("npc/"+x)
+     -> /d/region/magiername/meingebiet/secure/npc/
+	  #define OBJ(x)     HOME("obj/"+x)
+     -> /d/region/magiername/meingebiet/secure/obj/
+	  #define ROOM(x)    HOME("room/"+x)
+     -> /d/region/magiername/meingebiet/secure/room/
+
+
+LETZTE AeNDERUNG:
+  04.09.2011 Zesstra
+

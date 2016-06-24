@@ -1,0 +1,32 @@
+
+titel
+-----
+
+ KOMMANDO:
+    titel <text>
+    titel 0
+
+ ARGUMENTE:
+
+     <text>
+        Der Titeltext.
+
+ BESCHREIBUNG:
+    Der Text wird als neuer Titel gesetzt. Dabei sollte der Titel nicht mit
+    einem Spielertitel identisch oder einem solchen sehr aehnlich sein. Der
+    uebergebene Text darf ein Backspace (\b) am Anfang enhalten, wenn
+    darauf ein Komma (,) oder ein Hochkomma (') folgt.
+
+    Wird kein Argument uebergeben, so wird der aktuelle Titel geloescht.
+
+    Wird 0 als Argument uebergeben, so wird der Titel durch den aktuellen
+    Gildentitel ersetzt.
+    
+    Das Kommando steht Spielern ab Level 21 zur Verfuegung, sofern sie sich
+    in der Fraternitas Dono Archmagorum diese Faehigkeit beibringen lassen.
+
+ SIEHE AUCH:
+    stufen, presay (Seherkommando)
+
+ LETZTE AeNDERUNG:
+    Fri, 25.05.2007, 19:57:00 - Miril

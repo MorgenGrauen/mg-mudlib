@@ -1,0 +1,108 @@
+
+Regionsmagier
+=============
+
+Vorbemerkung: Dieses Dokument ist nicht auf dem aktuellen Stand,
+Anregungen dazu nehme ich, Zook, gerne entgegen. Ich werde das
+Dokument dann nach und nach erweitern, berichtigen.
+
+    Hier sind einige Verhaltensregeln fuer Regionsmagier zusammengetragen. Sie
+    sollten tunlichst beachtet werden, damit es nicht zu Aerger und
+    Enttaeuschungen fuer Spieler und Magier kommt.
+
+    Einstellen von neuen Mitarbeitern:
+
+     * Man sollte dem neuen Magier *vorher* sagen, was fuer Richtlinien fuer
+       die Region gelten.
+     * Der neue Magier sollte zuerst seine Plaene erlaeutern und mit dem RM
+       absprechen, ob das in die Region passt.
+     * Zum Aufnehmen in die Region einfach ein Verzeichnis mit dem Magiernamen
+       anlegen, dann zu Merlin gehen und sagen
+
+       merlin mach <xxx> zum magier / merlin mach <xxx> zur magierin
+
+    Zum Testen von neuen Gebieten:
+
+     * Generell gilt: ERST testen, dann anschliessen.
+     * Logik beachten!
+     * Syntax von Befehlen beachten, kann der Spieler draufkommen?
+     * Objekte pruefen, genaueres siehe unten beim Punkt Balance.
+     * Jedes Monster kurz umhauen (nicht zappen), geht prima mit einem
+       entsprechend hohen Wert fuer P_HANDS. Dann `tail /log/NPC_XP' und die
+       XP-Vergabe ueberpruefen.
+     * Auch den Code anschauen, unnoetige oder schlecht programmierte Dinge
+       bemaengeln, natuerlich mit Verbesserungsvorschlag.
+     * typischer Fehler: darauf achten, ob beim Bewegen von Objekten in den
+       Spieler der Rueckgabewert von move() ueberprueft wird und die
+       entsprechenden Massnahmen ergriffen werden, wenn der Spieler nichts
+       mehr tragen kann.
+     * Bei sich bewegenden Monstern mit dem Magier besprechen, ob das wirklich
+       noetig ist, bzw. ob man den Takt verlaengern kann. Lauf-NPCs sind
+       CPU-Fresser.
+     * Vor dem Anschluss MUESSEN Forscherpunkte eingetragen werden. Das macht
+       der entsprechende Erzmagier, momentan ist das Rikus. Naeheres dazu
+       steht unter `hilfe forscherpunkte'.
+
+    Ein paar grobe Regeln zur Balance:
+
+     * Dies sind Richtlinien, die evtl. nicht mehr aktuell sind. Die aktuellen
+       Regeln, die von den Magiern befolgt werden muessen, stehen im
+       Verzeichnis `/doc/REGELN' sowie insbesondere in `/doc/wiz/balance'.
+     * gute Waffen (WC ueber 190) sollten nur selten ins Spiel kommen, das
+       heisst es sollte keine 5 NPCs auf einem Haufen mit solchen Waffen geben
+       (als Beispiel). Ausserdem sollten diese Waffen schwer zu erlangen sein.
+     * sehr gute Waffen (200 oder mehr) sollten sehr selten sein und sehr
+       schwierig zu bekommen. Extrem gute Waffen koennen ruhig existieren,
+       allerdings sollten sie dann einmalig sein (Beispiel: Hauruck).
+     * Artillerie: Gibt es schon mehr als genug, sollte eigentlich nur noch in
+       extremem Ausnahmefaellen neu reinkommen. Als Artillerie bezeichne ich
+       alles, was im Kampf zusaetzlich hilft (Flammenkugeln, Wurfsterne,
+       Eisstab).
+     * Heilung: tragbare Heilung ist generell nicht erlaubt, allerdings kann
+       man Ausnahmen machen bei entsprechenden Nachteilen, z.b. hohe
+       Saettigung, gleichzeitige Vergiftung, Abhaengigkeit ... der Fantasie
+       sind keine Grenzen gesetzt.
+     * Ausgeglichenheit: Darauf achten, dass nicht nur Mega-Monster rumlaufen,
+       sondern fuer jeden etwas dabei ist. Dabei sollten harte Monster nicht
+       ohne weiteres zu erreichen sein; man sollte spuerbaren Widerstand
+       ueberwinden muessen, bevor man sie erreicht.
+
+Programmhierhinweise: [Ergaenzung vom 2003-03-06, Zook]
+
+Bitte achtet darauf, dass beim Programmieren Eurer Regionsmitarbeiter
+gewisse Standards eingehalten werden und dass typische Fehler vermieden
+werden. Im folgenden ein paar Hinweise:
+
+ * Bei Laeden bitte darauf achten, dass nicht unnoetig "verkaufe" mit
+   einem AddCmd ueberschrieben wird, wenn statt dessen buy_obj() oder
+   sell_obj() verwendet werden kann.
+   Um Laeden besser anzupassen, kann dort auch P_GENDER, P_NAME und
+   P_ARTICLE gesetzt werden.
+ * Bei Waffen kann und sollte die Funktion "is_unsafe" verwendet werden,
+   wenn NPCs die Waffe nicht zuecken sollten. Z.B. liefert einen 
+   Runenschwert bei Elfen-NPCs eine 1 zurueck, sonst eine 0.
+ * Es gibt eine Property P_PLURAL. Die sollte man auch verwenden. 
+   Siehe dazu die Hilfeseite.
+ * Zum Hantieren mit Gegenstaenden stellt put&get einige komfortable
+   Funktionen zur Verfuegung: pick_obj(), drop_obj(), put_obj(), 
+   give_obj().
+   Um Objekte auszuwaehlen kann find_obs() genutzt werden.
+   Prueft ein Objekt, ob es selbst gemeint ist (z.B. in einem AddCmd)
+   bitte pruefen, ob id() verwendet werden sollte.
+   
+
+    Sonstiges:
+
+     * Wenn man ein Verzeichnis unter /d/<region> anlegt, muss man darauf
+       achten, dass der entsprechende Name gebanisht wird, sonst ist ein
+       Spieler der diesen Namen hat automatisch Mitarbeiter der Region (das
+       betrifft Verzeichnisse, die nicht fuer Regionsmitglieder, sondern fuer
+       andere Aufgaben gedacht sind).
+     * Ein Name wird gebanisht indem man in die Gilde geht und dort `banish
+       <name>' eingibt. Bitte keine direkten Funktionsaufrufe im master!
+
+ SIEHE AUCH:
+    forscherpunkte, balance, banish
+
+ LETZTE AeNDERUNG:
+    Don,  6. Feb 2003, 13:30:56 von Zook.

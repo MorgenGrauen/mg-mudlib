@@ -1,0 +1,36 @@
+NAME:
+    P_X_HEALTH_MOD                  "extern_health_modifier"
+
+DEFINIERT IN:
+    /sys/living/attributes.h
+
+BESCHREIBUNG:
+    Mapping, mit dem die maximalen Lebenspunkte und Magiepunkte eines
+    Spielers veraendert werden, der dieses Objekt bei sich traegt.
+
+    Zu beachten: Diese Property bitte _ausschliesslich_ mit SetProp
+    aendern, weil damit gleichzeitig UpdateAttributes() im
+    Lebewesen aufgerufen und ggf. das Objekt als Statmodifizierer 
+    registriert wird.
+
+    Bei Ruestungen/Waffen, die diese Wirkung entfalten sollen, verwendet
+    man besser P_M_HEALTH_MOD.
+
+BEMERKUNGEN:
+    Bitte bei "Loeschen" der Prop nicht den Wert des jew. Attributes im 
+    uebergebenen Mapping als 0 uebergeben, sondern das Key/Werte-Paar ganz 
+    entfernen und ggf. ein leeres Mapping oder 0 uebergeben.
+
+BEISPIEL:
+    // Dem Spieler, der das Objekt bei sich traegt, wird P_MAX_HP um 5
+    // erhoeht und P_MAX_SP um 5 erniedrigt.
+    SetProp(P_X_HEALTH_MOD,([P_HP:5,P_SP:-5]));
+    // Stats wiederherstellen:
+    SetProp(P_X_HEALTH_MOD,([]);
+
+SIEHE AUCH:
+    P_M_HEALTH_MOD, P_X_ATTR_MOD, P_M_ATTR_MOD, balance
+
+LETZTE AeNDERUNG:
+    Sat, 06.02.1999, 14:00:00 von Paracelsus
+

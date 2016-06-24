@@ -1,0 +1,32 @@
+EVENT: 
+   EVT_LIB_LOGOUT
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/player/base.c
+
+BESCHREIBUNG:
+   Ein Spieler hat sich gerade ausgeloggt.
+   Bitte beachten: Objekt im Inventar und im Environment eines Spieler sollten
+   weiterhin BecomesNetDead() benutzen! Dieser Event ist nur fuer Objekte
+   gedacht, die das Ausloggen mitkriegen wollen, aber nicht in der Naehe des
+   Spieler sind.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:      (object) Objekt des ausgeloggten Spielers,
+      E_PLNAME:      (string) UID/Name des ausgeloggten Spielers,
+      E_ENVIRONMENT: (object) letztes Environment vor dem Ausloggen,
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+   EVT_LIB_LOGIN
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

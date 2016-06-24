@@ -1,0 +1,68 @@
+
+Dokumentation fuer das Std-Seil: /obj/seil.c
+
+Abhaengigkeiten: /sys/thing/seil.h
+
+Das Standard-Seil ermoeglichst das Festbinden und Loesen eines Seiles an
+Objecten und Raeumen. Es kann im ganzen Morgengrauen verwendet werden.
+
+in den Objecten, die festgebunden werden, wird die Propertie P_TIED gesetzt.
+Sie enthaelt ein Mappng der Form:
+
+([
+
+ objectid: ([ "player" : playerid, "time" : timestamp ])
+
+])
+
+Wenn ein Object festgebunden wird, so wird die Funktion tie() in dem Object
+aufgerufen. Die Funktion muss in dem Object vorhanden sein. Liefert die
+Funktion 1 zurueck, darf man ein Seil daran binden.
+
+Aus der Funktion heraus kann im Seil in der Propertie P_TIE_USER ausgelesen
+werden, welche User die Aktion ausgeloest hat.
+(Diese Daten werden aus Kompatibilitaetsgruenden nicht an die Fkt. direkt
+uebergeben.)
+
+Wird ein Seil wieder losgebunden, so wird die Funktion 
+untie()
+in dem Object aufgerufen. 
+
+Damit ein Seil in einem Raum festgebunden werden kann, muss der Raum eine
+id() bekommen - wie ein normales Object.
+
+In den Funktionen tie() und untie() kann jeweils ueberprueft werden, ob ein
+Spieler ein Seil benutzen darf oder nicht. Liefern die Funktionen 0 zurueck,
+so wird die Benutzung des Seiles verweigert.
+
+Die Funktion seil->query_tied_to_ob() liefert das Object zurueck, an welches
+ein Seil gebunden ist oder 0;
+
+Bei der Benutzung eines Seiles im Raum wird zur Beschreibung die Funktion
+name() aufgerufen. Es kann also P_NAME gesetzt werden oder direkt name() im
+Raum ueberschrieben werden.
+
+Seile koennen ueber NPC's/Raeume und Zauber gesteuert werden:
+
+varargs int binde_seil(string ziel, string msg)
+
+	Ziel beschreibt das Object oder Raum, wo es festgebunden werden soll
+	msg ist die Ausgabe. Wird msg nicht gesetzt, so wird eine 
+	    Standard-Ausgabe ausgegeben.
+
+varargs int loese_seil(string msg)
+	Das Seil wird geloest - es wird dabei die msg in den Raum
+        ausgegeben. Ist msg nicht definiert, wird eine Standardausgabe
+    	erzeugt.
+
+
+Beide Funktionen werden wir von enem Spieler behandelt - es werden tie() und
+untie() in den festgebundenen Objecten ausgewertet.
+
+Eine weitere Propertie ist P_TIE_AUTO.
+Dieser Wert steht per Default auf 1 und erlaubt damit eine automatische
+Benutzung des Seiles ueber die Funktionen binde_seil() und loese_seil().
+Ist diese Propertie auf 0, so koennen nur Spieler das Seil benutzen.
+
+
+Letzte Änderung: 25.6. Gando

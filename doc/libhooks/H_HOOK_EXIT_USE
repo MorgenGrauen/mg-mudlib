@@ -1,0 +1,30 @@
+HOOK: 
+   H_HOOK_EXIT_USE
+
+DEFINIERT IN:
+   /sys/hook.h
+
+GERUFEN VON:
+   /std/room/exits.c
+
+BESCHREIBUNG:
+   Wird ausgeloest, wenn ein Lebewesen einen Raumausgang benutzt.
+
+EVENT-DATEN:
+   Es wird ein Array uebergeben:
+   ({ <verb>, <destroom>, <message> })
+      <verb>     : eingegebenes Kommandoverb
+      <destroom> : Zielraum (string) oder closure
+      <message>  : Bewegungsmeldung (ggf. 0)
+
+RUeCKGABEWERTE:
+   ({ <status>, <daten> })
+      <status>  : H_NO_MOD, H_CANCELLED, H_ALTERED
+      <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH:
+   HRegisterToHook(), HUnregisterFromHook(), HookFlow()
+
+-----------------------------------------------------------------------------
+7.2.2016, Zesstra
+

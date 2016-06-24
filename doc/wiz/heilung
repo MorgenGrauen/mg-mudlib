@@ -1,0 +1,156 @@
+Heilung von Spielern durch Objekte, Raeume, portable Heilung
+============================================================
+
+                               Generelles:
+                               **********
+
+Neben den bekannten Heilstellen fuer Spieler (den Kneipen sowie gildeninterne
+Faehigkeiten) gibt es noch die Moeglichkeit, den Spielern Heilung durch Ver-
+wendung der LFUNs "heal_self", "restore_hit_points", "restore_spell_points",
+"buffer_hp" und "buffer_sp" Heilung zukommen zu lassen.
+
+Dies wird meist ueber Raeume gemacht, in denen der Spieler ein bestimmtes
+Kommando ausfuehren muss oder ueber Objekte, die der Spieler mit sich tragen
+kann ('tragbare Tanken'), um Heilung zu erfahren.
+
+ES WIRD EMPFOHLEN, jede mobile Heilung ueber "/std/food" zu implementieren.
+Dort muessen lediglich ein paar Properties gesetzt werden, um sicherzugehen,
+dass diese Heilungsregeln eingehalten werden.
+Gleichzeitig wird auch sichergestellt, dass z.B. Props von Containern, die
+Heilung enthalten, nach Leerung korrekt gesetzt werden.
+
+Neben diesen Moeglichkeiten gibt es auch noch Enttankungen, also die
+Moeglichkeit, im Spieler eine der Properties P_DRINK, P_FOOD oder P_ALCOHOL
+ueber die LFUNs "defuel_food/drink" oder "reduce_food/drink/alcohol" zu
+mindern. Dies ist eine Form der Heilung, da der Spieler danach wieder
+regulaer essen und trinken kann. Sie muss allerdings ortsgebunden sein.
+
+Grundsaetzlich kann eine Heilstelle natuerlich auch Schaden in einem Spieler
+verursachen. Das macht dann Sinn, wenn er z.B. der - fuer diese Heilstelle -
+'falschen' Gilde oder Rasse angehoert. Dabei MUSS fuer den Spieler aber
+vorher deutlich erkennbar gewesen sein, dass diese 'Heilstelle' fuer ihn
+nicht geeignet ist.
+
+                              Spezifisches:
+                              ************
+
+Bei jeder Form von Heilung MUSS "eat_food" (bei Essen) oder "drink_soft" (bei
+Trinken) und ggf. "drink_alcohol" verwendet werden! Diese Funktionen sorgen
+fuer einen unkomplizierten Ablauf der Heilung, da sie pruefen, ob der Spieler
+noch genuegend Tankkapazitaeten hat und wenn ja, die entsprechenden Properties
+(P_DRINK, P_FOOD oder P_ALCOHOL) automatisch raufsetzen.
+
+"drink_alcohol" ist in diesem Zusammenhang besonders wichtig, da es auf einen
+evtl. vorhandenen Saufskill prueft!
+
+Die Heilung selber muss dann aber noch ueber "heal_self", "restore_hit_points",
+"restore_spell_points", "buffer_hp" oder "buffer_sp" geschehen!
+
+Ortsgebundene Heilung:
+---------------------
+Kneipen: Hier ist klar, dass, je hoeher die Heilung ist, umso teurer die
+         Heilung sein muss. Ausserdem MUSS "buffer_hp" verwendet werden.
+         Ausnahme hiervon ist die Kneipe bei den Eistrollen im Warok.
+         Mit dem Pubtool ("/obj/tools/pubtool") kann man pruefen, ob die
+         Werte der Kneipe in Ordnung gehen.
+
+Raeume:  Es gibt viele ortsgebundene Heilungsstellen im MG, welche in erster
+         Linie dazu da sind, den Spielern *in diesem Gebiet* eine Tankmoeg-
+         lichkeit zur Verfuegung zu stellen (-> Drakonien). Hierfuer sollte
+         man die Property P_LAST_XP benutzen, was aber allerdings keine
+         Pflicht ist, wenn man moechte, dass auch "gebietsfremde" Spieler
+         hier tanken gehen koennen (-> SSP). Dann wiederum sollte man aber
+         darauf achten, dass sie nicht zu gut sind, u.U. schwer zu erreichen
+         sind (-> T'emong), Blockmonster den Weg versperren (-> SSP) etc.
+
+         In jedem Fall aber MUSS eine Begrenzung der Tankmoeglichkeit sicher-
+         gestellt werden; entweder erfolgt die Limitierung durch Reset oder
+         durch Zeitbegrenzung (-> check_and_update_timed_key).
+
+         "eat_food" bzw. "drink_soft" MUSS bei den Tanken gesetzt werden, die
+         den Spieler darauf schliessen lassen, Nahrung aufgenommen zu haben
+         (-> "iss beeren", "trinke schleim", etc.).
+         Bei allen anderen (-> "rieche blume", etc.) sollten Qualitaet und
+         Quantitaet im Rahmen bleiben.
+         Diese ortsgebundenen Heilungen duerfen Instant-Tanken sein.
+
+Tragbare Heilung:
+----------------
+Tragbare Heilung sollte nach max 5 Resets verderben, die Wirkung vermindern
+oder verloren gehen. Sie sollte nicht beliebig im Spieler oder anderswo
+hortbar sein. Eine begrenzte Anzahl pro Reset kommt hierbei auch immer gut
+(gute Beispiele hierfuer: Drops von Twingi, Heilblaetter von Zook).
+
+Richtwerte fuer Aufloesung oder Wirkungsminderung von tragbarer Heilung:
+
+                        Heilung         Reset-Zeit
+                          > 200    :     30- 60 min
+                      150 - 200    :     60-120 min
+                      100 - 150    :     90-180 min
+                       50 - 100    :    120-240 min
+                          <  50    :    150-300 min
+
+Diese Richtwerte sind gute Anhaltspunkte, koennen aber bei Bedarf mit dem
+Erzmagier der Heilungs-Balance individuell abgestimmt werden.
+
+'Wirkungsminderung' ist hierbei im Sinne von *deutlich* gemeint.
+
+*** NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU  ***
+
+   Tragbare Heilungen, die im weitesten Sinne aus Lebensmitteln bestehen,
+  duerfen nicht mehr instant sein, sondern MUESSEN "buffer_hp/sp" verwenden!
+
+*** NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU - NEU  ***
+
+Bei tragbaren Heilungsmoeglichkeiten, die weder aus Essbarem, noch aus Trink-
+barem besteht (bei denen es also nicht logisch waere, "buffer_hp/sp" zu
+benutzen), MUSS "check_and_update_timed_key" verwendet werden, da sie sonst zu
+kritisch werden. Dann darf es natuerlich auch sowas geben. Beispielsweise kann
+man solche Objekte gut als (Mini-)Questbelohnung integrieren.
+
+Hier gilt: Je hoeher die Heilung, um so hoeher die Zeitdauer, nach der der
+Spieler diese Moeglichkeit wieder in Anspruch nehmen darf.
+(Richtwerte: heal_self(50): ~ 1800 sec., heal_self(150): ~ 3600 sec.)
+
+Auch bei diesen Objekten ist es ein MUSS, die Heilungsmoeglichkeiten einmal
+erschoepfen zu lassen, sie also entweder 'verderben' oder sich verabschieden
+(-> Dschinn) zu lassen oder sie 'stillegen', da sie dann einfach eine zeitlang
+Ruhe brauchen, um sich neu 'aufzuladen'.
+
+Questbelohnungen:
+----------------
+Diese Objekte stellen eine Ausnahme unter den tragbaren Heilungen dar. Hier
+kann auf "buffer_hp/sp" verzichtet werden; dafuer muessen aber andere Regeln
+beachtet werden: das Objekt darf pro Reset nur begrenzt heilen bzw. nach der
+Anwendung sich selber zerstoeren (-> gelber Stein). Oder es muss vorher eine
+erhebliche Menge LP/KP investiert werden, um das Objekt zu nutzen
+(-> Infernoblock).
+
+Enttanken:
+---------
+Die Moeglichkeit zur Enttankung MUSS an einen festen Ort gebunden sein. Sie
+darf also nicht durch tragbare Objekte hervorgerufen werden koennen. Ein
+Beispiel hierfuer sind die Toiletten von Wurzel in Wilhelmsburg oder die
+Fleischreste in der SSP. Weiteres hierzu siehe -> "man enttanken".
+
+                                 Logisches:
+                                 *********
+
+Jede (!) Moeglichkeit zur Heilung, abgesehen von regulaeren Kneipen, muss dem
+zustaendigen Magier fuer Heilungs-Balance gemeldet und von diesem genehmigt
+werden. Wer diesen Posten momentan innehat, kann dem MailAlias
+"heilungs_balance" entnommen werden.
+
+Siehe auch:
+----------
+     Tanken:    consume, drink_alcohol, eat_food, drink_soft
+     Heilung:   heal_self, restore_spell_points, restore_hit_points, 
+                buffer_hp, buffer_sp
+     Timing:    check_and_update_timed_key
+     Enttanken: defuel_drink, defuel_food
+     Props:     P_DRINK, P_FOOD, P_ALCOHOL, P_SP, P_HP,
+                P_DEFUEL_TIME_DRINK
+     Konzepte:  enttanken, food
+
+----------------------------------------------------------------------------
+17.09.2010, Zesstra

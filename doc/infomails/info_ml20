@@ -1,0 +1,83 @@
+Willkommen auf Magierlevel 20. :-)
+Hallo @WER1,
+
+Du bist gerade von mir auf Magierlevel 20 befoerdert worden. Das 
+bedeutet fuer Dich vor allem, dass Dein Konzept fuer ein Gesellenstueck
+das Wohlwollen der Erzmagier gefunden hat und angenommen wurde. Herzlichen
+Glueckwunsch erst einmal dazu! :-)
+
+Weiterhin wurde jetzt auch ein Home-Verzeichnis unter /players/@WER1
+angelegt, in dem Du die Dateien Deines Gesellenstuecks und anderes ablegen
+kannst. Unter /players/@WER1/workroom.c existiert jetzt auch Dein eigener
+Workroom, in dem Du Dich standardmaessig nach dem Einloggen materialisierst.
+
+Als kleine Hilfestellung fuer Deine Arbeit am Gesellenstueck moechten Dir
+die Erzmagier einige Tips mit auf den Weg geben, die Dir das Leben 
+hoffentlich erleichtern.
+
+1) Zur Programmierung:
+
+   Im Mud selbst kannst Du nur ueber den Zeilen-Texteditor "ed" etwas
+   programmieren. Hilfe zu diesem Werkzeug bekommst Du ueber "man ed"
+   und "man ed0..ed5". Als sinnvolle Alternative steht Dir ein FTP-
+   Zugang zur Verfuegung, ueber den Du die auf Deinem eigenen Rechner
+   geschriebenen Files ins Mud kopieren kannst. Hierbei kannst Du dann
+   Deinen eigenen Editor verwenden. Bitte achte aber darauf, dass Du
+   als Dateiformat das Unix-Format verwendest. Auch unter Windows 
+   beherrschen inzwischen die meisten Editoren dieses Dateiformat.
+
+   Um vernuenftig arbeiten zu koennen, solltest Du Dir das MGTool (zu
+   finden unter /obj/tools/MGtool) beschaffen (die Hilfe hierzu findest
+   Du dann mittels "xman"). Weiterhin sei Dir dringend die Verwendung des
+   Fehlerteufels (siehe "hilfe fehlerteufel") empfohlen, der Dir die
+   Fehlersuche stark erleichtert. Wie Du diese Objekte clonst, kann Dir
+   Dein Sponsor oder ein anderer Magier sicher zeigen.
+
+   Weiterhin solltest Du nun zusaetzlich noch die Ebenen -debug, 
+   -entwicklung und -warnungen einschalten, auf denen Du ueber auftretende
+   Bugs informiert wirst (nicht nur Deine eigenen, aber Du wirst Dich
+   damit sicher schnell zurechtfinden).
+
+   Was formale und auch inhaltliche Anforderungen an Deinen Code angeht,
+   lies Dir bitte "hilfe regionsleitfaden" durch, hier findest Du alles
+   wesentliche kompakt zusammengefasst. Wenn darueber hinaus spezielle
+   Fragen zu der Region bestehen, die Dein Gesellenstueck spaeter aufnehmen
+   soll, kannst Du gerne auch den Regionsmagier ansprechen. Du solltest 
+   aber auf jeden Fall davon ausgehen, dass dieser Dir nur sehr geringe
+   Abweichungen von den im Regionsleitfaden beschriebenen Standards zuge-
+   stehen wird, wenn ueberhaupt (insbesondere wird viel Wert auf eine 
+   sinnvolle Kommentierung Deines Codes gelegt).
+
+2) Zur Fertigstellung und Abnahme des Gesellenstuecks:
+
+   Der uebliche Ablauf ist der, dass der zustaendige Regionsmagier
+   (den Du schon von der Konzeptphase her kennen duerftest) Dein 
+   Gesellenstueck als erster abnimmt und seine Anmerkungen dazu gibt.
+   Wenn diese geklaert und umgesetzt sind, ist der GS-Erzmagier an der
+   Reihe, der Dein Werk nochmals durchsieht und evtl. weitere Kommentare
+   dazu aeussert. Wenn diese beiden Schritte erledigt sind, ist Dein
+   Gesellenstueck fast fertig fuer den Anschluss.
+
+   In der Regel ist jetzt auch der Zeitpunkt gekommen, dass Du zum
+   Vollmagier (Level 21) befoerdert werden kannst und Dein Code in
+   die Region kopiert wird, in der er angeschlossen werden wird.
+
+   Allerdings sei Dir ein Punkt jetzt schon ans Herz gelegt: Solltest
+   Du Objekte in Deinem Gesellenstueck bauen wollen, die von der Balance
+   genehmigt werden muessen (siehe hierzu zunaechst "man balance" und 
+   "man grenzwerte"), solltest Du den noetigen Antrag rechtzeitig stellen,
+   da die Erfahrung zeigt, dass solche Entscheidungen in der Regel nicht
+   von heute auf morgen getroffen werden koennen. 
+   Hilfestellung bei der Frage, was genehmigt werden muss, gibt die
+   Balance gerne auf Anfrage, ansonsten wird aber auch jeder erfahrene
+   Magier aushelfen oder zumindest einen Ansprechpartner vermittln koennen.
+
+Damit ueberlasse ich Dich nun Deiner Arbeit am GS. Wenn Du noch Fragen
+hast (was sicher der Fall sein wird), scheue Dich nicht, sie zu stellen, 
+ob auf einer der Magierebenen oder direkt Deinem Sponsor oder anderen 
+Magiern! Es wird sich sicher jemand finden, der Dir helfen kann oder der
+Dich zumindest auf die richtige Faehrte bringt.
+
+Viele Gruesse und viel Erfolg,
+Dein Merlin.
+

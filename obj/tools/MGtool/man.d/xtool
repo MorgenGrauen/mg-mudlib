@@ -1,0 +1,45 @@
+SYNOPSIS
+      xtool [update|heart=<on|off>|first=<on|off>|protect=<on|off>|
+	     invcheck=<on|off>|envcheck=<on|off>|ndcheck=<on|off>|
+	     varcheck=<on|off>|short=<on|off>|echo=<on|off>|
+	     more=<amount>|kill|news|save|load|reset]
+
+DESCRIPTION
+      This command is used to set some tool-specific behaviours.
+      - "update" clones a new Xtool and destructs the old one. This should
+        only be done when working on the source of the tool and to get a fast
+        update. Settings and aliases will be reached through the new clone.
+      - "heart=<on|off>" turns the heart beat of the tool on or off.
+        The heart beat is for a higher security and to keep the other checks
+        running. If you just want to use the Xtool as a passive tool without
+        any checks then turn the heart beat off.
+      - "first=<on|off>" turns the automatic moving into the pole position
+        of your inventory on or off. Turning it off, avoids struggle with
+        other tools which behave same, but also reduces security. The history
+        mechanism will also capture the less commands.
+      - "protect=<on|off>" turns on/off the protection mode of the Xtool.
+        It will protect you from forces of other wizards and of player objects
+        which try to move into your inventory.
+      - "invcheck=<on|off>" turns the automatic check of your inventory on or
+        off. If turned on, all new objects in your inventory will be reported.
+      - "envcheck=<on|off>" like "invcheck" but checks your environment, the
+        content of the current room.
+      - "ndcheck=<on|off>" sets the netdeadchecking mode of the Xtool.
+      - "short=<on|off>" turns displaying of short descriptions on or off.
+        This is to avoid to get on other wizards nerves, when they have a tool
+        that notifies inventory checks (like this tool does :). But the main
+        reason is to cope with bad short descriptions of objects. For
+        example if you want to destruct it a bug in the short desc. would
+        make it nearly impossible to do so.
+      - "more=<amount>" sets the amount of lines that will be displayed at one
+        time with the xmore command. Will be removed soon because there is a
+        player property called P_PAGESIZE to take care of it.
+      - "echo=<on|off>" turns the echoing of commands executed via alias,
+        history or multiple command execution on or off.
+      - "kill" destructs the Xtool and removes it from the autoload list.
+      - "news" show the news and changes of the Xtool.
+      - "save" saves the settings of the Xtool including the aliases into a
+        file.
+      - "load" restores the saved settings from the save file.
+      - "reset" resets the Xtool.
+

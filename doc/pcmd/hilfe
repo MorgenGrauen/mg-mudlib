@@ -1,0 +1,79 @@
+
+hilfe
+-----
+
+ KOMMANDO:
+    hilfe [[gilde <gildenname>] <thema>]
+
+ ARGUMENTE:
+
+     <thema>
+        Das Thema oder Kommando, zu dem Du eine Hilfe haben moechtest
+     <gildenname>
+        Name einer Gilde (fuer gildenspezifische Seiten)
+
+ BESCHREIBUNG:
+    Gibt Hilfsseiten ueber die Befehle und einige allgemeine Themen aus. Ohne
+    <thema> wird eine Seite mit den Themen gezeigt, zu denen es Hilfsseiten
+    gibt.
+
+    Bei Hilfen zu Zauberspruechen gibt es eine Besonderheit zu beachten:
+    Einige Gilden haben Zaubersprueche mit gleichen Namen, aber etwas
+    unterschiedlicher Wirkung, unterschiedlichen Kosten oder Lernbedingungen.
+    Deshalb kann man noch angeben, von welcher Gilde man die entsprechende
+    Hilfeseite haben moechte. Standardmaessig lassen sich nur die Seiten der
+    Gilde erreichen, in der man gerade Mitglied ist.
+
+    Es gibt (noch?) nicht von allen Gilden Hilfeseiten zu den einzelnen
+    Spruechen und Faehigkeiten. Momentan sind dies nur die Abenteurer,
+    Bierschuettler, Karateka und Kleriker. Es wird jedoch auch auf den
+    jeweiligen Gildenhilfeseiten noch darauf hingewiesen.
+
+ SCHREIBWEISEN:
+    Viele Kommandos verstehen mehrere unterschiedliche Aufrufe. Ausserdem sind
+    manche Bestandteile der Eingabezeile fest vorgegeben, andere dagegen
+    variabel. Um nicht jeden moeglichen Aufruf in eine eigene Zeile packen zu
+    muessen, gibt es folgende Konventionen in der Schreibweise der
+    KOMMANDO-Zeile:
+
+     fest
+        Feste Bestandteile, die auch genau so eingegeben werden.
+     <variabel>
+        Variable Bestandteile. Sie geben an, was genau der Befehl bewirken
+        soll.
+     [ Optionen ]
+        Teile in eckigen Klammern sind optional.
+     Alter | Nativen
+        Alternative Formulierungen werden durch einen senkrechten Strich
+        voneinander getrennt.
+
+    Als Beispiel mag die Kommandozeile der `hilfe'-Befehls selbst herhalten:
+    hilfe [[gilde <gildenname>] <thema>]
+
+    Aufgedroeselt wuerde das so aussehen:
+
+     hilfe
+     hilfe <thema>
+     hilfe gilde <gildenname> <thema>
+
+    Die aeusseren eckigen Klammern zeigen an, dass saemtliche Parameter
+    optional sind und weggelassen werden koennen. Dies entspricht dem oberen
+    Aufruf.
+
+    Die inneren eckigen Klammern zeigen an, dass auch der Gildenteil
+    weggelassen werden kann. Man erhaelt dann eine Hilfe zu allgemeinen Themen
+    (der mittlere Aufruf). Das <thema> selbst ist dabei variabel.
+
+    Die dritte Zeile schliesslich besteht aus dem festen Bestandteil "gilde"
+    sowie den Variablen <gildenname> und <thema>.
+
+    Anstelle der doppelten eckigen Klammern haette man das Ganze auch als
+    Alternative formulieren koennen:
+
+    hilfe [<thema> | gilde <gildenname> <thema>]
+
+ SIEHE AUCH:
+    gilden
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,202 @@
+SYNOPSIS
+        #include <object_info.h>
+
+        mixed object_info(object ob, int what)
+
+DESCRIPTION
+        Returns some internal information about object <ob>. The
+        Argument <what> determines which information is returned.
+
+        It can be either a configuration option as given to
+        configure_object() or one of the following options:
+
+
+
+        Object Flags:
+
+        <what> == OI_ONCE_INTERACTIVE:
+           1 if <ob> was once (or still is) interactive, 0 else.
+
+        <what> == OI_RESET_STATE:
+           1 if <ob> is (still) reset, 0 else.
+
+        <what> == OI_WILL_CLEAN_UP:
+           1 if <ob>'s clean_up() will be called, 0 else.
+
+        <what> == OI_LAMBDA_REFERENCED:
+           1 if <ob> has lambdas (and there replace_program()
+           is not allowed anymore), 0 else.
+
+        <what> == OI_REPLACED:
+           1 if the program for <ob> was replaced, 0 else.
+
+
+
+        Program Flags:
+
+        <what> == OI_NO_INHERIT:
+           1 if the program can't be inherited.
+
+        <what> == OI_NO_CLONE:
+           1 if the program/blueprint can't be cloned.
+
+        <what> == OI_NO_SHADOW:
+           1 if the program's functions can't be shadowed.
+
+        <what> == OI_SHARE_VARIABLES:
+           1 if clones of this program share their initial
+           variable values with the blueprint.
+
+
+
+        Swapping Information:
+
+        <what> == OI_SWAPPED:
+           1 if <ob> is swapped, 0 else.
+
+        <what> == OI_PROG_SWAPPED:
+           1 if <ob>'s program is swapped, 0 else.
+
+        <what> == OI_VAR_SWAPPED:
+           1 if <ob>'s variables are swapped, 0 else.
+
+        <what> == OI_SWAP_NUM:
+           The swap number for <ob>s program, or -1 if not swapped.
+
+
+
+        Time Information:
+
+        <what> == OI_NEXT_RESET_TIME:
+            Time of the next reset.
+
+        <what> == OI_NEXT_CLEANUP_TIME:
+            Time of the next data cleanup.
+
+        <what> == OI_LAST_REF_TIME:
+            Time of the last call to <ob>.
+
+
+
+        Object List:
+
+        <what> == OI_OBJECT_NEXT:
+           The next object in the global object list.
+
+        <what> == OI_OBJECT_PREV:
+           The previous object in the global object list.
+
+        <what> == OI_OBJECT_POS:
+           The position of <ob> in the global object list,
+           counting from 0 up. This can be expensive to compute.
+
+
+
+        Shadows:
+
+        <what> == OI_SHADOW_NEXT:
+           The next object in the shadow list, i.e. the object
+           that is shadowing <ob>, or 0 if <ob> is not shadowed.
+
+        <what> == OI_SHADOW_PREV:
+           The previous object in the shadow list, i.e. the object
+           that <ob> is currently shadowing, or 0 if <ob> is not a shadow.
+
+        <what> == OI_SHADOW_ALL:
+           Returns an array of all objects that are currently
+           shadowing <ob>, or an empty array if <ob> is not shadowed.
+
+
+
+        Object Statistics:
+
+        <what> == OI_OBJECT_REFS:
+           The number of references to <ob>.
+
+        <what> == OI_TICKS:
+           The accumulated evaluation cost spend in <ob> modulo 1000000000.
+
+        <what> == OI_GIGATICKS:
+           The accumulated evaluation cost spend in <ob> divided by 1000000000.
+
+        <what> == OI_DATA_SIZE:
+           The total size of the values held in the object's variables,
+           scaled down according to the extend of data sharing.
+
+        <what> == OI_DATA_SIZE_TOTAL:
+           The unmodified total size of the values held in the
+           object's variables
+
+
+
+        Program Statistics:
+
+        <what> == OI_PROG_REFS:
+           The number of references to <ob>'s program.
+
+        <what> == OI_NUM_FUNCTIONS:
+           The number of functions in the program.
+
+        <what> == OI_NUM_VARIABLES:
+           The number of variables in the program.
+
+        <what> == OI_NUM_STRINGS:
+           The number of strings in the program.
+
+        <what> == OI_NUM_INHERITED:
+           The number of explicitely inherited programs.
+
+        <what> == OI_NUM_INCLUDED:
+           The number of included files in the program.
+
+        <what> == OI_SIZE_FUNCTIONS:
+           The size needed for the function structures.
+           Note that this does not include size of the function code.
+
+        <what> == OI_SIZE_VARIABLES:
+           The size needed for the variable structures.
+           Note that this does not include size of the variable data,
+           See OI_DATA_SIZE/OI_DATA_SIZE_TOTAL for that.
+
+        <what> == OI_SIZE_STRINGS:
+           The size needed for the string pointers.
+
+        <what> == OI_SIZE_STRINGS_DATA:
+           The size needed for the string values,
+           scaled down according to the extend of data sharing.
+
+        <what> == OI_SIZE_STRINGS_DATA_TOTAL:
+           The unmodified size needed for the string values.
+
+        <what> == OI_SIZE_INHERITED:
+           The size needed for the inherit structures.
+
+        <what> == OI_SIZE_INCLUDED:
+           The size needed for the include structures.
+
+        <what> == OI_PROG_SIZE:
+           The size of the program structure.
+
+        <what> == OI_PROG_SIZE_TOTAL:
+           The total size of the program.
+
+
+HISTORY
+        Introduced in LDMud 3.2.6.
+        Changes in LDMud 3.2.7:
+          - new basic result OIB_REPLACED.
+          - basic result OIB_IS_WIZARD is always 0 if set_is_wizard()
+              is not available.
+          - basic result OIB_APPROVED is gone.
+        LDMud 3.2.8 added OIM_DATA_SIZE to the result of OINFO_MEMORY.
+        LDMud 3.2.9 added the index mechanism, OIM_NUM_INCLUDES,
+          OIM_NO_INHERIT, OIM_NO_SHADOW, OIM_NO_CLONE, OIM_SIZE_STRINGS_DATA,
+          OIM_SIZE_STRINGS_TOTAL, and OIM_DATA_SIZE_TOTAL to the result
+          of OINFO_MEMORY.
+        LDMud 3.3.378 added the OIM_SHARE_VARIABLES to the result
+          of OINFO_MEMORY.
+        LDMud 3.3.654 added the OIB_NEXT_CLEANUP to the result of OINFO_BASIC.
+        LDMud 3.5.0 redesigned the whole efun.
+
+SEE ALSO
+        configure_object(E), interactive_info(E), driver_info(E)

@@ -1,0 +1,47 @@
+Allgemein nuetzliche simul_efun's:
+
+file_time(string filename) liefert die Accesstime des Files in Sekunden seit
+	1.1.1970 (das kann man als input fuer ctime oder dtime verwenden).
+
+query_wiz_level(mixed player) bekommt einen Spielernamen oder ein Spieler-
+	Object als argument und liefert den Magierlevel (siehe auch 
+	/secure/wizlevels.h)
+
+query_wiz_grp(mixed player) wie query_wiz_level, liefert aber die Magier-
+	Gruppe (auch wizlevels.h)
+
+mixed *exclude_array(mixed *arr,int from,int to) liefert den array ohne die
+	arr[0..from-1]+arr[to+1..<1]
+
+mixed *remove_alist(mixed key,mixed *alist) nimmt das Elem. mit Schluessel
+	key aus der Alist heraus.
+
+mixed *exclude_alist(int i,mixed *alist) nimmt das Element mit der Nummer i
+	aus der Alist.
+
+string dtime(int wann) wie ctime, aber deutsch (macht aus der Zahl, die time
+	usw liefern, einen lesbaren String)
+
+varags string
+	break_string(string str, int width, mixed indent, int leave_my_lfs)
+	bricht einen String um auf Weite width, man kann einen indent-String
+	angeben, der vor jeden Teilstring gehaengt wird, oder auch eine Zahl
+	dann werden entsprechen viele Leerzeichen dorthin gehaengt. Der letzte
+	Parameter legt fest, ob bereits existierende Linefeeds erhalten bleiben
+	oder nicht.
+
+string uptime() liefert genau diese in lesbarer Form.
+
+public object *all_environment(object ob) liefert einen Array mit dem re-
+	kursiven Environment (den Beutel, in dem ob steckt, den Spieler,
+	der den Beutel traegt, und den Raum, in dem sich der Spieler aufhaelt.
+
+varargs mixed match_living(string str, int players_only)
+	bekommt einen String. Falls der GENAU dem Namen eines nicht netztoten
+	Spielers entspricht, bekommt man den. Falls er genau dem Namen eines
+	Monsters entspricht und man nicht players_only!=0 angegeben hat,
+	liefert er den Namen des Monsters. Ansonsten sucht er nach einem 
+	Spieler, dessen Name mit std anfaengt. Gibt es keinen, returned
+	er eine -2, gibt es mehr als einen, eine -1, bei genau einem den
+	Namen.
+

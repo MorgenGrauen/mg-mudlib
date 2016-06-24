@@ -1,0 +1,23 @@
+Materialid:
+MAT_GRAPHITE             "graphite"
+
+Name:
+"Graphit" "Graphits" "Graphit" "Graphit"
+
+Geschlecht:
+N
+
+Beschreibung:
+metallisch grau
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:20
+MAT_LEAD:40
+MAT_CARBON:60
+MAT_GRAPHITE
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

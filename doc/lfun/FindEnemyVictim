@@ -1,0 +1,24 @@
+FindEnemyVictim()
+
+FUNKTION:
+	object FindEnemyVictim(string wen, object pl, string msg)
+
+DEFINIERT IN:
+	/std/spellbook.c
+
+ARGUMENTE:
+	wen - id des gewuenschten Gegners, falls nicht angegeben SelectEnemy.
+	pl  - Caster.
+	msg - Nachricht falls Gegner nicht anwesend ist.
+
+BESCHREIBUNG:
+	Findet einen Gegner, z.B. fuer einen Angriffsspruch.
+	
+RUECKGABEWERT:
+	Der Auserwaehlte :-)
+
+BEMERKUNGEN:
+	Der Gegner wird auf jeden Fall angegriffen.
+
+SIEHE AUCH:
+	FindLivingVictim

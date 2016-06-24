@@ -1,0 +1,45 @@
+P_UNIT_DECAY_QUOTA (int)
+
+NAME:
+     P_UNIT_DECAY_QUOTA					"unit_decay_quota"
+
+DEFINIERT IN:
+     /sys/unit.h
+
+BESCHREIBUNG:
+     Diese Prop bestimmt, welcher Anteil der einzelnen Unitobjekte pro Zerfall
+     zerstoert wird. Dieser Anteil wird als ganze Zahl zwischen 0 und 10000
+     ausgedrueckt. 1 entspricht einem Zerfall von 0.01%, 10000 entspricht
+     100%.
+     Momentan sind keine Werte < 0 zulaessig, die einem Zuwachs entsprechend
+     wurden.
+
+     Falls das Flag ABSOLUTE_DECAY (s. P_UNIT_DECAY_FLAGS) gesetzt ist, steht
+     die Zahl in dieser Prop fuer die absolute Anzahl an zu zerstoerenden
+     Einheiten.
+
+     Die Prop kann in der Blueprint und in den einzelnen Clones gesetzt
+     werden.
+     Ist die Prop in einem einzelnen Clone nicht explizit gesetzt,
+     liefert ein QueryProp(P_UNIT_DECAY_QUOTA) den in der Blueprint
+     eingestellten Wert zurueck und die Unit zerfaellt zu diesem Anteil.
+     D.h. man sollte diese Prop in der Blueprint setzen und in einzelnen
+     Clones nur soweit diese abweichende Zerfallsraten haben sollen.
+
+BEMERKUNGEN:
+     * Setzt man diese Prop in einem Clone auf 0, wird der Wert aus er
+       Blueprint zum Zerfall benutzt.
+     * Will man den Zerfall fuer ein bestimmtes Unitobjekt abschalten, sollte
+       man P_UNIT_DECAY_FLAGS benutzen.
+
+BEISPIEL:
+     // pro Zerfallsintervall sollen 12% zerfallen.
+     SetProp(P_UNIT_DECAY_QUOTA, 1200);
+
+SIEHE AUCH:
+     unit
+     P_UNIT_DECAY_INTERVAL, P_UNIT_DECAY_FLAGS, P_UNIT_DECAY_MIN
+     DoDecay, DoDecayMessage
+     /std/unit.c
+
+14.03.2008, Zesstra

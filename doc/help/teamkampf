@@ -1,0 +1,155 @@
+Teamkampf
+=========
+
+Gruenden eines Teams und Aufnahme neuer Mitglieder
+--------------------------------------------------
+team folge            Ein Spieler kann mit <team folge name> beantragen,
+                      dass <name> ihn in sein Team aufnimmt.
+
+team aufnahme         Wenn ein Spieler die Aufnahme ins Team beantragt hat,
+                      kann der Teamleiter ihn mit <team aufnahme name>
+                      aufnehmen. Wenn man noch nicht in einem Team ist,
+                      so wird hiermit eins gegruendet.
+                      Von der Aufnahme ausgeschlossen sind Gaeste und
+                      Geister sowie Zweitspieler von Teammitgliedern.
+
+team verlasse         Mit diesem Befehl verlaesst man das Team.
+
+Organisation innerhalb des Teams
+--------------------------------
+team leiter           Der Teamleiter seine Aufgabe an ein anderes Mitglied
+                      abgeben. Schlaeft der Teamleiter ein oder ist laenger
+                      als 10 Minuten inaktiv, koennen auch die anderen
+                      Mitglieder einen neuen Teamleiter ernennen.
+
+team entlasse         Der Teamleiter kann auch Mitglieder entlassen.
+
+Angriffskoordination
+--------------------
+team angriffsbefehl   Ein Teammitglied kann einen Befehl angeben, der
+                      ausgeloest wird, sobald der Teamleiter das Signal
+                      zum Angriff gibt.
+                      Beispiel: <team angriffsbefehl norden> - wenn der
+                      Teamleiter das Signal gibt geht man nach Norden
+                      zum Monster.
+
+team angriff          Der Teamleiter loest den Angriffsbefehl bei allen
+                      Teammitgliedern aus, die im gleichen Raum stehen
+                      und einen Angriffsbefehl eingestellt haben.
+
+Organisation des Teamkampfes
+----------------------------
+                      Teammitglieder haben die Moeglichkeit, ihre Position
+                      innerhalb der Kampfaufstellung zu bestimmen. So koennen
+                      die Kaempfer vorne kaempfen und den Kleriker decken
+                      der sie staendig heilt :-)
+
+team kampfreihe       Jedes Teammitglied kann seinen Positionswunsch mit
+                      <team kampfreihe nr> angeben, wobei <nr> im Bereich
+                      von 1 bis 5 sein muss. Dabei wird jedoch immer die vom
+                      Teamleiter gewuenschte Formation eingehalten.
+                      Durch die Teammitglieder in den vorderen Reihen
+                      werden die in den hinteren Reihen geschuetzt.
+                      Beispielsweise reichen drei Mitglieder in Reihe 1 aus,
+                      zwei in Reihe 2 und eines in Reihe 3 zu schuetzen.
+                      Der Anteil der Schlaege die ein Mitglied abbekommt
+                      entspricht der Anzahl der ungeschuetzen Mitglieder
+                      seiner Reihe (in der ersten Reihe plus 1).
+                      Nur die erste Reihe kann selber im Nahkampf zuschlagen.
+
+team fluchtreihe      Ein Teammitglied kann eine Reihe angeben, in die er
+                      bei der Flucht wechseln moechte statt abzuhauen.
+                      So kann man sich - ausreichende Deckung vorausgesetzt -
+                      in Ruhe von dem mitgebrachten Kleriker heilen lassen.
+                      Wird die Flucht ausgeloest, so wird die Fluchtreihe zur
+                      gewuenschten Kampfreihe. Mit
+                      <team fluchtreihe 0> wird die Fluchreihe deaktiviert.
+                      Falls die Flucht in eine hintere Reihe nicht gelingt,
+                      wird die normale Flucht ausgeloest.
+
+team formation        Der Teamleiter kann bestimmen, innerhalb welcher
+                      Grenzen die Formation eingehalten werden soll.
+                      Dies geschieht mit <team formation min1-max1
+                      min2-max2 min3-max3 min4-max4 min5-max5>. Die
+                      Beschraenkungen fuer nicht angegebene Reihen
+                      werden nicht geaendert. Wenn statt Minimum und
+                      Maximum nur eine Zahl angegeben wird, gilt diese
+                      fuer beide Werte. Die Grenzen werden automatisch so
+                      angepasst, dass sie erfuellbar sind, maxmial 6
+                      Mitglieder in jeder Reihe stehen und mindestens eines
+                      in Reihe 1.
+                      Beispiel: "team formation 3-4 2 1"
+
+team uebersicht       Zeigt die eigenen und gegnerischen Reihen an.
+
+Weitere nuetzliche Teambefehle
+------------------------------
+team autofolge        Teammitglieder, die mit <team autofolge ein> den
+                      Folgemodus aktiviert haben, fuehren automatisch
+                      jeden Befehl des Teamleiters (nach kurzer Verzoegerung)
+                      aus, der einen Ortswechsel bewirkt, vorausgesetzt sie
+                      stehen dort wo der Leiter direkt vor seinem Ortswechsel
+                      war.
+                      Der Teamleiter muss den Folgemodus auch aktiviert haben,
+                      damit die anderen ihm folgen.
+                      Wenn der Teamleiter versucht zu fliehen, wird der
+                      Folgemodus fuer ihn deaktiviert.
+
+team info             Gibt Informationen ueber die Teammitglieder.
+                      Dabei steht in den Spalten:
+                      *      - Kennzeichnung des Teamleiters
+                      Name   - der Name
+                      Gilde  - die Gilde
+                      LV     - Stufe
+                      GLV    - Gildenstufe
+                      LP/MLP - Lebenspunkte
+                      KP/MKP - Konzentrations/Magiepunkte
+                      Vors.  - Vorsicht
+                      GR     - Gewuenschte Reihe
+                      AR     - Aktuelle Reihe (bezogen aufs ganze Team)
+                      TR     - Tatsaechliche Reihe (bezogen auf Anwesende)
+                      FR     - Fluchtreihe
+                      A      - Angriffsbefehl eingestellt
+                      V      - Verfolgemodus aktiviert
+                      Der Teamleiter kann durch die Angabe "lang" eine
+                      zweizeilige Ausgabe bekommen, bei der auch
+                      Angriffsbefehl und Fluchtrichtung gezeigt werden.
+                      Wenn man "sortiert" angibt, wird die Ausgabe nach
+                      (TR,AR,GR,Name) sortiert, bei "alphabetisch" erfolgt
+                      die Sortierung nach dem Namen, wobei Spieler jedoch
+                      vor anderen Teammitgliedern eingeordnet werden.
+                      Ansonsten wird nach AR geordnet.
+
+team farben           Damit laesst sich aendern, ab wann die eigenen
+                      Lebenspunkte bzw. Konzentrationspunkte gelb oder
+                      gar rot (bzw. fett) angezeigt werden.
+
+team orte             Zeigt an, wo sich die Teammitglieder befinden.
+                      Normalerweise werden nur Spieler angezeigt, mit
+                      "alle" jedoch auch andere Teammitglieder.
+
+team rufe             Mitteilung an alle Teammitglieder.
+
+team hist             History der Teammitteilungen. Die Anzahl der
+                      anzuzeigenden Zeilen (bis 100) kann angegeben werden.
+
+team name             Man kann seinem Team auch einen Namen geben.
+
+team hilfe            Gibt eine kurze Befehlsuebersicht.
+
+team liste            Zeigt an, welche Teams es schon gibt.
+
+Punkteverteilung
+----------------
+Die Erfahrungspunkte fuers Toeten eines Monsters werden zur Haelfte
+unter den anwesenden Teammitgliedern und zur Haelfte anteilmaessig
+verteilt. Dies gilt nur fuer das Team des Killers, fuer alle anderen
+ist die Verteilung wie bisher anteilmaessig.
+
+Die Erstkillpunkte werden an ein Teammitglied vergeben, das diese noch
+nicht hat. Dabei werden Teammitglieder in der ersten Reihe bevorzugt.
+
+Abk.
+----
+Statt "team" sind auch "gruppe" und die Abkuerzung "g" moeglich.
+

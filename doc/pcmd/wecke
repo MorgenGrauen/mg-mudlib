@@ -1,0 +1,24 @@
+KOMMANDO:
+	wecke <Lebewesen>
+
+ARGUMENTE:
+	<Lebewesen>
+	  Hier gibt man das Lebewesen an, bei welchem man sich bemerkbar
+	  machen moechte.
+
+BESCHREIBUNG:
+	Will man sich bei insbesondere herumlungernden (auch ideln genannt)
+	Spielern bemerkbar machen, so kann einem dieses Kommando
+	weiterhelfen. Es erzeugt beim zu Weckenden nebst einem kleinen Text,
+	wer verzweifelt um Aufmerksamkeit ringt, auch einen kurzen Piepton.
+
+BEMERKUNGEN:
+	Dieser Ton kann sich in gewissen RL-Umgebungen recht stoerend
+	auswirken. Der zu Weckende kann sich jedoch dagegen mit dem Kommando
+	'ton AUS' wehren.
+
+SIEHE AUCH:
+	ton
+
+----------------------------------------------------------------------------
+11.11.2006 Zesstra

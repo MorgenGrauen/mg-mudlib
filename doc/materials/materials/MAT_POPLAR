@@ -1,0 +1,24 @@
+Materialid:
+MAT_POPLAR               "poplar"
+
+Name:
+"Pappelholz" "Pappelholzes" "Pappelholz" "Pappelholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+sehr weich, faserig
+
+Erkennbarkeit:
+MAT_MISC_DECIDUOUS_WOOD:25
+MAT_POPLAR
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_DECIDUOUS_WOOD:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

@@ -1,0 +1,151 @@
+Typischer Arbeitsablauf
+=======================
+
+(Es gibt andere Arbeitsweisen, aber dies hier ist eine, die sich bewaehrt
+ hat.)
+
+Nehmen wir an, ich moechte etwas neues einbauen, einen Bug fixen etc.
+Alle der folgenden Schritt werden auf eurem eigenen Rechner in eurem lokalen
+Clone des jeweiligen Repositories durchgefuehrt.
+
+# Schritt 1: Repository clonen und/oder updaten
+> git clone git@mg.mud.de:/dings/bums
+> git checkout master
+> git pull
+Zuerst einmal wird ein checkout des Zweiges 'master' gemacht. Und in diesen
+Zweig hol ich mir erstmal den aktuellen Stand aus dem Mud (pull).
+
+Jetzt moechte ich alle Aenderungen erstmal in einem separaten Zweig machen.
+Warum? Weil dann der 'master' (das ist der aktive Zweig im Mud!) immer in
+einem benutzbaren Zustand ist. Desweiteren kann man einen Zweig einfach
+wegwerfen, wenn irgendwas groesseres schiefgelaufen ist...
+Ausserdem ist es dann einfacher, zwischenzeitliche Aenderungen aus dem Mud zu
+integrieren.
+
+# Schritt 2: Neuen Zweig erstellen
+> git checkout -b neue_kampftaktik
+Hiermit wird  ein neuer Zweig erstellt und gleichzeitig in ihn gewechselt.
+
+Hier mach ich jetzt alle moeglichen Arbeiten und Basteleien, die ich fuer die
+neue Kampftaktik brauche. Tipps dazu:
+* Viele und haeufige Commits machen! Je kleiner einzelne Commits sind, desto
+  besser kann man Aenderungen spaeter verfolgen (was z.B. super ist, wenn
+  jemand was abnehmen muss!) und desto besser kann man einzelne Aenderungen
+  spaeter bei Bedarf auch rueckgaengig machen, wenn man merkt, dass man
+  stellenweise Unsinn gebaut hat. ;-)
+* Thematisch unterschiedliche Dinge in verschiedene Commits packen. Also zB
+  erst Syntaxfehler editieren und commiten, dann eine neue Methode fuer
+  etwas ganz andere schreiben und commiten.
+
+# Schritt 3.1: Aenderungen pruefen
+> git status
+Hiermit lasse ich mir anzeigen, welche Dateien nicht-committete Aenderungen
+enthalten (oder neu sind/geloescht wurden).
+
+> git diff
+Dies zeigt mir alle nicht-committeten Aenderungen an - zeilenweise verglichen
+mit dem vorherigen Zustand.
+
+# Schritt 3.2: Aenderungen in lokales Repository commiten
+> git add <file>                    // einzelne Files auswaehlen
+ODER
+> git add -A ./                     // alle Files auswaehlen
+Hiermit merke alle gemachten Aenderungen fuer den naechsten Commit vor.
+Ich koennte hier aber auch einzelne Dateien auswaehlen oder sogar nur
+bestimmte Teile der Aenderungen in einer Datei. (Hierzu bitte die
+Git-Doku bemuehen.)
+
+> git commit
+Hiermit erstelle ich einen Commit, der die bisherigen Aenderungen umfasst.
+Dabei wird ein Editor geoeffnet, in den ich eine informative Nachricht ueber
+meine Aenderungen hinterlassen kann. Das ist besonders wichtig, wenn ich in
+fremden Gebieten arbeite, aber auch fuer mich und einen etwaigen abnehmenden
+Magier sehr sinnvoll.
+Anregung: Die erste Zeile ist das sog. Betreff des Commits - vergleichbar mit
+dem Betreff einer eMail. Anschliessend sollte eine leere Zeile folgen und
+danach eine laengere Beschreibung eingeben werden, sofern noetig/sinnvoll.
+
+Wenn ich an diesem Punkt mit dem Bugfix oder Feature noch nicht fertig bin:
+einfach die letzten 4 Befehle aus Schritt 3 beliebig oft wiederholen, d.h.
+beliebig viele weitere Commits machen.
+
+# Schritt 4: Aenderungen in lokalen Master-Zweig mergen
+Bin ich dann schliesslich aber mal fertig, gehe ich erstmal zurueck zum
+master-Zweig:
+
+> git checkout master
+Huch! Ploetzlich sind alle Dateien auf dem alten Stand! Keine Sorge,
+unsere Aenderungen sind im Zweig 'neue_kampftaktik' sicher verwahrt.
+
+Achtung: wenn ihr mit anderen zusammen arbeitet, koennte jemand
+anderes im MUD Aenderungen vorgenommen haben. Ein einfaches
+> git pull
+um die Dateien im 'master'-Zweig auf den neuesten Stand zu bringen,
+zeigt euch auch Aenderungen. Wenn da jetzt
+  'Already up-to-date.'
+steht, ist alles in Butter, ansonsten siehe unten bei 4.1.extra.
+
+> git merge neue_kampftaktik
+Mit diesem Kommando hole ich nun alle Aenderungen aus meinem Zweig
+'neue_kampftaktik' in den Zweig 'master' (merge).
+
+# Schritt 5: Aenderungen in das MUD-Repository uebertragen
+Jetzt bin ich bereit, die Aenderungen ins Mud zu uebertragen:
+> git push 
+Job done!
+Hier kommen jetzt div. Ausgaben vom Mud, die etwas ueber den Erfolg und
+Misserfolg des Pushes sagen. ;-)
+Wenn am Ende steht
+  'Your changes were copied to the mudlib.'
+ist alles erfolgreich.
+
+Steht am Ende ein
+  'Your changes were merged successfull with changes in the mudlib and the
+   merged state was copied to the mudlib. Do not forget to pull the merge
+   commit!" 
+ist an sich auch alles gut. Aber dann gab es im Mud eben doch noch
+Aenderungen, die es nicht im Git-Repo gab, die gemerged wurden. In diesem
+Fall sollte man den aktuellen Zustand sich nochmal holen:
+> git pull
+Und dann anschauen, dieser Merge auch das richtige gemacht hat:
+> git log -p
+Hiermit kriege ich eine schoene Liste aller Commits angezeigt und -p sorgt
+dafuer, dass dabei alle Aenderungen angezeigt werden, nicht nur die
+Commit-Nachricht.
+
+# Sonderfaelle und erweiterte Moeglichkeiten
+# Schritt 4.1.extra: Zwischenzeitliche Aenderungen im MUD beruecksichtigen
+
+Es koennte sein, dass man fuer den Branch ne ganze Weile gebraucht hat -
+und dass waehrend meiner Arbeit jemand anders Aenderungen (im Mud oder
+Repo) gemacht hat.
+
+Diese Aenderungen sollte man sich wie geschrieben als erstes nach dem
+Umschalten zum master-Zweig holen:
+> git pull
+
+Jetzt geh ich wieder in meinen Zweig (ohne -b)
+> git checkout neue_kampftaktik
+und mache ein sog. Rebase. Damit verschiebe ich sozusagen, den Punkt,
+an dem mein Zweig vom 'master' abzweigt und tue so, als ob die eben
+geholten Aenderungen schon da gewesen waeren, als ich den Zweig erstellte.
+(Andere Sichtweise: ich nehme meine Zweig und setz ihn auf den aktuellen
+ 'master' dran.)
+> git rebase master
+
+Der Vorteil ist: wenn jetzt was kaputt gegangen ist, es also Konflikte gibt,
+dann gibt es die nur in meinem Zweig 'neue_kampftaktik' und dort kann ich
+sie in aller Ruhe reparieren. Sowohl der 'master' im MUD als auch mein
+lokaler 'master' sind intakt.
+
+Und jetzt geht es wie oben weiter.
+
+SIEHE AUCH
+  git-repositories: Repository-Verwaltung im Mud
+  git-howto: Wie git benutzt wird
+  git-kooperation: Ein ueber git-workflow hinausgehendes Beispiel zur
+                   Synchronisation bzw Kooperation mehrerer Magier/Rechner
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-faq: haeufig gestellte Fragen/Probleme
+
+02. Feb 2013 Gloinson

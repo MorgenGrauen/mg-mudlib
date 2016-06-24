@@ -1,0 +1,85 @@
+Spielertesties
+==============
+
+Nach Absprache mit einem Erzmagier ist es erlaubt, dass ein Spieler
+unangeschlossene Gebiete, Quests oder auch Gilden testet. 
+
+Fuer das Testen von Gebieten und Questen gibt es zwei Moeglichkeiten:
+  
+Der Magier leitet den Test hauptverantwortlich:
+Diese Regelung ist vor allem fuer das Testen kleinerer Quests und Gebiete gedacht.
+Hier gelten folgende Regeln:
+ Der Spieler, der den Test durchfuehrt, bekommt einen Testspieler des Magiers 
+ sowie eine angemessene Ausruestung. Bei der Auswahl eines Testspielers
+ ist es auch moeglich Testspieler anderer Magier mit deren Einverstaendnis
+ zu verwenden.
+ Der leitende Magier informiert einen Erzmagier ueber den Testspieler.
+ Der Testspieler darf waehrend der Testzeit das Testgebiet nicht verlassen und 
+ auch keine Objekte des zu testenden Gebietes an andere weiterreichen. 
+ Der Testspieler wird waehrend der ganzen Testzeit vom Magier ueberwacht. 
+ Dies geschieht sowohl zur Ueberwachung dieser Regeln, als auch,  um dem 
+ programmierenden Magier weitere Ideen zur Verfuegung zu stellen.
+ Dieser Test kann nach der Fertigstellng und Tests des Gebietes durch den 
+ verantwortlichen Magier stattfinden.
+ 
+Ein Erzmagier leitet den Test hauptverantwortlich:
+Diese Regelung ist vor allem fuer das Testen groesserer Quests und Gebiete 
+gedacht.
+Hier gelten folgende Regeln:
+ Der Spieler, der den Test durchfuehrt, bekommt durch den Erzmagier einen 
+ Testspieler sowie eine angemessene Ausruestung gestellt. Bei der Auswahl 
+ eines Testspielers ist es auch moeglich Testspieler anderer Magier mit 
+ deren Einverstaendnis zu verwenden. Dieser Testspieler darf waehrend der 
+ Testzeit das Testgebiet nicht verlassen und auch keine Objekte des zu 
+ testenden Gebietes an andere weiterreichen. 
+ Der Testspieler wird waehrend der ganzen Testzeit vom Magier und Erzmagier 
+ ueberwacht. Dies geschieht sowohl zur Ueberwachung dieser Regeln, als auch,  
+ um dem programmierenden Magier weitere Ideen zur Verfuegung zu stellen.
+ Der Erstcharakter des Spielers (auf Wunsch auch ein Zweitie) erhaelt nach
+ Abschluss des Tests die gefundenen Forscherpunkte und Erstkillstupse 
+ gutgeschrieben, aber auch die erlittenen Schaeden (insbesondere Tode) - 
+ selbstverstaendlich, soweit sie nicht durch Programmier-fehler bedingt waren.
+Dieser Test findet NACH dem Test des Gebietes durch den zustaendigen 
+Regionsmagier und (bei Questen) durch den Quest-Erzmagier, sowie NACH 
+Eintrag der Forscherpunkte statt.
+
+Beide Testvarianten ersetzen auf keinen Fall die Tests durch Magier.  
+
+Fuer das Testen von Gilden gelten andere Regeln, da sich diese zusammen mit
+anderen Spielern in gleichen Gebieten aufhalten koennen:
+
+1) Gildentesties sind immer echte, zu diesem Zweck erschaffene Testspieler.
+   P_TESTPLAYER wird dabei auf den Namen der Gilde gesetzt.
+
+2) Jeder einem Spieler zur Verfuegung gestellte Gildentestie muss 
+   mittels P_SECOND mit dem Namen des Erstspielers markiert sein, der
+   ihn fuehrt. Jeder Testspieler sollte eindeutig zuzuordnen sein.
+  
+3) Die Testies unterliegen ALLEN Regeln des Testie-Daseins. Das heisst
+   unter anderem, dass sie NICHT fuer andere Spieler Ausruestung beschaffen
+   oder Wege freimetzeln duerfen! Verstoesse hiergegen koennen unter
+   Umstaenden zur Loeschung der beguenstigten Spielercharaktere und
+   des Testcharakters fuehren.
+
+4) Die Testies werden staendig ueberwacht. Logfiles koennen unter Umstaenden
+   von den Gildenmagiern eingesehen werden.
+
+5) Jeder Testie muss vom EM Gilden (z.Z. Humni) genehmigt werden!
+
+6) 5 Testies pro Gilde sollten genuegen. Wenn ein Teil der Testies nichts
+   tut, kann man den Testie auch weitergeben lassen.
+
+SIEHE AUCH:
+        Erzmagier, Gildenmagier, Regionsmagier, Tod
+
+----------------------------------------------------------------------------
+Last modified: Fri Oct 18 16:24:00 2002 by Muadib
+
+
+Fuer Magier.
+Magier koennen natuerlich ohne Absprache Testspieler einer bestimmten Gilde
+haben, sofern diese normalen Spielern zugaenglich ist. Sofern eine Gilde das
+Anlegen von Testspielern unterstuetzt, gibt es entsprechende Hilfeseiten unter
+<gildenname>.testspieler - zum Beispiel katzenkrieger.testspieler
+
+Zusatz: Tue Jan  7 23:22:44 2003, durch Bambi.

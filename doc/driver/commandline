@@ -1,0 +1,60 @@
+NAME
+	commandline
+
+DESCRIPTION
+	The driver understands several command line options and
+	arguments.
+
+	-f<string>: When the master object is loaded and fully
+		    operational after startup, the function flag()
+		    with argument string is applied to the master
+		    object for each occurence of -f in the command line.
+
+	-o	  : run in compat mode (thus sometimes also called
+		    -o mode), instead of native mode. Note: the flag
+		    is obsolete by now, the driver must be compiled
+		    with the appropriate definitions in the config.h
+		    instead.
+
+	-c	  : trace compilations.
+
+	-Dsymbol  : Globally pre-#define symbol for preprocessor.
+
+	-D	  : without symbol, this logs specific trace messages
+		    to /log/D_TRACE (if the driver was compiled for it)
+
+	-e	  : The number of occurences of the -e flag is
+		    passed as argument to the epilog() function
+		    in the master at startup time.
+
+	-N	  : Don't start the erq demon.
+
+	-M<master>: provide a different name for the master object.
+
+	-m<dir>	  : provide a different mudlib directory.
+
+	-ru<size> : set the size of the reserved user memory.
+	-rm<size> : set the size of the reserved master memory.
+	-rs<size> : set the size of the reserved system memory.
+
+	-E<cost>  : set the maximum allowed evaluation cost.
+
+	--max_malloced : set maximum size of mallocable memory chunks.
+	--max_small_malloced : set max. size of mallocable memory chunks.
+
+	-u<port> : set the UDP port number for IMP communication.
+
+	-t	 : disable heart_beat and reset.
+
+	-d	 : run with debug.
+
+	-s<time> : Set the time between swapout attempts. -1 means
+		   don't swap.
+
+	-y	 : If the driver has been compiled with YYDEBUG,
+		   this will enable debug output for the LPC compiler.
+
+	<number> : the TCP port number to use for user connections.
+
+SEE ALSO
+	flag(M), epilog(M), native(C), imp(C)

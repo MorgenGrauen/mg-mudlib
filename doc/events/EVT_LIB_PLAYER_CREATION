@@ -1,0 +1,31 @@
+EVENT: 
+   EVT_LIB_PLAYER_CREATION
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/player/base.c
+
+BESCHREIBUNG:
+   Dieser Event wird vom Spielerobjekt ausgeloest, wenn sich ein Spieler
+   erstmalig ins MorgenGrauen eingeloggt hat.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_PLNAME:       (string) UID/Name des erstellten Spielers,
+      E_OBJECT:       (object) Objekt des Spielers,
+    ])
+
+BEMERKUNGEN:
+   Da zu diesem Zeitpunkt das Spielerobjekt noch nicht vollstaendig
+   konfiguriert ist, werden nur Objekt und Spielername in den Daten 
+   uebermittelt.
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+   EVT_LIB_PLAYER_DELETION
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

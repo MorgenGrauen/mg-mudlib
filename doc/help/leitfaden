@@ -1,0 +1,228 @@
+Ein kleiner Leitfaden zum Spiel im MorgenGrauen
+===================================================
+
+  Das MorgenGrauen ist ein Spiel. Wie bei jedem Spiel muessen, um den
+  Spielspass moeglichst fuer alle zu erhalten, ein paar wenige Regeln
+  beachtet werden. Diese Regeln gelten sowohl fuer Spieler als auch
+  fuer Magier.
+
+                                *
+
+    Die wichtigste Regel betrifft das Angreifen und Toeten anderer
+    Spieler.
+
+    ES IST STRIKT UNTERSAGT ANDERE SPIELER ANZUGREIFEN ODER ZU TOETEN.
+
+    Auch das absichtliche indirekte Toeten von Spielern durch
+    Gildenfaehigkeiten, spezielle Objekte oder aehnliches faellt unter
+    diese Regel.
+
+    Sollte man einen Spieler umgebracht haben, treten sofort
+    Beschraenkungen in Kraft, die nur durch einen Erzmagier wieder
+    aufgehoben werden koennen.
+
+    Will man sich dennoch mit anderen Spielern messen, so existieren
+    extra dafuer eingerichtete Gebiete, wie zum Beispiel die Arena in
+    der Wueste, in denen man sich gegenseitig bekaempfen kann.
+
+                                *
+
+    Hat man mit seinem Charakter eine Zeit lang gespielt, so entsteht
+    oft der Wunsch, einmal eine andere Rasse, Gilde oder einfach einen
+    anderen Rollenspielcharakter zu spielen.
+    Seinen bisherigen Charakter kann oder moechte man dazu allerdings
+    nicht benutzen.
+    Daher kann jeder Spieler weitere Charaktere anlegen.
+
+    Diese muessen dann jedoch als sogenannter Zweitspieler des ersten
+    Charakters markiert werden.
+    Diese Markierung kann man zum Beispiel beim Schmied in der
+    Zwergenstadt oder beim Dorfschreiber im Elfendorf erhalten.
+    Diese Markierung kann man auch vor anderen Spielern verbergen.
+
+    Man kann beliebig viele seiner Charaktere gleichzeitig einloggen,
+    doch ist hierbei darauf zu achten, dass nur zwei dieser Charaktere
+    aktiv am Spielgeschehen, das ist alles was ueber reine
+    Kommunikation hinausgeht, teilnehmen.
+    Die anderen Charaktere muessen sich auf die Kommunikation
+    beschraenken.
+
+    Weitere Einschraenkungen existieren fuer Magier.
+
+    Ein Magier darf nicht gleichzeitig mit seinen Spielercharakteren
+    eingeloggt sein, diese manipulieren oder fuer seine Zweitspieler
+    fremden Code analysieren.
+
+    Der Magier-Zweitspieler sollte darauf achten, anderen Spielern
+    nicht durch seinen eventuellen Wissensvorteil bei Questen zu
+    helfen.
+
+    Ein Magier-Zweitspieler sollte weiterhin darauf achten, andere
+    Spieler nicht in ihrem Spiel zu behindern. Dies koennte zum
+    Beispiel durch Blockieren von Quests oder bestimmter limitierter
+    Gildenraenge geschehen.
+    Den Programmierern von Quests oder Gilden steht es natuerlich frei,
+    hier eine eigene Vorsorge zu treffen.
+
+                                *
+
+    Wer im MorgenGrauen spielt, der ist des oefteren auf die Hilfe
+    Anderer angewiesen. Eine Form der Hilfe ist es, einen Charakter
+    auszuleihen oder ausgeliehen zu bekommen.
+    Um sprachlich begruendete Missverstaendnisse im weiteren zu
+    vermeiden, hier kurz folgende Nomenklatur:
+
+      Ein Spieler, der einem anderen Spieler einen Charakter zur
+      Verfuegung stellt, wird als Verleiher bezeichnet.
+
+      Ein Spieler, der einen Charakter eines anderen Spielers nutzt,
+      wird als Nutzer bezeichnet.
+
+    Das Ausleihen von Charakteren ist mit gewissen Randbedingungen
+    erlaubt.
+
+    Ein ausgeliehener Charakter wird als aktiver Zweitspieler des
+    Nutzers betrachtet und ist somit den Regelungen fuer Zweitspieler
+    unterworfen.
+
+    Besonders zu beachten ist, dass der ausgeliehene Charakter nicht
+    mit dem Nutzer, oder einem Zweitspieler des Nutzers, in ein Team
+    darf.
+
+    Sowohl der Nutzer des ausgeliehenen Spielers als auch Verleiher,
+    koennen fuer die Handlungen des ausgeliehen Charakters
+    verantwortlich gemacht werden.
+
+                                *
+
+    Wer mit einem Charakter Aufgaben geloest hat oder zu bestimmten
+    Vermutungen ueber Forscherpunkte gelangt ist, der notiert dies oft,
+    um bei spaeteren Charakteren auf diese Informationen zugreifen zu
+    koennen.
+
+    Solche Forscherpunktlisten oder Komplettloesungen sind zum
+    Eigengebrauch, das heisst fuer die eigenen Zweitspieler erlaubt.
+
+    Die Weitergabe dieser Informationen oder das Nutzen von nicht
+    selbst erstellten Komplettloesungen oder Forscherpunktlisten sind
+    anderen Spielern gegenueber im hoechsten Masse unfair und daher
+    untersagt.
+
+                                *
+
+    Um das Spielen von Muds zu vereinfachen und komfortabler zu
+    gestalten, gibt es eine Reihe sogenannter Mud-Clients.
+
+    Diese Clienten bieten oftmals die Moeglichkeit, mehrere Kommandos
+    im Mud auf eine einzige Aktion hin auszufuehren oder auf Ausgaben
+    mit solchen Kommandoketten zu reagieren.
+
+    Man spricht hier von Scripten oder Triggern.
+
+    Zusammen mit einer internen Programmiersprache der Clienten lassen
+    sich vielfach bestimmte Aktionen im Mud automatisieren.
+
+    Die Verwendung solcher Scripte ist mit einigen Auflagen jedem
+    Spieler freigestellt.
+
+    Sogenannte Untersuchescripte, die selbstaendig eine oder mehrere
+    Detailtiefen von Raeumen, Monstern oder anderen Gegenstaenden
+    abfragen, sind nicht erlaubt.
+
+    Jeder Charakter sollte individuell gesteuert werden, daher sind
+    Scripte, die mehrere Charaktere auf einmal steuern untersagt.
+
+    Scripte, welche einen Charakter im Sinne einer Komplettloesung
+    durch eine Quest fuehren oder eine Forscherpunktliste abarbeiten
+    sind nicht erlaubt.
+
+    Grundsaetzlich duerfen andere Spieler durch Scripte nicht in ihrem
+    Spiel behindert oder belaestigt werden.
+
+    Alle anderen Scripte sind erlaubt, soweit der Spieler innerhalb
+    einer Minute im Rahmen seiner Moeglichkeiten ansprechbar bleibt.
+
+    Als unerlaubtes Skript zaehlt auch der Kampf mit einem Monster,
+    wenn der Spieler dabei laengere Zeit keine Tastatureingaben
+    vornimmt und dabei nicht ansprechbar ist(totidlen). Dies gilt vor
+    allem wenn der Tod des Monsters nicht absehbar ist.
+
+                                *
+
+    Das MorgenGrauen baut auf die Arbeit vieler freiwilliger
+    Programmierer auf. Wie bei jedem Programm kann es dabei zu Fehlern,
+    auch Bugs genannt, kommen.
+
+    Jeder Spieler sollte ein Interesse daran haben, dass diese Fehler
+    beseitigt werden.
+
+    Dies kann man durch eine Meldung des Fehlers an den jeweiligen
+    Magier oder falls dieser nicht erreichbar ist, durch eine Meldung
+    an den entsprechenden Regionsmagier erreichen. Auch der Befehl
+    "fehler" kann hier nuetzliche Dienste leisten.
+
+    Wer diese Magier sind, kann jedem Spieler bei Bedarf durch einen
+    anwesenden Magier oder oft auch anderen Spieler mitgeteilt werden.
+
+    Dieses Vorgehen sollte auch fuer Fehler gelten, die dem Spieler,
+    der diese Fehler entdeckt, zum Vorteil gereichen.
+
+    Sollte sich ein Spieler nicht sicher sein, ob es sich bei einem
+    bestimmten Verhalten von Gegenstaenden, Monstern oder Raeumen um
+    einen Fehler handelt oder um Absicht des Programmieres, so kann er
+    den zustaendigen Magier problemlos danach fragen und somit bei der
+    Beseitigung von Fehlern aktiv helfen.
+
+    Das Verschweigen und Ausnutzen von Fehlern ist anderen Spielern
+    gegenueber unfair und ist daher zu unterlassen.
+
+                                *
+
+    Grundsaetzlich sollte der Spielspass fuer moeglichst alle Spieler
+    erhalten bleiben. Dazu gehoert auch ein gewisses Mass an Fairness
+    der Spieler untereinander.
+
+    Es ist nicht der Sinn der Regeln, das Spielen im MorgenGrauen durch
+    Ueberreglement zu behindern oder reizlos zu gestalten.
+
+    Daher ist es jedoch auch moeglich, dass im Spiel Situationen
+    auftreten, die den Spielspass anderer Spieler und die allgemeine
+    Fairness beeintraechtigen, ohne dass diese Situation durch diesen
+    Leitfaden abgedeckt ist.
+
+    Hier ist jeder Spieler und auch Magier gefragt, seinen gesunden
+    Menschenverstand zu befragen und zu ueberlegen, wie er eine solche
+    Situation vermeiden oder entspannen kann, auch wenn man damit auch
+    einmal auf einen Vorteil verzichten muss.
+
+    Es ist also durchaus nicht alles erlaubt, was nicht explizit
+    verboten ist.
+
+                                *
+
+    Fuer Magier gelten natuerlich zusaetzlich die Regeln des
+    Magiervertrages.
+
+                                *
+
+    Sollte ein Spieler oder Magier gegen Regeln verstossen haben, so
+    kann dies vom Sheriff, seinen Deputies oder den Erzmagiern geahndet
+    werden.
+    Strafen koennen sich von einer einfachen Verwarnung bis hin zur
+    Loeschung von Charakteren erstrecken.
+
+    Die Strafen werden in einem gesunden Verhaeltnis zum Fehlverhalten
+    des Spielers stehen.
+
+                                *
+
+    Wer die Funktion des Sheriffs oder eines Deputies wahrnimmt, kann
+    man mit dem Kommando 'hilfe sheriff' erfragen.
+
+
+ SIEHE AUCH:
+    zweitiemarkierung, fehler, sheriff
+
+ LETZTE AeNDERUNG:
+    Wed, 30.08.2000, 11:35:00 von Muadib
+    

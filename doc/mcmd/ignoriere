@@ -1,0 +1,30 @@
+
+ignoriere
+---------
+
+ MAGIERKOMMANDO:
+    ignoriere <magier>.debug
+
+ ARGUMENTE:
+
+     <magier>
+        Name des Magiers, dessen Bugmeldungen ignoriert werden sollen.
+
+ BESCHREIBUNG:
+    Mit Hilfe dieses Befehls kann man gezielt die Bugs eines bestimmten 
+    Magiers ignorieren.
+    
+    Es werden die Bug-Meldungen auf den Kanaelen 'debug' und auf 
+    'entwicklung' ignoriert. 
+
+    Beim Durchsehen der Kanal-History (-deb*20) werden die Bugs allerdings 
+    nicht ignoriert.
+
+    '-deb backtrace' liefert ein Backtrace zu dem letzten aufgetretenen Bug,
+    voellig unabhaengig, ob der Aufrufende den Bug ignoriert.
+
+ SIEHE AUCH:
+    ignoriere (Spielerkommando)
+
+ LETZTE AENDERUNG:
+    Don, 01.08.2002, 17:15:00 von Vanion

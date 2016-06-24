@@ -1,0 +1,17 @@
+BEFEHL:
+	scan
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Wenn der TOS ein Spieler oder ein Monster ist, so gib die
+	spielrelevanten Informationen zu ihm aus. Wenn der TOS ein
+	String ist, so wird der Spieler mit diesem Namen gesucht.
+
+BEISPIELE:
+	,me scan
+	,"jof" pl scan (oder kuerzer: ;"jof" scan)
+
+SIEHE AUCH:
+	"player"

@@ -1,0 +1,41 @@
+ConvMaterialList()
+FUNKTION:
+     varargs string ConvMaterialList(mixed mats, int casus, mixed idinf)
+
+DEFINIERT IN:
+     /p/daemon/materialdb.c (MATERIALDB)
+
+ARGUMENTE:
+     mixed mats:  - das zu erkennende Material:
+                    - ein Mapping, ein String oder ein Stringarray
+                      ([MAT_A:y,MAT_B:x,..]) oder MAT_A oder ({MAT_A,MAT_B,..})
+     int casus:   - der Fall: 0..3 -> <language.h>: WAS, WESSEN, WEM, WEN
+     mixed idinf  - Dinge, welche die Faehigkeiten des Erkennens beeinflussen
+		    (siehe "man MaterialList")
+
+BESCHREIBUNG:
+     Man uebergibt ConvMaterialList() eine Liste von Materialien, die die
+     Funktion unter Verwendung von MaterialName() in ihre Bestandteile
+     aufsplittet und mit "und" und "," verknuepft zurueckgibt.
+
+RUECKGABEWERT:
+     string - Materialien, durch Komma und "und" getrennt oder
+              "unbekanntes Material"
+
+BEMERKUNGEN:
+     Wird von /std/thing/description::MaterialList() gerufen.
+     Bitte an Objekten auch MaterialList() verwenden.
+     Ruft direkt MaterialName() auf.
+
+SIEHE AUCH:
+     Konzepte:	  material, materialerkennung
+     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste, materialgruppen
+     Master:	  AddMaterial(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

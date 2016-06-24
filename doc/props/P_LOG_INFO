@@ -1,0 +1,32 @@
+NAME:
+    P_LOG_INFO                    "log_info"                    
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Wenn diese Property gesetzt ist wird jede Frage, die ein
+     Monster nicht beantworten kann, im Report-File des
+     zustaendigen Magiers geloggt.
+
+     Es ist jedoch auch moeglich, direkt einen Filenamen anzugeben.
+     Bei diesen wird dann jedoch automatisch ein /log/ vorne angehaengt.
+
+BEISPIELE:
+     SetProp(P_LOG_INFO,1);           // Alle fehlenden Infos dieses
+                                         Monsters werden in das Report-
+                                         File unter /log/report/ gelogt.
+
+     SetProp(P_LOG_INFO,"tilly/opa"); // Alle fehlenden Infos dieses
+                                         Monsters werden in das File
+                                         monster unter /log/tilly/ ge-
+                                         logt.
+BEMERKUNGEN:
+     Bei nachtraeglich angeschlossenen Monstern empfiehlt sich Variante 
+     2 der Beispiele. Ein muehsames Suchen (und Loeschen) der fehlenden 
+     Infos des Monsters im Report-File eruebrigt sich dann naemlich.
+
+SIEHE AUCH:
+     P_LOG_FILE, write_file(), log_file(), AddInfo
+
+Letzte Aenderung: 13.09.04 Tilly@MorgenGrauen

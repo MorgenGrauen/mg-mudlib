@@ -1,0 +1,21 @@
+Materialid:
+MAT_CHEESE             "cheese"
+
+Name:
+"Kaese" "Kaeses" "Kaese" "Kaese"
+
+Geschlecht:
+M
+
+Beschreibung:
+weich, essbar
+
+Erkennbarkeit:
+MATGROUP_EATABLE:0
+MATGROUP_BIO:0
+MAT_CHEESE
+
+Gruppenzugehoerigkeit:
+MATGROUP_EATABLE:100
+MATGROUP_SOLID:100
+MATGROUP_BIO:100

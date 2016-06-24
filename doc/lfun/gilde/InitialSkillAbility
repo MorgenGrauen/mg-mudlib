@@ -1,0 +1,31 @@
+InitialSkillAbility()
+FUNKTION:
+    static int InitialSkillAbility(mapping ski, object pl)
+
+DEFINIERT IN:
+    /std/gilden_ob.c
+
+ARGUMENTE:
+    mapping ski     Der zu lernende Skill
+    object  pl      Spieler
+
+BESCHREIBUNG:
+    Gibt den initialen Ability-Wert fuer einen neu zu lernenden Skill (Spell)
+    zurueck. Die Standardformel benutzt nur Intelligenz und SI_SKILLLEARN und
+    kann in der Gilde ueberschrieben werden.
+
+BEMERKUNGEN:
+    Der zurueckgegebene Wert wird noch in das Spieler-Skillsystem eingegeben
+    und daher kann der real gelernte Wert abweichen
+
+SIEHE AUCH:
+    Skills:         LimitAbility, ModifySkill
+    GObj Lernen:    LearnSkill, LearnSpell
+    * Anzeigen:     SkillListe
+    * Verwalten:    AddSpell (gilde), AddSkill, QuerySpell, QuerySkill
+    * Nutzen:       UseSpell (gilde)
+    * Properties:   P_GUILD_SKILLS, P_GLOBAL_SKILLPROPS
+    Gildenfkt.:     GuildRating
+    * Ein/Austritt: beitreten, bei_oder_aus_treten, austreten
+
+3. Okt 2011 Gloinson

@@ -1,0 +1,62 @@
+
+  ---------------------------SPIELERHILFSSEITE-----------------------------
+
+Fuer folgende allgemeine Befehle und Themen kann mit "hilfe <thema>" eine
+Erlaeuterung angezeigt werden:
+
+Einfuehrung und erste Schritte:
+    Grundlegend: 
+      syntax, bewegung, regeln, einfuehrung
+    Charakter:
+      attribute, zaubertraenke, stufen, stufenpunkte
+    Spiel:   
+      abenteuer, gilden, zauberei
+    Neuspieler:  
+      cicerones, tutorial
+
+Kommunikation:
+    Im Raum:	
+      sage, gespraech, frage, antworte
+    Privat:	
+      teile (mit), erzaehle, erwidere, fluestere,
+    MUD-weit:	
+      rufe, ebenen, post, mrufe
+    Anderes:	
+      ignoriere, kobold, weg, parties, senderwiederholung, klingelton
+      teamspeak
+
+Allgemeine Aktionen:
+    gib (an), hole (aus), nimm [aus], stecke (in), wirf (weg),
+    behalte, klettere, reise
+
+Interaktion und Information:
+    schau (an), untersuche, lausche, rieche, suche, i (=inventur),
+    ausruestung, info, kurzinfo, taste
+    inform, erwarte, wer, kwer, kkwer, muds, zeit, finger, idlezeit
+    email, url, ort, icq, wegmeldung
+
+Sonstige Verben:
+    verben (mit eigener Hilfefunktion), adverb, emote, rknuddle, rwinke
+
+Eingaben und Ersetzungen:
+    alias, unalias, ersetzungsanzeige, history
+
+Kampf:
+    toete, stop, vorsicht, zuecke, ziehe (hervor/aus), trage,
+    stecke (weg/zurueck), heilung, sterben, spruchermuedung
+    team, waffenfertigkeiten, gift/krankheiten/flueche
+
+Gildenuebersicht:
+    abenteurer, bierschuettler, chaos, dunkelelfen, kaempfer, karate,
+    klerus, tanjian, uruk-hai, werwoelfe, zauberer
+
+Andere Befehle:
+    ende, schlafe (ein), speichern, lang, kurz, ultrakurz, ausgaenge,
+    passwort, fehler, idee, typo, zeilen, selbstloeschung, spieldauer,
+    spielpause, uhrmeldung, zweitiemarkierung, telnegs, stty, grafik, 
+    telnet
+
+Sonstige Themen:
+    verein, konzept, seher, magier, regionen, editor, buecher, faq,
+    balance, mudrechner, einfuehrung, spiele
+

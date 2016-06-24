@@ -1,0 +1,36 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+	mapping copy(mapping)
+
+DESCRIPTION:
+        Create a shallow copy of <arg> and return it. For arrays and mappings
+        this means that a new array or mapping is created with copies of the
+        original content. Embedded arrays and mappings are copied by reference!
+
+EXAMPLE
+        mixed *a, *b;
+
+        a = ({ 1, ({ 21, 22 }) });
+        b = copy(a);
+        a[0] = -1; a[1][0] = -21;
+         --> a is now ({ -1, ({ -21, 22 }) })
+             b is now ({  1, ({ -21, 22 }) })
+
+WARNING
+	Keep in mind, that a copy of a mapping, that contains arrays/mappings,
+	contains references to these Mappings/Arrays, not real copies. If you
+	don't take care, you can a) change the original mappings while working
+	on the copy and b) create recursive mappings, that leak memory.
+
+HISTORY
+  Superseeded by the copy() efun.
+  Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SEE ALSO:
+	mappings(LPC)
+
+26. September 2006, Zesstra

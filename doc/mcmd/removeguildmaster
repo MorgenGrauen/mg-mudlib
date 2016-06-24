@@ -1,0 +1,24 @@
+
+removeguildmaster
+-----------------
+
+ ERZMAGIERKOMMANDO:
+    removeguildmaster <name> <gilde>
+
+ ARGUMENTE:
+
+     <name>
+        Name des Magiers
+     <gilde>
+        Name der Gilde
+
+ BESCHREIBUNG:
+    Der Magier <name> ist fortan nicht mehr Gildenmagier der Gilde <gilde>.
+
+    Dieser Befehl steht nur Goettern zur Verfuegung.
+
+ SIEHE AUCH:
+    addguildmaster, gilden
+
+ LETZTE AeNDERUNG:
+    2003-12-10, Zook.

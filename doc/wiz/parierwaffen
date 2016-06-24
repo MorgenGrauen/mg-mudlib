@@ -1,0 +1,18 @@
+==============================================================================
+                 Regeln zur Programmierung von Parierwaffen:
+==============================================================================
+
+Standardobjekt: /std/weapon.c
+
+Siehe hierzu: /doc/wiz/balance   (oder 'man balance')
+
+Aktuelle Grenzwerte:
+====================
+
+   Parier-Typ   Genehmigungsgrenze
+  ------------ --------------------
+  PARRY_ONLY   Wie Rustungen vom Typ AT_SHIELD
+  PARRY_TOO    Generelle Genehmigungspflicht
+
+==============================================================================
+Paracelsus@MorgenGrauen, 18/08/1999

@@ -1,0 +1,49 @@
+
+SelectNearEnemy()
+
+
+FUNKTION:
+        varargs object SelectNearEnemy(object *here, int forcefrom)
+
+DEFINIERT IN:
+        /std/living/team.c
+
+ARGUMENTE:
+        here      - Rueckgabewert von PresentEnemies()
+        forcefrom - Gegner MUSS aus uebergebenem Array ausgewaehlt werden
+
+BESCHREIBUNG:
+        Waehlt einen im Nahkampf erreichbaren Feind aus
+
+RUECKGABEWERT:
+        Der Auserwaehlte :-)
+
+BEMERKUNGEN:
+        1. Falls der Spieler in einem Team ist und in einer hinteren Reihe
+           steht, wird kein Feind ausgewaehlt, es sei denn, der Spieler hat
+           einen Kampf mit einem Teammitglied angefangen.
+        2. Wenn ein bevorzugter Feind in einer der hinteren Reihen eines
+           Teams steht, wird solange das Team bevorzugt.
+        3. Auch Feinde in den hinteren Reihen koennen im Nahkampf erreichbar
+           sein, wenn die vorderen Reihen nicht genuegend Deckung bieten.
+        4. ACHTUNG: Der Auserwaehlte kommt nicht notwendigerweise aus dem
+           uebergebenen Array, wenn forcefrom=0 ist. Normalerweise ist dieses
+           Verhalten beabsichtigt, damit jemand, der sich in der Reihe vor
+           einen Gegner stellt, angegriffen wird, auch wenn er noch nicht
+           Feind ist.
+
+SIEHE AUCH:
+        Uebersicht: teamkampf
+        Properties: P_TEAM, P_ASSOC_MEMBERS, P_TEAM_ATTACK_CMD,
+                    P_TEAM_AUTOFOLLOW, P_TEAM_COLORS, P_TEAM_LEADER,
+                    P_TEAM_NEWMEMBER, P_TEAM_WANTED_ROW, P_TEAM_WIMPY_ROW
+        Bewegung:   IsTeamMove, TeamFlee
+        Mitglieder: IsTeamLeader, TeamMembers
+        Kampf:      AssocMember, DeAssocMember, InsertEnemyTeam,
+                    SelectFarEnemy
+        Positionen: PresentPosition, PresentRows, PresentEnemyRows,
+                    PresentTeamPosition, SwapRows
+        Sonstiges:  TeamPrefix, teamkampf_intern
+
+----------------------------------------------------------------------------
+Last modified: 16-08-2010, Gabylon

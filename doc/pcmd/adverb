@@ -1,0 +1,64 @@
+
+adverb
+------
+
+ KOMMANDO:
+    adverb <abk> <text>
+    adverb [ # | $ ]
+    adverb ? <abk>
+    adverb <abk>
+
+ ARGUMENTE:
+
+     <abk>
+        Eine Abkuerzung fuer ein Adverb
+     <text>
+        Der Text des Adverbs
+
+ BESCHREIBUNG:
+
+    Mit Adverbien koennen einige Verben genauer beschrieben werden. So
+    kann man einfach nur laecheln (laechel), gluecklich laecheln (laechel 
+    glue) oder scrollen (laechel stra und glue und stol und vers). Mit
+    einem / kann man an das Verb noch etwas eigenes einfuegen (jammere 
+    laut und /wie es nur Zauberer koennen).
+
+    Mit dem Kommando adverb kann man die definierten Adverbien anzeigen
+    lassen oder auch eigene Adverbien definieren. Die einzelnen Aufrufe
+    haben folgende Funktion:
+
+    1. Es wird ein neues Adverb mit der Abkuerzung <abk> zu dem Text <text>
+       definiert. Die Abkuerzung kann einen bis sechs Buchstaben lang sein.
+
+    2. Ohne weitere Parameter wird die komplette Adverbienliste angezeigt.
+       `adverb #' zeigt nur die selbstdefinierten Adverbien an, waehrend
+       `adverb $' nur die Standardadverbien anzeigt.
+
+    3. Es wird geprueft, ob es schon ein Adverb zu der Abkuerzung <abk> gibt.
+
+    4. Das Adverb mit der Abkuerzung <abk> wird aus der Liste geloescht. Dies
+       geht jedoch nur mit selbstdefiinierten Adverbien, nicht mit den
+       Standardadverbien!
+
+ BEISPIELE:
+    Ein Adverb `ratlos' mit der Abkuerzung `rat' wird geschaffen:
+
+    > adverb rat ratlos
+    OK, neues Adverb "ratlos" mit der Abkuerzung "rat".
+
+    Wir sehen nach, wie `rat' definiert ist:
+
+    > adverb ? rat
+    Die Abkuerzung rat gehoert zum Adverb:
+    ratlos
+
+    Wir loeschen es wieder:
+
+    > adverb rat
+    OK, Adverb "ratlos" geloescht.
+
+ SIEHE AUCH:
+    verben, adverbien
+
+ LETZTE AeNDERUNG:
+    Thu, 29.03.2008, 12:00:00 von Vanion

@@ -1,0 +1,17 @@
+Materialid:
+MAT_CHALK                "chalk"
+
+Name:
+"Kreide" "Kreide" "Kreide" "Kreide"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

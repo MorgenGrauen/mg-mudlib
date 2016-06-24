@@ -1,0 +1,61 @@
+
+man
+---
+
+ MAGIERKOMMANDO:
+    man [-i] <name/nummer>
+    man [-i] <name> [nummer]
+    man [-mi] <maske>
+    man [-ri] <maske>
+
+ ARGUMENTE:
+
+     <name> [...]   Name der gewuenschten Hilfeseite
+     <maske>        Wortteil einer Hilfeseite (kann * und ? enthalten)
+     <[nummer]>	    Nummer einer von mehreren Hilfsseiten
+
+ BESCHREIBUNG:
+    Im Hilfeverzeichnis (`/doc') wird nach der entsprechenden Hilfeseite
+    gesucht und diese dann angezeigt.
+
+    Wenn der Parameter -m verwendet wurde, dann werden alle Hilfeseiten
+    aufgelistet, deren Name die Maske enthaelt.
+
+    Der Parameter -r ermoeglicht es, einen Ausdruck im Regexp-Format
+    anzugeben.
+
+    Mit Hilfe der Nummer kann man sich das genaue Ausschreiben einer
+    bestimmten Hilfsseite bei der Anzeige mehrere sparen.
+
+    Die Option -i (interaktiver HTML-Modus) ist zur Zeit nicht aktiviert.
+
+ ACHTUNG:
+
+    Nach dem Einspielen von neuen MAN-Seiten muss der betreffende Magier
+    per 'xcall /p/daemon/mand->update_cache()' den Cache aktualisieren.
+    Dieser wird automatisch nur woechentlich aktualisiert.
+
+ BEISPIELE:
+    Eine einfache Hilfeseite (naemlich diese):
+
+    > man man
+
+    Welche Hilfeseiten haben etwas mit Haenden zu tun?
+
+    > man -m *hands*
+
+    Welche Hilfesseiten sagen uns etwas ueber Waffen?
+
+    > man waffen
+      Es wurden folgende potentiell passenden Seiten gefunden:
+      --------------------------------------------------------
+      1: help/waffenfertigkeiten 2: std/weapon 3: wiz/waffen
+      --------------------------------------------------------
+    > man 3 ODER	> man wiz/waffen ODER	> man waffen 3
+      [Anzeige von /wiz/waffen]
+
+ SIEHE AUCH:
+    hilfe rman
+
+ LETZTE AENDERUNG:
+    20. Maerz 2004 Gloinson

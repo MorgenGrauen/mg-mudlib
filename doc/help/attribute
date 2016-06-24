@@ -1,0 +1,35 @@
+
+Die Attribute
+=============
+
+    In MorgenGrauen gibt es fuer Spieler 4 Attribute: *Intelligenz*, *Kraft*,
+    *Geschicklichkeit* und *Ausdauer*. Je hoeher der Wert dieser Attribute
+    ist, desto besser ist es natuerlich fuer den Spieler. Die Attribute wirken
+    sich z.B. auf folgende Bereiche aus:
+
+     Intelligenz
+        Konzentration, Lernfaehigkeiten
+     Kraft
+        Kampfkraft, Tragen von Gegenstaenden
+     Geschicklichkeit
+        Benutzen von Waffen, Schutz vor Schaden im Kampf
+     Ausdauer
+        Gesundheit (Lebenspunkte)
+
+    Erhoeht werden die Attribute durch Zaubertraenke, die ueberall im Spiel
+    versteckt sind. Die Zaubertraenke sind teilweise recht leicht zu finden,
+    teilweise aber auch sehr schwer. Das Orakel von Tingan gibt allerdings zu
+    jedem Zaubertrank einen Hinweis.
+
+    Die einzelnen Rassen haben einen rassenspezifischen Bonus bei den
+    Attributen, der immer bestehenbleibt.
+
+    Wenn man nach einem Tod wieder ins Leben zurueckkehrt, sind die Attribute
+    um ein gewisses Mass herabgesetzt. Sie regenerieren sich aber im Laufe der
+    Zeit von selbst wieder.
+
+ SIEHE AUCH:
+    info, zaubertraenke, lebenspunkte
+
+ LETZTE AeNDERUNG: 17.01.2009, Zesstra
+

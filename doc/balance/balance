@@ -1,0 +1,73 @@
+
+Kurzer Abriss unseres Aufgabenbereiches:
+---------------------------------------
+
+1) Was wird von uns begutachtet?
+
+   Alle Ruestungen und Waffen, die ueber eine DefendFunc 
+   verfuegen, die fuer Spieler von Nutzen ist.
+
+   Alle Ruestungen und Waffen, die ueber eine HitFunc
+   verfuegen, die fuer Spieler von Nutzen ist.
+
+   Alle Ruestungen und Waffen, deren AC/WC die Genehmigungs-
+   grenze ueberschreitet. Auch solche, bei denen dies erst
+   in einer Hit- oder DefendFunc der Fall ist.
+
+   Alle Ruestungen und Waffen, die einen genehmigungs-
+   pflichtigen Schadenstyp enthalten.
+   
+   Alle Objekte, die in irgendeiner Weise das Kampfgeschehen
+   beeinflussen.
+
+2) Was entscheiden wir fuer Gilden?
+
+   Nur Kaempfer-Boni in Waffen und Ruestungen (Waffenschlag, Finte). 
+   Alle anderen Gilden, z.B. Unterstuetzungen fuer Zauberer-Sprueche, 
+   Chaoskomponenten unterliegen dem zustaendigen GildenMagier und 
+   der GildenBalance.
+
+   Selbst ueber Einschraenkungen fuer Gilden haben wir nicht zu 
+   entscheiden. Wenn ein Magier sein Objekt nur fuer Chaoten nutz-
+   bar machen moechte, macht er das eben. Oder wenn er Tanjian aus-
+   schliessen moechte ebenfalls. Das nennt sich dann Programmier-
+   freiheit.
+
+3) Was ist mit Objekten, die keine Waffe/Ruestung sind?
+
+   Hier unterliegen alle Objekte unserer Begutachtung, die irgend-
+   wie eine kampfrelevante Bedeutung haben. Dazu zaehlt:
+
+   - Schaden verursachen koennen (Saeurekugeln)
+   - Paralysetools (graue Steine)
+   - Begleit-Npc (Einhorn, Feuerelementar)
+   - Informationen ueber eingehende Schadenstypen geben
+   - Waffen/Ruestungen manipulieren koennen (Geisterhauch, Blutstropfen)
+   - Informationen ueber Npc, Raeume, Reset-Zeiten usw. ausgeben
+   - Werte manipulieren (Attribute oder Geschwindigkeit erhoehen)
+
+   Ein Sonderfall stellen hier Objekte dar, die vom Typ AT_MISC oder
+   WT_MISC sind. Fuer diese gilt:
+
+   - Sie duerfen keinerlei positive Veraenderungen im Spieler vor-
+     nehmen
+   - Sie duerfen keinerlei kampfrelevante Bedeutung haben (im Sinne 
+     von Spell-/Skill-/Gegner-Manipulation, Attributsveraenderungen, 
+     Heilungen, Informationen u.a.) oder sonstwie einen Kampf be-
+     einflussen
+   - Sie duerfen ueber keine Hit- oder DefendFunc verfuegen. Die AC 
+     bzw. WC solcher Objekte ist immer 0
+
+4) Worauf ist besonders zu achten?
+
+   Die Grenzwerte bei Waffen und Ruestungen sollen den fuer diesen 
+   Typ geltenden Wert nur im seltensten Fall ueberschreiten. Dies
+   gilt auch fuer Werte einer Defend- oder HitFunc.
+
+   Boni aus einer Defend- oder HitFunc sind IMMER per random() zu
+   geben!
+
+   Besonders gute Objekte haben ueber Restriktionen zu verfuegen.
+
+   Besonders gute Objekte sollten auch Nachteile haben.
+

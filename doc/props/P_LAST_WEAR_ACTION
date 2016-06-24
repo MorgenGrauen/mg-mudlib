@@ -1,0 +1,24 @@
+PROPERTY:
+
+	P_LAST_WEAR_ACTION    "last_wear_action"
+
+DEFINIERT IN: 
+
+	/sys/armour.h (und damit auch in properties.h)
+
+BESCHREIBUNG:
+
+	Diese Prop gibt an, welche An/Auszieh-Aktion ein Spieler zuletzt
+	durchgefuehrt hat. Sie ist ein zweielementiges Array, wobei der
+	erste Eintrag angibt, ob der Spieler sich an- oder ausgezogen
+	hat (WA_WEAR, WA_UNWEAR, auch in armour.h definiert) und der
+	zweite den Zeitpunkt.
+
+	Die Property wird (unter anderem?) dafuer verwendet festzustellen ob
+	der Spieler in der letzten Runde schon einen Ruestungswechsel
+	vorgenommen hat und einen entgegengesetzten zu unterbinden.
+
+LETZTE AENDERUNG: 
+
+2003-01-29, 17:30 von Humni
+

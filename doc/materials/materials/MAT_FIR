@@ -1,0 +1,24 @@
+Materialid:
+MAT_FIR                  "fir"
+
+Name:
+"Tannenholz" "Tannenholzes" "Tannenholz" "Tannenholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+trocken (Douglasie)
+
+Erkennbarkeit:
+MAT_MISC_CONIFER_WOOD:15
+MAT_FIR
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_CONIFER_WOOD:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_BIO:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

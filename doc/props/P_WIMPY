@@ -1,0 +1,15 @@
+NAME:
+    P_WIMPY                       "wimpy"                       
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Numerischer Wert. Das Lebewesen flieht, wenn die Lebenspunkte
+     unter diesen Wert sinken.
+
+SIEHE AUCH:
+     P_WIMPY_DIRECTION
+
+----------------------------------------------------------------------------
+Letzte Aenderung: Mon Feb 12 17:50:47 2001 von Tilly

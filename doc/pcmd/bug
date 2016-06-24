@@ -1,0 +1,61 @@
+
+fehler
+------
+
+KOMMANDO:
+    bug <text>
+    bug <objekt>:<text>
+   
+ARGUMENTE:
+
+    <text>
+        Eine Mitteilung
+    <objekt>
+        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+
+BESCHREIBUNG:
+    Nobody's perfect. Dies gilt besonders fuer unsere Magier :)
+
+    Wer viel programmiert, kann auch viele Fehler machen. Die meisten Fehler
+    werden zwar schon in der Testphase gefunden und ausgemerzt, aber einige
+    Fehler bleiben bis zum Anschluss eines neuen Gebietes oder Objekts
+    unentdeckt.
+
+    Wenn Du einen solchen Fehler gefunden hast, sei es, weil ein 'Fehler im
+    Raum-Zeit-Gefuege' aufgetreten ist, sei es, weil irgendwelche seltsamen
+    Zeichen in der Beschreibung eines Objektes auftauchen, so kannst Du den
+    Verantwortlichen mit diesem Befehl davon unterrichten.
+    (Anmerkung: FiRZG werden auch automatisch protokolliert und zustaendigen
+     Magiern zur Verfuegung gestellt.)
+
+    Nicht zoegern, wenn Du einen Fehler findest, Fehlermitteilungen sind
+    *sehr* willkommen!
+    Solltest Du Dir einmal nicht sicher sein, ob es sich bei einem bestimmten
+    Verhalten um einen Fehler handelt oder nicht, zoegere nicht, bei dem
+    zustaedigen Magier oder auch bei Spielern und anderen eingeloggten Magiern
+    zu fragen.
+
+    Wenn Du einen Typo an einem bestimmten Objekt oder NPC entdeckst, kannst
+    Du dieses/diesen hinter einem Doppelpunkt angeben, damit der fuer das
+    Objekt verantwortliche Magier die Meldung bekommt.
+    Wenn das Objekt nicht zu finden ist, wird die ganze Eingabe als
+    Meldung aufgefasst.
+
+    Ein Hinweis auf die Regeln hier noch: Das Verschweigen und Ausnutzen von
+    Fehlern ist anderen Spielern gegenueber unfair. Bitte unterlasst das,
+    sondern berichtet die Fehler. Bugausnutzung zu eigenem Vorteil oder
+    anderer Nachteil ist ansonsten durchaus ein Fall fuer Sheriff. ;-)
+
+BEMERKUNG:
+    Der Befehl 'bug' bezieht sich bei Nichtangabe eines Bezugsobjektes
+    auf das letzte betrachtete Objekt. Hast Du also ein Objekt untersucht,
+    dann wird die Meldung fuer diese Objekt abgegeben. Hast Du aber den
+    Raum untersucht oder 'schau' eingegeben, wird die Meldung fuer Deinen
+    momentanen Raum abgesetzt.
+
+SIEHE AUCH:
+    typo, idee, detail, regeln, bezugsobjekt
+
+LETZTE AeNDERUNG:
+    12. Okt 2011 Gloinson
+

@@ -1,0 +1,73 @@
+ModifySkill()
+FUNKTION:
+    public varargs void ModifySkill(string sname, mixed val,
+                                    int diff, string gilde)
+
+DEFINIERT IN:
+    /std/living/skills.c
+
+ARGUMENTE:
+    string sname     der zu aendernde Skill
+    mixed val        Aenderungswert: int fuer SI_SKILLABILITY, sonst mapping
+    int diff         Schwierigkeit (optional: default ist existierendes diff)
+    string gilde     Gilde (optional: default ist eigene Gilde)
+
+BESCHREIBUNG:
+    Mit der Methode kann man die Werte eines Skills/Spells veraendern. Dabei
+    wird ein Skill immer in ein Mapping umgewandelt (Skills/Spells koennen
+    auch einfach nur ihren Skillwert enthalten, diese ist aequivalent zu
+    einem Mapping mit ([SI_SKILLABILITY:<Skillwert>]).
+
+    Ist 'val' ein int, wird dieses als SI_SKILLABILITY gesetzt. Falls der
+    Skill nur ein int war, wird ein 'diff'!=0 als SI_DIFFICULTY gesetzt.
+
+    Ist 'val' ein Mapping, wird dieses zum Skillmapping addiert.
+    
+    Etwaige SI_SKILLABILITY-Aenderungen laufen danach noch durch LimitAbility.
+
+BEISPIELE:
+    // #1a: Lerne einen Spell/Skill (einer Gilde)
+    caster->ModifySkill("feuerball", MAX_ABILITY, 100, "abenteurer")
+    // #1b: ... oder ...
+    caster->ModifySkill("feuerball", ([SI_SKILLABILITY: MAX_ABILITY]), 100,
+                        "abenteurer")
+    // #1c: ... oder fuer einen Abenteurer ...
+    caster->ModifySkill("feuerball", ([SI_SKILLABILITY: MAX_ABILITY]), 100);
+    
+    // #2: Setze eine Skill-Funktion fuer einen Kampfskill des Klerus
+    this_player()->ModifySkill(FIGHT(WT_CLUB),
+                               ([SI_SKILLFUNC: "Keulenkampf",
+                                 SI_DIFFICULTY: 100]),
+                               100, "klerus");
+
+    // #3: Speichere im Skill (also Spieler) eine Option fuer diesen Skill
+    // Vorteil: dieser Eintrag wird dem Spell immer uebergeben
+    caster->ModifySkill("blitz", (["klerus_spell_option": 2]));
+
+    (Code in /doc/beispiele/testobjekte/modifyskillspell_test)
+    // #4: Lerne einen unabhaengigen Spell: ACHTUNG
+    // dieser Spell funktioniert nur solange, wie die Closure existiert,
+    // SI_SKILLABILITY und Spell bleiben jedoch im Spieler gespeichert (!)
+    this_player()->ModifySkill("fnrx",
+      ([SI_CLOSURE:
+          function int (object caster, string skill, mapping sinf) {
+            caster->LearnSkill("fnrx", 1);
+            tell_object(caster, "Peng! Dein Skillwert steigt auf "+
+                                caster->QuerySkillAbility("fnrx")+".\n");
+            return ERFOLG;
+          },
+        SI_SKILLABILITY: 8432]),
+      100,
+      "ANY");
+
+SIEHE AUCH:
+    Skills Lernen:  LearnSkill, LimitAbility
+    * Nutzung:      UseSpell, UseSkill
+    * Abfragen:     QuerySkill, QuerySkillAbility
+    * Modifikation: ModifySkillAttribute, QuerySkillAttribute,
+                    QuerySkillAttributeModifier, RemoveSkillAttributeModifier
+      * Properties: P_SKILL_ATTRIBUTES, P_SKILL_ATTRIBUTE_OFFSETS
+    * sonstig:      spruchermuedung
+    * Properties:   P_NEWSKILLS
+
+3. Okt 2011 Gloinson

@@ -1,0 +1,51 @@
+
+mv
+--
+
+ MAGIERKOMMANDO:
+    mv [ -irfv ]  <alt> <neu>
+    mv [ -irfv ]  <von_1> [ ... <von_n> ] <nach>
+    mv [ -irfvm ] <von_1> [ ... <von_n> ] <nach> <maske>
+
+ ARGUMENTE:
+
+     <alt>    Alter Datei- oder Verzeichnisname
+     <neu>    Neuer Datei- oder Verzeichnisname
+     <von_1>
+     <von_n>  Name der Quelldateien und -verzeichnisse
+     <nach>   Das Zielverzeichnis
+     <maske>  Dateimaske fuer Datei- oder Verzeichnisnamen
+
+ BESCHREIBUNG:
+    Mit dem ersten Aufruf wird die Datei bzw. das Verzeichnis <alt> in <neu>
+    umbenannt.
+
+    Mit dem zweiten Aufruf werden die Quelldateien <von_1> bis <von_n> in das
+    Zielverzeichnis <verz> verschoben.
+
+    In der zweiten Variante koennen die Dateinamen auch Muster wie * oder ?
+    enthalten.
+
+    Die Optionen haben folgende Bedeutung:
+
+     -i  Vor dem Ueberschreiben einer existierenden Datei wird eine
+         Sicherheitsabfrage durchgefuehrt.
+     -r  Es werden rekursiv Unterverzeichnisse verschoben, falls das
+         Zielverzeichnis schon existiert
+     -f  Evtl. auftretende Probleme, die sonst einen Abbruch bewirken wuerden,
+         werden ignoriert. Auch `-i' wird ausser Kraft gesetzt.
+     -v  Es wird detailliert ausgegeben, was gemacht wird
+     -m  Es werden nur Dateien verschoben, die dem Muster <maske> entsprechen
+
+ BEISPIELE:
+
+    > mv datei1 datei2
+    > mv * temp
+    > mv /players/hate/*.c ../test
+    > mv -ifrm ~mandragon/meloran /d/inseln/mandragon/meloran *.c
+
+ SIEHE AUCH:
+    cp, rm
+
+ LETZTE AENDERUNG:
+    Don, 03.10.2002, 18:00:00 von Mandragon

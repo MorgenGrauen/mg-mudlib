@@ -1,0 +1,18 @@
+SYNOPSIS
+      xeval <expression>
+
+DESCRIPTION
+      Execute an LPC expression. Inside the <expression>, "me" and "here" are
+      predefined objects (guess for what :). Here we can also use the function
+      "get()" to find an object using the object access syntax. If the
+      Expression returns an object the variable "$result" will be set to this.
+      xeval includes a private ~/.xtool.h, if it exists, to support user        
+      defined macros.
+
+
+EXAMPLES
+      Just do it!
+      xeval users()
+      xeval getuid(me)
+      xeval get("$me.xtool")
+

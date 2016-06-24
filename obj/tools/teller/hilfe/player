@@ -1,0 +1,21 @@
+BEFEHL:
+	player, pl
+
+ARGUMENTE:
+	TOS -- Name eines Spielers
+
+FUNKTION:
+	Hole einen Namen vom Stack und lege stattdessen das entsprechende
+	Spielerobjekt auf den Stack.
+
+	Am Ende des Spielernamens ist ein Stern ('*') als Wildcard erlaubt.
+	Die Namen nicht eingeloggter Spieler muessen in jedem Fall ausge-
+	schrieben werden.
+
+
+BEISPIELE:
+	,"rumata" pl
+	Legt Rumata auf den Stack.
+
+SIEHE AUCH:
+	"living", "object"

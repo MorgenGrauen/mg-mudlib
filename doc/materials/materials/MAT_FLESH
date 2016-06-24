@@ -1,0 +1,21 @@
+Materialid:
+MAT_FLESH                "flesh"
+
+Name:
+"Fleisch" "Fleisches" "Fleisch" "Fleisch"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_FOOD:-50
+MAT_FLESH
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_BIO:100
+MATGROUP_EATABLE:100
+MATGROUP_SOLID:100

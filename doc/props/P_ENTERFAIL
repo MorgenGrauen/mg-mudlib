@@ -1,0 +1,24 @@
+NAME:
+    P_ENTERFAIL                   "enterfail"                   
+
+DEFINIERT IN:
+    /sys/transport.h
+
+BESCHREIBUNG:
+     Meldung an den Spieler, wenn er einen vollen Transporter betreten 
+     will. Ist die Propertie ein Array, so wird das erste Element als
+     Meldung an den Spieler, das zweite als Meldung an die Mitspieler 
+     im Raum geschickt.
+
+BEISPIEL:
+     SetProp(P_ENTERFAIL,"Dort ist wirklich kein Platz mehr fuer Dich");
+     
+     SetProp(P_ENTERFAIL, ({ "Dort ist wirklich kein Platz mehr fuer Dich",
+                             "versucht, auf die Kutsche zu klettern, wird "
+                            +"aber wieder heruntergeschickt" }) );
+
+SIEHE AUCH:
+     P_ENTERMSG, P_LEAVEFAIL, P_LEAVEMSG, transporter
+
+LETZTE AENDERUNG:
+    Don, 24.01.2002, 10:15:07h von Tilly

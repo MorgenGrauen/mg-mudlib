@@ -1,0 +1,14 @@
+NAME:
+    P_MAX_SP                      "max_sp"
+
+DEFINIERT IN:
+    /sys/living/life.h
+
+BESCHREIBUNG:
+     Maximale Anzahl der Magiepunkte.
+
+SIEHE AUCH:
+     Props:	P_SP
+     Verwandt:	UpdateAttributes()
+
+21.April 2006 Gloinson

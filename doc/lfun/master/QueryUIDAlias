@@ -1,0 +1,43 @@
+QueryUIDAlias()
+
+FUNKTION:
+    varargs string* QueryUIDsForWizard(string uidalias, int recursive);
+
+DEFINIERT IN:
+    /secure/master/userinfo.c
+
+ARGUMENTE:
+    uidalias
+      UID, die expandiert werden soll.
+    recursive (optional)
+      Gibt an, ob QueryUIDAlias() (indirekt) rekursiv aufgerufen wurde.
+      Sollte normalerweise nicht per Hand gesetzt werden.
+
+BESCHREIBUNG:
+    Die Funktion ermittelt aus einer "Alias-UID" die UID, fuer die sie steht.
+    Hierbei werden folgende UID-Aliase beruecksichtigt:
+    "region":    d.region.* + region + d.region
+    "gilde":     GUILD.gilde, GUILD.gildenspellbook, p.gilde
+    "p":         p.* (ohne p.service)
+    "p.service": p.service.*
+    "magierid":  QueryUIDsForWizard()
+
+    Das Ergebnis dieser Funktion wird laengere Zeit gecachet (bis zu 24h).
+
+RUeCKGABEWERT:
+    Zurueckgeliefert wird ein Array von Strings, jedes Element ist eine UID.
+    Sollte uidaliase keines der o.g. sein, wird ein ({uidalias}) geliefert.
+
+BEISPIELE:
+    string *uids = master()->QueryUIDAlias("schattenwelt");
+    // uids enthaelt nun:
+    // ({"d.anfaenger","anfaenger","d.anfaenger.ark","d.anfaenger.ennox",
+    //   "d.anfaenger.humni","d.anfaenger.kiria","d.anfaenger.konzepte",
+    //   "d.anfaenger.miril"})
+
+SIEHE AUCH:
+    QueryWizardsForUID(), 
+		AddWizardForUID(), RemoveWizardFromUID()
+
+16.12.2007, Zesstra
+

@@ -1,0 +1,24 @@
+SYNOPSIS
+      xmtp [options] <directory> <file>
+
+DESCRIPTION
+      Create a script file for transfering complete directories with mtp.
+      If your mtp needs extra arguments (except of the -r option which
+      stands for reading files) for example the -g option then you can add
+      then to the command.
+      This command works recursively and can cause a to deep recursion or
+      a too long evaluation error when trying to make a script for huge
+      directories like "/players" for example.
+      If the <file> allready exists it will not be removed instead the script
+      will simply added to the end of the file.
+
+EXAMPLE
+      xmtp -gtubmud /basic ~/basic.csh
+      Create a script file "basic.csh" to transfer the whole content of the
+      "/basic" directory.
+
+      On your host you then just create a directory (normally with the same
+      name give to the xmtp command), change into the directory and read
+      the script file with "mtp -r basic.csh". Then just execute the script
+      with "csh" or "sh".
+

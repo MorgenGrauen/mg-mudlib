@@ -1,0 +1,28 @@
+
+tutorial
+--------
+
+ BESCHREIBUNG:
+
+   Im Startraum jeder Rasse kann man mit dem Befehl 'tutorial' das
+   Neuspielertutorial beginnen. Im Tutorial bekommt man von einem
+   alten Steinbeisser die wichtigsten Faehigkeiten fuer das Ueberleben
+   im MorgenGrauen beigebracht.
+
+   Es werden: Bewegung, Untersuchen, Kommunikation, Aktionen, Quests,
+   Benutzung von Containern, Lichtquellen, Handel und Kampf behandelt.
+
+   Das Tutorial kann per 'ueberspringe tutorial' verlassen werden, sobald
+   Du das erste Mal dem Steinbeisser begegnet bist. Du hast jederzeit die 
+   Moeglichkeit, es wieder zu beginnen, indem Du den Befehl 'tutorial' in
+   Deinem Startraum eingibst.
+
+   Die Geschwindigkeit der Informationen innerhalb des Tutorials ist
+   mittels 'schneller', 'langsamer', 'pause', 'weiter', 'abbruch' und
+   'neustart' steuerbar.  
+
+SIEHE AUCH: einfuehrung, cicerones, hilfe
+
+ LETZTE AeNDERUNG:
+   07.05.2016, Arathorn
+

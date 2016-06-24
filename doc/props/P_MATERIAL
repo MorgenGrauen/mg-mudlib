@@ -1,0 +1,79 @@
+P_MATERIAL
+NAME:
+     P_MATERIAL					"material"
+
+DEFINIERT IN:
+     <thing/material.h>
+
+BESCHREIBUNG:
+     Mapping mit prozentualen Anteilen von Materialien, aus denen ein Objekt 
+     besteht.
+
+BEMERKUNGEN:
+     Bei SetProp kann man zu Vereinfachung auch ein einzelnes Material oder 
+     ein Array aus Materialien angeben. Die Anteile werden dann 
+     gleichmaessig verteilt.
+
+BEISPIELE:
+     // 100% Eis
+     SetProp(P_MATERIAL, MAT_ICE);
+     // QueryProp(P_MATERIAL) -> ([MAT_ICE:100])
+
+     // 50% Eis, 50% Misc-Holz
+     SetProp(P_MATERIAL, ({ MAT_ICE, MAT_MISC_WOOD }));
+     // QueryProp(P_MATERIAL) -> ([MAT_ICE:50, MAT_MISC_WOOD: 50])
+
+     // 60% Eis, 40% Misc-Holz
+     SetProp(P_MATERIAL, ([ MAT_ICE: 60, MAT_MISC_WOOD: 40 ]));
+
+     // 100% Papier
+     SetProp(P_MATERIAL, MAT_PAPER);
+     // QueryProp(P_MATERIAL) -> ([MAT_PAPER:100])
+
+     // 50% Silber, 50% Gold
+     SetProp(P_MATERIAL, ({MAT_SILVER, MAT_GOLD}))
+     // QueryProp(P_MATERIAL) -> ([MAT_SILVER:50,MAT_GOLD:50])
+
+     // ein weiser Schmied, der was daraus macht:
+     int i;
+     string *mat, mname, mgroup;
+     mat=m_indices(ob->QueryProp(P_MATERIAL));
+     i=sizeof(mat);
+
+     write("Der Schmied sagt: "+ob->Name(WER)+" besteht aus ...\n");
+     while(i--) {
+      // den Namen erkennen/aussprechen:
+      // Materialien werden allgemein ganz schlecht erkannt (zu 5%), aber
+      // alles aus Metall wird zu +100% gut erkannt ...
+      mname=MATERIALDB->MaterialName(mat[i], WER,
+	     ({5, ([MATERIAL_SYMMETRIC_RECOGNIZABILITY:
+			({MATGROUP_METAL, 100})])}));
+
+      // und nur Metalle analysieren ...
+      if(MATERIALDB->MaterialGroup(([mat[i]:100]),MATGROUP_METAL)>=100) {
+       int j;
+       string *mgr;
+       mgr=MATERIALDB->GetMatMembership(mat[i]);
+       j=sizeof(mgr);
+       mgroup=" gehoert zu ";
+       while(j--) {
+        mgroup+=MATERIALDB->GroupName(mgr[j]);
+        if(j>0) mgroup+=", ";
+       }
+      } else mgroup=" kenne ich nicht";
+      printf("%-12.12s: %s\n",mname, mgroup);
+     }
+
+
+SIEHE AUCH:
+     Konzepte:	  material, materialerkennung
+     Grundlegend: /sys/thing/material.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste, materialgruppen
+     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

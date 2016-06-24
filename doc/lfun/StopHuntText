@@ -1,0 +1,58 @@
+StopHuntText()
+
+FUNKTION:
+	void StopHuntText(object arg);
+
+DEFINIERT IN:
+	/std/living/combat.c
+
+ARGUMENTE:
+	arg
+	  Der Gegner, welcher nicht mehr bekaempft wird.
+
+BESCHREIBUNG:
+	Mit der Funktion StopHuntFor() kann man ein Lebewesen als Gegner
+	austragen. Dabei erhalten sowohl der Gegner, als auch das Lebewesen,
+	welches (einseitig!) Frieden schliesst, jeweils eine Meldung, sofern
+	man dies nicht mittels eines Flags unterbindet.
+	Es ist nun moeglich, auf diese Meldung Einfluss zu nehmen, indem
+	man die Funktion StopHuntText() ueberschreibt, welche dafuer
+	verantwortlich ist.
+
+BEISPIEL:
+	Ein Lebewesen moechte einen Kampf sofort abbrechen, wenn es von
+	einem Frosch angegriffen wird:
+	  int Defend(int dam,mixed dam_type,mixed spell,object enemy)
+	  { if(enemy&&enemy->QueryProp(P_FROG))
+	    { if(StopHuntFor(enemy))
+              { // wenn Frosch angreifen will, der noch kein Gegner war
+                tell_object(arg,
+         this_object()->Name(WER)+" kaempft nicht mit Dir.\n"
+	+"Wahrscheinlich werden Froesche verschont.\n");
+	        tell_object(this_object(),
+	 "Der bloede Frosch wollte Dich doch tatsaechlich angreifen.\n");
+              }
+	      enemy->StopHuntFor(this_object(),1);
+              return 0;
+            }
+	    return::Defend(dam,dam_type,spell,enemy);
+	  }
+	  // wird nur aufgerufen, wenn der Gegner irgendwann Frosch wurde
+	  void StopHuntText(object arg)
+	  { tell_object(arg,
+	 this_object()->Name(WER)+" jagd Dich nicht mehr.\n"
+	+"Wahrscheinlich werden Froesche verschont.\n");
+	    tell_object(this_object(),
+	"Dein Gegner ist doch tatsaechlich ploetzlich Frosch geworden!\n");
+	  }
+	Warum braucht man nun das erste StopHuntFor(), wenn doch Gegner erst
+	in ::Defend() eingetragen werden, welches doch gar nicht ausgefuehrt
+	wird, wenn der Gegner ein Frosch ist? Man beachte hierbei, dass der
+	Gegner ja auch waehrend des Kampfes oder waehrend der Feindschaft
+	irgendwann Frosch werden koennte und dann schon Gegner war.
+
+SIEHE AUCH:
+	StopHuntFor(), SelectEnemy(), QueryEnemies(), IsEnemy()
+
+----------------------------------------------------------------------------
+Last modified: Wed May 26 16:47:51 1999 by Patryn

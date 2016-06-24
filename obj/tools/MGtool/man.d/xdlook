@@ -1,0 +1,6 @@
+SYNOPSIS
+      xdlook <object>
+
+DESCRIPTION
+      Same as look, but takes a deep look at the object.
+

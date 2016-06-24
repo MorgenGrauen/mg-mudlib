@@ -1,0 +1,33 @@
+Fuer die Verwaltung der Standardtoplisten gibt es /secure/topliste, welches (zur Zeit) bei Login bei toplisten-willigen Spielern die toplisten-relevanten Daten vom Spieler abfragt und in einer Tabelle eintraegt.
+
+Abfragen laesst die Liste jederzeit wie folgt durch Aufruf folgender Funktionen in /secure/topliste: Liste, SpielerListe, SeherListe und HardcoreListe.
+
+Die 4 sind varargs und bekommen folgende moegliche Argumente:
+* string rasse
+  Nur Spieler der Rasse <rasse> beruecksichtigen
+* string gilde
+  Nur Spieler der Gilde <gilde> beruecksichtigen
+* int limit
+  Max. <limit> Eintraege, Default: 100, Max: 100
+* string sort
+  Liste sortieren nach: lep, qp, xp, age, wizlevel, hardcore, gilde, rasse, 
+  name
+  Default: lep
+
+Die Funktionen liefern ein Array zurueck, was fuer jeden Eintrag in der Topliste wieder ein Array enthaelt: < <string|int>* >*
+
+Beispiele:
+# /secure/topliste->Liste()
+  Die 100 Chars mit den meisten Stufenpunkten
+# /secure/topliste->HardcoreListe(0,0,10)
+  Die 10 HC-Chars mit den meisten Stufenpunkten
+# /secure/topliste->Liste(0,"kaempfer",10,"xp")
+  Die 10 Kaempfer-Chars mit den meisten XP
+# /secure/topliste->Liste("Zwerg","zauberer")
+  Die 100 Zwergenzauberer mit den meisten Stufenpunkten
+Weiteres koennt ihr euch ja sicher denken.
+
+Achso, das Ergebnis sieht dann ungefaehr so aus:
+({ ({name, lep, qp, xp, level, age, rasse, gilde, wizlevel, hardcore}), ... })
+({({"hcplay",100,0,0,1,62,"Mensch","abenteurer",0,1})})
+

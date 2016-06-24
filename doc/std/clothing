@@ -1,0 +1,77 @@
+ STANDARDKLASSE:
+	"/std/clothing"
+ 
+ BENUTZUNG:
+        inherit "/std/clothing";
+ 
+        #include <properties.h>
+        #include <clothing.h>
+
+ PROPERTIES:
+
+     Besondere Attribute und Anforderungen fuer Traeger:
+	P_RESTRICTIONS	setzbar: Anforderungen an Traeger
+	P_CURSED	setzbar: Verfluchung (nicht ausziehbar)
+
+     Meldungen und Zeitpunkte:
+	P_EQUIP_TIME	enthaelt den Zeitpunkt des Anziehens
+	P_WORN		enthaelt den Traeger
+	P_WEAR_MSG	setzbar: eigene Anziehmeldungen
+	P_UNWEAR_MSG	setzbar: eigene Ausziehmeldungen
+
+     Dynamisches Verhalten in Kampf und beim Anziehen:
+	P_WEAR_FUNC	setzbar: Objekt mit Anziehfunktion "WearFunc()"
+	P_REMOVE_FUNC	setzbar: Objekt mit Ausziehfunktion "RemoveFunc()"
+
+     Zusaetzlich sind alle Properties aus /std/thing verfuegbar, also
+     bitte auch folgende setzen:
+	P_MATERIAL	setzbar: Zusammensetzung
+	P_SIZE		setzbar: Groesse
+	P_WEIGHT	setzbar: Gewicht
+
+ 
+ ERLAEUTERUNG:
+     Basisklasse fuer alle Kleidungen im Spiel. Sie ist von "/std/thing"
+     abgeleitet.
+     Kleidung belegt niemals einen Ruestungsslot und ist nur fuer Kram
+     gedacht, der keine kampfrelevante Funktionalitaet beeinhaltet.
+     Momentan ist die Anzahl an Kleidungsstuecken, die ein Spieler anziehen
+     kann, nicht begrenzt.
+     Kleidung sind im Prinzip Ruestungen ohne alle in den Ruestungen
+     enthaltene kampfrelevante Funktionalitaet.
+     (BTW: Kleidungen koennen allerdings, sofern unbedingt notwendig, mittels
+      P_SENSITIVE, P_SENSITIVE_ATTACK, etc. auch indirekt am Kampf teilnehmen,
+      in dem Sinne, dass sie auf eingehenden Schaden reagieren. Hierbei darf
+      allerdings in keinem Fall in den Kampfverlauf eingegriffen werden.)
+
+     Spezielle Properties:
+     SetProp(P_WEAR_FUNC, ob)
+	Setzt das Objekt, in dem die Funktion WearFunc() definiert
+	wird. WearFunc() wird beim Versuch die Kleidung anzuziehen
+	aufgerufen, gibt sie 0 zurueck so scheitert der Versuch.
+     SetProp(P_REMOVE_FUNC, ob)
+	Setzt das Objekt, in dem die Funktion RemoveFunc() definiert
+	ist. Die Funktion wird beim Versuch die Kleidung auszuziehen
+	aufgerufen, gibt sie 0 zurueck, so scheitert der Versuch.
+
+
+ VERERBUNGSBAUM:
+     [/std/clothing]
+     ..... [/std/thing/properties]
+     ..... [/std/thing/language]
+     ..... [/std/thing/commands]
+     ..... [/std/thing/restrictions]
+     ..... [/std/thing/envchk]
+     ..... [/std/clothing/description]
+     .......... [/std/thing/description]
+     ..... [/std/clothing/moving]
+     .......... [/std/thing/moving]
+     ..... [/std/clothing/wear]
+
+ SIEHE AUCH:
+     armours,
+     FilterClothing, FilterArmours, Wear(), Unwear(), WearArmour(),
+     WearClothing(), UnwearArmour(), UnwearClothing() 
+
+15.02.2009, Zesstra
+

@@ -1,0 +1,8 @@
+BEFEHL:
+	here
+
+ARGUMENTE:
+	Keins
+
+FUNKTION:
+	Lege den Raum, in man sich befindet oben auf den Stack.

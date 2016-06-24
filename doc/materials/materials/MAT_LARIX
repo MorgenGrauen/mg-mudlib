@@ -1,0 +1,25 @@
+Materialid:
+MAT_LARIX                "larix"
+
+Name:
+"Laerchenholz" "Laerchenholzes" "Laerchenholz" "Laerchenholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+sehr harzig, biegsam
+
+Erkennbarkeit:
+MAT_MISC_CONIFER_WOOD:5
+MAT_LARIX
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_CONIFER_WOOD:100
+MATGROUP_FLEXIBLE:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

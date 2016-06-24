@@ -1,0 +1,66 @@
+Erzmagier
+=========
+
+ERZMAGIER:
+  Der Einflussbereich der Erzmagier beschraenkt sich nicht nur auf Bereiche
+  innerhalb des Spiels, sondern auch auf Bereiche ausserhalb. Sie koennen
+  Aenderungen an der Basis-MudLib vornehmen und damit die Rahmenbedingungen
+  des Spiels aendern oder ergaenzen. Ausserdem sind sie die richtigen
+  Ansprechpartner, wenn man sein Passwort vergessen hat, oder wenn durch
+  einen Absturz des Rechners das Savefile eines Spielers kaputt gegangen
+  ist.
+
+  Die MudGoetter Jof, Rumata und Zook sind dabei die hoechsten Instanzen;
+  Jof macht sich allerdings in letzter Zeit etwas rar.
+
+Die Aufgabenbereiche der einzelnen Erzmagier sind wie folgt festgelegt:
+
+      Amaryllis
+        Amaryllis ist fuer die Administration und das Hosting unseres
+        Servers zustaendig und hat ausserdem das Amt des Sheriffs inne.
+      Arathorn
+        Arathorn kuemmert sich um die Vergabe der Erstkill-Stupse (dazu
+        begutachtet er die NPCs). Darueberhinaus kuemmert er sich 
+        um die Weiterentwicklung der Mudlib.
+      Ark
+        Ark testet neue Abenteuer sowie sogenannte MiniQuests bevor sie
+        auf Spieler losgelassen werden und traegt diese mit 
+        angemessener Punktzahl ein.
+        Er kuemmert sich um die Pflege der bestehenden Rassen sowie die
+        Ausarbeitung weiterer Rassen. Dazu gehoeren sowohl die Rassenshells
+        als auch die Seele.
+      Humni
+        Humni ist fuer die Gilden-Balance zustaendig und leitet das
+        Balance-Team. Des Weiteren ist er fuer die Heilungs-Balance
+        zustaendig.
+      Jof
+        Jof ist als MudGott fuer mehr oder weniger alles zustaendig.
+      Rumata
+        Rumata ist MudGoettin und damit auch Maedchen fuer alles.
+        Und delegiert dann ;-)
+      Miril
+        Miril verwaltet die Forscherpunkte und Zaubertraenke.
+      N.N. 
+        Er/Sie ist weiterhin fuer die Pflege des Stufensystems verantwortlich 
+        und kuemmert sich um die Pflege der Mudlib.
+      Zesstra
+        Zesstra kuemmert sich um unseren Driver und die Mudlib.
+      Zook
+        Zook ist einer der MudGoetter und damit Maedchen fuer 
+        alles. Er ernennt Regionsmagier und beruft diese gegebenenfalls
+        ab. Jungmagier koennen sich mit ihren Gesellenstuecken gerne bei
+        ihm melden.
+
+Noch im Kreis der Erzmagier, aber schon ihrer Aufgaben entbunden 
+sind: 
+
+      Hate
+        Hate war fuer die Administration unseres Mud-Rechners zustaendig.
+
+SIEHE AUCH:
+        ebenen, regionen, goetter
+        (nur Magier): balance
+
+LETZTE AeNDERUNG:
+        2011-09-25 von Zook.
+

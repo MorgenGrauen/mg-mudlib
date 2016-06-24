@@ -1,0 +1,51 @@
+
+lies
+----
+
+KOMMANDO
+	lies <was> [an <objekt> | am <objekt>] [in mir | im raum]
+
+ARGUMENTE
+  <was>
+    Name eines Gegenstandes, Lebewesens oder Detail, welches man lesen will.
+	<objekt>
+	  Ein Gegenstand oder ein Lebewesen, an dem man lesen will.
+
+BESCHREIBUNG
+  'lies' ist das allgemeine Kommando, um lesbare Details an Gegenstaenden,
+  Lebewesen oder in Raeumen (z.B. ein Schild an einem Rucksack) oder an sich
+  lesbare Gegenstaende (z.B. eine Schriftrolle) wahrzunehmen.
+
+  Da bei Objekten mit gleichen lesbaren Details zuerst die im Raum liegenden
+  Objekte gelesen werden, kann man an Sachen, die man bei sich traegt, auf
+  alle Faelle mit dem Zusatz `in mir' riechen.
+
+  Das Kommando benutzt ggf. das aus dem Kommando 'schau' bzw. 'untersuche'
+  bekannte Bezugsobjekt.
+
+BEISPIELE:
+  > lies tafel
+
+  > lies tafel in raum
+
+  > lies widmung an buchstuetzen in mir
+  
+  > lies schild an biene in raum
+
+  > lies buch in paket
+
+  > unt paket
+  > lies index an buch
+  (Liegt ein Buch mit lesbarem Detail "index" im Paket, liest man diesen mit
+   dem zweiten Kommando.)
+
+  > lies index an buch in paket in raum
+  (Liest den Index eines Buches in einem Paket im Raum.)
+
+SIEHE AUCH:
+  bezugspunkt
+  schau, rieche, lausche, taste
+
+LETZTE AENDERUNGEN:
+  18.01.2013, Zesstra
+

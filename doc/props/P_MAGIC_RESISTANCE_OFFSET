@@ -1,0 +1,33 @@
+NAME:
+     P_MAGIC_RESISTANCE_OFFSET                     "mag_res_offset"                     
+
+DEFINIERT IN:
+     /sys/new_skills.h
+
+BESCHREIBUNG:
+     Mapping mit ganzzahligen Prozentwerten in 0.01%-Schritten
+     (0-10000) zur Resistenz/Empfindlichkeit gegen bestimmte
+     Magieklassen.
+
+     Die Property wird in der Methode SpellDefend() ausgewertet und
+     fuer einen auf den NPC/Spieler gesprochenen Spell werden die
+     Werte fuer all dessen Magieklassen aufaddiert. Daher sind auch
+     negative Werte fuer einzelne Magieklassen sinnvoll.
+
+     P_MAGIC_RESISTANCE_OFFSET und SpellDefend werden von den Spellbooks
+     ausgewertet. Der Einfluss ist daher abhängig vom Spellbook.
+
+BEISPIELE:
+     // Goblins
+     SetProp(P_MAGIC_RESISTANCE_OFFSET,
+               ([MT_ANGRIFF:600,         // 6% Resistenz gegen Angriff
+	         MT_ILLUSION:500,        // 6% Resistenz gegen Illusionen
+                 MT_VERWANDLUNG:-300,    // 3% Empfindlichkeit
+		 MT_HELLSICHT:-750,      // 7.5% Empfindlichkeit
+		 MT_BEHERRSCHUNG:250])); // 2.5% Resistenz
+
+SIEHE AUCH:
+     Verwandt:     SpellDefend
+     Aehnlich:     P_NOMAGIC
+
+29.Dez 2007 Gloinson

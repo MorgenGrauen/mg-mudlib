@@ -1,0 +1,51 @@
+8. DESIGNER-SEHER
+-----------------
+
+Nun, vielleicht ist dieser Titel auch ein wenig uebertrieben. Aber als
+Seher kannst Du (fast) Deine gesamte Erscheinung im MUD selbst gestalten:
+Nun, Designertypen glaenzen durch ihr Aeusseres, also fangen wir mal beim
+Aussehen an: Was die Spieler sehen, wenn sie Dich untersuchen, kannst Du
+mit dem Befehl 'extralook' bestimmen. Die dort eingegebene Beschreibung
+wird der Auflistung dessen, was Du bei Dir traegst, vorangestellt.
+
+Zur Erscheinung gehoert auch das Auftreten, also designen wir mal ein
+bisschen an Deinen Meldungen herum, die erscheinen, wenn Du einen Raum
+betrittst oder verlaesst. Dies kannst Du mit:
+'setmin <TEXT>' bzw. 'setmout <TEXT>' setzen.
+Und wenn Du moechtest, kannst Du mit 'setmmout' bzw. 'setmmin'
+die Meldungen setzen, die erscheinen, wenn Du einen Ort mittels eines
+Teleports betrittst/verlaesst.
+
+Doch auch Designerseher leben unter dem Joch des Armageddon, und sind daher
+manchmal waffen- und ruestungslos. Wer es aber nicht ertragen kann, in diesen
+bitteren Stunden immer die Meldung 'greift mit blossen Haenden an' zu sehen,
+der kann sich mittels des Befehls 'sethands <TEXT>' eine martialischere
+(oder auch zaertlichere, je nach Geschmack ;)) Kampfmeldung fuer seine Haende
+setzen.
+
+Nun, ein richtiger Seher hat natuerlich auch einen interessanteren
+Namen, nicht so was oedes wie 'Wurst, die Seherin'. Und deshalb koennte
+sich Wurst einen eigenen Namen geben, mit dem Befehl 'titel <TEXT>'.
+Dann hiesse sie hinterher beispielsweise 'Wurst ist ne Wurst'.
+Und wem das noch nicht laessig genug ist, der setzt sich mit
+'presay <TEXT>' auch noch einen Namensvorsatz.
+Beispiel: 'Die Oberwurstseherin Wurst ist ne Wurst'.
+Wenngleich das vielleicht doch nicht SOOO cool ist.
+Geschmackssache halt ;).
+
+
+Ach ja, und wenn man dann bei all der Rumdesignerei vergessen haben sollte,
+was man ueberhaupt eingegeben hat, so erhaelt man mit dem Befehl 'review'
+einen Ueberblick ueber die meisten Einstellungen.
+
+Eine Anmerkung noch: Der Toeter hat vor langer Zeit eine kleine Erweiterung
+in den Befehl setmout eingebaut:
+Nunmehr ist es moeglich, den Text 'nach (Richtung)' nicht mehr nur am Ende,
+sondern irgendwo im Text erscheinen zu lassen: dann muss im Text der
+out-message ein # erscheinen, die dann durch 'nach (Richtung)' ersetzt wird.
+Unterdruecken kannst Du die Richtungsangabe allerdings nicht, wenn Du das #r
+weglaesst, wird diese Angabe einfach hinten angehaengt..
+
+Hilfe dazu liefern aber natuerlich auch wiederum die Seherhilfeseiten unter
+'hilfe seher'
+

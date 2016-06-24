@@ -1,0 +1,84 @@
+Para-Raeume
+
+    Grundsaetzlich wird ein Para-Raum dadurch gekennzeichnet, dass an den 
+    Dateinamen ein ^n angehaengt wird, n gibt die Dimension an. Ein Raum in 
+    Para 1 wuerde also raum^1.c heissen.
+
+    Man muss sich nicht selbst darum kuemmern, dass Spieler in den richtigen
+    Para-Raum bewegt werden, das passiert im move().
+
+    Damit man bei gleichen Raeumen, die sich nur durch beispielsweise die
+    Anwesenheit eines fiesen Monsters unterscheiden nicht alles doppelt
+    beschreiben muss, sollte man das bekannte Konzept der Vererbung
+    verwenden. Hierfuer gibt es zwei Ansaetze:
+
+LOESUNG 1:
+    Habe ich einen Raum, der in Para exakt so ist wie in Normal, wo nur eine
+    Sache hinzugefuegt wird, schreibe ich meinen Raum in normal so wie ich es
+    immer tun wuerde, erbe diesen im Para-Raum und setze mein fieses Monster
+    hinein.
+    Einziger Unterschied im Normal-Raum: Damit er immer initialisiert wird,
+    muss ich create_super() erstellen und darin create aufrufen. Sonst buggt
+    der Normalraum beim Betreten, falls der Pararaum zuerst betreten wurde,
+    weil der Normalraum dann zwar geladen aber selbst nicht initialisiert
+    wurde.
+
+    Beispiel:
+
+    raum.c:
+    inherit "/std/room";
+
+    protected void create() {
+      ::create();
+      ...
+    }
+
+    protected void create_super() {
+      create();
+    }
+
+    raum^1.c:
+    inherit "raum";
+
+    protected void create() {
+      ::create();
+      AddItem("fieses_monster",REFRESH_REMOVE);
+    }
+
+LOESUNG 2:
+    Habe ich einen Raum, wo auch in Normal Dinge existieren, die es nicht in
+    Para geben soll, kann ich einen Raum mit der Dimensionsnummer 0 erstellen.
+    Dieser wird niemals automatisch betreten, ausser ein Ausgang fuehrt
+    explizit dort hin.
+
+    Beispiel:
+
+    raum^0.c:
+    inherit "/std/room";
+
+    protected void create() {
+      ::create();
+      ...
+    }
+
+    raum.c:
+    inherit "raum^0";
+
+    protected void create() {
+      ::create();
+      AddItem("harmloses_monster",REFRESH_REMOVE);
+    }
+
+    raum^1.c:
+    inherit "raum^0";
+
+    protected void create() {
+      ::create();
+      AddItem("fieses_monster",REFRESH_REMOVE);
+    }
+
+
+SIEHE AUCH:
+    move(L), create_super(L), P_PARA(P)
+
+Letzte Aenderung: 18.01.2015, Bugfix

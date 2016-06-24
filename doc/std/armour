@@ -1,0 +1,87 @@
+ STANDARDKLASSE:
+	"/std/armour"
+ 
+ BENUTZUNG:
+        inherit "/std/armour";
+ 
+        #include <properties.h>
+        #include <combat.h>
+
+ PROPERTIES:
+     Grundlegend:
+	P_AC		setzbar: Ruestungsklasse == Schutz
+	P_ARMOUR_TYPE	setzbar: Ruestungstyp
+
+     Besondere Attribute und Anforderungen fuer Traeger:
+	P_RESTRICTIONS	setzbar: Anforderungen an Traeger
+	P_M_ATTR_MOD	setzbar: Attributmodifikator fuer Traeger
+	P_RESISTANCE_STRENGTHS
+			setzbar: Resistenzmodifikator fuer Traeger
+	P_NR_HANDS	setzbar: notwendige Handanzahl (zB Schilde)
+	P_CURSED	setzbar: Verfluchung (nicht ausziehbar)
+
+     Meldungen und Zeitpunkte:
+	P_EQUIP_TIME	enthaelt den Zeitpunkt des Anziehens
+	P_LAST_USE	enthaelt den Zeitpunkt des letzten Treffers
+	P_WORN		enthaelt den Traeger
+	P_WEAR_MSG	setzbar: eigene Anziehmeldungen
+	P_UNWEAR_MSG	setzbar: eigene Ausziehmeldungen
+
+     Dynamisches Verhalten in Kampf und beim Anziehen:
+	P_WEAR_FUNC	setzbar: Objekt mit Anziehfunktion "WearFunc()"
+	P_REMOVE_FUNC	setzbar: Objekt mit Ausziehfunktion "RemoveFunc()"
+	P_DEFEND_FUNC	setzbar: Objekt mit Defensivfunktion "DefendFunc()"
+
+     Zusaetzliche Eigenschaften:
+	P_DAMAGED	enthaelt den Ausmass des Schadens an Waffe
+	P_QUALITY	setzbar: Qualität/Haltbarkeit der Waffe
+	P_EFFECTIVE_AC	setzbar: falls DefendFunc AC nicht sichbar aendert
+	P_DAM_TYPE	setzbar: interessant bei Kaempferangriffen
+
+     Zusaetzlich sind alle Properties aus /std/thing verfuegbar, also
+     bitte auch folgende setzen:
+	P_MATERIAL	setzbar: Zusammensetzung
+	P_SIZE		setzbar: Groesse
+	P_WEIGHT	setzbar: Gewicht
+
+ MAKROS:
+     Gueltige Ruestungstypen (definiert in "/sys/combat.h").
+ 
+ ERLAEUTERUNG:
+     Basisklasse fuer alle Ruestungen im Spiel. Sie ist von "/std/clothing"
+     abgeleitet und enthaelt alle zusaetzliche Funktionalitaet
+     fuer den Kampf.
+
+     Vor der Programmierung von Ruestungen sollte /doc/MG/waffen_werte
+     gelesen werden. Die Regeln darin sind verbindlich und sollten nur
+     in Ausnahmefaellen und mit Absprache mit dem Erzmagier fuer 
+     Waffen/Ruestungen/Monster ueberschritten werden.
+     Gerade in DefendFuncs sollte auf die korrekte Behandlung der
+     uebergebenen Spellflags geachtet werden - insbesondere SP_RECURSIVE
+     und SP_NO_ACTIVE_DEFENSE.
+
+     Die Maximalwerte und Werte fuer Zerstoerung bei Verkauf sind
+     /sys/combat.h zu entnehmen: VALID_ARMOUR_CLASS/KEEP_ARMOUR_CLASS.
+
+ VERERBUNGSBAUM:
+     [/std/armour]
+     ..... [/std/thing/properties]
+     ..... [/std/thing/language]
+     ..... [/std/thing/commands]
+     ..... [/std/thing/restrictions]
+     ..... [/std/thing/envchk]
+     ..... [/std/armour/description]
+     .......... [/std/clothing/description]
+     .............. [/std/thing/description]
+     ..... [/std/armour/wear]
+     .......... [/std/clothing/wear]
+     ..... [/std/clothing/moving]
+     .......... [/std/thing/moving]
+     ..... [/std/armour/combat]
+
+ SIEHE AUCH:
+     P_ARMOURS, P_LAST_WEAR_ACTION, P_TOTAL_AC
+     Attack(), Defend(), /doc/wiz/ruestungen, balance
+
+03.08.2007, Zesstra
+

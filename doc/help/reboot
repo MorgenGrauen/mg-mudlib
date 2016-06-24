@@ -1,0 +1,57 @@
+Reboots und ihre Folgen
+-----------------------
+    
+    Bei einem 'Reboot' wird das MorgenGrauen heruntergefahren, d.h.
+    das aktuelle Spiel wird beendet und, wenn alles gut geht, ein neues 
+    Spiel gestartet. Dies ist manchmal noetig, wenn groessere Aenderungen 
+    am MorgenGrauen vorgenommen wurden.
+    
+    Dabei gehen in der Regel alle Objekte (Waffen, Ruestungen etc.), die 
+    im Umlauf waren, verloren. Nach einem 'Reboot' stehst Du also erstmal 
+    ziemlich nackt in der Gegend herum :)
+    
+    Eine Ausnahme bilden jedoch sogenannte 'Autoload-Objekte'. Oft sind
+    dies Objekte, die man als Belohnung fuer bestandene Abenteuer erhalten
+    hat, Gildenobjekte, Muenzen und einiges mehr. Sie ueberleben selbst
+    einen 'Reboot' und bleiben Dir erhalten. Was Du an 'Autoload-Objekten'
+    bei Dir traegst, kannst Du mit dem Befehl 'i +a' erfahren (Siehe hierzu:
+    hilfe inv).
+    
+    Fuer Objekte, die Du durch einen 'Reboot' verloren hast, bekommst
+    Du eine finanzielle Entschaedigung.
+ 
+    Ein 'Reboot' hat jedoch keine Auswirkungen auf Deine Gildenfaehigkeiten,
+    die Hoehe Deiner Erfahrungs- oder Abenteuerpunkte u.ae., er fuegt Dir
+    lediglich einen unwesentlichen materiellen Schaden zu.
+
+Armageddon
+----------
+    Wird ein Reboot noetig, ist das meist keine ploetzliche Angelegenheit,
+    sondern von langer Hand vorbereitet. Daher kann der Reboot auch einige
+    Tage zuvor angekuendigt werden, so dass Spieler sich auf ihn einstellen
+    koennen. Diese Aufgabe uebernimmt Armageddon als Herold des Weltunter-
+    gangs. Dieser ruft regelmaessig aus, wie lange es noch bis zum Reboot 
+    ist und sorgt auch sonst fuer eine passende, unheimliche, also dem Welt-
+    untergang angemessene Stimmung.
+
+    Wenn Du nicht durch Armageddons Meldungen belaestigt werden moechtest, 
+    kannst Du dies auf zweierlei Arten tun:
+    
+    Entweder durch 'ignoriere armageddon'. Du wirst ab sofort nur noch das 
+    absolute Minimum an Meldungen von Armageddon bekommen. Weltuntergangs-
+    stimmung gibt es dann aber auch nicht mehr.
+
+    Oder durch 'teile armageddon mit ruhe'. Damit bringst Du diesen einen
+    Armageddon zum schweigen. Wird dieser aber abgebrochen, oder kommt es
+    doch mal zum Reboot, ist ein neuer Armageddon redseelig wie gehabt. 
+
+    Auf diese Weise verpasst Du keinen Armageddon, wirst aber auch nicht 
+    durch staendiges gescrolle genervt. Falls Du doch wieder genervt werden
+    moechtest, reicht die Wiederholung des oben genannten tm.
+
+    
+ SIEHE AUCH:
+    inv, ignoriere, crash, erzmagier
+
+ LETZTE AeNDERUNG:
+    Mon Apr 05 21:30:00 2004 von Vanion.

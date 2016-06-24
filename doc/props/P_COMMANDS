@@ -1,0 +1,47 @@
+P_COMMANDS
+NAME:
+     P_COMMANDS "commands"
+
+DEFINIERT IN:
+     <thing/commands.h>
+
+BESCHREIBUNG:
+     Diese Property enthaelt ein Mapping mit den Befehlen, die dem Objekt
+     zugeordnet sind.
+
+     Sie sollte nicht von Hand manipuliert werden, sondern nur ueber die
+     Funktionen AddCmd() und RemoveCmd().
+
+     Das Mapping hat folgenden Aufbau:
+
+     ([ befehl : ({funktion1,...});
+                 ({flag1,...});
+                 ({regel1,...});
+                 ({id1, ...}),
+        ... ])
+
+     Die Eintraege entsprechen den Parametern des AddCmd()-Aufrufs, sind
+     aber in anderer Form. Als Beispiel:
+
+     AddCmd(verb,fun1,1);
+     AddCmd(verb+syn1a|syn1b&syn2a|syn2b|syn2c,fun2,
+	   error1_notify|error2_notify^error2_write);
+     -->
+     ([verb:({fun1,fun2});					  // funs
+	    ({1,({error1_notify, error2_write^error2_say, 1})});  // flags
+            ({0,({({syn1a,syn1b}),({syn2a,syn2b,syn2c})})});	  // rules
+            0])							  // IDs
+
+     Aufgeschluesselt sehen die einzelnen Arrays folgendermassen aus:
+
+     Rules: ({<Regelsatz fuer fun1>, ({<1. Synonymgruppe>,
+				       <2. Synonymgruppe, ...}), ...})
+     Flags: ({<Flag fuer fun1>, ({<Fehlermeldung 1. Synonymgruppe>, ... ,
+				  [, Index fuer write anstatt notify_fail]}),
+	      ... })
+     IDs:   0 oder ({<ID fuer fun1>}) oder ({0, <ID fuer fun2>}) ...
+
+SIEHE AUCH:
+     /std/thing/commands.c, AddCmd(), RemoveCmd()
+
+08.Dez.2003 Gloinson

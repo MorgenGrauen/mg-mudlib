@@ -1,0 +1,15 @@
+BEFEHL:
+	restore
+	
+ARGUMENTE:
+	keins oder
+	TOS -- filename
+	
+FUNKTION:
+	Lade die in der Datei gespeicherten Funktionen. Wird kein Filename
+	angegeben, so wird die Datei ~/.memory.o ausgelesen.
+
+	Es koennen nur Funktionen abgespeichert oder geladen werden!
+
+SIEHE AUCH:
+	"funktionen", "dump", "memory"

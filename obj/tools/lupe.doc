@@ -1,0 +1,140 @@
+The lens object uses a stack to manipulate objects. Some commands push objects
+on the stack, some pop them again off the stack and use them for various
+purposes. There may be multiple commands on a single line, separated by
+spaces. The number of spaces between commands or between commands and
+arguments is not critical, i.e. there may also be two or more spaces.
+
+Notation:
+	<arg>	: a sequence of characters which doesn't contain spaces or
+		  dots. If it does, use "...", '...' or |...| to enclose
+		  it.
+	<number>: an integer, positive or negative.
+	<filename>: same as <arg> (use quotes if it contains dots). May be
+		  absolute (starting with /) relative to your home directory
+		  (starting with ~/) or relative to somebody else's home
+		  directory (starting with ~name/).
+	<function>: Name of an LPC-function.
+
+Commands:
+	pl <arg>	: push player object with name <arg>.
+	lv <arg>	: push living object with name <arg>.
+	me		: push yourself.
+	here		: push the location you are in.
+	ob <filename>	: load & push the object denoted by <filename>.
+	<filename>	: same as ob <filename> if it begins with / or ~.
+	new <filename>	: clone & push the object denoted by <filename>.
+			  Thereafter move it in your inventory.
+        creat <filename>: same as new, but don't move it into your inventory.
+	env		: push the environment of the TOS.
+	.<number>	: push the nth object in the inventory of the TOS.
+	.<arg>		: push the object with id <arg> in the inventory
+			  of the TOS.
+	=		: display the TOS.
+	info		: show detailed information about the TOS.
+	stk		: show the entire stack.
+	clr		: clear the entire stack.
+	dup		: duplicate the topmost stack entry.
+	pop		: discard the topmost stack entry.
+	swap		: exchange the two topmost stack entries.
+	over		: push the entry second from top.
+	@<number>	: push the stack entry corresponding to the number.
+			  The topmost one has number 0.
+	inv		: show the inventory of the TOS.
+	cln		: clean the inventory of the TOS. Players are not
+			  destructed.
+	clnof <arg>	: clean the inventory of the TOS of all objects with
+			  id <arg>.
+	rec		: perform the next inv, cln or clnof recursively.
+	norec		: use this to turn of rec again if you are not going
+			  to use one of inv, cln or clnof. inv, cln and clnof
+			  turn off rec automatically after being used.
+	dest		: destruct the TOS.
+	make		: destruct the TOS, then rebuild it from the file.
+			  Very useful when developing rooms.
+	mov		: move the object denoted by the stack entry that is
+			  second from top into the TOS.
+	[<function>]	: call <function> in the TOS.
+	[<function> <arg1> ... <argn>]
+			: call <function> in the TOS. arguments are separated
+			  by spaces. If the arguments themselves contain
+			  spaces, enclose them by "...", '...' or |...|.
+			  Use @<number> to supply objects on the stack
+			  as arguments.
+	result		: push the result of the function call if it is
+			  an object.
+	desc		: toggle whether short descriptions are shown when
+			  displaying objects.
+	#		: the contents of the stack will be restored after
+			  performing the next command on the same line.
+			  Since all commands which manipulate stack objects
+			  except inv and = pop them, this might come in handy.
+	<<number>	: used to push variable <number>. May range from
+			  0 to 9.
+	><number>	: store the TOS in variable <number>.
+	vars		: display all variables.
+
+The following two commands can only be used as the first command on a line.
+
+	?		: there are two usages for the ?-command. Followed
+			  by text it will execute the commands in it.
+			  Simply hitting ?<CR> will put you in interactive
+			  mode. Leave this mode by typing .<CR>. Lines
+			  typed in will be executed by the lens and the
+			  stack shown afterwards.
+
+	grant		: Two forms are possible:
+			  'grant access to <name>' allows the player with
+			  name <name> to use the lens.
+			  'grant no access' denies the access to all players
+			  below level 21.
+
+Examples:
+	me /room/church mo
+		: go to the church.
+	pl demos ob ~demos/workroom mo
+		: move the player demos to his workroom.
+	here make
+		: update and load the room you are in, keeping the inventory
+		  untouched.
+	here dup rec cln make
+		: same, this time cleaning up before.
+	me.bag inv
+		: show the contents of the bag you have.
+	me."bag 2" inv
+		: same for the second bag.
+	me [short]
+		: shows your short description.
+	me [query_attack] result [stop_fight]
+		: pacify your opponent.
+	pl demos [attacked_by @0]
+		: make Demos attack himself.
+	lv troll pl demos [attacked_by @1]
+		: demos is attacked by a troll.
+	here.troll here.demos [attacked_by @1]
+		: same effect if they're both here.
+	new /obj/level_list
+		: get yourself a copy of the top ten list.
+	pl ereborn clnof flea
+		: help poor ereborn to get rid of those fleas.
+	pl demos env [long]
+		: show the room where demos is.
+	here rec inv pop
+		: show the inventory of your current location and clean
+		  up the stack afterwards.
+	me #[set_str 20] #[set_dex 20] #[set_int 20] #[set_con 20]
+		: set all your stats to the maximum possible value.
+	me [set_title "the new wizard"]
+		: changes your title accordingly.
+	pl demos env >4
+		: store the room Demos is in in variable 4.
+	<4 [query_dest_dir]
+		: get it again and list the possible exits.
+	me rec inv .4 inv
+		: get a recursive listing of yourself, then a non-recursive
+		  one of the 4th item in your inventory
+	me.4.1 info
+		: show some information of the first item within the fourth
+		  item in your inventory.
+		  Please note that when doing a rec inv all the necessary
+		  information to find any object is displayed in front
+		  of it.

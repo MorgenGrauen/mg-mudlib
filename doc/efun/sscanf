@@ -1,0 +1,115 @@
+FUNKTION:
+ int sscanf(string str,string fmt,mixed var1,mixed var2,...)
+
+ARGUMENTE:
+      str
+        - String, der nach einem Muster zu durchsuchen ist
+        - darf nicht NULL sein
+      fmt
+        - Format-String, nach dessen Muster untersucht wird
+      var1,var2,...
+        - Argumente die mit %d oder %s korrespondieren
+
+RUeCKGABEWERT:
+     Anzahl der gefundenen Argumente.
+
+BESCHREIBUNG:
+     Wertet einen String <str> unter Beruecksichtigung des Formats <fmt>
+     aus. <fmt> kann Strings beinhalten, die durch %d und %s getrennt
+     werden. Jedes %d und %s entspricht einer der Variablen <var1>, <var2>,
+     etc. in die gespeichert werden soll.
+
+     Die Operatoren im Format-String <fmt> haben eines der folgenden
+     Formate:
+
+         %[+][!|~][<size>[.<minmatch>]]<type>
+
+        <type> kann folgendes sein:
+            d: steht fuer eine Zahl
+            D: steht fuer eine Zahl
+            U:
+            s: steht fuer eine Zeichenkette
+            %: steht fuer das %-Zeichen
+            t: steht fuer Whitespaces (also Leerschlaege und Tabulatoren),
+               speichert diese aber nicht.
+
+     <size> ist die erwartete Feldgroesse, <minmatch> die verlangte
+     minimale Laenge fuer einen Treffer (Standardwerte sind 0 fuer
+     Strings und 1 fuer Nummern). Sowohl <size> als auch <minmatch> kann
+     entweder numerisch oder mit '*' angegeben werden - im zweiten Fall
+     wird die gueltige Variable in der Liste der Argumente benutzt.
+
+     Wird + angegeben, muessen die Zeichen nach dem Feld ebenfalls
+     matchen. Ist dies nicht der Fall, wird auch dieses Feld als
+     Misserfolg in der Rueckgabe betrachtet (auch wenn der Wert
+     bereits an die zugehoerige Variable zugewiesen wurde).
+
+     Wird ! angegeben, wird zwar die Suche durchgefuehrt, aber Treffer
+     werden weder gespeichert noch gezaehlt. Mit ~ als Argument wird
+     zwar die Suche durchgefuehrt und die Treffer gezaehlt, das Resultat
+     wird aber nicht gespeichert.
+
+     Wenn ein %s nicht am Ende von <fmt> steht, wird nur ein Treffer
+     registriert, wenn auch der nachfolgende String bzw. das
+     nachfolgende Format gefunden wird. Weiter unten gibt es dazu
+     ein Beispiel.
+     Bei einem %d allerdings muss dieses Verhalten mit einem '+'
+     erzwungen werden.
+
+     Der Unterschied zwischen %d und %D %U ist, dass letzteres ein
+     unmittelbar vorausgehendes %s so bald als moeglich abbricht,
+     waehrend ersteres zuerst versucht, einen moeglichst grossen Treffer
+     fuer %s zu erzielen. Trotzdem ueberspringt %D/%U keine Whitespaces,
+     dazu muss %.0t%D gesetzt werden.
+
+     Die Funktion sscanf() ist insofern ein Spezialfall, als dass
+     Argumente automatisch nach Referenz uebergeben werden.
+
+BEISPIELE:
+     string who, what;
+         if (sscanf("wirf frisbee zu rex",
+                    "wirf %s zu %s", what, who) != 2)
+             write("Usage: Wirf <what> zu <who>\n");
+         else
+             write("Du wirfst einen "+what+" zu "+who+".\n");
+
+     sscanf("ab", "%s%s", who, what)
+     ==> liefert 2, who = "", what = "ab"
+
+     sscanf("ab", "%s %s", who, what)
+     ==> liefert 0, who = 0, what = 0
+
+     sscanf("ab ", "%s %s", who, what)
+     ==> liefert 2, who = "ab", what = ""
+
+
+     // Achtung bei %d
+     sscanf("12 ","%d xyz", num1);
+     ==> liefert 1, num1 = 12
+
+     sscanf("12 ","%s xyz", num1);
+     ==> liefert 0, num1 = 0
+
+     // mit '+' wird das Parsen des Restformats erzwungen:
+     sscanf("12 ","%+d xyz", num1);
+     ==> liefert 0, num1 = 12
+
+
+     // Weiteres Beispiel zu %d:
+     sscanf("get 12 coins","get %d rubys",num)
+     ==> ergibt 1, weil 'rubys' ignoriert wird
+
+     // Beispiel Format-Ignore 2
+     sscanf("get 12 coins","get %+d rubys",num);
+     ==> ergibt 0, da mit dem '+' das Parsen des Restformats erzwungen wird
+     ==> ergibt 1 bei 'get 12 rubys'
+
+     // Beispiel Format-Ignore 3 [alte Variante]
+     sscanf("get 12 coins","get %d rubys%s", num, dummy)
+     ==> ergibt 1
+     ==> ergibt 2 bei "get 12 rubys"
+
+SIEHE AUCH:
+        explode(E), regexp(E)
+
+8.Aug 2007 Gloinson

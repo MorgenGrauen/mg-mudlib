@@ -1,0 +1,115 @@
+filter_indices(E)
+
+FUNKTION:
+     mapping filter_indices(mapping map, string fun, string|object ob
+                            [, mixed extra, ...])
+     mapping filter_indices(mapping map, closure cl [, mixed extra, ...])
+
+PARAMETER:
+     map	- zu filterndes Mapping
+     fun/cl	- zu rufende Methode/Closure
+     ob		- Objekt/Dateiname, an dem Methode gerufen werden soll
+     extra	- weitere Parameter fuer Methode/Closure
+
+BESCHREIBUNG:
+     Filtert die Elemente (jeweils Schluessel) aus 'map' durch die
+     Methode 'fun' oder die Closure 'cl' in ein neues Mapping.
+     Fuer jedes Element aus 'map' wird 'fun' oder 'cl' mit dem Schluessel als
+     erstem Parameter [und folgend den optionalen Extra-Parametern] gerufen.
+
+     Wenn der Aufruf
+      	ob->fun(element [, extra1, extra2, ...]) bzw.
+       	funcall(cl, element [, extra1, extra2, ...])
+     als Rueckgabewert !=0 zurueckgibt dann wird der Schluessel+Werte in das
+     neue Array aufgenommen, sonst nicht.
+
+     Wenn auf die Werte zugegriffen werden muss, kann das Mapping 'map'
+     zusaetzlich als 'extra'-Parameter uebergeben werden. Alternativ kann man
+     walk_mapping() benutzen und das Rueckgabemapping selbst erstellen.
+
+
+     Verwendung von Methoden:
+	Wenn bei der Angabe von 'fun' kein Objekt 'ob' in Form eines Strings
+	oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+	Es koennen sowohl Lfun-Closures als auch Lambda-Closures verwendet
+	werden. Lfun-Closures koennen, wenn im selben Objekt vorhanden auch
+	'private' oder/und 'static' deklariert sein, muessen aber zu dem
+	Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+
+RUeCKGABEWERT:
+     Gefiltertes Mapping mit Filterbedingung erfuellenden Elementen.
+
+BEMERKUNGEN:
+     (1) Achtung, die Elemente in 'map' werden nicht tief kopiert, sind sie
+     also selbst Arrays oder Mappings, so fuehrt eine spaetere Aenderung im
+     Rueckgabe-Mapping zur Aenderung im Ursprungsmapping:
+
+     mapping m,n;
+     m=([1:({1,2}),0:({2,3,4})]);
+     n=filter_indicdes(m, #'!);		// filtert alle Keys !=0 heraus
+     n[0][0]=8;
+
+     fuehrt zu: n=([0:({8,3,4})])
+  		m=([0:({8,3,4}),1:({1,2})])
+
+     (2) Das Kopieren in das Rueckgabemapping erfolgt fuer jedes Element nach
+     Ausfuehrung der Filtermethode. Aenderungen der Werte im Mapping in dieser
+     Methode (globale Variable/Uebergabe als Referenz an filter_indices)
+     schlagen sich also im Rueckgabemapping nieder.
+
+BEISPIELE:
+     ### erfundene Liste mit Spielern saeubern ... ###
+     mapping x=([ [/human:liafar]:  20,
+		  [/dwarf:mesirii]: 50,
+		  [/elf:zarniya]:   40,
+		  [/feline:turbo]:  30]);
+
+     int is_badguy(object who) {
+      if(who->InFight()) return 1;
+      return 0;
+     }
+
+     mapping result=filter_indices(x, #'is_badguy);
+     // 'result' enthaelt nur noch kaempfende Spieler
+
+     ### erfundene Liste ueber ihre Werte saeubern ###
+     int is_badguy(object who, mapping m) {
+      if(m[x]<30) return 1;
+      return 0;
+     }
+
+     mapping result=filter_indices(x, #'is_badguy, &x); // Referenz
+     // 'result' enthaelt nur Spieler mit Werten >= 30
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i, width;
+     mapping ret; mapping input;
+     mixed *index;
+
+     width=get_type_info(input)[1];
+     ret=m_allocate(0, width);
+     index=m_indices(input);
+     i=sizeof(index);
+     while(i--)
+       if(ob->fun(index[i] [, extra1, extra2, ...]))
+       // if(funcall(cl, index[i] [, extra1, extra2, ...]))
+       {
+         int j;
+         j=width;
+
+         while(j--)
+           ret[index[i],j]=input[index[i],j];
+       }
+
+SIEHE AUCH:
+     Arrays:		filter(E), map(E)
+     Objektarrays:	filter_objects(E), map_objects(E)
+     Mappings:		map_indices(E)
+
+     Sonstiges:		walk_mapping(E), m_contains(E)
+			member()
+			m_indices(E), m_values(E)
+
+29.10.2006 Zesstra

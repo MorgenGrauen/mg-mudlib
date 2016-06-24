@@ -1,0 +1,26 @@
+P_RANGE
+
+NAME:
+    P_RANGE     "range"
+
+DEFINIERT IN:
+    <combat.h>
+
+BESCHREIBUNG:
+    Legt die Reichweite einer Schusswaffe fest. Ist ein Schuetze in einem
+    Raum mit gueltigem P_TARGET_AREA (andere Raum) oder environment() und
+    ist fuer diesen Raum P_SHOOTING_AREA festgelegt, dann kann er mit seiner
+    Schusswaffe in diesen anderen Raum schieﬂen, wenn die P_RANGE groesser
+    als P_SHOOTING_AREA ist.
+
+BEISPIELE:
+    // Langbogen mit 100 Reichweite
+    SetProp(P_RANGE, 100);
+
+SIEHE AUCH:
+    Generell:  P_AMMUNITION, P_SHOOTING_WC, P_STRETCH_TIME
+    Methoden:  FindRangedTarget(L), shoot_dam(L), cmd_shoot(L)
+    Gebiet:    P_SHOOTING_AREA, P_TARGET_AREA
+    Sonstiges: fernwaffen
+
+29.Jul 2014 Gloinson

@@ -1,0 +1,23 @@
+Nutzung von Git im MorgenGrauen
+===============================
+
+Was ist Git?
+  Git ist eine Software zur (verteilten) Versionsverwaltung von Dateien.
+  (http://git-scm.com/, http://de.wikipedia.org/wiki/Git)
+  Fuer Windows gibt es ein Paket, welches auch die Integration in den Explorer
+  anbietet:
+  https://code.google.com/p/gitextensions/
+
+
+SIEHE AUCH
+  git-repositories: Repository-Verwaltung im Mud
+  git-howto: Wie git benutzt wird
+  git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
+  git-kooperation: Erweiterung fuer Fortgeschrittene zu git-workflow
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-faq: haeufig gestellte Fragen/Probleme
+  git-links: Verweise ins WWW
+
+LETZTE AeNDERUNG:
+  25.03.2011, Zesstra
+

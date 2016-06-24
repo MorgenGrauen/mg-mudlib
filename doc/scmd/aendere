@@ -1,0 +1,52 @@
+
+aendere
+-------
+
+ SEHERHAUSKOMMANDO:
+    aendere <haus> lang
+    aendere detail <det>
+    aendere lesbares detail <det>
+    aendere befehl <bef>
+    aendere <truhe>
+    aendere meldungen
+
+ ARGUMENTE:
+
+     <haus>
+        eine gueltige Bezeichnung des Hauses. Gueltige Bezeichnungen sind
+        innerhalb des Hauses "haus" und "raum", ausserhalb des Hauses die
+        Begriffe, mit denen sich das Haus ansprechen laesst.
+     <det>
+        Name des zu aendernden (lesbaren) Details. Es kann immer nur ein
+        (lesbares) Detail gleichzeitig geaendert werden!
+     <bef>
+        Name des zu aendernden Befehls (Verb + Parameter)
+     <truhe>
+        eine gueltige Bezeichnung der Truhe.
+
+ BESCHREIBUNG:
+    Mit diesem Befehl ist es moeglich, schon vorhandene Beschreibungen zu
+    aendern. Dies ist zum Beispiel noetig, wenn man (oder ein Spieler) einen
+    Tippfehler gefunden hat, oder wenn man eine Beschreibung noch ein wenig
+    erweitern moechte.
+
+    Bei zu aendernden (lesbaren) Details und Befehlen werden alle mehrfach
+    auftretenden Texte gleichzeitig geaendert (d.h. wenn man die Details
+    "wand" und "waende" mit den gleichen Beschreibungen versehen hat, wird bei
+    aendere detail wand auch der Text von "waende" geaendert).
+
+    Geaendert werden koennen die Langbeschreibungen des Hauses (innen und
+    aussen), die Langbeschreibung der Truhe, Details, lesbare Details, Befehle
+    sowie die Liste der Rueckmeldungen von Spielern (also typo, fehler und
+    idee). Das ist recht nuetzlich, damit man die Meldungen, die man schon
+    abgearbeitet hat, wieder los wird.
+
+    Der zu aendernde Text wird in den Editor geladen und kann wie gewohnt
+    bearbeitet werden. Der Cursor befindet sich dabei zu Beginn ganz am Ende
+    des Textes.
+
+ SIEHE AUCH:
+    beschreibe, befehl, loesche, kopiere, meldungen, uebersicht, notiz
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

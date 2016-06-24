@@ -1,0 +1,20 @@
+Materialid:
+MAT_OBSIDIAN             "obsidian"
+
+Name:
+"Obsidian" "Obsidians" "Obsidian" "Obsidian"
+
+Geschlecht:
+N
+
+Beschreibung:
+schwarz
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:10
+MAT_OBSIDIAN
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

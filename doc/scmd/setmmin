@@ -1,0 +1,24 @@
+
+setmmin
+-------
+
+ SEHERKOMMANDO:
+    setmmin [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        Die neue Eingangsmeldung.
+
+ BESCHREIBUNG:
+    Mit diesem Kommando kann die Meldung definiert werden, die andere Spieler
+    sehen, wenn man in den Raum teleportiert wird. Dabei wird dem Text <text>
+    noch Dein Name vorangestellt.
+
+    Ohne <text> wird auf die Defaultmeldung zurueckgeschaltet.
+
+ SIEHE AUCH:
+    setmin, setmout, setmmout, review
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

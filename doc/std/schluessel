@@ -1,0 +1,24 @@
+STANDARDOBJEKT FUER SCHLUESSEL:
+
+BENUTZUNG
+	inherit "/d/unterwelt/std/schluessel"
+
+BESCHREIBUNG   
+	Du erzeugst einen Schluessel der nur auf eine bestimmte Tuer
+	passt.
+
+    Funktionen:
+
+	create():
+		setzt ein paar Defaultwerte.
+
+	SetDoorKey( string str):
+		gibt den Schluessel eine spezielle Beschreibung, die 
+		auf die Tuer passen muss.
+
+	QueryDoorKey()
+		fragt den string des Schluessels ab.
+
+SIEHE AUCH:
+	tuer
+

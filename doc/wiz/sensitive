@@ -1,0 +1,67 @@
+Sensitive Objekte
+
+Man kann ein Objekt mit der Property P_SENSITIVE dazu veranlassen, auf
+gewisse Dinge zu reagieren. Wenn diese Property benutzt wird, sollte sie ein
+Array von Arrays enthalten, das so aussieht:
+
+({ ({ ereignis1, key1, grenzwert1 (,Optionen1) }),
+   ({ ereignis2, key2, grenzwert2 (,Optionen2) }),
+   ...
+   ({ ereignisN, keyN, grenzwertN (,OptionenN) }) })
+
+Folgende moegliche Ereignisse sind in <sensitive.h> definiert:
+
+SENSITIVE_ATTACK - reagiert auf Angriff.
+     In diesem Fall ist der Key der Schadenstyp und der Grenzwert der
+     Schaden, ab dem die Funktion trigger_sensitive_attack() in dem Objekt
+     aufgerufen wird. Diese Funktion bekommt uebergeben:
+       1. Den Feind
+       2. Den Key (nicht ALLE Schadenstypen)
+       3. Den Schaden
+       4. Das Argument spell von Defend()
+       5. Die Optionen, und zwar alles nach dem Grenzwert als Array.
+
+     Bemerkungen:
+        o Der Schaden nach Abzug durch Ruestungen und vor Beruecksichtigung
+          von Resistenz und Koerperschutz ist ausschlaggebend.
+        o Ein Ereignis kann mit verschiedenen Keys mehrfach angegeben
+          werden.
+SENSITIVE_INVENTORY - reagiert auf bestimmte Objekte im Inventory.
+     Ein solches Objekt reagiert auf andere Objekte empfindlich, die
+     sensitiv sind und SENSITIVE_INVENTORY_TRIGGER mit dem gleichen Key und
+     einem hoeheren Grenzwert ausloesen.
+
+     Es ist dabei egal, welches der beiden Objekte zuerst da war. In einem
+     solchen Objekt wird dann die Funktion trigger_sensitive_inv()
+     aufgerufen, und zwar mit folgenden Argumenten:
+       1. Das ausloesende Objekt (Das mit Ereignis
+          SENSITIVE_INVENTORY_TRIGGER)
+       2. Der Key
+       3. Der Grenzwert des ausloesenden Objekts
+       4. Die Optionen des ausloesenden Objekts
+       5. Die Optionen des reagierenden Objekts
+SENSITIVE_INVENTORY_TRIGGER - siehe oben
+     Mit diesem Objekt selber geschieht nichts, es loest nur Funktionen in
+     anderen Objekten aus (siehe oben).
+
+In Planung ist noch:
+
+SENSITIVE_ENVIRONMENT_CHANGE (falls im Inventory von Lebewesen)
+
+Die Einsatzmoeglichkeiten sensitiver Objekte sind vielfaeltig:
+
+   * Dynamit koennte jetzt SENSITIVE_ATTACK mit DT_FIRE und z.B. Grenzwert
+     150 haben, die Funktion trigger_sensitive_attack() sollte dann z.B. die
+     Zuendschnur anzuenden...
+   * Bei Nitroglycerin entsprechend mit DT_BLUDGEON, einem sehr kleinen
+     Grenzwert und einer trigger_sensitive_attack()-Funktion, die BUMM
+     macht...
+   * Es soll auch Dinge geben, die man besser NICHT gleichzeitig am gleichen
+     Ort aufbewahren sollte... Fuer solche Dinge sind SENSITIVE_INVENTORY
+     und SENSITIVE_INVENTORY_TRIGGER da.
+   * SENSITIVE_ENVIRONMENT_CHANGE ist dafuer vorgesehen, dass Objekte im
+     Inventory empfindlich auf Tauchen oder Aufenthalt an heissen Orten usw.
+     reagieren, dies ist jedoch noch in Planung.
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:00:28 1996 by Wargon

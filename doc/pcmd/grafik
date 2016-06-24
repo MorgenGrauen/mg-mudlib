@@ -1,0 +1,24 @@
+
+grafik
+------
+
+ KOMMANDO:
+     grafik [ein|aus]
+
+ BESCHREIBUNG:
+     Mit "grafik aus" kannst du die Anzeige von ASCII-Grafiken fuer
+     Dich unterdruecken. Nach dem Befehl "grafik ein" werden Dir solche
+     Grafiken wieder angezeigt.
+     Rufst Du den Befehl ohne Parameter auf, dann wird Dir angezeigt,
+     ob Du Grafiken sehen moechtest oder nicht.
+
+     *** ACHTUNG ***
+     Dieser Befehl wurde am 18. Oktober 2005 eingefuehrt. Daher
+     ist davon auszugehen, dass die Einstellung erst nach und nach
+     an den jeweiligen Stellen im MorgenGrauen beruecksichtigt wird.
+     Wenn Dir eine solche Stelle auffaellt, wo es noch nicht 
+     beruecksichtigt wird, dann schreibe doch bitte eine E-Mail an
+     Zook, Ennox oder Bugfix
+     
+ LETZE AENDERUNG:
+     2009-09-10 von Zook

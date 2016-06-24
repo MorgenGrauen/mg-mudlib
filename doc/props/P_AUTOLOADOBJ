@@ -1,0 +1,119 @@
+NAME:
+    P_AUTOLOADOBJ                 "autoloadobj"
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     Hiermit kann prinzipiell angegeben werden ob ein Objekt ueber das
+     Ausloggen eines Spielers (Reboot/ende) behalten werden soll.
+
+     Als Inhalt der Property koennen permanente Eigenschaften des Objektes
+     angegeben werden.
+     Beim Einloggen wird das Objekt neu erzeugt und P_AUTOLOADOBJ auf die
+     gespeicherten Werte gesetzt. Die Werte muessen allerdings selbst
+     verwaltet werden.
+
+     Bitte geht nicht davon aus, dass es waehrend des Setzens/Abfragens dieser
+     Prop einen this_player() oder ein this_interactive() geben muss.
+     Speziell ist this_interactive() nicht == /secure/login!
+     Ebenfalls muss das Objekt beim Setzen/Abfragen nicht in einem Spieler
+     sein.
+
+BEMERKUNGEN:
+     Autoloadobjekte werden beim Ausloggen nicht fallengelassen!
+
+BEISPIELE:
+     ## Variante 1: simples Objekt, bleibt einfach nur erhalten,
+     ##             Variablen werden nicht gesichert ##
+     void create() {
+      ...
+      SetProp(P_AUTOLOADOBJ,1);
+      ...
+     }
+
+
+     ## Variante 2: Speicherung mehrerer Variablen ueber
+     ##             P_AUTOLOADOBJ (elegante Verwaltung)
+
+     // ein paar #defines fuer die Plaetze in der Speichervariablen
+     #define MY_AL_SHORT    0
+     #define MY_AL_ATTRM    1
+     #define MY_AL_OWNER    2
+     #define MY_AL_DESTRUCT 3
+
+     // die Variablen, die erhalten bleiben sollen
+     static object owner;
+     static int destruct_time;
+
+     // diese hier wird gerufen, wenn der Spieler gespeichert wird,
+     // wir packen also alle aktuellen Variablen in eine und geben die
+     // zum Speichern heraus ... wir nehmen hier ein Array (statt
+     // zB eines Mappings), weil das am wenigsten Platz braucht
+     static mixed* _query_autoloadobj() {
+      mixed *ret;
+      ret=allocate(4);
+      ret[MY_AL_SHORT] = QueryProp(P_SHORT);      // SHORT merken
+      ret[MY_AL_ATTRM] = QueryProp(P_M_ATTR_MOD); // einen Modifikator merken
+      ret[MY_AL_OWNER] = getuid(owner);           // ah, ein Besitzer!
+      ret[MY_AL_DESTRUCT]=destruct_time-time();   // und eine Lebensdauer!
+
+      return ret;
+
+      /*
+      // normalerweise wuerde man das einfach so schreiben:
+      return (({QueryProp(P_SHORT),
+                QueryProp(P_M_ATTR_MOD),
+                getuid(owner),
+                destruct_time-time()}));
+      */
+     }
+
+     // diese hier wird gerufen, wenn das Objekt neu im Spieler
+     // erzeugt wurde (Login), also packen wir das Speicherarray wieder
+     // aus und in alle entsprechenden Variablen
+     static mixed* _set_autoloadobj(mixed *new) {
+      // wenn das Format nicht mit dem oben uebereinstimmt ist was
+      // schiefgelaufen
+      if(pointerp(new) && !owner && sizeof(new)>4 &&
+         (owner=find_player(new[MY_AL_OWNER]))) {
+       // los, zuweisen!
+
+       SetProp(P_SHORT,      new[MY_AL_SHORT]);
+       SetProp(P_M_ATTR_MOD, new[MY_AL_ATTRM]);
+       destruct_time=        time()+new[MY_AL_DESTRUCT];
+
+       call_out(#'remove,new[3]);
+      } else call_out(#'remove,0);
+
+      return new;
+     }
+
+
+     ## Variante 3: und das gleiche mit Set/Querymethoden ##
+     // Prototypen fuer Set und Query-Methoden -> man Set
+     static mixed *my_query_autoloadobj();
+     static mixed *my_set_autoloadobj(mixed *new);
+
+     void create() {
+      // Binden der Methoden
+      Set(P_AUTOLOADOBJ, #'my_query_autoloadobj, F_QUERY_METHOD);
+      Set(P_AUTOLOADOBJ, #'my_set_autoloadobj, F_SET_METHOD);
+
+      // die werden nur von mir veraendert!
+      Set(P_AUTOLOADOBJ, PROTECTED, F_MODE_AS);
+      ...
+     }
+
+     static mixed *my_query_autoloadobj () {
+       // s.o.
+     }
+
+     static mixed *my_set_autoloadobj (mixed *new) {
+       // s.o.
+     }
+
+SIEHE AUCH:
+     P_AUTOLOAD, SetProp
+
+24.Aug.2006 Gloinson@MG

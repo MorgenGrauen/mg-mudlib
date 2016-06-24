@@ -1,0 +1,40 @@
+
+Testspieler
+===========
+
+ TESTSPIELER:
+    Testspieler sind Zweitcharaktere von Magiern, die auch gleichzeitig mit
+    dem Magier eingeloggt sein duerfen. Sie muessen entsprechend markiert sein
+    (siehe unten) und duerfen auch ruhig vom Magier manipuliert werden.
+
+    TESTSPIELER UNTERLIEGEN VOLL DEN REGELN DES MAGIERVERTRAGS!
+
+    Testspieler werden hauptsaechlich dann gebraucht, wenn Objekte oder
+    Gebiete wirklich aus Spielersicht getestet werden sollen und das
+    Abschalten des Magiermodus dazu nicht ausreicht. Ein anderes Einsatzgebiet
+    ist das Testen von Meldungen oder Aktionen, die nicht nur den
+    Ausfuehrenden selbst betreffen, sondern z.B. auch umstehende Personen in
+    einem Raum.
+
+ GILDENTESTSPIELER:
+    Sofern eine Gilde das Anlegen von Testspielern unterstuetzt, gibt es
+    entsprechende Hilfeseiten unter "hilfe <gildenname>.testspieler".
+
+ MARKIEREN:
+    Ein Testspieler wird durch setzen der Property P_TESTPLAYER markiert. Es
+    reicht zwar aus, diese Property einfach auf einen Wert != 0 zu setzen,
+    aber man sollte hier lieber den Namen des Magiers eintragen, zu dem der
+    Testie gehoert.
+
+    Einige Magier markieren ihre Testspieler nicht, und zwar mit der
+    Begruendung, dass dann Todesmeldungen nicht ausgegeben werden. Das ist
+    allerdings keine Ausrede mehr, das Testspieler-Todesmeldungen auf -TdT
+    ausgegeben werden.
+    Sind nichtmarkierter Testspieler entsprechend manipuliert, koennte es
+    passieren, dass sie wegen Schummelei geloescht werden...
+
+ SIEHE AUCH:
+    zweitspieler, vertrag, mschau, P_TESTPLAYER
+
+ LETZTE AeNDERUNG:
+    19. Maerz 2004 Gloinson

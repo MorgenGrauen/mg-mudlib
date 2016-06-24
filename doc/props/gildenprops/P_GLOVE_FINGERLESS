@@ -1,0 +1,16 @@
+P_GLOVE_FINGERLESS
+
+NAME:
+     P_GLOVE_FINGERLESS                     "fingerfreie_handschuhe"
+
+DEFINIERT IN:
+     /p/katzenkrieger/kkrieger.h
+
+BESCHREIBUNG:
+     So gekennzeichnete Handschuhe sind fingerlos und koennen
+     waehrend "krallenschlag" getragen werden.
+
+SIEHE AUCH:
+     Verwandt:	P_ARMOUR_TYPE, AT_GLOVE
+
+10.Okt 2006 Gloinson

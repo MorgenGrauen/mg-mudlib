@@ -1,0 +1,24 @@
+P_SENSITIVE_ATTACK
+NAME:
+    P_SENSITIVE_ATTACK            "sensitive_attack"
+
+DEFINIERT IN:
+    /sys/sensitive.h
+
+BESCHREIBUNG:
+    Hier steht die Liste der zu informierenden Objekte, die potentiell
+    auf einen Angriff reagieren koennten.
+    Wird von InsertSensitiveObject() und RemoveSensitiveObject()
+    geschrieben und in CheckSensitiveAttack() ausgewertet.
+
+BEMERKUNGEN:
+    Nicht selbst veraendern - bitte P_SENSITIVE fuer Eintraege benutzen.
+
+SIEHE AUCH:
+     P_SENSITIVE
+     InsertSensitiveObject, RemoveSensitiveObject
+     insert_sensitive_inv_trigger, insert_sensitive_inv
+     P_SENSITIVE_INVENTORY_TRIGGER, P_SENSITIVE_INVENTORY
+     CheckSensitiveAttack
+
+25.Apr.2001, Gloinson@MG

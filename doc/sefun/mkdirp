@@ -1,0 +1,21 @@
+FUNKTION:
+        int mkdirp(string dir)
+
+ARGUMENTE:
+        dir - Name des zu erstellenden Verzeichnisses (absolut)
+
+BESCHREIBUNG:
+        Erzeugt das Verzeichnis <dir>. Dies muss als abs. Pfad angegeben
+        werden.
+        Wenn noetig, wird die ganze Verzeichnishierarchie rekursiv erstellt.
+        
+RUECKGABEWERT:
+        0 - Verzeichnis konnte nicht erstellt werden
+        1 - Verzeichnis wurde erstellt oder existierte bereits
+
+SIEHE AUCH:
+        mkdir(E)
+
+LETZT AeNDERUNG:
+26.01.2013, Zesstra
+

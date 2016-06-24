@@ -1,0 +1,9 @@
+NAME:
+    P_SPECIAL_EXITS               "special_exits"               
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Dito, aber anstatt des Nachbarraums wird eine Funktion (im Raum)
+     angegebem, die bei Eingabe der Richtung ausgefuehrt wird.

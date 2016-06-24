@@ -1,0 +1,15 @@
+P_LAST_COMMAND_ENV
+NAME:
+    P_LAST_COMMAND_ENV            "last_command_env"            
+
+DEFINIERT IN:
+    /sys/player.h
+
+BESCHREIBUNG:
+     Der Raum, in dem das letzte Kommando eingegeben wurde.
+
+BEMERKUNGEN:
+     Keine echte Property, _query_last_command_env() ist
+     in /std/players/command.c implementiert.
+
+14.Feb.2004 Gloinson

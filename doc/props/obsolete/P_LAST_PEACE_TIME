@@ -1,0 +1,27 @@
+********************* VERALTETE PROPERTY ******************************
+* Diese Property ist veraltet und wird bald aus der Mudlib entfernt.  *
+***********************************************************************
+PROPERTY
+
+	P_LAST_PEACE_TIME	"last_peace_time"
+
+DEFINIERT IN
+
+	/std/living/combat.c
+
+BESCHREIBUNG
+
+	Diese Property gibt an, wann zuletzt versucht wurde, einen NPC zu
+	befrieden. Bitte nach Moeglichkeit nur lesend verwenden. Des weiteren
+	wird sie nur im ueblichen Verhalten von QueryPacify gesetzt, und nur
+	dann, wenn P_ACCEPT_PEACE nicht gesetzt ist.
+
+SIEHE AUCH
+
+	QueryPacify, P_ACCEPT_PEACE
+
+LETZTE AENDERUNG
+
+	2004-03-17, 14:30 von Humni
+	
+

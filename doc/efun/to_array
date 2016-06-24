@@ -1,0 +1,30 @@
+SYNOPSIS
+        mixed *to_array(string arg);
+        mixed *to_array(symbol arg);
+        mixed *to_array(quotedarray arr);
+        mixed *to_array(mixed *arg);
+        mixed *to_array(struct);
+
+        (int*)<value>
+
+BESCHREIBUNG
+        Strings und Symbole werden umgewandelt in ein Integer-Array, das aus
+        den Zeichen von <arg> besteht.
+
+        Gequotete Arrays werden "entquotet", und Arrays bleiben, wie sie sind.
+
+        Structs werden in normale Arrays umgewandelt.
+
+BEISPIELE:
+        to_array("12") liefert ({33,34}).
+
+BUGS
+        Die Cast-Schreibweise funktioniert nur, wenn der genaue Wert von
+        <value> zum Zeitpunkt der Kompilierung bekannt ist. Dies wird
+        nicht geaendert werden, da die Funktionsform verwendet werden kann.
+
+HISTORY
+        LDMud 3.3.250 added structs to the accepted data types.
+
+SIEHE AUCH
+        to_int(E), to_string(E), to_struct(E)

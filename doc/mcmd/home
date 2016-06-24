@@ -1,0 +1,23 @@
+
+home
+----
+
+ MAGIERKOMMANDO:
+    home
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Du wirst in Deinen Workroom transportiert.
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung, da sie
+    auch noch keinen Workroom haben.
+    Wenn Du Dich im Verfolgemodus befindet, wird dieser durch den Befehl
+    abgeschaltet.
+
+ SIEHE AUCH:
+    goto
+
+ LETZTE AeNDERUNG:
+    Sat, 29.07.2000, 18:00:00 von Silvana

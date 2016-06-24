@@ -1,0 +1,16 @@
+NAME:
+     P_DISTRIBUTION                "std_food_distribution"
+
+DEFINIERT IN:
+     /sys/food.h
+
+BESCHREIBUNG:
+     Verteilung der Heilung ueber mehrere Heartbeats.
+     Dieser Wert wird im entry_info als H_DISTRIBUTION dem consume() im
+     Living uebergeben.
+     
+SIEHE AUCH:
+     consume
+
+------------------------------------------------------------------------------
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra

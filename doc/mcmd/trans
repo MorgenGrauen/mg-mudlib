@@ -1,0 +1,24 @@
+
+trans
+-----
+
+ MAGIERKOMMANDO:
+    trans <name>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Lebewesens
+
+ BESCHREIBUNG:
+    Das Lebewesen <name> wird zu Dir transportiert.
+
+    Spieler duerfen dadurch nicht im Spiel beeinflusst werden!
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung.
+
+ SIEHE AUCH:
+    vertrag, goto
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:55:14 von Wargon

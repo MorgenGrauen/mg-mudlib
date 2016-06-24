@@ -1,0 +1,12 @@
+AddDrink()
+
+BEMERKUNGEN:
+
+        Die Funktion AddDrink() sollte NICHT MEHR BENUTZT werden.
+        Bitte AddToMenu() verwenden.
+
+SIEHE AUCH:
+	AddToMenu(), RemoveFromMenu()
+
+----------------------------------------------------------------------------
+Last modified: Fri Mar 03 13:23:00 2000 by Paracelsus

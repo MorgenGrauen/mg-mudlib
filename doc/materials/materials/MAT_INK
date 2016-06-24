@@ -1,0 +1,17 @@
+Materialid:
+MAT_INK                  "ink"
+
+Name:
+"Tinte" "Tinte" "Tinte" "Tinte"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100

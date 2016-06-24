@@ -1,0 +1,42 @@
+
+ UNIQUES
+    
+    Sogenannte "uniques" sind Objekte, die nicht in beliebiger Anzahl im Mud
+    vorhanden sein koennen, sondern von denen es entweder nur eins oder eine
+    begrenzte Anzahl gibt. Beispiele fuer uniques sind der bekannte Voll-
+    strecker des Weghiers oder die gruenen Roben aus dem Schemenreich.
+    Die Begrenzung auf wenige Objekte hat normalerweise den Sinn, besondere
+    Eigenschaften oder aussergewoehnliche Staerke zu rechtfertigen. Bei 
+    einigen Objekten passiert dies auch aus logischen Gruende, weil das
+    Objekt einfach einzigartig ist.
+
+    Fuer uniques gelten folgende Richtlinien:
+
+    - Die Erreichbarkeit des/der uniques darf nicht vom Reboot abhaengen.
+      Das bedeutet, ein Spieler muss waehrend der gesamten Uptime die
+      theoretische Moeglichkeit haben, ein bestimmtes Objekt durch welchen
+      Aufwand auch immer zu erreichen.
+
+    - Das Objekt muss auch gegen den Willen des bisherigen Besitzers zu
+      bekommen sein.
+
+    - Sollte das Objekt in Umlauf sein, muss an der Fundstelle ein Hinweis
+      darauf existieren, dass dieses Objekt dort zu bekommen ist. Auch wenn
+      fanatische Spieler ein Unique 5 Sekunden nach Reboot wegscripten,
+      sollten nachfolgende Spieler wenigstens wissen, wo es mal gewesen ist.
+
+    Uniques, die aufgrund ihrer Werte nicht genehmigungspflichtig sind, sollten
+    sich trotzdem an diese Richtlinie halten. Uniques ohne jegliches Konzept,
+    die der Balance vorgelegt werden, haben jedoch kaum Chance auf Genehmigung.
+    
+
+ SIEHE AUCH
+
+     balance, ruestungen, waffen, fernwaffen, npcs, grenzwerte,
+     attributsveraenderungen, resistenzen, kampfobjekte
+
+
+------------------------------------------------------------------------------
+ LETZTE AeNDERUNG:
+    Don, 31.10.1999, 20:00:00 von Nachtwind
+   

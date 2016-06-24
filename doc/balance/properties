@@ -1,0 +1,194 @@
+P_AC                  : ArmourClass, Wert der den Schutz einer Ruestung 
+                        (P_ARMOURS,P_ARMOUR_TYPE) angibt
+
+P_ATTACK_BUSY         : Anzahl der moeglichen Aktionen eines Lebewesens pro
+                        Kampfrunde (1 HeartBeat). Bei Spielern ist dies 1, 
+                        bei Sehern max. 5. Wegen des hoeheren Wertes bei
+                        Sehern ist darauf zu achten, das hier ADDIERT wird
+                        und nicht einfach nur auf 1 gesetzt.
+                        Siehe auch: bman kampfobjekte
+
+P_ATTRIBUTES          : Attribute eines Spielers, koennen durch Objekte,
+                        Flueche und/oder Krankheiten manipuliert werden.
+                        Siehe auch: bman attribute
+
+P_ATTRIBUTES_MODIFIER : Hier werden Attribut-Modifier gespeichert, die 
+                        ueber einen laengeren Zeitraum wirken sollen.
+                        Bekannteste Beispiele sind wohl der Todes-Malus
+                        und der Frosch-Malus. Normale Aenderungen sollten
+                        per P_X_ATTR_MOD oder P_M_ATTR_MOD realisiert 
+                        werden
+                        Siehe auch: bman attribute
+
+P_COMBATCMDS          : Beinhaltet Befehle, Schadenshoehe und -arten in 
+                        Kampfobjekten, damit diese auch von NPC benutzt
+                        werden koennen.
+                        Siehe auch: bman kampfobjekte
+
+P_CURSED              : Objekte in denen hier ein String oder Int-Wert ge-
+                        setzt ist, koennen nicht abgelegt werden. Kleriker
+                        haben die Faehigkeit, zu entfluchen
+
+P_DAMAGED             : Grad der Beschaedigung einer Waffe oder Ruestung.
+                        Wird meistens per waffe->Damage(x) realisiert. Kann
+                        bei div. Schmieden wieder auf 0 gesetzt werden, Trves
+                        koennen es durch Waffenschaerfen sogar selbst
+
+P_DAM_TYPE            : Schadenstyp, den eine Ruestung oder Waffe macht
+                        Siehe auch: bman schadenstypen
+
+P_DEFEND_FUNC         : Gesetzt wenn eine Ruestung eine DefendFunc definiert
+                        hat. Werte einer DefendFunc sind IMMER per random
+                        zu geben, Ausnahme: negativer Rueckgabewert. Auch
+                        hier ist darauf zu achten, das P_WC + Rueckgabewert
+                        nicht ueber den Grenzwert kommen
+                        Siehe auch: bman grenzwerte, bman ruestungen
+
+P_DISABLE_ATTACK      : Gesetzt wenn das Lebewesen ausnahmsweise mal nicht
+                        angreifen kann. Es wird die Anzahl der Kampfrunden
+                        (also HeartBeats) gesetzt, in denen die Paralyse
+                        wirkt. Neue Paralyse-Tools sind nicht gern gesehen
+                        und haben wenig Chancen auf Genehmigung
+
+P_EFFECTIVE_AC        : Die effektive ArmourClass einer Ruestung. Ist in
+                        einer Ruestung noch eine P_DEFEND_FUNC definiert,
+                        so betraegt ist P_EFFECTIVE_AC = P_AC + 2 * Mittelwert
+                        des dortigen Rueckgabewertes
+
+P_EFFECTIVE_WC        : Die effektive WeaponClass einer Waffe oder Ruestung.
+                        Ist in einer Waffe eine P_HIT_FUNC definiert, so be-
+                        rechnet sich die P_EFFECTIVE aus der Summe von P_WC
+                        und dem doppelten Mittelwert des dortigen Rueckgabe-
+			wertes
+
+P_HANDS               : Enthaelt mehrere Eintraege, die Meldung, Staerke
+                        eines Angriffes mit blossen Haenden und den oder
+                        die dabei verursachten Schadenstypen beinhalten
+
+P_HIT_FUNC            : Gesetzt, wenn eine Waffe oder Ruestung eine HitFunc
+                        definiert hat. Die Werte muessen IMMER per random
+                        gegeben werden. Auch hier sind einzig negative Rueck-
+                        gabewerte die Ausnahme. Darauf zu achten ist, das 
+                        P_AC + Rueckgabewert nicht den Grenzwert ueber-
+                        schreiten
+                        Siehe auch: bman grenzwerte
+
+P_HP                  : Aktuelle Lebenspunkte (HealthPoints) eines Lebe-
+                        wesens
+
+P_HP_DELAY            : Numerischer Wert, der angibt, wieviele HeartBeats
+                        notwendig sind, damit sich die P_HP um 1 regenieren
+
+P_HP_HOOKS            : Was fuer Objekte sollen bei einer Aenderung der P_HP
+                        benachrichtigt werden? Bekanntestes Beispiel ist 
+                        hier sicher der Teddy aus der Nibelungenquest
+
+P_LEP                 : LEvelPoints, absolute Stufenpunkte eines Spielers.
+                        Ist manchmal sinnvoller, P_LEP abzufragen anstatt
+                        P_LEVEL
+
+P_M_ATTR_MOD          : Mapping mit Attributen die veraendert werden, wenn
+                        das Lebewesen diese RUESTUNG oder WAFFE traegt oder
+                        zueckt. Jedes Attribut kann nur durch einen Modifier
+                        beeinflusst werden. Ist also ein Attribut blockiert,
+                        kann die Ruestung/Waffe nicht angezogen/gezueckt
+                        werden. Fuer Krankheiten usw. gibt es P_X_ATTR_MOD
+                        Siehe auch: bman attribute
+
+P_M_HEALTH_MOD        : Mapping mit dem die max. P_HP und max. P_SP eines
+                        Lebewesens manipuliert werden koennen, wenn es diese
+                        RUESTUNG oder WAFFE traegt oder zueckt. Es erfolgt
+                        keinerlei Blockade. Fuer Krankheiten usw. gibt es 
+                        P_X_HEALTH_MOD
+
+P_NOMAGIC             : Wert zwischen 0 (default) und 100, der den Grad an-
+                        gibt, mit welcher Wahrscheinlichkeit Magie keine
+                        Wirkung erzielt. Kann in Raeumen, Npc und Objekten
+                        gesetzt werden. Von Spieler nicht gern gesehen :)
+
+P_NR_HANDS            : Wieviel freie Haende sind notwendig, um diese Waffe
+                        oder diesen Schild zu zuecken?
+ 
+P_PARRY_WEAPON        : In Waffen gesetzt wenn es sich um eine Parierwaffe
+                        handelt
+                        Siehe auch: bman parierwaffen
+
+P_PURSUERS            : Beinhaltet alle Objekte/Npc die den Spieler momentan
+                        verfolgen
+
+P_QUALITY             : Beliebiger Wert in Waffen. Setzt man ihn auf n, so wird
+                        die Waffe bei jedem n-ten Schlag um 1 Punkt be-
+                        beschaedigt (P_DAMAGED also um 1 erhoeht) und dieser 
+                        von der P_AC abgezogen, der Schaden laesst sich in
+                        einer Schmiede reparieren.
+                       
+P_REMOVE_FUNC         : Funktion die vor dem Ausziehen einer Ruestung auf-
+                        gerufen wird
+                        Siehe auch: bman ruestungen
+
+P_RESISTANCE          : Was fuer Resistenzen sind gesetzt? Enthaelt ein 
+                        Array der Schadenstypen, gegen die das Lebewesen
+                        resistent sein soll. P_RESISTANCE_STRENGHTS ist hier
+                        viel genauer und sollte deswegen verwendet werden
+
+P_RESISTANCE_MODIFIER : Hier steht die Summe aller Modifikatoren, die 
+                        Resistenzen und Anfaelligkeiten betreffen. Diese
+                        Propertie sollte NIE direkt manipuliert werden
+
+P_RESISTANCE_STRENGHTS: Huebscher Typo bei Realisierung von Anfaelligkeiten
+                        und Resistenzen eines Lebenwesens :-)
+
+P_RESISTANCE_STRENGTHS: Was fuer Resistenzen oder Anfaelligkeiten hat das
+                        Lebewesen? Gesetzt wird ein Mapping mit den
+                        Schadenstypen und ein entsprechender numerischer 
+                        Wert. Dieser Wert geht von -1 .. 0 .. 1, ist er
+                        negativ, so ist das Lebewesen resistent, ist er 
+                        positiv, so ist das Lebewesen anfaellig
+
+P_RESTRICTIONS        : Wird vor dem Zuecken oder Anziehen einer Waffe oder
+                        Ruestung geprueft. Hier lassen sich diverse Werte
+                        abfragen, die das verhindern
+                        Siehe auch: bman restriktionen
+
+P_SP                  : SpellPoints, aktuelle Konzentrationspunkte eines
+                        Lebewesens
+
+P_SP_DELAY            : Numerischer Wert, der angibt, wieviele HeartBeats
+                        notwendig sind, damit sich die P_SP um 1 regenieren
+
+P_UNWIELD_FUNC        : Funktion, die vor dem Wegstecken einer Waffe auf-
+                        gerufen wird
+
+P_VULNERABILITY       : Empfindlichkeiten eines Npc/Spielers, sollte ueber
+                        P_RESISTANCE_STRENGTHS realisiert werden
+                         
+P_WC                  : WeaponClass, Wert der die Guete einer Waffe angibt.
+                        Absoluter Oberwert ist 200
+                        Siehe auch: bman grenzwerte
+
+P_WEAPON_TYPE         : Um was fuer eine Waffe handelt es sich? Keule, Speer
+                        oder Axt? Oder was anderes? 
+                        Siehe auch: bman waffen
+
+P_WEAR_FUNC           : Funktion die vor dem Anziehen einer Ruestung auf-
+                        gerufen wird. Sie kann das Anziehen verhindern, hier
+                        ist oftmals ein Eintrag in P_RESTRICTIONS sinnvoller
+                        Siehe auch: bman restriktionen
+
+P_WIELD_FUNC          : Funktion, die vor dem Zuecken einer Waffe aufgerufen
+                        wird. Sie kann das Zuecken verhindern. Oftmals ist
+                        da ein Eintrag per P_RESTRICTIONS vorteilhafter
+                        Siehe auch: bman restriktionen
+
+P_X_ATTR_MOD          : Mapping mit Attributen die veraendert werden, wenn
+                        das Lebewesen dieses OBJEKT bei sich hat. Ist fuer
+                        Krankheiten u.ae. gedacht. Bekanntes Beispiel sind
+                        die Flueche, die man sich auf Akhar Nth'tar weg-
+                        holen kann
+                        Siehe auch: bman attribute
+
+P_X_HEALTH_MOD        : Mapping mit dem die max. P_HP und max. P_SP eines
+                        Lebewesens veraendert werden, das dieses OBJEKT bei
+                        sich traegt. Ohne nachgesehen zu haben sag ich mal,
+                        das es so z.B. beim Rattenblut gemacht wird
+                        Siehe auch: bman kampfobjekte

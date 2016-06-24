@@ -1,0 +1,23 @@
+query_allow_shadow(M)
+FUNKTION:
+     int query_allow_shadow(object victim)
+
+DEFINITION:
+     /secure/master.c
+
+BESCHREIBUNG:
+     Gibt 1 zurueck, wenn das Objekt victim von previous_object() beschattet 
+     werden darf, 0 sonst.
+
+     Die Funktion prueft, ob das Objekt victim ein Root-Objekt ist, oder
+     ob es beim Aufruf von query_prevent_shadow() 1 zurueckgibt.
+
+BEMERKUNGEN:
+     Wird automatisch bei shadow() ausgefuehrt.
+
+SIEHE AUCH:
+     Rechte:	     query_prevent_shadow(L)
+     Generell:	     shadow(E), unshadow(E)
+     Informationen:  query_shadowing(E)
+
+20. Mai 2004 Gloinson

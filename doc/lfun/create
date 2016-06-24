@@ -1,0 +1,78 @@
+create()
+
+FUNKTION:
+     protected void create();
+     void create();
+
+DEFINIERT IN:
+     allen Standardobjekten
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Diese Funktion wird aufgerufen, wenn ein Objekt geladen oder geclont
+     wird.
+     In dieser Funktion wird das Objekt initialisiert und konfiguriert.
+     Waehrend des create() kann es einen this_player()/this_interactive()
+     geben, muss aber nicht!
+     Im create() hat das Objekt noch kein environment().
+     create() wird nur gerufen, wenn das Objekte geclont oder explizit geladen
+     wird. Wenn es aufgrund eines inherit in einem anderen Objekt vom Driver
+     geladen wird, wird das create() nicht ausgefuehrt (s. create_super()).
+
+RUeCKGABEWERT:
+     keiner
+
+BEMERKUNGEN:
+     Erbt man von anderen Objekten, so besteht die erste Aktion innerhalb
+     von create() normalerweise darin, in diesen Objekten create()
+     aufzurufen.
+     Die Funktion kann protected oder static sein (aber nicht private). Es
+     duerfte fuer die meisten Objekte sinnvoll sein, create() protected zu
+     deklarieren.
+
+     Um Speicher zu sparen, kann man bei Blueprints von der Konfigurierung
+     absehen (siehe Beispiel). Dies sollte man allerdings nicht bei Objekten
+     machen, von denen keine Clones erzeugt werden sollen (zB. bei Raeumen). 
+
+     Man sollte bei Abbruch des create() in BP unbedingt set_next_reset(-1);
+     rufen, da sonst die (nicht konfigurierte) BP resetten kann und dann
+     buggt.
+
+BEISPIELE:
+     Ein Gegenstand wuerde wie folgt konfiguriert:
+
+     inherit "std/thing";
+
+     #include <properties.h>
+
+     create()
+     {
+       // Wenn wir die Blueprint sind: NICHT konfigurieren!
+       // Bei normalen Raeumen oder Transportern sind diese beiden
+       // Zeilen wegzulassen!!!
+       if (!clonep(this_object())) {
+           set_next_reset(-1);    // wichtig, damit die BP nicht resettet.
+           return;
+       }
+
+       // Ansonsten die allgemeinen Eigenschaften von /std/thing
+       // konfigurieren...
+       ::create();
+
+       // ...und nun unsere speziellen Eigenschaften:
+       SetProp(P_NAME, "Muell");
+       SetProp(P_SHORT, "Muell");
+       SetProp(P_LONG, "Voellig unnuetzer Muell!\n");
+       SetProp(P_ARTICLE, 0);
+       SetProp(P_VALUE, 0);
+       SetProp(P_GENDER, MALE);
+     }
+
+SIEHE AUCH:
+     create(L), reset(L)
+     hook(C), create(H), create_ob(H), create_super(H, reset(H)
+     create(A), reset(A)
+----------------------------------------------------------------------------
+22.10.2007, Zesstra

@@ -1,0 +1,33 @@
+SYNOPSIS
+        object *all_environment();
+        object *all_environment(object ob);
+
+ARGUMENTE:
+        ob - das Objekt, dessen environment()s gewuenscht werden
+
+BESCHREIBUNG
+        Gibt ein Array mit allen Umgebungen des Objekts <ob> zurueck.
+        Wenn <ob> nicht angegeben wird, wird standardmaessig this_object()
+        verwendet.
+
+        Wenn <o> keine Umgebung hat oder zerstoert wurde, wird 0 zurueck
+        gegeben.
+
+BEMERKUNGEN:
+        Das zurueckgegebene Array ist so angelegt, dass die innerste Umgebung
+        am Anfang des Arrays steht, und die aeusserste Umgebung am Ende.
+
+BEISPIEL
+        (Die gesuchte Fackel befindet sich in einem Behaelter, den Wargon bei
+        sich traegt. Wargon steht in seinem Workroom.)
+
+        ob = all_environment(find_object("/obj/fackel#32"));
+        => ob = ({[+wueste/durian/behaelter#31],[/magier:wargon],[~/workroom]})
+
+AENDERUNGEN
+        Eingefuehrt in LDMud 3.2.6. Ein Vorschlag von TubMud.
+
+SIEHE AUCH
+        environment(E), all_inventory(E)
+
+7.Feb 2007 Gloinson

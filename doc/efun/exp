@@ -1,0 +1,8 @@
+SYNOPSIS
+        float exp(int|float zahl);
+
+BESCHREIBUNG
+        Die Exponentialfunktion. Liefert e^zahl.
+
+SIEHE AUCH
+        log(E), pow(E)

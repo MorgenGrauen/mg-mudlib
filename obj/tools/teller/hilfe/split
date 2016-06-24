@@ -1,0 +1,14 @@
+BEFEHL:
+	split, spl
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zerlege den Array, der auf dem Stack liegt und lege die
+	einzelnen Elemente (das Element mit Index 0 zuunterst)
+	auf dem Stack ab. Wenn der Stack vorher nicht leer war,
+	lege vorher ein Lock auf den Stack.
+
+SIEHE AUCH:
+	"array", "lock"

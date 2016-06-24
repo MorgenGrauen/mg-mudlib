@@ -1,0 +1,22 @@
+P_Z_NO_NOCON
+
+NAME:
+     P_Z_NO_NOCON					"no_nocon"
+
+DEFINIERT IN:
+     /p/zauberer/wiznpc.h
+
+BESCHREIBUNG:
+     Der Standardzauberergildennpc setzt SI_NO_CONSEQUENCES, damit
+     die Gildenpcs nicht den negativen Auswirkungen beim Misslingen
+     der Sprueche geschuetzt sind. Setzt man diese Property vor
+     P_Z_INFO auf 0, wird das Flag nicht gesetzt.
+
+
+BEMERKUNGEN:
+     Muss vor P_Z_INFO gesetzt werden, damit es wirksam ist.
+
+SIEHE AUCH:
+     /p/zauberer/text/wiznpc.doku, P_Z_INFO
+
+21.Okt 2006 Chagall

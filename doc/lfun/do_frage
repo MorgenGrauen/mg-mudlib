@@ -1,0 +1,21 @@
+do_frage()
+FUNKTION:
+     int do_frage(string text)
+
+DEFINIERT IN:
+     /std/npc/info.c
+
+ARGUMENTE:
+     string str	 - Schluesselwort der Frage
+
+BESCHREIBUNG:
+     Bearbeitet ein Schluesselwort, das mit "frage <wen> nach " uebergeben
+     wurde. Gibt entsprechende Antworten formatiert aus.
+
+BEMERKUNGEN:
+     Recht komplex, besser nicht ueberschreiben wenn man es nicht versteht.
+
+SIEHE AUCH:
+     Verwandt:  GetInfoArr, AddInfo
+
+31.Mar 2007 Gloinson

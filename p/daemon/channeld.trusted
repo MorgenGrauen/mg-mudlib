@@ -1,0 +1,12 @@
+# CHANNELD MASTER TRUSTED OBJECTS FILE
+# <object> : <channels> : <name>
+/secure/master                       ::
+/secure/udp/channel                  :IOAWqP:
+/secure/simul_efun                   ::
+/room/death/death_room               :T:
+/secure/questmaster                  :b:
+/d/inseln/anthea/room/land/muehlstein:T:
+/std/corpse                          :M:
+/p/daemon/inews                      :aNqW:DW
+/gilden/karate                       :K:
+/gilden/chaos                        :c:

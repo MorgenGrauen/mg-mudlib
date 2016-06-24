@@ -1,0 +1,46 @@
+NAME:
+    P_X_ATTR_MOD                  "extern_attributes_modifier"
+
+DEFINIERT IN:
+    /sys/living/attributes.h
+
+BESCHREIBUNG:
+    Mapping, das die Attribute des Spielers veraendert, der das Objekt bei
+    sich hat.
+
+    Zu beachten:
+    Diese Property bitte _ausschliesslich_ mit SetProp aendern, weil damit
+    gleichzeitig UpdateAttributes() im Lebewesen aufgerufen und ggf. das
+    Objekt als Statmodifizierer registriert wird.
+
+    Diese Property ist fuer Krankheiten, Flueche etc. gedacht. Bei
+    Waffen/Ruestungen, die die Attribute beeinflussen sollen, verwendet
+    man besser P_M_ATTR_MOD.
+
+    P_X_ATTR_MOD und P_M_ATTR_MOD duerfen einen gemeinsamen kumulierten
+    positiven Grenzwert nicht ueberschreiten. Dieser Grenzwert,
+    CUMULATIVE_ATTR_LIMIT, ist in /sys/living/attributes.h definiert.
+
+BEMERKUNGEN:
+    Die Methode /std/thing/restrictions::_set_extern_attributes_modifier()
+    benachrichtigt tragende Livings ueber Aenderungen.
+    Bitte beim "Loeschen" der Prop nicht den Wert des jew. Attributes im
+    uebergebenen Mapping als 0 uebergeben, sondern das Key/Werte-Paar ganz
+    entfernen und bzw. ein leeres Mapping oder 0 uebergeben.
+
+BEISPIEL:
+    // Dem Lebewesen, das das Objekt bei sich hat, wird 2 von A_INT abgezogen
+    SetProp(P_X_ATTR_MOD,([A_INT:-2]));
+
+    // Stats wiederherstellen:
+    SetProp(P_X_ATTR_MOD,([]));
+
+SIEHE AUCH:
+    QueryAttribute(), QueryRealAttribute(), QueryAttributeOffset(),
+    SetAttribute(), SetRealAttribute(), UpdateAttributes(),
+    SetTimedAttrModifier(), QueryTimedAttrModifier(),
+    DeleteTimedAttrModifier(),
+    P_X_HEALTH_MOD, P_M_HEALTH_MOD, P_ATTRIBUTES, P_ATTRIBUTES_OFFSETS,
+    P_TIMED_ATTR_MOD, P_M_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
+
+02.02.2016, Gloinson

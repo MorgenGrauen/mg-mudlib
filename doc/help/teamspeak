@@ -1,0 +1,64 @@
+
+Das Morgengrauen-Teamspeak
+==========================
+
+Teamspeak - was ist das ueberhaupt?
+
+    Teamspeak ist ein Voice-Chat-System, zu dem man sich mit einem geeigneten
+    Client verbinden kann, um sich mit anderen Leuten zu unterhalten. Das
+    Ganze funktioniert im Grunde aehnlich wie Skype, hat aber gegenueber
+    diesem den Vorteil, dass die Kommunikation ueber Server laeuft, die
+    nicht unter der Kontrolle von Fremdfirmen stehen, so dass auch nichts
+    mitgeloggt wird, was dort gesprochen wird.
+
+
+Wofuer braucht man das?
+    
+    Im Teamspeak kann man sich treffen, um gemeinsam Mehrspielerquests zu
+    loesen, groessere Metzelaktionen zu koordinieren oder einfach nur
+    zu quatschen.
+
+    Fuer Magier gibt es separate Channel, in denen man sich zur Diskussion
+    von Programmierthemen und -problemen treffen kann.
+
+
+Bin ich schon drin?
+
+    Wenn Du Lust bekommen hast, unser TS mal auszuprobieren, benoetigst Du
+    folgendes:
+
+    - eine Soundkarte im PC
+    - Lautsprecher und ein Mikrofon, besser jedoch ein Headset
+    - den Teamspeak3-Client von http://www.teamspeak.com
+    - die Zugangsdaten:
+
+      Servername:     mgts.mud.de (sollte ohne Portangabe funktionieren)
+      Serverpasswort: der Name unseres bekannten Urvaters aller Magier
+      Server-IP (falls benoetigt): 85.214.250.188:4711
+
+
+    Im Teamspeak-Client kannst Du diese Daten im Menue unter "Favoriten -
+    Favoriten verwalten" eintragen, indem Du einen neuen Favoriten anlegst
+    und unter "Adresse" den Servernamen eintraegst. Deinen Spielernamen
+    traegst Du noch unter "Nickname" ein, und unter "Server Passwort" 
+    jenes, das Du (hoffentlich) aus dem Hinweis oben ableiten konntest.
+
+    Wenn Du moechtest, kannst Du das MG-TS noch als Standard-Server
+    einstellen, indem Du in der Favoritenverwaltung unten links auf "Mehr"
+    klickst und dann ein Haekchen bei "Beim Start verbinden" setzt. Dann
+    wirst Du bei jedem Starten des TS3-Clients direkt mit dem MG-TS 
+    verbunden.
+
+  
+Noch einige Hinweise:
+
+    Der Server wird derzeit von Olli zur Verfuegung gestellt, um die
+    Moeglichkeit zum Ausprobieren anzubieten, benehmt Euch also, wenn Ihr
+    da drauf seid. :-)
+
+    Die Rechteverwaltung von TS3 ist ausgesprochen komplex geraten, so dass
+    wir um Geduld bitten moechten, wenn irgendetwas nicht auf Anhieb
+    funktioniert.
+
+31.10.2012  Arathorn
+

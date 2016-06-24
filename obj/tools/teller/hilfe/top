@@ -1,0 +1,23 @@
+BEFEHL:
+	top
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zeigt das Objekt an, das auf dem Stack zuoberst liegt (=TOS).
+
+BEISPIELE:
+	;me top
+	Zeige das Objekt, das man selbst ist, an.
+
+	;here top
+	Zeige den Raum, in dem man sich befindet.
+
+	;; 1 2 3 array top (Das zweite ';' ist wichtig)
+	Ergibt:
+	TOS= ({
+	       1
+	       2
+	       3
+	     })

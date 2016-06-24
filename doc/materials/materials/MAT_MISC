@@ -1,0 +1,17 @@
+Materialid:
+MAT_MISC                 "misc"
+
+Name:
+"verschiedenes Material" "verschiedenen Materials" "verschiedenem Material" "verschiedenen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+allg. Material (default)
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MISC:100

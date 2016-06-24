@@ -1,0 +1,28 @@
+********************** VERALTETE LFUN ****************************
+NoParaObjects()
+
+FUNKTION:
+	int NoParaObjects()
+
+DEFINIERT IN:
+	/std/virtual/v_compiler.c
+
+RUeCKGABEWERT:
+    1, wenn der VC keine Parawelt-Objekte erzeugt,
+    0, wenn er es doch tut.
+
+BESCHREIBUNG:
+    Diese Funktion ist veraltet. QueryValidObject() ist genereller und
+    einfacher zu handhaben. Bitte in Zukunft P_PARA im VC setzen, siehe hierzu
+    die Manpage von QueryValidObject().
+
+    Die Funktion gibt an, ob ein Virtual Compiler auch Parawelt-Objekte
+    erzeugen kann.
+    Wichtig: Entweder dieser Funktion im VC definieren, wenn der VC keine
+    Para-Objekte erzeugen wird oder P_PARA passend setzen!
+
+SIEHE AUCH:
+	virtual_compiler, P_PARA, QueryValidObject
+
+----------------------------------------------------------------------------
+04.03.2007, Zesstra

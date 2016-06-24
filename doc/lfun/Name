@@ -1,0 +1,28 @@
+Name()
+
+FUNKTION:
+     varargs string Name(int casus, int demon);
+
+DEFINIERT IN:
+     /std/thing/description.c
+
+ARGUMENTE:
+     casus
+          Der Fall, in dem der Name dekliniert werden soll.
+     demon
+          Gibt an, ob der Name mit bestimmtem oder unbestimmtem Artikel
+          versehen werden soll:
+             + demon = 0: Unbestimmter Artikel.
+             + demon = 1: Bestimmter Artikel.
+             + demon = 2: Finde selbst heraus, ob ein bestimmter oder ein
+               unbestimmter Artikel verwendet werden soll.
+
+BESCHREIBUNG:
+     Dieser Funktionsaufruf ist ein Alias fuer 
+     capitalize( name( casus, demon ) )
+
+SIEHE AUCH:
+     name(), /std/thing/description.c
+
+----------------------------------------------------------------------------
+Last modified: Sat Aug  3 11:24:06 2002 by Vanion

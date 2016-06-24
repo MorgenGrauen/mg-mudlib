@@ -1,0 +1,27 @@
+
+localcmd
+--------
+
+ MAGIERKOMMANDO:
+    localcmd
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Eigentlich sollte dieses Kommando alle Befehle anzeigen, die Du aufgrund
+    des Raumes, in dem Du gerade stehst, aufgrund der der Dinge in dem Raum
+    und in Deinem Inventar sowie aufgrund Deiner eigenen Stellung ausfuehren
+    kannst.
+
+    Aus technischen Gruenden werden allerdings nur die Befehle angezeigt, die
+    ueber add_action() in die Befehlsliste eingefuegt werden; das MorgenGrauen
+    verfuegt jedoch ueber einen anderen Mechanismus, um in Objekten Kommandos
+    zu definieren.
+
+ SIEHE AUCH:
+    man, hilfe,
+    AddCmd(L), add_action(E)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

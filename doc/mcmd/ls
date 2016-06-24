@@ -1,0 +1,90 @@
+
+ls
+--
+
+ MAGIERKOMMANDO:
+    ls [ -alrtsug ] [ <name> ... ]
+
+ ARGUMENTE:
+
+     <name>  Datei- oder Verzeichnisname (es koennen auch mehrere sein)
+
+ BESCHREIBUNG:
+    Die angegeben Dateien und Verzeichnisse werden aufgelistet. Laesst man
+    <name> weg, wird der Inhalt des aktuellen Verzeichnisses aufgelistet.
+
+    Die Flags haben folgende Bedeutung:
+
+     -a  Auch unsichtbare Dateien (deren Namen mit . beginnen) werden
+         angezeigt.
+     -l  Eine ausfuehrliche Liste, in der auch Laenge und Datum der Datei
+         angegeben werden.
+     -u  In Verbindung mit -l wird auch die UID der Dateien ausgegeben.
+     -g  In Verbindung mit -l wird auch die GID der Dateien ausgegeben.
+     -r  Die Sortierreihenfolge wird umgekehrt.
+     -t  Die Liste wird nach dem Erstellungsdatum sortiert.
+     -s  Die Liste wird nach der Groesse der Dateien geordnet.
+
+ EINSTELLUNGEN:
+    Verzeichnisse und geladene Objekte werden, abhaengig von der aktuellen
+    Einstellung des Terminaltyps, besonders angezeigt.
+
+    Diese Einstellungen lassen sich ueber zwei Umgebungsvariablen aendern,
+    wenn man als Terminaltyp `vt100' oder `ansi' eingestellt hat. Bei der
+    Einstellung `dumb' wird bei Verzeichnissen ein / angehaengt und bei
+    geladenen Objekten ein *.
+
+     LS_DIR  Hier kann man die Darstellung von Verzeichnissen konfigurieren.
+             Der Default ist bei `vt100'-Terminals Fettschrift und bei
+             `ansi'-Terminals blaue Fettschrift.
+     LS_OBJ  Diese Variable beinhaltet die Einstellung fuer geladene Objekte.
+             Der Default ist bei `vt100'-Terminals inverse Darstellung und bei
+             `ansi'-Terminals rote Schrift.
+     LS_VC   Diese Variable beinhaltet die Einstellung fuer Objekte, die von
+             einem Virtual Compiler erzeugt wurden. Default ist wie bei LS_OBJ.
+
+    Die Variablen koennen die nachfolgend aufgefuehrten Werte annehmen. Um
+    mehrere Effekte zu kombinieren, muss man sie mit einem + trennen.
+
+    `vt100' und `ansi':
+
+     none    Keine Hervorhebungen
+     bold    Fettschrift
+     blink   blinkende Schrift
+     invers  Schrift- und Hintergrundfarbe werden vertauscht
+
+    Nur `ansi':
+
+     black     Textfarbe schwarz
+     red       Textfarbe rot
+     green     Textfarbe gruen
+     yellow    Textfarbe gelb
+     blue      Textfarbe blau
+     purple    Textfarbe purpur
+     cyan      Textfarbe cyan
+     white     Textfarbe weiss
+     bblack    Hintergrundfarbe schwarz
+     bred      Hintergrundfarbe rot
+     bgreen    Hintergrundfarbe gruen
+     byellow   Hintergrundfarbe gelb
+     bblue     Hintergrundfarbe blau
+     bpurple   Hintergrundfarbe purpur
+     bcyan     Hintergrundfarbe cyan
+     bwhite    Hintergrundfarbe weiss
+
+ BEISPIELE:
+
+    > ls -l
+    > ls -a /doc
+
+    Verzeichnisse in Fettschrift anzeigen, geladene Dateien rot auf gelbem
+    Hintergrund:
+
+    > set LS_DIR bold
+    > set LS_OBJ red+byellow
+
+ SIEHE AUCH:
+    cd, pwd, set, stty
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon

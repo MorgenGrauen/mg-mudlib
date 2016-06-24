@@ -1,0 +1,121 @@
+WICHTIG:
+	**********************
+	Das erste Zeichen muss ab jetzt ein Komma (,) sein. Bisher war
+	es ein Semikolon, aber das wechselwirkt ja mit dem emote.
+	**********************
+
+DER TELLERSTAPEL:
+
+	Der Tellerstapel ist ein stackorientiertes Magiertool.
+	Das heisst, man legt die Objekte, Strings oder was auch immer auf
+	den Stack und ruft als letztes die Funktion auf, die dann mit
+	dem Stackihnhalt irgendetwas macht. Das Ergebnis wird meistens
+	dann wieder auf dem Stack abgelegt.
+	Im grossen und ganzen dieses Tool von Macbeths Lupe inspiriert.
+
+	Im folgenden wird mit TOS (TopOfStack) das Ding bezeichnet, das
+	als letztes auf dem Stack abgelegt wurde.
+
+KOMMANDOS:
+
+	Jedes Kommando, das mit den Tellern ausgefuehrt werden soll,
+	wird mit ',' eingeleitet. Allerdings hat das Semikolon noch
+	eine weitere Funktion, aber dazu spaeter.
+
+DINGE AUF DEN STACK LEGEN:
+
+	Hinter dem Semikolon werden (beliebig viele) Stackoperationen
+	angegeben. Die meissten dieser Operationen legen irgendetwas auf
+	dem Stack ab. Will man Objekte auf dem Stack ablegen, so gibt
+	man einfach deren Filenamen an. Zahlen gibt man durch ein voran
+	gestelltes Doppelkreuz ('#') an. (Positive Zahlen gehen auch ohne.)
+	und Strings werden in Anfuehrungszeichen eingefasst, damit sie von
+	den Objekten unterschieden werden koennen. (Uebrigens ist das Zeichen
+	'\n' und das ESC-Zeichen ('\e') in Strings erlaubt.)
+
+STACKOPERATIONEN:
+
+	Stackoperationen, die den Stack nicht beeinflussen.
+
+		say     - Meldungen an Mitspieler ein- und ausschalten.
+			  Umstehende sehen normalerweise, wenn man mit den
+			  Tellern arbeitet, eine Meldung der Art:
+			  "Sowieso jongilert mit seinen Tellern." bzw
+			  "Sowieso faellt beim Jonglieren ein Teller herunter."
+		names   - Objekte mit oder ohne Namen bei Auflistungen
+			  ausgeben.
+		stack   - Gebe Stackinhalt aus (0 ist der TOS).
+		memory  - Gebe Inhalt der Variablen aus.
+		top     - Gebe den TOS aus.
+		inv     - Gebe eine Liste der Objekte aus,
+			  die sich im TOS-Objekt befinden.
+		scan    - Gebe relevante Daten zu dem Spieler auf dem TOS aus.
+
+	Stackoperationen, die mit selbstdefinierten Funktionen zu tuen
+	haben:
+
+		!	- Definiere eine neue Funktion.
+			  (Hilfe unter "funktionen".)
+		dump
+		restore - Speichern und Laden der benutzerdefinierten
+			  Funktionen
+
+	Stackoperationen, die etwas auf dem Stack ablegen:
+
+		me      - Lege dich selbst auf den Stack.
+		here    - Lege den Raum, in dem Du bist, auf den Stack.
+
+	Stackoperationen zu dessen Verwaltung:
+
+		dup     - Lege den TOS noch einmal auf den Stack.
+		pop     - Loesche den TOS vom Stack.
+		swap    - Verstauche den TOS mit dem Ding darunter.
+		clear   - Loesche den ganzen Stack.
+
+	Die folgenden Funktionen poppen ihre Parameter vom Stack herunter.
+
+	Funktionen mit einem Parameter:
+
+		clone   - Clone ein Objekt mit den angegebenen Filenamen.
+		          Lege das geclonte Objekt auf den Stack.
+		update  - Zerstoere die Blueprint des Objektes.
+		remove  - Zerstoere das Objekt.
+
+	Funktionen mit mehreren Parametern:
+
+		move	- Bewege das zweitoberste Element in das Oberste.
+		if      - suche abhaengig vom obersten Element eines der
+			  darunter liegenden aus.
+
+	Funktionen mit beliebig vielen Parametern:
+
+		Um zu wissen, wieviele der Stackelemente zu dem Funktions-
+		aufruf gehoeren, muss eine Information auf dem Stack
+		abgelegt werden. Dieses wird mit einem Lock (';') gemacht.
+		Unter dem Stichpunkt "lock" sind auch Beispiele.
+
+		array	- Fuege alle Elemente zu einem Array zusammen.
+		split	- Zerlege das Array auf dem Stack in Einzelteile.
+
+		->	- Rufe in dem untersten Objekt die hinter dem
+			  Pfeil stehende Funktion auf. Uebergebe alle
+			  dem Objekt folgenden Elemente als Parameter.
+		-->	- Dito. Lege aber das Ergebnis wieder auf
+			  auf dem Stack ab.
+			  (Hilfe ist unter dem Begriff "call" zu finden.)
+
+		-*	- Rufe die hinter dem -* stehende efun auf.
+			  uebergib alle Stackelemente als Parameter.
+		--*	- Dito mit Ergebnisrueckgabe.
+			  (Hilfe unter dem Begriff "callefun".)
+
+		@	- Fuehre den LPC-Code hinter dem Klammeraffen aus.
+		@@	- Dito mit Returnwert.
+			  (Hilfe unter "evaluate".)
+
+	Wie die Befehle im einzelnen funktionieren, kann man durch
+	";hilfe <Befehl>" erfahren. Thema ist im Allgemeneinen der
+	Befehlsname. Bei Ausnahmen bitte oben nachlesen. ;-)
+
+	Viel Spass damit
+		Rumata, die Goettin der Morgenroete.

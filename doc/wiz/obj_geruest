@@ -1,0 +1,134 @@
+/*
+ *----------------------------------------------------------------------
+ * obj_geruest
+ * Dieses File ist Teil der Morgengrauen-Mudlib.
+ * Dieses File wird optimal formatiert, wenn Tabulatoren 4 Zeichen breit
+ * sind.
+ *
+ * Allgemeines Geruest fuer ein Objekt. Wer eigene Objekte schreibt,
+ * sollte sie nicht ganz so intensiv kommentieren wie dieses hier, aber
+ * hier sollen gleichzeitig, die grundlegenden Mechanismen erlaeutert
+ * werden.
+ *
+ * 16.08.92 Rumata
+ * Ueberarbeitet am 24.08.94 von Viper
+ *----------------------------------------------------------------------
+ */
+inherit "std/thing";            /* Leite aus den std-Objekten ab */
+
+#include <language.h>           /* Stelle Namen der Faelle und der Geschlechter */
+							/* dem Objekt zur Verfuegung. */
+
+create()
+{
+	::create();
+		/* Diese Zeile NIEMALS vergessen!!! */
+
+	AddId( "ball" );        
+	AddId( "strandball" );
+		/* Unter diesen Bezeichnungen fuehlt der Ball sich "angesprochen" */
+		/* Mann sollte mit Ids nicht sparen, damit die Spieler nicht ewig  */
+		/* nur nach dem richtigen Namen eines Objektes suchen muessen. */
+
+	SetProp( P_NAME, "Ball" );
+	SetProp( P_GENDER, MALE );
+	SetProp( P_ARTICLE, 1 );
+		/* Diese Meldungen ermoeglichen es der Mudlib, das Objekt richtig */
+		/* zu deklinieren. SetProp(P_ARTICLE, 1) kann wegfallen, da 1 Default ist. */
+
+	SetProp( P_SHORT, "Ein bunter Ball" );
+	SetProp( P_LONG, "Was fuer ein huebscher kleiner Strandball.\n"
+			+"Wem koenntest Du den mal zuwerfen?\n" );
+		/* Beschreibungen zur Betrachtung des Balls. */
+
+	SetProp( P_VALUE, 10 );
+	SetProp( P_WEIGHT, 250 );
+		/* Bei diesen Werten sollte die Verhaeltnismaessigkeit */
+		/* nicht aus den Augen gelassen werden. */
+}
+
+init()
+{
+	::init();
+		/* NICHT VERGESSEN */
+		/* Wenn keine eigenen Aktionen definiert werden sollen, so kann die */
+		/* Funktion init ganz weggelassen werden. Ein init, das nur */
+		/* ::init() aufruft ist ueberfluessig. */
+
+	add_action( "wurf", "werf", 1 );
+	add_action( "wurf", "wirf" );
+		/* werfe, werf oder wirf jemandem den Ball zu. Man sollte darauf */
+		/* achten, dass natuerliche Saetze als Eingabe akzeptiert werden. */
+}
+
+/*************************************************************************/
+/************* Die grundlegenden Funktionen enden hier *******************/
+/*************************************************************************/
+
+
+/* Eine Beispielaktion fuer den Ball. */
+wurf( argument )
+{
+	/* "werf ball rumata zu" wird als Argument "ball rumata zu" bekommen. */
+	string arg1, arg2;
+	string ziel;
+	object zielObj;
+
+	if ( sscanf( argument, "%s %s zu", arg1, arg2 ) != 2 ) return 0;
+		/* Rueckgabe von 0 bedeutet, dass dieses Objekt mit der Eingabe */
+		/* nichts anfangen konnte, und dass der Gamedriver das naechste */
+		/* Objekt befragen soll. */
+
+	if ( id( arg1 ) )
+			/* Welches der Argumente spricht den Ball an ? */
+			/* Das andere muss dann das Ziel des Balls sein. */
+		ziel = arg2;
+	else if ( id( arg2 ) )
+		ziel = arg1;
+	else
+		return 0;
+			/* Keines der Argumente war der Ball. */
+
+	zielObj = present( ziel, environment() );
+		/* Suche ein Objekt, das sich als Ziel angesprochen fuehlt. */
+
+	if ( ! zielObj )
+	{
+		write( "Hier ist kein \"" + ziel + "\".\n" );
+		return 1;
+			/* Hier wird 1 zurueckgegeben, da der Ball das Kommando den  */
+			/* Befehl bearbeiten konnte. Er hat zwar kein Ziel gefunden, */
+			/* aber man kann ja nicht alles haben. :-) */
+	}
+	
+	if( !living( zielObj ) )
+	{
+		write( "Und wie soll " + zielObj->name(WER,1) + " den Ball fangen?\n" );
+		return 1;
+			/* Nur lebende Wesen sollen Baelle fangen koennen. */
+	}
+
+	write( "Du wirfst " + zielObj->name(WEN,1) + " den Ball zu.\n" );
+			/* Mitteilung an den Werfer */
+	say( PL->name(WER,2) + " wirft " + zielObj->name(WEM,2)
+		+ " einen Ball zu.\n", zielObj );
+			/* Mitteilung an alle Wesem im selben Raum. */
+	tell_object( zielObj, "Hoppla, " + PL->name(WER,2)
+		+ " wirft Dir einen Ball zu.\n" );
+			/* Mitteilung an den Beworfenen */
+
+	if ( move( zielObj ) ) return 1;
+		/* Es hat geklappt. */
+
+	move( environment() );
+		/* Im Fehlerfall soll der Ball zu Boden fallen. */
+
+	write( "Aber " + zielObj->QueryPronoun(WER)
+		+ " kann ihn nicht fangen.\nDer Ball plumpst zu Boden.\n" );
+	say( "Aber " + zielObj->QueryPronoun(WER)
+		+ " kann ihn nicht fangen.\nDer Ball plumpst zu Boden.\n", zielObj );
+	tell_object( zielObj,
+		"Aber Du kannst ihn nicht fangen.\nDer Ball plumpst zu Boden.\n" );
+
+	return 1;
+}

@@ -1,0 +1,27 @@
+
+ort
+---
+
+ KOMMANDO:
+    ort [<name>|loeschen]
+
+ ARGUMENTE:
+
+     <name> (optional)
+        Der neue Ortsname
+     loeschen (optional)
+        Loescht den gesetzten Ortsnamen wieder
+
+ BESCHREIBUNG:
+     Wenn Du aus einem Ort kommst, der nicht automatisch erkannt
+     werden kann, kannst Du mit diesem Befehl eintragen, von
+     woher Du WIRKLICH kommst.
+     Die Angabe wird lediglich als zusaetzliche Information beim
+     "finger"-Befehl angezeigt sowie wahlweise bei "wer".
+     Falls Du z.B. aus Frankfurt eingeloggt bist und als Ort Muenchen
+     angibst, wirst Du sowohl bei "kwer in frankfurt" als auch bei
+     "kwer in muenchen" gefunden.
+     
+ SIEHE AUCH:
+    Persoenliche Details: email, url, icq, messenger
+    Sonstiges:            finger, wer, kwer

@@ -1,0 +1,72 @@
+NAME
+	about-efun+lfun-docs
+
+AUTHOR
+	These man pages were collected from the original 2.4.5 docs,
+	from the installed docs of NightFall, TubMud and MorgenGrauen.
+
+	They were collected corrected and completed Pepel@NightFall,
+	with assistance and support by the LPC wizards of NightFall,
+	TubMud and MorgenGrauen, namely Hyp, Macbeth and Mateese. Also
+	to mention are Bumblebee, Boing, Deepthought, Demos, Hate and
+	Jof.
+
+DESCRIPTION
+	The man pages generally adhere to the following format, which
+	was inspired by the Unix man pages.
+
+	<manpage> ::= <section>+
+
+	There are one or more sections in a man page.
+
+	<section> ::= <section-name><newline><section-text><newline>
+
+	The section names are always at the beginning of a line, and
+	in all capital letters (debatable uglyness).
+
+	<section-name> ::=   'NAME' | 'CONCEPT' | 'SYNOPSIS'
+			   | 'LAST UPDATED'
+			   | 'DESCRIPTION' | 'AUTHOR' | 'BUGS'
+			   | 'CAVEATS' | 'WARNING' | 'NOTE' | 'NOTES'
+			   | 'EXAMPLE' | 'EXAMPLES'
+			   | 'SEE ALSO'
+
+	If a NAME section occurs, it should give the name of the man
+	page.
+	If a SYNOPSIS section occurs, the name of the man page canb be
+	derived from the function name, that appears in the line after
+	SYNOPSIS, which looks as follows:
+
+	<returntype><space>['*']<function-name>'('<parameter-prototypes>
+
+	SEE ALSO is followed by one or more lines that contain
+	crossreferences of the form
+
+	<crossreferences> ::=
+		<crossref>[','<white-space><crossref>]*<white-space><EOF>
+	<crossref> ::= <man-page-name>'('<chapter-abbrev>')'
+
+	The names of the referenced man pages are followed in brackets
+	by an abbreveiation for the chaper (i.e. directory) the man
+	page is in. The abbrevs are
+	E for efun/	the ``system calls'' of LPC
+	L for lfun/	member functions that the driver applies to objects
+	C for concepts/	general concepts of LPMUD and LPC
+	LPC for LPC/	about parts of the LPC language
+	M for master/	lfuns that are applied to the master object only
+	D for driver/	some info about internal operation of the driver
+
+	If you want to process these man pages by some converter
+	program, you can use these to map the chapter names to file
+	names or whatever.
+
+BUGS
+	There are no man pages supported by Amylaar himself.
+	I hope one day I can convince him to at least put these docs
+	into the driver distribution.
+
+	Meanwhile, please report any corrections / suggestions /
+	completions to <pepel@ibr.cs.tu-bs.de>
+
+SEE ALSO
+	efun(E), lfun(L), concepts(C), lpc(LPC), master(M), driver(D)

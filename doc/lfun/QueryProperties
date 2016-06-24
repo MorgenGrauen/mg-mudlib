@@ -1,0 +1,30 @@
+QueryProperties()
+FUNKTION:
+     mapping QueryProperties()
+
+DEFINIERT IN:
+     /std/thing/properties.c
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Diese Funktion liefert ein Mapping mit allen fuer das Objekt
+     definierten Properties zurueck.
+
+RUeCKGABEWERT:
+     Ein Mapping mit den Properties. Das Mapping hat folgenden Aufbau:
+	([ name: wert; flags; set_method; query_method,
+	   name2: ... ]);
+
+BEMERKUNGEN:
+     - diese Funktion wird von restore_object() und save_object()
+     - F_QUERY_METHODs und _query_'prop'()-Methoden haben keine Auswirkung
+       auf die Wertefelder!
+
+SIEHE AUCH:
+     Aehnliches:	SetProp(L), QueryProp(L), Set(L), Query(L)
+     Generell:		SetProperties(L) 
+     Konzept:		properties, /std/thing/properties.c
+
+1.Mai 2004 Gloinson

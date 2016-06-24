@@ -1,0 +1,45 @@
+	Einfuehrung in die Progrmmierung der Morgengrauen-Mudlib
+	von Don Rumata, MudAdm des MorgenGrauens
+	========================================================
+
+	EINLEITUNG:
+	-----------
+
+	Herzlich willkommen als Magier im MorgenGrauen. Du bist
+	gerade Magier geworden. Dieser Kurs soll Dir helfen,
+	in diesem MUD alles Moegliche zu programmieren. 
+
+
+	WICHTIGE INFORMATIONEN FUER DEN ANFANG:
+	---------------------------------------
+
+	Ein Magier hat sich gewissen Regeln zu unterwerfen, wie man
+	sich bein einem Spiel auch in die Spielregeln zu halten hat.
+	Diese Spielregeln stehen in RULES (das sind die wichtigen)
+	und in RULES.WIZ (das sind die technischen Hinweise).
+
+	Wenn Du Files editieren willst, gibt es mehrere Moeglich-
+	keiten:
+
+	1.) Mit dem Befehl "ed <filename>":
+	    Eine Einleitung fuer ed kannst Du in /doc/ed/* finden.
+
+	2.) Fileuebertragung per ftp
+	3.) Fileuebertragung per mtp
+	    frage am besten einen der erfahrenen Magier.
+
+
+	KURSUEBERBLICK:
+	---------------
+
+	I	Programmierung von Raeumen
+	     1.	Ein einfacher Raum
+	 
+	II	Programmierung von Objekten
+	
+	III	Programmierung von Monstern
+
+
+	Achja: Ich bitte flehentlich um Korrekturlesen und
+	Verbesserungs/Ergaenzungsvorschlaege. Und noch mehr
+	um Mitarbeit. (Ich hab schon jetzt wunde Finger :-)

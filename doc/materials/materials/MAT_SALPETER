@@ -1,0 +1,17 @@
+Materialid:
+MAT_SALPETER             "salpeter"
+
+Name:
+"Salpeter" "Salpeters" "Salpeter" "Salpeter"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

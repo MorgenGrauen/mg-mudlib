@@ -1,0 +1,21 @@
+Materialid:
+MAT_ARSENIC              "arsenic"
+
+Name:
+"Arsen" "Arsens" "Arsen" "Arsen"
+
+Geschlecht:
+N
+
+Beschreibung:
+giftiges Halbmetall
+
+Erkennbarkeit:
+MAT_SALT:50
+MAT_MISC_METAL:66
+MAT_ARSENIC
+
+Gruppenzugehoerigkeit:
+MATGROUP_POISONOUS:100
+MATGROUP_METAL:100
+MATGROUP_SOLID:100

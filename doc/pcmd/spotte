@@ -1,0 +1,20 @@
+spotte
+------
+
+ KOMMANDO:
+    spotte <text>
+    spotte :<emote>
+
+ ARGUMENTE:
+    <text>
+        Was man so ueber seine Opfer laestern moechte.
+
+ BESCHREIBUNG:
+    Mit dem Kommando "spotte" kann man auf dem Moerder-Kanal seine Gefuehle
+    zum gerade erlegten Monster ausdruecken. Das klappt natuerlich nur bei
+    selbst erlegten Monstern und auch nur als direkte Antwort auf die letzten
+    Worte des NPCs.
+
+ SIEHE AUCH:
+    ebenen, toete
+

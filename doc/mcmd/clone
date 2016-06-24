@@ -1,0 +1,36 @@
+
+clone
+-----
+
+ MAGIERKOMMANDO:
+    clone [-f] <objektname>
+
+ ARGUMENTE:
+
+     <objektname> Dateiname des Objektes, das erzeugt werden soll
+
+ OPTIONEN:
+
+     -f:  Erzwingt den Versuch des Clonens ohne Ueberpruefung, ob eine
+          Datei existiert. Diese Option sollte nur in Ausnahmefaellen
+          verwendet werden, da Fehlschlaege sofort als Fehlermeldung im
+          Driverlog auftauchen.
+
+ BESCHREIBUNG:
+    Eine Kopie von einem Objekt, das im File <objektname> beschrieben ist,
+    wird erzeugt. Das Objekt befindet sich danach im Inventar des Magiers
+    oder (wenn in dem Objekt P_NOGET gesetzt ist) im gleichen Raum wie der
+    Magier.
+
+    Die Blueprint wird zu nichts anderem gebraucht, als Kopien zu erzeugen.
+
+    Wenn ein Objekt noch nicht geladen ist, wird es neu geladen.
+
+    Raeume sollten niemals geclont werden, da sie immer nur einmal existieren
+    sollten und nicht in mehrern Kopien.
+
+ SIEHE AUCH:
+    load, destruct, upd, setcmsg
+
+ LETZTE AENDERUNG:
+    Mit, 05.06.2003, 18:00:00 von Mandragon

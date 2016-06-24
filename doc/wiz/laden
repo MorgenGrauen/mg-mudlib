@@ -1,0 +1,15 @@
+LAEDEN IM MORGENGRAUEM
+----------------------
+
+Laeden im MorgenGrauen sollten grundsaetzlich /std/shop erben.
+
+Des Weiteren benoetigt man einen StorageRoom, also einen Raum, in dem der
+Laden seine Gegenstaende verwaltet. Dieser wird mit "SetStorageRoom"
+gesetzt. Die Hilfeseite zu diesem Befehl hat auch ein Beispiel.
+
+Objekte, die der Laden immer verkaufen soll, kann man mit "AddFixedObject"
+setzen.
+
+Siehe auch: SetStorageRoom, AddFixedObject, QuerySellValue
+
+Letzte Aenderung: Humni, 2015-06-17

@@ -1,0 +1,48 @@
+DEFINIERT IN:
+        /sys/living/combat.h
+
+BESCHREIBUNG:
+        In dieser Property kann man ein Array ablegen, das beim Tod eines
+        Spielers ausgewertet und der darin enthaltene String
+        anschliessend auf dem Todeskanal gesendet wird.
+        Der Array muss folgenden Aufbau haben:
+
+          SetProp( P_DEATH_MSG, ({ Text, Flag }) )
+          
+        Text: Der Text kann beliebig eingegeben werde. Allerdings darf 
+              er nicht mit einem '\n' abgeschlossen werden.
+        
+        Flag: Hier kann man drei Arten von Sendemethoden waehlen.
+              1. MSG_SAY      Normales Senden
+              2. MSG_GEMOTE   Genitiv-Emote
+              3. MSG_EMOTE    Emote
+
+
+BEISPIEL:
+        Der Spieler soll direkt nach seinem Tod eine Meldung auf dem 
+        Todeskanal senden.
+        
+        Nachricht auf dem Todes-Kanal:
+	
+        [Tod:Spieler] Ich will keine Beleidsbekundungen!
+        
+        void spieler_stirbt()
+	{
+         this_player()->SetProp( P_DEATH_MSG, ({ "Ich will keine "
+                                        "Beleidsbekundungen!", MSG_SAY}) );
+         this_player()->die();
+        }
+        
+        Nachricht auf dem Todes-Kanal:
+	
+        [Tod:Spieler liebt es zu sterben.]
+        
+        void spieler_stirbt()
+        {
+         this_player()->SetProp( P_DEATH_MSG, ({ "liebt es zu sterben.",
+                                                 MSG_EMOTE }) );
+         this_player()->die();
+        }
+
+SIEHE AUCH:
+        P_MURDER_MSG, P_FORCE_MURDER_MSG

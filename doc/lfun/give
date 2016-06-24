@@ -1,0 +1,43 @@
+give()
+
+FUNKTION:
+    public varargs int give(object o, object dest, mixed msg);
+
+DEFINIERT IN:
+    /std/living/put_and_get.c
+
+ARGUMENTE:
+    object o
+        Das Objekt, das uebergeben werden soll.
+    object dest
+        Der Spieler oder NPC, der das Objekt bekommen soll.
+    mixed msg
+        Eine optionale Meldung, die anstelle von P_GIVE_MSG oder der
+        Standardmeldung verwendet wird, oder -1, um die Meldung zu
+        unterdruecken.
+
+BESCHREIBUNG:
+    Der Spieler oder NPC uebergibt dem Empfaenger das Objekt. Gibt o->move()
+    keinen positiven Wert zurueck, beispielsweise weil das Objekt verflucht
+    ist oder der Empfaenger es nicht mehr tragen kann, bekommt er eine
+    entsprechende Fehlermeldung.
+
+RUECKGABEWERT:
+    Wenn die Uebergabe geklappt hat, 1, ansonsten 0.
+
+BEMERKUNG:
+    Diese Funktion ist dann sinnvoll, wenn man den Spieler ein Objekt
+    weitergeben lassen und sich nicht selbst um die Fehlerbehandlung kuemmern
+    moechte - und da unzaehlige verschiedene Dinge schiefgehen koennen und
+    manche Objekte eigene Fehlermeldungen definieren, eigentlich immer.
+
+    Die Funktion prueft nicht, ob der Spieler/NPC der Objekt ueberhaupt hat,
+    das muss man ggf. selbst ermitteln.
+
+SIEHE AUCH:
+    move(L), P_GIVE_MSG, give_objects(L), give_notify(L),
+    P_NOINSERT_MSG, P_NOLEAVE_MSG, P_TOO_MANY_MSG,
+    P_TOO_HEAVY_MSG, P_ENV_TOO_HEAVY_MSG, P_NODROP
+
+----------------------------------------------------------------------------
+Last modified: Thu Aug 28 22:21:19 2008 by Amynthor

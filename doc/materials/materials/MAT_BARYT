@@ -1,0 +1,21 @@
+Materialid:
+MAT_BARYT                "baryt"
+
+Name:
+"Schwerspat" "Schwerspates" "Schwerspat" "Schwerspat"
+
+Geschlecht:
+M
+
+Beschreibung:
+weiss, hohe Dichte
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:33
+MAT_ORTHOKLAS:50
+MAT_BARYT
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_STONE:100
+MATGROUP_SOLID:100

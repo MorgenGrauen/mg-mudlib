@@ -1,0 +1,24 @@
+
+review
+------
+
+ SEHERKOMMANDO:
+    review
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Es werden die Meldungen ausgegeben, die Anwesende erhalten, wenn Du einen
+    Raum betrittst oder verlaesst, sowie die Meldungen, wenn Du einen Gegner
+    mit blossen Haenden angreifst.
+
+    Bei Magiern werden ausserdem noch die Meldungen angezeigt, die von den
+    Befehlen clone und destruct ausgegeben werden.
+
+ SIEHE AUCH:
+    setmin, setmout, setmmin, setmmout, sethands
+    Nur Magier: setcmsg, setdmsg
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

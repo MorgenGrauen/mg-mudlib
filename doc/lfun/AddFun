@@ -1,0 +1,63 @@
+AddFun()
+
+FUNKTION:
+     void AddFun(string fun, int next);
+
+DEFINIERT IN:
+     /std/transport.c
+
+ARGUMENTE:
+     fun
+          Name der Funktion.
+     next
+          Zeit bis zur naechsten Fahrplanstation.
+
+BESCHREIBUNG:
+     Dem Fahrplan wird der Aufruf der Funktion fun, die im Transporter
+     definiert sein muss, hinzugefuegt. Nach Aufruf der Funktion vergehen
+     next Sekunden, bis die naechste Station angefahren wird.
+
+RUeCKGABEWERT:
+     keiner
+
+BEISPIELE:
+     Wenn ein zufaellig ausgewaehlter Passagier eines Schiffes unterwegs
+     seekrank werden soll, koennte man das wie folgt realisieren:
+
+     create()
+     {
+       ...
+
+       AddFun("seekrank", 5);
+       ...
+     }
+
+     seekrank()
+     {
+       object *passagiere, opfer;
+
+       // soll nicht immer passieren
+       if (random(5))
+         return;
+
+       // Opfer auswaehlen
+       passagiere = QueryPassengers();
+       if (sizeof(passagiere))
+         opfer = passagiere[random(sizeof(passagiere))];
+
+       // Und viel Spass...
+       tell_object(opfer,
+         "Du wirst seekrank! Schnell stuerzt Du zur Reling um  Dich zu\n"
+        +"uebergeben.\n");
+       tell_room(this_object(),
+         sprintf("%s ueberkommt die Seekrankheit!\n%s stuerzt an die Reling, "
+                +"um sich zu uebergeben.\n",
+                 capitalize(opfer->name(WEN)),
+                 capitalize(opfer->QueryPronoun(WER))), ({ opfer }) );
+     }
+
+SIEHE AUCH:
+     AddRoute(), AddMsg(), /std/transport.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:16:46 1996 by Wargon

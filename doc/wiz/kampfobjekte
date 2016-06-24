@@ -1,0 +1,60 @@
+ SONSTIGE KAMPFOBJEKTE:
+
+    Hierzu zaehlen alle Sachen, die irgendeinen Einfluss auf den Kampf nehmen
+    und weder `/std/weapon.c' noch `/std/armour.c' sind. Also die sogenannte
+    Artillerie, Eisstab und artverwandtes, Wurfsterne, Parasteine, Bumis...
+    sowie saemtliche tragbaren Heilmoeglichkeiten und unterstuetzende NPC.
+
+    Prinzipiell sind alle diese Sachen genehmigungspflichtig.
+    Auto-Selbstfahrer, also Sachen, die ohne Eingriff des Spielers agieren,
+    sind unerwuenscht und sollten vermieden werden. Sorry fuer die
+    Laggeplagten...
+
+    Kampfobjekte sollten P_ATTACK_BUSY setzen und auch vor der Anwendung
+    abfragen, damit sie nicht unbegrenzt hintereinander genutzt werden
+    koennen. Magische Sachen sollten entweder aufgeladen werden muessen oder
+    ihre magische Energie verlieren, damit sie nicht unendlich haltbar sind.
+    Ausserdem hat Magie normalerweise auch unerwuenschte Nebenwirkungen. Die
+    Spieler sollen die moeglichen Vorteile gegen Nachteile oder Nebenwirkungen
+    des Gegenstands abwaegen. Auch bei diesen Objekten *muss* P_INFO gesetzt
+    werden, um eine Begruendung fuer die besondere Wirkung und z.B. einen
+    Hinweis auf die Benutzung zu liefern.
+    Sie sollten keinesfalls kaeuflich erworben werden koennen.
+
+    Tragbare Heilstellen sollten aeusserst spaerlich verwendet werden. Handelt
+    es sich um irgendeine Form von Fressalien (Brot, Pfirsich,
+    Schnellhaerter...) so muss P_FOOD oder P_DRINK und evtl. P_ALCOHOL gesetzt
+    werden. Ansonsten sollten solche Dinge wenigstens irgendwelche
+    Auswirkungen auf den Spieler haben ausser der Heilung. Ein sogenanntes
+    "Restrisiko" waere nicht verkehrt...
+
+    Sie sollten niemals unbegrenzt erworben werden koennen, schon gar nicht
+    kaeuflich! Ausserdem ist eine gewisse Verfallszeit sehr sinnvoll und
+    erhoeht die Chancen auf Genehmigung. Richtwerte: erhoehtes Risiko nach 1.
+    Reset, unbrauchbar nach 2-3 Resets.
+
+    Objekte, die Auskunft ueber ein- und/oder ausgehende Schaeden geben, 
+    sind genehmigungspflichtig. Solche Objekte sollten nach Moeglichkeit
+    eine Waffe oder Kleidungsstueck - dies jedoch nicht AT_MISC - sein.
+    Dass solche Objekte auch ueber Luecken in der Angabe der Schaeden und
+    Nachteile verfuegen sollten, ist eigentlich klar. 
+    Solche Nachteile liessen sich ueber eine Mindest-Schadenshoehe oder
+    random realisieren. Informationen ueber mehrere Schadenstypen durch 
+    ein und das selbe Objekt sind nicht erwuenscht.
+
+    Ebenfalls genehmigungspflichtig sind alle Objekte, die in irgend einer
+    Weise Einfluss auf spezifische Gildenfaehigkeiten oder Besonderheiten
+    nehmen. Hierzu sollte neben der Balance auch noch der Gildenmagier
+    befragt werden. 
+    
+    Hinsichtlich Komponenten der Zauberer ist der Gildenchef der
+    Ansprechpartner.
+    
+ SIEHE AUCH
+
+     balance, ruestungen, waffen, fernwaffen, uniques, npcs, objects,
+     attributsveraenderungen, resistenzen, grenzwerte, artillerie
+
+------------------------------------------------------------------------------
+ LETZTE AeNDERUNG:
+    So, 26.01.2003, 18:50:00 von Humni

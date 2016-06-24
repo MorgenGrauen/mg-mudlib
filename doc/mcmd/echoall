@@ -1,0 +1,24 @@
+
+echoall
+-------
+
+ MAGIERKOMMANDO:
+    echoall <text>
+
+ ARGUMENTE:
+
+     <text>
+        ein beliebiger Text
+
+ BESCHREIBUNG:
+    Der Text <text> wird an alle Spieler im MUD geschickt.
+
+    Der Befehl sollte mit groesster Sorgfalt behandelt werden. In diesem
+    Zusammenhang sei auch nochmal darauf hingewiesen, dass Echos in fremdem
+    Namen nicht erlaubt sind.
+
+ SIEHE AUCH:
+    vertrag, emote, echo, echoto, mecho, teile (mit)
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:54:18 von Wargon

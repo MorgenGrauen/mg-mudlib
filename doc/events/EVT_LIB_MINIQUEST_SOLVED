@@ -1,0 +1,29 @@
+EVENT: 
+   EVT_LIB_MINIQUEST_SOLVED
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /secure/questmaster.c
+
+BESCHREIBUNG:
+   Dieser Event wird vom Questmaster ausgeloest, wenn ein Spieler eine
+   Miniquest geloest hat.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:        (object) Questgeber-Objekt,
+      E_OBNAME:        (string) Objektname des Questgebers
+      E_PLNAME:        (string) Spielername,
+      E_MINIQUESTNAME: (string) Titel der Miniquest
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+2014-Feb-03, Arathorn
+

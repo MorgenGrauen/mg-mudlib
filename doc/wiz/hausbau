@@ -1,0 +1,40 @@
+Hilfeseite fuer Magier: Hausbau im MorgenGrauen
+-----------------------------------------------
+
+Als Magier wird man desoefteren von Spielern gebeten, Ihnen beim
+Hausbau behilflich zu sein. Diese Bitte erfolgt meistens als
+
+1) 'Kannst Du hier in dem Raum wo ich bin, es mal so einrichten,
+    dass ich mein Haus abstellen und giessen kann'
+
+und 
+
+2) 'Ich moecht hier gerne mein Haus abstellen, aber es soll un-
+    sichtbar sein, eine andere Kurzbeschreibung haben und man 
+    soll es nicht mit <betrete> betreten koennen, oder .... '.
+
+
+Fuer 1) ist es relativ einfach. Man begebe sich als Magier in den 
+Raum, zuecke sein MG-Tool und tippe ein 
+
+              'xcall $h->SetProp(P_HAUS_ERLAUBT,1)'.
+
+Dann fordere man den Spieler auf, sein Haus abzustellen und gies-
+sen und setze diese Property wieder auf 0.
+
+ACHTUNG: Das Abstellen eines Hauses muss unbedingt vorher mit dem 
+-------  Magier abgesprochen werden, dem dieser Raum gehoert! Bei 
+         inaktiven Magier ist dies der zustaendige Regionsmagier.
+
+Bei 2) verfaehrt man, wie fuer den Fall 1) geschildert. Jedoch sind 
+dazu noch andere Dinge notwendig. Da diese den Rahmen einer Hilfe-
+seite sprengen, liegt unter 
+
+                       /doc/beispiele/misc/seherhaus.c
+
+ein File, in dem alles ausfuehrlich dokumentiert ist.
+
+SIEHE AUCH: P_HAUS_ERLAUBT
+
+------------------------------------------------------------------------------
+LETZTE AeNDERUNG: Sam, 19.05.2001, 23:00:00 von Tilly

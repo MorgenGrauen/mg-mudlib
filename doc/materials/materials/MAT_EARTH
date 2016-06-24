@@ -1,0 +1,18 @@
+Materialid:
+MAT_EARTH                "earth"
+
+Name:
+"Erde" "Erde" "Erde" "Erde"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_ELEMENTAL:100
+MATGROUP_SOLID:100

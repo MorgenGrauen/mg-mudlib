@@ -1,0 +1,127 @@
+
+Teamkampf-Interna
+=================
+
+Verwaltung der Kampfreihen
+--------------------------
+
+Die Umordnung der Teammitglieder wird durch die Formation gesteuert.
+
+  formin[reihe] - Minimale Anzahl von Teammitgliedern in dieser Reihe
+  formax[reihe] - Maximale Anzahl von Teammitgliedern in dieser Reihe
+
+Die Funktion CheckFormation() passt die Werte so an, dass sie bei Anwesenheit
+aller Teammitglieder erfuellbar sind, wobei ggf. der Maximalwert vorne
+anfangend erhoeht wird und der Minimalwert hinten anfangend verringert wird.
+Dabei ist der Minimalwert der ersten Reihe 1.
+
+Es ist zwischen der Teamaufstellung und der Raumaufstellung zu unterscheiden.
+Die Teamaufstellung ist die Aufstellung, in der die Mitglieder angeordnet
+waeren, wenn alle anwesend waeren. In der Teamaufstellung ist durch die
+Funktion MakeFormation() sichergestellt, dass die Minimal- und
+Maximalanforderungen erfuellt sind.
+Die Raumaufstellung ergibt sich aus den anwesenden Mitgliedern der
+Teamaufstellung. Sollten die Minimalanforderungen einer vorderen Reihe nicht
+erfuellt sein, werden anwesende Mitglieder aus den hinteren Reihen IN DER
+RAUMAUFSTELLUNG nach vorne geschoben soweit noetig.
+
+Vor Verschiebungen und bei Updates der TEAMAUFSTELLUNG werden die Arrays mit
+den Mitgliedern jeder Reihe sortiert, wobei die gewuenschte Reihe der
+Mitglieder das groesste Gewicht (125) im Sortierkriterium hat und die Anzahl
+der Lebenspunkte einfach eingeht. Solange die Teammitglieder unter 250 LP
+haben, kann ein Mitglied mit wenigen LP hinter einem mit vielen LP einsortiert
+sein, der EINE Reihe weiter hinter stehen will, aber nicht zwei oder mehr.
+Wird es noetig, Mitglieder aus einer Reihe in eine andere zu verschieben,
+werden Mitglieder vom Anfang des Arrays nach vorne verschoben (an das Ende
+des davorliegenden Arrays) bzw. Mitglieder vom Ende des Arrays nach hinten
+(an den Anfang des dahinterliegenden Arrays). Dadurch werden immer die
+Mitglieder mit dem staerksten Drang nach vorne an die Front geschickt :-)
+
+Wenn jemand die Reihe wechselt und dabei die Minimalanforderung der Quellreihe
+unterschritten oder die Maximalanforderung der Zielreihe ueberschritten wird,
+wird mit CycleRows() rotiert. Kommt ein neues Mitglied hinzu und die
+Maximalanforderung seiner gewuenschten Reihe wuerde ueberschritten, wird
+in AddToRow() zunaechst versucht ein Mitglied eine Reihe vorzuschieben, falls
+da noch Platz ist, sonst eine Reihe zurueck, falls da noch Platz ist (die
+Anzahl der Mitglieder also < formax ist). Wird ein Mitglied entfernt oder
+gewaltsam entfernt und wuerde dabei die Minimalanforderung seiner Reihe
+unterschritten, wird in RemoveFromRow() versucht, ein Mitglied aus der
+nachfolgenden Reihe nach vorne zu holen, falls dort Ueberschuss vorhanden ist
+(in der nachfolgenden Reihe also mehr Mitglieder als formin sind), sonst aus
+der vorangehenden Reihe, falls dort Ueberschuss ist.
+
+Sollten diese Umordnungen nicht ausreichen die Formation in der
+TEAMAUFSTELLUNG einzuhalten, wird die Formation mit MakeFormation() erzwungen.
+Dies wird in zwei Durchlaeufen erreicht. Der erste Durchlauf wird von vorne
+nach hinten durchgefuehrt. Ist das Maximum einer Reihe ueberschritten, werden
+soviele Mitglieder nach vorne geschoben wie in der davorliegenden Reihe freie
+Plaetze sind und die restlichen ueberschuessigen Mitglieder nach hinten. Sollte
+das Minimum einer Reihe unterschritten sein, werden soviele Mitglieder aus den
+nachfolgenden Reihen hergeholt, wie zum Erreichen des Minimums noetig ist. Der
+zweite Durchlauf wird von hinten nach vorne ausgefuehrt. Falls das Minimum
+einer Reihe unterschritten wird, werden Mitglieder aus den davorliegenden
+Reihen geholt soweit noetig, wenn jedoch Ueberschuss vorhanden ist, wird
+dieser nach vorne geschoben.
+
+BEISPIEL:
+
+Formation 3-6 2-2 1-2 0-6 1-1 (bloedsinnige Formation ;-)
+
+1. Durchlauf (vorne beginnend):
+
+   1 1 6 1 0
+   <----     (Minimum Reihe 1 unterschritten)
+   3 0 5 1 0
+     <--     (Minimum Reihe 2 unterschritten)
+   3 2 3 1 0
+       -->   (Maximum Reihe 3 ueberschritten)
+   3 2 2 2 0
+
+2. Durchlauf (hinten beginnend):
+
+   3 2 2 2 0
+         --> (Minimum Reihe 5 unterschritten)
+   3 2 2 1 1
+
+Ergebnis entspricht der gewuenschten Formation. Ermittlung der RAUMaufstellung:
+
+   2 0 2 1 1 (Anwesende aus der vorangegangenen TEAMaufstellung)
+   <----
+   3 0 1 1 1
+     <----
+   3 2 0 0 1
+       <----
+   3 2 1 0 0
+
+Ergebnis erfuellt Minimalanforderungen zumindest vorne, Maximalanforderungen
+koennen nicht ueberschritten werden, weil die Raumaufstellung hoechstens
+soviele Mitglieder wie die Teamaufstellung hat.
+
+
+Abarbeitung des Angriffsbefehls und Verteilung der Begruessungsschlaege
+-----------------------------------------------------------------------
+Das Grundprinzip ist folgendes:
+Wenn das ganze Team bewegt wird, werden die Begruessungsschlaege unter
+Vorbehalt weggelassen. Sobald alle Teammitglieder bewegt wurden, macht
+jedes Monster, das noch einen Begruessungsschlag ausfuehren muss, einen
+Schlag auf EIN Teammitglied das im Nahkampf erreichbar ist und der Vorbehalt
+wird fuer alle Mitglieder aufgehoben. Wenn ein Teammitglied versucht
+sich zu bewegen und noch ein Begruessungsschlag unter Vorbehalt fehlt,
+wird dieser noch vor der Bewegung nachgeholt.
+
+
+SIEHE AUCH:
+        Uebersicht: teamkampf
+        Properties: P_TEAM, P_ASSOC_MEMBERS, P_TEAM_ATTACK_CMD,
+                    P_TEAM_AUTOFOLLOW, P_TEAM_COLORS, P_TEAM_LEADER,
+                    P_TEAM_NEWMEMBER, P_TEAM_WANTED_ROW, P_TEAM_WIMPY_ROW
+        Bewegung:   IsTeamMove, TeamFlee
+        Mitglieder: IsTeamLeader, TeamMembers
+        Kampf:      AssocMember, DeAssocMember, InsertEnemyTeam,
+                    SelectNearEnemy, SelectFarEnemy
+        Positionen: PresentPosition, PresentRows, PresentEnemyRows,
+                    PresentTeamPosition, SwapRows
+        Sonstiges:  TeamPrefix
+
+----------------------------------------------------------------------------
+Last modified: 16-08-2010, Gabylon

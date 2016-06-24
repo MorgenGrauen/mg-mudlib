@@ -1,0 +1,15 @@
+query_real_name()
+
+SYNOPSIS:
+	string query_real_name(void)
+
+DESCRIPTION:
+	The result of this_player()->query_real_name() is used as
+	default argument for the efun wizlist().
+
+	If LOG_SHOUT was #defined in the parser at compile time, the
+	efun shout will use query_real_name() to log the shouter's
+	name.
+
+SEE ALSO:
+	shout(E), wizlist(E)

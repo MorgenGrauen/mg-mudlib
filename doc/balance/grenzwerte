@@ -1,0 +1,58 @@
+ GRENZWERTE
+
+    Waffen:
+   
+      Einhaendige Waffen  :    ab P_WC >= 140
+      Zweihaendige Waffen :    ab P_WC >= 175
+
+      Fuer Waffen die einen nichtphysikalischen Schadenstyp enthalten:
+
+      Einhaendige Waffen  :    ab P_WC >= 120
+      Zweihaendige Waffen :    ab P_WC >= 150
+
+      Genehmigungspflichtig sind auch generell Waffen, die als Schadens-
+      typ DT_TERROR, DT_SOUND, DT_AIR oder DT_SQUEEZE enthalten, unabhaengig
+      von der WC.
+
+      Der Schadenstyp DT_EXPLOSION wird nicht mehr genehmigt.
+
+      Alle Waffen mit HitFunc oder entsprechender Funktion muessen genehmigt
+      werden (Es sei denn diese wirken nur bei !interactive() oder erhoehen 
+      den Schaden nicht).
+
+    Ruestungen:
+
+      +--------------+--------+----------------------------+
+      | Ruestungstyp | MAX_AC | Genehmigungsgrenze (inkl.) |
+      +--------------+--------+----------------------------+
+      | AT_AMULET    |    2   |             --             |
+      | AT_ARMOUR    |   50   |             38             |
+      | AT_BELT      |    2   |             --             |
+      | AT_BOOT      |    6   |              5             |
+      | AT_CLOAK     |   10   |              8             |
+      | AT_GLOVE     |    5   |              5             |
+      | AT_HELMET    |   15   |             13             |
+      | AT_QUIVER    |    0   |             --             |
+      | AT_RING      |    2   |             --             |
+      | AT_SHIELD    |   40   |             28             |
+      | AT_TROUSERS  |   15   |             13             |
+      | AT_MISC      |    0   |             --             |
+      +--------------+--------+----------------------------+
+
+    Ruestungen mit DefendFunc o.ae. muessen generell genehmigt werden 
+    (siehe Waffen).
+
+    Ruestungen und Waffen vom Typ AT_MISC oder WT_MISC duerfen keiner-
+    lei positive Veraenderungen im Spieler hervorrufen, keine Stats
+    veraendern oder sonstwie kampfrelevante Bedeutung haben. Die WC/AC
+    solcher Objekte ist immer 0 und wird auch nicht anders genehmigt.
+
+ SIEHE AUCH
+
+     balance, ruestungen, fernwaffen, uniques, npcs, schadenstypen
+     attributsveraenderungen, resistenzen, kampfobjekte
+
+
+------------------------------------------------------------------------------
+ LETZTE AeNDERUNG:
+    Don, 03.01.02, 12:00:00 von Tilly

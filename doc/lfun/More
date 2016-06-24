@@ -1,0 +1,56 @@
+More()
+
+FUNKTION:
+     varargs public void More(string txt, int file,
+                              mixed ctrl, mixed *ctrlargs, int flags);
+
+DEFINIERT IN:
+     /std/util/pager.c
+
+ARGUMENTE:
+     txt  - entweder ein Text der ausgegeben werden soll, oder ein filename.
+     file - das flag file gibt an, ob es sich bei <txt> um einen text oder
+            einen Filenamen handelt. Bei einem Filenamen wird der Inhalt
+            dieses Files eingelesen und ausgegeben.
+     ctrl - Eine closure, die aufgerufen wird, falls kein <txt> angegeben
+            wurde.
+     ctrlargs - ctrlargs wird als Parameter an ctrl uebergeben.
+     flags - flags wird mit den im Spieler definierten P_MORE_FLAGS
+             kombiniert.
+
+BESCHREIBUNG:
+
+     More() dient der Ausgabe von Texten an Spieler. Mit Hilfe eines
+     PL->More(txt) oder PL->More(txt, 1) ist es sehr einfach laengere Texte
+     an Spieler auszugeben. Bei der Ausgabe werden die persoenlichen
+     Einstellungen des Spielern (wie z.b. Zeilen pro Bildschirmseite)
+     automatisch beruecksichtigt und der Text dadurch ggf. zerstueckelt
+     und in mehreren Schritten nacheinander angezeigt.
+
+RUeCKGABEWERT:
+     keiner
+
+BEMERKUNGEN:
+     Beim einlesen des Files sind die Leserechte des Spieler in dem More()
+     aufgerufen wird von Bedeutung und nicht die Rechte des Objektes das
+     More() aufruft. Spielerobjekte haben im MorgenGrauen jedoch nur sehr
+     eingeschraenkte Leserechte! Ausgegeben werden koennen nur files
+     aus /p/*, /gilden/* und /d/* die _keinen_ code enthalten. Als Code
+     wird hierbei jedes File betrachtet das als vorletztes Zeichen einen .
+     hat (also .c, .h, .o usw.).
+     Will man aus irgendwelchen Gruenden ein File (z.b. aus /players/)
+     ausgeben, so sollte man stattdessen folgendes verwenden:
+     this_player()->More(read_file(filename))
+
+BEISPIELE:
+
+     // Ausgabe eines normalen textes...
+     this_player()->More("Einfach nur mal so ein Test...\n");
+
+     // Ausgabe eines kompletten files
+     this_player()->More("/etc/WIZRULES", 1);
+
+SIEHE AUCH:
+
+----------------------------------------------------------------------------
+Last modified: Mon Feb 22 15:09:18 1999 by Padreic

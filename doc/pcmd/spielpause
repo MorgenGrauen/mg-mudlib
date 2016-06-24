@@ -1,0 +1,34 @@
+KOMMANDO:
+	Spielpause <Anzahl> Tag[e]
+	Spielpause bis <Datum>
+
+ARGUMENTE:
+	<Anzahl>
+	  Dauer der Spielpause in Tagen
+	<Datum>
+	  Datum, bis zu dem die Spielpause gelten soll.
+	  Im Format tt.mm.[jj]
+
+BESCHREIBUNG:
+	Wenn man unbedingt einmal eine Mudpause einlegen muesste, weil man
+	sich um RL-Dinge wie Klausuren, Diplomarbeiten und aehnliche
+	Nebensaechlichkeiten zu kuemmern hat, und wenn man genau weiss, dass
+	man sich aus eigenem Willen nicht vom Einloggen fernhalten kann, so
+	kann man sich mit diesem Befehl eine Zwangspause genehmigen.
+	Der Tag, an dem man sich zur Spielpause entschliesst, wird in die
+	Laenge der Pause mit eingeschlossen. Mit `Spielpause 1 Tag' kann man
+	sich also am naechsten Tag wieder einloggen.
+	Wenn man nicht weiss, wie lang die Spielpause sein soll, kann man
+	als Anzahl -1 angeben. Um sich wieder einloggen zu koennen, muss man
+	dann allerdings einem Gott oder Erzmagier Bescheid sagen (mit Hilfe
+	eines Gastes. ;)
+	Die Spielpause tritt mit dem naechsten Ausloggen in Kraft. Dabei ist
+	es egal, ob man sich mit 'Ende' oder 'Schlafe ein' ausloggt.
+	Entscheidet man sich, doch keine Pause antreten zu wollen, so kann
+	man die Aktion mit 'Spielpause 0 Tage' wieder rueckgaengig machen.
+
+SIEHE AUCH:
+	spieldauer, selbstloeschung, loeschskript
+
+----------------------------------------------------------------------------
+Last modified: Mon Okt 16 20:32:44 2000 by Silvana

@@ -1,0 +1,22 @@
+P_FAO_PORTALS
+
+NAME:
+     P_FAO_PORTALS      "fraternitasdonoarchmagorumPORTALS"
+
+DEFINIERT IN:
+     <player/fao.h>
+
+BESCHREIBUNG:
+     Fraternitas-relevante Property.
+
+     Enthaelt eine Array mit einer Liste der ueber die Fraternitas
+     gefundenen und benutzbaren Seher-Portale.
+
+     Genaue Informationen unbekannt.
+     Schreibender Zugriff ist nur EMs oder dem FAOMASTER (s. Headerfile) 
+     moeglich.
+
+SIEHE AUCH:
+     P_FAO_PORTALS, P_SEERDOORS
+     
+1.September 2008 Gloinson

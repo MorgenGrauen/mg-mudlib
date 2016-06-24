@@ -1,0 +1,16 @@
+SYNOPSIS
+      xinherit <object> [function]
+
+DESCRIPTION
+      Show the inheritance tree of an object and if optional specified
+      display all occurencies of the function.
+      The inheritance tree is perhaps not the one you expect to see. In
+      fact its the one the gamedriver really uses. That means if for
+      example two object inherit each other or in any other case of recursion
+      it will not be shown. Or if an object A inherits object B and C
+      and object B also inherits object C, the object C will only displayed
+      once (because the gamedriver also inherits object once).
+
+EXAMPLE
+      xinherit $me
+

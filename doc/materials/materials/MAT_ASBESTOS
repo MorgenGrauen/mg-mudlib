@@ -1,0 +1,20 @@
+Materialid:
+MAT_ASBESTOS             "asbestos"
+
+Name:
+"Asbest" "Asbests" "Asbest" "Asbest"
+
+Geschlecht:
+M
+
+Beschreibung:
+grauweiss
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_POISONOUS:100
+MATGROUP_MINERAL:100
+MATGROUP_STONE:100
+MATGROUP_SOLID:100

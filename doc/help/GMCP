@@ -1,0 +1,356 @@
+General Mud Communication Protocol im MorgenGrauen
+==================================================
+
+0. Einleitung
+   GMCP wird benutzt, um Daten zwischen MUD und Client "out of band" zu
+   uebertragen. "Out of band" bedeutet hier, dass der Datenaustausch hinter
+   den Kulissen passiert statt in der normalen textuellen Spielausgabe,
+   welcher vom Client mittels mehr oder weniger komplizierter Trigger
+   ausgewertet werden muss.
+
+   Vorteile:
+   * keine komplexen Trigger (Regexps) mehr.
+   * Daten werden in einem definierten Format uebertragen, welches der Client
+     fuer euch interpretiert.
+   * keine Gagtrigger mehr noetig, um empfangenen Text auszublenden
+   * keine stoerenden Ausgaben, falls man diese Gagtrigger nicht hat.
+   * Daten koennen auch uebertragen werden in Situationen, in denen eine
+     normale Textausgabe nicht so gut geht, z.B. in Editoren.
+   * Daten, die die Clientscripte nicht verarbeiten, stoeren nicht den
+     Textfluss.
+   * Der Client kann konfigurieren, welche Informationen er bekommen will.
+   * Im MG ist neben Dingen wie LP und KP die Uebertragung div. anderer Dinge
+     geplant, vor allem andere Informationen  ueber den Char oder den Raum
+     (z.B. eindeutige Raum-IDs (in den meisten Faellen)).
+
+
+1. Unterstuetzte Module
+
+1.1. Core (aus IRE (Iron Realms Entertainment) MUDs)
+  Das Core Modul ist immer aktiv. Es verwaltet die grundsaetzlichen
+  Einstellungen von GMCP. Die MG-Variante ist fast identisch zur IRE-Variante,
+  hat allerdings zusaetzliche das "Debug"-Kommando.
+
+  Vom Client gesendet:
+    - Core.Hello
+        Muss die erste Nachricht sein, welche der Client nach Aktivierung von
+        GMCP sendet.
+        Die Daten sind ein Objekt mit den Schluesseln "client" und "version",
+        welche entsprechend den Clientnamen und seine Versionskennung
+        enthalten.
+      Core.Hello { "client": "Nexus", "version": "3.1.90" }
+    - Core.Supports.Set
+        Informiert das MUD ueber die Pakete/Module, die der Client
+        unterstuetzt, d.h. die der Client empfangen kann. Es ist immer noch
+        Entscheidung des Muds, welche dieser Module ihre Daten senden (z.B.
+        wird MG einem "MG.char" den Vorzug geben vor einem generischen "Char",
+        falls vom Client beide unterstuetzt werden.
+        Wenn bereits vorher ein Core.Supports.* Kommando empfangen wurde, wird
+        die Liste der unterstuetzten Module durch die neue ersetzt.
+        Daten sind ein Array von Strings, welche jeweils den Modulnamen und
+        die Versionsnummer angeben (mit einem Leerzeichen getrennt).
+        Die Versionsnummer muss eine positive Ganzzahl sein.
+        Die meisten Clients werden Set nur einmal am Anfang senden und
+        brauchen kein Add/Remove.
+      Core.Supports.Set [ "MG.char 1", "MG.room 1" ]
+    - Core.Supports.Add
+        aehnlich zu Set, aber es fuegt die angegeben Module an die in der
+        Vergangenheit uebermittelten an.
+        Wenn noch keine Liste gesendet wurde, ist das Ergebnis wie bei Set.
+        Wenn die Liste Module enthaelt, die bereits aktiv sind, wird die neue
+        Versionsnummer Prioritaet vor der alten haben, selbst wenn die kleiner
+        ist.
+        Die Daten sind identisch zu Set.
+    - Core.Supports.Remove
+        Entfernt die angebenen Module aus der Liste der unterstuetzen Module.
+        Die Daten sind identisch zu Set. Die Modulversionen sind NICHT
+        optional (anders als bei IRE). Allerdings werden auch Module anderer
+        Version abgeschaltet. (Insofern koennte man - zur Zeit - einfach immer 1
+        als Versionsnummer senden.)
+    - Core.KeepAlive
+        Vom MG ignoriert, weil Verbindungen nicht automatisch getrennt werden.
+    - Core.Ping
+        Veranlasst das MG mit einem Core.Ping zu antworten.
+        Die Daten ist eine Ganzzahl, welche die durchschnittliche Pingzeit
+        aus verherigen Pings enthaelt, falls verfuegbar.
+        (Anmerkung: IRE macht keine Angabe ueber die Einheit dieser Zahl. MG
+         geht von Millisekunden aus.)
+      Core.Ping 120
+    - Core.Debug
+        Kann gesendet werden, um die Ausgabe von menschenlesbaren
+        Debugmeldungen vom GMCP zu aktivieren.
+        Die Daten sind eine Ganzzahl. Je groesser, desto mehr Debugmeldungen
+        werden ausgegeben.
+        0 schaltet die Debugmeldungen aus.
+        1 schaltet nur die Ausgabe von GMCP-Fehlern an.
+        100 schaltet alles an.
+      Core.Debug 1
+  Vom Server gesendet:
+    - Core.Ping
+        Als Antwort eines vom Client empfangenen Core.Ping gesendet.
+        Keine Daten.
+    - Core.Goodbye [NOT IMPLEMENTED YET!]
+        Gesendet vom MUD unmittelbar vor Verbindungstrennung.
+        Die Daten sind eine Nachricht (string), welche dem User angezeigt
+        werden kann und koennen den Grund fuer den Disconnect erklaeren.
+      Core.Goodbye "Goodbye, adventurer"
+
+1.2. MG.char 1 (angelehnt an Aardwolf, aber modifiziert)
+  Die Uebertragung der Kommandos in diesem Modul wird aktiviert, wenn
+  "MG.char" aktiv ist. Es gibt keine Submodule, die getrennt aktiviert werden
+  muessten. Die jeweiligen Kommandos werden gesendet, wenn sich eins der
+  gesendeten Daten aendert.
+  Alle Kommandos werden einmal bei Modulaktivierung gesendet (auch wenn ein
+  Modul durch ein Core.Supports.Set (erneut) aktiviert wird).
+  Ist dieses Modul vom Client unterstuetzt, werden keine Daten aus den
+  Modulen "Char" und "char" gesendet.
+  (Spieler aelter als 12.05.2013 muessen einmalig den textuellen Report mit
+   "report ein" und "report vorsicht" einschalten, damit die Uebertragung
+   via GMCP freigeschaltet wird. Der Report kann danach wieder
+   ausgeschaltet werden.)
+
+1.2.2. MG.char.base
+  Vom Server gesendet:
+    - MG.char.base
+      Einige grundlegende Eigenschaften des Chars, die sich selten aendern.
+      Ein "wizlevel" von 1 zeigt an, dass der Char ein Seher ist.
+      Der "title" kann am Anfang ein Backspace "\b" gefolgt von "," oder "'"
+      enthalten.
+      MG.char.base { "name": "Jof", "guild": "Abenteurer",
+                     "race": "Elf", "presay": "Mudgott",
+                     "title": "idlet.", "wizlevel": 101 }
+
+1.2.3. MG.char.vitals
+  Vom Server gesendet:
+    - MG.char.vitals
+      Aktuelle Lebenspunkte, Konzentrationspunkte und Vergiftungzustand.
+      Im Falle von Gift: je groesser, desto staerker die Vergiftung.
+      MG.char.vitals { "hp": 210, "sp": 90, "poison": 3 }
+    - MG.char.maxvitals
+      Aktuelle Maximalwerte fuer LP, KP und Vergiftungszustand. Werden in
+      einer separaten Gruppe uebertragen, weil sie sich viel seltener aendern.
+      MG.char.maxvitals { "max_hp": 210, "max_sp": 226, "max_poison": 10 }
+
+1.2.4. MG.char.attributes
+  Vom Server gesendet:
+    - MG.char.attributes
+      Aktuelle Attribute des Chars.
+      Die Daten sind ein Objekt Name-Wert-Paaren von Attributen.
+      MG.char.attributes { "int": 12, "con": 10, "str": 8, "dex": 12 }
+
+1.2.5. MG.char.infoVars
+  Vom Server gesendet:
+    - MG.char.infoVars
+      Diese Nachricht gibt den "technischen" Namen aus MG.char.info einen
+      Namen, der dem Spieler stattdessen angezeigt werden sollte.
+      Diese Nachricht wird nur bei Modulaktivierung gesendet.
+      Die Daten sind ein Objekt von Name-Beschreibung-Paaren.
+      MG.char.infoVars { "level": "Stufe", "guildlevel": "Gildenstufe" }
+
+1.2.6. MG.char.info
+  Vom Server gesendet:
+    - MG.char.info
+      Uebertraegt (ausgewaehlte) Daten aus dem Kommando <info>.
+      Die Daten sind ein Objekt von Name-Wert-Paaren.
+      (Moegliche weitere Angaben in der Zukunft: Questpunkte, Stufenpunkte
+       (Genauigkeit 20% einer Stufe), ...)
+      MG.char.info { "level": 210, "guildlevel": 9 }
+
+1.2.7. MG.char.wimpy
+  Vom Server gesendet:
+    - MG.char.wimpy
+      Aktuelle Vorsicht und ggf. Fluchtrichtung des Char.
+      Die Daten sind ein Objekt Name-Wert-Paare von Vorsicht+Fluchtrichtung.
+      Ist keine Fluchtrichtung gesetzt, wird 0 uebertragen.
+      Fuer die Uebermittlung der Vorsicht muss der Char die Quest "Der Schrat
+      kann nicht einschlafen" geloest haben und fuer die Fluchtrichtung
+      Seher sein.
+      MG.char.wimpy { "wimpy": 50, "wimpy_dir": "norden" }
+
+
+1.3. char 1 (Aardwolf)
+  Dieses Modul ist so aehnlich zum "char" Modul von Aardwolf wie es geht, d.h.
+  es benutzt die gleichen Schluesselnamen. Es ist aber reduziert im Umfang der
+  Daten, d.h. es uebertraegt weniger Daten als Aardwolf es tut.
+  Wann immer moeglich, wird empfohlen, das Modul MG.char stattdessen zu
+  verwenden.
+  Wenn MG.char aktiv ist, werden von diesem Modul keine Daten uebertragen.
+  ES WIRD DAVON ABGERATEN, DIESES MODUL ZU VERWENDEN.
+  Wann immer moeglich, solltet ihr es in euren Clients abschalten!
+
+1.3.1. char.base
+  Vom Server gesendet:
+    - char.base
+      Einige grundlegende Eigenschaften des Chars, die sich selten aendern.
+      char.base { "name": "Jof", "race": "Elf",}
+
+1.3.2. char.vitals
+  Vom Server gesendet:
+    - char.vitals
+      Aktuelle Lebens- und Konzentrationspunkte.
+      char.vitals { "hp": 210, "mana": 90}
+
+1.3.3. char.stats
+  Vom Server gesendet:
+    - char.stats
+      Aktuelle Attribute des Spielers.
+      Die Daten sind ein Objekt Name-Wert-Paaren von Attributen.
+      char.stats { "int": 12, "con": 10, "str": 8, "dex": 12 }
+
+1.3.4. char.status
+  Vom Server gesendet:
+    - char.status
+      Aktueller Level des Chars. (Dies ist die einzige Angabe aus dem Aardwolf
+      char.status, welche das MG machen kann.)
+      Die Daten sind ein Objekt Name-Wert-Paaren von Attributen.
+      char.status { "level": 210 }
+
+
+1.4. Char 1 (IRE)
+  Dieses Modul ist so aehnlich zum "Char" Modul von IRE wie es geht, d.h.
+  es benutzt die gleichen Schluesselnamen. Es ist aber reduziert im Umfang der
+  Daten, d.h. es uebertraegt weniger Daten als IRE es tut.
+  Wann immer moeglich, wird empfohlen, das Modul MG.char stattdessen zu
+  verwenden.
+  Wenn MG.char aktiv ist, werden von diesem Modul keine Daten uebertragen.
+  ES WIRD DAVON ABGERATEN, DIESES MODUL ZU VERWENDEN.
+  Wann immer moeglich, solltet ihr es in euren Clients abschalten!
+
+1.4.1. Char.Vitals
+  Vom Server gesendet:
+    - Char.Vitals
+      Aktuelle und maximale Lebens- und Konzentrationspunkte.
+      Char.Vitals { "hp": 210, "mp": 90, "maxhp": 210, "maxmp": 226 }
+
+1.4.2. Char.Status
+  Vom Server gesendet:
+    - Char.Status
+      Aktueller Level und Gilde des Chars. 
+      Die Daten sind ein Objekt Name-Wert-Paaren von Attributen.
+      Char.Status { "level": 210, "guild": "Zauberer" }
+
+1.4.3. Char.StatusVars
+  Vom Server gesendet:
+    - Char.StatusVars
+      Diese Nachricht gibt den "technischen" Namen aus Char.Status einen
+      Namen, der dem Spieler stattdessen angezeigt werden sollte.
+      Dieses Kommando wird nur bei Modulaktivierung gesendet.
+      Die Daten sind ein Objekt von Name-Beschreibung-Paaren.
+      Char.StatusVars { "level": "Spielerstufe", "guild": "Gilde" }
+
+
+1.5. comm.channel 1 (Aardwolf)
+  Dieses Modul ist genauso wie es Aardwolf definiert. Allerdings werden
+  natuerlich aus dem MG andere Ebenen uebertragen. ;-)
+  Vom Server gesendet:
+    - comm.channel
+      Diese Nachricht wird immer dann gesendet, wenn jemand was auf einer
+      eingeschalteten Ebene sagt. (Nicht bei Abruf der History!)
+      Zur Zeit ist es nicht moeglich, Ebenen per GMCP ein- oder auszuschalten.
+      Wenn dieses GMCP-Modul eingeschaltet ist, wird die Ausgabe der
+      Ebenenmeldung in der normalen Spielausgabe des MG unterdrueckt.
+      Achtung: Zur Zeit erfolgt (noch) keine Beruecksichtung eurer
+      "ignoriere"-Einstellungen bei den via GMCP uebertragenen
+      Ebenenmeldungen.
+      comm.channel { "chan": "allgemein",
+          "msg": "[Allgemein:Maharet] Guten Morgen, Grauen!", 
+          "player": "Maharet" }
+
+
+1.5. MG.team 1 (eigene Variante, inspiriert von Aardwolf)
+     Kommt spaeter. ;-)
+
+
+1.6. MG.room 1 (eigene Variante, inspiriert von Aardwolf)
+  MG.room beinhaltet Informationen ueber den aktuellen Raum des Spielers
+
+  Vom Server gesendet:
+  - MG.room.info
+    Diese Nachrichtig wird immer nach Betreten eines neuen Raumes gesendet
+    und enthaelt folgende Informationen:
+    * id: Eine eindeutige ID des Raumes (technisch: ein MD5-Hash)
+        Diese Angabe fehlt in Labyrinthraeumen (nicht gewollt) und in einigen
+        speziellen Raeumen (technische Gruende, z.B. manche 'virtual
+        compiler'). In diesem Fall ist die ID "" (leerer String).
+    * short: Die Kurzbeschreibung des Raumes
+    * domain: Die Region, in der der Raum liegt
+        Manche Raeume liegen nicht in den Regionen. In dem Fall fehlt diese
+        Angabe.
+    * exits: eine Liste von sichtbaren Ausgaengen (d.h. unsichtbare Ausgaenge
+        werden nicht angezeigt).
+    Hinweis: es ist moeglich, dass der Spieler in einen Raum bewegt wird,
+    der zwar technisch ein anderer Raum ist, aber kein anderer Ort. In
+    diesem Fall unterbleibt diese Nachricht.
+    room.info { "id": "d41d8cd98f00b204e9800998ecf8427e",
+                "short": "Die beruehmte Abenteurergilde",
+                "domain": "Ebene",
+                exits: [ "norden", "oben" ] }
+
+
+2. Vergleich mit GMCP in Aardwolf und IRE Muds
+   Im Morgengrauen wird GMCP letztendlich nur als Spezifikation des Transport
+   Layers betrachtet, da bei den Modulen jedes Mud seine eigene Definition der
+   uebertragenen Daten und ihrer Bedeutung vornimmt.
+
+   Das Modul "Char" ist aus den IRE-Muds, welches nur existiert, weil einige
+   Clients es standardmaessig schonmal einschalten. Es sendet aber nur einen
+   Minimalsatz an Daten.
+   Das Modul "char" ist aus Aardwolf, welches nur existiert, weil einige
+   Clients es standardmaessig schonmal einschalten. Es sendet aber nur einen
+   Minimalsatz an Daten.
+
+   Dem Modul MG.char sollte immer der Vorzug vor "Char" oder "char" gegeben
+   werden, da dort deutlich mehr Daten uebertragen werden.
+
+   Das Modul "Room" aus IRE wird nicht unterstuetzt, weil seine Daten vom MG
+   groesstenteils nicht in der geforderten Form bereitgestellt werden koennen
+   (zumindest nicht ohne ungerechtfertigten Aufwand).
+
+3. Transport Specification
+   Einstweilen am besten auf http://www.gammon.com.au/gmcp nachlesen.
+
+   Kommt hier vielleicht spaeter noch, einstweilen am besten im Netz
+   nachgucken.
+
+4. Implementationsdetails
+  Im MG ist Gross-/Kleinschreibung des Modulnamens wichtig, im Gegensatz zum
+  IRE. Meines Wissens (bitte korrigiert mich ggf.), machte die
+  Transportspezifikation keine Aussage in diesem Punkt, sondern IRE hat dies
+  entschieden.
+  Jetzt ist es so, dass Aardwolf teils Module mit dem gleichen Namen, aber
+  anderer Funktion wie IRE gebaut hat. Alle Doku von Aardwolf schreibt aber
+  immer von kleingeschriebenen Modulnamen. Insofern ist das jetzt ein Versuch,
+  die Module von IRE/Aardwolf doch irgndendwie auseinander zu halten.
+
+
+5. Client-Kram
+5.1. Tips und Hinweiss
+  Manche Clients zeigen die empfangenen GMCP-Daten standardmaessig auf dem
+  Bildschirm an.
+  Normalerweise sortieren sie die Daten  aber in von Scripten nutzbare
+  Tabellen ein, so dass es entfaellt, irgendeinen Text zu parsen.
+  In der Regel ist es dann auch so, dass der Client Moeglichkeiten anbietet,
+  auf den Empfang von GMCP-Daten reagieren zu koennen (z.B. nen Script
+  aufrufen zu lassen).
+
+5.2. Clients mit GMCP-MG-Support
+
+5.3. Clients mit GMCP-Support (Transport Spec)
+  * Mudlet (http://forums.mudlet.org/viewtopic.php?f=7&t=1547)
+    Im Netz sind div. weitere Quellen und Tutorial zu finden.
+  * Tintin++ (http://tintin.sourceforge.net/board/viewtopic.php?p=4651)
+  * TF 5 (http://mikeride.chaosnet.org/abelinc/scripts/telopt.html)
+  * CMUD (http://forums.zuggsoft.com/forums/viewtopic.php?p=158455#158455)
+  * Mushclient (http://www.aardwolf.com/wiki/index.php/Clients/MushclientGMCP)
+
+
+6. Angedachte Module fuer die Zukunft
+Ob und wann etwas aus diesem Bereich kommt, ist voellig offen. Haengt auch vom
+Interesse der Spielerschaft ab.
+
+6.3. Char.Items (IRE)
+  Eigentlich eher weniger geplant...
+
+LETZTE AeNDERUNG:
+09.01.2016, Zesstra
+

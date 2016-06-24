@@ -1,0 +1,59 @@
+FindDistantGroups()
+
+FUNKTION:
+	varargs mixed FindDistantGroups(object pl, int dist, int dy, int dx)
+
+DEFINIERT IN:
+	/std/spellbook.c
+
+ARGUMENTE:
+	pl   - Caster
+	dist - Entfernung
+	dy   - Tiefe      (default 100)
+	dx   - Breite     (default 100*MAX_TEAM_ROWLEN)
+
+BESCHREIBUNG:
+	Ermitteld feindliche (bei Spielern NPCs, bei NPCs Spieler) und
+	freundliche (bei Spielern Spieler, bei NPCs NPCs) Lebewesen,
+	die sich in Entfernung <dist> in einem Bereich der Breite <dx>
+	und Tiefe <dy> befinden.
+
+RUECKGABEWERT:
+	Array mit zwei Arrays als Inhalt:
+	({ feindliche Lebewesen, freundliche Lebewesen })
+
+BEMERKUNGEN:
+	Die Entfernungsangaben sind als cm. zu verstehen.
+	Jedes Lebewesen belegt 50cm x 50cm mit Abstand 50cm
+	zum naechsten Lebewesen in jeder Richtung.
+	Die Breitenangabe wirkt sich nur in der Anzahl der
+	Lebewesen aus, die zufaellig pro Reihe ausgewaehlt werden.
+	Die Skillattribute SA_RANGE und SA_EXTENSION werden beruecksichtigt.
+
+BEISPIEL:
+	dist=200, dy=200, dx=200, ein Punkt = 50cm x 50cm
+	   . . . . . . . . . . . . .
+	3. . . . . . . G . . . . . .
+	   . . . . . . . . . . . . .
+	2. . . . . . G . G . . . . .dist+dy/2-+
+	   . . . . . . . . . . . . .          |  
+	1. . . . . G . G . G . . . .     dist +-+ (Gegner G)
+	---.-.-.-.-.-.-.-.-.-.-.-.-.          | |
+	1. . . . . F . F . F . . . .dist-dy/2-+ | (Freunde F)
+	   . . . . . . . . . . . . .            |
+	2. . . . . . F . S . . . . .------------+ (Reihe des Spielers S)
+	   . . . . . . . . . . . . .
+	3. . . . . . . F . . . . . .
+	   . . . . . . . . . . . . .
+	Abgedeckter Bereich:           100cm  bis  300cm
+                Reihe 3:  375cm..425cm         375>300 -> nicht erwischt
+                Reihe 2:  275cm..325cm         275<300 -> erwischt
+	Gegner  Reihe 1:  175cm..225cm 100<175,225<300 -> erwischt
+	Freunde Reihe 1:   75cm..125cm 100<125         -> erwischt
+	        Reihe 2:  -25cm...25cm 100> 25         -> nicht erwischt
+                Reihe 3: -125cm..-75cm 100>-75         -> nicht erwischt
+	Ergebnis: ({({G,G,G,G}),({F,F})})
+	(Maximal 2 Lebewesen pro Reihe bei Breite 200).
+
+SIEHE AUCH:
+	teams, FindDistantGroup

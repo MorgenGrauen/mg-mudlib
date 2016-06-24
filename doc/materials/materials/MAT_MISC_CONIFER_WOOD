@@ -1,0 +1,23 @@
+Materialid:
+MAT_MISC_CONIFER_WOOD    "misc_conifer_wood"
+
+Name:
+"Nadelholz" "Nadelholzes" "Nadelholz" "Nadelholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_CONIFER_WOOD:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_BIO:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

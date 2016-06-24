@@ -1,0 +1,16 @@
+BEFEHL:
+	dump
+	
+ARGUMENTE:
+	keins oder
+	TOS -- filename
+	
+FUNKTION:
+	Speichere alle selbstdefinierten Funktionen in der angegebenen
+	Datei ab. Ist der TOS kein String, so wird in der Datei
+	~/.memory.o gespeichert.
+
+	Es koennen nur Funktionen abgespeichert oder geladen werden!
+
+SIEHE AUCH:
+	"funktionen", "restore", "memory"

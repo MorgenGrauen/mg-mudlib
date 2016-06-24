@@ -1,0 +1,12 @@
+BEFEHL:
+	rekinv
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Dieser Befehl mach das selbe wie "inv", zeigt aber rekursiv
+	auch den Inhalt der enthaltenen Objekte an.
+
+SIEHE AUCH:
+	"inv"

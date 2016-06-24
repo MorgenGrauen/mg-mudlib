@@ -1,0 +1,8 @@
+NAME:
+    P_START_HOME                  "start_home"                  
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     Raum, in dem der Spieler nach dem Einloggen landen soll

@@ -1,0 +1,37 @@
+********************* OBSOLETE LFUN ***********************************
+* Diese Efun bitte nicht mehr benutzen, sondern stattdessen die       *
+* Events (siehe "man events").                                        *
+***********************************************************************
+
+NotifyGiveQuest()
+
+FUNKTION:
+     void NotifyGiveQuest(object pl, string key);
+     
+DEFINIERT IN:
+     /std/gilden_ob.c
+     
+ARGUMENTE:
+     pl     Der Spieler, der eine Quest geloest hat.
+     key    Name der geloesten Quest.
+     
+BESCHREIBUNG:
+     Die Funktion wird in der Gilde des Spielers aufgerufen, wenn der 
+     Spieler eine gueltige Quest besteht - und zwar unabhaengig davon,
+     ob er sie bereits geloest hat, oder nicht.
+     
+RUECKGABEWERT:
+     keiner
+     
+BEMERKUNGEN:
+     Die Funktion ist dafuer gedacht, von Gildenprogrammierern ueberschrieben
+     zu werden, wenn beispielsweise bestimmte Quests als Aufstiegsbedingung
+     verlangt werden, diese aber in der entsprechenden Gilde geloest sein
+     muessen (z.B. Obergladiator als Level-5-Zauberer).
+     
+SIEHE AUCH:
+     /std/gilden_ob.c
+     /std/player/quests.c
+
+----------------------------------------------------------------------------
+Last modified: Fri Oct 4 10:17:00 1996 by Silvana

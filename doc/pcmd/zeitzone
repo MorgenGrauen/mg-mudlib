@@ -1,0 +1,45 @@
+
+zeitzone
+----------
+
+ KOMMANDO:
+    zeitzone [<zeitdifferenz>]
+
+ ARGUMENTE:
+
+     <zeitdifferenz>
+        Entweder: Ein ganzzahliger Wert, der den Zeitunterschied zwischen
+                  Deiner Zeitzone und Berlin in Stunden angibt.
+        Oder: UTC +/-i   Deine Zeitzone im Bezug auf die koordinierte
+                         Weltzeit UTC.
+
+ BESCHREIBUNG:
+    Ohne Argumente wird Deine aktuelle Zeitzone angezeigt.
+
+    Mit dem Argument <zeitdifferenz> kann man die eigene Zeitzone
+    einstellen. Diese Zeitdifferenz wird bei der stuendlichen Uhrmeldung
+    und beim Befehl (uhr)zeit beruecksichtigt.
+
+ BEISPIELE:
+
+    > zeitzone UTC 0
+    
+    Sollte man angeben, wenn man in London wohnt.
+    
+    > zeitzone UTC -10
+    
+    Sollte man angeben, wenn man auf Hawaii wohnt.
+    
+    > zeitzone 0
+    
+    Ist die Standard-Einstellung und entspricht der gleichen Zeitzone
+    wie Berlin.
+ 
+ ANMERKUNGEN:
+    Die mit "zeitzone" angegebenen Zeitzonen beruecksichtigen keine lokalen
+    Sommerzeiten - unter anderem, weil die sehr laenderspezifisch sind. Zudem
+    sind keine halben Stunden Zeitunterschiede beruecksichtigt, wie sie in
+    einigen australischen Territorien ueblich sind.
+
+ LETZTE AeNDERUNG:
+    Sat, 30.09.2000, 21:00:00 von Silvana

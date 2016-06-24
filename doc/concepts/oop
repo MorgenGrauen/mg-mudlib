@@ -1,0 +1,76 @@
+OOP
+ BESCHREIBUNG:
+     OOP steht fuer "Object-Orientierte Programmierung":
+
+     Wenn du weisst, wie man in einer prozeduralen Sprache programmiert
+     (C, PASCAL, BASIC), dann hast du bereits viele der Faehigkeiten, die
+     noetig sind um effektiv in LPC zu Programmieren. Die Hauptfaehigkeit,
+     die du brauchen wirst, ist die Begabung deine Ideen in eine Reihe von
+     Schritten zu unterteilen, so dass der Computer diese fuer dich
+     ausfuehren kann.
+
+     LPC ist aber auch eine (imperative, strukturierte) objektorientierte
+     Sprache. OOP haelt dazu an, sich zuerst um die Daten zu kuemmern und
+     dann um die Methoden mit denen diese Daten manipuliert werden:
+     Ein Spieler ist zuerst einmal ein Haufen von Attributen und Punkten
+     und seinem Namen, wie auf diese eingewirkt werden kann wird danach
+     geklaert. Ein Spielerobjekt kommuniziert und kooperiert mit vielen
+     anderen Objekten hier.
+
+     Im Folgenden sind einige der Kriterien objektorientierter Programmierung
+     aufgefuehrt:
+
+     Klassen:
+	Eine Klasse beschreibt das Verhalten einer Gruppe gleichartiger
+	Objekte. Beispielsweise kann man Lebewesen als eine Klasse ansehen,
+	weil man alle Objekte in Lebewesen und nicht-Lebewesen einteilen
+	kann. Hat man einen konkretes Monster und einen konkreten Spieler in
+	einem Raum, dann sind dies Objekte (Instanzen). Man kann von einer
+	Menge gleichartiger Objekte sagen, dass sie zu ein- und derselben
+	Klasse gehoeren. 
+
+     Abstraktion:
+	Jedes Objekt im System verkoerpert als abstraktes Modell einen
+	"Arbeiter", der Auftraege erledigen kann, seinen Zustand berichten
+	und aendern kann und mit den anderen Objekten im System kommunizieren
+	kann, ohne offen zu legen, wie diese seine Faehigkeiten implementiert
+	sind.
+	[So kann man einem Objekt den Auftrag Defend(1000, DT_FIRE, ...)
+	 geben. In MG werden lebende Objekte diesen Auftrag durch Aenderung
+	 ihres Zustandes - LP-Abzug oder Magiereaktion - erfuellen.]
+
+     Kapselung
+	Auch das "Verbergen von Information" genannt, sorgt K. dafuer, dass
+	Objekte den internen Zustand anderer Objekte nicht in unerwarteter
+	Weise aendern koennen; nur den eigenen Methoden eines Objektes soll
+	es erlaubt sein, auf den internen Zustand direkt zuzugreifen. Alle
+	Sorten von Objekten praesentieren nach aussen Schnittstellen (man
+	properties), die darueber bestimmen, wie andere Objekte mit ihnen
+	wechselwirken koennen.
+	[Siehe vor allem man properties]
+	
+     Polymorphie
+	Zeiger zu Objekten koennen es mit sich bringen, dass bei der Auswahl
+	eines konkreten Objektes seine Klasse (sein Typ) nicht offensichtlich
+	ist. Trotzdem werden Nachrichten an so selektierte Objekte korrekt
+	der tatsaechlichen Klasse zugeordnet. Wenn diese Zuordnung erst zur
+	Laufzeit aufgeloest wird, dann wird dieses Verhalten Polymorphismus
+	(auch: spaete Bindung oder dynamische Bindung) genannt.
+	[In LPC ist dynamische Bindung der Standard. Ueberschreibt man also
+	 in einem NPC die(), dann wird auf jeden Fall die neue Methode
+	 aufgerufen, wenn der NPC aus do_damage() heraus in sich die() ruft.]
+
+     Vererbung
+	Organisiert und erleichtert Polymorphie, indem neue Objekte definiert
+	und erzeugt werden koennen, die Spezialisierungen schon existierender
+	Objekte sind. Solche neuen Objekte koennen das vorhandene Verhalten
+	uebernehmen und erweitern, ohne dass dieses Urverhalten neu
+	implementiert werden muss. Typischerweise wird das dadurch erreicht,
+	dass Objekte zu Klassen und zu Hierarchien von Klassen gruppiert
+	werden, in denen sich die Gemeinsamkeiten im Verhalten ausdruecken.
+	[Siehe man vererbung]
+
+ SIEHE AUCH:
+     objekte, inheritance, goodstyle
+
+ 22. Maerz 2004 Gloinson

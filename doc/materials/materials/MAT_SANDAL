@@ -1,0 +1,24 @@
+Materialid:
+MAT_SANDAL               "sandal"
+
+Name:
+"Sandelholz" "Sandelholzes" "Sandelholz" "Sandelholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+gut riechend, kostbar, hart
+
+Erkennbarkeit:
+MAT_MISC_TROPICAL_WOOD:-5
+MAT_SANDAL
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_TROPICAL_WOOD:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

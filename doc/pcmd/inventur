@@ -1,0 +1,49 @@
+
+inventur
+--------
+
+ KOMMANDO:
+    i [<flags>]
+    inv [<flags>]
+    inventur [<flags>]
+
+ ARGUMENTE:
+
+     <flags>
+        Flags, um die Anzeige zu konfigurieren
+
+ BESCHREIBUNG:
+    Es wird eine kurze Beschreibung aller Objekte ausgegeben, die Du bei Dir
+    traegst. Normalerweise werden alle Objekte angezeigt und nach Waffen,
+    Ruestungen und Verschiedenes sortiert. Dies kann man allerdings mit den
+    <flags> aendern:
+
+     -1  Einspaltige Ausgabe
+     +a  Nur Autoloader anzeigen
+     -a  Keine Autoloader anzeigen
+     +b  Nur Objekte zeigen, die man bei "verkaufe alles" behaelt
+     -b  Kein Objekt zeigen, das man bei "verkaufe alles" behaelt
+     -f  Inventar nicht unterteilen oder gleiche Objekte zusammenfassen
+     +r  Nur Ruestungen anzeigen
+     -r  Keine Ruestungen anzeigen
+     -s  Ausgabe alphabetisch sortieren
+     +v  Alles zeigen, was nicht Ruestung oder Waffe ist
+     -v  Alles zeigen, was Ruestung oder Waffe ist
+     +w  Nur Waffen anzeigen
+     -w  Keine Waffen anzeigen
+
+    Die Argumente sind auch kombinierbar.
+
+    Bei den Flags +/-a und +/-b ist folgendes zu beachten: Kombiniert man sie
+    mit den anderen Flags, so findet eine logische UND-Verkuepfung statt. Mit
+
+    inv +r +a
+
+    werden also nicht alle Ruestungen sowie alle Autoloader angezeigt, sondern
+    nur alle Autoload-Ruestungen.
+
+ SIEHE AUCH:
+    behalte, ausruestung
+
+ LETZTE AeNDERUNG:
+    Tue, 27.02.2001, 17:25:00 von Tiamak

@@ -1,0 +1,128 @@
+
+Herzlich willkommen im Kreis der Magier!
+
+Ab jetzt kannst Du hinter die Kulisse des MorgenGrauens schauen.
+Diese Faehigkeit birgt Verantwortung.
+
+Deshalb gelten ab jetzt zusaetzlich zu den bisherigen Regeln folgende
+Magierregeln fuer Dich:
+
+Man darf Spielern keine Hilfen geben, es sei denn, es liegt ein
+*offensichtlicher* Fehler vor. Dabei zaehlt auch ein Zweitspieler,
+mit dem ein Magier spielt, zu den Spielern!
+Haelt der Sheriff einen Extra-Charakter eines Magiers nicht fuer einen
+echten Zweitie, kann er ihn jederzeit zum Testspieler erklaeren. 
+
+Beispiele fuer nicht erlaubte Hilfen:
+- Stats von Monstern mitteilen.
+- Objekte clonen, und Spielern geben.
+- Objekte schreiben, die den Spielern zu sehr helfen, oder umgekehrt
+  die Spieler schaedigen.
+- Spieler teleportieren.
+- Explizite Kommandos angeben, die ein Spieler eingeben muss.
+- Selber (oder mit Zweitcharakteren) mitspielen oder -kaempfen, sobald 
+  Insiderwissen in Anwendung kommt. Hier ist der gesunde Menschenverstand
+  bei der Entscheidung gefragt, ab wann dies der Fall ist.
+- Raeume resetten, damit die Spieler Objekte bekommen.
+  (Insbesondere kann das Nebeneffekte haben, die man als normaler
+   Magier nicht ueberschauen kann, ausserdem koennen die Spieler auch mal
+   warten.)
+- Weitergabe von Objektinformationen, die der Spieler nicht einsehen kann.
+
+In den folgenden Faellen darf natuerlich geholfen werden:
+- Spielern aus fehlerhaften Raeumen oder der 'void' heraushelfen.
+- Man sieht, dass der Spieler weiss, was er zu tun hat, aber ihm die
+  abwegige(!) Formulierung nicht einfaellt. (Hier sollte man aber
+  zusaetzlich dem Magier, der das entsprechende Objekt 'verbrochen'
+  hat, eine Mitteilung geben, auf dass er es verbessert.)
+
+Selber spielen soll man nur dann, wenn man den Spielern dabei nicht
+hilft oder ihnen ein Abenteuer vor der Nase wegloest.
+
+
+Generell muss die Privatsphaere von Spielern geachtet werden. 
+
+Snoopen von Spielern ist nur dann erlaubt, wenn es darum geht, Fehler
+im Mud zu finden oder Ideen zu sammeln, um seinen _eigenen_ Gebiete,
+bzw. Regionen fuer die man verantwortlich ist, zu verbessern und 
+anzupassen. Es darf auf keinen Fall dafuer benutzt werden, Spieler
+ohne besonderen Grund zu beobachten, sich ueber sie lustig zu machen, 
+oder sie auszuspionieren. Wenn Spieler Post schreiben oder lesen ist 
+snoopen strengstens untersagt (Briefgeheimnis).
+Generell ist es angebracht Spieler darauf hinzuweisen, dass sie 
+gesnoopt werden.
+
+Es ist ebenso unzulaessig, andere Moeglichkeiten auszunutzen, die 
+dazu dienen Spieler zu beobachten, bzw. auszuspionieren (zB verfolgen).
+
+Insbesondere ist es STRIKT untersagt, Objekte zu schreiben, die in
+irgendeiner Weise (zB add_action(...,"",1)) 'teile mit', 'fluester'
+und aehnliche Kommunikationsbefehle abfangen, um Gespraeche von anderen
+abzuhoeren. Dies stellt einen schweren Eingriff in die Intimsphaere der
+anderen Teilnehmer dar und wird dementsprechend geahndet!
+
+Jegliche Art von Belaestigung von Spielern ist untersagt. 
+Dazu gehoert das Verfluchen, Monster auf sie hetzen, oder ihnen auf
+irgendeine Art boeswillig Schaden zuzufuegen.
+
+
+Zu dem, was Du hier so programmierst:
+Alles was Du hier an Daten ablegst ist natuerlich Dein eigenes, 
+geistiges Eigentum. Trotzdem gehen wir davon aus, das alles, was hier
+im Mudverzeichnis landet, auch fuer das MorgenGrauen entwickelt worden
+ist, also alles was Du schreibst, auch vom Mud genutzt werden darf.
+Dies fuehrt zu folgender Regelung:
+ 
+Fuer das MorgenGrauen gilt uneingeschraenktes Nutzungsrecht fuer alle 
+Monster, Objekte oder Raeume die Du hier programmierst. Dies gilt 
+insbesondere fuer alle Sachen, die bereits an die Regionen des MGs
+angeschlossen sind.
+Das bedeutet fuer Dich, dass unter Umstaenden von Dir geschriebene 
+Objekte auch gegen Deinen Willen angeschlossen bleiben, und vielleicht
+sogar ggf. aus einem Backup wieder eingespielt werden.
+Mit dieser Regel soll verhindert werden, das unglueckselige Magier aus-
+steigen und beim Verlassen des MG riesige Loecher in der Landschaft 
+und im allgemeinen Gleichgewicht hinterlassen.
+
+
+Sollte Deine Magierzeit beendet sein, verpflichtest Du Dich, ueber
+etwaige waehrend Deiner Magierzeit gewonne nicht-oeffentliche Interna
+- insb. nicht-oeffentlichen Code - auch weiterhin Stillschweigen zu 
+bewahren. Dies gilt unabhaengig von dem Grund oder der Art und Weise,
+Deine Magierzeit zu beenden (z.B. Loeschung).
+
+
+Wenn Du diesen Vertrag unterschreibst, erkennst Du die Regeln an.
+Die Regeln in /etc/WIZRULES sind immer verbindlich, unabhaengig davon,
+wie sie zum Zeitpunkt deines Magierwerdens aussahen.
+
+
+Nun genug der strengen Regeln ;).
+Nun zu dem, was Du jeden Moment wirst; und zu dem, was danach kommt:
+
+1.) Wenn Du diesen Vertrag unterschrieben hast, und Dein Sponsor (das ist
+    der, der Dir den Vertrag gegeben hat) Merlin gebeten hat, Dich zum
+    Magier zu machen, bekommst Du die magischen Faehigkeiten der Magier.
+    Du wirst Dich unsichtbar machen koennen, andere Wesen teleportieren
+    koennen (siehe jedoch Regeln), Objekte clonen und so weiter und so
+    weiter. Dein Sponsor hat die Aufgabe, Dir den Umgang mit den neuen
+    Faehigkeiten beizubringen (Du darfst ihn darauf festnageln ;-)).
+
+2.) Du kannst jedoch selbst noch keinerlei Programme schreiben. Wenn Du
+    auch selber programmieren willst, musst Du zuerst ein Gesellenstueck
+    abliefern. Wie das geht, findest du bei der Hilfe zum Gesellenstueck
+    beschrieben("hilfe gesellenstueck").
+
+
+So und nun zu den Dingen, die fuer Dich da sind:
+
+    Mit dem Befehl "mhilfe" kannst Du eine Uebersicht ueber die Befehle
+    bekommen, die ein Magier zusaetzlich zu denen der Spieler hat. In
+    dem Verzeichniss /doc findest Du verschiedene Files, die Dir das
+    Verstaendnis erleichtern sollen. Eine Uebersicht kannst Du mit dem
+    Befehl. "more /doc/README" bekommen.
+	
+    Der gute alte Merlin ist nicht nur der Urvater aller Magier, sondern
+    beherbergt darueber hinaus auch einen (ab und zu) gut besuchten WizClub.
+    Wer sich mit "goto" noch nicht so gut auskennt, kann ihn in der 
+    Abenteurergilde mit dem Kommando "treff" betreten.

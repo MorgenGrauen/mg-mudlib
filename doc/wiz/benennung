@@ -1,0 +1,158 @@
+AUTOR   MG, den 22.08.92, Don Rumata
+	This file is part of the Morgengrauen-Mudlib from Jof and Rumata
+
+VERSION 1.1
+
+AKTUALISIERT: MG, den 14.10.93, Chris
+UEBERARBEITET: am 24.08.94 von Viper
+
+THEMA   BENENNUNG VON OBJEKTEN IM MorgenGrauen
+
+INHALT:
+	I.      Einleitung
+	II.     Funktionen, die alle Objekte besitzen muessen
+	III.    Unterstuetzung der Funktionen durch die MG_mudlib
+	IV.     Benennung von Raeumen
+	V.      Benennung von Monstern
+
+I.      EINLEITUNG
+
+	Jedes Objekt in der Mudlib muss auf folgende Weisen identifiziert
+	werden koennen:
+
+	1.)     Es muss einen Namen haben, der innerhalb eines Satzes das
+		Objekt bezeichnen kann.
+
+	2.)     Es muss eine Kurzbeschreibung besitzen.
+
+	3.)     Es muss eine ausfuehrliche Beschreibung besitzen.
+
+	4.)     Es muss eine Menge von Synonymen kennen, mit denen ein
+		Spieler das Objekt "ansprechen" kann.
+
+II.     FUNKTIONEN, DIE ALLE OBJEKTE BESITZEN MUESSEN
+
+	Jedes Objekt im MorgenGrauen sollte folgende Funktionen 
+	implementiert haben:
+
+	1.)     name( fall, dem )
+
+	Diese Funktion soll den Namen des Objektes im jeweiligen
+	Fall mit Artikel (wenn es einen besitzt) zurueckgeben, so
+	dass der Rueckgabewert in einen Satz eingearbeitet werden
+	kann.
+
+	"fall" dient zur Deklination des Objektnamens.
+
+	"dem" bestimmt, welche Artikel benutzt werden sollen.
+	Moegliche Werte fuer "dem":
+
+	0       Benutze unbestimmte Artikel.
+	
+	1       Benutze bestimmte Artikel.
+	
+	2       Benutze bestimmte Artikel, wenn sich mit dem Objekt
+		kein gleichartiges Objekt im selben Raum befindet,
+		sonst benutze einen unbestimmten.
+
+		Statt der 2 kann auch ein String uebergeben werden.
+		In diesem Fall wird getestet, ob sich ein Objekt mit
+		dem String als id im selben Raum befindet.
+
+	2.)     short()
+
+	Diese Funktion liefert eine Beschreibung, die ausgegeben
+	wird, wenn der Raum, in dem das Objekt sich befindet,
+	betrachtet wird.
+
+	3.)     long()
+
+	Diese Funktion liefert eine Beschreibung, die ausgegeben
+	wird, wenn das Objekt angeschaut wird. Im Unterschied zur
+	2.4.5 Mudlib wird die Beschreibung jedoch nicht ausgegeben,
+	sondern als return-Wert zurueckgegeben.
+
+	4.)     id( str )
+
+	Diese Funktion soll 1 zurueckgeben, wenn str eine Zeichen-
+	folge ist, die das Objekt bezeichnen koennte. Diese Zeichen-
+	folge wird in kleinen Buchstaben uebergeben.
+
+	5.)     _query_invis()
+
+	Wenn ein Objekt unsichtbar ist, soll es beim Aufruf dieser
+	Funktion 1 zurueckgeben. Sichtbare Objekte brauchen diese
+	Funktion nicht zu implementieren.
+
+III.    UNTERSTUETZUNG DER FUNKTIONEN DURCH DIE MG_MUDLIB
+
+	Wenn ein eigenes Objekt aus den Standardobjekten abgeleitet
+	wird, sind alle diese Funktionen bereits fertig definiert.
+	Es muessen beim Erzeugen der Objekte nur noch die entsprechenden
+	Werte mitgeteilt werden. Dieses geschieht mit folgenden Funk-
+	tionen, die am besten im create() aufgerufen werden.
+
+	1.)     SetProp( P_NAME, string );
+
+	In name() wird der uebergebene String dekliniert und automatisch
+	mit Artikeln versehen.  Diese Funktion bedenkt auch Faelle, an 
+	die ihr wahrscheinlich nie gedacht habt. Der Genitiv von der 
+	Lahme ist z.B. des Lahmen! Auch fuer andere Faelle bietet diese 
+	Funktion maechtige Unterstuetzung.
+
+	Wenn der String nicht mit Artikeln versehen werden soll, so kann
+	man das mittels der Funktion "SetProp(P_ARTICLE, 0 )" erreichen.
+
+	Damit die Funktion name() ueberhaupt den richtigen Artikel 
+	auswaehlen kann, muss man mit "SetProp( P_GENDER, gender)" das
+	Gechlecht des Objektes bekannt machen. Als gender kann man 
+	MALE oder 1, FEMALE oder 2 und NEUTER oder 0 verwenden.
+
+	Ist das Objekt unsichtbar, so darf string trotzdem nicht 0 sein;
+	stattdessen ist "SetProp( P_INVIS, 1 )" aufzurufen. (Die Zeile
+	"#include <properties.h>" nicht vergessen. :-))
+
+	Da dieses Verfahren sehr fehleranfaellig ist, ist fuer den Namen
+	ein Array von Namen zugelassen, so dass fuer jeden Fall ein Wort
+	uebergeben werden kann. Beispiel.:
+	SetProp( P_NAME, ({ "Mensch", "Menschen", "Menschen", "Menschen" }) );
+
+	2.)     SetProp( P_SHORT, string )
+	
+	In short() wird der uebergebene String ausgegeben. Mittels des
+	process_string-Mechanismus (siehe /doc/efun/process_string)
+	koennen auch varibale Teile in dem String vorkommen.
+	string braucht fuer unsichtbare Objekte nicht auf 0 gesetzt
+	werden.
+
+	3.)     SetProp( P_LONG, string )
+
+	Dito.
+
+	4.)     AddId( string );
+
+	Nehme den String in die Menge der Zeichenketten auf, auf die die
+	eingebaute id-Funktion mit 1 antworten soll.
+
+	5.)     Es reicht, SetProp( P_INVIS, 1 ) aufzurufen, wenn das
+	Objekt unsichtbar wird, und SetProp( P_INVIS, 0 ), wenn es wieder
+	sichtbar wird.
+
+IV.     BENENNUNG VON RAEUMEN
+
+	Bei Raeumen wird die long() bzw. short()-Beschreibung nur dann
+	benutzt, wenn der Raum *von aussen* angeschaut wird. Fuer eine
+	Beschreibung des Raumen von innen sind folgende Funktionen
+	bereitgestellt:
+
+	1.)     SetProp( P_INT_SHORT, string );
+
+	Gebe eine Beschreibung des Raumes fuer den "kurz"-Modus aus.
+
+	2.)     SetProp( P_INT_LONG, string );
+
+	Gebe eine ausfuehrliche Beschreibung des Raumes zurueck.
+
+V.      BENENNUNG VON MONSTERN
+
+	Siehe oben unter /doc/MG/BANISH.

@@ -1,0 +1,22 @@
+****************************************************************************
+************************* VERALTETE LFUN ***********************************
+************************* DO NOT USE!    ***********************************
+****************************************************************************
+
+BITTE STATT DER FUNKTION Door() IMMER  NewDoor() BENUTZEN.
+
+	AddDoor(string command, string roomfile, string doorname,
+		string doordesc, string keyname, int status)
+	  Creates a door which leads in direction <command> to the
+	  room <roomfile>. The door has the short description
+	  <doorname> and the long description <doordesc>, when you
+	  look at it. If a door with the same <doorname> exists in
+	  the other room, the open/close/locked status will be
+	  the same in both rooms at all time. Doors are locked on
+	  reset() if keyname is not 0. If <keyname> is given, the
+	  door is locked and can be opened only with a key which
+	  matches <keyname> with its id(). <status> can be set
+	  to an initial value of DOOR_STATUS_OPEN, DOOR_STATUS_CLOSED
+	  or DOOR_STATUS_LOCKED. These status codes are defined in
+	  <doors.h>.
+

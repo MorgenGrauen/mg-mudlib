@@ -1,0 +1,17 @@
+SYNOPSIS
+      xman <topic>
+
+DESCRIPTION
+      Searches in some special directories under /doc for the given topic
+      or command. If there are two equal topics in different directories
+      the one found first will be printed.
+
+EXAMPLES
+      xman xman
+      xman xforall
+      xman efun/destruct
+      xman w/destruct
+      xman move
+      xman thing
+      xman domains
+

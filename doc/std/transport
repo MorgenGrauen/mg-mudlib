@@ -1,0 +1,264 @@
+> FUNKTIONSWEISE VON TRANSPORTERN <
+Version 1.0 (04.05.1993) von Rumata
+===================================
+
+
+INHALT:
+======
+
+	1.	Allgemeines
+	2.	Properties
+	3.	Haltestellen
+	4.	Steuerung
+	5.	Betreten und verlassen
+	6.	Extras
+	7.	Kommandos in Trnasportern
+
+
+1. ALLGEMEINES
+==============
+
+	Ein Transporter ist ein Raum mit besonderen Eigenschaften.
+	Waehrend normale Raume miteinnder starr verbunden sind,
+	kann dieser Raum seine Verbindung zu anderen Raeumen mit
+	der Zeit aendern.
+
+	Jeder Transporter besitzt einen 'Kurs' den er abfaehrt; nach der
+	letzten 'Haltestelle' beginnt der Kurs wieder von Vorne.
+	Will man einen Kurs setzen, der entlang einer Strecke hin-
+	und zurueck fuehrt, so muss man jede Haltestelle einmal fuer
+	den Hinweg und einmal fuer den Rueckweg einfuegen.
+
+	Ein Beispiel, wie man einen solchen Transporter programmiert,
+	ist in /doc/beispiele/wolke.c zu sehen (und zu laden :-).
+
+2. PROPERTIES
+=============
+
+	P_ENTERMSG
+		Array mit zwei Meldungen in der Art von msgin und
+		msgout.  Die erste Meldung ist fuer den Raum, den der
+		Spieler verlaesst, und die zweite fuer den Transporter,
+		in den er geht.
+
+	P_LEAVEMSG
+		Array mit zwei Meldungen, eine fuer den Transporter, den
+		er verlaesst, und eine fuer den Raum, in den er kommt.
+
+	P_ENTERFAIL
+		Meldung an ein Wesen, wenn den vollen Transporter
+		betreten will. Ist die Prop. ein Array, so wird das erste
+		Element als Meldung an das Wesen, das zweite als Meldung
+		an die Mitspieler im Raum geschickt. Ist die Property
+		eine Closure, wird diese ausgefuehrt, wenn ein Spieler
+		vergeblich versucht, den Transporter zu betreten.
+
+	P_LEAVEFAIL
+		Meldung an ein Wesen, wenn es ausserhalb der Anlegezeiten
+		den Transporter verlassen will. Ist die Prop. ein Array,
+		so wird das erste Element als Meldung an das Wesen, das
+		zweite als Meldung an die Mitspieler im Transporter
+		geschickt. Ist die Property eine Closure, wird diese
+		ausgefuehrt, wenn ein Spieler vergeblich versucht, den
+		Transporter zu verlassen.
+
+	P_ARRIVEMSG
+		Ein Array mit zwei Meldungen. Das erste Element ist die
+		Meldung, die die Wesen im Transporter bekommen. Die
+		zweite Meldung ist fuer die Wesen in dem Raum, an dem
+		der Transporter anlegt. 
+
+	P_DEPARTMSG
+		Dito fuer das Ablegen.
+
+	P_MAX_PASSENGERS
+		Numerischer Wert fuer die maximale Anzahl von Wesen, die
+		sich in dem Transporter aufhalten duerfen.
+		0 bedeutet unbeschaenkte Spielerzahl.
+
+
+3. HALTESTELLEN
+===============
+
+	Es gibt 3 Sorten von Haltestellen:
+
+	1.) Raeume als Haltestellen.
+
+	FUNKTION:
+	
+		AddRoute( raum, verweil, next );
+		oder
+		AddRoute( raum, verweil, next, code );
+
+	PARAMETER:
+
+		raum	- Raum, an dem der Transporter halten soll.
+		verweil	- Zeit in Sekunden, die der Transporter in dem
+			  Raum verbleibt, bis er weiterfaehrt.
+		next	- Zeit in Sekunden bis zur naechsten Halte-
+			  stelle.
+
+		code	- Text, der von der Funktion QueryArrived
+			  zurueckgegeben wird, wenn der Transporter
+			  an dieser Haltestelle angelegt hat.
+			  Wird dieser Parameter nicht angegeben, wird
+			  ein leerer String als code gesetzt.
+
+	2.) Meldungen als Haltestellen.
+
+	FUNKTION:
+
+	      AddMsg( text, next );
+
+	PARAMETER:
+
+		text	- Text, der Meldung, die in dem Transporter
+			  ausgegeben wird.
+		next	- Zeit in Sekunden bis zur naechsten Halte-
+			  stelle.
+
+	3.) Funktionsaufrufe als Haltestellen.
+
+	FUNKTION:
+
+		AddFun( fun, next );
+
+	PARAMETER:
+
+		fun	- Name einer Funktion, die im Transporter
+			  aufgerufen wird.
+		next	- Zeit in Sekunden bis zur naechsten Halte-
+			  stelle.
+
+4. STEUERUNG
+============
+
+	FUNKTION
+
+		Start();
+		oder
+		Start(nummer);
+
+	BESCHREIBUNG:
+
+		Der Transporter soll sofort an der Haltestelle mit
+		der angegebenen Nummer (keine Nummer heisst an der ersten)
+		anlegen und von da ab seinen Kurs fahren.
+
+	FUNKTION:
+
+		Halt();
+
+	BESCHREIBUNG:
+
+		Halte die Fahrt an. Der Transporter bleibt stehen, wo
+		er ist.
+
+
+5. BETRETEN UND VERLASSEN
+=========================
+
+	Der Transporter hat keine Verben programmiert, mit denen man
+	den Transporter betreten oder verlassen kann.
+	Dafuer muessen mit AddCmd() Verben eingefuehrt werden, die
+	auf selbstgeschriebene Funktionen zugreifen.
+
+	FUNKTION:
+
+		Enter();
+
+	BESCHREIBUNG:
+
+		Teste, ob fuer dun aktuellen Spieler (this_player())
+		noch Platz im Transporter ist und ob er sich ausserhalb
+		des Transporters befindet. Wenn ja, bewege ihn in den
+		Transporter. Wenn der Transporter eine Reaktion (Bewegen des
+		Spielers oder Ueberlauf), so gib eine 1 zurueck sonst eine 0.
+
+		Wenn der Transporter nicht da (also unsichtbar) ist, tue fuer
+		die Spieler ausserhalb des Transporters so,
+		als ob das Verb nicht definiert wurde.
+
+		Dieser Wert kann im allgemeinen direkt als returnwert benutzt
+		werden.
+
+	FUNKTION:
+
+		Leave();
+
+	BESCHREIBUNG:
+
+		Wenn der Momentane Spieler nicht im Transporter ist, so gib
+		eine Fehlermeldung aus. Anderenfalls teste, ob der
+		Transporter an einen Raum angelegt hat. Wenn nein, gebe
+		die LEAVEFAIL Meldung aus; und wenn alles ok ist, so
+		bewege den Spieler aus dem Transporter.
+
+6. EXTRAS
+=========
+
+	FUNKTION:
+
+		QueryArrived();
+
+	BESCHREIBUNG:
+
+		Gebe den Code des Raumes zurueck, an dem der Transporter
+		gerade anliegt. Hat der Raum keinen Code, gebe einen
+		Leerstring zurueck. Liegt der Transporter an keinem Raum
+		an, so gebe 0 zurueck.
+
+		Diese Funktion bietet sich an um mittels process_string
+		die Ankunfts- und Abfahrtsmeldungen abwechslungsreich
+		zu gestalten.
+
+	FUNKTION:
+
+		QueryPassengers(),
+
+	BESCHREIBUNG:
+
+		Gebe eine Liste mit allen Lebewesen, die sich auf/in dem
+		Transporter befinden, zurueck.
+
+	FUNKTION:
+
+		RemoveRoute();
+
+	BESCHREIBUNG:
+
+		Halte den Transporter an und loesche dessen Kurs.
+
+7. KOMMANDOS IN TRANSPORTERN
+============================
+
+	Da sich der Transporter in dem Raum befindet, in dem er angelegt
+	hat, sind alle Kommandos des Transporters auch dort verfuegbar.
+	Selbst wenn der Transporter abgelegt hat, steht er noch immer
+	unsichtbar dort herum.
+
+	Deshabl muss in den Kommandos vorsorge grtroffen werden, dass nur
+	die richtigen Spieler (die drinnen und die draussen) die richtigen
+	Kommandos ausfuehren koennen.
+
+	KOMMANDOS FUER SPIELER AUSSERHALB:
+
+		Es muss abgetestet werden, ob der Spieler nicht im
+		Transporter ist, und ob der Transporter angelegt hat.
+
+		if( environment(this_player())==this_object() 
+			|| !QueryArrived() ) return 0;
+
+	KOMMANDOS FUER SPIELER INNERHALB:
+
+		Abtesten, ob der Spieler wirklich im Transport ist.
+
+		if( environment(this_player())!=this_object() )
+			return 0;
+
+		Vorsicht auch bei AddExits innerhalb des Transporters,
+		aber daran arbiete ich noch... :-)
+
+	Die Funktionen Enter() und Leave() haben diese Funktionalitaet
+	eingebaut.
+

@@ -1,0 +1,81 @@
+
+Die Ebenen
+==========
+    Die Ebenen sind eine Kommunikationsform, welche es einem ermoeglicht,
+    eine Unterhaltung ueber weite Strecken hinweg mit mehreren Personen zu
+    fuehren. Diese Form der Unterhaltung ist dem Rufen vorzuziehen, da es
+    fuer Personen, welche sich nicht auf der Ebene befinden, geraeuschlos
+    ist.
+
+    Betreten und Verlassen:
+     -<name>+
+        Ebene <name> einschalten.
+     -<name>-
+        Ebene <name> ausschalten.
+     ebenen neu <Name> <Text>
+        Erzeugt eine neue Ebene <Name> mit der Bezeichung <Text>. Dieses
+        Kommando ist erst ab Stufe 5 moeglich!
+     ebenen an
+        Schaltet die vorher ausgeschalteten Ebenen an.
+        Ist vorher kein `ebene aus' erfolgt, so werden alle nicht
+        eingeschalteten Ebenen eingeschaltet.
+     ebenen aus
+        Schaltet die Ebenen aus.
+
+    Reden auf einer Ebene:
+     -<name>'<Text>
+     -<name> <Text>
+        Sendet die Meldung <Text> auf die Ebene
+     -<name>:<Text>
+        Sendet das `emote' <Text> auf die Ebene
+     -<name>;<Text>
+        Erzeugt ein Genitiv-`emote'
+
+    Ebenennamen:
+     Man kann eine Ebene mit dem vollen Namen ansprechen:
+        "-anfaenger Hallo!"   oder   "-abenteuer Hilfe!"
+     es reicht aber auch schon ein eindeutig von anderen Ebenen abgrenzender
+     Teil des Namens:
+        "-an Hallo!"          oder   "-ab Hilfe!"
+
+     Gueltige Namen setzen sich zusammen aus den Buchstaben a-z, A-Z sowie
+     #$%&@<>-. Das # hat dabei eine Sonderaufgabe: Damit wird der
+     gleichnamige IRC-Channel erzeugt bzw. betreten.
+
+    Informationen und Ebenengeschichte:
+     -<name>?
+        Alle Teilnehmer der Ebene <name> anzeigen.
+     -<name>*<Laenge>
+        Die letzten <Laenge> Meldungen der Ebene <name> anzeigen. Wird die
+        Laenge weggelassen, ist Standard und Maximum 200.
+     -?
+        Alle verfuegbaren Ebenen anzeigen.
+     -!
+        Alle eingeschalteten Ebenen anzeigen.
+     ebenen beschreibung <name> <Text>
+        Veraendert die Beschreibung der Ebene <name>. Dies funktioniert nur,
+        wenn man der Meister der Ebene ist.
+
+    Abkuerzungen/Alias fuer Ebenennamen:
+     Es gibt einige vordefinierte Aliase fuer Ebenen (wie -a fuer -allgemein
+     oder -b fuer -abenteuer). Weitere kann man sich selbst definieren, wenn
+     Ebenennamen zu lang oder mit Sonderzeichen versehen sind:
+
+     ebenen a[bkuerzung]
+        Zeigt alle eingestellten Abkuerzungen an.
+     ebenen a[bkuerzung] s[tandard]
+        Stellt die Standardabkuerzungen ein und zeigt diese an.
+     ebenen <xx>=<Name>
+        Stellt die Abkuerzung <xx> fuer die Ebene <Name> ein. Leerzeichen
+	sind *nicht* zulaessig vor oder hinter dem Gleichheitszeichen '='!
+     ebenen <xx>=
+        Loescht die Abkuerzung <xx>
+     ebenen standard <Name>
+        Setzt die Ebene <Name> als Standard.
+	Damit wird automatisch bei "- <Text>" auf dieser Ebene geredet.
+
+ SIEHE AUCH:
+    irc, senderwiederholung
+
+ LETZTE AeNDERUNG:
+    1. Juli 2006 Ennox

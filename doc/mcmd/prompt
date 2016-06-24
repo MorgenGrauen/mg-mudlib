@@ -1,0 +1,43 @@
+
+prompt
+------
+
+ MAGIERKOMMANDO:
+    prompt [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        ein beliebiger Text
+
+ BESCHREIBUNG:
+    Die Eingabeaufforderung ("prompt") wird auf die angegebene Meldung <text>
+    gesetzt.
+
+    Ohne Argumente wird das Defaultprompt (`> ') eingestellt.
+
+    Um Leerzeichen an Anfang und Ende des Prompts zu ermoeglichen, kann <text>
+    in Anfuehrungszeichen gesetzt werden. Ausserdem gibt es noch folgende
+    besondere Zeichenfolgen:
+
+     \h  wird durch den Namen des Muds ersetzt
+     \u  wird durch Deinen Namen ersetzt
+     \w  wird durch das aktuelle Verzeichnis ersetzt
+     \t  wird durch die aktuelle Zeit ersetzt
+     \n  an dieser Stelle wird ein Zeilenumbruch eingefuegt
+
+ BEISPIELE:
+
+    > prompt "\h:\u:\w> "
+
+    ergibt bei Wargon, wenn er sich in seinem Homeverzeichns befindet:
+
+    MorgenGrauen:Wargon:/players/wargon> _
+
+    (der Unterstrich soll den Cursor anzeigen)
+
+ SIEHE AUCH:
+    pwd
+
+ LETZTE AeNDERUNG:
+    Mon, 08.02.1999, 22:15:00 von Tiamak

@@ -1,0 +1,15 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+	int widthof(mapping map)
+
+DESCRIPTION:
+	Return the number of values per index in mapping 'map'. It means
+	the width of the mapping 'map'.
+
+SEE ALSO:
+	mappingp(E), mkmapping(E), m_indices,(E) m_values(E),
+	m_delete(E), sizeof(E)

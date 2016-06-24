@@ -1,0 +1,25 @@
+SYNOPSIS
+      xgrep [-iv] <regexp> <filepattern>
+        or
+      xgrep [-iv] <regexp>    (when reading from a pipe)
+
+DESCRIPTION
+      Search for the regular expression <regexp> in all files matching the
+      <filepattern>.
+      Works simular to the Unix command "grep". The reslut will be written
+      to <STDOUT> and may be piped into another command.
+
+OPTIONS
+      -v  reverts the sense of <regexp>.
+
+      -i  matches case-insensitive
+
+EXAMPLES
+      xgrep Deepthought /log/SHOUTS
+      This will search throught the shout log file for any line which has
+      the word "Deepthought" in it.
+
+      xgrep create\(\) *.c
+      This will search for all lines of all lpc code files in the current dir
+      which have the function "create()" defined.
+

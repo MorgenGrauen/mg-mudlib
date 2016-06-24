@@ -1,0 +1,71 @@
+AddSmells()
+
+FUNKTION:
+    void AddSmells(string|string* keys, string|string*|mapping|closure desc);
+
+DEFINIERT IN:
+    /std/thing/description.c
+
+ARGUMENTE:
+    keys
+      String oder Array von Strings mit den Namen der Details.
+    desc
+      String, Mapping, String-Array oder Closure mit/zur Beschreibung.
+
+BESCHREIBUNG:
+    Diese Funktion entspricht dem AddDetail() fuer Standarddetails, nur
+    koennen hiermit Gerueche realisiert werden:
+    Die Beschreibung der Details <keys> wird gesetzt. Wie die Details
+    bei der Untersuchung aussehen, haengt im wesentlichen vom Typ der
+    Beschreibung <desc> ab:
+      <desc> ist ein String.
+        Beim Untersuchen wird dieser String zurueckgegeben.
+      <desc> ist ein String-Array.
+        Beim Untersuchen wird zufaellig einer der Strings zurueckgegeben.
+      <desc> ist ein Mapping.
+        Das Mapping muss folgenden Aufbau haben:
+          ([0:        "Defaulttext",
+            "rasse1": "r1text", ...]).
+
+        Falls fuer die Rasse des das Detail untersuchenden Spielers ein
+        Eintrag im Mapping existiert, wird der entsprechende Text
+        zurueckgegeben, ansonsten der Defaulttext. Auf diese Weise sind
+        rassenabhaengige Details moeglich. Siehe auch die Beispiele.
+      <desc> ist eine Closure.
+        In diesem Fall wird die Closure ausgefuehrt und das Ergebnis
+        zurueckgegeben. Die Closure bekommt dabei den Namen des Details
+        als Parameter uebergeben.
+
+    Fuer Geruchsdetails koennen Forscherpunkte eingetragen werden.
+
+    Gerueche koennen allgemein einen Raum oder Objekt zugeordnet werden:
+    dafuer muss man als <key> SENSE_DEFAULT uebergeben.
+    
+    Spielerkommandos: "riech", "rieche", "schnupper", "schnuppere"
+
+BEISPIELE:
+    Ein kleines Beispiel fuer rassenabhaengige Gerueche mit Closures:
+      string strafe(string key);
+      ...
+      AddSmells(SENSE_DEFAULT,
+        "Der Geruch von Knoblauch ist ueberwaeltigend!\n");
+      AddSmells(({"knoblauch","geruch"}),
+                ([0:        "Puhh, das stinkt!\n",
+                  "vampir": #'strafe]));
+      ...
+      string strafe(string key) {
+        this_player()->reduce_hit_points(100);
+        return "Der Knoblauch schmerzt dich furchtbar!\n";
+      }
+
+SIEHE AUCH:
+    Setzen:    AddDetail(), AddReadDetail(), AddSounds(),
+               AddTouchDetail()
+    Loeschen:  RemoveDetail(), RemoveReadDetail(), RemoveSmells(),
+               RemoveSounds(), RemoveTouchDetail()
+    Daten:     P_DETAILS, P_READ_DETAILS, P_SMELLS, P_SOUNDS, P_TOUCH_DETAILS
+    Veraltet:  AddSpecialDetail(), RemoveSpecialDetail(), P_READ_MSG
+    Sonstiges: GetDetail(), break_string()
+
+20.01.2015, Zesstra
+

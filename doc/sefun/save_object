@@ -1,0 +1,19 @@
+SYNOPSIS
+        mixed save_object(string name);
+
+BESCHREIBUNG
+        Diese Simul-Efun unterscheidet sich in einigen Details von der
+        Driver-Efun save_object() (s. auch dort! Wichtig!).
+        1. diese sefun speichert auch die mit F_SAVE markierten Properties
+        eines Objektes ab (was die efun des Driver nicht tut!).
+        2. das Format, in dem gespeichert wird, kann bei der sefun nicht
+        ausgewaehlt werden (ist aber auch nicht noetig!), sondern ein
+        mudlib-weiter Standard wird benutzt.
+        3. will man nicht in einem File speichern, sondern das, was im File
+        stehen wurde, als String zurueckhaben, muss man 0 als 'name'
+        uebergeben.
+
+SIEHE AUCH
+        save_object(E), restore_object(E), save_value(E)
+03.08.2007, Zesstra
+

@@ -1,0 +1,19 @@
+Materialid:
+MAT_COCAINE              "cocaine"
+
+Name:
+"Kokain" "Kokains" "Kokain" "Kokain"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_CHALK:50
+MAT_COCAINE
+
+Gruppenzugehoerigkeit:
+MATGROUP_DRUG:100
+MATGROUP_SOLID:100

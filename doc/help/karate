@@ -1,0 +1,72 @@
+
+Die Gilde der Karatekaempfer
+----------------------------
+
+    Man kann in der Gilde der Karatekaempfer bei Sensei Funakoshi Karate
+    lernen. Wenn man in der Gilde eingetreten ist, sollte man ihn nach den
+    Anforderungen fragen - er sagt einem dann, welche Karatetechniken man
+    lernen und ueben muss, um jeweils den naechsten Grad zu erreichen.
+
+    Es wird jedoch einige Zeit dauern, bis man die verschiedenen Techniken gut
+    genug kann. Man kann in der Gilde jede Technik einzeln ueben, bei den
+    Abwehrtechniken ist es jedoch ratsam, diese mit `uebe abwehr' gegen den
+    Sensei zu ueben - dabei muss man auf jeden Angriff mit einer Abwehrtechnik
+    reagieren. Natuerlich muss es die richtige Abwehr sein - einen Age-Zuki
+    (Fauststoss nach oben, im Kopfbereich) kann man nun einmal nicht mit einem
+    Gedan-Barai (Abwehr nach unten, gegen Schlaege unterhalb der Guertellinie)
+    abwehren. Anfangs wird man auch noch nicht jeden Angriff abwehren koennen.
+    Beim Training sollte man uebrigens nicht zuviel Krempel mit sich
+    herumschleppen - immerhin muss man sich bei Karate viel bewegen.
+
+    Im Kampf wendet man die erlernten Techniken uebrigens automatisch an. Auch
+    dadurch lernt man einiges hinzu. Schwere Ruestungen schraenken allerdings
+    die Beweglichkeit stark ein - man sollte sich also auf Gi und Guertel
+    beschraenken.
+
+    Es werden beim Kampf uebrigens nur die Ruestungen im getroffenen
+    Koerperbereich beim Gegner beruecksichtigt - wenn jemand in einem Bereich
+    schlecht geschuetzt ist, sollte man sich mit `angriff mit xxx, yyy und
+    zzz' auf die Angriffstechniken im richtigen Zielbereich beschraenken. Wer
+    einen hohen Grad hat, waehlt uebrigens die richtige Technik automatisch
+    etwas geschickter...
+
+    Es ist auch wichtig, wie gross der Gegner ist - ein Elf sollte nicht
+    versuchen, einen Zwerg mit einem Age-Zuki anzugreifen, weil er dann
+    Loecher in die Luft ueber ihm schlaegt.
+
+    Von den Angriffstechniken sind Tritte am effektivsten, danach kommen
+    Handkantenschlaege, dann Ellbogenschlaege und Knietritte, dann
+    Faustschlaege und zuletzt Fauststoesse.
+
+    Man kann mit zwei Haenden im Prinzip besser verteidigen als mit einer -
+    jedoch ist eine darauf folgende Handtechnik immer etwas schlechter. Auch
+    zwei Fusstechniken kurz hintereinander sind nicht empfehlenswert.
+
+    Die Erfolgswahrscheinlichkeit einer Technik haengt nicht nur vom Koennen
+    ab, sondern auch von der geistigen Konzentration, also den Magiepunkten.
+    Wenn diese nachlassen, sinkt die Wahrscheinlichkeit, bei schwierigen
+    Techniken frueher und bei leichten spaeter. Je hoeher jedoch der Grad ist,
+    desto langsamer sinkt die Wahrscheinlichkeit dann.
+
+    Die maximale Wirkung eines misslungenen Schlages ist schlechter als die
+    maximale Wirkung eines gelungenen Schlages - bei einfachen Schlaegen halb
+    so gut, bei schwierigen noch weniger. Je hoeher der Grad ist, desto hoeher
+    ist die garantierte Mindestwirkung eines gelungenen Schlages. Bei hohen
+    Graden kann es auch geschehen, dass ein Schlag besonders gut gelingt - bei
+    voller Konzentration wird die Wirkung dadurch fast verdoppelt. Handschuhe
+    bzw. Schuhe daempfen natuerlich einen Schlag bzw. Tritt.
+
+    Die Verteidigung ist auch noch von der Art des Angriffs abhaengig - ein
+    Karateka kann Angriffe mit stumpfen und spitzen Waffen gut abwehren,
+    Schwerter und aehnliche Waffen auch noch recht gut, aber etwas schlechter.
+    Gegen Magie, Feuer und Aehnliches sieht ein Karateka anfangs recht alt
+    aus, weil er dies nicht abwehren kann - wenn er einen hohen Grad hat
+    gelingt, es ihm aber oefter, einem solchen Angriff auszuweichen, jedoch
+    nur, wenn er nicht zuviel Gewicht dafuer bewegen muss.
+
+ SIEHE AUCH:
+    abwehr, angriff, konzentration, nemoku-owaru,
+    attribute, ebenen, gilden, daempfung
+
+    *Ist man Mitglied einer anderen Gilde, so muss man fuer die Hilfen zu den
+    Kommandos `hilfe gilde karate <name>' benutzen!*

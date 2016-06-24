@@ -1,0 +1,19 @@
+************** - 2 - **************#************** - 3 - **************
+* Im  file wird einfach /std/buch *#* Verbesserungsvorschlaege   sind *
+* inherited  und  dann meist  nur *#* ausdruecklich erwuenscht!       *
+* drei Funktionen geaendert:      *#*                                 *
+*                                 *#*                                 *
+* buchdir() : in dieser Funktion  *#*                                 *
+*   wird das directory angegeben, *#*                                 *
+*   in dem das Buch enthalten ist *#*                                 *
+*                                 *#*                                 *
+* getseitzahl() : diese Funktion  *#*                                 *
+*   uebergibt die Seitenzahl des  *#*                                 *
+*   Buchs                         *#*                                 *
+*                                 *#*                                 *
+* buchinfo() : diese Funktion     *#*                                 *
+*   uebergibt das Aussehen des    *#*                                 *
+*   Buchs, das man mit 'unter-    *#*                                 *
+*   suche buch' bekommt           *#*                                 *
+*                                 *#*                                 *
+***********************************#***********************************

@@ -1,0 +1,50 @@
+QueryMaterialGroup(L)
+FUNKTION:
+     int QueryMaterialGroup(string grp)
+
+DEFINIERT IN:
+     /std/thing/description.c
+
+ARGUMENTE:
+     string grp		- Materialgruppe, auf die getestet werden soll
+
+BESCHREIBUNG:
+     Liefert eine Angabe, zu welchem Anteil das Objekt aus Materialien
+     dieser Gruppe besteht.
+     Die Rueckgabe ist im Wertebereich -100 (Antigruppen) bis +100 (%).
+
+RUECKGABEWERT:
+     Anteil in Prozent.
+
+BEMERKUNGEN:
+     Ruft MaterialGroup() an der MATERIALDB.
+
+BEISPIELE:
+     // kann man damit was anfangen?
+     if(ob->QueryMaterialGroup(MATGROUP_METAL)<50)
+       write("Der Schmied sagt: Daraus kann ich kein Schwert fertigen.\n");
+
+     // verbrennt das Ding?
+     if(ob->QueryMaterialGroup(MATGROUP_INFLAMMABLE)>50) {
+       write(ob->Name(WER)+" geht in Flammen auf.\n");
+       ob->remove();
+     }
+
+     // wie magnetisch ist es denn?
+     if(ob->QueryMaterialGroup(MATGROUP_MAGNETIC)>50)
+      write(break_string(
+       ob->Name(WER)+" flutscht Dir aus der Hand und bleibt am Magneten "
+		     "kleben!",78));
+
+SIEHE AUCH:
+     Konzepte:	  material, materialerkennung
+     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Methoden:    QueryMaterial(), MaterialList(),
+     Listen:	  AllMaterials(), AllGroups(), Dump()
+		  materialliste, materialgruppen
+     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
+		  GroupName(), MaterialName(),
+		  GetGroupMembers(), GetMatMembership()
+     Sonstiges:	  P_MATERIAL_KNOWLEDGE
+
+7. Mai 2004 Gloinson

@@ -1,0 +1,23 @@
+IRC
+===
+
+     Der IRC-Kanal des Morgengrauens (-#mg) ist von aussen wie folgt
+     zu erreichen:
+     
+     Server:	irc.freenet.de
+		irc.fu-berlin.de
+		- siehe auch http://irc.fu-berlin.de/ircmap.html
+     Kanal:	mg.de
+
+     Befehle:   Um aus dem IRC zu sehen, welche Spieler den IRC-
+                Kanal des MG nutzen:
+                /msg [MG] who #mg.de
+
+                Um vom MG heraus die Liste der ICR-User zu sehen:
+                -#MG @who
+							
+ SIEHE AUCH:
+     kanaele, www
+
+ LETZTE AeNDERUNG:
+    30. Maerz 2006 Gloinson

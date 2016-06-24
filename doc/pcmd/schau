@@ -1,0 +1,72 @@
+
+schau (an)
+----------
+
+ KOMMANDO:
+    schau
+    schau -f | genau
+    schau -k | kurz
+    schau [-f|genau] <was> [an <objekt> | am <objekt>] [in mir | im raum] an
+    untersuche <was> [an <objekt> | am <objekt>] [in mir | im raum]
+
+ ARGUMENTE:
+
+     <was>
+        Ein Gegenstand oder Detail
+     <objekt>
+        Ein weiterer Gegenstand (kein Detail)
+
+ BESCHREIBUNG:
+    (Statt `untersuche' kann man auch `unt', `betrachte' oder `betr'
+    verwenden.)
+
+    `schau' ist das allgemeine Kommando, um Gegenstaende und Raeume zu
+    untersuchen. `schau' ohne Argumente gibt eine Beschreibung des Raumes, in
+    dem der Spieler sich befindet. Alle anderen Gegenstaende, Monster und
+    Spieler im selben Raum oder im eigenen Inventar koennen mit `schau (an)'
+    untersucht werden.
+
+    `schau' muss aber nicht unbedingt alle Geheimnisse des Gegenstandes
+    verraten.
+
+    `unt[ersuche]' bzw. `betr[achte]' macht genau dasselbe, ist aber manchen
+    vielleicht lieber.
+
+    Da bei Objekten mit gleicher Benennung zuerst das im Raum Liegende
+    untersucht wird, kann man Sachen, die man bei sich traegt, auf alle Faelle
+    mit dem Zusatz `in mir' untersuchen.
+
+    Betrachtet man ein <objekt> im Raum, so wird es als neuer Bezugspunkt fuer
+    weitere Betrachtungen genommen. D.h. man kann als naechstes ein Detail an
+    dem Objekt betrachten, ohne eingeben zu muessen `unt <detail> an
+    <objekt>', sondern es reicht dann `unt <detail>'. Wird das Detail an dem
+    eben betrachteten Objekt nicht gefunden, so wird der Bezugspunkt wieder
+    auf die Umgebung und die Objekte im Spieler gesetzt.
+    
+    Die Option '-f' bzw. 'genau' sorgt dafuer, dass gleichartige Objekte
+    bei der Langbeschreibung des Raumes oder der Betrachtung eines Behaelters
+    nicht zusammengefasst werden. 
+    Das kann nuetzlich sein, wenn verschiedene Objekte mit gleicher
+    Bezeichnung (beispielsweise verschiedene Schwerter) im Raum liegen
+    und man wissen will, welches davon man mit 'nimm schwert 2' nun
+    wirklich nimmt.
+    
+    'schau -k' oder 'schau kurz' geben die Kurzbeschreibung der aktuellen
+    Umgebung aus, wie sie auch bei Bewegungen im Kurz-Modus erscheint.
+
+    'schau' ohne ein Argument loescht das sog. Bezugsobjekt.
+
+ ACHTUNG:
+    Manche Raeume definieren ihr eigenes Verb: `untersuche'. Hier koennen
+    `unt' und `untersuche' zu *verschiedenen* Ergebnissen fuehren. Sollte euch
+    das auffallen, setzt bitte mit "fehler" einen Fehler in diesem Raum / an
+    dem Objekt ab.
+
+ SIEHE AUCH:
+    bezugspunkt
+    rieche, lausche, taste, lies
+    kurz, ausgaenge
+
+ LETZTE AeNDERUNG:
+   20.02.2013, Zesstra
+

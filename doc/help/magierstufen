@@ -1,0 +1,68 @@
+magierstufen
+============
+
+    Es gibt verschiedene Magierstufen, die bestimmte Rechte und Pflichten mit
+    sich bringen. Ueblicherweise sind die entsprechenden Magier oft auch ein
+    paar Level hoeher (so ist ein Gott ueblicherweise Level 111), dies sind
+    die Grenzen, ab wo die Bezeichnung bzw. die Rechte im beschriebenen 
+    Umfang gueltig sind:
+
+    Level 100	---	Gott
+		Ernennt Erzmagier, klaert schwerwiegende Probleme, traegt die
+		Last der Verantwortung.
+		Volle Schreibrechte.
+
+    Level 60	---	Erzmagier
+		Sind fuer verschiedene praktische Aufgabengebiete wie
+		(Gildenbalance), Mudlib oder Gesellenstuecke verantwortlich.
+		Volle Schreibrechte.
+
+    Level 50	---	Weise
+		Bearbeiten ein spezielles Thema.
+		Volle Schreibrechte bis auf die Mudlib.
+
+    Level 40	---	Regionsmagier
+		Sind fuer eine oder mehrere Regionen zustaendig und haben
+		dort volle Schreibrechte. Ernennt Regionsmitarbeiter.
+
+    Level 30	---	Hilfsmagier
+		Kuemmern sich um Dokumentation oder andere Spezialaufgaben,
+		haben dafuer im Dokumentationsbereich volle Schreibrechte.
+
+    Level 26    ---     Regionsmitarbeiter
+                Wie Level 25, darf zusaetzlich selbst Neumagier berufen.
+		Wird vom Regionsmagier verliehen, fuer Magier, denen diese
+		Verantwortung zugetraut werden kann.
+
+    Level 25	---	Regionsmitarbeiter
+		Arbeitet in einer (oder mehreren) Regionen mit und hat dort
+		auf sein Verzeichnis volle Schreibrechte.
+
+    Level 21	---	Vollmagier
+		Meist ein Uebergangszustand, wenn das Gesellenstueck
+		akzeptiert aber in keiner Region angeschlossen ist.
+		Schreibrechte im eigenen Verzeichnis.
+		Leserechte in allen Gebieten und der Mudlib, mit gewissen
+		Ausnahmen.
+
+    Level 20	---	Lehrling
+		Schreibt sein Gesellenstueck (oder sollte es tun).
+		Schreibrechte im eigenen Verzeichnis.
+		Keine Leserechte in Regionen, Magier- oder Gilden-
+		verzeichnissen.
+
+    Level 15	---	Lehrling/Neumagier
+		Auf diesem Level kann man in der Dokumentation und in der
+		Mudlib stoebern und sich mit dem Magierdasein vertraut
+		machen. Diesen Level erhaelt man direkt nach der
+		Magierwerdung.
+		Bei Annahme des Konzeptes fuer das Gesellenstueck erfolgt
+		Befoerderung auf Level 20.
+		Keine Schreibrechte.
+
+ SIEHE AUCH:
+    magier, stufen, vertrag
+    seher, regionen, gildenmagier, erzmagier, goetter
+
+ LETZTE AeNDERUNG:
+	25.01.2006 von Humni

@@ -1,0 +1,43 @@
+
+mkdir
+-----
+
+ MAGIERKOMMANDO:
+    mkdir [-vr] <verz> [...]
+
+ ARGUMENTE:
+
+     <verz> [...]
+        Name des neuen Verzeichnisses (es koennen auch mehrere sein)
+
+ BESCHREIBUNG:
+    Die angegebenen Verzeichnisse werden neu angelegt.
+
+    Die Flags haben folgende Bedeutung:
+
+    -v  Genau ausgeben, was gemacht wird
+    -r  Rekursiv die OBERverzeichnisse von <verz> mitanlegen, wenn sie nicht
+        schon existieren.
+    -p  Das gleiche wie -r (alias eingefuehrt, weil -p einfach viel
+        verbreiteter ist).
+ 
+ BEISPIELE:
+
+    > mkdir new
+
+    Soll jetzt in `new/' noch das Verzeichnis `foo/bar/' angelegt werden, so
+    darf man nicht folgenden Aufruf verwenden
+
+    > mkdir new/foo/bar      ; So nicht!
+
+    sondern koennte z.B folgendermassen vorgehen:
+
+    > mkdir new/foo new/foo/bar           oder
+    > mkdir -r /new/foo/bar
+
+ SIEHE AUCH:
+    rmdir
+
+ LETZTE AENDERUNG:
+    26.01.2013, Zesstra
+

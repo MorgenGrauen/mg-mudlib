@@ -1,0 +1,36 @@
+EVENT: 
+   EVT_GUILD_ADVANCE
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/gilden_ob.c
+
+BESCHREIBUNG:
+   Dieser Event wird immer ausgeloest, wenn sich der Gildenlevel eines
+   Spielers erhoeht oder auch, wenn nur der Gildenlevel eines Spielers von
+   einer Gilde geaendert wird (weil sie keine Gildenlevel kennt).
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:         (object) Spielerobjekt
+      E_PLNAME:         (string) UID/Spielername
+      E_ENVIRONMENT:    (object) Environment des Spielers
+      E_GUILDNAME:      (string) Gildenname
+      P_GUILD_LEVEL     (string) s. Property, neuer Gildenlevel
+      P_GUILD_TITLE:    (string) s. Property, neuer Gildentitel
+      P_SUBGUILD_TITLE: (string) s. Property, neuer Subguild-Title
+    ])
+
+BEMERKUNGEN:
+   Wenn Gilden keine Gildenlevel kenne, sondern andere Formen des Gildenstatus
+   vergeben und der Gildentitel allein nicht ausreicht,  muss hier ueber eine
+   Ergaenzung der Daten nachgedacht werden.
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

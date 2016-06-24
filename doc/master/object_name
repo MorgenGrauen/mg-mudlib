@@ -1,0 +1,10 @@
+SYNOPSIS
+	string object_name(object ob)
+
+DESCRIPTION
+	Return a printable name for an object. This function is called
+	by sprintf() to print a meaningful name in addition to the
+	normal object_name().
+
+SEE ALSO
+	sprintf(E), object_name(E)

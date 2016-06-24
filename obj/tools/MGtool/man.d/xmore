@@ -1,0 +1,12 @@
+SYNOPSIS
+      xmore <filename> [start]
+
+DESCRIPTION
+      Prints out a file and if a starting line is given, then the printing
+      will start there. On ansi or vt100 terminals the status line will be
+      overstroked to give a harmonic view of the file.
+
+EXAMPLES
+      xmore ~/workroom.c
+      xmore $here (this will show the source of the current room)
+

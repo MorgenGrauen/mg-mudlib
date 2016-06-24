@@ -1,0 +1,29 @@
+
+titel
+-----
+
+ SEHERKOMMANDO:
+    titel <text>
+    titel 0
+
+ ARGUMENTE:
+
+     <text>
+        Der Titeltext.
+
+ BESCHREIBUNG:
+    Der Text wird als neuer Titel gesetzt. Dabei sollte der Titel nicht mit
+    einem Spielertitel identisch oder einem solchen sehr aehnlich sein. Der
+    uebergebene Text darf ein Backspace (\b) am Anfang enhalten, wenn
+    darauf ein Komma (,) oder ein Hochkomma (') folgt.
+
+    Wird kein Argument uebergeben, so wird der aktuelle Titel geloescht.
+
+    Wird 0 als Argument uebergeben, so wird der Titel durch den aktuellen
+    Gildentitel ersetzt.
+
+ SIEHE AUCH:
+    stufen, presay
+
+ LETZTE AeNDERUNG:
+    Sat, 30.09.2000, 01:34:00 von Bierchen

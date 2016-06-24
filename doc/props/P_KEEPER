@@ -1,0 +1,14 @@
+NAME:
+    P_KEEPER                       "shop_keeper"
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+    In diese Property kann man in Kneipen und Laeden einen String schreiben.
+    Dann wird vor den Transaktionen geprueft, ob ein NPC anwesend ist,
+    der diesen String als ID hat.
+    Ist der NPC nicht vorhanden, kann nichts ge- oder verkauft werden.
+
+----------------------------------------------------------------------------
+Last modified: Mon Aug 23 14:29:00 1999 by Paracelsus

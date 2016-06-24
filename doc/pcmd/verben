@@ -1,0 +1,29 @@
+
+verben
+------
+
+ KOMMANDO:
+    verben
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Mit diesem Befehl werden alle moeglichen Verben der Seele angezeigt. Diese
+    Verben haben in der Regel keinen tiefen Sinn, sondern dienen dazu, eine
+    gewisse Stimmung zu verbreiten.
+
+    Da dies eine ganze Menge an Verben sind, deren Funktion meist eh auf der
+    Hand liegt, existieren fuer sie keine separaten Hilfeseiten.
+
+    Eine kurze Hilfe zu jedem Verb kannst Du jedoch jederzeit mit `<verb> -h'
+    erhalten.
+
+    Oft genutzte Verben sind: `lache', `laechel [an]', `danke', `argl',
+    `grinse', `umarme', `wuschel', ...
+
+ SIEHE AUCH:
+    adverb
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

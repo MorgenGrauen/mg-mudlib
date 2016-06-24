@@ -1,0 +1,197 @@
+Der Potionmaster (/secure/potionmaster)
+=======================================
+
+BESCHREIBUNG
+
+    Funktion: Verwaltung der Zaubertraenke, die Spieler finden koennen.
+
+    Zaubertraenke koennen von beliebigen Objekten im Spiel vergeben werden.
+    Jeder Spruch ist in einer eigenen Datei in /secure/ARCH/ZT hinterlegt,
+    wobei der Dateiname das allgemeine Format <nr>.zt haben muss. <nr>
+    entspricht hierbei der ZT-Nummer.
+
+    Die Tips zu den Traenken werden vom Orakel /room/orakel ausgegeben,
+    sofern der Spieler genug Stufenpunkte fuer einen neuen Spruch erspielt
+    hat (siehe hierzu "hilfe zt"). Die Tips werden dabei aus den o.g. Dateien
+    eingelesen. Der ZT wird von dem vergebenden Objekt durch Aufruf von
+    FindPotion(string msg) im Spielerobjekt gutgeschrieben.
+
+    In dieser Datei sind die Funktionen des Potionmasters dokumentiert.
+    Inhalt:
+
+    1. Zaubertraenke eintragen und aktivieren/deaktivieren
+    2. Zaubertraenke in eine Liste einsortieren
+    3. Zaubertraenke verlegen
+    4. Daten zu Zaubertraenken abfragen
+    5. Ein neuer ZT: Was tun?
+    6. Format der Zaubertrank-Tips
+    7. Wo finde ich eigentlich?
+    8. Verschiedenes
+
+
+FUNKTIONEN
+
+1. Zaubertraenke eintragen und aktivieren/deaktivieren
+
+   int AddPotionroom(string room, int list)
+      Der Raum <room> wird als neuer ZT-Fundort eingetragen und in die Liste
+      mit der Nummer <list> eingefuegt. room muss hierbei der load_name() 
+      des Objekts sein, unt <list> darf Werte von 0 bis 7 haben. Der ZT
+      wird dabei aktiviert.
+      
+      Rueckgabewerte:
+      <num> Nummer des naechsten neuen ZTs, <num-1> ist die Nummer des
+            neu eingetragenen ZTs.
+      -1    Zugriff verweigert
+      -2    <room> kein String, <list> ist nicht im Bereich 0-7
+      -3    <room> ist nicht ladbar
+      -4    <room> vergibt schon einen (anderen) ZT
+      -6    Datei mit ZT-Spruch (/secure/ARCH/ZT/<num>.zt) existiert nicht.
+
+   int ActivateRoom(string room)
+      Der ZT im Raum <room> wird aktiviert, d.h. er kann aktiv von dem Raum
+      vergeben werden. Technisch wird er aus der Liste der inaktiven ZTs
+      ausgetragen. <room> muss hierbei der load_name() des Raumes sein.
+
+      Rueckgabewerte:
+      <num>  Nummer des aktivierten ZTs
+      -1     Zugriff verweigert
+      -5     ungueltiger ZT (Raum ist nicht als ZT-Objekt eingetragen)
+      -8     <room> ist bereits aktiviert
+
+   int DeactivateRoom(string room)
+      Der ZT im Objekt <room> wird deaktiviert, d.h. er kann nicht mehr
+      von dem Objekt vergeben werden. Technisch wird er in die Liste der
+      inaktiven ZTs eingetragen. <room> muss hierbei der load_name() des
+      Raumes sein.
+
+      Rueckgabewerte:
+      <num>  Nummer des geaenderten ZTs
+      -1     Zugriff verweigert
+      -5     ungueltiger ZT
+      -9     <room> ist bereits inaktiv
+
+2. Zaubertraenke in eine Liste einsortieren
+
+   int SetListNr(string room, int list)
+      Traegt den Zaubertrank in Raum <room> in die Liste <list> ein. 
+      <room> muss hierbei der load_name() des Objekts sein.
+
+      Rueckgabewerte:
+      <num>  Nummer des geaenderten ZTs
+      -1     Zugriff verweigert
+      -5     ungueltiger ZT
+      -7     <list> ausserhalb der zugelassenen Werte, d.h. <0 oder >7
+
+3. Zaubertraenke verlegen
+
+   int ChangeRoomPath(string old, string new)
+      Der Zaubertrank in Raum <old> wird in den Raum <new> umgetragen.
+
+      Rueckgabewerte:
+      <num> Nummer des erfolgreich geaenderten Zaubertranks
+      -1    Zugriff verweigert
+      -2    <new> oder <old> oder beide sind keine Strings
+      -3    <old> vergibt keinen ZT, es gibt also nichts zu verlegen, oder
+            <new> ist nicht ladbar, dorthin kann also nicht verlegt werden
+      -4    <new> hat schon einen Zaubertrank
+
+4. Daten zu Zaubertraenken abfragen
+
+   mixed QueryPotionData(int num)
+      Abfrage der Daten zu dem ZT mit der Nummer <num>. Ausgegeben wird ein
+      Mapping der Form ([ num : Raumpfad; Listennummer ])
+
+   int QueryInactivePotions()
+      Liefert ein Array mit den Nummern der aktuell deaktivierten ZTs zurueck.
+
+   int QueryActive(mixed potion)
+      Gibt zu einer ZT-Nummer oder einem Raumpfad an, ob der betreffende ZT
+      aktiv ist oder nicht. Wenn ja, wird die entsprechende ZT-Nummer
+      zurueckgegeben.
+      
+      Rueckgabewerte:
+      <num> Nummer des abgefragten ZTs
+      -1    Zugriff verweigert
+      -5    ungueltiger ZT
+      -11   ZT ist nicht aktiv
+   
+   string GetFilenameByNumber(int nr)
+      Abfrage des Dateinamens zu Zaubertrank Nummer <nr>.
+      
+      Rueckgabewerte:
+      <num> Nummer des abgefragten ZTs
+      -1    Zugriff verweigert
+      -5    ungueltiger ZT
+
+   int HasPotion(object obj)
+      Abfrage der Zaubertranknummer, die von dem Objekt <obj> vergeben wird.
+      
+      Rueckgabewerte:
+      <num> Nummer des abgefragten ZTs
+      -1    Zugriff verweigert
+      -3    Raum vergibt keinen ZT
+
+   int GetListByNumber(int nr)
+      Abfrage der Liste aktiver ZTs, in der der ZT mit der Nummer <nr>
+      eingetragen ist.
+      Rueckgabe: Nummer der Liste, in der der ZT enthalten ist, sonst -5.
+
+   int GetInactListByNumber(int nr)
+      Abfrage der Liste inaktiver ZTs, in der der ZT mit der Nummer <nr>
+      eingetragen ist.
+      Rueckgabe: Nummer der Liste, in der der ZT enthalten ist, sonst -10.
+
+5. Ein neuer ZT: Was tun?
+
+   AddPotionRoom(newroom, liste) aufrufen. Wenn ein Fehler auftritt, muss
+   noch der ZT-Tip in dem unter 6. beschriebenen Format hinterlegt werden.
+   Der zu verwendende Dateiname ist in der Fehlermeldung angegeben.
+
+6. Format der Zaubertrank-Tips
+
+   Ein Beispiel mit zwei Tips fuer denselben Zaubertrank:
+
+   Die Zaubermaus wollts wohl verstecken,
+   Im Buecherwald sollst nichts entdecken,
+   Denn Trinkgenuss ist dort verpoent,
+   So ist mans auch RL gewoehnt.
+   XXXXX
+   Der Raum ist prall und star gefuellt,
+   Mit viel Papier, das gern verhuellt
+   In Zauberbuchform manches Od,
+   Das hilft Dir dann aus Deiner Not.
+   %%%%%
+
+   Die Prozentzeichen sind das Endezeichen, danach koennen eventuelle
+   Kommentare stehen. XXXXX ist das Trennzeichen zwischen zwei Tips
+   zum selben ZT. Auswirkung ist, dass der Spieler bei jedem Aufruf
+   seiner Zaubertrank-Liste zufaellig einen Spruch aus der Liste 
+   angezeigt bekommt.
+
+7. Wo finde ich eigentlich?
+
+   - die Zaubertrank-Tips:           /secure/ARCH/ZT/*.zt
+   - die Gesamtliste der ZTs:        /secure/ARCH/POTIONS.dump
+   - das Savefile des Potionmasters: /secure/ARCH/potions.o
+   - das Logfile fuer Aenderungen:   /log/ARCH/POTIONS_MOD.log
+
+8. Verschiedenes
+
+   mixed TipLesen(int nr)
+      Das Orakel auf der Hochebene ruft die Zaubertrank-Tipps ab, diese
+      werden von der Platte gelesen und als String an das Orakel 
+      zurueckgeliefert.
+   int DumpList()
+      Die Komplettliste der ZTs in das Dumpfile /secure/ARCH/POTIONS.dump
+      schreiben.
+
+SIEHE AUCH:
+   Spielerbefehle: zaubertraenke
+   Magierbefehle:  traenke
+   Properties:     P_POTIONROOMS, P_KNOWN_POTIONROOMS
+   Anleitung:      wiz/zaubertraenke
+   ZT finden:      FindPotion(L)
+
+2013-Mai-30 Arathorn
+

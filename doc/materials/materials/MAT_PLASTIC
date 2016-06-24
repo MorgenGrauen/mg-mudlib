@@ -1,0 +1,18 @@
+Materialid:
+MAT_PLASTIC              "plastic"
+
+Name:
+"kuenstliches Material" "kuenstlichen Materials" "kuenstlichem Material" "kuenstlichen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+Kunststoff
+
+Erkennbarkeit:
+MAT_MISC_SOLID:35
+MAT_PLASTIC
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

@@ -1,0 +1,17 @@
+Materialid:
+MAT_CERAMIC              "ceramic"
+
+Name:
+"Keramik" "Keramik" "Keramik" "Keramik"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

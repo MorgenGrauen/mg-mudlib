@@ -1,0 +1,205 @@
+STANDARD KLASSE:
+	"/std/thing" 
+
+BENUTZUNG:
+	inherit "/std/thing";
+
+	#include <thing.h>
+	#include <properties.h>
+
+PROPERTIES:
+	<thing/commands>
+		P_COMMANDS	-- Befehle assoziiert mit dem Objekt
+	<thing/description>
+		P_NAME		-- Name
+		P_NAME_ADJ	-- Namensadjektiv
+		P_SHORT		-- Kurzbeschreibung
+		P_LONG		-- Langbeschreibung
+		P_IDS		-- Identifikatoren (Feld von Zeichenketten)
+		P_ADJECTIVES	-- Adjektive zur Beschreibung
+	<thing/language>
+		P_ARTICLE	-- Artikel des Objekts
+		P_GENDER	-- Geschlecht des Objekts
+	<thing/moving>
+		P_NODROP	-- Kann nicht fallengelassen werden
+		P_NOGET		-- Kann nicht genommen werden
+	<thing/properties>
+		P_UID		-- User ID
+		P_EUID		-- Effektive User ID
+	<thing/restrictions>
+		P_WEIGHT	-- Gewicht des Objekts
+		P_TOTAL_WEIGHT	-- Gewicht inklusive des Inhalts
+	
+MAKROS:
+	<thing/properties>
+		F_VALUE		-- Propertywert
+		F_MODE		-- Propertymodus umschalten
+		F_MODE_AS	-- Propertymodus setzen
+		F_MODE_AD	-- Propertymodus loeschen
+		  SAVE		  -- Property wird gespeichert
+		  PROTECTED	  -- Property is geschuetzt
+		  SECURED	  -- Property kann nie mehr geaendert werden
+		  NOSETMETHOD	  -- Property besitzt keine Setzfunktion
+		F_SET_METHOD	-- Funktion zum setzen der Property
+		F_QUERY_METHOD	-- Funktion zum lesen der Property
+	<thing/language>
+		MALE, FEMALE, NEUTER 	-- Geschlechter
+		WER, WESSEN, WEM, WEN 	-- Fall
+		RAW 			-- fuer Namen ohne Artikel
+		SINGULAR, PLURAL 	-- Zeiten
+	
+FUNKTIONEN:
+	"/std/thing/commands":
+		varargs void AddCmd(mixed cmd, mixed func, int flag);
+		varargs void RemoveCmd(mixed cmd);
+	"/std/thing/description":
+		varargs int id(string str, int lvl);
+		void AddId(mixed str);
+		void AddAdjective(mixed str);
+		string name(int casus,int demon);
+	"/std/thing/language":
+		varargs string QueryArticle(int casus, int dem, int force);
+		varargs int SuggestArticle(string id);
+		varargs string QueryPossPronoun(mixed what, int casus, 
+		                                int number);
+		string QueryPronoun(int casus);
+		varargs string QueryDu(int casus,int gender, int zahl);
+		string QueryGenderString();
+		varargs string DeclAdj(string adj, int casus, int demon);
+	"/std/thing/properties":
+		varargs mixed Set(string name, mixed Value, int Type); 
+		varargs mixed Query(string name, int Type);
+		mixed SetProp(string name, mixed Value);
+		mixed QueryProp(string name);
+		void SetProperties(mapping props);
+		mapping QueryProperties();
+	"/std/thing/moving":
+		int move(mixed dest,int method);
+		varargs int remove();
+
+ERLAEUTERUNG:
+	"/std/thing" ist eine generelle Klasse fuer Objekte aller Art.
+	Es bietet generelle Funktionalitaet zur Erstellung von neuen
+	Klassen und Objekten. Sie kann mittels der zur Verfuegung
+	stehenden Funktionen konfiguriert werden:
+
+	** "/std/thing/commands":
+	varargs void AddCmd(mixed cmd, mixed func, int flag);
+	  Um dem Objekt die Moeglichkeit zu geben, auf Befehle zu reagieren,
+	  kann mit AddCmd() Kommandos definiert werden, die eine bestimmte
+	  Funktion (func) aufrufen. flag entscheidet darueber, ob das Kommando
+	  (cmd) abgekuerzt werden kann (flag = 1) oder nicht (flag = 0).
+
+	varargs void RemoveCmd(mixed cmd);
+	  Man kann die Kommandos jederzeit wieder mit der Funktion RemoveCmd()
+	  entfernen.
+
+	** "/std/thing/description":
+	varargs int id(string str, int lvl);
+	  Die Funktion id() behandelt die Identifikatoren eines Objektes, 
+	  welche in der Property P_IDS gespeichert sind. Jedesmal, wenn ein
+	  Objekt durch Kommandos wie "nimm", "lass fallen" etc referenziert
+	  werden soll, wird id() mit dem Namen des Objektes aufgerufen. Dabei
+	  werden dann die Elemente von P_IDS mit str verglichen und das Ergeb-
+	  nis (WAHR/FALSCH == 1/0) zurueckgegeben. lvl ist fuer die Behandlung
+	  von Lebewesen notwendig, siehe living.
+	
+	void AddId(mixed str);
+	  Mittels dieser Funktion kann ein oder mehrere neue Identifikatoren
+	  der Liste der bestehenden, Standard ist "ding", hinzugefuegt werden.
+
+	void AddAdjective(mixed str);
+	  Um den Objekten die Moeglichkeit zu geben, sich besser zu beschreiben
+	  oder zur besseren Identifizierung, kann man mit AddAdjective() dem
+	  Objekt naeher beschreibende Adjektive hinzufuegen. Diese sind in
+	  P_ADJECTIVES gespeichert.
+
+	string name(int casus,int demon);
+	  Diese Funktion liefert den Namen des Objektes mit allen zusaetzlichen
+	  Attributen im gewuenschten Fall (casus), demonstrativ (demon = 1) 
+	  oder nicht demonstrativ (demon = 0).
+
+	** "/std/thing/language":
+	varargs string QueryArticle(int casus, int dem, int force);
+	  Artikel im passenden Fall sowie demonst. bzw undemonst. zurueck-
+	  geben. force ueberschreibt das SetArticle-Flag.
+
+	varargs int SuggestArticle(string id);
+	  Empfehle einen Artikel fuer das Objekt, getestet wird, ob ausser
+	  diesem Objekt sich ein anderes Objekt mit der id im selben
+	  Raum befindet.
+
+	varargs string QueryPossPronoun(mixed what, int casus, int number);
+	  Gib ein Pronomen zurueck, das ausdrueckt, das ein Objekt diesem
+	  Objekt gehoert. Dabei ist what das Geschlecht des Objektes.
+
+	string QueryPronoun( casus );
+	  Er/Sie/Es u.ae. zurueckgeben.
+
+	varargs string QueryDu(int casus,int gender, int zahl);
+	  Du im passenden Fall zurueckgeben (siehe QueryArticle()).
+
+	string QueryGenderString();
+	  Gibt das Geschlecht in Worten zurueck.
+
+	varargs string DeclAdj(string adj, int casus, int demon); 
+	  Dekliniere Adjektive adj mit Casus casus.
+
+	** "/std/thing/properties":
+	varargs mixed Set(string name, mixed Value, int Type); 
+	  Setze einen Wert einer Property direkt, wobei der Typ des Wertes
+	  (Value) durch F_VALUE, F_MODE, F_SET_METHOD, F_QUERY_METHOD (Type)
+	  angegeben wird. 
+	  F_VALUE -- darf ein beliebiger Wert sein
+	  F_MODE  -- muss eine Zahl sein (SAVE, PROTECTED, SECURED, 
+	             NOSETMETHOD)
+	  F_SET_METHOD, F_QUERY_METHOD -- 0 oder eine Closure
+
+	varargs mixed Query(string name, int Type);
+	  Lies den Wert einer Property aus. Dabei gibt Type an, welchen Wert
+	  (F_VALUE, F_MODE, F_SET_METHOD, F_QUERY_METHOD) man auslesen will.
+
+	mixed SetProp(string name, mixed Value);
+	  Setze den Wert einer Property. Dabei wird, falls vorhanden, der Wert
+	  noch durch die F_SET_METHOD behandelt (z.B. Typueberpruefung).
+	  Dies sollte die Standardmethode zum Setzen einer Property sein!
+  
+	mixed QueryProp(string name);
+	  Lies den Wert einer Property, wobei der eigentliche Wert durch die,
+	  falls vorhanden, F_QUERY_METHOD behandelt wird. Als Beispiel dient
+	  hier die Behandlung des Gesamtgewichts, welches durch Abfragen von
+	  P_TOTAL_WEIGHT ausgelesen werden kann; hierbei errechnet die 
+	  F_QUERY_METHOD von P+_TOTAL_WEIGHT erst das totale Gewicht.
+	  Dies sollte die Standardmethode sein um eine Property auszulesen!
+
+	void SetProperties(mapping props);
+	  Diese Funktion kann die in props gespeicherten Properties im Objekt
+	  unterbringen. Dabei werden schon vorher als PROTECTED oder SECURED
+	  gekennzeichnete Properties NICHT ueberschrieben.
+
+	mapping QueryProperties();
+	  Liefert ein mapping, welches von SetProperties() behandelt werden
+	  kann.
+
+	** "/std/thing/moving":
+	int move(mixed dest,int method);
+	  Jedesmal, wenn ein Objekt bewegt werden soll, wird die Funktion
+	  move() aufgerufen, welche dann das eigentliche Bewegen ausfuehrt.
+	  Dazu muss der Funktion ein Ziel (dest) als Zeichenkette oder als
+	  Objekt und eine Methode der Bewegung uebergeben werden.
+	
+	varargs int remove();
+	  Wird ein Objekt zerstoert, wird die Funktion remove() aufgerufen.
+	  Rueckgabewert 1 bedeutet Erfolg und 0 Misserfolg der Zerstoerung.
+
+VERERBUNGSBAUM:
+	thing
+	  |-thing/commands
+	  |-thing/description
+	  |-thing/language
+	  |-thing/moving
+	  |-thing/properties
+	  `-thing/restrictions
+
+SIEHE AUCH:
+	properties, closures 

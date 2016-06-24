@@ -1,0 +1,293 @@
+
+  Vererbungsbaeume der Basis-MUDlib
+  =================================
+
+Einfache Gegenstaende
+---------------------
+
+Die einfachsten Objekte der Basis-MudLib. Die Module, die von thing.c
+geerbt werden, enthalten die wichtigsten Funktionen und treten auch in
+den anderen Standardobjekten immer wieder auf.
+
+Da die Ausgabe des Namens eines Objektes (dieser wird in den
+description-Modulen definiert) immer mit einer Deklination verbunden ist,
+findet man in jedem Objekt, welches ein description.c erbt, auch
+thing/language.
+
+thing
+  |- thing/properties    | Verwaltungsfunktionen des Property-Systems
+  |- thing/description   | Aussehen, Name, IDs des Objektes
+  |- thing/moving        | Bewegen und Zerstoeren des Objektes
+  |- thing/language      | Deklination von Namen, Adjektiven etc.; Pronomina
+  |- thing/commands      | vom Objekt definierte Kommandos
+  `- thing/restrictions  | Gewicht: standardmaessig 1Kg
+
+
+Ruestungen
+----------
+
+Bis auf thing/restrictions.c verfuegt armour.c ueber saemtliche Funktionalitaet
+die auch thing.c zur Verfuegung stellt. Zusaetzlich gibt es noch ein Modul,
+welches die Ruestung erst zur Ruestung macht: armour/combat.c
+
+armour                  | evtl. ein "(angezogen") an Kurzbeschreibung haengen
+  |- thing/properties   | Auch Ruestungen haben Eigenschaften
+  |- thing/description  | Aussehen, Name, IDs der Ruestung
+  |- thing/commands     | Kommandos sind auch moeglich
+  |- armour/moving      | Beim Bewegen/Zerstoeren: Ruestung ausziehen...
+  |    `- thing/moving  | ...und dann erst Bewegen/Zerstoeren
+  |- armour/combat      | Ruestungsklasse/-typ, Kampffunktion
+  `- thing/language     | und noch was zum deklinieren.
+
+
+Waffen
+------
+
+Wie Ruestungen, unterscheiden sich Waffen von einfachen Gegenstaenden im
+wesentlichen nur durch die Kampffunktionen.
+
+weapon                  | evtl. ein "(gezueckt)" an Kurzbeschreibung haengen
+  |- weapon/moving      | Waffe beim Bewegen/Zerstoeren erst wegstecken...
+  |    `- thing/moving  | ...und dann erst bewegen/zerstoeren
+  |- thing (s.o.)       | Ansonsten alle thing-Eigenschaften
+  `- weapon/combat      | Waffenklasse/-art, Schadenstyp, Kampffunktion
+
+
+Lichtquellen
+------------
+
+Lichtquellen sind (im Sinne der MudLib) normale Gegenstaende, die zusaetzlich
+die Eigenschaft haben, dass sie leuchten koennen (und auch verbrennen koennen).
+
+lightsource       | Alles, was zum Leuchten noetig ist
+  `- thing (s.o.) | ansonsten ein ganz normaler Gegenstand
+
+
+unit-Objekte
+------------
+
+unit-Objekte sind Gegenstaende, bei denen es sinnvoll ist, dass ein einzelnes
+Objekt eine gewisse Anzahl von gleichartigen Objekten repraesentiert. Das
+beste Beispiel hierfuer ist das liebe Geld: statt 1000 einzelner Muenzen im
+Inventory zu haben, hat man nur ein einziges Geldobjekt, das einer Menge von
+1000 Muenzen entspricht (die bei Kauf-/Verkaufsaktionen um eine entsprechende
+Menge erniedrigt oder erhoeht wird).
+Hierdurch wird a) die Uebersichtlichkeit erhoeht und b) natuerlich massig
+Speicher gespart.
+
+unit               | alle unit-Eigenschaften (Gewicht, Menge, Bewegen, ...)
+  `- thing (s.o.)  | ansonsten sind es normale Gegenstaende
+
+
+Spellbooks
+----------
+
+Fuer Gildenprogrammierer ist dies das Grundobjekt fuer das Zauberverzeichnis
+der Gilde.
+ACHTUNG: Obwohl thing.c geerbt wird, ist das Spellbook nicht zum clonen und
+"unter den Arm klemmen" gedacht! Vielmehr stellt thing.c hier im wesentlichen 
+nur das Property- und das Sprachmodul zur Verfuegung!
+
+spellbook                | Allgemeine Funktionen fuer Zaubersprueche
+  |- thing (s.o.)        | hier nur wg. Properties und Deklinationen
+  `- restriction_checker | fuer Einschraenkungen beim Zaubern
+
+
+Behaelter
+---------
+
+Die bisher beschriebenen Objekte kann man zwar mit sich herumtragen (ausser
+Spellbooks), aber man kann nichts hineinstecken. Hierzu sind einige weitere
+Funktionen noetig, die container.c zur Verfuegung stellt.
+Im wesentlichen sind das in container/restrictions.c Funktionen zum Aus-
+waehlen von Objekten im Behaelter, zum Testen, ob der Behaelter noch weitere
+Objekte aufnehmen kann (gewichtsabhaengig) und zur Ermittlung des Gesamt-
+gewichts des Behaelters.
+In container/description.c wird der Inhalt des Behaelters in eine Beschreibung
+umgewandelt.
+
+container
+  |- thing/properties        | DAS zentrale Modul...
+  |- thing/moving            | Bewegen/Zerstoeren des Behaelters
+  |- thing/commands          | Kommandos sind moeglich
+  |- container/description   | Beschreibung des Inhalts
+  |    `- thing/description  | Lang- und Kurzbeschreibung
+  |- thing/language          | Deklinationsmodul
+  `- container/restrictions  | Gesamtgewicht, Objektauswahl
+       `- thing/restrictions | Standardgewicht: 1Kg
+
+Leichen
+-------
+
+Leichen sind Behaelter mit der zusaetzlichen Eigenschaft, dass sie mit der
+Zeit zerfallen. Ausserdem geben sie ggf. noch eine Meldung ueber den
+Moerderkanal aus
+
+corpse                | Zerfallen, Moerdermeldung
+  `- container (s.o.) | sonst normaler Behaelter
+
+
+Raeume und ihre Abkoemmlinge
+----------------------------
+
+Raeume sind prinzipiell Behaelter mit Lang- und Kurzbeschreibung von INNEN
+und weiteren untersuchbaren Details (auch lesbare Details) sowie
+Ausgaengen und der Moeglichkeit vordefinierte Objekte im Raum zu plazieren.
+
+room
+  |- thing/properties     | Eigenschaften des Raumes
+  |- thing/language       | das obligatorische Sprachmodul
+  |- room/moving          | nur Zerstoeren; KEIN(!) Bewegen
+  |- room/restrictions    | Raeume werden nie voll
+  |    `- container/restrictions  | sonst die gleiche Funktionalitaet wie
+  |	    `- thing/restrictions | beim normalen Behaelter
+  |- room/description     | Raumbeschreibung, Details, etc.
+  |    `- container/description   | Beschreibung des Inhalts
+  |	    `- thing/description  | Beschreibung von aussen (selten sichtbar)
+  |- room/exits           | Verwaltung der Ausgaenge
+  |- room/commands        | notify_fail()s fuer "lies", "suche", "such"
+  |    `- thing/commands  | sonst normale Kommandobehandlung
+  |- room/items           | Verwaltung von Objekten, die im Raum sein sollen
+  `- room/doors           | Tueren (besondere Ausgaenge)
+
+
+Die Kneipe erweitert den Standardraum um Funktionen zur Definition der
+Speisen und Getraenke sowie um Befehle zum Bestellen und Ausgeben.
+
+pub
+  `- room (s.o.)
+
+
+Auch der Laden baut direkt auf dem Standardraum auf. Hier werden noch die
+ueblichen Ein- und Verkaufsbefehle zur Verfuegung gestellt.
+Jeder Laden benoetigt zusaetzlich einen Speicher, in dem verkaufte Objekte
+gelagert werden. Wenn der Laden schon beim ersten Betreten ueber ein
+gewisses Warensortiment verfuegen soll, kann man die mit AddItem()-Aufrufen
+im Speicher bewerkstelligen.
+
+laden
+  `- room (s.o.)
+
+store
+  |- thing/properties  | noetig fuer room/items.c
+  `- room/items        | vordefinierte Objekte im Speicher
+
+
+Die Post ist von der Programmierung her genau so zu behandeln wie ein
+normaler Raum. Die Postkabinen werden automatisch zur Verfuegung gestellt;
+man braucht sich in der Hinsicht um nichts zu kuemmern.
+
+post
+  `- (...) room
+
+
+Schiffe und aehnliche Transporter werden durch "bewegliche" Raeume realisiert.
+So hat man alle Beschreibungsmoeglichkeiten eines Raumes zur Verfuegung und
+kann (wie bei der Jolle geschehen) Ausgaenge in weitere Raume des Transporters
+legen (diese sind normale Raeume, KEINE Transporter!).
+Desweiteren sind Transporter die einzigen (Standard-)Raume, bei denen man
+auch die aeussere Lang- und Kurzbeschreibung zu sehen bekommt, weil man
+nicht nur in einem Transporter sein kann, sondern auch daneben stehen kann.
+
+transport         | Funktionen zur Festlegung der Route, An- und Ablegen
+  |- room (s.o.)  | die normalen Raumfunktionen
+  `- thing/moving | und hier steckt die Beweglichkeit
+
+
+Gilden
+------
+
+Gilden gibt es in zwei Ausfuehrungen: einmal als einfaches Gildenobjekt, dann
+aber auch als Gildenraum (wie zB. die Abenteurergilde).
+Waehrend das Gildenobjekt (gilden_ob) Funktionen zum Lernen von Faehigkeiten
+und Zauberspruechen, dem Gildenein- und -austritt sowie zum gildeninternen
+Aufstieg zur Verfuegung stellt (was zB. auch von einem NPC ausgeuebt werden
+koennte), verfuegt der Gildenraum zusaetzlich noch ueber Funktionen zum
+normalen Stufenaufstieg aufgrund von Abenteuer- und Erfahrungspunkten, die
+Questliste und die Kostenabfrage.
+
+gilden_ob                | Ein-/Austritt, Lernen, Gildenaufstieg
+  `- restriction_checker | Beschraenkungen bei obigen Aktionen
+
+gilden_room
+  |- gilde               | Stufenaufstieg, Questliste, Kosten
+  |    `- room (s.o.)    | normale Raumfunktionen
+  `- gilden_ob (s.o.)    | Gildenaufstieg etc.
+
+NPCs
+----
+
+Das Opfer. Zumindest meistens...
+
+npc
+  |- thing/properties            | Eigenschaften des NPC
+  |- living/description          | Ausgabe des Gesundheitszustandes...
+  |    `- container/description  | ...zusaetzlich zu seinem Inhalt...
+  |	    `- thing/description | ...und seiner Beschreibung
+  |- living/life                 | Die Lebensfunktionen, Essen, Trinken, Gift
+  |- living/attributes           | Die Verwaltung der Stats
+  |- living/moving               | Bewegen von Lebewesen
+  |- living/skills               | Funktionen fuer Faehigkeiten und Sprueche
+  |    `- living/std_skills      | und einige Standardfaehigkeiten
+  |- npc/combat                  | NPC-spezifische Kampffunktionen
+  |    `- living/combat          | der Kampf an sich
+  |- npc/chat                    | Sprueche a la Andy
+  |- npc/comm                    | Basiskommunikation: "sag", "echo", "emote"
+  |- container/restrictions      | wie bei Behaeltern
+  |    `- thing/restrictions
+  |- thing/language              | obligatorisch...
+  |- npc/info                    | Antworten auf Fragen
+  |- npc/put_and_get             | Reaktion auf erhaltene Gegenstaende
+  |    `- living/put_and_get     | Geben und Nehmen von Objekten
+  `- npc/guard                   | fuer Wach-NPCs
+
+Der intelligente NPC befindet sich noch in der Entwicklung.
+
+inpc
+  |- npc (s.o.)  | Erst mal ein ganz normaler NPC...
+  |- inpc/nobank | ...der gegen Bankzweitis vorgehen kann...
+  |    `- player/moneyhandler | ...und selbst Geld mitschleppt; ...
+  |- select      | ...die beste Ausruestung erkennt und auch benutzt...
+  `- boozing     | ...und in der Kneipe die beste Heilmoeglichkeit findet!
+
+
+Spieler- und Magiershell
+------------------------
+
+shells/magier                  | Hier auch noch Spielershells:
+  |- player/base               | Einloggen, Grundfunktionen
+  |    |- player/restrictions  | Maximale Zuladung (Staerke), InsertHooks
+  |    |    `- container/restrictions   | Maximalgewicht, Zuladungstest
+  |    |	 `- thing/restrictions  | Defaultgewicht
+  |    |- living/attributes    | Stats
+  |    |- living/combat        | Kampffunktionen
+  |    |- living/put_and_get   | Nehmen und Geben von Objekten
+  |    |- thing/properties     | DAS zentrale Modul...
+  |    |- thing/language       | Deklinationen
+  |    |- player/description   | Waffe/Ruestungen ausgeben
+  |    |    `- living/description           | Gesundheitszustand anzeigen
+  |    |	 `- container/description   | Ermittlung des Inhalts
+  |    |	      `- thing/description  | Kurz- und Langbeschreibung; IDs
+  |    |- player/moving        | Bewegen/Zerstoeren: Zusatzchecks
+  |    |    `- living/moving   | Bewegen/Zerstoeren von Lebewesen
+  |    |- player/life          | Zusatzchecks bei Lebensfunktionen
+  |    |    `- living/life     | allgemeine Lebensfunktionen
+  |    |- player/comm          | allgemeine Kommunikation
+  |    |    `- player/channel  | Kommunikation ueber die Kanaele
+  |    |- player/moneyhandler  | Geldverwaltung (auch fuer NPCs geeignet)
+  |    |- player/command       | Aliase, History, Parser
+  |    |- living/skills        | allg. Faehigkeitsfunktionen
+  |    |    `- living/std_skills | Standardfaehigkeiten
+  |    |- player/quests        | Verwaltung geloester Abenteuer
+  |    |- player/potion        | Verwaltung gefundener Zaubertraenke
+  |    |- player/soul          | Seelenkommandos (hilfe verben ;)
+  |    |- player/viewcmd       | Untersuchen etc.
+  |    |- more                 | More() fuer lange Texte
+  |    `- user_filter          | Hilfsmodul fuer "kwer in muenster" etc.
+  |                               | Ab hier: Magiershell
+  |- shells/filesys/filesys         | allgemeines Modul zur Dateibehandlung
+  |    |- shells/filesys/manual     | der "hilfe"-Befehl der Magier
+  |    |- shells/filesys/primitives | low-level-Routinen
+  |    |- shells/filesys/asynchron  | zur Vermeidung von Lags
+  |    `- shells/filesys/make       | komfortables updaten von Objekten
+  `- player/objects                 | Objekte clonen, updaten, zerstoeren

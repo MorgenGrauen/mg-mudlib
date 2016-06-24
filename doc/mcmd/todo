@@ -1,0 +1,35 @@
+
+todo
+----
+
+ MAGIERKOMMANDO:
+    todo neu
+    todo anzeigen [<nummer1>] [bis <nummer2>]
+    todo loeschen <nummer1>
+    todo verschieben [<nummer1>] [nach <ziel>]
+
+ ARGUMENTE:
+
+     <nummer1>
+     <nummer2> Nummer eines Eintrags in der Todo-Liste
+     <ziel>    Nummer eines Eintrags in der Todo-Liste oder 'oben' oder 'unten'
+
+ BESCHREIBUNG:
+    Mit dem Befehl 'todo' kann ein Magier seine Todo-Liste verwalten. Vier
+    grundsaetzliche Optionen stehen hier zur Verfuegung:
+
+    'todo neu' legt einen neuen Eintrag an.
+    'todo loeschen' loescht den Eintrag <nummer1>
+    'todo anzeigen' zeigt entweder alle Eintraege an, einen einzelnen Eintrag
+                    oder einen Ausschnitt aus der Todo-Liste. Falls <nummer2>
+                    kleiner ist, als <nummer1> erfolgt die Ausgabe rueckwaerts.
+    'todo verschieben' verschiebt einen Eintrag an eine bestimmte Stelle oder
+                    einen Schritt nach oben oder unten.
+
+    Negative Nummern bei 'todo anzeigen' werden vom Ende der Todo-Liste aus
+    gezaehlt.
+
+ SIEHE AUCH:
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon

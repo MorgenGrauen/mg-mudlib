@@ -1,0 +1,73 @@
+********************* VERALTETE PROPERTY ******************************
+* Diese Property ist veraltet. Bitte nicht mehr in neuem Code nutzen. *
+***********************************************************************
+P_TMP_ATTACK_HOOK
+
+NAME:
+    P_TMP_ATTACK_HOOK             "attack_hook"
+
+DEFINIERT IN:
+    /sys/new_skills.h
+
+BESCHREIBUNG:
+     Mittels dieser Property koennen die Attacken eines Livings ggf.
+     abgebrochen werden noch bevor Waffen oder Skills zum ausgewertet
+     wurden.
+
+     Es wird an dem Living die Property als mindestens 3-elementiges Array:
+     ({zeitpunkt, objekt, methode, ...})
+     gesetzt und die Methode 'methode' wird dann waehrend des Attack() des
+     Lebewesens in 'objekt' aufgerufen, solange time()<'zeitpunkt'.
+
+     Der Methode wird als Parameter der Gegner uebergeben.
+
+     Gibt die Methode 0 als Rueckgabewert zurueck, wird die Attacke sofort
+     kommentarlos abgebrochen.
+
+BEMERKUNGEN:
+     - Bitte das neuere Hooksystem (s. Manpage std/hooks) benutzen.
+     - falls die Zeit abgelaufen oder das Objekt zerstoert ist, wird die
+       Property auf 0 gesetzt
+     - vor dem Setzen immer auf die Existenz eines gueltigen Hooks
+       pruefen, einfaches Ueberschreiben fuehrt einerseits zu Fehlern
+       im Code anderer und ist andererseits unfair gegenueber ihnen
+
+BEISPIELE:
+     *** der Spieler erhaelt eine Verwundung, die ihn manchmal behindert ***
+     if(!pointerp(tmp=TP->QueryProp(P_TMP_ATTACK_HOOK)) ||
+        sizeof(tmp)<3 || tmp[0]<=time()) {
+       TP->SetProp(P_TMP_ATTACK_HOOK,
+		   ({time()+3600, this_object(), "test_hurt"}));
+     ...
+
+     // die entsprechende Methode, die bei jedem Angriff ueber Attack()
+     // gerufen wird ...
+     int test_hurt(object enemy) {
+
+       // mit 10% Chance generell und 20% Chance bei groesseren Gegnern
+       // bricht der Angriff ab ... previous_object() ist natuerlich
+       // der Angreifer
+       if(!random(10) ||
+          (enemy->QueryProp(P_SIZE)>previous_object()->QueryProp(P_SIZE) &&
+           !random(5)) {
+
+          tell_object(previous_object(),
+            "Deine Wunde schmerzt dich zu sehr um anzugreifen.\n");
+          tell_room(environment(previous_object()),
+            previous_object()->Name(WER,1)+" zuckt vor Schmerzen zusammen.\n",
+            ({previous_object()}));
+          return 0;
+       }
+
+       // ansonsten geht der Angriff weiter
+       return 1;
+     }
+
+SIEHE AUCH:
+     Angriff:	Attack(L)
+     Schutz:    Defend(L)
+     Verwandt:  InternalModifyAttack(L), P_TMP_ATTACK_MOD	
+     Hooks:	P_TMP_DIE_HOOK, P_TMP_MOVE_HOOK, P_TMP_DEFEND_HOOK
+     neue Hooks: std/hooks
+
+08.12.2008, Zesstra

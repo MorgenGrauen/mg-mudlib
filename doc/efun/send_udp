@@ -1,0 +1,12 @@
+SYNOPSIS:
+	int send_udp(string host, int port, string message)
+
+DESCRIPTION:
+	Sends The message in an UDP packet to the given host and port
+	number. Causes a privilege violation.
+	Returns 1 on success, 0 on failure.
+
+SEE ALSO:
+	receive_udp(M)
+
+29.10.2006 Zesstra

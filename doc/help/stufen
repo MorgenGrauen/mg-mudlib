@@ -1,0 +1,53 @@
+
+stufen
+======
+
+    Seine (Spieler-)Stufe kann man in jeder Gilde erhoehen. Die einzige
+    Voraussetzung dabei ist es, genuegend Stufenpunkte zu haben.
+
+    Ab Stufe 9 gilt:
+    Um auf Stufe <x> aufsteigen zu koennen, benoetigt man <x-4>*100 dieser
+    Stufenpunkte.
+    Bis Stufe 9 kosten die Stufen weniger als 100 Stufenpunkte (s. Tabelle).
+
+    Die einzige Ausnahme ist der Aufstieg vom Spieler zum Seher oder Magier:
+     Um Seher zu werden gibt es zusaetzliche Bedingungen, wie bestimmte
+     Anzahlen von Abenteuerpunkten, Forscherpunkten und Erstkills. Die
+     aktuelle Liste ist unter der Hilfeseite "seher" zu finden.
+     Magier kann man nach Erreichen des Seherstands auf Anfrage bei einem
+     hoeheren Magier werden.
+
+    Bis zur Stufe 19 sehen die Stufenbezeichnungen fuer Abenteurer wie folgt
+    aus:
+
+      Stufe  St.pkte        Maennlich               Weiblich          
+       19     1500      der angehende Seher     die angehende Seherin     
+       18     1400      der Held                die Heldin                
+       17     1300      der Eroberer            die Erobererin            
+       16     1200      der Entdecker           die Entdeckerin           
+       15     1100      der Feuerbaendiger      die Feuerbaendigerin      
+       14     1000      der Schatzsucher        die Schatzsucherin        
+       13      900      der Draufgaenger        die Draufgaengerin        
+       12      800      der Weltenbummler       die Weltenbummlerin       
+       11      700      der Abenteurer          die Abenteurerin          
+       10      600      der Reisende            die Reisende              
+        9      500      der Kundschafter        die Kundschafterin        
+        8      420      der Jaeger              die Jaegerin              
+        7      340      der Wegekundige         die Wegekundige           
+        6      280      der Faehrtensucher      die Faehrtensucherin      
+        5      220      der Waldlaeufer         die Waldlaeuferin         
+        4      180      der Wandergeselle       die Wandergesellin        
+        3      140      der Streuner            die Streunerin            
+        2      120      der Landstreicher       die Landstreicherin       
+        1      100      der hoffnungsvolle      die hoffnungsvolle        
+
+    Seherstufen tragen keinen Titel, da jeder Seher seinen Titel selbst frei
+    waehlen darf.
+
+ SIEHE AUCH:
+    seher, magier, magierstufen
+    forscherpunkte, stufenpunkte
+    abenteuer
+
+ LETZTE AeNDERUNG:
+    04.05.2013, Zesstra

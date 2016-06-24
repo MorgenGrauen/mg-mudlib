@@ -1,0 +1,58 @@
+Eine kurze Einfuehrung
+======================
+
+Hallo und willkommen im MorgenGrauen!
+
+Du befindest Dich jetzt in einer virtuellen Welt, in der Du Deinen Charakter
+(so bezeichnet man Deine Spielfigur) mittels verbaler Befehle dazu bringen
+kannst, die verschiedensten Bewegungen und Aktionen auszufuehren. Du kannst
+umhergehen, Dich umsehen, kaempfen, Dinge aufheben und benutzen und vieles
+mehr! Dazu solltest Du Dich mit den grundlegenden Befehlen vertraut machen,
+die dazu notwendig sind. Folgende Hilfeseiten seien Dir an's Herz gelegt:
+
+- "hilfe bewegung"
+- "hilfe syntax"
+
+Du kannst Dich mit den anderen Spielern auf verschiedene Weise
+verstaendigen. Wichtig ist zum einen das direkte Mitteilen, das funktioniert
+so: 
+
+"teile <spielername> mit <nachricht>"
+
+also zum Beispiel
+
+"teile zook mit hallo mudgott!"
+
+Das andere sind die sogenannten "Ebenen", auf denen Du allen Spielern (die
+dort grade mithoeren) etwas mitteilen kannst. Am Anfang befindest Du Dich
+auf den Ebene "anfaenger" und "abenteuer". Wenn Du zum Beispiel die anderen
+Spieler etwas fragen moechtest, tipp zum Beispiel
+
+-anfaenger Hallo ihr da draussen! Wie komme ich zur Abenteurergilde?
+
+und alle, die auf der Anfaengerebene mithoeren, werden diese Nachricht
+bekommen. Fuer weitere Informationen zu den Ebenen lies einfach mal
+die Hilfeseite dazu ("hilfe ebenen").
+
+Eines der Hauptziele dieses Spieles ist, seine Spielfigur weiterzuentwickeln,
+also die Werte zu verbessern. Informationen dazu findest Du auf den
+Hilfeseiten "stufenpunkte", "abenteuer" und "attribute".
+
+Es sei noch darauf hingewiesen, dass es natuerlich auch gewisse Regeln
+gibt, an die sich die Spieler halten muessen ("hilfe regeln").
+Lies Dir diese auf jeden Fall in Ruhe vollstaendig durch!
+
+Es gibt auch gewisse Spieler, die sich extra bereiterklaert haben, Dir als
+Anfaenger zur Seite zu stehen, die Ciceronen. Wenn Du wissen willst, wer 
+davon online ist, kannst Du den Befehl
+
+"kwer cicerone"
+
+verwenden. Die sollten dann anwesend sein und auch Zeit fuer Dich und Deine
+Fragen haben.
+
+ SIEHE AUCH:
+     abenteuer, bewegung, forscherpunkte, regeln, stufen, syntax, ciceronen
+ 
+ LETZTE AeNDERUNG:
+    Sun, 24.06.2001, 22:30:00 von Nachtwind

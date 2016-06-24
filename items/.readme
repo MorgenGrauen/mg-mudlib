@@ -1,0 +1,4 @@
+In diesem Verzeichnis sollten global (unabhaengig einer Region, Gilde etc.)
+verfuegbare Items angeschlossen werden, welche keine besonderen Rechte
+brauchen. Alle Objekte bekommen die spezielle UID ITEMS, welche einen Level
+von 0 und keine Schreibrechte hat.

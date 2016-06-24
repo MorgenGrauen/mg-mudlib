@@ -1,0 +1,20 @@
+Materialid:
+MAT_MALACHITE            "malachite"
+
+Name:
+"Malachit" "Malachits" "Malachit" "Malachit"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:20
+MAT_MALACHITE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

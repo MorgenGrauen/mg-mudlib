@@ -1,0 +1,29 @@
+P_TRANSPARENT
+NAME:
+     P_TRANSPARENT                 "transparent"
+
+DEFINIERT IN:
+     /sys/container.h
+
+BESCHREIBUNG:
+     ist != 0, wenn in einen Container hinein (offen) oder aus einem 
+     hinausgeschaut werden kann.
+
+     Schaut man aus einem hinaus, erhaelt der Spieler normalerweise die 
+     Meldung 'Ausserhalb siehst Du:'. Diese kann jedoch durch eine eigene, 
+     stimmigere  Meldung ersetzt werden, wenn in P_TRANSPARENT ein String 
+     mit dieser Meldung angegeben wird.
+
+BEISPIEL:
+     SetProp(P_TRANSPARENT,1); -> normale Meldung
+
+     SetProp(P_TRANSPARENT,"Vom Ruecken des Pferdes aus siehst Du:\n");
+
+     Diese Meldung ist natuerlich nur dann sinnvoll, wenn es sich
+     auch tatsaechlich um ein Pferd handelt :-)
+
+SIEHE AUCH:
+     int_long()
+
+----------------------------------------------------------------------------
+Last modified: Mon Jul 18 24:00:00 2001 by Tilly

@@ -1,0 +1,57 @@
+
+suender
+-------
+
+ ERZMAGIER- UND DEPUTY-KOMMANDO:
+
+    suender ?                    Gibt eine Liste aller eingetragenen 
+                                 "Suender" aus.
+
+    suender <name>               Listet die "Suenden" des Spielers/Magiers
+                                 <name> auf.
+
+    suender +<name> <text>       Fuegt einen "Suendeneintrag" fuer den
+    suender +<name> -f <text>    Spieler/Magier <name> hinzu. Durch Angabe
+                                 der Option -f koennen Eintraege fuer
+                                 bereits geloeschte Spieler/Magier
+                                 nachgetragen werden.
+
+    suender -<name> <nr>         Loescht den "Suendeneintrag" <nr> des
+                                 Spielers/Magiers <name>. Dieses Kommando
+                                 ist Erzmagiern vorbehalten.
+
+    suender !                    Erzeugt ein Dump-File mit allen Eintraegen
+
+    suender *                    Zeigt ALLE Eintraege an (per More() ;)
+
+ ARGUMENTE:
+
+     <name>
+        Name des Spielers/Magiers
+
+     <text>
+        Infotext. Sollte enthalten: 
+          a) ob es eine Verwarnung, eine Bestrafung oder Loeschung ist
+          b) den Grund.
+          c) Bei Nachtraeglichen Eintraegen einen entspr. Hinweis.
+        Der Text wird automatisch um das Datum und den Namen des
+        Eintragenden ergaenzt. 
+
+     <nr>
+        Die Nummer des Eintrags. Nach jeder Loeschung werden die Eintraege
+        neu durchnummeriert!
+
+ BESCHREIBUNG:
+
+    Verwaltung der vom Sheriff und seinem Deputy durchgefuehrten Massnahmen,
+    damit andere Erzmagier/Goetter schneller nachschlagen koennen, ob sie
+    z.B. eine Strafe aufheben duerfen.
+
+    Dieser Befehl steht nur Erzmagiern und Deputies zur Verfuegung.
+
+ SIEHE AUCH:
+
+    sheriff
+
+ LETZTE AeNDERUNG:
+    Die, 15.08.2000, 11:00:00 von Paracelsus

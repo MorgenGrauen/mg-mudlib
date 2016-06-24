@@ -1,0 +1,212 @@
+ RUeSTUNGEN:
+     a. Allgemeines
+
+	Auch hier gelten die aktuellen Genehmigungsgrenzwerte. Alles, was
+	diese AC-Grenzwerte uebersteigt, ist prinzipiell 
+	genehmigungspflichtig. Die RMs sind gefordert, fuer eine ausgewogene
+	Bestueckung der Ruestungen in ihrem Gebiet zu sorgen. Nicht nur die
+	oberen Schutzwerte gilt es abzudecken, auch die weniger guten 
+	Ruestungen sollte es geben.
+
+	Als Richtwert sollte gelten: Eine gute Lederruestung hat ca. AC 20, 
+	eine stabile Jeans etwa AC 5, eine gehaertete Lederkappe AC 5. Nur 
+	so als Idee...
+
+	Besonders existierende Ruestungen wie der Lichtpanzer etc. sind 
+	definitiv zu gut, bzw. er ist fuer eine so leicht erreichbare 
+	Ruestung zu gut. Hier sollten die RMs verstaerkt darauf achten, dass 
+	nicht unbedingt der Durchschnitt der ACs bei 4/5 der Max-AC liegt, 
+	sondern dass auch hier auf eine Ruestung mit hoher AC viele mit 
+	niedrigerer AC kommen.
+
+	Ruestungen vom Typ AT_MISC duerfen keinerlei Veraenderungen im 
+	Spieler verursachen, keine Attribute veraendern noch sonstwie 
+	kampfrelevante Bedeutung besitzen oder Spieler/Gegner manipulieren. 
+	Die AC solcher Ruestungen ist immer 0 und wird nicht anders ge-
+	nehmigt. Weiter duerfen solche Ruestungen nicht ueber eine Hit-
+	und/oder DefendFunc verfuegen.
+
+     b. Properties
+
+      P_WEIGHT
+	Bitte realistisch halten. Ringe mit weit ueber 100 Gramm sind 
+	Schwachsinn, ebenso Hosen mit Gewichten unter 200 usw.
+  (BTW: Spieler koennen bei Max-Staerke (30) 33200 gr zzgl. etwaige
+   Trageskills der Gilde tragen.)
+
+      P_VALUE
+	Wert der Ruestungen sollte auch nicht zu gross sein und sich ein 
+	wenig an der AC orientieren. Ebenfalls: RMs, schaut genau hin.
+
+      P_ARMOUR_TYPE
+	Bitte sinnvoll benutzen! Kleider als Hosen definieren oder 
+	aehnliches ist unsinnig und sollte nicht genehmigt werden. Sind mal 
+	wieder die RMs fuer zustaendig. Bitte achtet drauf!
+
+	Folgende Ruestungstypen sind moeglich:
+
+	AT_ARMOUR
+		Alles was irgendwie den Torso schuetzt. Also vorn und 
+		hinten, wie ein Pullover, ein Kettenhemd, ein Panzer etc.
+	AT_CLOAK
+		Umhaenge, auch im weiteren Sinn wie Decken und Schleier. Im 
+		Prinzip das, was normalerweise nur den Ruecken schuetzt, bei 
+		Bedarf aber auch vorn herum gewickelt werden koennte.
+	AT_HELMET
+		Kopfbedeckungen jeder Art, vom normalen Hut ueber Kronen bis 
+		hin zu Stirnbaendern (wenn sie schuetzen sollen)
+	AT_TROUSERS
+		Hosen. Alles was zum ueberwiegenden Teil dazu gedacht ist, 
+		die Beine und/oder den Popo zu schuetzen, also auch 
+		Schuerzen oder Leggins. Natuerlich gehoeren auch Badehosen 
+		oder Lendenschuerze hierher. AC dann selbstverstaendlich 
+		gering.
+	AT_BOOT
+		Schuhe, Stiefel und Fussbekleidungen jeder Art.
+	AT_GLOVE
+		Handschuhe oder alles, was man so zum Schutz der oberen 
+		Extremitaeten benutzt, wie Armschoner, Glacehandschuhe, 
+		Faeustlinge, Boxhandschuhe etc.
+	AT_QUIVER
+		Koecher und aehnliches, in denen man Munition fuer 
+		Schusswaffen unterbringen kann. Schuetzen tut sowas 
+		natuerlich nicht.
+	AT_SHIELD
+		Alles, was man so anstelle der eigenen Arme in einen 
+		gegnerischen Schlag halten kann und das nicht offiziell als 
+		Waffe deklariert ist. Es sollte nicht grade aus Papier 
+		bestehen, und das Gewicht ist mit entscheidend fuer die 
+		Guete des Schildes. Sie werden sehr wenig im MG genutzt, was 
+		eigentlich seltsam ist. Schliesslich erreicht ein guter 
+		Schild die Guete von Helm, Hose und Handschuhen zusammen 
+		oder 3/4 der Qualitaet einer Ruestung. Andererseits: es gibt 
+		auch nicht sehr viele Schilde. Da herrscht Bedarf!
+	AT_RING
+		Ringe. Prinzipiell sollte gelten, das Ringe praktisch keine 
+		Schutzwirkung haben (also AC 1 oder max. 2). Nur, und dafuer 
+		sind die Dinger da, wenn sie magisch sind koennen sie 
+		zusaetzliche Funktionen haben.
+	AT_AMULET
+		Im Prinzip dasselbe wie bei AT_RING, nur werden die Dinger 
+		meist an Kordeln um den Hals oder als Broschen an den 
+		Klamotten getragen, koennten also je nach Groesse 
+		tatsaechlich mehr Schutz bieten als ein Ring. Aber auch hier 
+		gilt: AC>2 schreit nach Erklaerung und sollte magischen 
+		Dingern vorbehalten bleiben.
+	AT_BELT
+		Guertel aller Art (z.B. Waffenguertel oder Magisterguertel 
+		der Zauberer). Schutzwirkung hat sowas natuerlich kaum.
+	AT_MISC
+		Alles, was man sonst noch so anziehen kann, was aber eher 
+		als Zierrat gedacht ist. AC immer 0. Bitte *keine* 
+		Kleidungsstuecke, die in eine der anderen Kategorien passen, 
+		als AT_MISC definieren. Dann lieber die AC sehr tief. Wenn 
+		es eh als Gag gedacht ist koennen die Spieler sich auch bei 
+		Bedarf umziehen.
+		Solche Ruestungen duerfen keinerlei (!) Bedeutung im Kampf 
+		fuer den Spieler haben. Keinerlei Veraenderungen im/an 
+		Spieler/Gegner verursachen oder aehnliches.
+
+      P_AC
+	siehe Tabelle weiter unten
+
+      P_EFFECTIVE_AC
+	Falls eine DefendFunc vorhanden ist und die regulaere AC veraendert, 
+	sollte sie gesetzt werden. Es wird der Durchschnittswert der AC 
+	incl. der DefendFunc gesetzt. Dient der Kaempfergilde zur 
+	Einschaetzung.
+
+      P_DAM_TYPE
+	Auch Ruestungen koennen einen Damage-Typ haben. Nutzen tut das 
+	bisher nur die Kaempfergilde, aber schaden tut's keinem. Default ist 
+	DT_BLUDGEON.
+
+      P_NOBUY
+	Alle Ruestungen ab 2/3 der maximal fuer den jeweiligen Ruestungstyp 
+	zulaessigen AC werden beim Verkauf im Laden einbehalten. Dennoch 
+	sollten besondere Ruestungen P_NOBUY gesetzt haben. Insbesondere 
+	waere das fuer alles mit DefendFuncs zu wuenschen, aber auch Sachen, 
+	die als Gag gedacht sind. Dafuer koennen sich die Spieler ruhig 
+	etwas recken.
+
+    c. Spezialruestungen/Ruestungen mit Sonderfunktion
+
+	Alle Ruestungen, die ueber eine DefendFunc oder aehnliches verfuegen 
+	sind genehmigungspflichtig.
+
+	Prinzipiell sollten die geltenden Grenzwerte (s.u.) nicht 
+	ueberschritten werden; Ausnahmen koennen unter Umstaenden genehmigt 
+	werden. Immer ist der Return-Wert per random() zurueckzuliefern, da 
+	der Wert ohne weiteres random() aufaddiert wird.
+
+	WearFuncs, die Restriktionen vorsehen (Geschlechtsabhaengigkeit,
+	Rassen- oder Gildenrestriktionen) sollten die RMs ueberpruefen.
+
+	Saemtliche Sonderfunktionen, wie Heilungen, Sonderattacken auf 
+	Gegner, Waffenbeschaedigungen etc. muessen genehmigt werden.
+
+  Die Properties, mit denen Handschuhe 'handfrei' bzw 'fingerfrei' gemacht
+  werden, duerfen nur vergeben werden, wenn die Handschuhe den Schaden der Hand
+  nicht veraendern und die Beschreibung der Handschuhe dazu passt.
+
+
+    d. AC- und Genehmigungsgrenzen
+
+	Folgende Grenzwerte gelten derzeit:
+
+	+--------------+--------+----------------------------+
+	| Ruestungstyp | MAX_AC | Genehmigungsgrenze (inkl.) |
+	+--------------+--------+----------------------------+
+	| AT_AMULET    |    2   |	      --	     |
+	+--------------+--------+----------------------------+
+	| AT_ARMOUR    |   50   |	      38	     |
+	+--------------+--------+----------------------------+
+	| AT_BELT      |    2   |	      --	     |
+	+--------------+--------+----------------------------+
+	| AT_BOOT      |    6   |		5	     |
+	+--------------+--------+----------------------------+
+	| AT_CLOAK     |   10   |		8	     |
+	+--------------+--------+----------------------------+
+	| AT_GLOVE     |    5   |		5	     |
+	+--------------+--------+----------------------------+
+	| AT_HELMET    |   15   |	      13	     |
+	+--------------+--------+----------------------------+
+	| AT_QUIVER    |    0   |	      --	     |
+	+--------------+--------+----------------------------+
+	| AT_RING      |    2   |	      --	     |
+	+--------------+--------+----------------------------+
+	| AT_SHIELD    |   40   |	      28	     |
+	+--------------+--------+----------------------------+
+	| AT_TROUSERS  |   15   |	      13	     |
+	+--------------+--------+----------------------------+
+	+--------------+--------+----------------------------+
+	| AT_MISC      |    0   |	      --	     |
+	+--------------+--------+----------------------------+
+
+     e. Ruestungen fuer Zauberer
+
+	Zauberer werden normalerweise durch Ruestungen behindert. Gibt man 
+	der Ruestung jedoch die in `/p/zauberer/zauberer.h' definierte ID 
+	GILDEN_ROBEN_ID, behindert die Ruestung Zauberer nicht mehr. Das 
+	Setzen dieser ID ist auf jeden Fall mit dem Chef der Zauberergilde 
+	abzuklaeren sowie mit der Objektbalance!
+
+	Zaubererruestungen koennen ausserdem bestimmte Zaubersprueche 
+	unterstuetzen, naeheres dazu ebenfalls beim Zauberergildenchef sowie 
+	bei der Objektbalance.
+
+     f. Ruestungen mit sonstigen Gildenfaehigkeiten
+
+	Ruestungen, die in irgend einer Weise die Faehigkeiten der Gilden 
+	spezifisch veraendern (zum Beispiel die Schadensart der Karatekas 
+	oder des akshara der Tanjian veraendern) sind auf jeden Fall mit den 
+	Gildenchefs der jeweiligen Gilde sowie mit der Objektbalance 
+	abzusprechen.
+
+ SIEHE AUCH:
+     balance, waffen, fernwaffen, uniques, npcs, grenzwerte,
+     attributsveraenderungen, resistenzen, kampfobjekte
+
+ LETZTE AeNDERUNG:
+  18.10.2010, Zesstra
+

@@ -1,0 +1,121 @@
+ HINWEISE ZU NPCS:
+
+  a. Allgemeines / Hinweise / Tipps
+
+     Dies sind Richtlinien, keine Vorschriften!!!!
+
+     Nicht jeder NPC braucht einen living_name. Nur in besonderen NPCs
+     sollte man einen solchen setzen. Alles andere ist unsinnig und belastet
+     nur unnoetig den Speicher.
+
+     Ein Monster sollte niemals zu viel Zeug mit sich herumtragen. Ein bis
+     zwei Sachen reichen im Normalfall.
+
+     Niemals sollte ein Monster allein mit mehreren Top-Qualitaets-Sachen
+     (sehr gute Waffe plus gute Ruestung[en]) ausgestattet sein. Das waere
+     doch zu einfach.
+
+     Die Haerte der Monster ist im Prinzip egal; pflastert die Gebiete ruhig
+     mit Hydren.
+     Nur: Anfaengern oder kleineren Spielern zugaengliche Gebiete sollten
+     keine Autoattackmonster enthalten, die die "Kleinen" gleich umnieten.
+     Solche Gegenden sollten entweder mit Wachen bestueckt oder mit einigen
+     zunehmend haerteren Monstern einen "Vorgeschmack" bieten, damit man
+     nicht unbedarft reinrennt. Unfaelle wird's dennoch geben. Was soll's,
+     Rochus liebt seine Statistik... :)
+
+     Auch bei NPCs kann die Property P_INFO gesetzt werden, dies sollte
+     insbesondere bei starken und speziellen NPCs gemacht werden.
+
+     Bei NPCs, die besondere Spells benutzen, sollten die RMs darauf achten,
+     dass nicht ploetzlich die ganze Gegend von NPCs wimmelt, von denen
+     jeder seinen Gegner blind oder taub macht oder vergiftet.
+
+     Nur als Tipp:
+     Monster mit Attack-Chats sind erheblich kniffliger zu killen und machen
+     auch um ihrer Selbst willen mehr Spass als bloede Hau-Drauf-Monster,
+     die zwar ueber unendlich HP verfuegen, aber im Prinzip nur Geduld
+     brauchen, um sie zu besiegen. Phantasie ist gefragt.
+
+  b. Eigenschaften
+      Fuer einfache Monster bitte create_default_npc() benutzen!
+
+      Ansonsten:
+      P_HANDS
+	Bei Monstern ohne Waffen sollte die Property P_HANDS in allen drei
+	Werten dem Erscheinungsbild des Monsters entsprechen, also in Text,
+	Schadenshoehe und Schadensart.
+	Auch bei Monstern mit einer Waffe sollte P_HANDS vernuenftig gesetzt
+	werden, also nicht zu hoch. Darauf zu achten ist Aufgabe der RMs.
+
+      P_BODY
+	Monster sollten nicht ueber undurchdringliche Bodies verfuegen, weil
+	sie dann nur magisch zu schlachten sind. Bodies ueber 150 (oder
+	P_TOTAL_AC ueber 150 incl. Ruestungen!) sind kaum noch
+	"herkoemmlich" zu killen. Normale Monster, also nicht-magische, sind
+	eigentlich immer anfaellig gegen die physikalischen Schadenstypen.
+	Also bitte da keine P_RESISTANCE setzen.
+
+      P_RESISTANCE/P_VULBERABILITY/P_RESISTANCE_STRENGTHS
+      P_NOMAGIC
+	Die RESISTANCE der Monster sollte sich auf ein oder zwei
+	Schadenstypen begrenzen, und die sollten auch begruendbar sein. Ein
+	normales Wesen gegen BLUDGEON, SLASH oder PIERCE unempfindlich zu
+	machen ist unlogisch und sollte vermieden werden. Gleiches gilt fuer
+	Empfindlichkeiten.
+	Ebenso sollte es Gruende geben, warum ein Monster eine Magie
+	unwirksam macht.
+
+      P_XP
+	Der Toetungsbonus in XP, die der Killer erhaelt, betragen 1/100 des
+	Wertes, der in P_XP angegeben wird. Der Wert selbst sollte der
+	Haerte des Monsters angemessen sein, als Faustregel fuer
+	'gewoehnliche' NPCs gilt:
+
+	  P_XP = 5 * WC * MAX_HP
+
+	Die RMs sollten darauf achten, dass hier keine ueberhoehten Werte
+	gesetzt werden.
+
+	Fuer Attack-Spells und aehnlich fieses kann ein Bonus gegeben
+	werden. Fuer questrelevante NPCs oder "Informations-NPCs", die nicht
+	unbedingt als Metzelobjekte herumstehen, kann man auch die EP
+	senken, um sie fuer EP-Sammler uninteressant zu machen.
+
+      P_MURDER_MSG/P_KILL_MSG
+	Nicht jeder NPC braucht seine eigene Moerder- oder Killermeldung.
+	Bei normalen 	NPCs sollte man also darauf verzichten.
+
+      P_DIE_MSG/P_NOCORPSE
+	Wenn ein NPC ein wenig anders umfaellt als sonst, traegt das auch
+	zum Spiel bei.
+
+      P_GUARD
+	Wenn der NPC nichts bewacht und nicht uebermaessig stark ist, sollte
+	man ihn auch fortlocken koennen. Setzt P_GUARD entsprechend und
+	lasst den NPC mit AddItem und REFRESH_MOVE_HOME erzeugen.
+
+      AddClass
+	Wenn ihr euren NPC in den definierten Klassen einordnen koennt, dann
+	macht das bitte. Besitzer von Spezialwaffen oder Ruestungen werden
+	es euch danken.
+
+  c. Hilfs-/Begleit-NPCs
+
+      Bei solchen NPC wird auf Ausgewogenheit Wert gelegt, der Programmierer
+      sollte sich schon vor Antrag-Stellung an die Balance Gedanken darueber
+      machen, wie sich der NPC selber verhaelt.
+      Beispiel waere hier Unvertraeglichkeit mit anderen NPCs,
+      Aggressivitaet gegenueber anderen NPCs / Spielern, Wankel- muetigkeit,
+      Unzuverlaessigkeit, zeitliche Begrenzung, Schutz oder Schaden in
+      Abhaengigkeit von Align, Gilde des Spielers, Angriff, vom Ort des
+      Geschehens oder der Begabung des Spielers fuer Magie u.ae. Der
+      Phantasie sind hier keine Grenzen gesetzt.
+
+SIEHE AUCH:
+     Verwandt:    balance, ruestungen, waffen, fernwaffen, uniques,
+                  grenzwerte, attributsveraenderungen, resistenzen,
+                  kampfobjekte, begleitnpcs
+     Funktionen:  create_default_npc
+
+14.Feb 2007 Gloinson

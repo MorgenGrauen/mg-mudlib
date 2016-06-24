@@ -1,0 +1,132 @@
+STANDARDOBJEKT FUER RAEUME:
+
+BENUTZUNG:
+	inherit "std/room";
+	
+	#include <properties.h>
+	#include <rooms.h>		// Fuer AddItem() und NewDoor()
+
+BESCHREIBUNG:
+	Ein Raum ist ein Objekt, dass von Spielern oder anderen Lebewesen
+	betreten werden kann. Er hat Lang- und Kurzbeschrreibungen von
+	innen und aussen (zum Beispiel Schiffe oder aehnliche Raeume in
+	Raeumen), die sich der Spieler je nach seinen Beduerftnissen
+	anzeigen lassen kann (kurz/lang-Modus).
+
+   Properties:
+
+	P_INT_SHORT
+		Kurzbeschreibung innerhalb des Raumes
+	P_INT_LONG
+		Langbeschreibung innerhalb des Raumes
+	P_SHORT
+		Kurzbeschriebung von aussen (nur noetig, wenn man den Raum
+		auch wirklich von aussen sehen kann)
+	P_LONG
+		Langbeschreibung von aussen (siehe P_SHORT)
+	Um Situationsbezogene Beschreibungen zu bekommen, kann man 
+	int_short(), int_long(), short(), long() ueberschreiben, oder
+	den process_string Mechanismus verwenden (siehe entsprechende
+	Dokumentation)
+
+	P_LIGHT
+		Lichtlevel des Raums (0 dunkel, 1 hell)
+	P_INDOORS
+		1 Wenn der Raum nicht im Freien ist
+	P_TRANSPARENT
+		Ist ungleich 0, wenn man in den Raum von aussen reinschauen
+		kann, oder von innen nach aussen
+	P_NO_TPORT
+		Zum verhindern von Teleportversuchen in oder aus dem Raum
+		(siehe auch /doc/properties.h)
+	P_NOMAGIC
+		Im Raum kann nicht gezaubert werden.
+
+   Funktionen:
+	AddExit(string|string* kmnd, string zielraum)
+		<kmnd> kann ein String sein oder eine Liste von Strings
+		mit den Kommandos mit denen der Spieler in <zielraum>
+		landen soll.
+	RemoveExit(string|string* kmnd)
+		<kmnd> ist ein String oder eine Liste von Strings, deren
+		Ausgaenge entfernt werden sollen. Dabei muss man etwas vor-
+		sichtig sein, da ein Spieler, der zum Zeitpunkt des Aufrufs
+		im Raum ist, die Aktion fuer sich noch definiert hat.
+		Also: Nur benutzen, wenn man weiss, was man tut!
+	AddSpecialExit(string|string* kmnd, string funktion)
+		<funktion> wird aufgerufen, wenn der Spieler das Kommando
+		<kmnd> tippt (oder eins der Kommandos, wenn <kmnd> eine
+		Liste ist). Nuetzlich zum Beispiel um einen Spieler nur
+		durchzulassen, wenn ein Waechter nicht da ist.
+	RemoveSpecialExit(string|string* kmnd)
+		siehe RemoveExit()
+	NewDoor()
+		siehe /doc/std/door
+	
+	Um Raeume interessanter zu machen, kann man ihnen Details, die 
+	vom Spieler angeschaut werden koennen, einbauen:
+
+	AddDetail(string|string* keys, string descr)
+		Eine Beschreibung von Details, die vom Spieler angeschaut
+		werden koennen wird dem Raum gegeben. <keys> kann ein
+		String sein oder eine Liste von Strings. <descr> ist
+		die Beschreibung, die der Spieler erhaelt.
+	RemoveDetail(string|string* keys)
+		Entfernt ein Detail aus einem Raum. <keys> kann ein String
+		sein oder eine Liste von Strings.
+	AddSpecialDetail(string|string* keys, string function)
+		Im Prinzip wie AddDetail(), nur wird als zweites Argument
+		kein fester String angegeben, sonder eine Funktion, die
+		einen String zurueckgeben muss. Damit kann man variable
+		Details programmieren.
+	RemoveSpecialDetail(string|string* keys)
+		siehe RemoveDetail()
+	AddReadDetail(string|string* keys, string desc)
+		<desc> wird ausgegeben, wenn ein Spieler den <key> liest.
+		<keys> kann wieder ein String oder eine Liste von Strings
+		sein.
+	RemoveReadDetail(string|string* keys)
+		siehe RemoveDetail()
+	AddRoomMessage(string* msg, int prob, string|string *func)
+		Alle <prob> Sekunden wird aus einer Liste von Meldungen
+		(<msg>) zufaellig eine ausgesucht, die dann im Raum er-
+		scheint. Wenn das Argument <func> angegeben ist, wird
+		eine Funktion diesen Namens aufgerufen, der der Index
+		der ausgegebenen Meldung als Argument uebergeben wird.
+		func darf auch einen Array von Funktionen enthalten. Es wird
+		dann zufaellig eine ausgewaehlt.
+
+	AddCmd(string|string* cmd, string func, int flag)
+		Im Raum wird beim Kommando <cmd> (oder einem der Kommandos)
+		die Funktion <func> aufgerufen. <func> muss 1 zurueck-
+		geben, wenn die Funktion die Kombination aus Kommando
+		und Argumenten akzeptiert, ansonsten 0. Alles was ein
+		Spieler hinter <cmd> noch angibt, wird der Funktion als
+		Argument uebergeben. Wenn <flag> gesetzt ist, wird jedes
+		Kommando, das mit <cmd> beginnt akzeptiert.
+	RemoveCmd(string|string* cmd)
+		Entfernt ein Kommando aus dem Raum.
+		ACHTUNG: Bei Spielern, die zum Zeitpunkt des Funktions-
+		aufrufs noch im Raum sind, ist das Kommando noch definiert.
+		Also: Nur benutzen, wenn man genau weiss, was man tut.
+
+	AddItem(string filename, int refresh)
+		Ein Objekt mit Pfad <filename> wird erzeugt und in den
+		Raum bewegt, dabei gibt es vier verschiedene Modi, die
+		ueber das Argument <refresh> angegeben werden:
+		REFRESH_NONE: Das Objekt wird nur beim allerersten mal
+			erzeugt, und dann nie wieder (erst beim reboot)
+		REFRESH_DESTRUCT: Ein neues Objekt wird erst erzeugt, 
+			wenn das alte zerstoert ist. So kann man sicher
+			gehen, dass nur ein Exemplar im Spiel ist.
+		REFRESH_REMOVE: Beim reset wird ein neues Objekt erzeugt,
+			wenn sich das alte nicht mehr im Raum befindet.
+		REFRESH_ALWAYS: Bei jedem reset wird ein neues Objekt 
+			erzeugt. VORSICHT: Kann zu riesigen Mengen von
+			Objekten fuehren, wenn ein Raum lange nicht be-
+			sucht wird.
+		Die Konstanten REFRESH_* sind in <rooms.h> definiert.
+
+	Auf die Properties P_EXITS, P_SPECIAL_EXITS, P_DETAILS, 
+	P_SPECIAL_DETAILS, P_READ_DETAILS, P_COMMANDS und P_ITEMS
+	sollte NICHT direkt zugegriffen werden.

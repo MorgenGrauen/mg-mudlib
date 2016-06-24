@@ -1,0 +1,52 @@
+KOMMANDO:
+     erwarte [-u|<Spieler>]
+     erwarte [<Spieler>] wegen [<Grund>]
+     erwarte [an|ein|aus]
+
+ARGUMENTE:
+     <Spieler>
+       Hier wird angegeben, welchen Spieler man erwartet.
+     <Grund>
+       (1) Textmeldung, welche beim Einloggen des erwarteten Spielers kommt.
+       (2) Bei Angabe von 'nichts' oder 'loeschen' wird <Grund> geloescht.
+     -u
+       Unter Verwendung dieser Option werden die erwarteten Spielernamen
+       in der chronologischen Reihenfolge ihres Eintrags in der
+       Erwarte-Liste ausgegeben. Ohne diese Option wird die Liste
+       alphabetisch geordnet praesentiert.
+
+BESCHREIBUNG:
+     Die Ankunft und das Weggehen der Spieler, die mit `Erwarte <Name>'
+     markiert wurden, werden mit einer Meldung und einem Piepton
+     bestaetigt.
+     `erwarte' ohne Argument zeigt die Liste der zur Zeit erwarteten
+     Spieler in alphabetischer Reihenfolge an. Die Option '-u' kann die
+     Liste auch in der chronologischen Reihenfolge ihrer Eintraege
+     anzeigen.
+     Ein erneuter Aufruf von `erwarte <Spieler>' entfernt <Spieler>
+     wieder aus der Liste.
+
+     Erwartet man einen Spieler aus einem ganz bestimmten Grund, und
+     moechte man bei dessen Einloggen auch daran erinnert werden, was man
+     von ihm wollte, so ist `erwarte <Spieler> wegen <Grund>' nuetzlich.
+     Beim Einloggen des Spielers <Name> erscheint eine Textmeldung mit
+     Inhalt <Grund>.
+     Mit `erwarte wegen' ist diese spezielle Erwarteliste abfragbar und
+     mit `erwarte <Spieler> wegen', ob und aus welchen Grund man Spieler
+     <Spieler> erwartet. Wird als <Grund> `nichts' oder `loeschen'
+     angegeben, entfernt man den Eintrag wieder.
+     Spieler koennen 10 Textmeldungen setzen, Seher 20, Magier 40 und
+     Erzmagier 80.
+     Mit 'erwarte aus' kann man Erwarte-Meldungen voruebergehend
+     deaktivieren. 'erwarte ein' bzw. 'erwarte an' aktiviert es dann
+     wieder, ohne dass die Liste der Erwarteten verloren geht.
+
+BEMERKUNGEN:
+     Der von 'erwarte' erzeugte Piepton kann sich in gewissen
+     RL-Umgebungen recht stoerend auswirken. Dagegen kann man sich jedoch
+     mittels des Kommandos 'ton AUS' wehren.
+
+SIEHE AUCH:
+     ton, inform
+
+6.Feb 2016 Gloinson

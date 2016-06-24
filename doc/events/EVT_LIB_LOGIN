@@ -1,0 +1,32 @@
+EVENT: 
+   EVT_LIB_LOGIN
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/player/base.c
+
+BESCHREIBUNG:
+   Ein Spieler hat sich gerade eingeloggt.
+   Bitte beachten: Objekt im Inventar und im Environment eines Spieler sollten
+   weiterhin BecomesNetAlive() benutzen! Dieser Event ist nur fuer Objekte
+   gedacht, die das Einloggen mitkriegen wollen, aber nicht in der Naehe des
+   Spieler sind.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBJECT:      (object) Objekt des eingeloggten Spielers,
+      E_PLNAME:      (string) UID/Name des eingeloggten Spielers,
+      E_ENVIRONMENT: (object) Environment nach dem Einloggen,
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+   EVT_LIB_LOGOUT
+
+-----------------------------------------------------------------------------
+16.08.2007, Zesstra
+

@@ -1,0 +1,34 @@
+DEFINIERT IN: 
+     /std/*.c
+
+BESCHREIBUNG:
+     Diese Mangepage beschreibt kein Einzelobjekt, sondern eine Sammlung von
+     Programmen.
+     Im Verzeichnis /std/util/ liegen mehrere Helferklassen, die Funktionen
+     bereitstellen, die nicht nur einem Objekt verwendet werden.
+
+     Momentan sind dies:
+     executer.c   - stellt eine Funkton execute_anything() beret.
+     input.c      - stellt eine Funtion intput() bereit, welche inptu_to()
+                    kapselt.
+     pager.c      - Stellt die Funktion More() und ihre Helfer bereit.
+     ringbuffer.c - Stellt einen Ringpuffer und die notwendigen Verwaltungs-
+                    funktionen bereit.
+
+     Ringbuffer.c:
+     ------------
+     Dies ist ein Puffer (Array) einer bestimmten Groesse. Sobald er voll ist
+     wird automatisch die jeweils aeltesten Daten ueberschrieben, sobald etwas
+     neues hineingeschrieben wird. Ein Ringpuffer mit einer Groesse von 30
+     speichert also die letzten 30 hineingeschriebenen Objekte.
+     * CreateRingBuffer(): erstellt einen neuen Ringpuffer.
+     * ResizeRingBuffer(): aendert die Groesse eines Ringpuffers.
+     * RingBufferPut(): schreibt ein neues Datum in den Puffer.
+     * RingBufferGet(): liefert die Daten des Ringpuffers zurueck.
+
+SIEHE AUCH:
+     CreateRingBuffer, ResizeRingBuffer, RingBufferPut, RingBufferGet
+
+LETZTE AeNDERUNG:
+23.05.2008, Zesstra
+

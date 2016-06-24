@@ -1,0 +1,64 @@
+NAME:
+	P_POST				"Post"
+
+DEFINIERT IN:
+	/mail/post.h
+
+BESCHREIBUNG:
+	In dieser Property laesst sich die Versendeerlaubnis von Paketen
+	regeln. Hierbei gibt es zum einen die postlagernden Pakete, die man
+	in einer Post abholen muss, und es gibt die sogenannten
+	Kurierpakete, welche direkt und unmittelbar zugestellt werden.
+	Nicht immer ist es erwuenscht, dass Pakete aus der Ferne in einen
+	Raum geschickt werden duerfen. Dies duerfte insbesondere innerhalb
+	von Gebieten interessant sein, in welche man nur beschraenkt viele
+	Objekte mitfuehren kann. Mit dieser Property nun ist es leicht
+	moeglich, dies zu verbieten. Man kann auch in den Objekten selbst
+	angeben, ob diese per postlagerndem Paket bzw. Kurierpaket
+	verschickt werden duerfen. Dies duerfte zum Beispiel bei Komponenten
+	fuer Spells oder fuer Unique-Objekte interessant sein.
+	Folgende Werte sind moeglich, wobei in Raeumen und Objekten
+	Standardmaessig PP_DEFAULT genutzt wird:
+
+	  PP_FORBIDDEN		-2	// auf jeden Fall verboten
+	  PP_NO_EXPRESS		-1	// Kurierpakete verboten
+	  PP_DEFAULT		 0	// Default
+	  PP_NORMAL_ALLOWED	 1	// postlagernde Pakete erlaubt
+	  PP_ALLOWED		 2	// auf jeden Fall erlaubt
+
+	Raeume, die von /std/post.c abgeleitet wurden, nutzen als Standard
+	natuerlich PP_ALLOWED.
+
+BEISPIEL:
+	Um Kurierpakete fuer einen Raum zu verbieten, nutzt man die
+	Funktionalitaet dieser Property folgendermassen:
+
+	  include "/mail/post.h"
+	  ...
+	  void create()
+	  { ::create();
+	    ...
+	    SetProp(P_POST,PP_NO_EXPRESS);
+	    ...
+	  }
+
+	Objekte selbst koennte man folgendermassen aus Paketen verbannen,
+	welche versendet werden sollen:
+
+	  include "/mail/post.h"
+	  ...
+	  void create()
+	  { ::create();
+	    ...
+	    SetProp(P_POST,PP_FORBIDDEN);
+	    ...
+	  }
+
+	In letzterem Fall funktionieren im Gegensatz zum ersten Beispiel
+	auch keine postlagernden Pakete mehr.
+
+SIEHE AUCH:
+	/std/post.c, /std/mailcabin.c, /p/service/loco/std/mailcabin.c
+
+----------------------------------------------------------------------------
+Last modified: Sun Sep  6 19:34:37 1998 by Patryn

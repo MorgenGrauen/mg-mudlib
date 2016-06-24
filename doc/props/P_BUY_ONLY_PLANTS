@@ -1,0 +1,15 @@
+NAME:
+    P_BUY_ONLY_PLANTS              "lib_p_buy_only_plants"
+
+DEFINIERT IN:
+    /sys/room/description.h
+
+BESCHREIBUNG:
+    Diese Property kann auf 1 gesetzt werden, wenn ein Laden nur Kraeuter
+    ankaufen darf. Hierzu muss /std/room/kraeuterladen.c geerbt werden,
+    da nur dieses Objekt die Property beruecksichtigt.
+
+SIEHE AUCH:
+    /std/room/kraeuterladen.c
+----------------------------------------------------------------------------
+Last modified: 02.04.2015 Arathorn 

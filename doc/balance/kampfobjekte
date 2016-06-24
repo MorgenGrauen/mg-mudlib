@@ -1,0 +1,31 @@
+    Hierzu zaehlen alle Sachen, die irgendeinen Einfluss auf den Kampf nehmen
+    und weder `/std/weapon.c' noch `/std/armour.c' sind. Also die sogenannte
+    Artillerie, Eisstab und artverwandtes, Wurfsterne, Parasteine, Bumi und
+    unterstuetzende NPC.
+
+    Prinzipiell sind alle diese Sachen genehmigungspflichtig.
+    
+    Auto-Selbstfahrer, also Sachen, die ohne Eingriff des Spielers agieren,
+    sind unerwuenscht und sollten vermieden werden. Sorry fuer die
+    Laggeplagten...
+
+    Kampfobjekte sollten P_ATTACK_BUSY setzen und auch vor der Anwendung
+    abfragen, damit sie nicht unbegrenzt hintereinander genutzt werden
+    koennen. Magische Sachen sollten entweder aufgeladen werden muessen oder
+    ihre magische Energie verlieren, damit sie nicht unendlich haltbar sind.
+    Ausserdem hat Magie normalerweise auch unerwuenschte Nebenwirkungen. Die
+    Spieler sollen die moeglichen Vorteile gegen Nachteile oder Nebenwirkungen
+    des Gegenstands abwaegen. Auch bei diesen Objekten *muss* P_INFO gesetzt
+    werden, um eine Begruendung fuer die besondere Wirkung und z.B. einen
+    Hinweis auf die Benutzung zu liefern.
+    
+    Sie sollten keinesfalls kaeuflich erworben werden koennen.
+
+    Objekte, die Auskunft ueber ein- und/oder ausgehende Schaeden geben, 
+    sind genehmigungspflichtig. Solche Objekte sollten nach Moeglichkeit
+    eine Waffe oder Kleidungsstueck - dies jedoch nicht AT_MISC - sein.
+    Dass solche Objekte auch ueber Luecken in der Angabe der Schaeden und
+    Nachteile verfuegen sollten, ist eigentlich klar. 
+    Solche Nachteile liessen sich ueber eine Mindest-Schadenshoehe oder
+    random realisieren. Informationen ueber mehrere Schadenstypen durch 
+    ein und das selbe Objekt sind nicht erwuenscht.

@@ -1,0 +1,32 @@
+
+toete
+-----
+
+ KOMMANDO:
+    toete <monster>
+    toete alle
+
+ ARGUMENTE:
+
+     <monster>
+        Der zu toetende Gegner
+
+ BESCHREIBUNG:
+    Startet eine Attacke auf das angegebene Monster. Es muss sich im selben
+    Raum befinden. Es ist moeglich, aus einem laufenden Kampf heraus zu
+    fliehen. Wenn man das fliehende Monster faengt, darf man den ersten Schlag
+    ausfuehren (umgekehrt gilt das allerdings auch!).
+
+    Es ist zwar auch moeglich, andere Spieler zu toeten. Dies ist jedoch unter
+    Strafe gestellt, es sei denn, der Kampf findet in extra dafuer
+    vorgesehenen Gebieten statt.
+
+    Mit 'toete alle' greift man ALLE potentiellen Gegner im Raum an, man
+    sollte sich also gut ueberlegen, wo man dieses Kommando einsetzt.
+
+ SIEHE AUCH:
+     Verwandt: stop, angriffsmeldung
+     Anderes:  kaempfen, heilung, leben, tod 
+
+ LETZTE AeNDERUNG:
+    Mon, 25.08.2003, 15:30:00 von Boing

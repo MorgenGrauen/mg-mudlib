@@ -1,0 +1,30 @@
+Es ist moeglich, Waffen und Ruestungen zu beschraenken, so dass sie
+nur von Spielern benutzt werden koennen, die gewisse Kriterien erfuellen.
+Diese Pruefung wird allerdings _nur_ beim Zuecken oder Anziehen geprueft.
+Sollte sich die entsprechende Eigenschaft des Spielers waehrend der
+Benutzung aendern, kann er oder sie das entsprechende Teil weiter
+nutzen, bis es ausgezogen/weggesteckt wird.
+
+Um solche Restriktionen zu implementieren, muss ein Eintrag in die
+Property P_RESTRICTIONS erfolgen. Was kann dort alles eingetragen
+werden?
+
+- Mindestwerte fuer alle Attribute (Geschicklichkeit etc.)
+- Mindestwerte fuer - Questpunkte
+                    - Spielerlevel
+                    - Erfahrungspunkte
+- Spielerrasse oder eine Liste von ein- bzw. ausgeschlossenen Rassen
+- Gildenlevel (macht nur wenig Sinn)
+- Seherstatus
+- Maximalwerte fuer Alkohol, Essen, Trinken
+- Gesinnung (nach oben und unten)
+- Koerpergroesse (nach oben und unten)
+- Anzahl der freien Haende
+
+Die Bedingungen sind beliebig zu kombinieren, man kann also eine Waffe
+programmieren, die nur von ueber 2 Meter grossen satanischen Hobbits
+gezueckt werden kann, die einen leeren Magen haben. (Vermutlich eine
+riesige Fleischgabel...)
+Fuer gute Waffen und Ruestungen sind allerdings vermutlich in erster Linie
+die Restriktionen Spielerlevel, Seherstatus und vielleicht noch Attribute
+interessant. Vielleicht auch noch Erfahrungspunkte.

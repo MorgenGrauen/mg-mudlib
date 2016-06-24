@@ -1,0 +1,29 @@
+
+extralook
+---------
+
+ SEHERKOMMANDO:
+    extralook <text>
+
+ ARGUMENTE:
+
+     <text>
+        Die Beschreibung.
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du Deine Beschreibung um zusaetzlichen Text
+    erweitern.
+
+    Der Text erscheint nach Deiner normalen Langbeschreibung und vor der
+    Auflistung Deines Inventars.
+
+    Gibst Du als <text> nur ein '?' an, wird Dir ein aktueller Extralook
+    ausgegeben.
+    Laesst Du <text> ganz weg, oeffnet sich ein Editor, in dem Du Deinen neuen
+    Extralook eingeben kannst.
+
+ SIEHE AUCH:
+    untersuche
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

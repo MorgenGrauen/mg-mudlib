@@ -1,0 +1,101 @@
+COMMANDS:
+    xcall      xddes      xforall    xids       xman       xscan      xtrace
+    xcallouts  xdes       xgoto      xinherit   xmore      xset       xtrans
+    xclean     xdlook     xgrep      xlag       xmove      xsh        xuclone
+    xclone     xdo        xhbeats    xload      xmsg       xsort      xupdate
+    xdbg       xdupdate   xhead      xlook      xmtp       xtail      xwc
+    xdclean    xeval      xhelp      xlpc       xprops     xtool      xwho
+
+
+Give a "?" as single argument to get the command usage or do "xman <command>"
+for more information about a command.
+
+QUICKTYPER:
+   The MGtool contains a full quicktyping tool. It provides the following
+   features:
+
+      - multiple command execution (see the xdo and xforall command)
+      - script files               (see the xsh command)
+      - command pipelining
+      - command history
+
+   The command history stores (nearly) each command you type in and lets you
+   re-execute it.
+
+      - %!        show the command history
+      - %%        re-execute the last command
+      - ^old^new  re-execute the last command but replace all occurencies of
+                  the "old" string of the command by "new".
+      - %num      re-execute the command at position num of the history
+      - %str      re-execute the last command beginning with the string "str"
+
+
+COMMAND ARGUMENTS:
+   Most commands need filenames or objects as argument. The way objects are
+   specified will be descriped in the following.
+
+      - an object can be accessed directly by its unique object name
+      - a player can be accessed by its player name
+      - a living can be accessed by its living name
+      - a object inside the current room by its id
+      - a object inside the current room by its position
+
+   If the object can not be accessed by the above mentioned ways you can also
+   use the following object modifiers:
+
+      ^obj         stands for the environment of an object
+      obj1.obj2    stands for an object obj2 inside another object obj1
+      
+  These modifiers can be concatenated together where the "^" has a higher
+  priority than the ".". This allows you to access an object from another know
+  object.
+
+  Now some examples which demonstrates how to use this accessing mechanism.
+  Therefore we use the command "xlook" which prints the short and long
+  description and also the content of an object:
+
+   1. xlook deepthought
+      Look at Deepthought.
+   2. xlook ^deepthought
+      Look at the room Deepthought is in.
+   3. xlook deepthought.bag
+      Look at the bag of Deepthought.
+   4. xlook deepthought.bag.bag
+      Look at the bag inside Deeps bag.
+   4. xlook deepthought.5
+      Look at the fifth object of Deeps inventory.
+   5. xlook /std/thing#123
+      Look at the object with the unique object name "/std/thing#123".
+   6. xlook 1
+      Look at the first object in the current room.
+   7. xlook 1.2.3
+      Look at the third of the second of the first object in the room.
+
+  If the name of an object contains an object modifier as a character then it
+  can be escaped by a "\". A "\" is escaped by itself. This is because file
+  names often contain the "." for file extensions. So if you want to access
+  directly an object with for example such a name "file.old.bulb" you have to
+  write "file\.old\.blub".
+    
+  If a command needs a file as argument you can use the filename of an object
+  for it by placing an "@" infront of the object. This way you can clone
+  an object by using another clone:
+
+     xclone @harry.bag.candles
+     Clone some candles of the kind Harry is carrying in his bag.
+
+
+ARGUMENT VARIABLES:
+   Whenever an object or a filename is needed, we can use variables.
+   A variable allways starts with a "$" followed by the name which
+   identificates it. Two variable names are reserved for special purpose.
+   The first, "$me" is always set to the one who owns the Xtool. The other,
+   "$here" represents the current room.
+
+   (Instead of "$me" and "$here" you can also use "$m" and "$h".)
+
+   If a command needs a file as argument and gets a variable it will be
+   automatically converted into the source file of the object.
+   (This is done by taking the unique object identifier and replacing the
+   "#..." by a ".c".)
+

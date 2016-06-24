@@ -1,0 +1,23 @@
+KOMMANDO:
+	klingelton aus
+        klingelton 1..3600 
+
+ARGUMENTE:
+                  : aktuellen Status anzeigen  
+	  1..3600 : Klingelton maximal aller n Sekunden 
+	  AUS     : Klingelton ausschalten.
+
+BESCHREIBUNG:
+        Um Mitteilungen im Scroll nicht zu verpassen, wird bei eingeschaltetem
+        Klingelton in den voreingestellten Zeitintervallen ein Tonsignal vom
+        Mud erzeugt. Das ist besonders fuer blinde Spieler von Vorteil, denen
+        sonst Mitteilungen schnell mal verloren gehen.
+        Der Ton wird nur produziert, wenn man mit 'ton ein' die Tonausgabe
+        des Muds aktiviert hat.
+        Mitteilungen sind in diesem Zusammenhang 'sag' und 'teile mit'.
+ 
+SIEHE AUCH:
+	teile mit, sag, klingelton, grafik aus, ton, keepalive
+
+LETZTE AENDERUNG:
+   16. Mai 2007  Ennox

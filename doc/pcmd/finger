@@ -1,0 +1,55 @@
+
+finger
+------
+
+ KOMMANDO:
+    finger [-n] [-p] [-s] [-v] [-a] <name> | <name>@<mud>
+
+ ARGUMENTE:
+
+     <name>
+        Name eines Spielers
+     <mud>
+        Name eines MUDs aus der `muds'-Liste
+
+ BESCHREIBUNG:
+    Gibt ein paar zusaetzliche Informationen ueber den Spieler <name> aus.
+    Hierbei ist einerlei, ob der Spieler eingeloggt, netztot oder ausgeloggt
+    ist.
+
+    Seher und Magier koennen sich eine .plan-Datei anlegen, deren Inhalt unter
+    den Spielerinformationen ausgegeben wird. Manchmal moechte man diese
+    jedoch gar nicht sehen. In diesem Fall kann man die Ausgabe des .plan mit
+    `-n' unterdruecken.
+
+    Moechte man die .plan-Datei defaultmaessig unterdruecken, kann man sich
+    ein Alias der Form
+
+    'alias finger finger -n $*'
+
+    erstellen.
+
+    Moechte man dann trotzdem einmal einen .plan sehen, kann man dies mit der
+    Option `-p' bewerkstelligen.
+
+    Mit dem Schalter '-a' kann man sich zusaetzlich zu den anderen Angaben
+    auch die Avatar-URI des Spielers anzeigen lassen (natuerlich nur, sofern
+    er auch eine gesetzt hat).
+
+    Gibt man den Schalter `-s' an, so wird das Verwandtschaftsverhaeltnis des
+    Magiers ausgegeben.
+
+    Im Gegensatz zu Spielern sehen Magier auch, wenn ein Magier zuletzt
+    unsichtbar anwesend war. Um dieses Verhalten zu unterdruecken, ist die
+    Option `-v' vorhanden.
+
+    Ist der Spieler als abwesend gekennzeichnet, zeigt 'finger' die
+    Wegmeldung des Spielers an.
+    Will man nur wissen, ob ein Spieler als abwesend gekennzeichnet ist, 
+    kann man den Befehl 'wegmeldung' benutzen.
+
+ SIEHE AUCH:
+    avatar, email, url, messenger, icq, ort, weg, (wegmeldung)
+
+ LETZTE AeNDERUNG:
+    27.05.2015, Boing

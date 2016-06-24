@@ -1,0 +1,27 @@
+
+setmout
+-------
+
+ SEHERKOMMANDO:
+    setmout [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        Die neue Ausgangsmeldung.
+
+ BESCHREIBUNG:
+    Mit diesem Kommando kann die Meldung definiert werden, die andere Spieler
+    sehen, wenn man aus dem Raum herausgeht. Dabei wird dem Text <text> noch
+    Dein Name vorangestellt.
+
+    Enthaelt <text> ein #, so wird dieses Zeichen in der Meldung durch die
+    jeweilige Richtung ersetzt.
+
+    Ohne <text> wird wieder die Defaultmeldung verwendet.
+
+ SIEHE AUCH:
+    setmmout, setmin, setmmin, review
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

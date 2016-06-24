@@ -1,0 +1,11 @@
+SYNOPSIS
+      xmsg [to <object>|all]
+
+DESCRIPTION
+      Send a message. If no arguments are given the message will be send into
+      the room. If second argument is "to" then send the message to the
+      specified <object>. If second argument is "all" then send the message to
+      all players in the mud.
+      This command can be used to send text via cut&paste to someone without
+      putting a "say", "tell" or "shout" infront of each line.
+

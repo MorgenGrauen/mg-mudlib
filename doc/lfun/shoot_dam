@@ -1,0 +1,40 @@
+shoot_dam()
+
+FUNKTION:
+    static int shoot_dam(mapping shoot)
+
+DEFINIERT IN:
+    /std/ranged_weapon.c
+
+ARGUMENTE:
+    mapping shoot - Schussdaten
+
+BESCHREIBUNG:
+    Erhaelt von /std/ranged_weapon::cmd_shoot() die Schussdaten und berechnet
+    den Schaden der Waffe, basierend auf den P_SHOOTING_WC von Waffe und
+    Munition sowie der Geschicklichkeit des Schuetzen. HitFuncs der Munition
+    und Skills werden hier ebenfalls beruecksichtigt.
+
+RUECKGABEWERT:
+    Schaden. Ebenfalls in 'shoot' unter SI_SKILLDAMAGE aktualisiert.
+
+BEMERKUNGEN:
+    'shoot' enthaelt normalerweise folgende Eintraege:
+    * Key P_WEAPON:       die Schusswaffe
+    * Key P_WEAPON_TYPE:  P_AMMUNITION, also die Munitions-ID
+    * Key P_STRETCH_TIME: P_STRETCH_TIME der Waffe
+    * Key P_WC:           P_SHOOTING_WC der Waffe
+    * Key P_SHOOTING_WC:  P_SHOOTING_WC der Munition
+    * Key P_AMMUNITION:   Munitionsobjekt (eventuell Unit)
+    * Key SI_ENEMY:       gueltigen Gegner
+    * Key SI_SKILLDAMAGE_TYPE:  Schaden (aus P_DAM_TYPE der Munition)
+    * Key SI_SKILLDAMAGE_MSG/2: Munitionsname
+
+SIEHE AUCH:
+    Generell:  P_AMMUNITION, P_SHOOTING_WC, P_STRETCH_TIME
+    Methoden:  FindRangedTarget(L), cmd_shoot(L)
+    Skills:    UseSkill(L), SkillResTransfer(L)
+    Attribute: QueryAttribute
+    Sonstiges: fernwaffen, HitFunc
+
+28.Jul 2014 Gloinson

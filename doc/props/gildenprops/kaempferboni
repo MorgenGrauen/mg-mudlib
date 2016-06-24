@@ -1,0 +1,264 @@
+
+Kaempferboni und deren Implementation
+-------------------------------------
+-------------------------------------
+
+Bei den Kaempfern gibt es einige Properties, die, in Waffen oder Ruestungen
+gesetzt, der Kampfverlauf eines Spielers erheblich beeinflussen koennen.
+
+Zu beachten ist, dass die Abnahme von Waffen oder Ruestungen mit Kaempferboni
+allein der Balance obliegt. Der Gildenmagier der Kaempfer steht aber gerne
+mit Rat und Tat zur Seite.
+
+
+Abschnitt A
+-----------
+
+In Waffen koennen nachfolgende, in /p/kaempfer/kaempfer.h definierten,
+Properties gesetzt werden. Die meisten davon fungieren als 'Boni' und werden
+dem Spieler auch mittels 'schaetz <waffe>' angezeigt:
+
+
+1 Waffenschlagbonus - K_BRAWLING_WC (INT) - "k_brawling_wc"
+
+  Wenn die Waffe eine zusaetzlich gefaehrliche Stelle besitzt - z.B. einen
+  harten Dorn am Stielende, eine Spitze am Ruecken einer Axtklinge, Zacken
+  am Dolchgriff - kann man der Waffe einen Waffenschlagbonus geben.
+  Dies bedeutet, dass der Waffenschlag um ein paar Prozente verstaerkt wird,
+  da der Spieler natuerlich versucht, immer genau mit diesem 'feature'
+  den Waffenschlag auszufuehren (der Waffenschlag ist kurz gesagt ein
+  unerwarteter Schlag, der nicht mit dem 'normalen' Waffenende ausgefuehrt
+  wird, der Gegner wird dadurch ueberrascht -> mehr Schaden).
+  Da solch ein 'feature' doch recht auffaellig ist, sollte es in der
+  Langbeschreibung der Waffe auf jeden Fall erwaehnt werden.
+
+  Interessant zu wissen waere noch, dass Zweihandwaffen einen generellen
+  zusaetzlichen Bonus auf den Waffenschlag bekommen und dass es eine
+  Abstufung gibt, nach der die Waffengattungen die Hoehe des Basiswertes
+  gesetzt bekommen, wobei Speere den hoechsten und Messer den niedrigsten
+  besitzen:
+
+  Speere - Kampfstaebe - Aexte - Keulen - Schwerter - Messer
+
+  Der max. Bonus fuer diese Property betraegt 30, wobei 1-10 -> geringer
+  Bonus, 11-20 -> guter Bonus, 21-30 -> sehr guter Bonus.
+
+  Bitte beachten: ein Zweihand-Speer mit max. P_WC und max. K_BRAWLING_WC
+  haut entsprechend gut rein und sollte nur schwer zu ergattern sein, bzw.
+  noch andere Auflagen haben (ggf. unique, personalisiert, etc.)
+
+
+2 Waffenschlagschaden - K_BRAWLING_DT (STRING) - "k_brawling_dt"
+
+  Wenn die Waffe, mit der der Kaempfer einen Waffenschlag ausfuehrt, ein
+  'feature' hat, mit dem er diesen Schlag ausfuehrt, kann dieses 'feature'
+  einen anderen Waffenschlagschaden besitzen. Z.B. kann ein Schwert, welches
+  normalerweise DT_SLASH macht, besonders lange und spitze Parierstangen
+  besitzen, die vielleicht auch noch vergiftet sind. Dann kann der Magier
+  ({DT_PIERCE,DT_POISON}) setzen, so dass beim Waffenschlag immer ein
+  Mischschaden aus Stiche und Gift erfolgt.
+
+
+3 Waffenschlagsmeldung - K_BRAWLING_MSG (STRING/STRING*) - k_brawling_msg"
+
+  In diese Property kann man hineinschreiben, mit welchem Teil der Waffe
+  der Waffenschlag ausgefuehrt wird. Angenommen, es bietet sich an, mit
+  einer Waffe stets den Waffenschlag mit einem grossen Knauf am Griff
+  auszufuehren, wird schlicht und einfach "mit einem grossen Knauf am
+  Griff der Schlachtaxt" in die Property gesetzt.
+  Sollte sich bei der Programmierung ergeben, dass es sich anbietet, der
+  Waffe mehr als nur eine guenstige Stelle anzudichten mit der man den
+  Waffenschlag ausfuehren kann, so setzt man ein Array, z.B. ({"mit einem
+  grossen Knauf am Griff der Schlachtaxt","mit der breiten Seite der "
+  "Schlachtaxtklinge"}). Insgesamt ist darauf zu achten, dass die Meldungen
+  'vollstandig' sind. Das Array kann beliebige Groesse annehmen, es wird
+  dann zufaellig eine Meldung beim Schlag ausgesucht.
+
+  Es empfiehlt sich, jede Waffe mit dieser Property zu schmuecken, die
+  K_BRAWLING_WC gesetzt haben, da die Waffenschlagmeldungen damit im Kampf
+  'individualisiert' werden. In der Praxis wird es jedoch daran scheitern,
+  dass es viel zu viele alte Waffen gibt, die keiner mehr anfassen moechte.
+  Daher wird auf Standardmeldungen zurueckgegriffen, sollte diese Property
+  nicht gesetzt sein.
+
+
+4 Waffenbruchbonus - K_WEAPON_SHATTER (INT) - "k_weapon_shatter"
+
+  Waffen, die besonders fuer den Waffenbruch konstruiert wurden, koennen
+  einen Bonus einbringen, der in dieser Property angegeben wird. Natuerlich
+  eignen sich die verschiedenen Waffentypen wieder unterschiedlich gut fuer
+  einen Waffenbruch: Keulen (meist aufgrund ihres Gewichts) am besten, Messer
+  am schlechtesten, alle anderen dazwischen (Axt - Schwert - Stab - Speer).
+  Dabei kriegen alle Waffen, die u.a. Schlagschaden verursachen, nochmal
+  einen kleinen Bonus obendrauf.
+
+  Der max. Bonus fuer diese Property betraegt 50, wobei 1-10 -> geringer
+  Bonus, 11-30 -> guter Bonus, 31-50 -> sehr guter Bonus.
+
+  Bei gut gelungenem Waffenbruch wird die Waffe des Gegners beschaedigt, wenn
+  die Technik sehr gut gelingt, kann es auch sein, dass dem Gegner die Waffe
+  aus der Hand geschlagen wird (der Spieler kann sie allerdings nicht
+  aufheben und der NPC zueckt sie nach ein paar Kampfrunden wieder).
+
+
+5 Bonus fuer Finte/Waffentrick - K_DISTRACTING_WEAPON (INT) -
+  "k_distracting_weapon"
+
+  Waffen, die fuer den Gegner aufgrund ihrer Bauweise besonders irritierend
+  sein koennen, koennen einen Bonus fuer Finte und Waffentrick haben. Dabei
+  wird der Gegner bei einer Finte bzw. einem Waffentrick NOCH mehr verwirrt,
+  als er es ohnehin schon nur durch die angewandte Technik wird.
+  Ein gutes Beispiel hierfuer ist z.B. der Kriegshamster: ein Hamster, der
+  auf einem Holzstab aufgespiesst ist, sollte fuer den Gegner schon SEHR
+  irritierend sein ;).
+  Die Waffengattung hat nur wenig Einfluss auf Finte/Waffentrick.
+
+  Der max. Bonus fuer diese Property betraegt 50, wobei 1-10 -> geringer
+  Bonus, 11-30 -> guter Bonus, 31-50 -> sehr guter Bonus.
+
+
+6 Todesstossbonus - K_CRITICAL_HIT (INT) - "k_critical_hit"
+
+  Man stelle sich eine Waffe mit besonders spitzer, langer Klinge vor oder
+  eine magische Waffe, die dem geschwaechten Gegner die Seele entreisst.
+  Diese Eigenschaften verleihen dem Spieler beim Todesstoss einen
+  entsprechenden Bonus von bis zu 100%.
+
+  Es ist moeglich, dass ein und dasselbe 'feature' sowohl dem Waffenschlag
+  als auch dem Todesstoss den Bonus stellt, z.B. zwei Hiebklingen auf dem
+  Klingenruecken einer grossen Axt. Auch dies sollte man deutlich aus der
+  Langbeschreibung herauslesen koennen.
+
+  Der max. Bonus fuer diese Property betraegt 100, wobei 100 eine Verdopplung
+  der P_WC beim Todesstoss bedeutet!
+  Ansonsten bedeutet 1-20 -> geringer Bonus, 21-60 -> guter Bonus,
+  61-100 -> sehr guter Bonus.
+
+
+7 Waffenwurfbonus - K_THROWING_WEAPON (INT) - "k_throwing_weapon"
+
+  Wenn eine Waffe besonders gut zum Werfen geeignet ist, z.B. ein Wurfdolch,
+  dann kann diese Property gesetzt werden. Natuerlich ist der Grundwert wieder
+  von der Waffengattung abhaengig. Es gilt, dass man Messer und Speere
+  grundsaetzlich am besten werfen - und dabei gut Schaden machen - kann, am
+  schlechtesten schneiden Keulen und Kampfstaebe ab.
+
+  Der max. Bonus fuer diese Property betraegt 50, wobei 1-20 -> geringer
+  Bonus, 21-40 -> guter Bonus, 31-50 -> sehr guter Bonus.
+
+  Zu beachten ist hierbei, dass ein sehr hoher Bonus nur bei Waffen mit etwas
+  geringerer P_WC vergeben werden sollte. Ein reines Wurfmesser ist nunmal im
+  normalen Kampf nicht die gefaehrlichste aller Waffen (speziell
+  ausbalanciert, keinen richtigen Griff, etc.).
+  Natuerlich kann es einen Wurfspeer mit max. P_WC und sehr hohem
+  Waffenwurfbonus geben, allerdings mit den ueblich hohen Restriktionen.
+
+
+8 KO-Schlag-Bonus - K_KO (INT) - "k_ko"
+
+  Waffen, die besonders fuer einen KO-Schlag geeignet sind, koennen einen
+  Bonus mit dieser Property bekommen. Eine entsprechende Waffe koennte z.B.
+  ein lederumwickelter Pruegel sein, denn man will den Gegner ja nur KO
+  schlagen und nicht gleich toeten.
+
+  Der max. Bonus fuer diese Property betraegt 50, wobei 1-20 -> geringer
+  Bonus, 21-30 -> guter Bonus, 31-50 -> sehr guter Bonus.
+
+
+9 Kein Waffenschaerfen - K_NO_HONING (INT) - "k_no_honing"
+
+  Wenn eine Waffe aus irgendeinem Grund nicht geschaerft werden kann oder
+  darf, muss man diese Property auf 1 setzen.
+  Eine Erklaerung dafuer sollte in der P_LONG bzw. P_INFO erfolgen.
+
+
+Abschnitt B
+-----------
+
+Die beiden Properties, P_EFFECTIVE_AC und P_EFFECTIVE_WC, welche in
+<combat.h> definiert sind, sind eigentlich nur dazu da, um Ruestungen und
+Waffen, die eine DefendFunc() bzw. HitFunc() besitzen, korrekt vom Spieler
+einschaetzen lassen zu koennnen.
+
+Das Kaempferspellbook verwendet diese Properties darueberhinaus wie folgt:
+
+
+1 Schutzboni in Waffen - P_EFFECTIVE_AC (INT) - "effective_ac"
+
+  Ist diese Property in einer Waffe gesetzt, geht das Kaempferspellbook
+  davon aus, dass diese Waffe mehr oder weniger die Faehigkeit besitzt,
+  auch wie eine Ruestung schuetzen zu koennen. Da man eine Waffe aber nicht
+  anziehen, sondern nur vor sich hertragen kann, kann auch der max.
+  Ruestungsschutz einer Waffe nur gleich dem max. Ruestungsschutz eines
+  Schildes entsprechen.
+  Eine gesetzte P_EFFECTIVE_AC in einer Waffe wird dem Spieler als mehr
+  oder weniger gute 'Paradewaffe' im 'schaetz' angezeigt und geht sowohl bei
+  der Waffenparade als auch beim Block als Bonus mit ein.
+
+  Z.B. koennte ein leichtes Schwert, was aufgrund seiner Bauweise mehr fuer
+  den defensiven Kampf ausgelegt ist (extralange Parierstangen, verstaerkter
+  Handschutz im Griffbereich, ...) wie ein maessiges Schild wirken. Die
+  Vorteile liegen auf der Hand: der Spieler bekommt verstaerkten Schutz,
+  kann aber weiterhin eine Zweihandwaffe fuehren.
+
+  Der max. Bonus fuer diese Property betraegt 40, wobei 1-20 -> geringer
+  Bonus, 21-30 -> guter Bonus, 31-40 -> sehr guter Bonus.
+
+  Zu beachten ist hier, dass sehr gute Parierwaffen mit P_EFFECTIVE_AC > 30
+  moeglichst deutlich unter der max. WC liegen sollten.
+
+  Anmerkungen:
+  Eine gesetzte P_EFFECTIVE_AC in einem Schild kann den Bonus fuer die
+  Schildparade nach oben oder unten beeinflussen. Moechte man ein Schild
+  herstellen, welches speziell bei der Schildparade der Kaempfer besser
+  als 'normal' schuetzt, sollte man hier einen Wert eintragen, der deutlich
+  groesser als die P_AC des Schildes ist.
+
+  Eine gesetzte P_EFFECTIVE_AC in einer anderen Ruestung hat nur den Nutzen,
+  auf deren erhoehten (und nicht sofort sichtbaren) Verteidigungswert
+  hinzuweisen, der durch eine DefendFunc() realisiert wird.
+
+
+2 Angriffsboni in Ruestungen - P_EFFECTIVE_WC (INT) - "effective_wc"
+
+  Fuer die Kaempfer koennen folgende Ruestungstypen modifiziert werden:
+  AT_TROUSERS (Hosen), AT_HELMET (Kopfbedeckung), AT_BOOT (Fusskleidung),
+  AT_ARMOUR (Koerperruestung), AT_SHIELD (Schilde).
+  Ist in einer dieser Typen P_EFFECTIVE_WC gesetzt, so macht diese Ruestung
+  bei einem Angriff mit einer Spezialattacke (Kniestoss, Kopfstoss, Fusstritt,
+  Ellbogenschlag und Schildstoss) entsprechend mehr bzw. weniger Schaden als
+  ohne diese Property. Eine entsprechende Begruendung fuer eine Verstaerkung
+  oder Schwaechung sollte auch hier fuer den Spieler offensichtlich sein
+  (Dornen am Schild, verstaerkter Kniebereich, Zacken am Helm, etc.).
+
+  Wenn man der Ruestung einen Bonus geben moechte, muss man darauf achten,
+  dass P_EFFECTIVE_WC hoeher ist als die P_AC der Ruestung! Sollte
+  P_EFFECTIVE_WC niedriger als P_AC sein, wird dennoch P_EFFECTIVE_WC als
+  Angriffswert genommen. Dies stellt natuerlich eine Schwaechung der
+  Spezialattacke dar. Moeglicherweise ist aber genau das gewollt, wenn eine
+  Ruestung, die sehr gut schuetzt, nur geringen Kaempferbonus aufweisen soll.
+
+  Beispiel: ein Schild aus Hartgummi kann recht gut Schlaege aller Art
+  abfangen (-> P_AC 35). Will der Kaempfer jedoch einen Schildstoss damit
+  machen, fehlt ihm aufgrund der Beschaffenheit die Wucht, eher daempft es
+  den Schildstoss noch ein wenig (-> P_EFFECTIVE_WC 25).
+
+  Der Maximalwert fuer die P_EFFECTIVE_WC bei Kaempfern ist der jeweils
+  doppelte maximale P_AC-Wert (s. 'man ruestungen').
+
+  Die Angabe eines Schadenstyps (P_DAM_TYPE) in einer Ruestung kann dann
+  sinnvoll sein, wenn bei der Spezialattacke ein spezieller Schaden gemacht
+  werden soll. Beispielsweise sollten Flammenstiefel logischerweise DT_FIRE
+  und DT_BLUDGEON oder DT_PIERCE bei einem Kampftritt verursachen. Es MUSS
+  (logischerweise) mindestens ein physikalischer Schadenstyp enthalten sein.
+  Wird kein Schadenstyp angegeben, wird auf Standardtypen zurueckgegriffen.
+
+
+SIEHE AUCH:
+     Waffen:     P_WC, P_TOTAL_WC, P_EFFECTIVE_WC, HitFunc()
+     Ruestungen: P_AC, P_TOTAL_AC, P_EFFECTIVE_AC, DefendFunc()
+     Files:      /std/weapon.c, /std/weapon/combat.c
+     Balance:    waffen, ruestungen, properties
+
+-----------------------------------------------------------------------------
+26.10.2012, Gabylon

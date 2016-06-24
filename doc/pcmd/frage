@@ -1,0 +1,31 @@
+
+frage
+-----
+
+ KOMMANDO:
+    frage <npc> nach <was>
+    frage <spieler> <was>
+
+ ARGUMENTE:
+
+     <npc>
+        Ein NPC, von dem man etwas wissen will
+     <spieler>
+        Ein Spieler, von dem man etwas wissen will
+     <was>
+        Die Frage an sich
+
+ BESCHREIBUNG:
+    Man befragt ein Monster oder einen Spieler ueber irgendetwas. Nicht alle
+    Monster haben auch Antworten einprogrammiert und bei Spielern kann man
+    erst recht nicht wissen, ob sie antworten.
+
+    Wenn ein NPC auf eine Deiner Meinung nach sinnvolle Frage keine sinnvolle
+    Antwort weiss, kannst Du seinem Programmierer mit dem idee-Befehl einen
+    kleinen Denkanstoss geben.
+
+ SIEHE AUCH:
+    antworte
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

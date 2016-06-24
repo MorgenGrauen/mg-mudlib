@@ -1,0 +1,28 @@
+
+Die FAQ
+=======
+
+    Du hast Interesse an den FAQ? Gut so, eine kluge Entscheidung.
+
+    Zur Zeit findest Du die neueste Ausgabe der FAQ auf dem FTP Server des
+    Muds im Verzeichnis `/open/Texte/FAQ/'. Dieses Verzeichnis ist auch fuer
+    Spieler zugaenglich. Im einzelnen solltest Du folgendermassen vorgehen:
+
+    > ftp mg.mud.de
+    [Als Login-Namen 'anonymous' und als Passwort Deine EMail-Adresse angeben]
+    [Magier koennen auch Namen und Passwort ihres Charakters nehmen]
+    > cd /open/Texte/FAQ
+    > get mg-faq.v202
+
+    Eine andere Moeglichkeit ist, eine E-Mail an mud@mg.mud.de zu
+    schicken und als Subject `FAQ' anzugeben.
+
+    Hast Du das geschafft, bist Du im Besitz eines umfangreichen Werkes ueber
+    sehr viele Fragen, die im Zusammenhang mit dem Spiel auftauchen koennen.
+    Sollte Deiner Meinung nach etwas in den FAQ fehlen, so schreib einfach
+    eine Mail an Pilgrim oder Viper. Pilgrim ist als Autor des Werkes fuer
+    Anregungen sehr dankbar.
+
+LETZTE AeNDERUNG:
+    Sam, 29. Sep 2001, 11:35:01 von Zook.
+

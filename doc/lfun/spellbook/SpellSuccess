@@ -1,0 +1,31 @@
+SpellSuccess()
+FUNKTION:
+    int SpellSuccess(object caster, mapping sinfo)
+
+DEFINIERT IN:
+    /std/spellbook.c
+
+ARGUMENTE:
+    object caster    Spell sprechender Spieler
+    mapping sinfo    Spell-Info-Mapping mit allen Informationen
+
+BESCHREIBUNG:
+    Berechnet den Erfolg der Anwendung eines Spells aus seiner
+    SI_SKILLABILITY und dem Skill SK_CASTING im Spieler. Laesst
+    den Spieler bei besonders gutem Gelingen SK_CASTING lernen.
+
+BEMERKUNGEN:
+    SK_CASTING muss fuer die SK_CASTING-Boni beherrscht werden.
+    Das ist zB im Klerus ab bestimmtem Level der Fall.
+
+SIEHE AUCH:
+    Spellbook Lernen: Learn, Erfolg, Misserfolg
+    * Verwalten:      AddSpell, QuerySpell
+    * Angriff:        TryAttackSpell, TryDefaultAttackSpell,
+                      TryGlobalAttackSpell
+    * Properties:     P_GLOBAL_SKILLPROPS, P_SB_SPELLS
+    Skills Lernen:    LearnSkill, ModifySkill, LimitAbility
+    * Nutzung:        UseSpell, UseSkill
+    * sonstig:        spruchermuedung, skill_info_liste
+
+5. Okt 2011 Gloinson

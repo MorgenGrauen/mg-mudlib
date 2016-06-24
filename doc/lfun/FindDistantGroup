@@ -1,0 +1,31 @@
+FindDistantGroup()
+
+FUNKTION:
+	varargs object *FindDistantGroup(object pl, int who,
+                                         int dist, int dy, int dx)
+
+DEFINIERT IN:
+	/std/spellbook.c
+
+ARGUMENTE:
+	pl   - Caster
+	who  - 1=Freunde, -1=Gegner, 0=beide
+	dist - Entfernung
+	dy   - Tiefe      (default 100)
+	dx   - Breite     (default 100*MAX_TEAM_ROWLEN)
+
+BESCHREIBUNG:
+	Ermittelt Lebewesen, die sich in Entfernung <dist> in einem Bereich
+	der Breite <dx> und Tiefe <dy> befinden.
+
+RUECKGABEWERT:
+	Array mit den gefundenen Lebewesen.
+
+BEMERKUNGEN:
+	Genauere Hinweise unter "FindDistantGroups".
+	Wer sowohl Freunde wie auch Feinde in getrennten Arrays braucht,
+	sollte FindDistantGroups statt FindDistantGroup verwenden.
+
+SIEHE AUCH:
+	teams, FindDistantGroups
+

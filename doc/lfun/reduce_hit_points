@@ -1,0 +1,43 @@
+reduce_hit_points()
+FUNKTION:
+    int reduce_hit_points(int damage)
+
+DEFINIERT IN:
+    /std/living/life.c
+
+ARGUMENTE:
+    int damage	- der zugefuegte Schaden
+
+BESCHREIBUNG:
+    Dem Lebewesen werden damage Lebenspunkte abgezogen, aber der
+    Wert wird hinterher nicht kleiner als 1 sein und das Lebewesen
+    wird dadurch nicht sterben.
+
+RUECKGABEWERT:
+    Die verbleibenden Lebenspunkte.
+
+BEISPIELE:
+    write("Ploetzlich schiesst eine scheussliche Kreatur aus der Pfuetze "+
+          "heraus und\nbeisst Dich ins Bein, sie verschwindet so schnell, "+
+          "wie sie gekommen ist.\n");
+    this_player()->reduce_hit_points(50);
+    (Auszug aus /players/boing/friedhof/room/cat1x9)
+
+BEMERKUNGEN:
+    damage kann auch ein negativer Wert sein, dann werden dem Lebewesen
+    diese Lebenspunkte gutgeschrieben und auf die aktuellen Lebenspunkte
+    addiert. Da dies eine Form der Heilung ist, nur nach Ruecksprache mit
+    dem Regionsmagier verwenden.
+
+    Bei Heilstellen sollte eine evtl. Heilung des Spielers mit der eigens
+    dafuer eingerichteten Funktion check_and_update_timed_key realisiert
+    werden.
+
+SIEHE AUCH:
+    Gegenpart:	restore_hit_points()
+    Verwandt:	do_damage(), Defend(), reduce_spell_points()
+    Props:	P_HP
+    Konzept:	heilung
+
+----------------------------------------------------------------------------
+Last modified: Sat Dec 13 01:00:47 1999 by Tilly

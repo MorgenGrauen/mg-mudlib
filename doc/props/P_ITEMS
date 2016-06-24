@@ -1,0 +1,9 @@
+NAME:
+    P_ITEMS                       "items"                       
+
+DEFINIERT IN:
+    /sys/properties.h
+
+BESCHREIBUNG:
+     Definition von Gegenstaenden, die in dem Raum liegen sollen.
+     Erklaerung in einem Extrafile.

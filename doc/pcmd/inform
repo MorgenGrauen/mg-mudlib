@@ -1,0 +1,29 @@
+
+inform
+------
+
+ KOMMANDO:
+    inform [<zustand>]
+
+ ARGUMENTE:
+
+     <zustand>
+        `ein' oder `aus'
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du den Informationsmodus ein- oder ausschalten.
+    Hast Du den Informationsmodus eingeschaltet, so wirst Du immer ueber das
+    Ein- und Ausloggen von Spielern informiert.
+
+    `inform' ohne Parameter zeigt Dir den aktuellen Zustand des
+    Informationsmodus an.
+
+ BEMERKUNGEN:
+    Wenn Du nur ueber das Ein- und Ausloggen bestimmter Spieler informiert
+    werden willst, solltest Du den `erwarte'-Befehl benutzen.
+
+ SIEHE AUCH:
+    erwarte
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

@@ -1,0 +1,59 @@
+Waffenskills im MorgenGrauen
+----------------------------
+
+Das Skillsystem des MGs ist recht komplex. Hier nur ein paar Bemeerkungen
+zu den Waffenskills.
+
+Es gibt 2 Sorten von Waffenskills:
+
+* allgemeine Waffenskills. Diese sind in die Shell eingebunden.
+* Gildenspezifische Skills. Diese sind in der entsprechenden Gilde definiert.
+
+Die Skills werden in einer Property im Spieler gespeichert (P_NEWSKILLS). Es
+handelt es sich um ein mapping, das diesen Aufbau hat:
+
+(["ANY":([ANYSKILLS]),
+"gilde1":([SKILLS_VON_GILDE_1]),
+"gilde2":([SKILLS_VON_GILDE_2]),
+...])
+
+Mit Query(P_NEWSKILLS) erhaelt man das gesamte Mapping.
+
+Mit QueryProp(P_NEWSKILLS) erhaelt man NUR DIE SKILLS DER AKTUELLEN GILDE!
+Das heisst, im obigen Beispiel, wenn der Spieler in gilde1 ist, ist
+der Returnwert SKILLS_VON_GILDE_1.
+
+Sprich: Allgemeine Skills, wie allgemeine Waffenskills, stehen in diesem 
+Mapping nicht drin! Ebenso wie z.B. der entgifte-Spell aus der 
+Duesterwaldquest (wohl aber der der Kleriker, wenn man einer ist).
+
+Mit QuerySkill("skillname") kann man einen Skill abfragen. Dabei wird, wenn
+kein Skill unter diesem Namen in der aktuellen Gilde eingetragen ist, ein
+eventuell vorhandener ANY-Skill zurueckgegeben. Daher wird z.B. bei einem
+Abenteurer bei QueryProp(P_NEWSKILLS) der Schwertwaffenskill nicht
+angezeigt, wohl aber bei einem QuerySkill(FIGHT(WT_SWORD)).
+
+Prioritaet hat immer der Skill der Gilde, wenn er vorhanden ist.
+
+Man kann auch Skills in der Gilde unterdruecken. Dies geht ueber die Poperty
+P_GUILD_DEACTIVATE_SKILLS. Diese Skills werden nicht per se unterdrueckt,
+sondern nur die entsprechenden ANY-Skills.
+
+Sprich: Es sei A ein Abenteurer.
+
+xcall A->QuerySkill(FIGHT(WT_SWORD))
+
+mag folgendes zurueckgeben:
+
+Result: (["si_difficulty":150,"si_abil":0,"si_guild":"ANY"])
+
+tritt A daraufhin den Kaempfern bei und hat dort noch keinen Schwertskill
+gelernt, wird hingegen 0 zurueckgegebn. Fuer den Fall eines Austritts ist der
+Wert aber nach wie vor gespeichert, wie man per Query(P_NEWSKILLS) leicht
+sehen kann. Dies wird unterdrueckt, da in der Kaempfergilde die Prop 
+P_GUILD_DEACTIVATE_SKILLS gesetzt wird.
+
+Tritt der Spieler den Chaoten bei, aendert sich hingegen bei diesem Aufruf
+nichts.
+
+Letzte Aenderung: Humni, 2003-07-09

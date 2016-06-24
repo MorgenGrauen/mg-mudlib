@@ -1,0 +1,17 @@
+Materialid:
+MAT_ICE                  "ice"
+
+Name:
+"Eis" "Eises" "Eis" "Eis"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

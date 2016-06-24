@@ -1,0 +1,33 @@
+
+info
+----
+
+ KOMMANDO:
+    info
+    punkte
+
+ BESCHREIBUNG:
+    Diese Kommandos geben die wichtigsten Daten ueber Deinen Charakter aus.
+    Dazu gehoeren:
+
+     * Dein voller Name mit Presay und Titel,
+     * Deine Rasse,
+     * Deine Charaktereinstellung,
+     * koerperliche Attribute wie Geschlecht, Groesse und Gewicht,
+     * Deine Spielerstufe,
+     * die Gilde, der Du angehoerst, und die Stufe dort,
+     * Erfahrungs- und Abenteuerpunkte,
+     * Deine Attribute,
+     * Deine koerperliche und geistige Verfassung,
+     * ggf. Vorsichtsmodus und Fluchtrichtung,
+     * der Grad Deiner Kenntnis des MorgenGrauen,
+     * ggf. Vergiftungsgrad, Abwesenheit und Feinde sowie
+     * Dein Alter.
+
+    `info' zeigt alle diese Daten an, waehrend `punkte' nur die wichtigsten
+    Daten anzeigt.
+
+ SIEHE AUCH:
+    kurzinfo
+
+12. Mar 2006 Gloinson

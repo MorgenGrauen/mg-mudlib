@@ -1,0 +1,17 @@
+BEFEHL:
+	living, lv
+
+ARGUMENTE:
+	TOS -- Name eines Monsters
+
+FUNKTION:
+	Hole einen Namen vom Stack und lege stattdessen das entsprechende
+	Monsterobjekt auf den Stack. Gebe eine Fehlermeldung aus, wenn kein
+	derartiges Monster vorhanden ist.
+
+BEISPIELE:
+	,"ork" living
+	Sucht den erstbesten Ork.
+
+SIEHE AUCH:
+	"object", "player"

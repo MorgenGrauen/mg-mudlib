@@ -1,0 +1,56 @@
+
+Stufenpunkte
+============
+
+    Die Stufenpunkte bilden die Grundlage des neuen Stufenkonzeptes im
+    MorgenGrauen. Anstatt wie frueher nur durch Erfahrungspunkte und in
+    gewissem Masse Abenteuerpunkte wird die Moeglichkeit zum Aufstieg nun auch
+    noch von einigen anderen Faktoren bestimmt, die insgesamt eine
+    ausgewogenere Einschaetzung des Charakters ermoeglichen sollen:
+
+    Den wichtigsten Anteil bilden nun die Abenteuerpunkte. Sie gehen im
+    Verhaeltnis 1:1 in die Stufenpunkte ein.
+
+    Der zweitgroesste Anteil wird von den Forscherpunkten gestellt. Diese
+    Punkte werden einem zwar nicht direkt als Zahl bekannt gegeben; mit dem
+    Befehl `info' (auch als `score' oder `punkte' bekannt) kann man jedoch
+    eine Einschaetzung der Mud-Kenntnis abfragen.
+
+    Den naechsten Anteil liefern gefundene Zaubertraenke und ein weiteres
+    Level die Heiltraenke (die letzten vier ZTs).
+
+    Die Gilde, in der man sich befindet, liefert einen vierten Anteil. Hier
+    gehen in der Regel die Kenntnisse der einzelnen Sprueche und der
+    Faehigkeiten ein, die man in der Gilde erlernen kann (das ist aber jeder
+    Gilde selbst ueberlassen). Gilden, aus denen man ausgetreten ist, werden
+    dabei nicht beruecksichtigt! Manche Gilden vergeben sehr viele Stufen-
+    punkte schon bis Level 20. Dann verliert man beim Wechsel einige Stufen,
+    die man in der neuen Gilde aber mit der Zeit wieder erlangt.
+
+    Schliesslich gibt es noch Stufenpunkte fuer das Toeten von Monstern;
+    allerdings muss das Monster dafuer eine bestimmte minimale Menge von
+    Erfahrungspunkten geben. Diese Punkte werden nur fuer das erstmalige
+    Toeten des Monsters vergeben. Es nuetzt also nichts, den selben Ork 27 mal
+    zu toeten; wenn er ueberhaupt Stufenpunkte abwirft, dann nur beim ersten
+    Mal.
+
+    (Ein erweiterter Hinweis zum Thema Erstkill-Stufenpunkte, insbesondere
+     in Zusammenhang mit Kerbholz und  Duesterwald-Plakette, ist in der
+     Hilfeseite "erstkillstufenpunkte" (oder "eks") zu finden.)
+
+    Auch "MiniQuests" koennen Stufenpunkte vergeben. (Miniquests sind kleine
+    Aufgaben, die keine Abenteuerpunkte geben).
+
+    Und zum guten Schluss kommen auch die Erfahrungspunkte noch zu Ehren, wenn
+    auch nicht zu besonders grossen... ;-)
+    Fuer x Erfahrungspunkte erhaelt man x^0.32 Stufenpunkte, so dass im
+    unteren Erfahrungspunktebereich recht schnell Stufenpunkte erzielt
+    werden, nach oben hin jedoch immer weniger Stufenpunkte pro erzieltem
+    Erfahrungspunkt vergeben werden.
+
+ SIEHE AUCH:
+    forscherpunkte, info, stufen, erstkillstufenpunkte, erzmagier
+
+ LETZTE AeNDERUNG:
+    Wed, 09.05.01, 15:00:00 von Rikus
+ 

@@ -1,0 +1,24 @@
+
+addmaster
+---------
+
+ ERZMAGIERKOMMANDO:
+    addmaster <name> <region>
+
+ ARGUMENTE:
+
+     <name>
+        Name des Magiers
+     <region>
+        Eine Region
+
+ BESCHREIBUNG:
+    Der Magier <name> wird in der Region <region> zum Regionsmagier ernannt.
+
+    Dieser Befehl steht nur Erzmagiern und Goettern zur Verfuegung.
+
+ SIEHE AUCH:
+    removemaster, regionen
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

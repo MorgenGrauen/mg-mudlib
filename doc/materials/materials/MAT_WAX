@@ -1,0 +1,17 @@
+Materialid:
+MAT_WAX                  "wax"
+
+Name:
+"Wachs" "Wachses" "Wachs" "Wachs"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

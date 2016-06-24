@@ -1,0 +1,27 @@
+do_wear()
+
+FUNKTION:
+     varargs int do_wear(string str, int silent);
+
+DEFINIERT IN:
+     /std/armour/combat.c
+
+ARGUMENTE:
+     str
+          String, der normalerweise dem Parameter des
+          "ziehe/trage"-Kommandos entspricht.
+     silent
+          1, wenn das Anziehen ohne Meldungen durchgefuehrt werden soll.
+
+BESCHREIBUNG:
+     Wenn sich die Ruestung mit "str" identifizieren laesst, wird versucht,
+     sie mittels DoWear() anzuziehen.
+
+RUeCKGABEWERT:
+     1, wenn sich die Ruestung anziehen liess, sonst 0.
+
+SIEHE AUCH:
+     do_unwear(), DoWear(), WearFunc(), InformWear(), /std/armour/combat.c
+
+----------------------------------------------------------------------------
+Last modified: Sun Jun 27 22:31:00 1999 by Paracelsus

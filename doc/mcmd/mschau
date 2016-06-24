@@ -1,0 +1,40 @@
+
+mschau
+------
+
+ MAGIERKOMMANDO:
+    mschau <schalter>
+
+ ARGUMENTE:
+
+     <schalter>
+        'an', 'ein' oder 'ja' schaltet den Magiermodus ein
+        'aus' oder 'nein' schaltet den Magiermodus aus
+        '+debug' schaltet Debugmeldungen ein
+        '-debug' schaltet Debugmeldungen aus
+
+ BESCHREIBUNG:
+    Manchmal moechte man etwas ausprobieren, was nur Spielern moeglich ist,
+    zum Beispiel beim Testen von Abenteuern o.ae. Dazu dient dieser Befehl,
+    mit dem man die meisten Faehigkeiten eines Magiers deaktivieren kann.
+
+    Nach einem `mschau aus' sieht man keine Dateinamen mehr von Raeumen und
+    Objekten. Die meisten Magierbefehle sind abgeschaltet und man kann auch
+    wieder sterben wie ein normaler Spieler.
+
+    Mit `mschau an' kehrt man wieder in den Magiermodus zurueck.
+
+    Zusaetzlich kann dieses Kommando noch umschalten, ob Magier Debugmeldungen
+    (das sind Meldungen, die mit dem Typ MT_DEBUG an ReceiveMsg() uebergeben
+     werden) wahrnehmen moechten oder nicht.
+
+ BEMERKUNGEN:
+    Auch mit ausgeschaltetem Magiermodus unterliegt man noch den Bedingungen
+    des Magiervertrags!
+
+ SIEHE AUCH:
+    vertrag, schau (an), i (=inventur)
+
+ LETZTE AeNDERUNG:
+    1.5.2014, Zesstra
+

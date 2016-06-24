@@ -1,0 +1,30 @@
+moved_objects()
+
+FUNKTION:
+    public object *moved_objects(void);
+
+DEFINIERT IN:
+    /std/living/put_and_get.c
+
+ARGUMENTE:
+    keine
+
+BESCHREIBUNG:
+    Mit dieser Funktion lassen sich die Objekte ermitteln, die das Lebewesen
+    beim letzten Aufruf von drop_objects(L) oder einer aehnlichen Funktion
+    bewegt hat.
+
+RUECKGABEWERT:
+    Array mit den zuletzt bewegten Objekten, oder ein leeres Array, falls
+    keine Objekte auf die Beschreibung des letzten drop_objects() / 
+    pick_objects() / put_objects() / give_objects() passten.
+
+BEISPIELE:
+    siehe drop_objects() und give_objects()
+
+SIEHE AUCH:
+    drop_objects(L), give_objects(L), pick_objects(L), put_objects(L),
+    show_objects(L), NotifyMove(L)
+
+----------------------------------------------------------------------------
+Last modified: Thu Aug 28 22:19:26 2008 by Amynthor

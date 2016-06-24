@@ -1,0 +1,20 @@
+Materialid:
+MAT_CARTON               "carton"
+
+Name:
+"Pappe" "Pappe" "Pappe" "Pappe"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_BIO:100
+MATGROUP_PAPER:100
+MATGROUP_SOLID:100

@@ -1,0 +1,41 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+FUNKTION:
+	is_clone(mixed ob)
+
+ARGUMENTE:
+	ob - Das zu pruefende Objekt
+
+BESCHREIBUNG:
+	is_clone stellt fest, ob ob ein geclontes Objekt ist oder nicht.
+
+RUECKGABEWERT:
+	1, wenn ob ein geclontes Objekt ist, ansonsten 0.
+
+HINWEIS:
+  Dies ist eine Simul Efun, die inzwischen ueberflussig ist und nur aus
+  Kompatibilitaetsgruenden noch existiert. Bitte die Efun 'clonep' verwenden!
+
+BEISPIELE:
+	inherit "std/thing";
+
+	#include <properties.h>
+
+	create()
+        {
+          if (!is_clone(this_object())) {
+              set_next_reset(-1);
+              return;
+          }
+
+          :: create();
+          ...
+        }
+
+siehe auch: clonep
+
+Zesstra, 04.02.2007
+

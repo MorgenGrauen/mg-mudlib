@@ -1,0 +1,22 @@
+Materialid:
+MAT_ONYX                 "onyx"
+
+Name:
+"Onyx" "Onyxes" "Onyx" "Onyx"
+
+Geschlecht:
+M
+
+Beschreibung:
+Unterart Achat, schwarz
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:0
+MAT_QUARTZ:20
+MAT_AGATE:75
+MAT_ONYX
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

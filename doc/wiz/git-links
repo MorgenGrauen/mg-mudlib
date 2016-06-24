@@ -1,0 +1,38 @@
+Liste von nuetzlichen und weiterfuehrenden Links im Netz
+========================================================
+
+  * Das 'offizielle' Tutorial
+    http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+  * Git - SVN Crash Course (fuer Leute, die SVN kennen)
+    http://git.or.cz/course/svn.html
+  * Everyday git with 20 commands or so
+    http://www.kernel.org/pub/software/scm/git/docs/everyday.html
+    (sortiert nach Developers, Integrators, Admins)
+  * Das git Community Book (sehr empfehlenswert)
+    http://book.git-scm.com/
+  * Understanding git conceptually
+    http://www.eecs.harvard.edu/~cduan/technical/git/
+  * Git cheat sheets
+    http://help.github.com/git-cheat-sheets/
+    http://jan-krueger.net/development/git-cheat-sheet-extended-edition
+    https://github.com/AlexZeitler/gitcheatsheet/blob/master/gitcheatsheet.pdf
+    http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf
+    http://cheat.errtheblog.com/s/git
+  * Guides/Howtos von GitHub
+    http://help.github.com/
+  * Difference of merge and pull
+    http://longair.net/blog/2009/04/16/git-fetch-and-merge/
+  * Div. Tips und Tricks
+    http://longair.net/blog/2009/04/25/a-few-git-tips/
+  * Git fuer Windows
+    https://code.google.com/p/gitextensions/
+    (Mit Integration in den Explorer)
+  * Git-Benutzung unter Windows
+    http://rogerdudler.github.io/git-guide/
+    http://help.github.com/win-set-up-git/
+  * Git-Interna verstaendlich erklaert:
+    Git For Ages 4 And Up 
+    https://www.youtube.com/watch?v=1ffBJ4sVUb4
+
+10.03.2015 Amaryllis
+

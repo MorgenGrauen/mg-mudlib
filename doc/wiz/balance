@@ -1,0 +1,78 @@
+Beurteilung und Genehmigung von Waffen und Ruestungen im MG
+===========================================================
+
+    
+    Was bedeutet Balance im Morgengrauen? Die Balance (bzw. ihr Fehlen)
+    wird vor allem dann wahrgenommen, wenn Spieler sich gelangweilt durch
+    Gebiete zappen, die vor zwei oder drei Jahren noch als anspruchsvoll
+    galten, oder wenn ein Magier feststellen muss, dass sein schoenes 
+    Riesenmonster nichtmal dazu kommt, seine ausgefeilten Zaubersprueche
+    anzuwenden, weil es nach durchschnittlich zweieinhalb Runden schon
+    tot ist. Fehlentwicklungen dieser Art zu verhindern ist Aufgabe der 
+    Balance. Sie stellt universelle Grenzwerte und Masstaebe, die als
+    gemeinsamer Nenner fuer alle Magier in diesem Mud eine gewisse 
+    Ausgewogenheit garantieren. Anhand dieser Werte kann jeder Magier auf
+    der einen Seite einschaetzen, wie begehrt ein neues Objekt sein wird,
+    und auf der anderen weiss er ungefaehr, was auf seine armen Monster
+    zukommen wird, wenn Spieler mit den Objekten anderer Magier angreifen.
+    
+    Diese Aufgabe zu bewaeltigen kann jedoch in einem so riesigen Mud keine 
+    Instanz allein leisten. Ein grosse Verantwortung lastet auch auf den 
+    Regionsmagiern, die innerhalb ihres Verantwortungsbereichs dafuer Sorge
+    tragen sollten, dass aussergewoehnliche Objekte in Gebieten nicht zu
+    gehaeuft auftreten und nicht zu leicht zu erreichen sind.
+
+    Wie laeuft nun eine Genehmigung durch die Balance ab? 
+    Zuallererst sollte sich ein Magier ueber den aktuellen Stand der Balance-
+    regeln informieren. Zum einen weiss er dann sofort, welche Ideen ohnehin
+    keine Chance auf Genehmigung haben, zum anderen inspirieren vielleicht 
+    sogar die zahlreichen Hinweise und technischen Details das ein oder 
+    andere Objekt. Als naechstes steht eine kritische Pruefung der eigenen
+    Ideen an. Braucht das Mud wirklich den 132. Panzer, der gegen Feuer
+    schuetzt? Gibt es nicht irgendwo ohnehin schon eine Waffe dieses Typs
+    mit fast identischen Werten? Addiert sich die Wirkung eines geplanten
+    Kampfobjekts vielleicht irgendwie mit vorhandenen Objekten? Diese und
+    aehnliche Fragen frueh zu klaeren kann spaeter viel Frust vermeiden. Das
+    Balanceteam kann auch zu diesem Zeitpunkt schon ein Ansprechpartner sein,
+    da seine Mitglieder einen guten Ueberblick ueber die meisten heraus-
+    ragenden Objekte im Mud haben und gerne als Berater zur Verfuegung 
+    stehen. Die Magier des Teams koennen natuerlich auch zu programmier-
+    technischen Fragen den einen oder anderen Tip geben.
+
+    Sind die Objekte dann programmiert und ist auch der Regionsmagier mit
+    ihnen einverstanden, wird schliesslich der Antrag gestellt. (Per
+    "mail balance"). Der Antrag sollte folgenden Informationen enthalten:
+
+    - Name des Objekts
+    - Vollstaendiger Filename
+    - Alle relevanten Werte: AC bzw. WC, P_NR_HANDS, Gewicht, Wert, ...
+    - Defend/HitFuncs, in Form einer praezisen Beschreibung der 
+      Funktionsweise und des Wertebereichs.
+    - Alle sonstigen Informationen ueber Eigenschaften, die den Kampf 
+      beeinflussen oder dem Spieler von Nutzen sind
+    - Fundort und subjektive Einschaetzung des Aufwands, um diesen 
+      Gegenstand zu ereichen.
+
+    Die Genehmigung erfolgt dann per mail, es sei denn es gibt begruendete
+    Einwaende. In diesem Fall kommt die Genehmigung mit leicht geaenderten
+    Werten oder sogar eine Ablehnung. Im letzteren Fall steht es dem Magier
+    natuerlich frei, das Objekt zu veraendern und neu zu beantragen.
+    Normalerweise ergibt sich dann auch schnell im persoenlichen Gespraech
+    mit Mitgliedern der Balance, wo das Problem genau liegt und welche 
+    Alternativen es gibt. 
+
+    Anzumerken bleibt noch, dass Objekte, die nach der Genehmigung noch in
+    irgendeiner Weise positiv veraendert werden, natuerlich neu genehmigt
+    werden muessen. Bei kleineren Aenderungen (Gewicht o.ae.) reicht
+    unter Umstaenden eine informelle Anfrage beim Balanceteam.
+
+ SIEHE AUCH
+
+     balanceantrag, ruestungen, waffen, fernwaffen, uniques, npcs, objects,
+     attributsveraenderungen, resistenzen, kampfobjekte, grenzwerte,
+     nachteile
+
+
+------------------------------------------------------------------------------
+ LETZTE AENDERUNG:
+    Son, 18.10.2005, 18:54:00 von Miril

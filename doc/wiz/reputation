@@ -1,0 +1,164 @@
+THEMA:
+  Reputationen
+
+
+ALLGEMEINE BESCHREIBUNG:
+  Man kann bei einer Gruppierung/Volk/Partei/etc. Ruf gewinnen oder verlieren 
+  und somit entweder deren Respekt erlangen oder auf ihrer Abschussliste 
+  landen.
+
+  Am Beispiel der Goblins im Walddorf Skoga: Dort gibt es das Freie Volk, das 
+  aus seinem Heimatdorf vertrieben wurde, und die Goblins, welche das Dorf
+  besetzt haben. Hilft man einer Seite, baut man Ruf auf und erhaelt 
+  beispielsweise Zugang zu Heilstellen und speziellen Items, waehrend die 
+  andere Seite zunehmend misstrauisch reagiert und einen schlussendlich ohne 
+  zu fragen attackiert.
+
+  Es muessen nicht immer mehrere Seiten involviert sein. Auch eine einzelne 
+  Partei ist denkbar, der man helfen kann und in deren Laeden/Kneipen man mit 
+  steigendem Ruf z.B. Verguenstigungen, mehr Informationen, Bonusitems und 
+  Aehnliches erhaelt.
+
+  Denkbar ist es auch, das Ganze zu vernetzen. Beispielsweise koennte ein 
+  Verwandter eines Mitglieds von obengenanntem Freien Volk vor den Angriffen 
+  ins Polargebiet umgezogen sein, aber von des Spielers Heldentaten gehoert 
+  haben und ihm so freundlicher gesonnen sein.
+
+
+METHODEN (s. a. einzelne Manpages):
+
+  int ChangeReputation(string repid, int value, int silent)
+      Die Funktion ist in jedem Spielerobjekt vordefiniert.
+      Vor der Aenderung wird ein Check auf die UID des ausfuehrenden Objektes
+      ausgefuehrt, "fremde" Reputationen darf man somit nicht veraendern.
+      Man kann aber selbstverstaendlich in begruendeten Faellen mit dem
+      zustaendigen Magier/Regionsmagier sprechen, ob man ebenfalls Zugriff
+      erhaelt. Eingetragen wird dies schlussendlich durch einen EM.
+
+
+  int GetReputation(string repid)
+      Ebenfalls im Spielerobjekt vordefiniert. Liefert den aktuellen Wert der
+      angegebenen Reputation zurueck.
+
+
+  mapping GetReputations()
+      Ebenso vordefiniert. Liefert ein Mapping aller im Spieler gespeicherten
+      Reputationen und ihrer Werte zurueck.
+
+
+BEISPIELE:
+
+  // Eine kleine Aufgabe fuer das "Freie Volk" bringt dem Spieler etwas 
+  // Ansehen.
+
+  void QuestGeloest(object pl) {
+    // Silent, wir geben eine eigene Meldung aus.
+    pl->ChangeReputation("freiesvolk", 250, 1);
+
+    tell_object(pl, "Du befreist einen Gefangenen. Das freie Volk wird es "
+      "Dir danken.\n");
+  }
+
+  // Ein NPC des "Schaedlspalta-Klans". Wenn er getoetet wird, verlieren die 
+  // toetenden Spieler Ruf bei dieser Fraktion.
+ 
+  #include <properties.h>
+
+  inherit "/std/npc.c";
+
+  void create() {
+    npc::create();
+    SetProp(P_SHORT, "Ein Goblin des Schaedlspalta-Klans");
+    ...
+  }
+
+  varargs void die(int poison, int ext) {
+    object *enemies;
+    int value;
+    // Begleit-NPCs brauchen keine Reputation
+    enemies = filter(PresentEnemies(), #'interactive);
+    // 50 Reputationsabzug pro Kill, aufgeteilt auf alle Gegner
+    value = -50 / sizeof(enemies);
+    foreach(object pl : enemies) {
+      pl->ChangeReputation("schaedlspalta", value);
+      // Optional koennte ihre "Feindfraktion" das gutheissen:
+      // pl->ChangeReputation("freiesvolk", abs(value));
+    }
+    return npc::die(poison, ext);
+  }
+
+  // Jeder beteiligte Feind kriegt nun eine Meldung, die in etwa lauten 
+  // koennte: "Dein Ansehen beim Schaedlspalta-Klan hat sich etwas 
+  // verschlechtert." Der NPC koennte nun Spieler automatisch angreifen, 
+  // sobald ihr Ruf zu tief gesunken ist:
+  
+  #include <reputation.h>
+
+  void init() {
+    npc::init();
+    if(objectp(this_player()) && !IsEnemy(this_player()) && 
+       this_player()->GetReputation("schaedlspalta") <= REP_DISLIKED)
+      InsertEnemy(this_player());
+  }
+
+  // Ein NPC rueckt bestimmte Informationen erst raus, sobald das Ansehen
+  // des Spielers hoch genug ist:
+
+  #include <properties.h>
+  #include <reputation.h>
+
+  inherit "/std/npc.c";
+
+  string InfoGeheimplan();
+
+  void create() {
+    npc::create();
+    SetProp(P_SHORT, "Der Kommandant des freien Volkes");
+    ...
+    AddInfo("geheimplan", #'InfoGeheimplan, "sagt: ");
+  }
+
+  string InfoGeheimplan() {
+    if(this_player()->GetReputation("freiesvolk") < REP_TRUSTED)
+      return "Das geht Dich ueberhaupt nichts an!";
+    return "Nun, ich vertraue Dir. Also, heute um Mitternacht ... ... ...";
+  }   
+
+  // Pruefung der (wichtigsten) Rueckgabewerte:
+
+  #include <reputations.h>
+  
+  void QuestGeloest(object pl) {
+    string msg;
+
+    // Sonstige Meldungen
+    ...
+
+    switch(pl->ChangeReputation("freiesvolk", 500, 1)) {
+      // Reputation bereits Max
+      case REP_RET_ALREADYMAX:
+        msg = "Dein Ansehen beim freien Volk kann sich nicht mehr weiter "
+              "verbessern.";
+        break;
+      // Reputation waere hoeher als Max geworden, daher auf Max gesetzt
+      case REP_RET_SUCCESSCUT:
+        msg = "Dein Ansehen beim freien Volk hat sich etwas verbessert, "
+              "aber weiter steigern kannst Du es nicht mehr.";
+        break;
+      // Reputation erfolgreich geaendert
+      case REP_RET_SUCCESS:
+        msg = "Dein Ansehen beim freien Volk hat sich etwas verbessert.";
+        break;
+      default:
+        // Technischer Fehler
+        break;
+    }
+
+    if(stringp(msg) && strlen(msg))
+      tell_object(pl, break_string(msg, 78));
+  }
+
+SIEHE AUCH: 
+
+LETZTE AENDERUNG:
+  2009-22-03, 12:30:00 von Nibel

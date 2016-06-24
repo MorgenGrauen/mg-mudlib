@@ -1,0 +1,34 @@
+Eine Zusammenfassung aller Lichtproperties (fuer genaueres siehe manpages)
+
+P_LIGHT              - gibt an wie stark eine Lichtquelle selbst leuchtet.
+
+P_TOTAL_LIGHT        - gibt das Lichtlevel an, das von einem Objekt ausgeht,
+                       dieses kann != P_LIGHT sein, z.B. weil eine Fackel in
+                       einem Paket liegt.
+
+P_INT_LIGHT          - Lichtlevel in einem Objekt, z.B. ein Raum
+                       gibt an wie gut dieses Objekt ausgeleuchtet ist.
+
+P_PLAYER_LIGHT       - gibt an mit welchem Lichtlevel der Spieler gerade sieht
+
+P_LIGHT_MODIFIER     - veraendert den Lichtlevel der von einem Spieler
+                       wahrgenommen wird, z.B. eine Sonnenbrille
+
+P_LIGHT_ABSORPTION   - Wieviel Licht wird vom Raum geschluckt? wirkt sich
+                       direkt auf P_INT_LIGHT des Raumes aus. Andere Spieler
+                       profitieren von den Lichtquellen ihrer Mitspieler
+                       weniger bei hoeheren Werten. Default: 1.
+
+P_LIGHT_TRANSPARENCY - Wieviel Licht schluckt ein Container und wieviel
+                       Licht dringt nach aussen. Defaulttransparenz: 2
+
+Hinweis: Alle Objekte mit Lichtlevel <0 und >2 sowie alle Objekte, die
+         P_LIGHT_MODIFIER oder Closures setzen sind genehmigungspflichtig!
+         Dafuer sind die Regionsmagier zustaendig.
+
+
+SIEHE AUCH: P_LIGHT
+
+------------------------------------------------------------------------------
+ LETZTE AeNDERUNG:
+    2002-11-21, 17.30 von Zook

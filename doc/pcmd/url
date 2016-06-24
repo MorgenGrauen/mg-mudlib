@@ -1,0 +1,34 @@
+
+url
+---
+
+ KOMMANDO:
+    url [<adresse>]
+
+ ARGUMENTE:
+
+     <adresse> (optional)
+        Die neue Adresse
+
+ BESCHREIBUNG:
+    Wenn Du eine eigene HomePage im Internet hast und sie fuer Deine
+    Mitspieler erreichbar machen willst, so kannst Du das mit diesem
+    Kommando tun.
+
+    Ohne <adresse> wird die aktuelle Adresse angezeigt, ist sie 'keine',
+    so wird die Adresse geloescht.
+
+    Aus <adresse> werden saemtliche HTML-Tags entfernt!
+
+    Zu finden sind diese Informationen:
+
+     http://mg.mud.de/
+     -> Information
+        -> Online
+
+ SIEHE AUCH:
+    Persoenliche Details: email, icq, messenger, ort
+    Sonstiges:            finger
+
+ LETZTE AeNDERUNG:
+    Sun, 05.07.1997, 17:00:00 von Rikus

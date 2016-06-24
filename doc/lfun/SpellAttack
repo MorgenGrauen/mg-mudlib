@@ -1,0 +1,71 @@
+SpellAttack()
+
+FUNKTION:
+        void SpellAttack(object enemy)
+
+ARGUMENTE:
+        enemy: Der Feind.
+
+BESCHREIBUNG:
+        Diese Funktion wird in jedem Heartbeat eines NPCs ausgefuehrt,
+        falls nicht P_DISABLE_ATTACK gesetzt ist (Paralyse).
+        Standardmaessig tut diese Funktion nichts, aber man kann sie
+        ueberschreiben, damit in jedem Heartbeat Angriffe mit Spells
+        ausgefuehrt werden.
+
+        Man sollte hierbei ein random() einbauen, damit der NPC nicht
+        in jedem Heartbeat auch wirklich einen Angriff ausfuehrt.
+        Ausserdem sollte man auch fuer eventuelle Ausgaben sorgen.
+
+RUECKGABEWERT:
+        Keiner.
+
+BEMERKUNG:
+        Die AttackChats, die mittels SetAttackChats gesetzt werden
+        koennen, macht im Grunde nichts anderes, aber Chats sind halt
+        keine Angriffe. :-)
+
+BEISPIELE:
+        Im Grunde ist dieses simple Beispiel eine Nachbildung von
+        Attack-Chats und soll dementsprechend nur der Anschauung dienen.
+
+        void SpellAttack(object enemy) 
+        {
+          // mit 80% Wahrscheinlichkeit wird nichts gemacht.
+          switch(random(5))
+          {
+            case 0: 
+              write("Der Ork tritt Dir in den Hintern.\n");
+              return;
+            case 1: 
+              write("Der Ork bruellt: Lebend kommst Du hier nicht raus!\n");
+              return;
+            case 2:
+              write("Der Ork blutet schon aus mehreren Wunden.\n");
+              return;
+            case 3:
+              write(knirsch(enemy));
+              return;
+            default:
+              return;
+          }
+        }
+
+        string knirsch(object enemy)
+        {
+           if (objectp(enemy))
+             helm = enemy->QueryArmourByType(AT_HELMET);
+           if (objectp(helm))
+           {
+             helm->Damage(1);
+             return "Der Ork beschaedigt Deinen Helm!\n";
+           }
+           else
+             return ""; // keine Meldung
+        }
+
+SIEHE AUCH:
+        "Attack", "SetAttackChats", /std/npc/combat.c
+
+LETZTE AENDERUNG:
+ Don, 27.02.2003, 12:50:00 von Hirudo

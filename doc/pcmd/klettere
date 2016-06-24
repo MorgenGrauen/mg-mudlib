@@ -1,0 +1,29 @@
+
+klettere
+--------
+
+ KOMMANDO:
+    klettere hoch | runter
+    klettere aus | auf | ueber | in | aus <objekt>
+
+ ARGUMENTE:
+
+     <objekt>
+        Ein Gegenstand
+
+ BESCHREIBUNG:
+    Das ist der Standardbefehl, um ein Hindernis zu ueberwinden. Manchmal
+    reichen aber auch die normalen Richtungsbefehle aus. Manche Hindernisse
+    stellen ein Raetsel dar, das mit raffinierteren Methoden ueberwunden
+    werden will.
+
+ BEMERKUNG:
+    Wenn irgendwo noch der Befehl `klettere' in anderer Syntax benoetigt wird,
+    bitte eine `fehler'-Meldung hinterlassen, damit die Magier es etwas
+    leichter haben, die Befehle zu vereinheitlichen.
+
+ SIEHE AUCH:
+    bewegung, fehler
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

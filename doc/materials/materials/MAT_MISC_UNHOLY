@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_UNHOLY          "misc_unholy"
+
+Name:
+"unheiliges Material" "unheiligen Materials" "unheiligem Material" "unheiligen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_UNHOLY:100
+MATGROUP_SOLID:100

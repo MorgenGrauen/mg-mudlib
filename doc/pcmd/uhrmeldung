@@ -1,0 +1,33 @@
+
+uhrmeldung
+----------
+
+ KOMMANDO:
+    uhrmeldung [<meldung>]
+
+ ARGUMENTE:
+
+     <meldung>
+        Deine ganz persoenliche Uhrmeldung
+
+ BESCHREIBUNG:
+    Ohne Argumente wird Deine aktuelle Uhrmeldung angezeigt.
+
+    Mit dem Argument <meldung> kann man sich eine eigene Uhrmeldung setzen.
+    Der Platzhalter fuer die Uhrzeit in der Meldung ist `%d'.
+
+    Es darf nur *ein* `%d' in der Meldung vorkommen!
+
+    Mit dem Befehl "uhrmeldung 0" kannst Du Deine Uhrmeldung auf die
+    Standardmeldung zuruecksetzen.
+
+ BEISPIELE:
+
+    > uhrmeldung Schon %d Uhr, und immer noch im MUD.
+
+    Das gibt dann zB. abends um zehn:
+
+    Schon 22 Uhr, und immer noch im MUD.
+
+ LETZTE AeNDERUNG:
+    Sam, 08.03.2008, 13:08:00 von Arathorn

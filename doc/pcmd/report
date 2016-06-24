@@ -1,0 +1,77 @@
+KOMMANDO:
+        report [ein|aus|vorsicht]
+
+ARGUMENTE:
+        (nichts)      : aktuelle Einstellung anzeigen
+        aus           : alle eingeschalteten Report-Modi ausschalten
+        ein           : Report von LP/KP/Gift einschalten
+        vorsicht      : Vorsicht-Report zusaetzlich einschalten
+                        (nur Seher: Fluchtrichtung wird auch gemeldet)
+        senden        : Report jetzt sofort mit aktuellen Einstellungen
+                        senden
+
+BESCHREIBUNG:
+        Wenn der Report eingeschaltet wird, wird bei Aenderungen an den LP
+        des Spielers eine Meldung an diesen ausgegeben, die den neuen LP-Wert
+        beinhaltet. Falls freigeschaltet (s.u.), gilt das gleiche fuer 
+        Aenderungen an den KP und am Giftstatus. Jede Aenderung an einem 
+        dieser Werte loest die Ausgabe aller drei Werte gemeinsam aus.
+        Ausschalten laesst sich der Report nur komplett mit "report aus".
+
+        Wenn der Vorsicht-Report eingeschaltet ist, wird in einer separaten
+        Zeile zusaetzlich die Vorsicht sowie bei Sehern die Fluchtrichtung
+        gemeldet. Die Ausgabe ist unabhaengig von dem LP/KP/Gift-Report
+        und findet wie bei diesem nur dann statt, wenn eine Aenderung an
+        Vorsicht oder Fluchtrichtung eingetreten ist, dann aber werden beide
+        Werte gemeinsam ausgegeben.
+
+        "report senden" kann zum Testen verwendet werden oder wenn der
+        Client nach dem Verbinden alle Daten einmal braucht. (Nutzt man
+        GMCP, werden die Daten per GMCP gesendet.) 
+
+HINWEISE:
+        - Die Anzeige der LP ist sofort nach Charaktererstellung verfuegbar.
+        - Die Anzeige der KP ist erst nach Abschluss der Quest "Hilf den 
+          Gnarfen" verfuegbar. Solange dies nicht der Fall ist, werden
+          nicht die KP, sondern die Zeichen ### angezeigt.
+        - Die Anzeige des Giftstatus ist erst nach Abschluss der Quest
+          "Katzenjammer" verfuegbar. Solange dies nicht der Fall ist,
+          wird der Giftstatus als "(nicht verfuegbar)" gemeldet.
+        - Die Anzeige der Vorsicht ist erst nach Abschluss der Quest 
+          "Schrat kann nicht einschlafen" verfuegbar. Mit Erreichen des
+          Seher-Status zeigt diese Option zusaetzlich die eingestellte
+          Fluchtrichtung an. Sehern, die diese Quest nicht abgeschlossen
+          haben, steht keines von beiden zur Verfuegung. Spielercharakteren
+          wird die Fluchtrichtung bis zum Erreichen des Seherstatus als
+          "(nicht verfuegbar)" gemeldet.
+        - Nach dem Bestehen einer der genannten Quests muss ein bereits
+          eingeschalteter Report einmal aus- und wieder eingeschaltet
+          werden, um die Aenderung zu aktivieren.
+        - Der Vorsicht-Report laesst sich auch alleine benutzen, jedoch 
+          muessen zuvor alle Reportfunktionen mit "report aus" abgeschaltet
+          werden, um danach den Vorsicht-Report separat einzuschalten.
+
+BEISPIELE:
+        Angenommen, ein Spieler, der zunaechst mit "report ein" den LP-/KP-
+        und Gift-Report eingeschaltet hat und gerade gegen eine gefaehrliche
+        Spinne kaempft, habe bereits einige Treffer erlitten und auch einige
+        KP fuer Zaubersprueche ausgegeben und daher aktuell nur noch
+        154 LP, 187 KP und sei nicht vergiftet. Wird er nun von der Spinne
+        gebissen und vergiftet, wird diese Reportmeldung ausgegeben:
+            LP: 154, KP: 187, Gift: leicht.
+        Wenn die Spinne bei diesem Biss aber gleich auch Schaden verursacht,
+        und der Spieler 6 LP verliert, wuerde sofort ein weiterer Report
+        ausgeloest:
+            LP: 148, KP: 187, Gift: leicht.
+        Wenn der Spieler jedoch nicht gerne questet und ihm daher nur der
+        LP-Report zur Verfuegung steht, wuerde nur eine der beiden Aenderungen
+        gemeldet, naemlich die LP-Aenderung, und somit folgender Report
+        ausgegeben:
+            LP: 148, KP: ###, Gift: (nicht verfuegbar).
+
+SIEHE AUCH:
+        vorsicht, fluchtrichtung, leben, heilung, kampf
+
+LETZTE AENDERUNG:
+   09.01.2015, Zesstra
+

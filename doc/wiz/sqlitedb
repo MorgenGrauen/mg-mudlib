@@ -1,0 +1,14 @@
+SQLite-DBs im Morgengrauen
+
+Im MG koennen Objekte sqlite-Datenbanken verwenden.
+Die notwendigen efuns dafuer sind sl_open, sl_close, sl_exec, sl_insert_id.
+
+Hat man das Speicherfile (Savefile) der DB, kann man dieses mit dem Kommando
+sqlite3 auf einer Shell auch direkt abfragen:
+
+Auf der Shell fragt man die DB recht simpel so ab:
+sqlite3 -column -header <pfad_zur_db>
+
+Alles aus einer Tabelle anzeigen, wo eine Spalte einen bestimmten Wert hat:
+select * from <tabelle> where <spalte>='abc';
+

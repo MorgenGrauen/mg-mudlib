@@ -1,0 +1,42 @@
+Der Master hat (erstmal) kein AddMaterial mehr. Neue Materialien werden jetzt
+ganz einfach durch eine neue Datei im Verzeichnis mit den Materialien und den
+Aufruf der Update()-Funktion in der Datenbank erzeugt. Das gleiche gilt fuer
+neue Materialgruppen.
+Nach einem Update sollte man den Materialheader und die Doku neu generieren
+und einspielen, damit alles schoen konsistent bleibt (anders als bisher).
+Das Format der Materialdateien schaut man sich am besten am Beispiel an.
+
+Die alten Funktionen des Masters existieren weiterhin. Es gibt ein paar neue,
+um abhaengige Files zu erzeugen und die Datenbank neu aufzubauen:
+
+----------------------------------------
+
+void Update()
+
+Erneutes Einlesen der Materialdaten. Das Einlesen passiert asynchron, falls es
+zu lange dauert. Nach Abschluss des Einlesens werden die neuen Daten aktiv.
+
+----------------------------------------
+
+vargargs void GenMatList(string filename)
+
+Generiert Datei mit registrierten Materialien fuer die Dokumentation. Falls
+kein Dateiname angegeben wird, wird "materialliste" verwendet.
+
+----------------------------------------
+
+vargargs void GenMatGroupList(string filename)
+
+Generiert Datei mit registrierten Materialgruppen fuer die
+Dokumentation. Falls kein Dateiname angegeben wird, wird "materialgruppen"
+verwendet.
+
+----------------------------------------
+
+vargargs void GenHeaderFile(string filename)
+
+Generiert Datei mit Definitionen der moeglichen Materialien und Gruppen. Der
+Inhalt entspricht der bisherigen /sys/thing/material.h.  Wenn kein Dateiname
+angegeben wird, wird "material.h" verwendet.
+
+----------------------------------------

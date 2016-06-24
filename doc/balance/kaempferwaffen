@@ -1,0 +1,143 @@
+
+      Spezial-Waffen fuer die Kaempfergilde
+      -------------------------------------
+                                   
+Fuer die Waffen bzw. Ruestungen muss /p/kaempfer/kampf.h includet werden.
+  
+  
+
+Zuerst einmal was ueber den Weapon-Type. Zum hundertesten male der Hinweis,
+dass es nicht nur Schwerter gibt! Obwohl die Kaempfer jede beliebige
+Waffe benutzen koennen, gibt es doch, je nach Rasse, sehr grosse Unter-
+schiede. Nur um ein Beispiel zu nenne:
+Ein Hobbit, der alle Werte auf 100% hat, hat mit dem Knochenschaelmesser
+(WC 145) einen hoeheren Angriffswert als mit einer Lanze (WC 200)!!!
+
+
+1) Parierwaffen
+
+  Parierwaffen eigenen sich vor allem zum Parieren, wie z.B. der Sai.
+  Da man mit solchen Waffen oft auch die gegnerische Waffe festhalten
+  kann, gilt der Bonus auch fuer den Block. Parierwaffen haben meistens
+  eine nicht so hohe WC.
+  Es wird die Property P_EFFECTIVE_AC gesetzt.
+  Normale Waffen, die zusaetzlich zum Parieren geeignet sind:
+    P_EFFECTIVE_AC: 1 - 15
+  Reine Parierwaffen mit niedriger WC:
+    P_EFFECTIVE_AC: 20 - 30
+  
+2) Wurfwaffen
+
+  Wurfwaffen sind speciell ausbalanziert, besitzen meist keinen richtigen
+  Griff etc. Aus diesem Grunde sollte ihre WC nicht zu hoch sein.
+  Es wird K_THROWING_WEAPON gesetzt. Der Wert sollte zwischen 1-50 
+  liegen, wobei wirklich nur sehr gute Wurfwaffen mit niedrigerer
+  WC Werte zwischen 35 - 50 haben sollten.
+  
+3) Waffen mit ungewoehnichen Angriffsmoeglichkeiten
+
+  Man kann an Waffen auch an ungewoehnlicher Stelle zusaetzliche
+  Angriffsmoeglichkeiten anbauen. So koennte z.B. die Parierstange
+  bei einem Schwert aus Klingen bestehen, oder das Ende des Stiels
+  bei einer Axt in einem Dorn enden. Beim Waffenschlag wird mit
+  diesen Extrawaffen gearbeitet. Diese Besonderheiten (Klinge am 
+  Pommel des Griffs, etc) sollten natuerlich auch in P_LONG
+  erwaehnt werden, schliesslich sind sie ja mit blossem Auge
+  zu erkennen.
+  Property: K_BRAWLING_WC mit Werten zwischen 1 - 30
+  Weiterhin besteht die Moeglichkeit dieser zusaetzlichen Angriffs-
+  moeglichkeit einen eigenen Schadenstyp zu geben. Dazu setzt man
+  die Property K_BRAWLING_DT (analog zu P_DAM_TYPE).
+
+4) Waffen, die andere Waffen zerstoeren sollen
+  
+  Als Kaempfer kann man versuchen, die Waffe des Gegners zu beschaedigen.
+  Dafuer eignen sich natuerlich besonders schwere Waffen, vor allem
+  z.B. Haemmer. Man koennte natuerlich Waffen konstruieren, die besonders
+  dafuer geeignet sind. Dafuer wird K_WEAPON_SHATTER gesetzt.
+  Der Wert sollte zwischen 1 - 50 liegen.
+  
+5) Waffen, die besonders gut fuer den KO-Schlag sind
+  
+  Der Kaempfer kann versuchen einen Gegner zu betaeuben. Dies geschied
+  in der Regel durch einen Schlag auf den Kopf. Je hoeher das Gewicht
+  der Waffe, desto besser. Es gibt natuerlich Waffen, die dafuer besonders
+  geeignet sind (z.B Todstschlaeger). Dann wird K_KO als Property gesetzt.
+  Der Wert sollte zwischen 1 - 50 liegen. 
+ 
+6) Waffen, die den Gegner besonders gut ablenken koennen
+  
+  Es gibt natuerlich Waffen, die den Gegner leicht ablenken koennen.
+  Dies ist fuer Finten und den Waffentrick sehr nuetzlich. Eine solche
+  Waffe ist z.B. der singende Speer, der den Gegner (und den Traeger)
+  fuerchterlich nervt. Gesetzt wird K_DISTRACTING_WEAPON, wobei
+  der Wert zwischen 1 - 50 liegen sollte.
+ 
+7) Waffen, die beim Todesstoss besonders effektiv sind
+
+  Man kann sich Waffen vorstellen, die speziell fuer den Todesstoss
+  geeignet sind. Vor allem magische Waffen, die z.B. die Seele aus dem
+  geschwaechten Koerper des Gegners reissen, sind vorstellbar. Oder
+  Waffen mit besonders langen, spitzen und duennen Klingen, die sich
+  tief in den Gegner bohren. Es wird K_CRITICAL_HIT gesetzt, der
+  Wert liegt zwischen 1 und 100, wobei 100 eine Verdopplung des 
+  Schadens ergibt!!! Also wirklich sehr vorsichtig verwenden!!!!!
+
+
+8) Schilde fuer den Schildstoss
+
+  Ist ein Schild extra fuer den Schildstoss angefertigt (hat es z.B. einen
+  Dorn montiert, mit dem man gefaehrlich den Gegner rammen kann) so
+  kann im Schild P_EFFECTIVE_WC gesetzt werden. Ausserdem ist es moeglich
+  einen bestimmten Schadenstyp mit P_DAM_TYPE anzugeben (Feuerschild).
+                                      
+9) Special-Ruestungen
+
+  Folgende Ruestungstypen koennen fuer die Kaempfer modifiziert werden:
+  AT_TROUSERS; AT_HELMET; AT_ARMOUR; AT_BOOT. Dabei sind drei verschiedene
+  Sachen moeglich. 
+  a) P_EFFECTIVE_AC wird gesetzt, wenn die Ruestung durch besondere
+     DefendFunc's einen hoeheren Schutz als die AC macht
+  b) Die Ruestung soll auch als Waffe zu verwenden sein (Stiefel beim
+     Kampftritt, Hose beim Kniestoss, Helm beim Kopfstoss und Ruestung
+     beim Ellbogenschlag). z.B. waeren Dornen an den Stiefeln denkbar.
+     Dadurch werden die Stiefel ja nicht als Schutz besser, aber als
+     Waffe. Deshalb P_EFFECTIVE_WC setzen. Den Wert nicht hoeher als
+     doppelte AC.
+     [Boing:]
+     Wenn man der Ruestung wirklich einen Attackebonus geben moechte,
+     dann muss P_EFFECTIVE_WC hoeher sein, als P_AC der Ruestung!
+     Da im Falle, wenn P_EFFECTIVE_WC nicht gesetzt ist, P_AC als
+     Angriffswert genommen wird, waere das ansonsten eine Schwaechung!
+     Das kann man natuerlich gezielt einsetzen, wenn man eine Ruestung
+     machen will, die sehr gut schuetzt, aber nur geringe Kaempferboni
+     aufweist. 
+     Beispiel: 
+        Ruestung mit ac 40 und keiner eff_wc: angriffswert ist 40
+        Ruestung mit ac 40 und eff_wc 20:     angriffswert ist 20
+        Ruestung mit ac 40 und eff_wec 60:    angriffswert ist 60
+  c) Die Ruestung macht einen besonderen Schadenstyp. z.B. Flammenstiefel,
+     die beim Kampftritt DT_FIRE und DT_BLUDGEON machen, oder Hosen
+     mit Spikes an den Knien -> DT_PIERCE. Es sollte immer ein
+     physikalischer Schaden vorhanden sein. Zusaetzlich waere jeder
+     magische Schaden denkbar, der Phantasie sind keine Grenzen gesetzt.
+     Natuerlich sollten solche Specialsachen auch in P_LONG der Ruestung
+     auftauchen. Die Kaempfer haben aber die Moeglichkeit Ruestungen
+     einzuschaetzen und sowas zu entdecken.
+     
+
+
+  Bitte alle fuer die Kaempfer geaenderten Waffen und Ruestungen
+  bei mir absegnen lassen, ich moechte den Ueberblick nicht verlieren :))
+  Ausserdem sollten die Werte nicht gleich zu hoch gewaehlt werden.
+  Die Maximalwerte sollten so gut wie nie vergeben werden. 
+  Vorsicht!!! Werden die Werte ueber die Grenzen erhoeht, wird ein 
+  Kaempfer mit so einer Waffe viel zu stark. Bis jetzt hab ich noch keine
+  Sicherheitsfunktion eingebaut, was sich aber aendern wird, wenn 
+  es jemand uebertreibt :))
+  [Boing:] Leider wurde es uebertrieben, also ist jetzt eine Sicherheits-
+  funktion drin.
+
+
+Ciao Zardoz
+     

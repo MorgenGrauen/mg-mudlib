@@ -1,0 +1,111 @@
+sort_array(E)
+
+FUNKTION:
+     mixed *sort_array(mixed *arr, mixed func [, mixed ob])
+
+PARAMETER:
+     arr  - zu sortierendes Array
+     func - zu rufende Methode; kann als String (Funktionsname) oder 
+            Closure uebergeben werden
+     ob   - Objekt, an dem Methode gerufen werden soll; kann als String
+            (Filename) oder Objektpointer uebergeben werden
+
+BESCHREIBUNG
+     Erzeugt eine (flache) Kopie des Arrays 'arr' und sortiert diese mit der
+     Sortierfunktion 'func'. Die sortierte Kopie wird dann zurueckgegeben.
+
+     Die Elemente des zu sortierenden Arrays werden paarweise an die
+     Sortierfunktion als Argumente uebergeben.
+     Die Sortierfunktion sollte eine Zahl
+     - >0 zurueckgeben, wenn die Elemente in der falschen
+       Reihenfolge sind
+     - <=0 zurueckgeben, wenn die Elemente in der richtigen
+       Reihenfolge sind.
+
+     Verwendung von Methoden:
+       Wenn bei der Angabe von 'func' kein Objekt 'ob' in Form eines Strings
+       oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+       Es koennen Lfun-, Lambda- und Inline-Closures verwendet werden. 
+       Lfun-Closures koennen, wenn im selben Objekt vorhanden, auch
+       'private' oder/und 'static' deklariert sein, muessen aber zu dem
+       Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+       Von der Verwendung von Lambda-Closures wird ausdruecklich abgeraten.
+
+BEMERKUNGEN:
+     (1) sort_array() unterstuetzt keinen extra-Parameter
+
+     (2) Achtung, die Elemente in 'arr' werden nicht tief kopiert, sind sie
+     also selbst Arrays oder Mappings, so fuehrt eine Aenderung im Rueckgabe-
+     Array zur Aenderung im Ursprungsarray:
+
+     int *i, *j;
+     i=({({1}),({2,3}),({4,5,6})});
+     j=sort_array(i,        // sortiert der Groesse nach absteigend
+         function int ( mixed x, mixed y ) {
+           return sizeof(x) < sizeof(y); }
+         );
+     
+     Zu diesem Zeitpunkt ist  i == ({ ({1}),({2,3}),({4,5,6}) })
+                              j == ({ ({4,5,6}),({2,3}),({1}) })
+     
+     Fuehrt man jetzt die Zuweisung j[0][0]=8; aus
+
+     resultieren folgende Arrays: i == ({ ({1}),({2,3}),({8,5,6}) })
+                                  j == ({ ({8,5,6}),({2,3}),({1}) })
+
+BEISPIELE:
+     ### Sortieren von Zahlen in aufsteigender Reihenfolge ###
+     
+     int *arr = ({ 3, 8, 1, 3 })
+
+     // Folgend identische Resultate, aber andere Ansaetze:
+
+     #1: nutzt die 'Efun' > als Lfun-Closure (ideal hier):
+         sort_array(arr, #'>);
+
+     #2: mit Sortierfunktion im selben Objekt:
+         int is_greater (int a, int b) {
+           return a > b;
+         }
+         
+         #2a: sortiert mittels der Lfun im selben Objekt die Elemente in das
+              Rueckgabearray
+              sort_array(arr, "is_greater", this_object())
+              sort_array(arr, "is_greater")
+
+         #2b: nutzt die Lfun is_greater() als Lfun-Closure (Funktionspointer)
+              sort_array(arr, #'is_greater)
+
+     #3: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
+         sort_array(arr, lambda(({'a, 'b}), ({#'>, 'a, 'b})))
+
+     #4: analog zu 3, mit Inline-Closure
+         sort_array(arr, function int (int a, int b) {
+           return a > b; } );
+
+     Resultat in allen Faellen: ({1,3,3,8})
+
+     ### Sortieren von geschachtelten Arrays ###
+
+     arr = ({ ({ "foo", 3 }), ({ "quux", 1 }), ... })
+
+     // Vorgehen identisch, allerdings muss die Sortierfunktion
+     // angepasst werden (siehe auch das Beispiel unter Verwendung von
+     // Inline-Closures oben unter "Bemerkungen"):
+     
+     int is_greater (mixed *a, mixed *b) {
+       return a[1] > b[1];
+     }
+
+SIEHE AUCH:
+     Arrays:        filter(E), map(E)
+     Objektarrays:  filter_objects(E), map_objects(E)
+     Mappings:      filter_indices(E), map_indices(E)
+
+     Sonstiges:     unique_array()
+                    alist, transpose_array(E)
+
+----------------------------------------------------------------------------
+Last modified: Mon Feb 18 23:09 2008 by Arathorn

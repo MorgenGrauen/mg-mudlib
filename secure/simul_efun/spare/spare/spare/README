@@ -1,0 +1,20 @@
+simul_efun 
+---------- 
+Das simul_efun Objekt /secure/simul_efun/simul_efun benutzt die Dateien
+in /secure/simul_efun.
+Im Verzeichnis /secure/simul_efun/spare ist eine Sicherheitskopie von allen 
+Dateien in /secure/simul_efun.
+
+Falls /secure/simul_efun/simul_efun.c nicht ladbar ist, wird 
+/secure/simul_efun/spare/simul_efun.c als Ersatz versucht. Wenn auch das
+nicht ladbar ist, erfolgt ein Shutdown des Muds.
+
+Bei Aenderungen sollte _zuerst_ die normale simul efun editiert und
+anschliessend zerstoert/entladen werden, woraufhin sie implizit durch den
+Driver und Master neugeladen wird. Ist dies erfolgreich und die neue
+simul_efun laeuft (erst dann!) kopiert man die Dateien aus 
+/secure/simul_efun nach /secure/simul_efun/spare.
+
+Die Dateien hier sind mit Ausnahme der simul_efun.c selbst _nicht_ dazu 
+gedacht, geladen zu werden.
+

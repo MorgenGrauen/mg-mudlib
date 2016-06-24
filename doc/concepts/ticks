@@ -1,0 +1,66 @@
+* Was sind Ticks?
+Ein Tick ist eine Masseinheit, die man frueher eingefuehrt hat, um zu
+verhindern, dass ein Objekt/Magier den Driver beliebig lang beschaeftigen
+kann und niemand anders mehr zum Zuge kommt.
+
+* Sind es also Zeiteinheiten? Oder Rechenoperationen?
+Am ehesten entspricht ein Tick der Rechenoperation. Besser gesagt: jeder
+LPC-Operator, jedes LPC-Schluesselwort und jede efun, die man ruft, verringert
+die zur Verfuegung stehenden Ticks um mindestens 1: Sowas wie +, -, if(),
+else, switch(), etc.
+Hierbei stehen die Ticks, die ein Stueck Code braucht und die Zeit, die dessen
+Ausfuehrung braucht, in keinem konstanten Verhaeltnis. Ein Stueck Code
+braucht immer die gleiche definierte Menge an Ticks, aber kann dafuer
+unterschiedliche Zeiten benoetigen (z.b. wenn man erst was einswappen muss).
+Ebenso brauchen 2 Stueck Code, die die gleiche Menge Ticks brauchen, oft
+unterschiedlich lang.
+
+* Wie messe ich Ticks?
+Die Funktion get_eval_cost() liefert einem zurueck, wieviele Ticks man in
+diesem Ausfuehrungsthread man noch verbraten darf, bis die Ausfuehrung
+abgebrochen wird. Will man wissen, wieviel etwas kostet, ruft man vorher
+get_eval_cost(), merkt sich das und vergleicht mit dem Ergebnis von
+get_eval_cost() danach.
+
+* Wieviel ticks verbraucht diese und diese Operation/Funktion?
+Jede elementare Operation verbraucht erstmal einen Tick. Aber: es gibt Efuns
+und Operatoren, die sehr grosse Datenmengen manipulieren (koennen). Damit man
+mit diesen nicht megabyteweise Daten fuer einen Tick manipulieren kann, gibt
+es in LDMud die sog. dynamischen Evalcosts, bei denen je nach Umfang der
+manipulierten Daten Ticks abgezogen werden. Bsp: str1 + str2 kostet umso mehr,
+je groesser str1 und str2 sind.
+Wenn man es genau wissen will, sollte man per get_eval_cost() messen, dies ist
+natuerlich fuer die dynamischen Evalcosts schwieriger. Ggf. fragt den EM fuer
+Driver/Mudlib, ob er das weiss.
+
+* Wieviel stehen dem Driver pro Heartbeat zur Verfuegung? 
+Das ist so global nicht zu beantworten. Aber: pro Ausfuehrungsthread stehen
+uns momentan 1500000 Ticks zur Verfuegung. So ein Ausfuehrungsthread startet
+z.B., wenn der Driver in einem Objekt heart_beat() ruft, auch reset(),
+clean_up() oder wenn der Driver ein Spielerkommando auswertet. Callouts sind
+ein Spezialfall, hierbei teilen sich die "gleichzeitig" (im gleichen
+Backend-Zyklus des Drivers) und unter der gleichen UID ausgefuehrten Callouts
+letztendlich die Ticks.
+
+* Was passiert, wenn es doch mal nicht reicht?
+In dem Fall gibt es den beruehmt-beruechigten 'too long evaluation'-Fehler
+(TLE) und die Ausfuehrung wird an der Stelle abgebrochen, wo die Anzahl an
+verfuegbaren Ticks auf 0 faellt.
+
+* Wie finde ich heraus, wieviel Laufzeit eine bestimmte Operation benoetigt?
+Hierbei helfen einem die verbrauchten Ticks nicht weiter. Um die Laufzeit
+eines Stuecks Code zu bestimmen, misst man vorher die aktuelle Zeit mit
+genuegend grosser Genauigkeit, fuehrt seinen Code, misst erneut die Zeit und
+bildet die Differenz. Die genaueste Moeglichkeit der Zeitmessung im Mud stellt
+die efun utime() dar, welche die Zeit in Mikrosekunden ermitteln kann.
+Beispiel:
+  int *zeit1 = utime();
+  // code ausfuehren
+  int *zeit2 = utime();
+  int usec = (zeit2[0] - zeit1[0]) * 1000000 - zeit1[1] + zeit2[1];
+
+SIEHE AUCH:
+  effizienz, memory, goodstyle
+
+04.09.2008, Zesstra
+

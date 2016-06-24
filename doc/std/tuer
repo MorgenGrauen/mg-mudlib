@@ -1,0 +1,42 @@
+STANDARDOBJEKT FUER TUEREN:
+
+BENTUZUNG:
+	inherit "std/tuer";
+
+	#include <tuer.c>
+	
+BESCHREIBUNG:
+	Basisklasse fuer alle Tueren im Spiel. Sie ist von /std/thing
+	abgeleitet.
+
+    Funktionen:
+
+	AddDoor2( strin short,
+		  string long,
+		  mixed id,
+		  mixed dest,
+		  string com,
+		  int flags,
+		  string key,
+		  string func,
+		  object obj )
+
+		Erzeugt eine neue Tuer, wobei die Parameter folgendes angeben:
+
+		short 	= Kurzbeschreibung der Tuer
+		long	= Ausfuehrliche Beschreibung der Tuer
+		id	= Name[n] der Tuer
+		dest	= Kommando zum Durchschreiten der Tuer, z.B. 'norden'
+
+		Optionale Parameter:
+
+		flags	= Flags aus tuer.h
+		key	= String, der im Schluessel definiert sein muss, damit
+			  er 'passt'.
+		func	= Funktion die beim Durchschreiten der Tuer in obj
+			  aufgerufen werden soll.
+		obj	= Objekt in dem func aufgerufen werden soll.
+
+SIEHE AUCH:
+	schluessel
+

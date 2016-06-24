@@ -1,0 +1,45 @@
+
+avatar
+---------
+
+ KOMMANDO:
+    avatar [<uri>]
+
+ ARGUMENTE:
+
+     <uri> (optional)
+        Die neue URI zum Avatar
+
+ BESCHREIBUNG:
+    Spieler koennen sich mit diesem Kommando einen graphischen Avatar (d.h.
+    ein Bild) geben, welchen manche Clients anzeigen koennen.
+    Hierzu setzt der Spieler hier eine URI, welche auf ein Bild im Netz
+    verweist, welches ggf. vom Client anderer Spieler heruntergeladen wird.
+    Spieler koennen diese Avatar-URI mit dem Befehl 'avatar' anzeigen,
+    aendern und loeschen.
+    Ist das Argument dieses Befehls 'keine', so wird die Avatar-URI
+    geloescht.
+
+    Avatar-URIs anderer Spieler lassen sich mit 'finger -a' ausgeben.
+
+    Wird ein Charakter auf der MG-Homepage gefingert, wird das Bildchen ggf.
+    ebenfalls mit angezeigt. Hierzu muss allerdings eine URL angegeben werden,
+    welche mit http:// oder https:// beginnt.
+ 
+ BEMERKUNGEN:
+    Auf der MG-Homepage werden die Bilder immer auf eine Hoehe von 150 Pixeln
+    skaliert (Breite entsprechend proportional).
+    Um anderen Spielern nicht unnoetige Wartezeiten zu beschweren, sollte die
+    Groesse des Bildes nicht zu riesig sein. Bilder im Bereich von 20-200kB
+    sollten voellig ausreichen.
+
+ BEISPIELE:
+    avatar http://mg.mud.de/avatars/zesstra.png
+    avatar keine
+
+ SIEHE AUCH:
+    Persoenliche Details: email, url, icq, ort
+    Sonstiges:            finger
+
+ LETZTE AENDERUNG:
+    25.08.2011, Zesstra

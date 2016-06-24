@@ -1,0 +1,25 @@
+BEFEHL:
+	!funktionsname text
+	
+ARGUMENTE:
+	text -- der *ganze* Rest der Zeile
+	
+FUNKTION:
+	Erzeuge aus text eine neue Funktion mit dem angegebenen Namen. Dieser
+	Name ist als neuer Befehl innerhalb der Teller benutzbar wie die
+	eingebauten Befehle.
+	Wird ein Befehl ausgefuehrt, bekommt er auf einem neuen Stack seine
+	Parameter uebergeben. Was am Ende des Funktionsaufrufes auf dem
+	Stack legt, wird dann auf den urspruenglichen abgelegt.
+
+BEISPIEL:
+	,!Query !1 pl !0 -->QueryProp
+	Definiere die Funktion "Query", sie hat zwei Parameter (!0 und !1),
+	wobei !0 der TOS ist.
+	,rumata title Query
+		Liefert dann den Titel von Rumata auf dem Stack zurueck, da
+		am Ende der Auswertung dieser auf dem Stack liegen wuerde.
+	,!Demo !1 stk
+	,1 2 3 4 Demo
+		Zeigt einen Stack auf dem das zweitoberste Element von dem
+		ursprungsstack liegt; in diesem Fall also 3.

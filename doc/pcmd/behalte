@@ -1,0 +1,29 @@
+
+behalte
+-------
+
+ KOMMANDO:
+    behalte [[<objekt>] [alles] [nichts]]
+
+ ARGUMENTE:
+
+     <objekt>
+        ein Objekt in Deinem Inventar
+
+     alles/nichts
+        wie es der Parameter schon sagt
+
+ BESCHREIBUNG:
+    Man kann mit diesem Befehl Gegenstaende markieren, so dass sie bei
+    `verkaufe alles' nicht mehr automatisch verkauft werden. Ist der
+    betreffende Gegenstand bereits markiert, wird die Markierung aufgehoben.
+    Saemtliche Sachen lassen sich mit `behalte alles' markieren, mit
+    `behalte nichts' kann man saemtliche Markierungen aufheben.
+
+    Ohne Argument aufgerufen zeigt der Befehl alle markierten Gegenstaende an.
+
+    Angezogene Ruestungen und gezueckte Waffen werden uebrigens automatisch
+    behalten.
+
+ LETZTE AeNDERUNG:
+    Tue, 27.10.1998, 16:00:00 von Rikus

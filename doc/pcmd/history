@@ -1,0 +1,75 @@
+
+history
+-------
+
+ KOMMANDO:
+    history (oder: hist)
+    &<nr>
+    &<text>
+    histlen <n>
+    histmin <n>
+    ^<falsch>^<richtig>^
+
+ ARGUMENTE:
+
+     <nr>
+        Die Nummer eines Befehls in der History
+     <text>
+        Der Anfang eines Befehls in der History
+     <n>
+        Eine Zahl
+     <falsch>
+        Fehlerhafter Text
+     <richtig>
+        Korrigierter Text
+
+ BESCHREIBUNG:
+    Die letzten Befehle, die Du eingegeben hast, werden gespeichert. Auf diese
+    gespeicherten Befehle kannst Du zugreifen, ohne sie komplett neu eingeben
+    zu muessen:
+
+    `&<nr>' fuehrt den Befehl mit Nummer <nr> aus, soweit er sich noch in der
+    Befehlsgeschichte befindet. Man kann jedoch auch negative Nummern
+    verwenden: `&-0' fuehrt den letzten Befehl nochmal aus, `&-1' den
+    vorletzten, und so weiter.
+
+    `&<text>' fuehrt den letzten Befehl aus, der mit <text> anfaengt (sofern
+    vorhanden).
+
+    Wird eine identische Befehlszeile mehrfach hintereinander angegeben, so
+    erscheint sie nur nur ein einziges Mal in der Befehlsgeschichte (auch,
+    wenn die Wiederholungen ueber `&-0' erfolgten).
+
+    Die komplette Befehlsgeschichte kannst Du Dir mit `history' (oder
+    abgekuerzt `hist') anzeigen lassen. Der `history'-Befehl selbst erscheint
+    jedoch nicht in der Geschichte.
+
+    Die Laenge der Befehlsgeschichte betraegt standardmaessig 40 Befehle, dies
+    kann man aber mit dem Befehl `histlen <n>' aendern. Die voreingestellten
+    40 Befehle bilden allerdings das Maximum, welches nicht ueberschritten
+    werden kann.
+
+    Normalerweise landet *jeder* Befehl in der Befehlsgeschichte. Will man
+    aber z.B. die Bewegungsbefehle nicht in der History haben, so kann man mit
+    `histmin <n>' festlegen, ab welcher Laenge die Befehle aufgenommen werden.
+    Mit `histmin 4' werden also nur Befehlszeilen mit mindestens vier
+    Buchstaben Laenge aufgenommen. Dies stellt uebrigens eine sinnvolle
+    Groesse dar, da bei kuerzeren Zeilen die Eingabe des &-Kommandos mehr
+    Aufwand darstellt als die Neueingabe des Befehls.
+
+    Tippfehler im letzten eingegebenen Befehl lassen sich wie folgt
+    korrigieren: `^<falsch>^<richtig>^'. Das letzte ^ kann man auch weglassen.
+    Zum Beispiel:
+
+    > tm jpf Hi!
+    Kein solcher Spieler!
+    > ^jpf^jof
+    Du teilst Jof mit: Hi!
+
+    Hier haette uebrigens auch `^p^o' genuegt.
+
+ SIEHE AUCH:
+    ersetzungsanzeige, alias
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

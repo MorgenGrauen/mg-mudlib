@@ -1,0 +1,17 @@
+BEFEHL:
+	names, nam
+
+ARGUMENTE:
+	keine
+
+FUNKTION:
+	Normalerweise werden der Filename und der Name (QueryProp(P_NAME))
+	angezeigt, wenn man den Stack oder aehnliches betrachtet.
+	Mit diesem Befehl schaltet man den Namen aus oder an.
+
+	Durch Anschauen der Teller kann man feststellen, ob die Namen oder
+	nur die Filenamen angezeigt werden.
+
+SIEHE AUCH:
+	"inv", "stack", "move", "top", ...
+	Andere Schalter: "say", "inform"

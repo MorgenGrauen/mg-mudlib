@@ -1,0 +1,95 @@
+
+Zaubertraenke fuer Magier
+=========================
+
+Wie man die Traenke jetzt genau versteckt bleibt dem betreffenden Magier
+ueberlassen, es sollte halt insgesamt ein breites Spektrum von sehr leicht
+zu finden bis fast unmoeglich abgedeckt sein.
+Fuer das Orakel der Hochebene sollte dann ein entsprechender Spruch
+vorbereitet werden, nicht zu kryptisch aber doch orakleig.
+
+Die zufaellige Auswahl an zugeordneten Zaubertraenken wird beim ersten
+Einloggen des Spielers festgelegt.
+
+Die Raeume, in denen Traenke versteckt werden (und es duerfen nur Raeume
+sein), werden in 8 Listen eingeteilt, je nach Schwierigkeitsgrad. Der haengt
+natuerlich von der Lage (so ist ein Trank in einem monsterwimmelnden
+Labyrinth schwieriger zu erreichen, als einer auf der Hochebene), und von
+dem Versteck selbst ab.
+Questraeume, die nur im Rahmen der Quest erreichbar sind, sind ungeeignet.
+
+
+Mein Standardbeispiel fuer ein Versteck ist immer folgendes:
+ 
+> schaue
+blablablabla .... Ein Schreibtisch steht in der Ecke. ... blablabla
+> unt schreibtisch
+Er hat eine Schublade.
+> oeffne schublade                         
+Du oeffnest die Schublade.
+> unt schublade
+In der Schublade enteckst Du ein paar Papiere.
+> unt papiere
+Beim Rumwuehlen in den Papieren entdeckst Du einen kleinen Zaubertrank, den
+Du sofort trinkst.
+ 
+Dann kommt die Auswahlsequenz, welche Eigenschaft man erhoehen will.
+ 
+In diesem Fall reichen Details, Details mit Closure und eine Kommando fuer
+"oeffne" aus. Etwa wie folgt:
+
+  void create() {
+    [...]
+    SetProp(P_INT_LONG, ... Ein Schreibtisch steht in der Ecke ...);
+  
+    AddDetail(({"tisch", "schreibtisch"}),
+      "Er hat eine Schublade.");
+
+    AddCmd("oeffne&schublade", #'action_oeffne,
+           "Was moechtest du oeffnen.");
+  }
+
+  private int action_oeffne() {
+    tell_object(this_player(), "Du oeffnest die Schublade.\n");
+    tell_room(this_object(), this_player()->Name()+
+                             " oeffnet eine Schublade.\n", ({this_player()}));
+
+    AddDetail("schublade",
+              "In der Schublade entdeckst du ein paar Papiere.\n");
+    AddDetail("papiere", #'detail_papiere);
+  }
+
+  // Zaubertrankgebendes Detail  
+  private string detail_papiere() {
+    if (this_player()->FindPotion(
+        break_string("Beim Rumwuehlen in den Papieren entdeckst Du einen "
+                     "kleinen Zaubertrank, den Du sofort trinkst.", 78)))
+      return "";  
+      // Es muss ein String zurueckgegeben werden, da man sonst
+      // die Fehlermeldung "Sowas siehst du hier nicht." bekommt
+    else
+      return "Die Papiere sind alle unbeschriftet.\n";
+  }
+
+  // Aufraeumen des Raumes
+  void reset() {
+    if(!sizeof(filter(all_inventory(this_object()), #'interactive))) {
+      RemoveDetail("papiere");
+      RemoveDetail("schublade");
+    }
+    ::reset();
+  }
+  
+FindPotion() gibt 1 zurueck, wenn der Spieler den Zaubertrank finden darf.
+
+Wer also Traenke verstecken will, macht sowas in der Art und meldet dann den
+Raum persoenlich oder per Post bei den Erzmagiern bzw seinem aktiven
+Regionsmagier an.
+ 
+SIEHE AUCH:
+    Weitere Dateinamen mit Beispielen fuer Trankverstecke kann man der
+    Datei /etc/traenke entnehmen.
+
+    Befehl:    traenke (fuer Magier zum Einschalten des Findens von ZTs)
+
+10. August 2015 Gloinson

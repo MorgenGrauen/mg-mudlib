@@ -1,0 +1,31 @@
+long()
+FUNKTION:
+     varargs string long(int mode);
+
+DEFINIERT IN:
+     /std/thing/description.c
+
+ARGUMENTE:
+     int mode		- Modifikatoren fuer die Anzeige, falls this_object()
+			  ein Container ist
+			  (siehe "man make_invlist")
+
+BESCHREIBUNG:
+     Der Inhalt der Property P_LONG wird ausgewertet und zurueckgegeben.
+     Falls das Objekt ein Container und transparent (offen) ist, wird
+     zudem make_invlist() auf den Inhalt zurueckgegeben.
+
+RUeCKGABEWERT:
+     Die Langbeschreibung des Objektes.
+
+BEMERKUNGEN:
+     Durch Ueberladen von long() lassen sich noch weitere Eigenschaften des
+     Objektes anzeigen. Behaelter koennen zum Beispiel noch ihren Inhalt
+     anzeigen, Lebewesen ihren Gesundheitszustand, o.ae.
+
+SIEHE AUCH:
+     Aehnliches:	short()
+     Properties:	P_LONG, P_INVIS, P_TRANSPARENT
+     Sonstiges:		make_invlist()
+
+11. Mai 2004 Gloinson

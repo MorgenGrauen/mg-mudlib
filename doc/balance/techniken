@@ -1,0 +1,108 @@
+****************************************************************************
+* Dieser Text ist veraltet. Die Techniken werden von der Mudlib nicht      *
+* ausgewertet und momentan auch von keiner Gilde (Ausnahme: die Tanjian    *
+* zeigt sie an, tut aber nix damit.                                        *
+****************************************************************************
+----------------------------------------------------------------------------
+     P_TECHNIQUE: Techniken, mit denen Waffen eingesetzt werden koennen
+----------------------------------------------------------------------------
+
+TQ_THRASH - "Schlagtechnik"
+
+    Die vom Verstaendnis her einfachste Technik: Man nehme sich einen
+    Gegenstand,  der gross genug ist und halbwegs  brauchbare  Dichte 
+    besitzt - also nicht gerade federleicht  fuer seine Groesse ist - 
+    und haue drauf.  Egal ob Henkersaxt,  Stock,  Stuhl,  Bierflasche 
+    (ganz), Knueppel, Keule oder Bratpfanne,  das und aehnliches sind 
+    brauchbare  'Waffen',  um mit dieser Technik Erfolg zu haben.  Es 
+    ist eine schlagende Bewegung,  also das gewollte schwunghafte Zu-
+    sammenfuehren zweier Koerper, fuer gewoehnlich Waffe und Gegner.
+
+
+TQ_THRUST - "Stosstechnik"
+
+    Auch diese Technik erfreut sich zumindest in Kneipenschlaegereien
+    grosser Beliebtheit: Das Stossen.  Mit einem vorzugsweise spitzen
+    Gegenstand wie Speer, Dolch, Bierflasche (zerbrochen) oder Helle-
+    barde  wird dem Gegner ein Loch in den Leib  gestossen,  im Falle 
+    eines   stumpfen Gegenstandes wie z.B.  einem Kampfstock oder dem 
+    eigenen  Zeigefinger oder Knoechel zielt man auf Vitalpunkte oder
+    Weichteile und erzielt auch damit beeindruckende Ergebnisse.  Das
+    Gewicht der Waffe ist  weniger von Bedeutung,  da  der Akteur bei 
+    einem korrekt ausgefuehrtem seine eigene Masse mit einsetzt.
+
+
+TQ_STROKE - "Streichtechnik"
+
+    Ein etwas eigenwillig anmutender Begriff,  aber bei genauerer Be-
+    trachtung hat  diese Technik tatsaechlich etwas mit Streicheln zu
+    tun:  Die wichtigste Komponente der Bewegung fuehrt mehr oder we-
+    niger am  Gegner _entlang_ und nicht auf ihn zu.  Man stelle sich 
+    ein Schwert vor, das geschmeidig durch die Kehle eines Orks glei-
+    tet  und eine Menge Blut  freisetzt oder ein Pergamentblatt,  das
+    man aus der Hand gezogen bekommt  (und ebenfalls eine Menge  Blut
+    freisetzt).  In den allermeisten Faellen ist also eine moeglichst
+    scharfe Schneide im Spiel und, auch wenn schmerzhafte Erfahrungen
+    mit  Pargamentkanten gelegentlich gegenteiliges  vermuten lassen, 
+    je schaerfer die Schneide, desto weniger Druck in Richtung feind-
+    lichen  Zielkoerper  muss fuer  einen  "durchschneidenden Erfolg" 
+    ausgeuebt werden.
+
+
+TQ_WHIP - "Peitschtechnik"
+
+    Unter der Peitschtechnik wird nun alles zusammengefasst,  was den
+    Umgang mit beweglichen Elementen an der Waffe betrifft.  Egal, ob
+    Peitsche a la George Lucas, neunschwaenzige Katze, Manriki-Gusari
+    (eine halbmeter lange Kette mit Gewichten an den Enden), ein- bis
+    dreikoepfigem  beketteten Morgenstern oder gar Dreschflegel,  sie 
+    sind zumindestteilweise sehr unterschiedlich konzipiert (so fehlt
+    der  Peitsche am aeusseren Ende das Gewicht,  so dass jenes durch
+    eine gegenlaeufige Bewegung beschleunigt werden muss), haben aber
+    eines gemeinsam: Der Schaden wird durch ein ueber die normale Be-
+    wegung des Kaempfers  hinaus beschleunigtes Teil der Waffe verur-
+    sacht. Durch jene Beweglichkeit der  Waffe wird ein sehr  grosses 
+    Mass an Koordinationsvermoegen vom Kaempfer abverlangt.
+
+----------------------------------------------------------------------------
+
+Vermischtes
+
+    - Waffen koennen  sich fuer mehrere  Techniken eignen.  Mit einem
+      Katana, dem Schwert der Samurai, beispielsweise kann man in die
+      ungeschuetzten Partien des Gegners stechen,  dem Gegner mit der 
+      Streichtechnik tiefe Schnitte in die Unterseiten der Arme  (ein
+      durch typische Samurairuestungen schlecht geschuetzter Bereich)
+      zufuegen, und mit der beruehmten halben Koerperdrehung dem in-
+      zwischen taumelndem Kontrahenten den Kopf abschlagen. 
+
+    - Waffen koennen sich, obwohl von der gleichen Gattung, fuer ver-
+      schiedene Techniken eignen.  Ein spitzer Dolch mag eine stumpfe
+      Klinge haben  und nur fuer ausschliesslich stossende  Praktiken
+      zu gebrauchen zu sein, waehrend ein abgerundetes Kuechenmesser,
+      ebenfalls vom Typ "Zyn", fuer kantiges Zuschlagen und eventuell
+      auch fuer schnittige Streichtechniken herhalten kann.
+
+    - Je nach Zweck und Koennen wird die beste zu verwendende Technik 
+      variieren:  Wenn es um arme Grashalme geht,  wird die Sense mit 
+      schneidenden Bewegungen gefuehrt  (schoen in der  Milka-Werbung 
+      zu sehen,  fuer die, die es partout nicht glauben wollen),  bei 
+      einer Bauernrevolte mag das gute Stueck jedoch auch mit anderen 
+      Techniken effektiv (und vielleicht sogar effektiver) eingesetzt 
+      werden, wer weiss, wer war schon dabei...?  Selbst bei normalen
+      Waffen wie Schwertern  wuerde ein Ungeuebter  selten versuchen,  
+      mit Streichtechniken Schaden zu verursachen, denn das Zustechen 
+      ist schlicht einfacher.
+
+    - Es wird immer  besondere Waffen geben.  So  sind beispielsweise
+      das Zweililien und  die Hellebarde  beide dem Typ "Kzrok" (fuer
+      nicht-Trves: Stangenwaffen) zuzuordnen, die Techniken  weichen,
+      bedingt  durch die Vielseitigkeit  der Waffen,  jedoch von  der
+      Norm ab: Das Zweililien, an jedem  Ende eine lange und  scharfe
+      Klinge,  kann  ebenso  vielseitig  gehandhabt  werden  wie  ein 
+      Schwert,  waehrend die Hellebarde (eine Mischung aus  Lanze und
+      Axt) durch ihre unausgewogene Gewichtsverteilung  und dem damit
+      verbundenen Potenzial an Schwung schlichtweg DIE Waffe der Wahl 
+      fuer feige Zwerge ist:  Schwingen wie eine grosse  Axt und  den 
+      Gegner auf Distanz halten koennen.  Gut,  dass es keine  feigen 
+      Zwerge gibt ;o)

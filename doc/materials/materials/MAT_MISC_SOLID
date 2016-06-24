@@ -1,0 +1,17 @@
+Materialid:
+MAT_MISC_SOLID           "misc_solid"
+
+Name:
+"verschiedenes Material" "verschiedenen Materials" "verschiedenem Material" "verschiedenen Material"
+
+Geschlecht:
+N
+
+Beschreibung:
+allg. Feststoffe
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_SOLID:100

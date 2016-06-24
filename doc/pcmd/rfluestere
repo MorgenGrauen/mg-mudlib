@@ -1,0 +1,27 @@
+
+rfluestere
+---------
+
+ KOMMANDO:
+    rfluestere <wem> zu <text>
+
+ ARGUMENTE:
+
+     <wem>
+        Das Lebwesen, dem Du aus der Ferne etwas zufluestern willst
+     <text>
+        Der zu fluesternde Text
+
+ BESCHREIBUNG:
+    Gibt eine Mitteilung an das angegebene Lebewesen aus, die niemand anderes
+    hoeren kann. Das Lebewesen muss sich in einem anderen Raum befinden.
+    Dieser Befehl ist fast aehnlich zum 'teile (mit)'-Befehl, allerdings kann
+    letzterer in einer TM-History beim Sender und/oder Empfaenger gespeichert
+    werden, waehrend dies bei 'rfluestere' nicht passieren kann.
+
+ SIEHE AUCH:
+    sage, frage, antworte, teile (mit), gespraech, rufe, ebenen, weg,
+    ignoriere, kobold, tmhist
+
+ LETZTE AeNDERUNG:
+    10.08.2008, Zesstra

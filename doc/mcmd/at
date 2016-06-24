@@ -1,0 +1,33 @@
+
+at
+--
+
+ MAGIERKOMMANDO:
+    at <name> <kommando>
+
+ ARGUMENTE:
+
+     <raum>
+        Name eines Lebewesens
+     <kommando>
+        das auzufuehrende Kommando
+
+ BESCHREIBUNG:
+    Du wirst, unsichtbar fuer die Anwesenden, in den Raum transportiert, in
+    dem sich das Lebewesen <name> befindet. Dort fuehrst Du das Kommando
+    <kommando> aus und gelangst automatisch wieder in den Raum zurueck, in dem
+    Du vorher warst.
+
+ BEISPIELE:
+    Catweazle macht mal wieder Faxen?
+
+    > at catweazle wuerge catweazle
+
+    Die Umstehenden sehen dann zwar die Meldungen des Kommandos, aber man
+    selbst befindet sich sofort wieder in Sicherheit :)
+
+ SIEHE AUCH:
+    in, goto
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

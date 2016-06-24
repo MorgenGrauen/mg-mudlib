@@ -1,0 +1,20 @@
+NAME:
+	P_MAX_FOOD			"max_food"
+
+DEFINIERT IN:
+	/sys/living/life.h
+
+BESCHREIBUNG:
+	Numerischer Wert fuer die maximale Saettigung eines Lebewesens.
+
+ANMERKUNGEN:
+	Der Wert von P_MAX_FOOD ist bei den einzelnen Rassen verschieden, 
+	ebenso wie der fuer P_FOOD_DELAY. Die genauen Werte stehen in den
+	Rassen-Shells (/std/shells).
+
+SIEHE AUCH:
+	P_FOOD, P_FOOD_DELAY, eat_food,
+	P_MAX_DRINK, P_MAX_ALCOHOL
+
+----------------------------------------------------------------------------
+Last modified: Tue Dec 18 12:16:10 2001 by Patryn

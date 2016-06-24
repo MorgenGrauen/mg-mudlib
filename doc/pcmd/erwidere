@@ -1,0 +1,28 @@
+
+erwidere
+--------
+
+ KOMMANDO:
+    erwidere <text>
+
+ ARGUMENTE:
+
+     <text>
+        Der zu erwidernde Text
+
+ BESCHREIBUNG:
+    Wenn Dir jemand etwas mitteilt, kannst Du mit diesem Kommando direkt
+    darauf antworten, ohne den Namen des Absenders eingeben zu muessen.
+
+    Aber aufgepasst: Du erwiderst wirklich nur die *letzte* Mitteilung! Wenn
+    Du also den zu erwidernden Text schreibst, und jemand anderes teilt Dir in
+    der Zwischenzeit auch noch etwas mit, so bekommt *er* die Antwort
+    zugeschickt!
+    
+    Der gleiche Effekt kann mit "teile , mit <text>" erzielt werden.
+
+ SIEHE AUCH:
+    teile (mit)
+
+ LETZTE AeNDERUNG:
+    Thu, 08.02.2007, 18:23:00 von Muadib

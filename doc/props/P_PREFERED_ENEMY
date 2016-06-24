@@ -1,0 +1,26 @@
+NAME:
+	P_PREFERED_ENEMY		"pref_enemy"
+
+DEFINIERT IN:
+	/sys/living/combat.h
+
+BESCHREIBUNG:
+	Diese Property enthaelt ein Array mit folgenden Eintraegen:
+	  Eintrag 1:      Integerwert zwischen 0 und 100, welcher die
+	                  Wahrscheinlichkeit dafuer angibt, dass ein
+	                  Lebewesen bevorzugt bei einem Angriff gewaehlt
+	                  werden soll.
+	  Eintraege ab 2: Lebewesen, aus welchen per Zufall eines
+	                  ausgewaehlt wird, welches beim aktuellen Angriff
+	                  bevorzugt wird.
+	Es ist zu beachten, dass solch ein bevorzugtes Opfer natuerlich auch
+	wirklich Gegner sein muss und auch im selben Raum zu stehen hat, wie
+	der Angreifer. Ist dies nicht der Fall, wird dann doch irgendein
+	anderer Gegner aus diesem Raum genommen.
+
+SIEHE AUCH:
+	QueryPreferedEnemy(), IsEnemy(), SelectEnemy(), Attack(),
+	/std/living/combat.c, /std/living/life.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 26 16:44:38 1999 by Patryn

@@ -1,0 +1,35 @@
+SuggestArticle()
+
+FUNKTION:
+     varargs int SuggestArticle(string name);
+
+DEFINIERT IN:
+     /std/thing/language.c
+
+ARGUMENTE:
+     name
+          Der Name zur Entscheidungshilfe.
+
+BESCHREIBUNG:
+     Diese Funktion versucht herauszufinden, ob der Artikel zu diesem Objekt
+     ein unbestimmter oder besser ein bestimmter Artikel sein sollte. Die
+     Vorgehensweise ist folgende: Gibt es in der Umgebung dieses Objektes
+     ein weiteres Objekt, das den Namen name besitzt, so wird ein
+     unbestimmter Artikel vorgeschlagen, ansonsten ein bestimmter.
+
+RUeCKGABEWERT:
+     0, wenn ein unbestimmter Artikel geeignet ist, ansonsten 1.
+
+BEMERKUNGEN:
+     Der Vergleich erfolgt mittels der Property P_NAME. Um Erfolg zu haben,
+     sollte man diese Funktion daher in der Form
+
+     SuggestArticle(QueryProp(P_NAME))
+
+     aufrufen.
+
+SIEHE AUCH:
+     QueryArticle(), name(), /std/thing/language.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:25:34 1996 by Wargon

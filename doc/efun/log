@@ -1,0 +1,8 @@
+SYNOPSIS
+        float log(int|float arg);
+
+BESCHREIBUNG
+        Liefert den natuerlichen Logarithmus von <arg>.
+
+SIEHE AUCH
+        exp(E), pow(E)

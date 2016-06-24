@@ -1,0 +1,22 @@
+P_FREE_HANDS
+NAME:
+    P_FREE_HANDS                  "free_hands"
+
+DEFINIERT IN:
+    /sys/living/combat.h
+
+BESCHREIBUNG:
+    Anzahl der freien Haende.
+    Effektiv nur ein die Differenz von P_MAX_HANDS und P_USED_HANDS.
+
+BEMERKUNGEN:
+    Keine echte Property. Die Methode /std/living/combat::_query_free_hands
+    stellt die Daten zusammen. Nicht setzen!
+
+SIEHE AUCH:
+    P_HANDS, P_HANDS_USED_BY
+    P_MAX_HANDS, P_USED_HANDS
+    UseHands, FreeHands
+    /std/weapon.c, /std/spellbook.c
+
+1. Okt 2012, Gloinson

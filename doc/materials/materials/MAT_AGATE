@@ -1,0 +1,21 @@
+Materialid:
+MAT_AGATE                "agate"
+
+Name:
+"Achat" "Achats" "Achat" "Achat"
+
+Geschlecht:
+M
+
+Beschreibung:
+Farbspiel
+
+Erkennbarkeit:
+MAT_MISC_MINERAL:0
+MAT_QUARTZ:20
+MAT_AGATE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_STONE:100
+MATGROUP_SOLID:100

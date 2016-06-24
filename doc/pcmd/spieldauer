@@ -1,0 +1,32 @@
+KOMMANDO:
+	Spieldauer <Dauer> Minute[n] fuer <Anzahl> Tag[e]
+	Spieldauer <Dauer> Stunde[n] fuer <Anzahl> Tag[e]
+
+ARGUMENTE:
+	<Dauer>
+	  Dauer der Spielzeit pro Tag in Minuten oder Stunden
+	<Anzahl>
+	  Dauer der Spielzeitbeschraenkung in Tagen
+
+BESCHREIBUNG:
+	Wenn man unbedingt einmal eine Mudpause einlegen muesste, weil man
+	sich um RL-Dinge wie Klausuren, Diplomarbeiten und aehnliche
+	Nebensaechlichkeiten zu kuemmern hat, und wenn man genau weiss, dass
+	man sich aus eigenem Willen nicht vom Einloggen fernhalten kann, so
+	kann man sich mit 'Spielpause' eine Zwangspause genehmigen.
+	Weniger drastisch wirkt der Befehl 'spieldauer'. Hiermit schraenkt
+	man die pro Tag zur Verfuegung stehende Zeit im MUD ein. Somit kann
+	man jeden Tag noch schnell seine Mails lesen oder kurz Freunde
+	begruessen. Ist die angegebene Zeit um, so wird man automatisch aus
+	dem MUD geworfen und kann sich erst am naechsten Tag wieder
+	einloggen. Gibt man als Anzahl der Tage 0 ein, so wird die
+	Beschraenkung abgeschaltet. Da man damit die Beschraenkung jederzeit
+	wieder aufheben kann, gehoert also trotzdem viel Disziplin dazu,
+	diese einzuhalten. Der anfangs erwaehnte Befehl 'Spielpause' ist
+	also deutlich wirkungsvoller.
+
+SIEHE AUCH:
+	Spielpause, Selbstloeschung
+
+----------------------------------------------------------------------------
+15.11.2015, Zesstra

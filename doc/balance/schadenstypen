@@ -1,0 +1,48 @@
+Schadenstypen:
+
+Es werden zwei Arten von Schadenstypen unterschieden:
+
+a) physikalische Schadenstypen
+
+   DT_BLUDGEON      Schlagschaden, z.B. Keulen
+   DT_EXPLOSION     Schaden durch eine Explosion
+   DT_PIERCE        Stechschaden, z.B. Lanzen
+   DT_RIP           Reissender Schade, z.B. Krallen
+   DT_SLASH         Schnittschaden, z.B. Schwerter
+   DT_SQUEEZE       Quetschschaden, z.B. Tentakel
+   DT_WHIP          Peitschenschaden, z.B. Peitschen
+
+   Alle physikalischen Schadenstypen stehen auch in dem Mapping
+   PHYSICAL_DAMAGE_TYPES.
+
+b) magische Schadenstypen
+
+   DT_ACID          Saeureschaden
+   DT_AIR           Luft(mangel)schaden
+   DT_COLD          Kaelteschaden
+   DT_FIRE          Feuerschaden
+   DT_HOLY          Heiliger Schaden
+   DT_LIGHTNING     Blitzschaden
+   DT_MAGIC         Genereller magischer Schaden
+   DT_POISON        Giftschaden
+   DT_SOUND         Laermschaden
+   DT_TERROR        Angstschaden
+   DT_UNHOLY        Unheiliger/daemonischer Schaden
+   DT_WATER         Wasserschaden
+
+   Alle magischen Schadenstypen stehen auch in dem Mapping
+   MAGICAL_DAMAGE_TYPES.
+
+Waffen duerfen maximal 50% homogenen magischen Schaden machen. 
+Die Summe der magischen Schaeden darf maximal 66% betragen. 
+Es _muss_ immer mindestens ein physikalischer Schaden gesetzt 
+sein. Der Anteil an physikalischem Schaden betraegt demzufolge
+immer mindestens 34%. Solche Waffen sind generell genehmigungs-
+pflichtig.
+
+Genehmigungspflichtig sind auch generell Waffen, die als Schadens-
+typ DT_TERROR, DT_SOUND, DT_AIR oder DT_SQUEEZE enthalten.
+
+Der Schadenstyp DT_EXPLOSION wird nicht mehr genehmigt.
+
+

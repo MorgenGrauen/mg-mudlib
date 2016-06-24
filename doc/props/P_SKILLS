@@ -1,0 +1,15 @@
+NAME:
+	P_SKILLS			"skills"                      
+
+DEFINIERT IN:
+	/sys/player/skills.h
+
+BESCHREIBUNG:
+	Diese Property sollte nicht mehr verwendet werden. Sie wurde
+	vollstaendig durch P_NEWSKILLS ersetzt.
+
+SIEHE AUCH:
+	P_NEW_SKILLS
+
+----------------------------------------------------------------------------
+Last modified: Wed Jan 14 19:17:06 1998 by Patryn

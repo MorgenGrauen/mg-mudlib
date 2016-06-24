@@ -1,0 +1,19 @@
+Materialid:
+MAT_FIRE                 "fire"
+
+Name:
+"Feuer" "Feuers" "Feuer" "Feuer"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_GAS:100
+MATGROUP_INVIS:100
+MATGROUP_ELEMENTAL:100

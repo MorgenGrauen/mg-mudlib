@@ -1,0 +1,12 @@
+SYNOPSIS
+      xclean [object]
+
+DESCRIPTION
+      Clean the inventory of the object, but don't destruct any living.
+      With no argument the current room will be cleaned. The objects
+      are removed with the lfun remove().
+
+EXAMPLE
+      xclean $me.bag
+      Clean my bag.
+

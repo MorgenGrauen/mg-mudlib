@@ -1,0 +1,47 @@
+
+   ----------------------MAGIER_HILFS_SEITE------------------------
+
+Als Magier hat man neben den Spieler- und Seherbefehlen einige weitere
+Befehle zur Verfuegung. Eine Erlaeuterung zu den folgenden Themen und
+Kommandos kann man mit "hilfe <kommando>" erhalten. Wobei hier nicht
+zwischen den Stufen der Magier unterschieden wird. Dies wird aber jeweils
+bei der Erlaeuterung erwaehnt.
+
+ALLGEMEINE THEMEN:
+    balance, forscherpunkte, testspieler, zweitspieler
+
+KOMMUNIKATION:
+    echoall, echoto, echo, mecho, mrufe, oropax, remote
+
+BEWEGUNG:
+    goto, trans, home, verfolge, setmin, setmout, setmmin, setmmout,
+    at, in, +
+
+KAMPF:
+    zap, frieden, sethands
+
+DATEISYSTEM:
+    cd, pwd, ls, cat, head, tail, more, grep, cp, mv, rm, mkdir,
+    rmdir, set, prompt, ed
+
+OBJEKTE:
+    clone, destruct, upd(ate), load, setcmsg, setdmsg
+
+INFO:
+    mschau, people, pwho, localcmd, man, snoop, sallow, spieler, rman
+
+ANDERES:
+    heile, zwinge, title, extralook, traenke, invis, vis, protect, do,
+    showpresay, ping, todo
+
+REGIONSMAGIERBEFEHLE UND -THEMEN:
+    regionsmagier banish, exec
+
+ERZMAGIERBEFEHLE:
+    addmaster, removemaster, mbanish, shutdown
+
+In den Verzeichnissen unter /doc/* findest Du viele weitere Dokumentationen.
+Unter anderem findest Du einen Programmierkurs in LPC/MorgenGrauen unter
+  /doc/KURS/*
+Ausserdem sollten unbedingt die Dokumentationen unter /doc/MG/* beachtet werden.
+

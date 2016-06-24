@@ -1,0 +1,18 @@
+Materialid:
+MAT_MISC_DRUG            "misc_drug"
+
+Name:
+"Droge" "Droge" "Droge" "Droge"
+
+Geschlecht:
+F
+
+Beschreibung:
+allg. Drogen
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_DRUG:100
+MATGROUP_SOLID:100

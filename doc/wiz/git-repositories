@@ -1,0 +1,72 @@
+Git-Repositories im MorgenGrauen
+================================
+
+Die folgenden Repositories stehen fuer die Benutzung durch Magier bereit bzw.
+lassen sich durch Magier bei Bedarf (leer oder durch Import von Verzeichnissen
+aus dem Mud) anlegen:
+
+* /d/region/magier/*
+  Verzeichnisse unterhalb der Magierebene in den Regionen lassen sich in
+  git-Repos aufnehmen.
+  Anlegen: Regionsmitarbeiter, Magier mit Schreibzugriff auf den Pfad
+  Schreibzugriff: Eigentuemer (Magier), Regionsmagier dieser Region, Weise
+  Lesezugriff: s. Schreibzugriff (wegen secure/)
+
+* /p/service/magier/*
+  Anlegen: Weise, Magier mit Schreibzugriff auf den Pfad
+  Schreibzugriff: Eigentuemer (Magier), Weise
+  Lesezugriff: alle Magier (>= 20)
+  
+* /players/magier/*
+  Anlegen: Magier selber, Magier mit Schreibzugriff auf den Pfad
+  Schreibzugriff: Magier selber
+  Lesezugriff: Magier selber
+
+* /players/magier/public/*
+  Anlegen: Magier selber, Magier mit Schreibzugriff auf den Pfad
+  Schreibzugriff: Magier selber, Weise
+  Lesezugriff: jeder Magier (>= 20)
+
+* playground/magier/*
+  Spielwiese zum Testen von Magiern. Soll zum Rumspielen und Testen von Git
+  dienen.
+  Diese Repos werden NICHT mit dem Mud synchronisiert.
+  Diese Repos werden automatisch geloescht, wenn sie laenger als 14 Tage nicht
+  veraendert werden.
+  Anlegen: jeder Magier
+  Schreibzugriff: Magier selber, Weise
+  Lesezugriff: jeder Lehrling (und hoeher) (>= 15)
+
+Uebrigens geht es explizit NICHT, sein gesamtes ~ in ein Repo zu fassen.
+
+Wenn man sein kompletten Regionsverzeichnis (/d/region/magier) in ein Repo
+importiert, sind anschliessend keine einzelnen Repos unterhalb dieses
+Verzeichnisses moeglich (bzw. fuehren zu Problemem)! Ebenso kann das komplette
+Magierverzeichnis nicht mehr als Repo importiert werden, wenn es unter ihm
+schon Repos gibt.
+
+Erzmagier und Goetter haben uebrigens auf _alle_ Repositories Lese- und
+Schreibzugriff. Sie sind auch die einzigen, die in den Repositories einen sog.
+Rewind durchfuehren koennen - d.h. die Versionsgeschichte im Nachhinein
+aendern.
+Eine Beruecksichtigung von access_rights.c, ACCESS_RIGHTS etc. findet hierbei
+derzeit NICHT statt.
+
+Zum Loeschen von Repositories siehe Punkt 6 in git-howto.
+
+Ein (automatischer) Import bestehender Verzeichnisse aus dem Mud ist
+moeglich. In diesem Fall werden das so erstellte Repository und die Mudlib
+automatisch synchronisiert, wenn jemand von aussen in das Repository pusht.
+Hierbei wird _versucht_ etwaige gleichzeitige Aenderung im Git-Repo und in der
+Mudlib sinnvoll zu 'mergen' - im Falle von Konflikten ist dies nicht immer
+moeglich, weswegen Magier auf das Ergebnis solcher automatisierter Merges ein
+Auge werfen sollten.
+
+SIEHE AUCH:
+  git-howto: Wie git benutzt wird
+  git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-faq: haeufig gestellte Fragen/Probleme
+  git-links: Verweise ins WWW
+
+29.01.2013 Gloinson.

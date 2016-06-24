@@ -1,0 +1,10 @@
+SYNOPSIS
+        mixed funcall(closure cl, mixed arg, ...);
+
+BESCHREIBUNG
+        Wertet die Closure 'cl' aus. Die Argumente 'args' werden als Argumente
+        an die Closure uebergeben. Wenn 'cl' keine Closure ist, wird 'cl'
+        zurueck gegeben.
+
+SIEHE AUCH
+        apply(E), quote(E)

@@ -1,0 +1,32 @@
+QueryOwn()
+
+FUNKTION:
+     varargs string QueryOwn(int casus)
+
+DEFINIERT IN:
+     /std/thing/language.c
+
+ARGUMENTE:
+     casus
+          Der Fall fuer die Anrede.
+
+BESCHREIBUNG:
+     Diese Funktion liefert das dem Anlass entsprechende Possessiv-
+     pronomen fuer den Spieler selber (Dein/Deine).
+
+RUeCKGABEWERT:
+     Ein String mit dem Pronomen.
+
+BEISPIELE:
+
+     printf("%s %s loest sich auf.\n",
+           capitalize(obj->QueryOwn(WER)),obj->name(WER));
+
+     (In den meisten Faellen kann man hier auch direkt "Dein" oder "Deine"
+      einsetzen.)
+
+SIEHE AUCH:
+     /std/thing/language.c
+
+----------------------------------------------------------------------------
+Last modified: Sun Aug 10 23:55:27 2003 by Mandragon

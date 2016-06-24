@@ -1,0 +1,28 @@
+
+files seherfaq: alle +Path = /../morgeng/seher/faq/faq2-0
+
+
+
+0. Neuigkeiten: news.txt
+
+1. Transportmoeglichkeiten: inhalt.txt
+
+2. Seherquests: quest.txt
+3. Fluchtrichtung: flucht.txt
+4. seherlevel: level.txt
+5: Kommunikation: kommun.txt
+6: magische kugel: kugel.txt
+7: Seherladen: sladen.txt
+8: designer-seher: looks.txt
+9: fehlermeldung: errmes.txt
+10: paralleldimension.txt: para.txt
+11: finger-befehl: finger.txt
+12: echo, r-emote: echo.txt
+13: magischer beutel: beutel.txt
+anleitung magischer beutel: anleit.txt
+14: seherhaeuser: haeuser.txt
+15: Seherspielplatz: splatz.txt
+16: uebersichtskarte spielplatz: smap.txt
+18: alle seher im mg: salle.txt
+19 zusammenfassung & nachwort: zusamm.txt
+files: files.txt

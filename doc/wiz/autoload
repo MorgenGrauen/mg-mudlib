@@ -1,0 +1,32 @@
+AUTO_LOADING:
+	Rumata 26.08.92
+
+	DER NEUE AUTOLOAD-MECHANISMUS
+
+FUNKTIONEN:
+	void SetProp( P_AUTOLOADOBJ, mixed wert );
+	mixed QueryProp( P_AUTOLOADOBJ );
+
+ERLAEUTERUNG:
+	Es gibt jetzt eine Property P_AUTOLOADOBJ, die jedes Objekt
+	setzen kann. Ist der Wert dieser Property nicht 0, so gilt
+	das Objekt als Autoloading-Objekt. 
+	WICHTIG: Auch Werte wie "" oder ({ }) sind nicht 0.
+
+	Mit der Funktion QueryProp( P_AUTOLOADOBJ ) kann dieser Wert
+	abgefragt werden.
+
+BEMERKUNGEN:
+	Die Property P_AUTOLOADOBJ sollte nicht mit der
+	Property P_AUTO_LOAD verwechselt werden. Diese speichert
+	die Autoload-Informationen im Spieler.
+
+	Die Property P_AUTOLOADOBJ kann selbstverstaendlich auch als
+	Built-in-Property implementiert werden.
+
+BEISPIEL:
+	Ein einfaches Beispiel steht in ***
+	Ein leistungsfaehiges Beispiel steht in /obj/tools/muschel.c
+
+SIEHE AUCH:
+	"doc/MG/properties"

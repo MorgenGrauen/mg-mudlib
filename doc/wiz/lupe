@@ -1,0 +1,209 @@
+ALLGEMEINES:
+	Die Lupe benutzt einen Stapel (Stack), um Objekte zu bearbeiten.
+	Einige Befehle schieben Objekte auf den Stapel, andere wiederum
+	holen sie wieder vom Stapel herunter und benutzen sie fuer die
+	verschiedensten Zwecke.
+	Man kann in einer Zeile mehrere Kommandos gleichzeitig angeben
+	(durch Leerzeichen getrennt).
+	Eine Zeile wird immer von links nach rechts abgearbeitet.
+
+SCHREIBWEISEN:
+	<arg>	- Eine Reihe von Zeichen, die weder Leerzeichen noch Punkte
+		  (.) enthaelt. Falls doch Leerzeichen oder Punkte in <arg>
+		  auftauchen, muss man die Zeichenkette zwischen "...",
+		  '...' oder |...| einschliessen.
+	<nr>	- Eine (positive oder negative) ganze Zahl.
+	<filename> - Ein Dateiname. Fuer ihn gilt das Gleiche wie fuer <arg>:
+		  Wenn er Punkte enthaelt, muss man ihn zwischen "...",
+		  '...' oder |...| einschliessen.
+		  Es sind alle Variationen moeglich, die man auch aus der
+		  Magiershell kennt: absolute Dateinamen (beginnen mit "/"),
+		  Dateinamen relativ zum eigenen Homeverzeichnis ("~/")
+		  oder zum Homeverzeichnis eines anderen Magiers ("~name/"),
+		  Dateinamen in einer Region ("+region/") und Dateinamen
+		  relativ zum aktuellen Verzeichnis (alles andere ;).
+	<func>	- Name einer LPC-Funktion.
+	TOS	- Das Objekt ganz oben auf dem Stapel (Top Of Stack).
+
+DER STAPEL:
+	Bei dem Stapel handelt es sich um einen LIFO-Stapel (Last In - First
+	Out), d.h. das Objekt, das zuletzt auf den Stapel geschoben wurde,
+	wird als erstes bearbeitet.
+	Bei der Bearbeitung wird der TOS in der Regel vom Stapel entfernt
+	(Ausnahmen: =, stk und #), der Stapel wird also im Laufe der Zeit
+	wieder kleiner.
+	Der Stapel kann maximal zehn Elemente aufnehmen. Dieses Limit wird
+	man bei "normalem Betrieb" allerdings selten erreichen.
+	Sollte es trotzdem einmal eng werden, stehen einem noch zehn
+	Variablen zur Verfuegung, in denen man zusaetzlich Objekte (vom
+	Stapel) ablegen kann.
+
+BEFEHLE:
+	Es gibt drei unterschiedliche Befehlsgruppen:
+	a) Befehle, die ein Objekt auf den Stapel schieben;
+	b) Befehle, die mit Objekten auf dem Stapel arbeiten;
+	c) Befehle, die ohne den Stapel auskommen.
+	Einige Befehle setzen voraus, das der TOS ein Lebewesen oder gar ein
+	Spielerobjekt ist; andere Befehle sind erst ab einem bestimmten
+	Magierlevel zugaenglich. Dies ist bei den entsprechenden Befehlen
+	jeweils vermerkt.
+
+    Diese Befehle schieben ein neues Objekt auf den Stapel:
+	creat <filename> Macht das Gleiche wie 'new', das Objekt wird aller-
+			dings nicht in Dein Inventory gesteckt.
+	here		Das Objekt, in dem man gerade steht, auf den Stapel
+			schieben.
+	lv <arg>	Schiebt das Lebewesen mit dem living_name <arg> auf
+			den Stapel. ACHTUNG! Das muss dann nicht unbedingt
+			das Lebewesen sein, das man dort eigentlich haben
+			will! Es wird einfach das erste Objekt genommen,
+			dessen living_name passt! Wenn man etwas mit einem
+			NPC vorhat, der im gleichen Raum steht, spricht man
+			ihn besser mit here.name an.
+	me		Sich selbst auf den Stapel schieben.
+	new <filename>	Cloned das mit <filename> angegebene Objekt und
+			schiebt es auf den Stapel. Anschliessend befindet es
+			sich in Deinem Inventory.
+	ob <filename>	Laedt das Objekt, das mit <filename> angegeben ist,
+			und schiebt es auf den Stapel.
+	pl <arg>	Schiebt das Spielerobjekt mit dem Namen <arg> auf den
+			Stapel.
+			Es werden auch netztote Spieler berucksichtigt.
+	push <filename> Schiebt das Objekt, das mit <filename> angegeben ist,
+			auf den Stapel.
+	<filename>	Macht das gleiche wie 'ob', falls <filename> mit "/"
+			oder "~" beginnt.
+
+    Die naechsten Befehle schalten Optionen der Lupe an/aus/um:
+	desc		Die zusaetzliche Angabe der Kurzbeschreibung des
+			aktuellen Objektes wird unterdrueckt.
+	rec		Schaltet in den "rekursiv"-Modus um. Dieser Modus
+			wird von folgenden Befehlen genutzt:
+			'inv', 'cln' und 'clnof'
+			Nach Ausfuehrung eines dieser Befehle wird der
+			"rekursiv"-Modus automatisch wieder abgestellt.
+	norec		Stellt den "rekursiv"-Modus "von Hand" ab.
+
+    Diese Befehle schieben ebenfalls ein neues Objekt auf den Stapel. Sie
+    arbeiten dabei allerdings relativ zum TOS. Man muss also schon mindestens
+    ein Objekt auf den Stapel geschoben haben. Der alte TOS wird dabei in der
+    Regel entfernt.
+	.<nr>		Schiebt das <nr>te Objekt im Inventory des TOS auf den
+			Stapel.
+	.<arg>		Schiebt das Objekt mit der ID <arg> im Inventory des
+			TOS auf den Stapel.
+	<<nr>		Schiebt die Variable <nr> auf den Stapel. Als <nr>
+			sind Werte zwischen 0 und 9 moeglich.
+	@<nr>		Schiebt das <nr>te Objekt von oben noch einmal auf den
+			Stapel. Der alte TOS hat die Nummer 0. Weder der alte
+			TOS noch das verschobene Objekt werden vom Stapel ent-
+			fernt.
+			@1 ist analog zu 'over'.
+	copy		Legt eine Kopie des TOS an (inkl. aller Propertywerte)
+			und schiebt diese Kopie auf den Stapel. Die Kopie
+			befindet sich danach in Deinem Inventory.
+	dup		Schiebt den TOS doppelt auf den Stapel.
+	env		Schiebt das Objekt, in dem sich der TOS befindet, auf
+			den Stapel.
+	over		Schiebt das Objekt, das sich unter dem TOS befindet,
+			nochmal auf den Stapel. Dabei werden weder der alte
+			TOS noch das Objekt unter ihm entfernt.
+	result		Wenn in einem Objekt eine Funktion aufgerufen wurde,
+			und diese Funktion wieder ein Objekt zurueckgegeben
+			hat, so wird dieses Objekt auf den Stapel geschoben.
+	swap		Tauscht TOS und das darunter liegende Element gegen-
+			einander aus.
+
+    Die naechsten Befehle arbeiten mit den auf dem Stapel liegenden Objekten.
+    Dabei werden die bearbeiteten Objekte in der Regel vom Stapel entfernt.
+	><nr>		Speichert den TOS in der Variablen <nr>. Als <nr>
+			sind Werte zwischen 0 und 9 moeglich.
+	=		Zeigt den TOS. Dieser bleibt dabei unveraendert.
+	#		Der Stack bleibt ueber das naechste Kommando hinaus
+			erhalten.
+	inv		Zeigt das Inventory des TOS. Der TOS bleibt dabei
+			unveraendert.
+	cln		Entfernt alle Objekte aus dem Inventory des TOS. Es
+			werden allerdings keine Spieler entfernt.
+	clnof <arg>	Entfernt alle Objekte, die auf die ID <arg> anspre-
+			chen, aus dem Inventar des TOS.
+	clr		Loescht den gesamten Stack.
+	Dest		Der TOS wird zerstoert. Das geht allerdings NICHT,
+			wenn der TOS ein Spielerobjekt oder die Lupe selbst
+			ist.
+	dest		Wie Dest, allerdings wird zuerst TOS->remove() auf-
+			gerufen, um dem TOS die Moeglichkeit zu geben, noch
+			hinter sich aufzuraeumen.
+	dinfo		Gibt einige GameDriver-interne Informationen wie zB.
+			die Zeit des naechsten reset()-Aufrufs oder die an-
+			gesammelte evalcost des TOS aus.
+	disco		Unterbricht die Verbindug des TOS (muss ein aktiver
+			Spieler sein) zum MG (disconnect).
+	hl		Zeigt die Historyliste des TOS an (hierbei muss es
+			sich um einen Spieler handeln).
+			Dieser Befehl steht ab ELDER_LVL (50) zur Verfuegung.
+			!!!Fuer die Benutzung gilt das Gleiche wie fuer das
+			Snoopen!!!
+	idle		Gibt an, wie lange der TOS schon idlet. (Der TOS
+			sollte dabei natuerlich ein Spieler sein).
+	info		Gibt einige Informationen ueber den TOS aus.
+	inherit_list	Gibt den Vererbungsbaum des TOS aus (allerdings nicht
+			sehr baumfoermig ;)
+	inv		Zeigt das Inventory des TOS an.
+
+	make		Fuehrt ein Update des TOS durch. Geht nicht bei
+			Spielern! Dafuer gibt es renew.
+	minfo		Gibt einige Informationen ueber den Speicherverbrauch
+			des TOS aus.
+	move, mov, mo	Das Objekt, das unter dem TOS steht, wird in den TOS
+			gemoved. Beide Objekte werden dabei vom Stapel ent-
+			fernt.
+	_move, _mov, _mo, _mv
+			Das Objekt, das unter dem TOS steht, wird in den TOS
+			gemoved, ohne dass dort init() aufgerufen wird. Beide
+			Objekte werden dabei vom Stapel entfernt.
+			Dieser Befehl steht ab ARCH_LVL (60) zur Verfuegung.
+	pop		Entfernt den TOS.
+	renew		Aehnlich wie 'make', der TOS muss allerdings ein
+			Spieler sein. ACHTUNG! Man sollte nicht "einfach so"
+			Spieler 'renew'en, sondern nur dann, wenn es wirklich
+			gerechtfertigt ist!
+	scan, sc	Kombiniert 'stat' und finger. Der TOS muss ein Lebe-
+			wesen sein.
+	stat		Gibt Informationen ueber Zustand, Ausruestung, ge-
+			loeste Quests etc. des TOS aus. Der TOS muss dabei
+			ein Lebewesen sein.
+	stk		Zeigt den gesamten Stack. Dieser bleibt dabei unver-
+			aendert.
+	[<func>]	Ruft im TOS die Funktion <func> ohne Parameter auf.
+			Falls diese Funktion ein Objekt zurueckgibt, kann man
+			dieses anschliessend mit result auf den Stapel
+			schieben.
+	[<func> <arg1> ... <argn>]
+			Ruft im TOS die Funktion <func> mit den Parametern
+			<arg1> bis <argn> auf. Die Parameter sind mit Leer-
+			zeichen zu trennen. Enthalten die Parameter selbst
+			Leerzeichen, so sind sie in "...", '...' oder |...|
+			einzuschliessen.
+			Mittels @<nr> kann man auch Objekte, die sich auf dem
+			Stapel befinden, als Argumente angeben.
+
+    Die folgenden Befehle kommen ohne Objekte auf dem Stack aus:
+	call_out	Gibt eine Liste aller Objekte mit einem laufenden
+			call_out aus.
+	dump		Schreibt die Listen aller Objekte mit aktivem
+			heart_beat und aller Objekte mit laufendem call_out
+			in die Datai LISTS.LUPE in Dein Homeverzeichnis.
+	dumphists	Schreibt die Befehlshistory aller momentan einge-
+			loggten Spieler nach /log/ARCH/HD.
+			Dieser Befehl steht erst ab ARCH_LVL (60) zur
+			Verfuegung.
+	heart_beat	Gibt eine Liste aller Objekte mit aktivem heart_beat
+			aus.
+	rusage		Zeigt einige Infos ueber den Ressourcenge-/-verbrauch
+			des Muds an.
+	swho		Zeigt (so gut wie) alle aktiven Snoops.
+	vars		Zeigt die belegten Variablen an.
+
+----------------------------------------------------------------------------
+Last modified: Wed Jun 26 14:49:02 1996 by Wargon

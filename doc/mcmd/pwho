@@ -1,0 +1,35 @@
+
+pwho
+----
+
+ MAGIERKOMMANDO:
+    pwho
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Dieses Kommando gibt die wichtigsten Charakterwerte aller eingeloggten
+    Spieler und Seher aus.
+
+    Als Infomation erhaelt man
+
+     * den Level
+     * den Namen
+     * die Erfahrungspunkte
+     * die Abenteuerpunkte
+     * Intelligenz
+     * Kraft
+     * Geschicklichkeit
+     * Ausdauer
+     * Angriffsstaerke
+     * Abwehrstaerke
+     * Angriffsstaerke mit blossen Haenden
+     * momentane Lebenspunkte
+     * maximale Lebenspunkte
+
+ SIEHE AUCH:
+    wer, people
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

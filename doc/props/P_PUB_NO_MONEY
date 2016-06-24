@@ -1,0 +1,21 @@
+NAME:
+	P_PUB_NO_MONEY				"pub_no_money"
+
+DEFINIERT IN:
+	/sys/pub.h
+
+BESCHREIBUNG:
+        In diese Property kann man einen String schreiben, der ausgegeben
+        wird, wenn der Spieler nicht ueber genug Geld verfuegt, um das
+        gewuenschte Gericht zu bezahlen.
+        Fuer den Preis kann man ein %d als Platzhalter einfuegen.
+
+BEMERKUNGEN:
+        Die Standardmeldung ist:
+        "Das kostet %d Goldstuecke, und Du hast nicht so viel!\n"
+
+SIEHE AUCH:
+	/std/room/pub.c
+
+----------------------------------------------------------------------------
+Last modified: Sat Mar 04 22:48:00 2000 by Paracelsus

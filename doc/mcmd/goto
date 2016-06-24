@@ -1,0 +1,52 @@
+
+goto
+----
+
+ MAGIERKOMMANDO:
+    goto <ziel>
+    +<magier>
+
+ ARGUMENTE:
+
+     <ziel>
+        Pfadname oder Name eines Lebewesens
+     <magier>
+        Name eines Magiers (mindestens Magierlevel 20)
+
+ BESCHREIBUNG:
+    Mit diesen Befehlen gelangst Du an die gewuenschten Orte im MorgenGrauen.
+
+    Ist <ziel> ein Pfadname, so gelangst Du direkt in den angegebenen Raum.
+
+    Ist <ziel> dagegen der Name eines (eingeloggten) Spielers oder eines NPCs,
+    so wirst Du in den Raum teleportiert, in dem sich das entsprechende
+    Lebewesen aufhaelt.
+    
+    Wenn mehere NPCs des Namens existieren, kann man mit 'goto name nr' den
+    gewuenschten auswaehlen.
+
+    Eine schnelle Art, in den Arbeitsraum des Magiers <magier> zu gelangen,
+    ist das Kommando +<magier>.
+
+    Wenn Du Dich im Verfolgemodus befindet, wird dieser durch den Befehl
+    abgeschaltet.
+
+ BEISPIELE:
+    In Wargons Arbeitsraum steht immer ein NPC namens Errol. Deshalb kann man
+    auf folgende drei Arten in Wargons Arbeitsraum gelangen:
+
+    > goto ~wargon/workroom
+    > goto errol
+    > +wargon
+    
+    Es gibt im Morgengrauen zahlreiche Rehe. Zu den einzelnen gelangt man mit
+    > goto reh 1
+    > goto reh 2
+    > goto reh 3
+    > ...
+
+ SIEHE AUCH:
+    trans, in, at, setmmin, setmmout
+
+ LETZTE AeNDERUNG:
+    Sat, 29.07.2000, 18:00:00 von Silvana

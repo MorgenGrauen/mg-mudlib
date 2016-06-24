@@ -1,0 +1,22 @@
+
+stop
+----
+
+ KOMMANDO:
+    stop [<gegner>]
+
+ ARGUMENTE:
+
+     <gegner> (optional)
+        Einer Deiner Gegner
+
+ BESCHREIBUNG:
+    Du hoerst auf, Deine Gegner (oder nur den Gegner <gegner>) zu verfolgen.
+    Allerdings kann man nicht aufhoeren, verfolgt zu werden.
+
+ SIEHE AUCH:
+     Verwandt: toete
+     Anderes:  kaempfen, heilung, leben, tod 
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

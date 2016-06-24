@@ -1,0 +1,8 @@
+SYNOPSIS
+      xdes <object>
+
+DESCRIPTION
+      Destruct an object using by first calling the lfun remove() of the
+      object and if its still "alive" then destruct it with the efun
+      destruct().
+

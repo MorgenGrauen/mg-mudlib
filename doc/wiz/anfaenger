@@ -1,0 +1,116 @@
+Anfaengergebiete
+
+Vielleicht eruebrigt es sich, einen laenglichen Leitfaden zu schreiben,
+weil dies eigentlich Gebiete wie viele andere sein sollten:
+ausreichend beschrieben, logisch durchdacht, balanciert, was NPC und
+Objekte wie Waffen und Ruestungen betrifft, kurzum, es muss Spass fuer
+Spieler machen.
+
+Einiges unterscheidet aber ein solches Gebiet von anderen, denn wie der
+Name schon sagt, sollte man dort eher hauptsaechlich Anfaenger (einmal
+willkuerlich als Spielstufe 1-5 bezeichnet) erwarten.
+
+1. Erreichbarkeit
+Viele Anfaengergebiete befinden sich natuerlich in unmittelbarer Naehe
+einer Rasse, z.B. die Hochebene bei den Zwergen, der Park der Freunde
+bei den Elfen oder der kleine Dschungel im NW von Katzmandu. Hierbei
+ist die Naehe fuer eine Rasse gegeben, so dass zumindest die kleinen
+Spieler dieser Rasse das Gebiet leicht erreichen koennen. Natuerlich
+ist es fuer andere Rassen nicht unbedingt einfach, einige weit entfernt
+gelegene Anfaengergebiete zu erreichen, ohne Dutzende von Raeumen zu
+durchlaufen.
+Man kann auch nicht sofort davon ausgehen, dass sich ein Anfaenger von
+Anfang an eine Karte fuer Wege anlegt. Insofern ist es sinnvoll, wenn
+es Anfaengergebiete in unmittelbarer Naehe zu den Startpunkten der
+Rassen gibt. Die koennen dann entweder unter dem Ebenenpfad oder auch
+unter /d/anfaenger stehen.
+Allgemein zugaengliche Anfaengergebiete sollten zumindest ohne grossen
+Aufwand vom Startpunkt der Rassen aus zu erreichen sein. Das koennte
+durch spezielle Hilfsmittel geschehen, durch NPC, die einen den Weg
+dorthin weisen (vielleicht durch Ueberarbeitung von bestehenden Files)
+oder durch teleportierende Objekte, die nur fuer Anfaenger benutzbar
+sind. Ziel ist es nicht, den Spielern das Laufen und selbststaendige
+Erkunden abzunehmen, sondern nur die Gefahr, sich ueber laengere
+Strecken hin zu "verfransen".
+
+2. Bekanntheitsgrad
+Diesem Punkt sollte man ein wenig Zeit widmen. Am einfachsten ist die
+Bekanntheit zu erreichen, wenn im Gebiet eine Quest spielt, da dann
+frueher oder spaeter zwangslaeufig eine Frage gestellt wird. Ist es
+eine Miniquest, koennte eine Erfolgsmeldung ueber die Ebene Anfaenger
+flimmern statt ueber die Ebene Abenteuer. Wenn es passt, koennten
+auch diverse NPC mit Informationen versorgt werden, oder andere Objekte,
+die man an prominenter Stelle plaziert (Notizen, Buecher, Aufzeichnungen
+oder aehnliches).
+
+3. NPC
+Auch wenn es nur "kleine" NPC sind, kann man in sie mindestens so viel
+Energie fuer Informationen, Verhalten und Details stecken wie fuer
+"grosse". Sie sollten keinesfalls aggressiv sein. Hoher Body (~ >70)
+oder hohe Hands (~ >100) sind zu vermeiden, da man als Anfaenger noch
+kein Gefuehl dafuer hat, was die Schadensmeldungen "hart", "krachende
+Knochen" oder "kitzelt Dich" in etwa an Schaden machen. Dementsprechend
+waere es auch sinnvoll, die NPC zu schreiben. Bedrohlich aussehende
+Drachen, die immer verfehlen, sind eigentlich ebenso wenig plausibel
+wie kleine Ameisen, die einen mit der Saeure immer sehr hart treffen.
+Im Zweifel einfach einen Lvl 1 Testspieler anlegen und ausprobieren,
+mal ganz ohne Waffe (wie komme ich als "nackter" Neuling an meine erste
+Waffe?), mal mit einer schwachen, mal mit einer etwas besseren Waffe.
+Als Ausnahme darf hier gerne auch mal ein eigentlich schwacher NPC
+Killstufenpunkte (Killstupse) vergeben.
+
+4. Cleaning Up
+Hoffentlich besuchen dann auch viele das Gebiet. Eventuell empfiehlt es
+sich dann (wie bei vielen anderen Gebieten aber auch) zu ueberlegen,
+was passiert, wenn eine Unzahl geschriebener Objekte, die viele dann
+doch nicht gebrauchen/mitnehmen, im Raum herumliegt. Bei Ruestungen und
+Waffen sind die Argumente CLONE_WIELD und CLONE_WEAR in der Funktion
+AddItem vorteilhaft, bei anderen Objekten koennte man in deren Reset
+nachsehen, ob sie laengere Zeit in einem Raum des Gebiets oder im Gebiet
+selbst "herumgammeln". Es bleibt zwar zu hoffen, dass sie irgendwann
+dem Ausswappen des Raumes anheimfallen, aber es sieht im allgemeinen
+nicht schoen aus, wenn Objekte oder gar quest-/miniquestrelevante Teile
+sich in einem oder mehreren Raeumen stapeln.
+
+5. ZTs
+Sie helfen, das Gebiet bekannter zu machen (siehe Punkt 2), sollten
+aber einfach zu finden sein (Detail, einfacher Befehl) und nicht gleich
+eine ganze Miniquest beinhalten.
+
+6. Unterstuetzung von wichtigen Standarditems
+Dazu gehoeren immer noch Seil, Fackel oder Schaufel. Eventuell braucht
+man sie fuer die eine oder andere Aufgabe, ihre Benutzung und die damit
+verbundene Syntax sollte dem Anfaenger danach gelaeufig sein.
+
+7. Unterstuetzung von weit verbreiteten Befehlen
+Dazu zaehlen "oeffne", "nimm", "suche/durchsuche", "schliesse", etc.,
+also das, was in vielen Quests auch mitunter gefragt ist.
+
+8. Vielfalt in dem, was man "tun" kann, einfache Umsetzung
+Man koennte diesen Punkt auch unter "einfacher Code fuer Anfaenger"
+zusammenfassen, das ginge aber manchmal zu weit. Wichtig in diesem
+Zusammenhang ist auch, dem Anfaenger spielerisch im Text, durch Details
+oder Infos von NPC die Syntaxen, wenn sie denn einmal abseits der so
+ueblichen Kommandos sind, ein wenig in den Mund zu legen:
+(Spieler weiss, dass in diesem Raum ein ZT fuer ihn ist, es hat was mit
+dem Baum zu tun, vor dem er steht)
+"unt baum" ->
+"Der Baum ist recht beeindruckend und hoch. Dennoch koenntest Du ohne
+ weiteres auf ihn klettern." ->
+"kletter auf baum/baum hoch" ->
+Erfolg
+
+9. Belohnungen
+Sie duerfen ruhig grosszuegig sein: ZTs (Zaubertraenke), FP (Forscher-
+punkte), EK (Erstkills/Killstupse), AP (Abenteuerpunkte/Questpunkte)
+und MQP (Miniquestpunkte) sind wohl dosiert und abwechslungsreich zu
+verteilen und sollen dem Spieler helfen, den anfangs langen Weg bis
+zum naechsten Level zu verkuerzen.
+
+Wie ueberhaupt hilft eine gute Dokumentation auch einem Anfaenger unter
+den Magiern, selbst schnell eine eigene Referenzsammlung fuer einfache
+Dinge in LPC zu erstellen. Man koennte also sagen, wie der Spieler im
+Anfaengergebiet waechst auch der Magier, der es geschrieben hat.
+
+-----------------------------------------------------------------------
+Last modified: Tue Mar 21 01:46:35 2006 by Ark

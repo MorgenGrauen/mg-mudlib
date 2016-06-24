@@ -1,0 +1,17 @@
+Das sind die Befehle, die die magischen Teller zur Zeit beherrschen:
+(Letzte Aenderung am 20.01.1995 an den mit % markierten Funktionen,
+die mit * sind neu! AB JETZT GIBT ES AUCH FUNKTIONEN! )
+
+array       destruct    here        memory%     rekinv      split
+call        dump*       if*         message     remove      stack
+callefun    dup         inv         move        restore*    swap
+callouts    einleitung  living      names       rupdate     todo
+cleanof     evaluate*   lock        object      say         top
+clear       FUNKTIONEN* lpc         player      scan        update
+clone       general     me          pop         snoop       vars
+
+Mit ",hilfe <Befehl>" kannst Du Informationen zu den Befehlen abfragen.
+Wenn Du garnix verstehst, dann versuche mal ",hilfe einleitung". :-)
+
+WICHTIG: Das Semikolon wird nicht mehr unterstuetzt, stattdessen
+	kann nur noch das Komma benutzt werden.

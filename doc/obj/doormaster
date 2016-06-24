@@ -1,0 +1,26 @@
+Der doormaster.c dient als zentrale Verwaltungsstelle fuer die Tueren im
+MorgenGrauen. In der Regel kommt man mit diesem Objekt nicht in Beruehrung,
+da die Kommunikation ueber /std/room/doors.c laeuft.
+
+Folgende Funktionen stehen zur Erzeugung, Abfrage und Manipulation von Tueren
+bereit:
+
+ * NewDoor()
+     Tuer einbauen. Wird im ueblicherweise im create() eines Raums benutzt.
+
+ * QueryDoorStatus()
+     Status einer Tuer abfragen.
+
+ * SetDoorStatus()
+     Status einer Tuer setzen.
+
+ * QueryAllDoors()
+     Gibt ein Mapping mit allen Tueren im MG und deren Zustaenden zurueck.
+
+
+SIEHE AUCH:
+    NewDoor(), QueryDoorKey(), QueryDoorStatus(), SetDoorStatus(),
+    /std/room/doors.c, GetPhiolenInfos(), QueryAllDoors(), P_DOOR_INFOS
+
+-----------------------------------------------------------------------------
+Letzte Aenderung: Don, 08.05.2014, Gabylon

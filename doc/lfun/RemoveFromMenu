@@ -1,0 +1,32 @@
+RemoveFromMenu()
+
+FUNKTION:
+     int RemoveFromMenu(mixed ids)
+
+DEFINIERT IN:
+     /std/pub.c
+
+ARGUMENTE:
+     ids - string oder string*
+	   String oder Array von Strings, mit denen sich die Speise bzw.
+           das Getraenk beim Bestellen ansprechen laesst.
+
+RUECKGABEWERT:
+     int - Anzahl entfernter Einzelmenueeintraege
+
+BESCHREIBUNG:
+     Mit dieser Methode kann man id-basiert Speisen und Getraenke
+     wieder von der Karte entfernen (wenn zB nur saisonbasiert
+     bestimmte Dinge angeboten werden sollen).
+     
+BEMERKUNGEN:
+     - sich zwischen zwei Speisen ueberschneidende IDs fuehren zu
+       undefiniertem Verhalten!
+     - bei Benutzung von RemoveFromMenu sollte man in Delay-Speisen oder
+       -Getraenken auf die Nutzung vom ident-Parameter in den
+       Serviernachrichten verzichten (es sei, man weiss was man tut)
+
+SIEHE AUCH:
+     AddToMenu(), AddFood(), AddDrink(), /sys/pub.h
+
+15. Februar 2009 Gloinson

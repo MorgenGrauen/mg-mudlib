@@ -1,0 +1,17 @@
+Materialid:
+MAT_SLIME                "slime"
+
+Name:
+"Schleim" "Schleims" "Schleim" "Schleim"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100

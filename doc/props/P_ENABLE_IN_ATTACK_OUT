@@ -1,0 +1,33 @@
+NAME:
+	P_ENABLE_IN_ATTACK_OUT		"enable_in_attack_out"
+
+DEFINIERT IN:
+	/sys/combat.h
+
+BESCHREIBUNG:
+	Normalerweise wird die bekannte Taktik Rein-Angriff-Raus
+	standardmaessig unterbunden, damit NPCs auch eine Chance haben, sich
+	zu verteidigen. Hierzu wird der Schaden innerhalb do_damage()
+	durch einen Wert geteilt, der sich aus der Verweildauer des
+	Angreifers im Raum ergibt (bis zu 3 Sekunden).
+	Da manche NPCs so konzeptioniert wurden, dass man sie nur mit der
+	erwaehnten Taktik toeten kann, kann man sie auch explizit erlauben
+	(manche NPCs verwenden auch eigene Methoden, diese Taktik zu
+	 verbieten, und sie waere dann doppelt abgefangen).
+	Hierzu setzt man einfach die Property P_ENABLE_IN_ATTACK_OUT im NPC.
+
+BEISPIEL:
+	Das folgende Beispiel erlaubt einfach mal die angesprochene Taktik:
+	  void create()
+	  { ...
+	    SetProp(P_ENABLE_IN_ATTACK_OUT,1);
+	    ...
+	  }
+	Jetzt kann man den NPC mit Rein-Angriff-Raus auch wirkungsvoll
+	bekaempfen.
+
+SIEHE AUCH:
+	do_damage(), P_LAST_MOVE, /std/living/life.c
+
+-----------------------------------------------------------------------------
+Last modified: Sat Jan 30 12:53:00 1999 by Patryn

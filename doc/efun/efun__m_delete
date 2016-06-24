@@ -1,0 +1,24 @@
+SYNOPSIS:
+	mapping m_delete(mapping map, mixed key)
+
+DESCRIPTION:
+	Remove the entry with index 'key' from mapping 'map', and
+	return the changed mapping. If the mapping does not have an
+	entry with index 'key', the first argument is returned.
+
+        If you don't want to modify the mapping map, checkout the
+        simul_efun m_delete().
+
+EXAMPLE: 
+
+        mapping m1, m2;
+
+        m1 = ([ "a":1, "b":2, "c":3 ]);
+
+        m2 = efun::m_delete(m1, "b");
+           => m1 = ([ "a":1, "c":3 ])
+	      m2 = ([ "a":1, "c":3 ])
+
+SEE ALSO:
+	mappingp(E), mkmapping(E), m_indices(E), m_values(E),
+	sizeof(E)

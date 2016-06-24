@@ -1,0 +1,64 @@
+
+Zaubertraenke
+=============
+
+ ZAUBERTRAeNKE:
+    Im ganzen MorgenGrauen sind Zaubertraenke (ZT) versteckt, welche die
+    Attribute erhoehen. Da das Spiel aber inzwischen so gross geworden ist,
+    dass man sie ohne Hilfe praktisch nicht mehr finden kann, gibt es das
+    Orakel von Tingan. Dort bekommt man in Abhaengigkeit von den
+    Stufenpunkten konkrete Hinweise, wo man einen Zaubertrank finden kann.
+    Natuerlich bekommen Anfaenger zuerst die leichtesten Verstecke verraten,
+    der Schwierigkeitsgrad steigert sich dann im Spielverlauf. So sollte es
+    immer moeglich sein, mit den Tipps auch etwas anzufangen (siehe DETAILS).
+
+    Konkret sieht das so aus:
+
+     * 8 Tipps kann man sich direkt bei Spielbeginn umsonst holen
+     * 26 Tipps gibt es fuer jeweils 25 Stufenpunkte
+     * 26 Tipps gibt es fuer jeweils 40 Stufenpunkte
+     * 10 Tipps gibt es fuer jeweils 70 Stufenpunkte
+     * 10 Tipps gibt es fuer jeweils 100 Stufenpunkte
+
+    Natuerlich muss man keine Stufenpunkte bezahlen, man muss sie nur haben.
+
+    ACHTUNG: Man kann die Zaubertraenke erst finden, wenn man den
+    entsprechenden Hinweis vom Orakel bekommen hat.
+
+    Wo ist das Orakel?
+    Das Orakel kann man finden, wenn man sich den westlichen Teil der
+    Hochebene etwas genauer anschaut. Wie man die Hochebene findet? Das kann
+    jeder Spieler mit ein bisschen Spielerfahrung erklaeren, also fragt ruhig
+    ein bisschen herum.
+
+    Wie sehen die Hinweise aus?
+    Natuerlich orakelmaessig verschluesselt, aber nicht *zu* undurchsichtig.
+    Man sollte in der Regel schon etwas damit anfangen koennen, das heisst
+    aber nicht, dass man ueberhaupt nicht mehr suchen oder nachdenken muss.
+    Damit man sich nicht alles aufschreiben muss, merkt sich der Spieler die
+    momentan aktuellen Sprueche automatisch, man kann sie mit dem Befehl
+    `zaubertraenke' abrufen. Wenn der Zaubertrank gefunden wurde, verschwindet
+    auch der entsprechende Hinweis aus der Liste.
+    Fuer einige Zaubertraenke gibt es mehrere Sprueche, die in der Liste
+    zufaellig ausgewaehlt und angezeigt werden.
+
+ DETAILS:
+    Technisch genauer: Ein Spieler bekommt bei seinem ersten Login eine Liste
+    von ZTs zugeordnet. Diese Liste ist eine Auswahl aus allen existierenden
+    ZTs.
+    Das Orakel praesentiert einem dann jeweils die leichtesten ZTs aus dieser
+    eigenen Liste (und nicht aus allen ZTs!)
+    Das heisst also, dass euch durch andere Spieler bekannte, leichte ZTs
+    nicht unbedingt auch eure ZTs sein muessen. Und es kann bedeuten, dass
+    eure leichten ZTs etwas schwerer sind. Nicht aufgeben!
+
+    Wenn euch ZTs an nur in einer Quest erreichbaren Stellen auffallen, so
+    wendet euch bitte an den Erzmagier, der fuer die ZTs zustaendig ist
+    (siehe hilfe erzmagier).
+
+ SIEHE AUCH:
+    attribute, stufenpunkte
+
+ LETZTE AeNDERUNG:
+    25. Nov 2007 Gloinson
+

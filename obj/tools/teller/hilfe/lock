@@ -1,0 +1,26 @@
+BEFEHL:
+	,
+
+ARGUMENTE:
+	Keine
+
+FUNKTION:
+	Lege einen 'Lock' auf dem Stack ab. Anhand eines Locks erkennen
+	Funktionen, die eine varibale Anzahl von Argumenten vom Stack
+	nehmen koennen, wieviele der Argumente fuer sie bestimmt sind.
+
+	Wichtig: Das Komma am Anfag jeder Eingabezeile ist KEIN Lock.
+
+BEISPIELE:
+	,me, 1 2 3 array
+		Es werden nur die Zahlen 1 2 und 3 in das Array aufgenommen,
+		nicht der Spieler selbst. Auf dem Stack liegen nacher der
+		Spieler und das Array.
+	,here, me "rumata" ->id
+		"id" wird im Spieler mit einem Argument ("rumata") aufgerufen.
+	,here me "rumata" ->id	
+		Hier wird die Funktion im Raum mit zwei Argumenten aufgerufen,
+		was hier natuerlich keinen Sinn macht.
+
+SIEHE AUCH:
+	"array", "split", "call", "callefun", "evaluate"

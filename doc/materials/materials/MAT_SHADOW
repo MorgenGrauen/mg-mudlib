@@ -1,0 +1,17 @@
+Materialid:
+MAT_SHADOW               "shadow"
+
+Name:
+"Schatten" "Schattens" "Schatten" "Schatten"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MISC:100

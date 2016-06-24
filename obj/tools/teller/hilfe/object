@@ -1,0 +1,22 @@
+BEFEHL:
+	object, ob
+
+ARGUMENTE:
+	TOS -- Name eines Objektes
+
+FUNKTION:
+	Hole einen Namen vom Stack und lege stattdessen das entsprechende
+	Objekt auf den Stack. Falls es kein geladenes Objekt dieses Namens,
+	wohl aber eine (nicht geladene) Blueprint, so wird diese geladen
+
+BEISPIELE:
+	,"players/rumata/workroom" ob
+	Macht das selbe wie ',/players/rumata/workroom', da die Teller
+	Filenamen automatisch zu erkennen versuchen.
+	,"~rumata/workroom" ob
+	geht auch.
+	,"~/workroom" ob
+	liefert den eigenen Workroom.
+
+SIEHE AUCH:
+	"living", "player"

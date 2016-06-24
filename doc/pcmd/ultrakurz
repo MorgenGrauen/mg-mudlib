@@ -1,0 +1,21 @@
+
+ultrakurz
+---------
+
+ KOMMANDO:
+    ultrakurz
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Schaltet auf den "Ultrakurz"-Modus um. Wenn Du Dich in diesem Modus
+    befindest, siehst Du *keine* Raumbeschreibung - nuetzlich, wenn man
+    altbekannte Pfade ablaeuft. Mit den Kommandos `lang' und `kurz' kannst Du
+    diesen Modus wieder beenden.
+
+ SIEHE AUCH:
+    lang, kurz, schau, ausgaenge
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

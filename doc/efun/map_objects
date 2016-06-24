@@ -1,0 +1,51 @@
+map_objects(E)
+
+FUNKTION:
+     object *map_objects(object *arr, string fun [, mixed extra])
+
+PARAMETER:
+     arr	- zu mappendes Array von Objekten/Objektpfaden
+     fun	- an Objekten zu rufende Methode
+     extra	- weitere Parameter fuer Methode
+
+BESCHREIBUNG:
+     Mapped die Elemente aus 'arr' durch den Aufruf der Methode 'fun' an
+     jedem der Elemente von 'arr' in ein neues Array.
+     0-Eintraege werden ignoriert.
+
+     Der Rueckgabewert von
+	arr[n]->fun([extra1, extra2, ...])
+     wird an der Indexposition des Elementes in das neue Array eingetragen.
+
+RUeCKGABEWERT:
+     Array mit Resultaten der Funktionsaufrufe am jeweiligen Objekt.
+
+BEMERKUNGEN:
+     Werden Pfade angegeben, so wird versucht ein Objekt zu laden, falls
+     dieses nicht existiert.
+
+BEISPIEL:
+     // ersetze alle Objekte durch ihre Namen
+     arr=map_objects(inputarr, "name");
+
+     // ersetze alle Objekte durch ihre Namen im Genitiv
+     arr=map_objects(inputarr, "name", WESSEN);
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i;
+     object *ret; mixed *input;
+
+     i=sizeof(input);
+     ret=allocate(i);
+     while(i--)
+       ret[i]=input[i]->fun([extra1, extra2, ...]);
+
+SIEHE AUCH:
+     Arrays:		filter(E), map(E)
+     Objektarrays:	filter_objects(E)
+     Mappings:		filter_indices(E), map_indices(E)
+
+     Sonstiges:		sort_array(E), unique_array()
+			alist, transpose_array(E)
+
+20.Jan 2005 Gloinson

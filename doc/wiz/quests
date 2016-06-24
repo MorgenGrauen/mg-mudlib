@@ -1,0 +1,160 @@
+Leitfaden fuer die Questerstellung/-abnahme:
+============================================
+
+
+Quests im MorgenGrauen:
+-----------------------
+
+Beginnen wir mit einem Zitat:
+
+  Boing sagt: 'Das MorgenGrauen ist ein Questmud.'
+
+Das MorgenGrauen unterscheidet sich von einigen anderen Muds, indem
+eben ein sehr grosser Wert auf Quests gelegt wird. Mittlerweile haben
+wir ja auch schon eine ordentliche Anzahl Quests. Trotzdem ist es
+wichtig und wird immer wieder gerne gesehen, wenn neue Quests geproggt
+werden. Darueberhinaus bleibt man als Magier natuerlich auch laenger
+im Spiel bekannt. Gerade weil Quests auch eine wichtige Anforderung
+zum Sehertum sind, muss ihnen ein besonderes Augenmerk seitens des
+programmierenden Magiers gewidmet werden und besonders sorgfaeltig
+gearbeitet werden. Dazu gibt es nun im folgenden ein paar Hinweise,
+die man als Questprogrammierer einhalten sollte, damit die Quest
+genehmigt werden kann und bei den Spielern gut ankommt.
+
+Questideen:
+-----------
+
+Dies ist der wichtigste Bestandteil einer Quest. Hier sollte man sich
+sehr viel Muehe geben, denn mit dem Konzept steht und faellt eine
+Quest. Damit Spieler Spass an einer Quest haben, ist eine gute Story,
+ein gutes Konzept unabdingbar. Ein wichtiger Erfolgsfaktor ist an
+dieser Stelle auch, sich rechtzeitig mit dem betroffenen Regionsmagier
+und dem Questerzmagier abzusprechen. Spaeter hat man da vielleicht
+keine Gelegenheit mehr und hat sich viel Arbeit gemacht und muss
+wieder viel aendern. Daher: VORHERIGER ABSPRACHE VERMEIDET
+AERGER. Insbesondere bei Quests mit hohem Metzelanteil sollte
+unbedingt Ruecksprache gehalten werden, da solche Quests nicht so
+gerne gesehen sind. 
+
+Questumsetzung:
+---------------
+
+Bei der Umsetzung kann man sich an die Regeln halten, die allgemein
+fuer den Anschluss von Gebieten gelten (NPCs, Balance...). Besondere
+Aufmerksamkeit verdienen die Teile, die zur Loesung der Quest
+notwendig sind (Questitems, Questmaster...)  Es empfiehlt sich auch in
+dieser Phase, immer mal Ruecksprache mit dem Regionsmagier oder
+Questerzmagier zu halten.
+
+Eine Questbelohnung wird von Spielern immer wieder gerne
+genommen. Dabei sollte man allerdings ein gewisses Augenmass
+anlegen. Nicht fuer jede Quest muss es eine super tolle
+Auto-Load-Belohnung geben. 
+
+Fuer das konkrete Umsetzen seien noch ein paar Hinweise gegeben:
+
+ - Fuer die Atmosphaere und die Details sollte man sehr viel Muehe
+   verwenden, so dass sich dem Spieler der logische Aufbau
+   erschliesst. Es ist fuer Spieler ausserordentlich aergerlich, eine
+   Quest zu spielen, deren Bestandteile irgendwie in der Luft
+   haengen. 
+ - Es sollte sich sehr gut ueberlegt werden, wie die Quest reagiert, 
+   wenn mehrere Spieler gleichzeitig die Quest spielen wollen (das
+   wird inbesondere direkt nach dem Anschluss der Fall sein).
+   Dies bezieht sich insbesondere auf Quest-Objekte, die einem Spieler
+   evtl. nicht zur Verfuegung stehen, weil sie gerade ein andere
+   genommen hat, oder Quest-NPCs, die wichtige Auskuenfte haben,
+   aber leider umgenietet wurden. Wichtige Quest-NPCs sollten nach
+   Moeglichkeit besser nicht als Metzelopfer konzipiert werden.
+ - Nach Moeglichkeit sollte es nicht das hundertste Labyrinth geben.
+ - Werden fuer die Quest allgemeine Objekte (wie Schaufeln, Seile
+   etc.) benoetigt, so sollten auch die an anderer Stelle im Mud
+   erhaeltlichen Objekte funktionieren oder es sollte fuer den Spieler
+   erkennbar sein, wieso nur ein spezielles Objekt den Zweck erfuellt.
+ - Questobjekte sollten fuer Spieler nicht erstellbar sein (->
+   Seherbeutel). 
+ - Wird der Questfortschritt in einem Master gespeichert, so empfiehlt
+   es sich, die Daten zu den Spielern nach dem Loesen der Quest wieder
+   zu loeschen (ebenso bei Spielern, die sich geloescht haben).
+ - Es sollten sich auch Gedanken gemacht werden, wie die Quest beim
+   Einschlafen, Beenden oder bei einem Crash reagiert. Es muss also
+   sichergestellt sein, dass der Spieler dann beim naechsten 
+   Questversuch nicht in einen inkonsistenten Zustand landet.
+ - Gut ist, den Questverlauf ein wenig variable zu gestalten, so
+   dass die Quest nicht ohne weiteres durchskriptbar ist.
+ - Bei Pflichtquests bitte beachten, dass NPCs, die zwingend zu toeten
+   sind, nicht zu stark sind.
+ - Das Objekt, welches die Quest nach dem Loesen setzen soll, muss einen 
+   Aufruf von GiveQuest enthalten. Desweiteren ist beim ersten Loesen 
+   in ein Questlogfile im Verzeichnis /log/quest ein Eintrag zu machen, 
+   dass der Spieler die Quest bestanden hat. Diesen Eintrag bitte 
+   mit write_file schreiben.
+  
+Questtest (Magier):
+-------------------
+
+Nun kommt ein entscheidender Schritt fuer die Quest. Denn jetzt
+schauen auch einmal Magierkollegen ueber die Quest und koennen auf
+Bugs, logische Fehler und kleinere Probleme hinweisen. Um moeglichst
+viele derartiger Dinge abzufangen, sollte man auf den Questtest viel
+Zeit verwenden und Magierkollegen bitten, die Quest einmal zu testen. 
+
+Questtest (Spieler):
+--------------------
+
+Wenn es moeglich ist, sollte auch ein Spieler die Quest einmal
+testen. Jedoch sind dazu die Regeln fuer Spielertesties ('man
+testies') einzuhalten. Es ist insbesondere darauf zu achten, dass
+wenn dem Testie eventuelle Forscherpunkte o.ae. zugesprochen werden,
+die negativen Seiten der Quest nicht wegfallen duerfen (soweit sie
+nicht auf Fehlern beruhen). 
+
+Abnahme der Quest:
+------------------
+
+Sofern noch nicht geschehen, muss nun der Regionsmagier die Quest
+abnehmen. (Ist der Programmierer selbst der Regionsmagier, sollte er
+einen Magierkollegen bitten, dies zu machen (fuer die meisten Regionen
+gibt es ja mehr als einen RM).) Wenn dies alles geschen ist, kann der
+Questerzmagier die Quest abnehmen. 
+
+Die Bearbeitung der Quest geht am schnellsten, wenn dem Quest-EM
+folgende Infos vorliegen (z.B. in einer Mail):
+
+ - Eine kurze Beschreibung der Quest, also worum geht es ueberhaupt?
+ - Eine Loesungsskizze (bitte nicht im Home-Verzeichnis rumliegen
+   lassen)
+ - Eine Beschreibung der technischen Loesung, also wie ist das ganze
+   programmiert? 
+ - In welchem Objekt wird die Quest mittels GiveQuest gesetzt?
+ - Eine Aufstellung, welche Files zu der Quest gehoeren und wo sie
+   sich befinden.
+ - Eine Liste der Abhaengigkeiten zu anderen Teilen im Mud? (Gilden-NPCs,
+   MNPCs..)
+ - Eine Einschaetzung der Schwierigkeit der Quest. Wie gut sollte man
+   sein? Welchen Level? Was fuer Stats?...
+ - Einen Vorschlag, wieviele APs fuer die Quest vergeben werden sollen.
+ - Einen Vorschlag, welchen Spruch der Wanderer den Spielern sagen
+   soll.
+ - Eine Liste der Magier und Spieler, die die Quest schon getestet haben.
+
+Danach schaut sich der Quest-EM die Quest an und legt mit dem
+Programmierer zusammen APs, Schwierigkeitsgrad, den Spruch fuer den
+Wanderer etc. fest. Dann wird die Quest vom Quest-EM eingetragen.
+
+Questanschluss:
+---------------
+
+Zum Anschluss der Quest sollte man nach Moeglichkeit ebenfalls online
+sein, um eventuelle Probleme, Bugs zu beseitigen. Auch sollte man nach
+Anschluss der Quest gewissenhaft sein Repfile abarbeiten um Typos,
+Ideen und Bugs abzuarbeiten.
+
+Siehe auch:
+-----------
+
+ QueryQuest, GiveQuest, write_file
+
+------------------------------------------------------------------------------
+Zuletzt geaendert: Mon, 17. Jul 2000, 12:16:41 von Zook.
+

@@ -1,0 +1,58 @@
+
+Die Idee hinter diesem Spiel
+============================
+
+    Dies sind die (etwas technisch gehaltenen) Grundkonzepte des
+    MorgenGrauens, bzw. von LPMuds an sich:
+
+     1. Ein Magier kann das Spiel erweitern.
+
+     2. Spielerweiterungen koennen am laufenden Spiel vorgenommen werden.
+
+     3. Alles im Spiel besteht aus Objekten. Raeume, Spieler, Monster und
+        Schaetze sind alles Objekte.
+
+     4. Alle Objekte werden in einem C-Dialekt (LPC) geschrieben. Die
+        Objekte werden bei Bedarf geladen und halbinterpretiert.
+
+     5. Es gibt keinen Parser. Alle Kommandos werden von den Objekten
+        definiert. Ein Messer definiert zum Beispiel das Kommando `schneide'
+        und eine Lederjacke das Kommando `trage'.
+
+        Ein Objekt definiert ein Kommando, indem es sie mit einer im Objekt
+        implementierten Funktion verknuepft. Wenn der Spieler das Kommando
+        eingibt, so wird die zugehoerige Funktion im Objekt aufgerufen. Wenn
+        der Spieler `trage jacke' eingibt, so wird `jacke' als Argument an
+        diese Funktion uebergeben. Wenn der Spieler `trage schild' eingibt, so
+        erkennt die Funktion, dass `jacke' != `schild' ist, und gibt den Wert
+        fuer Misserfolg (0) zurueck. Dann wird ein anderes `trage'-Kommando
+        ausprobiert, bis ein Passendes gefunden wird.
+
+        Bewegt der Spieler die Jacke aus seinem Inventory oder seinem
+        Environment - sprich seinem Einflussbereich so werden alle Kommandos,
+        die zur Jacke gehoeren geloescht.
+
+     6. Raeume sind Objekte, die Kommandos wie `osten' oder `kletter' und
+        aehnliches definieren. Wenn der Spieler `osten' eingibt, so wird die
+        zugehoerige Funktion etwas mit dem Spieler tun.
+
+     7. Ein Objekt kann eine Funktion namens heart_beat() definieren. Diese
+        Funktion wird alle zwei Sekunden aufgerufen. Diese Funktion kann fuer
+        selbststaendig agierende Monster, verloeschende Fackeln oder
+        verzoegerte Fallen eingesetzt werden.
+
+        Der Phantasie der Magier sind keine Grenzen gesetzt.
+        (Der Effizienz dieser Funktion schon!)
+
+     8. Das komplizierteste Objekt ist das Spielerobjekt. Es definiert
+        Kommandos wie `nimm', `laechel', `schau' oder `toete'.
+
+     9. Wenn ein Spieler Magier wird, so wird er einer Region zugeteilt.
+        Innerhalb dieser Region darf er dann das Spiel erweitern. Er kann
+        Schloesser bauen, oder eine Hoehle ...
+
+    10. Fuer Magier, die Objekte schreiben, stehen ein ed-kompatibler Editor
+        und ein UNIX-aehnliches Filesystem zur Verfuegung.
+
+ LETZTE AeNDERUNG:
+    14. Maerz 2004 Gloinson

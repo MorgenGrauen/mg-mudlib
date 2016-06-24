@@ -1,0 +1,29 @@
+	OBJEKTE
+	
+	Als erstes musst Du wissen, dass jedes Objekt in diesem
+	Mud durch ein File repraesentiert wird. Dieses File
+	wird auch die "Blueprint" genannt. Du kannst neue Objekte
+	auf 2 Arten erschaffen.
+
+	1.) "clone"n von Blueprints. Das bedeutet, dass Du ein
+	    Objekt erschaffst, das die Eigenschaften hat, die in
+	    der Blueprint programmiert worden sind. Von einer
+	    Blueprint koennen mehrere "Clones" existieren.
+	    Typische Beispiele fuer "Clones" sind Waffen,
+	    Monster, Geld oder Spieler.
+
+	2.) "load"en von Blueprints. Das bedeutet, dass Du
+	    diese Blueprint zu Leben erweckst. In gewisser Weise
+	    benehmen sich diese Objekte genauso wie die "Clones",
+	    allerdings koennen von einmal geladenen Blueprints
+	    keine "Clones" mehr erschaffen werden.
+	    Typische geladene Objekte sind Raeme.
+
+	KNIGGE FUER MAGIER
+
+	Dadurch, dass Du beliebige Files laden oder clonen kannst,
+	bist Du in der Lage, jedem Spieler das gewuenschte Objekt
+	zu beschaffen. Aber das ist natuerlich nicht der Sinn der
+	Sache. Als Magier bist Du verpflichtet, den Spielern nur
+	noch dann zu helfen, wenn sie aufgrund von Programmier-
+	fehlern in Schwierigkeiten geraten.

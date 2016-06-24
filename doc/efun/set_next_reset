@@ -1,0 +1,55 @@
+FUNKTION
+     int set_next_reset(int delay)
+
+ARGUMENTE
+     delay - minimale Zeit bis zum naechsten Reset des Objektes
+
+BESCHREIBUNG
+     Mit dieser efun ist es moeglich Einfluss auf das Resetverhalten des
+     Objektes zu nehmen:
+
+     Das Objekt bekommt einen reset()-Aufruf fruehestens in <delay> Sekunden.
+     Bei Angabe eines Wertes <0 wird der reset() für das Objekt abgeschaltet,
+     was fuer Blueprints gelegentlich sinnvoll ist.
+
+     Intern wird in gleichbleibenden Abstaenden (derzeit: in der Regel 2s,
+     kann sich aber auch verzoegern, wenn der Driver viel zu hat, z.B. auf 
+     4s) geprueft ob die Zeit zum zum naechsten reset() abgelaufen ist. 
+     Sollte dies der Fall sein, wird die Funktion reset() im Objekt 
+     aufgerufen.
+
+     Die Funktion gibt die verbleibende Zeit bis zum naechsten Reset
+     zurueck, bevor <delay> gesetzt wurde. Der Wert kann auch negativ
+     sein, wenn der Reset ueberfaellig war.
+
+     Achtung: die tatsaechliche Zeit, wann der Reset im Objekt durchgefuehrt
+     wird, haengt auch davon ab, ob das Objekt nach Ablauf von <delay>
+     verwendet wird.
+
+BEISPIELE
+     // ein Objekt mit verkuerzter reset()-Zeit
+     void create() {
+       ...
+       set_next_reset(15*60);	// ~ 15 Minuten
+       ...
+     }
+
+     void reset() {
+       set_next_reset(900);	// die muss im reset() immer wieder
+       ::reset();           // neu gesetzt werden
+     }
+
+     // ein Objekt, dessen Blueprint keinen reset() bekommen soll
+     void create() {
+       if(!clonep(this_object())) {
+         set_next_reset(-1);
+         return;
+       }
+       ::create();
+       ...
+     }
+
+SIEHE AUCH
+     call_out(E), object_info(E), reset(L), query_next_reset(E)
+
+7.Aug 2007 Gloinson

@@ -1,0 +1,32 @@
+EVENT: 
+   EVT_LIB_CLOCK
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /obj/uhr.c
+
+BESCHREIBUNG:
+   Alle Viertelstunde wird dieser Event gerufen. Wenn man Ereignisse jeweils
+   zur vollen Stunde, xx:15, xx:30 und xx:45 durchfuehren will, bietet es sich
+   an, diesem Event zu lauschen.
+
+EVENT-DATEN:
+   Die Daten sind ein Mapping mit den Arrayindizes von localtime() als Keys
+   und den dazu gehoerigen Daten als Values.
+
+BEMERKUNGEN:
+   Will man ermitteln, in welcher Viertelstunde man sich gerade befindet,
+   bietet sich ((minuten/15) % 4) an. Das ergibt immer eine Zahl zwischen 0
+   und 3. 0-> volle Stunde, 1-> viertel nach, 2-> halb, 3-> viertel vor voll.
+   Hierbei wird nach Benachrichtigen der Objekt um ueblicherweise 0-2s
+   verzoegert, wenn es als wirklich exakt sein muss, laesst sich dieser Event
+   dann doch nicht verwenden.
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+28.11.2012, Zesstra
+

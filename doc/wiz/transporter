@@ -1,0 +1,19 @@
+DEFINIERT IN:
+	"/std/transport"
+	"/sys/transport.h"
+
+BEMERKUNGEN:
+	Zu Transportern gibt es ein Beispiel unter
+        '/doc/beispiele/misc/bsptransporter1.c' und auch die verwendeten 
+        Properties sind dokumentiert.
+	
+        Um einen Transporter zu aktivieren, muss er in das Preload-File der
+	Region geschrieben werden, oder aber ueber eine Funktion im Start-
+	und Zielraum aufgerufen werden, die das erledigt.
+
+SIEHE AUCH:
+	P_ARRIVEMSG, P_DEPARTMSG, P_ENTERMSG, P_LEAVEMSG, P_LEAVEFAIL,
+	P_ENTERFAIL, P_MAX_PASSENGERS, AddRoute, AddMsg, Start
+        /d/inseln/schiffe/HowTo
+----------------------------------------------------------------------------
+Last modified: Wed Dec 26 14.43:07 2001 by Tilly

@@ -1,0 +1,19 @@
+Materialid:
+MAT_MISC_MINERAL         "misc_mineral"
+
+Name:
+"Mineral" "Minerals" "Mineral" "Mineral"
+
+Geschlecht:
+N
+
+Beschreibung:
+allg. Mineralien
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

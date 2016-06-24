@@ -1,0 +1,43 @@
+clean_up()
+FUNKTION:
+     int clean_up(int ref);
+
+DEFINIERT IN:
+     /std/room.c
+     man kann die Funktion jedoch auch in beliebigen Objekten selbst
+     definieren.
+
+ARGUMENTE:
+     ref
+             + 0 bei gecloneten Objekten
+             + 1 bei einfachen geladenen Objekten
+             + >1 bei Objekten, die geerbt wurden oder als Blueprint dienen
+             + <0, wenn clean_up() von aussen aufgerufen wurde (das muss man
+               selbst beachten!)
+
+BESCHREIBUNG:
+     Wenn ein Objekt seit langer Zeit nicht mehr benutzt wurde, kann es sich
+     hier selbst zerstoeren. Das sollte das Objekt allerdings nur tun, wenn
+     ref kleiner oder gleich 1 ist.
+
+RUeCKGABEWERT:
+     Der Rueckgabewert hat nur dann eine Bedeutung, wenn sich das Objekt
+     nicht selbst zerstoert hat. Wird 0 zurueckgegeben, so wird clean_up()
+     erst dann wieder aufgerufen, nachdem das Objekt aus- und wieder
+     eingeswappt wurde.
+
+     Ein Rueckgabewert ungleich 0 zeigt an, dass das Objekt sich
+     wahrscheinlich in der naechsten clean_up()-Runde zerstoeren kann, wenn
+     in der Zwischenzeit zB. noch einmal reset() aufgerufen wurde.
+
+BEMERKUNGEN:
+     Standardmaessig definieren nur Raeume clean_up().
+
+     Die Zeiten zwischen zwei Aufrufen von clean_up() betragen momentan
+     einen Tag (86400 Sekunden).
+
+SIEHE AUCH:
+     reset(), P_NEVER_CLEAN
+     memory
+
+21. Maerz 2004 Gloinson

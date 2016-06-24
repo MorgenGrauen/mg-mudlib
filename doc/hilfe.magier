@@ -1,0 +1,36 @@
+
+  ---------------------------MAGIERHILFSSEITE------------------------------
+
+Als Magier hat man neben den Spieler- und Seherbefehlen einige weitere
+Befehle zur Verfuegung. Bei der Anzeige der Hilfeseiten wird nicht zwischen
+den Stufen der Magier unterschieden wird. Diese wird aber bei Erlaeuterung
+beruecksichtigt:
+
+Allgemeine Themen und REGELN:	    |  Kommunikation:
+    balance, forscherpunkte,	    |      echoall, echoto, echo, mecho,
+    testspieler, zweitspieler,	    |      mrufe, oropax, remote
+    effizienz, objekte		    |
+				    |
+Bewegung:			    |  Kampf:
+    goto, trans, home, verfolge,    |      zap, frieden, sethands
+    at, in, +			    |
+				    |
+Dateisystem:			    |  Objekte:
+    cd, pwd, ls, cat, head, tail,   |      clone, destruct, upd(ate), load,
+    more, grep, cp, mv, rm, mkdir,  |	   setcmsg, setdmsg
+    rmdir, set, prompt, ed	    |
+				    |  Anderes:
+Information:                        |     heile, zwinge, titel, extralook,
+    mschau, people, pwho, man,      |     traenke, invis, vis, protect, do
+    snoop, sallow, spieler, rman,   |     showpresay, ping, todo
+    localcmd			    |
+				    |  Erzmagierbefehle:
+Regionsmagierbefehle:		    |     addmaster, removemaster, mbanish,
+    regionsmagier, banish, exec     |     shutdown
+				    |
+
+In den Verzeichnissen unter /doc/ findest du weitere Dokumentation:
+- funktionierende Beispiele unter /doc/beispiele/
+- MG-spezifische Informationen unter /doc/MG/
+- einen Programmierkurs unter /doc/KURS/
+

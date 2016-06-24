@@ -1,0 +1,34 @@
+
+echo
+----
+
+ SEHERKOMMANDO:
+    echo <text>
+
+ ARGUMENTE:
+
+     <text>
+        ein beliebiger Text
+
+ BESCHREIBUNG:
+    Der Text <text> wird an alle Spieler im selben Raum gesendet.
+
+    Bei Sehern verbraucht dieses Kommando 50 Magiepunkte. Fuer Magier ist es
+    kostenlos.
+
+    ACHTUNG: Die Benutzung dieses Befehls wird geloggt! D.h. dass er nicht
+    zur Benutzung geeignet ist, wenn man nicht moechte, dass der gesendete
+    Text von Magiern nachgelesen werden kann. Dies ist aufgrund von Missbrauch
+    leider notwendig. In diesem Zusammenhang sei auch nochmal darauf 
+    hingewiesen, dass Echos in fremdem Namen nicht erlaubt sind und mit
+    dem Entzug der echo-Faehigkeit (plus (r)emote als Bonus) geahndet
+    werden koennen.
+
+BEMERKUNGEN:
+    Die Faehigkeit wird erst nach der Loesung des Quest "Hilf dem
+    Architekten." freigeschaltet.
+
+ SIEHE AUCH:
+    sag, emote
+
+1. Maerz 2013 Gloinson

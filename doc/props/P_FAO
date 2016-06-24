@@ -1,0 +1,19 @@
+P_FAO
+
+NAME:
+     P_FAO      "fraternitasdonoarchmagorum"
+
+DEFINIERT IN:
+     <player/fao.h>
+
+BESCHREIBUNG:
+     Fraternitas-relevante Property.
+
+     Genaue Informationen unbekannt.
+     Schreibender Zugriff ist nur EMs oder dem FAOMASTER (s. Headerfile)
+     moeglich.
+
+SIEHE AUCH:
+     P_FAO_PORTALS
+
+1.September 2008 Gloinson

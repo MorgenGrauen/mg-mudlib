@@ -1,0 +1,19 @@
+Materialid:
+MAT_IRON                 "Fe"
+
+Name:
+"Eisen" "Eisens" "Eisen" "Eisen"
+
+Geschlecht:
+N
+
+Beschreibung:
+weich
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_MAGNETIC:100
+MATGROUP_SOLID:100

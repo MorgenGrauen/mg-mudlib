@@ -1,0 +1,181 @@
+Der Fehlerteufel
+================
+
+die Mudlib speichert die aufgetretenen Fehler und Warnungen. Dabei werden 
+folgende Daten mitgespeichert:
+- Zeit (erstes Mal, zuletzt)
+- In welchem Objekt und welchem Programm der Fehler war
+- Zeilenr.
+- Fehlermeldung
+- Objekt, dessen Heartbeat, den Fehler ausloeste
+- this_interactive() bzw. this_player()
+- den Befehl, den TI eingegeben hat
+- das Environment von TI oder TP
+- wie oft der Fehler schon auftrat
+- der Backtrace
+- ob der Fehler in einem catch() auftrat
+
+Zusaetzlich werden von Spielern per "bug", "fehler" oder "sonnenfehler"
+gemeldete Fehler gespeichert.
+
+Der Fehlerteufel dient nun dazu, sich diese Infos darstellen zu lassen. Nach 
+dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
+
+- fehlerliste <auswahl s. Kommando fehlermodus>
+  Dieser Befehl stellt euch eine Liste aller bekannten Fehler dar, die unter
+  einer UID auftraten, fuer die ihr zustaendig seid (z.B. "zesstra", 
+  "d.inseln.zesstra", "GUILD.magierpack", s. auch QueryUIDsForWizard()). Die
+  Liste umfasst die eindeutige Fehler-ID, den Ladenamen des fehlerausloesenden
+  Objekts und die UID.
+  Je nach Argument werden div. Fehler oder Warnungen ausgegeben. Wird keins 
+  von beiden angegeben, wird je nach Einstellung von 'fehlermodus' aufgelistet.
+
+- fehlerabfrage <id>
+  Hiermit lassen sich die Detail-Informationen zu <id> anzeigen. <id> bekommt
+  ihr entweder aus "fehlerliste" oder von -debug/-entwicklung/-warnungen, dort
+  werden diese IDs mit ausgegeben. Ohne Angabe der <id> wird der letzte
+  betrachtete Fehler ausgegeben.
+  Neben der numerischen ID ist hierbei auch die Hash-ID moeglich.
+  Es kann auch der Ladename eines Objekts angegeben werden, dann werden alle
+  zu diesem Objekt gehoerenden Eintraege auf einmal angezeigt, z.B.
+    fehlerabfrage /d/unterwelt/raeume/wald3
+  Der Ladename muss mit einem / beginnen.
+
+- fehlerloeschen <id>
+  Fehler mit der ID <id> zum Loeschen markieren (z.B. wenn gefixt). Die 
+  eigentlich Loeschung findet innerhalb von 24h statt. Die Fehler werden nach 
+  diesem Befehl nicht mehr in der Fehlerliste angezeigt. Ohne Angabe der <id>
+  wird der letzte benutzte Fehler geloescht.
+  Wiederholt man den Befehl, wird die Loeschmarkierung wieder entfernt.
+  Es kann auch der Ladename eines Objekts angegeben werden, dann werden alle
+  zu diesem Objekt gehoerenden Eintraege auf einmal geloescht, z.B.
+    fehlerloeschen d/unterwelt/raeume/wald3
+
+- fehlereingabe <objekt>
+  Hiermit laesst sich per Hand ein Eintrag fuer das angegebene Objekt im
+  Fehlerteufel erstellen. Das Objekt kann mit einer seiner IDs oder seinem
+  vollstaendigen Objektnamen angegeben werden. Wird kein Objekt angegeben,
+  wird die Umgebung des Magiers als Objekt genutzt. Bsp:
+    fehlereingabe seil
+    fehlereingaeb /obj/seil#5635
+
+- fehlerrefresh
+  Der Fehlerteufel hat einen Zwischenspeicher fuer die Fehlerliste. Dieser 
+  Befehl loescht diesen Zwischenspeicher und holt die Fehlerliste neu.
+
+- fehlerfilter
+  Hiermit laesst sich ein Filter fuer UIDs einstellen. (s.u.) Ist er aktiv, 
+  werden per 'fehlerliste' keine Fehler mehr angezeigt, die im Filter
+  eingetragen wurden.
+
+- fehlermodus <fehler|warnungen>
+  Einstellen, welche Arten von Eintraegen im Fehlerteufel vom Kommando
+  'fehlerliste' ausgegeben werden soll:
+    laufzeitfehler: Laufzeitfehler werden ausgegeben (-debug, -entwicklung)
+    laufzeitwarnungen: Laufzeitwarnungen werden ausgegeben (-warnungen)
+    ladezeitfehler: Fehler beim Laden eines Objekts werden ausgegeben  
+    ladezeitwarnungen: Warnungen beim Laden eines Objekts werden ausgegeben
+    fehlerhinweise: Fehler, die Spieler/Magier abgesetzt haben
+    ideen: Ideen, die Spieler/Magier abgesetzt haben
+    typos: Typos, die Spieler/Magier abgesetzt haben
+    md: Fehlende Details, die Spieler/Magier abgesetzt haben
+    fehler: alle moeglichen Fehler werden ausgegeben
+    warnungen: alle moeglichen Warnungen werden ausgegeben
+    alle: alle Fehler + Warnungen werden ausgegeben
+    
+    Ohne Argument: aktuellen Modus ausgeben.
+
+- fehlermonitor
+  Hiermit lassen sich UIDs angeben, die man zusaetzlich zu den eigenen
+  auch noch beobachten will.
+  Hierbei sind auch einige UID-Aliase moeglich, z.B. 'magier', 'region', 
+  'p.service', 'p' oder 'gilde'.
+  BTW: nach Aenderung dieser Liste sollte man "fehlerrefresh" aufrufen.
+
+- flock <id> <bemerkung>
+  So markierte Fehler werden nicht mehr automatisch (nach 31 Tagen ohne
+  Aenderung) geloescht. ABER: Solcherart gesperrte Fehler werden momentan
+  _niemals_ automatisch geloescht, deshalb denkt bitte daran, sie entweder
+  selber zu loeschen oder sie wieder freizugeben, wenn ihr sie nicht mehr
+  braucht.
+
+- funlock <id> <bemerkung>
+  Gibt den Fehler wieder zum automatischen Loeschen frei.
+
+- ffix <id> <bemerkung zum fix>
+  Fehler wird als "gefixt" markiert und eine Mail an alle fuer das buggende
+  Objekte zustaendigen Magier geschickt (soweit bekannt). Anschliessend 
+  werden die Fehler vom Fehlerteufel nicht mehr angezeigt.
+  Im Falle von durch Spieler berichteten Fehlern wird dem jeweiligen Spieler
+  beim Fixen ebenfalls eine Mail geschickt.
+  Als gefixt markierte Fehler werden nach einiger Zeit geloescht.
+  Es empfiehlt sich fuer eigene Fehler, diese nach Beheben einfach zu
+  Loeschen, wenn man keine Mail ueber den Fehler erhalten moechte.
+
+- funfix <id> <bemerkung warum der Bugfix scheisse war ;)>
+  Wenn ihr bis zu der "Archivierung" gefixter Fehler feststellt, dass ihr den 
+  Fehler wohl doch nicht gefixt habt, koennt ihr das wieder rueckgaengig 
+  machen.
+
+- fnotiz <id> <bemerkung>
+  Wenn euch an so einem Fehler was auffaellt oder ihr eine Idee habt, koennt ihr
+  das so also "verewigen". Notizen kann jeder Magier an Fehler dranhaengen,
+  dafuer braucht man keine besonderen (Schreib)Rechte. Die Notizen werden vom
+  Fehlerteufel ausgegeben und stehen auch im CHANGELOG.
+  Anmerkung: Es gibt (absichtlich) keine Moeglichkeit, Notizen wieder zu
+  loeschen.
+
+- fuebertrage <id> <newuid> <bemerkung>
+  Wenn ihr einen Fehler habt, fuer den ihr nicht zustaendig seid, weil der
+  Ursprung des Fehlers nicht in einem eurer Files liegt, koennt ihr diesen
+  Fehler an eine andere UID mit einer Bemerkung uebertragen. Danach ist der
+  Magier von <newuid> zustaendig und hat Schreibrechte auf den Fehler.
+  <newuid> kann z.B. sowas wie 'd.inseln.zesstra' oder 'zesstra' sein. Liegt
+  der Fehler in einem Objekt in /d/, solltet ihr auf jeden Fall
+  d.region.magier benutzen, damit ggf. der RM der Region auch zustaendig wird.
+
+UID-Filter:
+  a) fehlerfilter an
+     Schaltet den Filter ein
+  b) fehlerfilter aus
+     schaltet den Filter aus
+  c) fehlerfilter alle
+     schaltet den Filter ein _und_ schreibt alle UIDs, fuer die man zustaendig
+     ist, in den Filter, es wird dann nichts mehr angezeigt.
+  d) fehlerfilter keine
+     schaltet den Filter ein _und_ loescht den Filter, d.h. es wird trotzdem
+     erstmal noch nix gefiltert..
+  e) fehlerfilter +zesstra +d.inseln.zesstra -d.ebene.zesstra
+     Fuegt "zesstra" und "d.inseln.zesstra" den aktuellen Filtereinstellungen
+     hinzu und loescht "d.ebene.zesstra" aus dem Filter.
+     Beliebige Kombinationen moeglich. Ohne - oder + am Anfang wird jeweils
+     invertiert, also hinzugefuegt, wenn noch nicht drin und entfernt, wenn
+     schon in der Liste.
+
+Fehler-Monitor:
+  a) fehlermonitor keine
+     Loescht alle beobachteten UIDs
+  b) fehlermonitor +atamur -d.polar.atamur
+     Fuegt "atamur" der Beobachtungsliste hinzu und entfernt "d.polar.atamur".
+     Beliebige Kombinationen moeglich. Ohne - oder + am Anfang wird jeweils
+     invertiert, also hinzugefuegt, wenn noch nicht drin und entfernt, wenn
+     schon in der Liste.
+
+Zugriffsrechte:
+  - Lesen und Anhaengen (Notizen, Loeschsperren) darf jeder Magier
+  - Loeschen, Fixen und UID neu zuordnen duerfen fuer die UID zustaendige Magier
+  - Fixes zurueckziehen darf jeder Magier (solange issue nicht expired)
+  - EM+ duerfen alles
+
+Randbemerkung:
+  Moechte man nicht, dass vom Magier selbst ausgeloeste Fehler in /players/
+  protokolliert werden, kann der Magier _in sich_ die Prop P_DONT_LOG_ERRORS
+  (aus /secure/errord.h) auf 1 setzen.
+  ACHTUNG: das bedeutet, dass ueber Fehler keine Informationen mehr
+  vorliegen, die beim Fixen helfen koennen. Bedenkt das bitte, wenn ihr die
+  Prop setzt.
+ 
+
+SIEHE AUCH:
+ QueryUIDsForWizard(), QueryWizardForUID()
+

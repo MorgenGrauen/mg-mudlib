@@ -1,0 +1,75 @@
+TakeFlaw()
+
+FUNKTION:
+     varargs void TakeFlaw(object enemy); (Waffen)
+     varargs void TakeFlaw(mixed dam_types,mapping einfos) (Ruestungen)
+
+DEFINIERT IN:
+     /std/armour/combat.c,
+     /std/weapon/combat.c
+
+ARGUMENTE:
+     keine
+
+BESCHREIBUNG:
+     Diese Funktion wird in Waffen und Ruestungen waehrend des Kampfes
+     aufgerufen. In einer Waffe erfolgt der Aufruf bei jedem Schlag mit
+     dieser Waffe, bei Ruestungen wird TakeFlaw() in einer zufaellig
+     ausgewaehlten getragenen Ruestung aufgerufen.
+     Waffen bekommen das Gegnerobjekt uebergeben, Ruestungen die erweiterten
+     DefendInfos (s. dort fuer Details). Aufgrund dieser Informationen kann
+     man den Schaden, den ein Gegenstand nimmt, flexibler gestalten (z.B. bei
+     einer Waffe in Abhaengigkeit von P_BODY des Gegners.)
+
+     Soweit man die Funktion nicht ueberlaedt, bewirkt sie nichts weiter als
+     das Erhoehen eines Zaehlers, der mit QueryFlaw() abgefragt werden kann.
+
+RUeCKGABEWERT:
+     keiner
+
+BEMERKUNGEN:
+     Die Waffen-/ Ruestungsklasse wird nicht automatisch reduziert! Wenn
+     eine Waffe oder Ruestung sich abnutzen soll, muss man TakeFlaw()
+     ueberladen und dort entsprechend handeln, oder (fuer einfache
+     Faelle) die Property P_QUALITY setzen.
+
+BEISPIELE:
+     Eine Waffe, deren Waffenklasse alle 20 Schlaege um 1 abnimmt:
+
+     inherit "std/weapon";
+
+     #include <properties.h>
+     #include <combat.h>
+
+     create()
+     {
+       /* Das Uebliche... */
+     }
+
+     TakeFlaw()
+     {
+       int flaw;
+
+       /* erst mal den Zaehler erhoehen... */
+       ::TakeFlaw();
+
+       /* jetzt den aktuellen Zaehlerstand abfragen */
+       flaw = QueryFlaw()[0];
+
+       /* Abzug nur jeden 20. Schlag */
+       if (!(flaw % 20)) {
+         /* So, jetzt fuer den Schaden sorgen. Hierfuer benutzt */
+         /* man am sichersten die eingebaute Funktion Damage() */
+         Damage(1);
+       }
+     }
+
+     Dieses einfache Beispiel haette natuerlich auch ueber ein
+     SetProp(P_QUALITY,20); im create() realisiert werden koennen.
+
+SIEHE AUCH:
+     QueryFlaw(), Damage(), DefendInfo, P_QUIALITY, /std/armour/combat.c,
+     /std/weapon/combat.c
+
+----------------------------------------------------------------------------
+Last modified: Thu May 22 10:30:10 1997 by Paracelsus

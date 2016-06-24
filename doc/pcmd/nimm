@@ -1,0 +1,34 @@
+
+nimm [aus]
+----------
+
+ KOMMANDO:
+    nimm <objekt> [aus <behaelter>]
+    nimm alles [aus <behaelter>]
+
+ ARGUMENTE:
+
+     <objekt>
+        Der zu nehmende Gegenstand
+     <behaelter> (optional)
+        Der Behaelter, in dem sich das Objekt der Begierde befindet
+
+ BESCHREIBUNG:
+    Man nimmt den Gegenstand <objekt> vom Boden auf oder aus einem <behaelter>
+    heraus.
+
+    Waehlt man als <objekt> `alles', so nimmt man alles, was sich nehmen
+    laesst (soweit man es noch tragen kann).
+
+    Mit 'nimm behaltenes' kann man alle Gegenstaende, die man frueher
+    einmal "behalten" (s. 'behalte') hat, aus dem aktuellen Raum aufnehmen.
+    Steht man in einem Raum, wo man gestorben ist und liegt dort der eigene
+    Kram in Form eines "Haufen Krempels", kann man mittels 'nimm eigenes'
+    alles aus diesem (und nur diesem) Haufen aufnehmen. Dieses schliesst
+    uebrigens 'nimm behaltenes' ein.
+
+ SIEHE AUCH:
+    stecke (in), hole (aus), wirf (weg), behalte
+
+ LETZTE AeNDERUNG:
+    24.05.2007, Zesstra

@@ -1,0 +1,38 @@
+NAME:
+    P_TRAVEL_CMDS                   "travel_cmds"                   
+
+DEFINIERT IN:
+    /sys/transport.h
+
+BESCHREIBUNG:
+    Ein Array mit Befehlen, die zum Verlassen UND Betreten des Trans-
+    porters fuehren. 
+
+BEISPIEL:
+    void create()
+    {
+      ::create();
+
+      SetProp(P_TRAVEL_CMDS,({ "steig","steige" }) );
+
+    }
+
+    Als Parameter werden hier ausschliesslich 'auf,in' und 'von,aus'
+    verarbeitet.
+
+    steige auf|in  <xxx>    fuehrt also zum Betreten des Transporters,
+    steige von|aus <xxx>    dagegen fuehrt zum Verlassen desselben.
+
+BEMERKUNGEN:
+    Um /std/transport.c nicht aufzublaehen, werden weitere Parameter wie
+    etwa 'steige auf|in das|die|den xxx' _nicht_ unterstuetzt!
+
+    Hier muss der verantwortliche Magier schon eine eigene Loesung finden
+    und in seinen Transporter schreiben.
+
+SIEHE AUCH:
+    P_LEAVEFAIL, P_ENTERFAIL, P_ENTERCMDS, P_LEAVECMDS, transporter,
+
+LETZTER AENDERUNG:
+    Don, 24.01.2002, 10:15:07h von Tilly
+    

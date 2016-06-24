@@ -1,0 +1,23 @@
+BEFEHLE:
+	<varname, >varname
+
+ARGUMENTE:
+	TOS 
+	varname -- String
+
+FUNKTION:
+	>varname
+		Speichere das oberste Element des Stacks in der Variable
+		"varname" ab.
+	<varname
+		Kopiere den Inhalt der Variable "varname" auf den Stack.
+		Wenn der Inhalt der Variable eine Funktion ist, wo wird
+		diese in Stringform auf den Stack gelegt und nicht aus-
+		gewertet.
+
+	Es koennen ausser Objekten auch Arrays, Strings und Integers
+	in Variablen gespeichert werden. Wird eine 0 in einer Variable
+	gespeichert, so wird die Variable wieder geloescht.
+
+SIEHE AUCH:
+	"memory"

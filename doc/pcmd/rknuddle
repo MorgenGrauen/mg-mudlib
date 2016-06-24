@@ -1,0 +1,21 @@
+
+rknuddle
+--------
+
+ KOMMANDO:
+    rknuddle <name>
+
+ ARGUMENTE:
+
+     <name>
+        Ein Spieler, der nicht im gleichen Raum ist
+
+ BESCHREIBUNG:
+    Du knuddelst einen [bestimmten] Spieler, der sich nicht im gleichen Raum
+    befindet, in dem Du Dich aufhaeltst.
+
+ SIEHE AUCH:
+    verben, rwinke
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

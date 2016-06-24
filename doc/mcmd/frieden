@@ -1,0 +1,24 @@
+
+frieden
+-------
+
+ MAGIERKOMMANDO:
+    frieden [<name>]
+
+ ARGUMENTE:
+
+     <name> (optional)
+        Name eines Lebewesens
+
+ BESCHREIBUNG:
+    Ohne Argument werden alle Kaempfe in dem Raum, in dem Du Dich gerade
+    befindest abgebrochen.
+
+    Mit Argument bricht das Lebewesen <name> den Kampf ab (d.h. es selbst
+    schlaegt nicht mehr zu, und auch seine Feinde greifen es nicht mehr an).
+
+ SIEHE AUCH:
+    stop
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

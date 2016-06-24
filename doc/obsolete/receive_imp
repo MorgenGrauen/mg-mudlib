@@ -1,0 +1,25 @@
+
+   **********************************************************
+  * ACHTUNG: WIRD VOM DRIVER NICHT MEHR GERUFEN! NICHT VERWENDEN! *
+   **********************************************************
+
+SYNOPSIS
+	void receive_udp(string host, string msg, int hostport)
+
+DESCRIPTION
+	Handle a received IMP message.
+
+	This function is called for every message received on the IMP
+	port. Usually it is passed on to some object that handles
+	inter mud communications.
+
+HISTORY
+	The 'hostport' argument was added in 3.2.1.
+  LDMud 3.2.9 renamed this method to receive_udp(); this old version
+  is supported if the driver is compiled with USE_DEPRECATED.
+  Removed in LDMud 3.3 and LP "03.02.1@150".
+
+SEE ALSO
+	send_udp(E), query_udp_port(E)
+
+29.10.2006 Zesstra

@@ -1,0 +1,8 @@
+BEFEHL:
+	me
+
+ARGUMENTE:
+	Keine
+
+FUNKTION:
+	Lege den Eigentuemer (Dich!) oben auf den Stack.

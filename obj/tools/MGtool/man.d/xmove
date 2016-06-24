@@ -1,0 +1,13 @@
+SYNOPSIS
+      xmove <object> into <object>
+
+DESCRIPTION
+      Moves one object into another or give the reason why the move failed.
+
+EXAMPLES
+      xmove $clone into $me
+      If you cloned an object with xclone but the object couldn't be moved
+      then this can be used to get the reason for it.
+
+      xmove hyp into ^wurzel  (this is a silent form of going to other players)
+

@@ -1,0 +1,68 @@
+Erweiterung zum Git-Workflow:
+=============================
+
+Bei manchen Projekten will man mit anderen Magiern kooperieren, aber:
+* die Dateien im MUD fuer die Spieler unveraendert lassen
+* in einem ordentlichen Zweig zusammenarbeiten
+
+Dazu kann man Zweige auch remote, also im MUD erstellen. Da nur der
+'master'-Zweig in das MUD selbst synchronisiert wird, kann man ueber
+das MUD so die Repositories auf mehr als einen Computer/mehr als einer
+Person synchronisieren, ohne die Spieler mit seiner Entwicklungsarbeit
+zu behelligen:
+
+# Alternativen in/zu Schritt 4: Kooperation in einem remote Zweig.
+Falls ich mit anderen Leuten meinen Code teilen will, dieser aber nicht im
+MUD im 'master'-Zweig auftauchen (also als Dateiaenderung fuer alle Spieler
+gelten) soll, kann ich auch nur meinen Zweig selbst ins MUD schicken:
+> git checkout neue_kampftaktik
+> git push -u git@mg.mud.de:/dings/bums neue_kampftaktik
+
+Als Antwort duerfte sowas wie:
+ * [new branch]      neue_kampftaktik -> neue_kampftaktik
+dort stehen.
+
+Mit
+> git pull
+koennen wir uns diese Aenderungen am MUD-Repository holen. Der Zweig
+'neue_kampftaktik' ist jetzt ein Zweig auch im MUD und alle Leute,
+die sich jetzt das Repository /dings/bums clonen, steht genau dieser
+Zweig mit all unseren Aenderungen jetzt auch zur Verfuegung.
+
+Unser lokaler Zweig 'neue_kampftaktik' bekommt aber die Aenderungen
+an diesem Zweig anderer eventuell noch nicht ganz mit. Mit
+> git branch --set-upstream neue_kampftaktik remotes/origin/neue_kampftaktik
+sagen wir dem lokalen Zweig, dass er ab jetzt mit dem remotes-Zweig
+'neue_kampftaktik' verbunden ist.
+
+Damit bekommen wir etwaige remote-Aenderungen in diesem Zweig nach einem
+> git pull
+bei einem folgenden
+> git checkout neue_kampftaktik
+direkt mitgeteilt, eventuell in der Form:
+  Your branch is behind 'origin/neue_kampftaktik' by 1 commit, and can be
+  fast-forwarded.
+Das ist sehr einfach durch ein
+> git merge origin/neue_kampftaktik
+korrigierbar und schon koennen wir selber wieder an dem aktualisierten Zweig
+arbeiten und Aenderungen pushen. Siehe Schritt 5.
+
+Ziel einer solchen Zusammenarbeit ist natuerlich immer, irgendwann auch
+wieder den aus Schritt 4 bekannten Merge gegen den Zweig 'master' durchzu-
+fuehren, damit die Spieler was davon haben.
+Wenn wir also irgendwann diesen Merge durchgefuehrt haben und der Zweig
+'neue_kampftaktik' unnoetig geworden ist, koennen wir ihn auf der Seite
+des MUDs mit:
+> git push git@mg.mud.de:/dings/bums :neue_kampftaktik
+aufraeumen. Der einzige Unterschied zum Erstellen des Zweiges auf MUD-Seite
+ist tatsaechlich der ':' vor dem Namen des Zweigs.
+Achtung: das geht momentan (noch) nicht und auf 'master' ohnehin nie.
+
+SIEHE AUCH
+  git-repositories: Repository-Verwaltung im Mud
+  git-howto: Wie git benutzt wird
+  git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
+  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  git-faq: haeufig gestellte Fragen/Probleme
+
+02. Feb 2013 Gloinson

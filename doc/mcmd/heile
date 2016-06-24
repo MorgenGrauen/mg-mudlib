@@ -1,0 +1,27 @@
+
+heile
+-----
+
+ MAGIERKOMMANDO:
+    heile <ziel>
+
+ ARGUMENTE:
+
+     <ziel>
+        Das zu heilende Lebewesen
+
+ BESCHREIBUNG:
+    Das angegebene Lebewesen wird vollstaendig geheilt.
+
+    Der Befehl darf nur fuer Tests benutzt werden. Man sollte darauf achten,
+    dass man keine Spieler damit beeinflusst, und zwar weder im Guten (indem
+    man den Spieler heilt) noch im Boesen (indem man das Monster heilt, gegen
+    das der Spieler gerade kaempft).
+
+    Magier-Lehrlingen steht dieser Befehl noch nicht zur Verfuegung.
+
+ SIEHE AUCH:
+    vertrag
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:54:45 von Wargon

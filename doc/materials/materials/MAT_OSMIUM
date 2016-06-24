@@ -1,0 +1,22 @@
+Materialid:
+MAT_OSMIUM               "Os"
+
+Name:
+"Osmium" "Osmiums" "Osmium" "Osmium"
+
+Geschlecht:
+N
+
+Beschreibung:
+schwerstes Metall
+
+Erkennbarkeit:
+MAT_MISC_METAL:0
+MAT_SILVER:5
+MAT_PLATINUM:25
+MAT_OSMIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_SOLID:100
+MATGROUP_PRECIOUS_METAL:100

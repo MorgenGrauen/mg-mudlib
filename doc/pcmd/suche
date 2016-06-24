@@ -1,0 +1,43 @@
+
+suche
+----------
+
+ KOMMANDO:
+    suche <was>
+    such  <was>
+    durchsuche <was>
+
+ ARGUMENTE:
+
+     <was>
+        Ein Gegenstand oder Detail
+
+ BESCHREIBUNG:
+    Nicht alle Geheimnisse dieser Welt offenbaren sich auf den ersten Blick.
+    Bei einigen muss mein ein zweites mal hinschauen. Manche Dinge verbergen 
+    sich aber auch diesem genaueren Blick. Genau Dann ist dieser Befehl 
+    sinnvoll.
+
+    Sicher bist Du schonmal auf einem Weg oder in einem Wald ueber einen 
+    Laubhaufen gestolpert und hast Dich gefragt, welche Schaetze er wohl 
+    birgt. Ein gezieltes 'suche laub' oder 'durchsuche laub' bringt da so
+    manch nuetzliches zum Vorschein.
+
+ ACHTUNG:
+    Leider ist das Verhalten von 'such', 'suche' und 'untersuche' jeweis 
+    abhaengig von der Kreativitaet des programmierenden Magiers. Auch wenn 
+    die drei Befehle aehnlich klingen, heisst das nicht, dass sie auch das 
+    gleiche machen. 
+
+    Manchmal findet man etwas, wenn man 'durchsuche laub' macht, waehrend 
+    'suche laub' nur ein lahmes 'Du suchst, findest aber nichts.' zum 
+    Vorschein bringt.
+
+    Oft findet man aber in der Raumbeschreibung Hinweise, welcher Begriff 
+    hier passend ist.
+
+ SIEHE AUCH:
+    rieche, lausche, schau, untersuche
+
+ LETZTE AeNDERUNG:
+    Mon, 01.08.2002, 14:00:00 von Vanion

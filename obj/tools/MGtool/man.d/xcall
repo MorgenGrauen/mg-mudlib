@@ -1,0 +1,21 @@
+SYNOPSIS
+      xcall <object>-><function>(<expression>)
+
+DESCRIPTION
+      Calls the lfun <function> of the <object> with <expression> as
+      argument. The <properties.h> are included. Three objects are allready
+      defined on invokation. "me" represents the onwer of the Xtool. "here"
+      is the current room and "obj" is the object which lfun is called.
+      To use the object access syntax described above, a function called
+      "get(string)" can be used. If the call returned an object, the variable
+      "$result" will be set to this object.
+      xcall includes a private ~/.xtool.h, if it exists, to support user
+      defined macros.
+
+EXAMPLES
+      xcall $me->QueryProp(P_LONG)
+      xcall /std/thing#145->SetProp(P_SHORT,"a small thing")
+      xcall /secure/master->add_domain_wiz("hell", "hyp")
+      xcall $me->move(get("^deepthought"),"go")
+      (the last one uses the function get() to find the room where our god is)
+

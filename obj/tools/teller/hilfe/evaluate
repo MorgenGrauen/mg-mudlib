@@ -1,0 +1,22 @@
+BEFEHL:
+	evaluate, eval
+	
+ARGUMENTE:
+	TOS - Name einer Funktion als String.
+	
+FUNKTION:
+	Der Name wird von Stack genommen.
+	Der unter Namen gespeicherte Wert wird ausgewertet. Fuer normale
+	Werte bedeutet das, dass sie auf den Stack gelegt werden. Funktionen
+	werden ausgewertet.
+	
+BEISPIEL:
+	,!Q !1 pl !0 ->QueryProp
+	,rumata title Q
+		liefert direkt den Titel.
+	,rumata title "Q" eval
+		tut das selbe, nur das "Q" als String
+		zwischendurch auf dem Stack liegt.
+
+SIEHE AUCH:
+	"funktionen"

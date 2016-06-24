@@ -1,0 +1,43 @@
+P_KILL_NAME
+
+NAME:
+     P_KILL_NAME			"kill_name"
+
+DEFINIERT IN:
+     /sys/properties.h
+
+BESCHREIBUNG:
+     Wenn ein Spieler getoetet wird, so erscheint eine kurze Information auf
+     dem Todeskanal. Im Normalfall werden die Informationen aus P_NAME,
+     P_ARTICLE und P_GENDER des toetenden Objektes verwendet, um einen Namen
+     fuer eben dieses Objekt zu kreieren. Manchmal moechte man jedoch einen
+     davon unabhaengigen Namen dort stehen haben. Dann kommt die Property
+     P_KILL_NAME zum Einsatz.
+     Man sollte beachten, dass der Name des Toetenden nicht zu lang sein
+     sollte, denn obwohl bei einer Todesmeldung automatisch umgebrochen wird,
+     kann es doch ziemlich stoeren. Wenn das toetende Objekt ein Plural-
+     Objekt ist, so kann man dies zusaetzlich in der Property P_KILL_MSG
+     angeben.
+
+BEISPIEL:
+     Eine Wolke, die wahlweise zwischen verschiedenen Zustaenden mutiert,
+     koennte mal eine Eiswolke, mal eine Giftwolke oder auch mal eine
+     Feuerwolke sein. Fuer den Todeskanal soll jedoch immer erscheinen:
+     '[Tod:] Eine mutierende Wolke hat gerade <Spieler> umgebracht.'
+
+     void create()
+     {
+       ::create();
+       ...
+       SetProp(P_KILL_NAME,"Eine mutierende Wolke");
+       ...
+     }
+
+SIEHE AUCH:
+     Tod:		die(L)
+     Todesmeldungen:	P_KILL_MSG, P_DIE_MSG, P_MURDER_MSG
+			P_ZAP_MSG, P_ENEMY_DEATH_SEQUENCE
+     Sonstiges:		P_CORPSE, P_NOCORPSE, /room/death/death_room.c
+
+----------------------------------------------------------------------------
+Last modified: Wed Jan 14 19:17:06 1998 by Patryn

@@ -1,0 +1,14 @@
+BEFEHL:
+	move, mv
+
+ARGUMENTE:
+	obj -- Objekt, das bewegt werden soll.
+	ziel(TOS) -- Raum, in den das Objekt soll
+
+FUNKTION:
+	Bewege das Objekt in den angegebenen Raum. Die meisten Sicherungen
+	werden bei diesem Verschiueben umgangen, also vorsicht!
+
+BEISPIELE:
+	,me "~/workroom" ob mv
+		Man geht in den eigenen Workroom.

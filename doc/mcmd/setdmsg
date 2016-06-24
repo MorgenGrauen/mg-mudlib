@@ -1,0 +1,33 @@
+
+setdmsg
+-------
+
+ MAGIERKOMMANDO:
+    setdmsg [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        Die neue Meldung
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du die Meldung festlegen, die andere Leute im
+    gleichen Raum sehen, wenn Du einen Gegenstand zerstoerst. Vor den Text
+    wird noch der Name des Gegenstandes gestellt.
+
+    Ohne Argument wird die Defaultmeldung eingestellt.
+
+ BEISPIELE:
+    Angenommen, Wargon stellt folgende Destruct-Meldung ein:
+
+    > setdmsg wird von Wargon annihiliert
+
+    Zerstoert Wargon nun z.B. eine Fackel, sehen die Spieler im gleichen Raum:
+
+    Eine Fackel wird von Wargon annihiliert.
+
+ SIEHE AUCH:
+    setcmsg, review, destruct
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

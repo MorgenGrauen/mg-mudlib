@@ -1,0 +1,36 @@
+Wollt ihr Code in der allgemeinen, oeffentlichen Mudlib anschliessen, bitte
+beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
+
+* Einrueckungen per Leerzeichen, nicht Tabs
+* Einrueckung von 2 Leerzeichen pro Ebene
+* praegnante und viele Kommentare
+* keine lambdas
+* Bei inline-closures die function-Syntax statt der (: :)-Syntax verwenden.
+* else, else if in eine eigene Zeile
+* { am Beginn von Bloecken soll in eine eigene Zeile.
+* Nach ifs, Loops & Co: umfasst der davon kontrollierte Code mehr als eine
+  physische Zeile Code, einen Block mit { } formulieren.
+* keine return fun(), 0;
+* (type) Casts sollten vermieden werden (Ausnahme: (type)call_other).
+  (type) konvertieren nur, wenn die Typen zur Compilezeit bekannt und
+  unterschiedlich sind. Daher bei gewuenschten Konversionen to_type() nehmen.
+* Pfade, die absolut sind, sollen auch mit / beginnen, z.B. 
+  inherit "/std/thing", nicht inherit "std/thing"
+
+Benennung von Properties:
+* der interne Name von Properties in der Basis-Mudlib beginnt immer mit
+  "p_lib_". Niemand sonst sollte Properties mit diesem Praefix erstellen.
+
+Sonstiges:
+* In der Mudlib wird keine neue Funktion(alitaet) angeschlossen, bevor die
+  Dokumentation dafuer fertig ist.
+  Am liebsten ist mir, bei der Konzeptentwicklung zuerst die fertige
+  Dokumentation (Manpage) fuer Nutzer/Spieler zu entwickeln, bevor ein Magier
+  ueberhaupt eine Zeile Code schreibt.
+* Patches muessen eine Zusammenfassung haben, welche kurz erlaeutert,
+  was dieser Patch fixen/aendern/verbessern soll und auf welche Weise
+  diese umgesetzt wird. (Anders gesagt: eine Commit-Message)
+
+LETZTE AeNDERUNG:
+  15.8.2015, Zesstra
+

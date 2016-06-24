@@ -1,0 +1,25 @@
+
+sethands
+--------
+
+ SEHERKOMMANDO:
+    sethands <text>
+
+ ARGUMENTE:
+
+     <text>
+        Der Text, der beim Kaempfen mit "den blossen Haenden" erscheinen soll.
+
+ BESCHREIBUNG:
+    Normalerweise erscheint beim Kaempfen ohne Waffen eine Meldung:
+
+    >  Du greifst <Gegner> mit blossen Haenden an.
+                           ^=================^
+
+    Diesen Text kann man durch <text> ersetzen.
+
+ SIEHE AUCH:
+    review
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

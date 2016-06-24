@@ -1,0 +1,49 @@
+OBJECT:
+	container 
+
+
+DESCRIPTION:
+	A cointainer is a special object which can contain other objects.
+	It provides the same functions as the thing(S) class, but adds
+	some functions for the handling of contents. It defines some
+	properties related to what and how much is contained in it.
+
+	The following additional properties are defined for a container:
+	P_MAX_WEIGHT, P_WEIGHT_CONTENTS
+
+	Note that the weight of a container is handled especially:
+	SetProp(P_WEIGHT,weight) sets the weight of the container
+	without contents, while QueryProp(P_WEIGHT) returns the total
+	weight of the container plus contents.
+
+	For now, you may use the following function to add or remove
+	weight from the container.
+
+	AddWeight(weight)
+	  Adds <weight> to the container. If its OK, 1 is returned,
+	  otherwise 0. Only if the weight fits into the container, the
+	  weight is adjusted.
+
+	MayAddWeight(weight)
+	  Like AddWeight, but if the weight fits inside the container,
+	  the total weight is NOT updated. You may use this function to
+	  test if an object fits into a container.
+
+	NOTE: Currently, these functions may be called from outside.
+	In a alter stage, movement of objects will be done by calling
+	the move() function in the object to be moved. The move()
+	function of that object will then call (May)AddWeight() itself
+	to determine if it may enter the container.
+
+
+INHERITANCE TREE:
+	container
+	  |-thing/moving
+	  |-thing/properties
+	  |-container/description
+	  |   `-thing/description
+	  `-container/restrictions
+
+
+SEE ALSO:
+	thing(S)

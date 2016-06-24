@@ -1,0 +1,16 @@
+SYNOPSIS
+      xlag
+
+DESCRIPTION
+      xlag displays the current system LAG by comparing the actual
+      processed heartbeats with the initial heartbeat rate (1/2s).
+      Values will we displayed for the last minute, the last 15 minutes
+      and the last hour.
+
+EXAMPLE
+      Letzte 60 min: ####### (7.2%)
+      Letzte 15 min: ######## (8.3%)
+      Letzte Minute: ######### (9.4%) 
+
+AVAILABILITY
+      xlag requires /players/kirk/obj/lag-o-daemon.c to be loaded.

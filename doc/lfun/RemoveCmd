@@ -1,0 +1,60 @@
+RemoveCmd(L)
+FUNKTION:
+    varargs int RemoveCmd(mixed cmd, int norule, mixed id)
+
+DEFINIERT IN:
+    /std/thing/commands.c
+
+ARGUMENTE:
+    com
+         String oder Array von Strings mit den zu entfernenden Kommandos.
+    norule
+         Kommandos mit Regeln werden nicht entfernt (ausser bei cmd==0)
+    id
+         eine ID, mit der man ein vorher mit dieser ID gespeichertes
+         Kommando eindeutig lvschen kann
+
+BESCHREIBUNG:
+    Mit AddCmd() hinzugefuegte Kommandos koennen mit diesem Befehl wieder
+    abgemeldet werden. Die entfernten Kommandos sind direkt nach dem
+    RemoveCmd()-Aufruf nicht mehr ansprechbar.
+
+    Wird ein Regelstring angegeben, so wird die identische AddCmd-
+    Regel entfernt.
+
+BEMERKUNGEN:
+    Uebergibt man fuer com eine 0, so werden alle definierten Kommandos
+    entfernt!
+
+RUECKGABEWERT:
+    Anzahl der entfernten Kommandos.
+
+BEISPIELE:
+    (1) AddCmd("test");
+    (2) AddCmd("test|teste&mit&parameter");
+    (3) AddCmd(({"test"}),1);
+    (4) AddCmd("test",0,0,"XYZ");
+    (5) AddCmd("test&mit&parameter",0,0,"XYZ");
+
+    RemoveCmd(0);
+    - entfernt alle Kommandos
+    RemoveCmd("test",1);
+    - entfernt (1) und (3)
+    RemoveCmd("test");
+    - entfernt (1), (3) und einen Teil von (2),
+      es verbleibt "teste&mit&parameter"
+    RemoveCmd("test|teste&mit&parameter"
+    - entfernt (2)
+    RemoveCmd("test",0,"XYZ");
+    - entfernt (4) und (5)
+    RemoveCmd("test",1,"XYZ");
+    - entfernt (4), nicht (5)
+    RemoveCmd(0,0,"XYZ");
+    - entfernt (4) und (5)
+
+SIEHE AUCH:
+			AddCmd(L), AddCmd_bsp
+    Sonstiges:		replace_personal(E), enable_commands(E), init(E)
+    Alternativen:	AddAction(L), add_action(E)
+
+24.Maerz 2004 Gloinson

@@ -1,0 +1,73 @@
+Verschluesselung der MUD-Kommunikation mit stunnel
+==================================================
+
+    Mit 'stunnel' kann man seine saemtliche Kommunikation mit dem MUD
+    verschluesseln. Dazu startet man lokal bei sich stunnel und verbindet
+    sich dann per telnet/tf/... mit diesem Client.
+    In den folgenden Beispielen wird dafuer jeweils localhost:4711 benutzt.
+
+    Stunnel gibt es fuer diverse OS unter: http://www.stunnel.org/
+    
+    Start von stunnel unter Linux uAe:
+    * bis zur Version 3.* mit dem Kommando
+      stunnel -c -d 4711 -r mg.mud.de:4712
+    * ab Version 4.* mit Konfigurationsdatei folgenden Inhalts, gefolgt
+      von Start via "stunnel <konfigurationsdatei>"
+    --
+      foreground = yes
+      client = yes
+
+      [mg]
+      connect = mg.mud.de:4712
+      accept = localhost:4711
+    --
+
+    Start von stunnel unter Windows:
+    * Installieren/Starten, dann unter Configuration die Datei stunnel.conf
+      editieren und bei 'Service definitions' folgende Zeilen hinzufuegen:
+    --
+      client = yes
+      [mg]
+      connect = mg.mud.de:4712
+      accept = 127.0.0.1:4711
+    --
+
+ BEMERKUNGEN:
+    Der Server unterstuetzt Kompression, zB durch die Konfigurationszeile:
+      compression = zlib
+    ausserhalb des Profils.
+    
+    Auszugsweise momentan moegliche Chiffren sind, nach Staerke aufsteigend:
+      DES-CBC-SHA           SSLv3 Kx=RSA    Au=RSA  Enc=DES(56)   Mac=SHA1
+      RC4-SHA               SSLv3 Kx=RSA    Au=RSA  Enc=RC4(128)  Mac=SHA1
+      RC4-MD5               SSLv3 Kx=RSA    Au=RSA  Enc=RC4(128)  Mac=MD5 
+      CAMELLIA128-SHA       SSLv3 Kx=RSA    Au=RSA  Enc=Camellia(128) Mac=SHA1
+      DHE-RSA-AES128-SHA    SSLv3 Kx=DH     Au=RSA  Enc=AES(128)  Mac=SHA1
+      DES-CBC3-SHA          SSLv3 Kx=RSA    Au=RSA  Enc=3DES(168) Mac=SHA1
+      EDH-RSA-DES-CBC3-SHA  SSLv3 Kx=DH     Au=RSA  Enc=3DES(168) Mac=SHA1
+
+      AES128-SHA            SSLv3 Kx=RSA    Au=RSA  Enc=AES(128)  Mac=SHA1
+      AES128-SHA256         TLSv1.2 Kx=RSA  Au=RSA  Enc=AES(128)  Mac=SHA256
+      AES128-GCM-SHA256     TLSv1.2 Kx=RSA  Au=RSA  Enc=AESGCM(128) Mac=AEAD
+      AES256-SHA            SSLv3 Kx=RSA    Au=RSA  Enc=AES(256)  Mac=SHA1
+      AES256-SHA256         TLSv1.2 Kx=RSA  Au=RSA  Enc=AES(256)  Mac=SHA256
+      AES256-GCM-SHA384     TLSv1.2 Kx=RSA  Au=RSA  Enc=AESGCM(256) Mac=AEAD
+
+      DHE-RSA-CAMELLIA256-SHA SSLv3 Kx=DH   Au=RSA  Enc=Camellia(256) Mac=SHA1
+      DHE-RSA-AES256-SHA    SSLv3 Kx=DH     Au=RSA  Enc=AES(256)  Mac=SHA1
+      DHE-RSA-AES256-SHA256 TLSv1.2 Kx=DH   Au=RSA  Enc=AES(256)  Mac=SHA256
+      DHE-RSA-AES256-GCM-SHA384 TLSv1.2 Kx=DH Au=RSA  Enc=AESGCM(256) Mac=AEAD
+    
+    Einstellbar ist das bei speziellen Wuenschen (Vorschriften
+    zur Verschluesselungsstaerke im Ausland zB) mit:
+      ciphers = RC4-SHA
+    innerhalb des Profils. Fuer einige muss allerdings
+      fips = no
+    gesetzt werden, da sie als nicht mehr sicher genug gelten.
+ 
+ SIEHE AUCH:
+    teamspeak, mudrechner
+    Details zu Zertifikaten: http://mg.mud.de/download/stunnel.shtml
+
+ LETZTE AeNDERUNG:
+3. Aug 2015 Gloinson

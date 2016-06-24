@@ -1,0 +1,74 @@
+Guter Stil
+ BESCHREIBUNG:
+     Guten Stil kann man lernen. Zumindest in der Programmierung. Guter Stil
+     bedeutet vor allem: Schreib es so, das andere es lesen und verstehen
+     koennen. (Ansonsten werde /secure/-Erzmagier, die muessen aufgrund
+     eingebauter Paranoia selbstverschluesselnd schreiben.)
+
+     Lernen kann man auch am Beispiel, unter /d/gebirge/room/,
+     /d/gebirge/obj/, /d/gebirge/mon/, /doc/beispiele/ ist sauberer Code
+     zu finden.
+
+     Tipps zum Aussehen:
+     - Programmzeilen nicht laenger als 80 Zeichen schreiben, denn 80 Zeichen
+       breite Fenster sind immer noch die Regel
+       - Code kann auf der naechsten Zeile weiterfuehren:
+         filter(all_inventory(environment(TP)),
+		      #'einetollesortierfunktion, &extravariablen);
+       - Strings koennen (ohne Addition mit +) unterbrochen werden:
+         "Jemand "<EOL>    "jammert" == "Jemand jammert"
+         "Jemand \<EOL>jammert"      == "Jemand jammert"
+
+     - Bloecke (mit {} umrandeter Code) einruecken, damit man den
+       geplanten Programmfluss gut erkennen kann
+       - 2 bis 4 Zeichen, nicht gleich ein ganzes Tab (siehe erste Regel)
+       - die { und } ruhig in einzelen Zeilen schreiben
+
+     - Variablen in dem Block deklarieren, in dem sie gebraucht werden,
+       dadurch sind sie schneller zu finden
+
+     - #define nicht uebertreiben, wenn komplexe Funktionen damit gebaut
+       sind, uebersieht der Leser den Code oft nicht mehr
+       - #define sollten in #includeten Headerdateien stehen
+       - wenn es eine oft benutzte Funktion ist, schreib sie als Lfun
+       - ist es vielleicht schon in /sys/*.h oder /secure/*.h definiert?
+
+     Tipps zum Code:
+     - objektorientiert programmieren
+       - das was andere nicht von aussen sehen oder aufrufen muessen, mit
+         "protected" oder "private" bei Vererbung verstecken
+
+     - return mitten im Code wenn moeglich vermeiden, da der Programmfluss
+       damit aufgesplittert wird - ein einziger Funktionsausgang ist
+       uebersichtlicher
+       - Ausnahme hiervon kann aber sein, (die meisten) Ausschlussbedingungen
+         fuer irgendwas am Anfang einer Funktion abzupruefen und die Funktion
+         dann auch sofort zu verlassen.
+      
+     - korrekte Typen bei Variablen und Typen verwenden, damit der Leser
+       erkennt welches Ding was ist
+       - #pragma strong_types oder gar #pragma strict_types hilft
+       - Auch Typpruefungen zur Laufzeit (#pragma rtt_checks) verwenden
+       - bei Objekten, die geerbt werden, immer auch  #pragma save_types
+
+     Tipps zu Dateien:
+     - unterteilt eure Gegenden am besten in verschiedene Verzeichnisse,
+       dann findet man sich schnell zurecht:
+       - NPCs, Objekte, Raeume, Master (ggf. Waffen, Ruestungen wenn zu viel)
+
+     - Pfade sollten in einer zentralen #include Datei stehen, welche dann
+       relativ #included werden kann. Damit erleichtert man spaeteren Magiern
+       eventuell noetige Verzeichnisaenderungen.
+       statt:	AddItem("/d/ebene/<magier>/sumpf/npc/schleimi", ...);
+       lieber:
+         #include "../local.h"
+           [enthaelt ein
+            #define SUMPFNPC(x) ("/d/ebene/<magier>/sumpf/npc/" x)]
+		     ...
+		     AddItem(SUMPFNPC("schleimi"), ...);
+
+ SIEHE AUCH:
+     inheritance, effizienz, pragma, oop
+
+05.06.2014, Zesstra
+

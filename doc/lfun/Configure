@@ -1,0 +1,76 @@
+Configure()
+
+  public mixed Configure(mixed data)
+
+DEFINIERT IN:
+   Beliebigen Objekten
+
+ARGUMENTE:
+   <data>
+     0 fuer Datenabfrage
+     beliebige Daten, die ein Configure(0) vorher lieferte
+
+BESCHREIBUNG:
+   Viele Objekte werden fuer bestimmte Spieler konfiguriert und so
+   personalisiert. Sie enthalten zusaetzlich zu den Daten, welche waehrend des
+   create() gesetzt wurden, noch weitere spieler-individuelle Daten.
+   Damit diese Objekte im Bedarfsfall neu erstellt werden koennen, sollte ein
+   geeignetes Configure() definfiert werden, um diese Daten abzurufen und in
+   einem neuen Clone (oder neugeladener Blueprint) wieder zu setzen.
+   
+   Existiert Configure() im Objekt, MUSS dieses bei einem Aufruf mit
+   <data>==0 (d.h. Configure(0)) alle individuellen Daten zurueckliefern,
+   die noetig sind, um den aktuellen Zustand des Objektes spaeter
+   wiederherzustellen.
+   Das Objekt darf nach dem Zurueckgeben dieser Daten diese NICHT mehr
+   veraendern, d.h. es muss ggf. eine Kopie erstellt werden (copy, deep_copy)
+
+   Genau diese Daten werden in einem neu geclonten Objekt durch den Aufruf
+   von Configure(data) wieder gesetzt. Das Configure MUSS genau die Daten, die
+   es im alten Objekt zurueckliefert, wieder akzeptieren.
+
+RUeCKGABEWERT:
+   Wenn <data>==0:
+     Alle individuellen Daten in einer beliebigen Form. Ein Mapping bietet
+     sich jedoch an.
+     Nicht erlaubt sind: Objekte und Closures.
+
+   Wenn <data>!=0:
+     1, wenn die Daten zur Konfiguration akzeptiert wurden.
+     0, sonst.
+
+BEMERKUNGEN:
+   Configure() ist nicht verpflichtet, erneut Daten zu akzeptieren, wenn es
+   bereits einmal mit gueltigen Daten aufgerufen wurde.
+   Das Zurueckschreiben der Daten kann auch nach Ablauf laengerer Zeit
+   und/oder in einer anderen Uptime erfolgen.
+
+BEISPIELE:
+   Ein Objekt, welches ein anderes Objekt sicher ersetzt, d.h. die
+   individuelle Konfiguration bleibt erhalten:
+   mixed data;
+   if (call_resolved(data,ob,"Configure",0) == 1) {
+     string obname = load_name(ob);
+     ob->remove();
+     ob = clone_object(obname);
+     if (data) {
+       if (ob->Configure(data) == 1) {
+         printf("Instanz von %s erfolgreich ersetzt, neues Objekt: %O\n",
+             obname,ob);
+       }
+       else {
+         raise_error(sprintf("Configure() in %O akzeptierte Daten nicht!\n",
+             ob));
+       }
+     }
+   }
+   else {
+     printf(break_string(
+         "Das Objekt %O definiert keine Funktion Configure(). Es kann "
+         "nicht sicher ersetzt werden, da unbekannt ist, ob es individuelle "
+         "Daten enthaelt.",78));
+   }
+
+LETZTE AeNDERUNG:
+26.09.2011, Zesstra
+

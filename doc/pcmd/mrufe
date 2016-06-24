@@ -1,0 +1,37 @@
+
+mrufe
+-----
+
+ KOMMANDO:
+    mrufe <text>
+
+ ARGUMENTE:
+
+     <text>
+        Der Text, der an die Magier gerufen wird
+
+ BESCHREIBUNG:
+    Die Meldung <text> wird an alle eingeloggten Magier ausgegeben.
+
+    Dieser Befehl darf nur in NOTFAELLEN verwendet werden!!!
+
+    Notfaelle sind z.B. fehlerhafte Raeume, aus denen man nicht mehr
+    herauskommt, o.ae. (*aber*: nicht jeder Raum ohne sichtbare Ausgaenge ist
+    fehlerhaft!) Man sollte sich erst vergewissern, ob man wirklich
+    feststeckt.
+
+    Kein Notfall ist z.B. ein mrufe, wenn man einen Brief an einen Magier
+    zustellen will.
+    Missbraeuchliche Benutzung dieses Befehls sorgt dafuer, dass sich die
+    Magier auch in wirklichen Notlagen nicht mehr um das ge`mrufe' kuemmern,
+    sondern sich koestlich ueber die Spieler amuesieren. Es liegt also bei
+    euch, wie ernst ihr genommen werden moechtet.
+
+    Magier sollten lieber die Magierebene verwenden (-Magier+).
+
+ SIEHE AUCH:
+    teile (mit), ebenen
+
+ LETZTE AeNDERUNG:
+ 16.09.2008, Zesstra
+

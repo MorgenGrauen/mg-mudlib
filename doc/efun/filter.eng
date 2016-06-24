@@ -1,0 +1,49 @@
+filter(E)
+SYNOPSIS
+     mixed *filter(mixed *arr, string fun, string|object ob
+                         [, mixed extra, ...])
+     mixed *filter(mixed *arr, closure cl [, mixed extra, ...])
+     mixed *filter(mixed *arr, mapping map [, mixed extra, ...])
+
+DESCRIPTION
+        Returns an array holding the items of arr filtered through
+        ob->fun(element, extra, ...), the closure cl, or the mapping map.
+        The function 'fun' in 'ob' resp. the closure 'cl' is called
+        for each element in arr with that element as parameter. The
+        extra and following parameters are in each call if given.
+        The mapping 'map' is likewise indexed by each element.
+        If ob->fun(arr[index], extra) returns != 0 resp.
+        map[arr[index]] exists, the element is included in the
+        returned array.
+
+        If arr is not an array, an error occurs.
+
+        The extra argument(s) are optional and must not be protected
+        references like &(i[0]).
+        If <ob> is omitted, or neither a string nor an object, it
+        defaults to this_object().
+
+        Since 3.2.1@36, the second arg can also be a mapping. Then
+        only the elements of the array which belong to the map (as
+        keys) will be returned (i.e. map[arr[index]] != 0).
+
+EXAMPLE
+        int check_if_idle(object user) { return query_idle(user); }
+
+        ...
+
+        object *idle_users;
+
+        idle_users = filter(users(), "check_if_idle");
+        /* equivalent but smaller and faster */
+        idle_users = filter(users(), #'query_idle );
+
+        Now idle_users contains all users that have been idle for more
+        than 1 second.
+
+SEE ALSO:
+        Similar filter:	filter(E), filter_object(E), filter_indices(E)
+        Mapping:	map(E), map_objects(E), map_indices(E)
+        Related:	sort_aray(E), unique_array(E)
+
+29.10.2006 Zesstra

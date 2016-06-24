@@ -1,0 +1,24 @@
+BEFEHL:
+	callouts
+	callouts!
+
+ARGUMENTE:
+	callouts: TOS String, nach dem gesucht wird.
+	callouts!: keine
+
+FUNKTION:
+	Gib eine Liste aller im Spiel laufenden call_outs aus. Ein call_out
+	wird in folgendem Format ausgegeben:
+	1.) Zeit, bis zum Aufruf der Funktion.
+	2.) Objekt, in dem die Funktion aufgerufen wird.
+	3.) Name der Funktion.
+	4.) Argument, das dem call_out uebergeben wird.
+
+	Wird der Befehl ohne Rufzeihen eingegeben, so werden nur die
+	Meldungen ausgegeben, die in den ersten drei (!) Argumenten
+	den angegebenen String enthalten.
+
+BEISPIEL:
+	,"go" callouts
+	Gibt alle Monster aus, die mittels der Funktion "go" umherlaufen.
+	(Es gibt aber auch welche, die mittels "Walk" laufen. :-)

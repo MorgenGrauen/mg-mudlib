@@ -1,0 +1,25 @@
+QueryTotalQP()
+
+FUNKTION:
+    int QueryTotalQP()
+
+DEFINIERT IN:
+    /secure/questmaster.c
+
+ARGUMENTE:
+    keine
+
+RUECKGABEWERT:
+    Abenteuerpunkte saemtlicher Quests
+
+BESCHREIBUNG:
+    Diese Funktion liefert die Abenteuerpunkte der saemtlicher aktivierter
+    Quests zurueck.
+
+SIEHE AUCH:
+    GiveQuest, QueryQuest, /secure/questmaster.h, QueryGroupedKeys,
+    QueryMaxQP, QueryOptQP
+
+----------------------------------------------------------------------------
+Zuletzt geaendert: Sam, 25. Nov 2000, 14:04:28 von Zook.
+

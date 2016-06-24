@@ -1,0 +1,80 @@
+P_KILL_MSG
+
+NAME:
+	P_KILL_MSG			"kill_msg"
+
+DEFINIERT IN:
+	/sys/properties.h
+
+BESCHREIBUNG:
+     Wenn ein Spieler getoetet wird, so erscheint dazu eine kurze Information
+     auf dem Todeskanal. Um dem toetenden Objekt zusaetzlich die Moeglichkeit
+     zu geben, noch etwas mehr auf diesem Kanal auszugeben, kann man in
+     dieser Property einen String uebergeben.
+     Noetige Zeilenumbrueche werden hierbei automatisch generiert.
+
+     Es ist auch moeglich anzugeben, ob Emotes verwendet werden und ob das
+     toetende Objekt ein Plural-Objekt ist. Hierzu uebergibt man ein Array
+     der Gestalt:
+
+	({Killmessage,Emotes}) bzw. ({Killmessage,Emotes,PLURAL})
+
+     Der Eintrag <Killmessage> stellt hierbei die Meldung selbst dar, PLURAL
+     gibt an, dass es sich um ein Plural-Objekt handelt und <Emotes> kann
+     folgende Werte annehmen:
+
+	MSG_SAY    - Meldung wird normal ausgegeben.
+	MSG_EMOTE  - Meldung erscheint als Emote.
+	MSG_GEMOTE - Meldung erscheint als Genitiv-Emote.
+	MSG_EMPTY  - Meldung erscheint ohne zuvorige Angabe des
+	               toetenden Objektes.
+
+     Moechte man die Meldung noch etwas "persoenlicher" ;-) gestalten, so
+     kann man den Platzhalter %s verwenden. An dessen Stelle wird dann der
+     Name des Verblichenen eingesetzt.
+
+BEISPIEL:
+     Ein nettes Beispiel ist das folgende: Wenn ein Spieler sich als
+     Drachentoeter bewehrt hat, so kann er traditionell in seinem Blut baden.
+     Hin und wieder ist jedoch auch der Drache erfolgreich, dem man eine
+     lustige Zusatzmeldung fuer den Todeskanal uebergeben kann:
+
+     void create() {
+       ::create();
+       ...
+       SetProp(P_KILL_MSG,"Jetzt bade ich mal in DEINEM Blut, %s!");
+       ...
+     }
+
+
+     Falls der 'Killer' ein Plural-Objekt oder -NPC war, koennte eine Meldung
+     auch folgendermassen aussehen:
+
+     SetProp(P_KILL_MSG,({"haun sich jetzt die Hucke voll.",
+			  MSG_EMOTE,
+			  PLURAL}));
+
+     wobei P_KILL_NAME hier natuerlich auf "Eine Menge Orks" oder
+     dergleichen gesetzt sein sollte. Auf dem Kanal waere dann dies zu
+     lesen:
+
+	[Tod:Lars] Eine Menge Orks haben gerade Orktoeter umgebracht.
+	[Tod:Eine Menge Orks haun sich jetzt die Hucke voll.]
+
+
+     Weiteres Beispiel.
+     Man habe einen NPC, dessen Killname als Plural aufzufassen ist, der aber
+     keinen zusaetlichen Text auf -Tod bringen soll.
+
+     SetProp(P_NAME, "Eine Horde Gummibaeren");
+     SetProp(P_KILL_NAME, "Viele kleine Gummibaeren");
+     SetProp(P_KILL_MSG, ({0, 0, 1}));
+
+SIEHE AUCH:
+     Tod:		die(L)
+     Todesmeldungen:	P_KILL_NAME, P_DIE_MSG, P_MURDER_MSG
+			P_ZAP_MSG, P_ENEMY_DEATH_SEQUENCE
+     Sonstiges:		P_CORPSE, P_NOCORPSE, /room/death/death_room.c
+
+----------------------------------------------------------------------------
+Last modified: Wed Aug 21 14:36:04 2002 by Bambi

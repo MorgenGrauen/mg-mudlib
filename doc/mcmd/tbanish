@@ -1,0 +1,26 @@
+
+tbanish
+-------
+
+ ERZMAGIERKOMMANDO:
+    tbanish <name> <tage>
+
+ ARGUMENTE:
+
+     <name>
+        Name des Opfers
+     <tage>
+        Die Dauer der Spielpause
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kann man Spielern eine Spielpause auferlegen. Die Dauer
+    wird in Tagen angegeben. Eine Angabe von -1 setzt eine unbefristete
+    Spielpause; mit einer Dauer von 0 Tagen loescht man eine gesetzte Sperre.
+
+    Dieser Befehl kann nur von Erzmagiern und Goettern ausgefuehrt werden.
+
+ SIEHE AUCH:
+    banish, mbanish, sbanish
+
+ LETZTE AeNDERUNG:
+    Mon, 20.12.1999, 23:30:00 von Tiamak

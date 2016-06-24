@@ -1,0 +1,143 @@
+[10.07.97]
+
+- fixed minor bug in command lookup:
+  'xdosomethingorsomethingelse' was previously executed as 'xdo'
+  This is treated as an unknown command now. Anyway commands may be
+  abbreviated as long as they are not ambiguous.
+
+[12.03.97]
+
+- xlpc includes some more std-include-files and .xtool.h (if present)
+
+[04.03.97]
+
+- new command: xproc
+  display some information from the /proc filesystem in a very raw fashion.
+
+[08.05.96]
+
+- Xmore/Xtail: modified MoreFile/CatFile using new read_buffer() instead of
+  read_file() function which is VERY slow when giving offsets as argument.
+
+[13.02.96]
+
+- see below ...
+
+[03.01.96]
+
+- new command line parser under development (ALPHA!)
+
+[21.11.95]
+
+- MGtool will be destructed during creation, when !IS_LEARNER(<cloner>) is true
+
+- new option "-s" to xi[nventory] prints short inventory list (filenames only).
+  This is useful for alert object "... scanned your inventory" etc.
+  xi accepts <username> as optional argument to retrieve <username>'s 
+  inventory instead of the cloner's own inventory and may write into pipes
+  to create command chains like: xi -s kirk|xgrep MGtool
+
+- new command xlag :-) 
+
+[09.11.95]
+
+- bugfix: xinherit now calls xinherit and NOT xinventory
+
+[23.08.95]
+
+- xcall and xeval try to include a private header file ~/.xtool.h if one 
+  exists. You may define own macros or whatever to make things easier
+
+[21.06.95]
+
+- new option "cmdavg" to xwho, shows command_average in ascending order
+
+[20.06.95]
+
+- removed redirecting of xcall and xeval (too buggy)
+
+- added options -f and -m to xprops (show propflags and propmethods)
+
+[06.06.95]
+
+  ** IMPORTANT ** (not backward compatible change)
+- xcall and xeval now write to a file, when redirecting their output
+  using '>'. It is also possible to pipe output into other commands
+
+[30.05.95]
+
+- xlook/xdlook are now able to write into pipes
+
+- xwho shows the name of any user currently logging in
+  instead of simply " R O O T "
+
+[10.04.95]
+
+- added option -i to xgrep (ignore case)
+
+- bugfix in command pipelines
+
+[28.03.95]
+
+- xinherit is now able to write into pipes
+
+[20.03.95]
+
+- added IO redirection like:  xwho ip > testfile  or  xwho >> testfile
+                        and:  xmore < testfile
+  (this is very ALPHA!!!)
+
+[01.03.95]
+
+- new command xwc. Count lines, words and chars in file
+  Syntax xwc [-clw] [file]  (is able to read from pipe)
+
+[17.02.95]
+
+- changed formatting of xprops output
+
+[15.02.95]
+
+- lots of code added, some rewritten
+
+- removed xalias capability (the shell alias provides the same functionality)
+
+- removed xcindent, xdate, xquit 
+
+- bugs fixed in xcallouts, xprops, xman (when using xxtool)
+
+- added command pipelines for selected commands:
+
+  -> cmd : is able to read from pipe
+  cmd -> : is able to write into pipe
+
+  xcallouts ->
+  -> xcat ->
+  xcmds ->
+  -> xgrep ->
+  xhbeats ->
+  -> xhead ->
+  -> xmore
+  -> xmsg
+  xprops ->
+  -> xsort ->
+  -> xtail ->
+  xwho ->
+
+  the general syntax using pipes is:
+
+    cmd_a [arg_a] | cmd_b [arg_b] | ...
+
+  only the first space between cmd_a and arg_a or between cmd_a and the
+  first pipe symbol is necessary.
+
+  All functions which allow direct output into a pipe don't use a pager
+  to show its output even if no pipe follows this command. You may use
+  cmd [arg]|xmore to obtain the old results.
+
+- new commands xtail, xhead, xcat and xsort
+
+- command line option -v added to xgrep to print lines not matching the search
+  pattern
+
+- i/o redirection is coming soon

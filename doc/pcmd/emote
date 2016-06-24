@@ -1,0 +1,64 @@
+
+emote
+-----
+
+ KOMMANDO:
+    emote <text1>[#<name>#<text2>[#<text3>]]
+    :<text1>[#<name>#<text2>[#<text3>]]
+    ;<text1>[#<name>#<text2>[#<text3>]]
+
+ ARGUMENTE:
+
+     <text1>, <text2>, <text3>
+        Zeichenketten
+     <name>
+        Name eines Lebewesens im gleichen Raum wie Du
+
+ BESCHREIBUNG:
+    Gibt den Text <text1> an alle im Raum aus. Dein Name wird dem Text
+    vorangestellt. Verwendet man die `;'-Form, wird Dein Name im Genitiv
+    gewaehlt.
+
+    Werden ein Name und weiterere Texte angegeben, so wird an <name> statt des
+    ersten Textes <text2> ausgegeben (ebenfalls mit Deinem Namen
+    vorangestellt) und an Dich <text3> (ohne Namen).
+
+    Das `emote'-Kommando beherrscht man uebrigens erst, nachdem man die
+    Amaryllis-Quest geloest hat.
+
+    Ist man nur einfacher Spieler (also weder Seher noch Magier), so wird auch
+    noch ein `> ' vor Namen und Text gesetzt.
+
+ BEISPIELE:
+    Angenommen, Wargon und Saphis stehen mit einigen anderen Leuten zusammen
+    in einem Raum.
+
+    Hier ein paar Eingaben von Wargon mit den entsprechenden Ausgaben bei den
+    Anwesenden:
+
+    > :niest.
+
+    |Wargon:| Wargon niest.
+    |Saphis:| Wargon niest.
+    |andere:| Wargon niest.
+
+    > :aergert Saphis.#saphis#aergert Dich.
+
+    |Wargon:| Wargon aergert Saphis.
+    |Saphis:| Wargon aergert Dich.
+    |andere:| Wargon aergert Saphis.
+
+    > :aergert Saphis.#saphis#aergert Dich.#Du aergerst Saphis.
+
+    |Wargon:| Du aergerst Saphis.
+    |Saphis:| Wargon aergert Dich.
+    |andere:| Wargon aergert Saphis.
+
+    Wie man sieht, lassen sich mit der letzten Form und dem alias-Befehl
+    eigene Befehle herstellen (allerdings muss man auf Adverbien verzichten).
+
+ SIEHE AUCH:
+    verben, (ab hier nur fuer Seher) remote, echo
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

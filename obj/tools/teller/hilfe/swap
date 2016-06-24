@@ -1,0 +1,8 @@
+BEFEHL:
+	swap
+
+ARGUMENTE:
+	Die obersten 2 Stackelemente.
+
+FUNKTION:
+	Vertausche die beiden obersten Elemente vom Stack.

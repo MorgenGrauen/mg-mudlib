@@ -1,0 +1,23 @@
+NAME:
+    P_ROOM_TYPE                       "room_type"                       
+
+DEFINIERT IN:
+    /sys/rooms.h
+
+BESCHREIBUNG:
+    In P_ROOM_TYPE wird die Art des Raumes durch entsprechende Flags
+    beschrieben.
+
+    Bisher unterstuetzt werden:
+        - RT_SHOP       fuer Raeume, die /std/room/shop inheriten
+        - RT_PUB        fuer Raeume, die /std/room/pub inheriten
+
+BEISPIEL:
+    Wenn ein NPC abfragen moechte, ob er sich in einer Kneipe aufhaelt (um
+    selbststaendig tanken zu koennen) koennte eine Abfrage z.B. so aussehen:
+
+        if ( environment() &&
+             environment()->QueryProp(P_ROOM_TYPE) & RT_PUB ){
+
+            ... tanken ...
+        }

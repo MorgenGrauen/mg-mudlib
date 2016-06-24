@@ -1,0 +1,21 @@
+Materialid:
+MAT_TURQUOISE            "turquoise"
+
+Name:
+"Tuerkis" "Tuerkis" "Tuerkis" "Tuerkis"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_TURQUOISE
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

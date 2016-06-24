@@ -1,0 +1,28 @@
+P_DAMAGED
+
+NAME:
+     P_DAMAGED "item_damaged"
+
+DEFINIERT IN:
+     <combat.h>
+
+BESCHREIBUNG:
+     Ruestungen und Waffen koennen im Eifer des Gefechts beschaedigt werden.
+     Der Grad der Beschaedigung sollte in dieser Property festgehalten
+     werden.
+
+     Bei Waffen ergibt sich die urspruengliche Waffenklasse aus der Summe
+     von aktueller Waffenklasse und dem Wert von P_DAMAGED:
+     altes P_WC = aktuelles P_WC + P_DAMAGED.
+
+     Analoges gilt fuer die Ruestungsklasse einer beschaedigten Ruestung:
+     altes P_AC = aktuelles P_AC + P_DAMAGED.
+
+     P_DAMAGED bitte niemals direkt setzen, sondern immer ueber
+     die Funktion Damage() manipulieren!
+
+SIEHE AUCH:
+     /std/armour.c, /std/weapon.c, TakeFlaw(), QueryFlaw(), Damage()
+
+----------------------------------------------------------------------------
+02.10.2007, Zesstra

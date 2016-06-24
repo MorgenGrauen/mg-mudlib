@@ -1,0 +1,75 @@
+map_indices(E)
+
+FUNKTION:
+     mapping map_indices(mapping m, string fun, object ob [, mixed extra])
+     mapping map_indices(mapping m, closure cl [, mixed extra])
+
+PARAMETER:
+     arr	- zu mappendes Array
+     fun/cl	- zu rufende Methode/Closure
+     ob		- Objekt/Dateiname, an dem Methode gerufen werden soll
+     extra	- weitere Parameter fuer Methode/Closure
+
+BESCHREIBUNG:
+     Mapped die Elemente (jeweils Schluessel) aus 'map' durch die Methode
+     'fun' oder die Closure 'cl' in ein neues Mapping.
+     Fuer jedes Element aus 'm' wird 'fun' oder 'cl' mit dem Schluessel als
+     erstem Parameter [und folgend den optionalen Extra-Parametern] gerufen.
+
+     Der Rueckgabewert der Methode/Closure wird in fuer den Schluessel als
+     Datenwert in das neue Mapping eingetragen.
+
+     ACHTUNG: Alle anderen Daten bei Mapping mit Breite>1 verfallen!
+
+     Verwendung von Methoden:
+	Wenn bei der Angabe von 'fun' kein Objekt 'ob' in Form eines Strings
+	oder Objekts angegeben wird, wird this_object() angenommen.
+
+     Verwendung von Closures:
+	Es koennen sowohl Lfun-Closures als auch Lambda-Closures verwendet
+	werden. Lfun-Closures koennen, wenn im selben Objekt vorhanden auch
+	'private' oder/und 'static' deklariert sein, muessen aber zu dem
+	Zeitpunkt der Verwendung bekannt sein (Funktionsprototypen benutzen).
+
+RUeCKGABEWERT:
+     Mapping mit Schluessel:Rueckgabewerten der Methode/Closure.
+
+BEISPIELE:
+     // ersetze in einem Mapping die Datenwerte durch das Doppelte,
+     // nutze dabei die Datenwerte des Altmappings durch Uebergabe als
+     // extra-Parameter
+
+     // Anmerkung: Das geht mit walk_mapping() eleganter!
+
+     int do_double(string key, mapping m, int mult) {
+      return m[key]*mult;
+     }
+
+     mapping x, y;
+     x=(["a":2, "b":3]);
+     y=map_indices((["a":2, "b":3]), #'do_double, &x, 3);
+
+     y == (["a":6,"b":9])
+
+AeQUIVALENZCODE (nicht empfohlen, nur zum Verstaendnis!):
+     int i;
+     mapping ret; mapping input;
+     mixed *index;
+
+     ret=m_allocate(0, 1);
+     index=m_indices(input);
+     i=sizeof(index);
+     while(i--)
+       ret[index[i]]=ob->fun(index[i] [, extra1, extra2, ...]))
+       // ret[index[i]]=funcall(cl, index[i] [, extra1, extra2, ...]);
+
+SIEHE AUCH:
+     Arrays:		filter(E), map(E)
+     Objektarrays:	filter_objects(E), map_objects(E)
+     Mappings:		filter_indices(E)
+
+     Sonstiges:		walk_mapping(E), m_contains(E)
+			member()
+			m_indices(E), m_values(E)
+
+29.10.2006 Zesstra

@@ -1,0 +1,30 @@
+********************* VERALTETE PROPERTY ******************************
+* Diese Property ist veraltet. Bitte nicht mehr in neuem Code nutzen. *
+***********************************************************************
+
+NAME:
+    P_NEXT_SPELL_TIME             "next_spell"
+
+DEFINIERT IN:
+    /sys/new_skills.h
+
+BESCHREIBUNG:
+    Wann kann das naechste Mal gezaubert werden?
+    Dies ist eine globale Spruchermuedung/-Sperre.
+    Flexiblere Sperren koennen mittels SetSpellFatigue/CheckSpellFatigue()
+    verwaltet werden.
+
+    Diese Property ist keine echte Property, sondern liefert nur das
+    Ergebnis von von CheckSpellFatigue() zurueck bzw. ruft beim Setzen
+    SetSpellFatigue(<spruchsperre>, 0) auf.
+    Diese Prop sollte _nicht_ mittels Query- oder Setmethoden manupuliert
+    werden, da sonst Inkonsistenzen zum Ergebnis von CheckSpellFatigue()
+    auftreten.
+
+SIEHE AUCH:
+    SetSpellFatigue(L), CheckSpellFatigue(L)
+    spruchermuedung
+
+ZULETZT GEAeNDERT:
+14.03.2010, Zesstra
+

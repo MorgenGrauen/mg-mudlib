@@ -1,0 +1,24 @@
+NAME:
+     P_EMPTY_MSG                   "std_food_eater_msg"
+
+DEFINIERT IN:
+     <sys/food.h>
+
+BESCHREIBUNG:
+     Meldung an den Konsumenten, wenn versucht wird, eine aufgebrauchte Speise
+     (also einen leeren Behaelter) zu konsumieren.
+     
+BEMERKUNGEN:
+     Diese Meldung wird von replace_personal mit den Argumenten:
+     1. Speise (also den leeren Behaelter)
+     2. Konsument
+     verarbeitet, kann als entsprechende Platzhalter enthalten
+     
+DEFAULT:
+     "@WER1 ist bereits leer."
+
+SIEHE AUCH:
+     /std/food.c, wiz/food, replace_personal
+
+------------------------------------------------------------------------------
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra

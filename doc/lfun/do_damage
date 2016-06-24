@@ -1,0 +1,44 @@
+do_damage(L)
+FUNKTION:
+     int do_damage(int dam,mixed enemy);
+
+DEFINIERT IN:
+     /std/living/life.c
+
+ARGUMENTE:
+     int dam
+	  Die abzuziehenden Lebenspunkte (HP).
+     object enemy
+	  Das Objekt, welches den Schaden zufuegt.
+
+BESCHREIBUNG:
+     Dem Lebewesen werden <dam> HP abgezogen. Falls weniger als 0 HP uebrig
+     bleiben, so stirbt es automatisch mittels die().
+     Ein Lebewesen, welches sich bewegt hat, trifft die ersten Kampfrunden
+     sehr viel schlechter, um Rein-Raus-Attacken zu verhindern. Dieses
+     Vorgehen kann man mittels P_ENABLE_IN_ATTACK_OUT deaktivieren.
+     Lebewesen, welche P_NO_ATTACK gesetzt haben, kann man mit dieser
+     Funktion nicht schaden.
+
+RUeCKGABEWERT:
+     Der tatsaechlich verursachte Schaden.
+
+BEMERKUNGEN:
+     Beim Gegner <enemy>, falls vorhanden, werden XP und ALIGN entsprechend
+     angepasst, im Opfer wird der Gegner in P_KILLER vermerkt, der Kampf wird
+     beendet.
+     Diese Funktion sollte nur selten direkt verwendet werden. Meist ist der
+     uebliche Weg ueber Defend() -> do_damage() -> die() die logisch bessere
+     und balancetechnisch guenstigere Loesung, da Defend() magische
+     Verteidigungen, die der Spieler bei sich hat beruecksichtigt.
+     Es sollte also allein schon aus Fairness gegenueber den Objekten
+     anderer Magier Defend() immer dem direkten reduce_hit_points() oder
+     do_damage() vorgezogen werden. Mittels der Flags in 'spell' kann man
+     sehr viele Parameter beeinflussen.
+
+SIEHE AUCH:
+     Verwandt:	Defend(L), reduce_hit_points(L), die(L)
+     Props:	P_NO_ATTACK, P_ENABLE_IN_ATTACK_OUT, P_KILLER
+		P_XP, P_ALIGN
+
+23.Feb.2004 Gloinson

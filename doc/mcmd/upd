@@ -1,0 +1,79 @@
+
+upd
+---
+
+ MAGIERKOMMANDO:
+    upd [ -abcdhfilmrv ] <datei> [...]
+
+ ARGUMENTE:
+
+     <datei> [...]
+        die zu bearbeitende(n) Datei(en)
+
+ BESCHREIBUNG:
+    Dieses spezielle Kommando stellt ein dateibasiertes Update dar. Es
+    zerstoert und/oder laedt geladene Objekte (Blueprints).
+
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Wird ein Objekt nicht nur zerstoert, sondern auch neu erzeugt, so wird
+    Configure() benutzt, sofern es eines hat, d.h. die Objektdaten werden
+    vor der Zerstoerung mittels Configure() abgerufen und im neuen Objekt mit
+    Configure() wieder gesetzt.
+
+    Zusaetzlich koennen folgende Flags angegeben werden:
+
+     -a  Alle Instanzen (Clones) der Datei werden zerstoert. Da dazu die
+         gesamte Objektliste durchsucht werden muss und diese Funktion
+         entsprechend zeitaufwendig ist, sollte man dieses nur mit Bedacht
+         benutzen.
+     -b  Falls es beim Update einen Fehler gab, wird versucht, ein Backtrace
+         aus `/<rechner>.debug.log' zu lesen.
+     -C  Die Nutzung von Configure() wird erzwungen, d.h. Objekte, die kein
+         oeffentliches Configure() haben, werden nicht zerstoert/ersetzt.
+         (im Zusammenspiel mit -l oder -r, inkompatibel mit -c)
+     -c  Die Properties des Originalobjektes werden kopiert. In diesem Fall
+         wird Configure() _nicht_ benutzt (im Zusammenspiel mit -l und -r,
+         inkompatibel mit -C)
+     -d  Beim Zerstoeren der Instanzen werden auch evtl. in ihnen vorhandene
+         Objekte zerstoert. Nuetzlich, um z.B. NPCs samt ihrer Ausruestung zu
+         entsorgen.
+     -f  Alle Instanzen (Clones) der Datei werden gesucht.
+     -h  Es wird kein remove versucht, sondern sofort destruct verwendet.
+         Bitte nur in Ausnahmefaellen verwenden.
+     -i  Nicht nur die Datei selbst wird zerstoert, sondern auch alle geerbten
+         Klassen (soweit sie geladen sind).
+     -l  Die Datei wird geladen (aehnlich wie beim Befehl load, allerdings
+         wird das alte Objekt zerstoert, falls es schon geladen ist).
+     -m  MAKE - wie -i, aber es werden nur Objekte zerstoert, die aelter sind
+         als die Datei
+     -r  Wenn ein Objekt zerstoert wurde, wird versucht, es neu zu laden.
+     -s  Alle Erfolgsmeldungen untergeordneter Prozesse unterdruecken.
+     -v  Der volle Abhaengigkeitsbaum wird ausgegeben (im Zusammenspiel mit
+         -m)
+
+    Es koennen auch Objekte angegeben werden, die nicht als Datei existieren,
+    d.h. man kann auch Instanzen mit dem # im Namen zerstoeren. Ausserdem
+    koennen nur Objekte, die man selbst schreiben darf, zerstoert/geladen
+    werden.
+
+    `upd' merkt sich das zuletzt geladene oder geclonte Objekt! Dies wirkt
+    sich vor allem dann aus, wenn man ein Objekt zum testen immer wieder
+    zerstoeren, updaten, laden und clonen muss. Diese Reihe von Kommandos wird
+    durch `upd -mr' ohne Argument auf das zuletzt geladene oder gelonte Objekt
+    vollzogen.
+
+ BEISPIELE:
+
+    > upd *.c
+    > upd -r *
+    > upd -mv test.c
+    > upd -r test#12345
+    > upd -ar /d/inseln/mandragon/meloran/obj/alle/meloran_obj
+
+ SIEHE AUCH:
+    destruct, load
+    Configure()
+
+ LETZTE AENDERUNG:
+    Tue, Oct 10 18:50:00 2000 von Mandragon

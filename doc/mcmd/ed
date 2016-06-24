@@ -1,0 +1,47 @@
+
+ed
+--
+
+ MAGIERKOMMANDO:
+    ed <datei> [...]
+
+ ARGUMENTE:
+
+     <datei> [...]
+        Name(n) der zu bearbeitenden Datei(en)
+
+ BESCHREIBUNG:
+    Startet den Editor nacheinander mit jeder angegebenen Datei.
+
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Der Editor ist im grossen und ganzen kompatibel zum UNIX Editor ed. Er ist
+    zeilenorientiert und funktioniert nach einem einfachen Prinzip.
+
+    Es gibt zwei Modi: Kommandomodus und Eingabemodus
+
+     Kommandomodus:
+
+         * Hat das Prompt `:'
+         * Akzeptiert Befehle der Art [<addresse>]<befehl>
+           Hierbei besteht <adresse> aus einer Zeilennummer oder aus einer
+           Angabe die mehrere Zeilen adressiert: zeile1,zeile2
+           Die Befehle koennen mit dem Befehl `h' abgerufen werden.
+
+     Eingabemodus:
+
+         * Hat keinen Prompt.
+         * Akzeptiert Eingaben, bis auf einer einzelnen Zeile ein `.'
+           eingegeben wird, das wechselt wieder in den Kommandomodus.
+
+ BEISPIELE:
+
+    > ed test.c
+    > ed *.c
+
+ SIEHE AUCH:
+    more, head, tail, load, clone
+    ed0(LPC), ed1(LPC), ed2(LPC), ed3(LPC), ed4(LPC), ed5(LPC)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

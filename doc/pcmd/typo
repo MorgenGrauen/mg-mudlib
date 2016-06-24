@@ -1,0 +1,48 @@
+typo
+----
+
+KOMMANDO:
+    typo <text>
+    typo <objekt>:<text>
+
+ARGUMENTE:
+
+    <text>
+        Eine Mitteilung
+    <objekt>
+        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+
+BESCHREIBUNG:
+    In den Beschreibungen von Raeumen und Objekten kommt es immer wieder mal
+    zu Tippfehlern, die auch die Testphase des Objektes/Gebietes unerkannt
+    ueberstanden haben.
+
+    Wenn Du einen Tippfehler gefunden hast, so kannst Du den Verantwortlichen
+    mit diesem Befehl davon unterrichten.
+
+    Fuer den Magier ist es sehr hilfreich, wenn Du bei in Meldung angibst,
+    wo genau der Tippfehler zu finden ist (also z.B, welches Detail den
+    Fehler enthaelt).
+
+    Zoegere nicht, wenn Du einen Tippfehler findest; Fehlermitteilungen sind
+    *sehr* willkommen!
+
+    Wenn Du einen Typo an einem bestimmten Objekt oder NPC entdeckst, kannst
+    Du dieses/diesen hinter einem Doppelpunkt angeben, damit der fuer das
+    Objekt verantwortliche Magier die Meldung bekommt.
+    Wenn das Objekt nicht zu finden ist, wird die ganze Eingabe als
+    Meldung aufgefasst.
+
+BEMERKUNG:
+    Der Befehl 'typo' bezieht sich bei Nichtangabe eines Bezugsobjekts
+    auf das letzte betrachtete Objekt. Hast Du also ein Objekt untersucht,
+    dann wird die Meldung fuer diese Objekt abgegeben. Hast Du aber den
+    Raum untersucht oder 'schau' eingegeben, wird die Meldung fuer Deinen
+    momentanen Raum abgesetzt.
+
+SIEHE AUCH:
+    bug, idee, detail, bezugsobjekt
+
+LETZTE AeNDERUNG:
+    03.06.2013, Zesstra
+

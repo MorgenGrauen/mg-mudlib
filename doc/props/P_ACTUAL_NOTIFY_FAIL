@@ -1,0 +1,27 @@
+********************** VERALTETE PROPERTY *********************************
+NAME:
+     P_ACTUAL_NOTIFY_FAIL          "actual_notify_fail"          
+
+DEFINIERT IN:
+     /sys/player.h
+
+ACHTUNG:
+     Diese Prop wird nicht mehr gesetzt (und auch nicht mehr abgefragt), da LD
+     eine efun hat, um das Objekt zu ermitteln, was als letztes ein
+     notify_fail() gesetzt hat, ein Speichern im Spieler also voellig
+     ueberfluessig ist.
+
+BESCHREIBUNG:
+     Ist im Spielerobjekt  gesetzt und enthaelt das Objekt, welches zuletzt
+     eine Fehlermeldung mit notify_fail()/_notify_fail() erfolgreich
+     waehrend des aktuellen Kommandos abgespeichert hat.
+
+BEMERKUNGEN:
+     Dient dazu, bei _notify_fail() zu ueberpruefen, ob schon vorher eine
+     Fehlermeldung gesetzt wurde.
+
+SIEHE AUCH:
+     AddCmd(), add_action()
+     notify_fail(), _notify_fail()
+
+10.03.2007, Zesstra

@@ -1,0 +1,9 @@
+BEFEHL:
+	clear, clr
+
+ARGUMENTE:
+	STACK
+
+FUNKTION:
+	Loesche den ganzen Stack. Die Objekte auf dem Stack werden aber
+	nicht destructed.

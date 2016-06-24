@@ -1,0 +1,8 @@
+NAME:
+    P_READ_NEWS                   "read_news"                   
+
+DEFINIERT IN:
+    /sys/player/base.h
+
+BESCHREIBUNG:
+     Welche Artikel bereits gelesen wurde (frueher: in der MPA)

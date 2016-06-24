@@ -1,0 +1,12 @@
+SYNOPSIS
+      xsh <filename>
+
+DESCRIPTION
+      Read in a file and execute each line of it as a command given from the
+      keyboard.
+
+EXAMPLE
+      xsh ~/setup.xsh
+      Execute the file "~/setup.xsh". This way you can set up your aliases or
+      other parameters for other tools if the setting gone lost.
+

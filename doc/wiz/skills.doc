@@ -1,0 +1,77 @@
+ Skills sind Fertigkeiten, die ein Spieler erwerben kann. Zu einem Skill koennen
+mehrere Verben gehoeren. Ausserdem kann ein Verb unter Umstaenden bei mehreren
+Skills definiert sein (zB, falls es eine Magiergilde und eine Psionkier-
+gilde gaebe, koennte es skills "magie" und "psi" geben, die beide das
+Verb "teleportiere" definieren).
+
+ Welche Skills es gibt, welche Verben dazugehoeren, welche Objekte und
+Funktionen diesen zugeordnet sind, regelt ein zentraler "Skillmaster".
+Darueberhinaus gibt es in jedem Spielerobjekt ein "Skill"-Modul.
+
+Der Skillmaster offeriert die folgenden Funktionen:
+
+InsertSkill(string skillname, string skilldescr, string *verben,
+            string *objFunDescr)
+ skillname ist (natuerlich) der Name des Skills (zB Magie).
+ skilldescr ist ein string, der den Skill naeher beschreibt, zB
+            "Magie gibt dem Anwender ein breites Spektrum von Moeglichkeiten,
+             sowohl im Kampf als auch ausserhalb."
+ verben ist ein Array, der die Verben zu dem Skill enthaelt.
+ objFunDescr ist ein Array, der dieselbe Groesse haben muss wie Verben. Jedes
+             Element ist ein 4-elementiger Array. Erstes Element dieses Arrays
+             ist ein Filename, zweites eine Funktion. Bei der Eingabe des Verbs
+             wird in dem Objekt die Funktion aufgerufen. Die dabei uebergebenen
+             Parameter werden spaeter beschrieben.
+             Drittes Element ist ein String, der die zu diesem Verb und Skill
+             gehoerende Aktion naeher beschreibt, zB:
+             "Die Magische Rakete kostet den Gegner zwischen 5 und 10 Hitpoints"
+             Das 4. Element muss eine Zahl aus [1..19] sein und gibt den Level
+             an, ab dem ein Player dieses Skillverb erwerben kann.
+ Die Funktion darf nur von Erzmagiern aufgerufen werden.
+ Es darf noch keinen Skill dieses Names geben. Falls man einen bestehenden
+ Skill lediglich erweitern moechte, muss man die Funktion AddVerbs benutzen
+ (siehe unten).
+
+RemoveSkill(skillname)
+ entfernt einen Skill wieder. ACHTUNG: Wenn Player den Skill bereits erworben
+ haben, verlieren sie ihn, wenn sie zum naechsten mal versuchen, ihn zu be-
+ nutzen.
+
+GetSkills()
+ gibt die AList mit den Skills zurueck.
+
+GetSkill(skillname)
+ liefert den entsprechenden Eintrag aus der AList zurueck.
+
+GetFunctionAndDescription(skillname, verb)
+ liefert den in AddSkill uebergebenen 4elementigen Array mit Objektname,
+ Funktionsname, Aktionsbeschreibung und Level zurueck.
+
+GetSkillDescription(skillname)
+ liefert die in AddSkill uebergebene Beschreibung des Skills zurueck.
+
+AddVerbs(skillname, mixed *verbs, mixed *objFunDescr)
+ erweitert einen bestehenden Skill um einige Verben, naehere Beschreibung
+ siehe AddSkill.
+
+-------------------------------------------------------------------------------
+Das Skillmodul im Playerobjekt bietet die folgenden Funktionen:
+
+GiveAbility(verb, skill, int promill)
+ gibt einem Spieler die Faehigkeit, das Verb verb aus dem Skill skill zu benut-
+ zen. Promill wird bei dem Versuch, das Verb zu benutzen, an das Skillobjekt
+ uebergeben und sollte die Wahrscheinlichkeit, das dem Player die Skillaktion
+ gelingt, in Promill beschreiben. Wenn der Player die Ability schon hatte, wird
+ lediglich promill geupdated.
+ Es wird eine -1 zurueckgegeben, falls eine solche Kombination aus Skill und
+ Verb (noch) nicht definiert ist, eine -2 falls der Level des Spielers nicht
+ ausreicht.
+
+GetAllAbilities()
+ gibt die AList mit den Abilities des Spielers zurueck. Schluessel in der AList
+ sind die Verben, Eintraege sind Arrays mit den Skills. Die Arrays haben so
+ viele Eintraege, wie der Player Skills hat, die das betreffende Wort
+ definieren (im Idealfall also EINEN Eintrag, naemlich wenn es keine Ueber-
+ scheidungen gibt). Die Eintraege sind wiederum 2elementige Arrays, die
+ als 1. Element den Skillnamen, als 2. Element die Promill enthalten.
+

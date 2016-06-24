@@ -1,0 +1,35 @@
+
+rm
+--
+
+ MAGIERKOMMANDO:
+    rm [ -irv ] <dateiname> [...]
+    rm [ -irmv ] <dateiname> [...] [<maske>]
+
+ ARGUMENTE:
+
+     <dateiname> Name einer Datei oder eines Verzeichnisses
+                 (es koennen auch mehrere sein)
+
+ BESCHREIBUNG:
+    Die angegebenen Dateien oder Verzeichnisse werden geloescht.
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Die Optionen haben folgende Bedeutung:
+
+     -r  Unterverzeichnisse werden rekursiv geloescht.
+     -i  Bei jeder Datei wird nachgefragt, ob sie geloescht werden soll.
+     -m  Es sind nur Dateien betroffen, die der Maske <maske> entsprechen
+     -v  Es wird jeder Arbeitsschritt ausgegeben
+
+ BEISPIELE:
+
+    > rm test1.c
+    > rm *.bak
+    > rm -rm / *~     
+
+ SIEHE AUCH:
+    cp, mv
+
+ LETZTE AeNDERUNG:
+    Thu, 17.10.2002, 16:30:00 von Mandragon

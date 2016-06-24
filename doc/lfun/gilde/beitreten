@@ -1,0 +1,28 @@
+beitreten()
+FUNKTION:
+    int beitreten()
+
+DEFINIERT IN:
+    /std/gilden_ob.c
+
+BESCHREIBUNG:
+    Beitrittsfunktion der Gilde. Prueft die Gilde selbst im Gildenmaster,
+    dann die Restriktionen der Gilde und laesst this_player() ggf eintreten.
+
+    Der Gildenmaster loest ggf ein EVT_GUILD_CHANGE aus. Dabei werden
+    E_OBJECT, E_GUILDNAME, E_LAST_GUILDNAME entsprechend gesetzt.
+
+    Durch Ueberschreiben koennen hier zB Standard-Skills und Spells den
+    Spieler bei Eintritt gelehrt werden.
+
+SIEHE AUCH:
+    GObj Lernen:    LearnSkill, LearnSpell, InitialSkillAbility
+    * Anzeigen:     SkillListe
+    * Verwalten:    AddSpell (gilde), AddSkill, QuerySpell
+    * Nutzen:       UseSpell (gilde)
+    * Properties:   P_GUILD_SKILLS, P_GLOBAL_SKILLPROPS
+    Gildenfkt.:
+    * Ein/Austritt: bei_oder_aus_treten, austreten
+    * Props dafuer: P_GUILD_RESTRICTIONS
+
+3. Okt 2011 Gloinson

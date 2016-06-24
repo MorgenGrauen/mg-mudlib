@@ -1,0 +1,47 @@
+SYNOPSIS
+        void tell_object(object|string obj, string str);
+        void tell_object(object|string obj, mixed *|mapping|struct|object msg);
+
+BESCHREIBUNG
+        Sendet einen Nachricht an das Objekt <obj> (das auch durch seinen
+        Objektnamen angegeben werden kann).
+
+        Ist die Nachricht ein String, wird der Text an interaktive Objekte
+        direkt ausgegeben, fuer andere Objekte wird die lfun catch_tell()
+        in diesen aufgerufen.
+
+        Ist die Nachricht ein anderer Typ, wird die lfun catch_msg() im
+        Empfaenger aufgerufen.
+
+BEMERKUNGEN
+        - wird in einem catch_msg() der Wert von <msg> veraendert, erhalten
+          alle nachfolgenden Objekte das veraenderte <msg> (Referenz!)
+
+BEISPIELE
+        // Dies gibt ein einfaches "Hi!" an den Spieler Thomas aus:
+
+            object wer;
+            wer = find_player("thomas");
+            tell_object(wer, "Hi!\n");
+
+        // Ein Beispiel mit zwei Objekten, das zeigt, wie das Zusammenspiel
+        // von catch_tell() und tell_object() ablaueft. Objekt1 ist ein
+        // Lebewesen mit Namen "Dummymonster", Objekt2 verteilt die Meldung:
+
+        Objekt1:
+            void catch_tell(string str) {
+                write("Erhaltener Text: "+str+"\n");
+            }
+
+        Objekt2:
+            void fun() {
+                object wer;
+                wer = find_living("dummymonster");
+                tell_object(wer, "Folge mir, Sterblicher!\n");
+                ...
+            }
+
+SIEHE AUCH
+        Aehnlich:   write(E), shout(E), say(E), tell_room(E), printf(E)
+        Verwandt:   catch_tell(E), catch_msg(A)
+        Sonstiges:  object_name(E)

@@ -1,0 +1,23 @@
+ShowDoors()
+
+FUNKTION:
+	void ShowDoors()
+
+ARGUMENTE:
+	Keine.
+
+BESCHREIBUNG:
+	Zeigt alle Sehertor an, die der Seher (this_player()) schon kennt.
+	Falls in seiner Umgebung ein Tor steht, so wird dieses eingeklammert.
+
+RUECKGABEWERT:
+	Keiner.
+
+BEMERKUNGEN:
+    Diese Funktion wird von /d/seher/portale/sehertormaster definiert.
+
+BEISPIELE:
+    /d/seher/portale/sehertormaster->ShowDoors()
+
+SIEHE AUCH:
+    DiscoverDoor, DoorIsKnown, Teleport, GetDoorsMapping

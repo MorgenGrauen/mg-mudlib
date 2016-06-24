@@ -1,0 +1,17 @@
+BEFEHL:
+	inv
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Gebe alle Objekte an, die sich in dem Objekt TOS befinden.
+	Gib einen Fehler aus, wenn TOS kein Objekt ist.
+	TOS bleibt auf dem Stack, da dieser Befehl meistens dazu benutzt
+	wird, ein Objekt auf den Stack zu legen und dann bestimmte
+	Objekte in ihm zu suchen, und dann diese zu holen.
+
+BEISPIELE:
+	,me inv
+	Dann sieht man .... ".2 /bla/bla/bla/objekt" und man kann dann
+	mittels ,.2 dieses Objekt holen.

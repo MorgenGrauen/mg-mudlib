@@ -1,0 +1,19 @@
+Materialid:
+MAT_CRYSTAL              "crystal"
+
+Name:
+"Kristall" "Kristalls" "Kristall" "Kristall"
+
+Geschlecht:
+M
+
+Beschreibung:
+klar bis weiss
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_STONE:100

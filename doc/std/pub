@@ -1,0 +1,95 @@
+Um die Funktionalitaet einer Kneipe nutzen zu koennen, muss der Raum eine
+der folgenden Dateien importieren:
+
+'/std/pub.c'         - die Komplettloesung inclusive der Abhaengigkeit zu
+                       '/std/room'
+
+'/std/room/pub.c'    - die Mindestloesung, bei der man selbst die Abhaengig-
+                       keit zu einem Raum definieren muss
+
+------------------------------------------------------------------------------
+Eine Zusammenfassung der Pub-Properties (fuer genaueres siehe manpages)
+aus '/sys/pub.h'
+
+P_NPC_FASTHEAL       - NPCs tanken hier auf die "schnelle" Art
+
+P_NO_STD_DRINK       - Der Pub soll keine Standard-Getraenke anbieten
+
+P_PUB_UNAVAILABLE    - Meldung, wenn etwas nicht mehr vorhanden ist
+
+P_PUB_NOT_ON_MENU    - Meldung, wenn etwas nicht im Menue steht
+
+P_PUB_NO_MONEY       - Meldung, wenn Spieler nicht genug Geld hat
+
+P_PUB_NO_KEEPER      - Meldung, wenn der P_KEEPER nicht anwesend ist
+
+aus '/sys/room/description.h'
+
+P_KEEPER             - Id des Kneipeninhabers, der anwesend sein muss, 
+                       damit die Kneipe genutzt werden kann
+
+------------------------------------------------------------------------------
+Methoden zur Manipulation des Menues (fuer genaueres siehe manpages)
+
+AddToMenu            - fuegt einen Eintrag zum Menue hinzu
+
+RemoveFromMenu       - entfernt einen Eintrag aus dem Menue
+
+------------------------------------------------------------------------------
+Ablauf und Manipulationsmoeglichkeiten in einer Kneipe
+
+Wunsch wurde ueber 'kaufe', 'bestelle' oder 'spendiere' abgegeben:
+
+search_what()        - prueft, dass nicht mehrere Wuensche auf einmal
+                       geaeussert werden und ruft consume_something() auf
+
+consume_something()  - prueft die Anwesenheit der beteiligten Personen
+                     - prueft die Anwesenheit des Kneipenbesitzers
+                     - prueft das Ignorieren beim Spendieren
+                     - prueft die Verfuegbarkeit von genuegend Geld beim
+                       Besteller ( check_solvency() )
+                     - prueft die Verfuegbarkeit des Gewuenschten
+                       ( CheckAvailability() )
+                     - prueft, ob der Empfaenger in der Lage ist, das
+                       Bestellte zu konsumieren
+                       ( ueber empfaenger->consume(testonly) )
+
+                     - fuehrt die Bezahlung durch ( do_pay() )
+                     - fuehrt die Vergabe von FPs durch ( GiveEP() )
+                     - entnimmt das Bestellte aus der Menge des Angebotes
+                       ( DecreaseAvailibility() )
+                     - prueft, ob eine Verzoegerung der Lieferung erfolgen
+                       soll und uebergibt im Negativfall gleich an
+                       do_deliver()
+                     - Ausgabe der Meldungen zur Bestellung
+                     - verzoegerter Aufruf von do_deliver()
+                     
+do_deliver()         - prueft nochmal die Anwesenheit des Empfaengers
+                     - prueft, ob Heilung erlaubt ist (ueber Pubmaster)
+                     - prueft P_NPC_FASTHEAL und korrigiert die Angaben, die
+                       aus dem Menueeintrag kommen
+                     - fuehrt das Konsumieren beim Empfaenger durch
+                       ( empfaenger->consume() )
+                     - Ausgabe der Meldung zum Konsumieren
+
+pub_init()           - Moeglichkeit fuer Magier, die Werte der angebotenen
+                       Speisen und Getraenke zu ueberpruefen
+                     - erweiterte Moeglichkeiten zum Pruefen von korrekten
+                       Menueeintraegen bietet das Pub-Tool
+                       ( '/obj/tools/pubtool.c' )
+
+Hinweis: Um diese Pruefungen und Aktionen sicher zu gewaehrleisten, sollte
+         man consume_something oder do_deliver NICHT ueberschreiben!
+         Das fuehrt bei Aenderungen mit grosser Wahrscheinlichkeit zu
+         Problemen!
+         Ueberschreibt besser die Methoden, die die Funktionalitaet
+         beinhaltet, die ihr wirklich anpassen wollt.
+         Falls das nicht geht, sprecht lieber mit einem RM+, ob eine Loesung
+         dafuer gefunden werden kann. Der Standard-Pub wurde in der
+         Vergangenheit so immer modularer und besser.
+
+
+SIEHE AUCH: AddToMenu, RemoveFromMenu, consume, QueryMoney, AddMoney 
+
+------------------------------------------------------------------------------
+Last modified: Son Apr 11 19:28:00 2010 by Caldra

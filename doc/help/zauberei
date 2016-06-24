@@ -1,0 +1,37 @@
+
+Zauberei im MorgenGrauen
+========================
+
+    Die meisten Gilden stellen ihren Mitgliedern mehr oder weniger nuetzliche
+    Zaubersprueche zur Verfuegung. Genaueres zu den einzelnen Spruechen
+    findest Du auf den jeweiligen Hilfeseiten.
+
+    Allgemein laesst sich sagen, dass die Anwendung von Magie im wesentlichen
+    an die Intelligenz des Charakters gekoppelt ist.
+
+    So verbrauchen die Sprueche in der Regel mehr oder weniger viele
+    Magiepunkte. Deren Anzahl wiederum haengt direkt von der Intelligenz ab,
+    kann aber auch durch andere Magie erhoeht werden.
+
+    Lernt man einen Spruch neu dazu, so wird ihm ein Anfangswert fuer die
+    Erfolgswahrscheinlichkeit zugeordnet. Auch dieser Anfangswert haengt bei
+    den meisten Gilden von der Intelligenz ab (hier koennen aber auch noch
+    weitere Faktoren wirksam werden).
+
+    Die Erfolgswahrscheinlichkeit eines Spruches verbessert sich, wenn der
+    Spruch fehlschlaegt (`Du lernst aus Deinem Fehler.'). Hier muss man
+    allerdings aufpassen: Einige Sprueche haben eine Beschraenkung der maximal
+    erreichbaren Wahrscheinlichkeit. Die Schranke wandert mit zunehmender
+    Spielerstufe weiter nach oben. Hat man den fuer seine Stufe maximalen Wert
+    erreicht, so kann es bei einigen Gilden immer noch zu der Lernmeldung
+    kommen, obwohl man eigentlich nichts dazulernt!
+
+    Die Verbesserung der Wahrscheinlichkeit im Falle eines Fehlschlags haengt
+    uebrigens wiederum in den meisten Faellen von der Intelligenz ab.
+
+ SIEHE AUCH:
+    attribute, gilden, heilung
+
+ LETZTE AeNDERUNG:
+    18. Maerz 2004 Gloinson
+

@@ -1,0 +1,27 @@
+
+rufe
+----
+
+ KOMMANDO:
+    rufe <text>
+
+ ARGUMENTE:
+
+     <text>
+        Der zu rufende Text
+
+ BESCHREIBUNG:
+    Du rufst so laut <text>, dass man Dich im ganzen MorgenGrauen hoeren kann.
+    Da das MorgenGrauen allerdings ziemlich gross ist, verbraucht ein Ruf ein
+    gewisses Mass an geistiger Energie (sprich: Magiepunkten).
+
+    Rufe werden im allgemeinen als stoerend empfunden; man sollte lieber die
+    Ebenen benutzen. Diese sind nach Themen eingeteilt, und ihre Nutzung ist
+    kostenlos.
+
+ SIEHE AUCH:
+    sage, frage, antworte, fluestere, teile (mit), gespraech, ebenen, mrufe,
+    weg, ignoriere, kobold
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

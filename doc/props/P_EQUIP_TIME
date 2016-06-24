@@ -1,0 +1,26 @@
+P_EQUIP_TIME
+
+NAME:
+      P_EQUIP_TIME			"equip_time"
+
+DEFINIERT IN:
+      /sys/combat.h
+
+BESCHREIBUNG:
+      Innerhalb von Waffen und Ruestungen wird in dieser Property
+      registriert, wann diese zuletzt gezueckt bzw. angezogen wurden.
+      Innerhalb der Funktionen wield_me() in '/std/weapon/combat' bzw.
+      DoWear() in '/std/armour/combat' wird hierbei jeweils folgende Aktion
+      ausgefuehrt:
+	SetProp(P_EQUIP_TIME,time());
+
+SIEHE AUCH:
+      Verwandt:		P_LAST_USE
+      Waffen:		P_UNWIELD_TIME
+			DoWield()
+      Ruestungen:	DoWear()
+      Sonstiges:	time()
+			/std/weapon/combat.c, /std/armour/combat.c
+
+----------------------------------------------------------------------------
+Last modified: Sun Jul 26 23:59:12 1998 by Patryn

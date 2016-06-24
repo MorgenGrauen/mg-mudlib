@@ -1,0 +1,78 @@
+ STANDARDKLASSE:
+	"/std/weapon"
+
+ BENUTZUNG:
+        inherit "std/weapon";
+
+	#include <properties.h>
+	#include <combat.h>
+
+ PROPERTIES:
+     Grundlegend:
+        P_WC		setzbar: Waffenklasse == Angriffsstaerke
+	P_WEAPON_TYPE	setzbar: Waffentyp
+	P_DAM_TYPE	setzbar: Schadenstypen
+	P_NR_HANDS	setzbar: Anzahl benoetigter Haende
+
+     Besondere Attribute und Anforderungen fuer Traeger:
+	P_RESTRICTIONS	setzbar: Anforderungen an Traeger
+	P_M_ATTR_MOD	setzbar: Attributmodifikator fuer Traeger
+	P_CURSED	setzbar: Verfluchung (nicht wegsteckbar)
+	P_PARRY		setzbar: Parierwaffe ?
+	P_AC		setzbar: Schutzfaktor einer Parierwaffe
+
+     Meldungen und Zeitpunkte:
+	P_EQUIP_TIME	enthaelt den Zeitpunkt des Anziehens
+	P_LAST_USE	enthaelt den Zeitpunkt des letzten Angriffs damit
+	P_WIELDED	enthaelt den Traeger
+	P_WIELD_MSG	setzbar: eigene Zueckmeldung
+	P_UNWIELD_MSG	setzbar: eigene Wegsteckmeldung
+
+     Dynamisches Verhalten in Kampf und beim Anziehen:
+	P_WIELD_FUNC	setzbar: Objekt mit Zueckfunktion "WieldFunc()"
+	P_UNWIELD_FUNC	setzbar: Objekt mit Wegsteckfunktion "UnwieldFunc()"
+	P_HIT_FUNC	setzbar: Objekt mit Angriffsfunktion "HitFunc()"
+
+     Zusaetzliche Eigenschaften:
+	P_DAMAGED	enthaelt den Ausmass des Schadens an Waffe
+	P_QUALITY	setzbar: Qualität/Haltbarkeit der Waffe
+	P_EFFECTIVE_AC	setzbar: falls HitFunc WC nicht sichbar aendert
+	P_EFFECTIVE_WC	setzbar: falls Parieren AC nicht sichbar aendert
+
+     Zusaetzlich sind alle Properties aus /std/thing verfuegbar, also
+     bitte auch folgende setzen:
+	P_MATERIAL	setzbar: Zusammensetzung
+	P_SIZE		setzbar: Groesse
+	P_WEIGHT	setzbar: Gewicht
+
+ MAKROS:
+     Gueltige Waffen- und Schadenstypen (definiert in "/sys/combat.h").
+
+ BESCHREIBUNG:
+     Basisklasse fuer alle Waffen im Spiel. Sie ist von /std/thing
+     abgeleitet und enthaelt alle zusaetzliche Funktionalitaet
+     fuer den Kampf.
+
+     Vor der Programmierung von Waffen sollte /doc/wiz/waffen
+     gelesen werden. Die Regeln darin sind verbindlich und sollten nur
+     in Ausnahmefaellen und mit Absprache mit dem Erzmagier fuer 
+     Waffen/Ruestungen/Monster ueberschritten werden.
+
+ VERERBUNGSBAUM:
+     [/std/weapon]
+     ..... [/std/thing/properties]
+     ..... [/std/thing/language]
+     ..... [/std/thing/commands]
+     ..... [/std/thing/restrictions]
+     ..... [/std/weapon/moving]
+     .......... [/std/thing/moving]
+     ..... [/std/weapon/description]
+     .......... [/std/thing/description]
+     ..... [/std/weapon/combat]
+
+
+ SIEHE AUCH:
+     P_WEAPON, P_PARRY_WEAPON, P_TOTAL_WC, P_TOTAL_AC, P_UNWIELD_TIME
+     Attack(), Defend(), /doc/wiz/waffen
+
+ 20 Maerz 2004 Gloinson

@@ -1,0 +1,14 @@
+SYNOPSIS
+      xdo [<number1>#]<command1>[;[<number2>#]<command2>] ...
+
+DESCRIPTION
+      Perform multiple command execution.
+
+      Examples:
+      xdo 5#smile   (smile 5 times)
+
+      xdo l;i       (look around in the room and then in your inventory)
+
+      xdo s;9#w;3#n;kill shaman;get sword from corpse;3#s;9#e;n;...
+                    (you know this one :)
+

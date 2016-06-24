@@ -1,0 +1,47 @@
+MayAddWeight()
+
+FUNKTION:
+     int MayAddWeight(int gewicht);
+
+DEFINIERT IN:
+     /std/container/restrictions.c
+
+ARGUMENTE:
+     gewicht
+          Das zu pruefende Gewicht.
+
+BESCHREIBUNG:
+     Wenn ein Objekt ein einen Behaelter bewegt wird, prueft move() ueber
+     diese Funktion, ob das Objekt ueberhaupt noch in den Behaelter hinein
+     passt. Dazu uebergibt move() dieser Funktion das Gewicht des zu
+     bewegenden Objektes.
+
+RUeCKGABEWERT:
+     0, wenn der Behaelter noch ein gewicht Gramm wiegendes Objekt aufnehmen
+     kann, -1 im anderen Fall.
+
+BEMERKUNGEN:
+     move() ruft diese Funktion nicht auf, wenn in den Flags M_NOCHECK
+     gesetzt war!
+
+BEISPIELE:
+     Die entsprechende Abfrage in /std/thing/moving.c sieht etwa
+     folgendermassen aus:
+
+     int weight;
+
+     ...
+     weight = QueryProp(P_TOTAL_WEIGHT);   // Behaelter? Ja => Gesamtgewicht
+     if (!weight)
+       weight = QueryProp(P_WEIGHT);       // Nein: einfaches Gewicht
+
+     if (ziel->MayAddWeight(weight) == -1) // Passt es noch rein?
+       return ME_TOO_HEAVY;                // Nein, entspr. Fehler zurueckgeben
+
+     ...
+
+SIEHE AUCH:
+     MayAddObject(), PreventInsert(), move(), /std/container/restrictions.c
+
+----------------------------------------------------------------------------
+Last modified: 23.09.2007, Zesstra

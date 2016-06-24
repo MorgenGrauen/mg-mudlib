@@ -1,0 +1,29 @@
+SYNOPSIS
+        int count_bits (string str)
+
+DESTRIPTION
+        Count the number of set bits in bitstring <str> and return the number
+        as result.
+
+NOTE
+	Bitstrings store 6 Bits per Character. Consequently, the functions for
+	manipulating bitstrings (see below) do generally not work on most
+	strings. An exception is this (s)efun. It accepts strings which are
+	not correct bitstrings (like getuid(PL)), BUT: It does NOT work
+	correctly on them! The results are NOT the correct number of bits!
+	Additionally, count_bits() in LDMud rejects such strings with an error
+	instead of returning false results, as all the other functions for
+	bitstrings do as well.
+
+EXAMPLES
+        string s;
+
+        s = set_bit("", 3); s = set_bit(s, 15);
+
+        count_bits(s) --> returns 2
+
+SEE ALSO
+        clear_bit(E), set_bit(E), test_bit(E), next_bit(E), last_bit(E),
+        or_bits(E), xor_bits(E), invert_bits(E), copy_bits(E)
+
+19.12.2006, Zesstra

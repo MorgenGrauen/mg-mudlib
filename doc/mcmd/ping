@@ -1,0 +1,19 @@
+
+ping
+----
+
+ MAGIERKOMMANDO:
+    ping <spieler>
+
+ ARGUMENTE:
+
+     <spieler>
+        ein (eingeloggter) Spieler
+
+ BESCHREIBUNG:
+    Der Spieler <spieler> wird angepiept. Dabei wird bei dem Spieler eine
+    Meldung und, falls sein Rechner dies unterstuetzt, ein Signalton
+    ausgegeben.
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

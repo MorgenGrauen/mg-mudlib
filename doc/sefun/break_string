@@ -1,0 +1,90 @@
+FUNKTION:
+    string break_string(string str)
+    string break_string(string str, int width)
+    string break_string(string str, int width, string indent)
+    string break_string(string str, int width, int space)
+    string break_string(string str, int width, string indent, int flags)
+    string break_string(string str, int width, int space, int flags)
+
+ARGUMENTE:
+    str    - umzubrechender String
+    width  - optional: maximale Zeilenlaenge (default 78)
+    indent - optional: String, der vor jeder umgebrochenen Zeile erscheint
+    space  - optional: Anzahl der Leerzeichen vor jeder umgebrochenen Zeile
+    flags  - optional: hiermit laesst sich das Verhalten von break_string()
+             aendern; moegliche Flags siehe Punkt 'Beschreibung'
+
+BESCHREIBUNG:
+    In der ersten Form wird der String 'str' durch Einfuegen von "\n" so um-
+    gebrochen, dass bei einer anschliessenden Ausgabe keine Zeile laenger
+    als 'width' Zeichen ist. Eventuell schon in 'str' vorhandene "\n" werden
+    dabei vorher entfernt.
+
+    Gibt man zusaetzlich noch einen String 'indent' an, so wird dieser vor
+    jede der umgebrochenen Zeilen gesetzt.
+
+    Analog wird bei der Angabe der Zahl 'space' ein String mit 'space' Leer-
+    zeichen vor jede umgebrochene Zeile gesetzt.
+
+    Zusaetzlich gibt es folgende optionale Flags, die man beliebig kombinieren
+    kann:
+
+        BS_LEAVE_MY_LFS  -  schon im Text vorhandene "\n" werden beibehalten
+        BS_SINGLE_SPACE  -  doppelte Leerzeichen sowie Leerzeichen nach Zeilen-
+                            umbruechen werden entfernt
+        BS_BLOCK         -  der Text wird im Blocksatz formatiert
+        BS_NO_PARINDENT  -  bei Blocksatz mit vorgegebenen Zeilenumbruechen
+                            (BS_BLOCK|BS_LEAVE_MY_LFS) werden Zeilen nach "\n"
+                            normalerweise mit einem Leerzeichen begonnen.
+                            Um das Einfuegen des fuehrenden Leerzeichens zu
+                            unterdruecken, muss BS_NO_PARINDENT angegeben werden
+        BS_INDENT_ONCE   -  die erste Zeile des Textes wird mit vorangestelltem
+                            'indent' ausgegeben; alle folgenden Zeilen bekommen
+                            einen Leerstring vorangestellt
+        BS_PREPEND_INDENT - der Ident wird dem Text vorangestellt sofern der 
+                            Indent + Text laenger als eine Zeile ist. Der Text
+			    wird um ein Leerzeichen eingerueckt, was mittels
+                            BS_NO_PARINDENT verhindert werden kann.
+
+RUECKGABEWERT:
+    Der umgebrochene Text.
+
+    Laufzeit-Fehler, wenn der Indent laenger ist als die vorgegebene Breite.
+
+BEISPIELE:
+    write(break_string("Dies ist ein laengerer Text. Nur so als Beispiel.",27));
+
+        => Dies ist ein laengerer
+           Text. Nur so als Beispiel.
+
+    write(break_string("Mit indent sieht das so aus", 30, "Wargon sagt: "));
+
+        => Wargon sagt: Mit indent sieht
+           Wargon sagt: das so aus
+
+    write(break_string("Mit indent sieht das so aus", 30, "Wargon sagt: ",
+                        BS_INDENT_ONCE));
+
+        => Wargon sagt: Mit indent sieht
+                        das so aus
+
+    write(break_string("Mit Leerzeichen sieht das so aus", 30, 2));
+
+        =>   Mit Leerzeichen sieht das so
+             aus...
+
+    write(break_string("Ich will es\naber vorformatiert!",60,
+                        "Wargon sagt: ", BS_LEAVE_MY_LFS));
+
+        => Wargon sagt: Ich will es
+           Wargon sagt: aber vorformatiert!
+
+    write(break_string("Ich will es\naber vorformatiert!",30,
+                        "Wargon sagt: ", BS_PREPEND_INDENT));
+
+        => Wargon sagt:
+            Ich will es aber 
+            vorformatiert!
+
+SIEHE AUCH:
+    senderwiederholung

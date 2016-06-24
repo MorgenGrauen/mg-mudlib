@@ -1,0 +1,37 @@
+RemoveResistanceModifier()
+
+FUNKTION:
+     varargs void RemoveResistanceModifier(string add);
+
+DEFINIERT IN:
+     /std/living/combat.c
+
+ARGUMENTE:
+     string add:
+      Ein eventueller Identifikator fuer einen gesetzten Modifikator.
+
+BESCHREIBUNG:
+     Die von einem Objekt im Zielobjekt gesetzte Resistenz wird geloescht,
+     der Schluessel add wird dazu benutzt, eine bestimmte Resistenz zu
+     loeschen (so kann ein setzendes Objekt mehrere verschiedene Re-
+     sistenzen setzen und selektiv loeschen).
+
+BEISPIELE:
+     // unser Oel aus AddResistanceModifier() verbrennt endgueltig
+     varargs void trigger_sensitive_attack() {
+      ...
+      if(environment() && living(environment())) {
+       environment()->RemoveResistanceModifier("oel");
+       tell_object(environment(),"Das Oel verbrennt endgueltig.\n");
+      }
+      remove();
+     }
+
+SIEHE AUCH:
+     Modifikatoren:	AddResistanceModifier, P_RESISTANCE_MODIFIER
+     simple Resistenz:	P_RESISTANCE, P_VULNERABILITY
+     Hauptmapping:	P_RESISTANCE_STRENGTHS
+     Berechnung:	CheckResistance(), UpdateResistanceStrengths()
+     anderes:		balance, /std/armour/combat.c, /std/living/combat.c
+
+29.Apr 2002, Gloinson@MG

@@ -1,0 +1,23 @@
+GetExits()
+
+FUNKTION:
+     varargs string GetExits(object viewer);
+
+DEFINIERT IN:
+     /std/room/exits
+
+ARGUMENTE:
+     viewer
+          Derjenige, der sich die Ausgaenge anschaut.
+
+BESCHREIBUNG:
+     Es wird eine Liste der fuer viewer sichtbaren Ausgaenge erstellt.
+
+RUeCKGABEWERT:
+     String mit der Liste der sichtbaren Ausgaenge.
+
+SIEHE AUCH:
+     AddExit(), AddSpecialExit(), /std/room/exits.c
+
+----------------------------------------------------------------------------
+Last modified: Wed May 8 10:18:47 1996 by Wargon

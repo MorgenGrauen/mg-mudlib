@@ -1,0 +1,19 @@
+Materialid:
+MAT_HELIUM               "He"
+
+Name:
+"Helium" "Heliums" "Helium" "Helium"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_GAS:20
+MAT_HELIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_GAS:100
+MATGROUP_INVIS:100

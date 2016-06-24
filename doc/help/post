@@ -1,0 +1,182 @@
+Das Postsystem
+==============
+
+    Im Mud gibt es auch die Moeglichkeit, anderen Spielern Post zu senden.
+    Anders als bei der Bundespost sind aber weder Briefe noch Postkarten im
+    Mud freimachungspflichtig.
+
+    Man geht einfach in eine der Postfilialen und tippt `post' oder `mail', um
+    in das Postmenue zu gelangen. Das Postmenue gibt auf `h' (oder `hilfe')
+    eine kurze Hilfsseite mit einer Befehlsuebersicht.
+
+    Will man nach 'post' oder 'mail' nicht die im Folder enthaltenen Mails
+    aufgelistet bekommen, so nutze man stattdessen 'post -silent' oder
+    'mail -silent'.
+
+ Inhaltsverzeichnis dieser Hilfsseite:
+
+    1. Mail schreiben
+    2. Mail nach und von ausserhalb des Muds
+    3. Mailaliase
+    4. Mail lesen, beantworten, loeschen und weitersenden - die anderen
+       Menuepunkte im Postmenue
+    5. Ordner (folders)
+    6. Nachsendeauftraege (.forward)
+    7. Paketpost
+    8. Absender ignorieren
+
+ 1. Mail schreiben:
+    Grundsaetzlich gibt es zwei Moeglichkeiten: Entweder innerhalb des
+    Postmenues `m <name>', oder aber man ruft direkt mit `mail <name>' das
+    Schreiben auf und landet dann nach Beendigung im Menue.
+
+    Man wird zunaechst nach der Ueberschrift gefragt und gibt dann den Text
+    ein. Die Eingabe verwendet einen einfachen Editor mit einigen
+    rudimentaeren Editorfunktionen, eine eigene Hilfsseite ist mit `~h'
+    abzufragen.
+    Ueberlange Zeilen werden auf 78 Zeichen pro Zeile umgebrochen, man kann
+    also getrost auch lange Texte am Stueck schreiben.
+
+    Beendet wird die Eingabe mit `.' oder `**' (als eigene Zeile eingeben) und
+    wird dann nach CC's gefragt. CC bedeutet `carbon copy', also Durchschlag.
+    Man kann jetzt einen oder mehrere durch Komma oder Leerzeichen getrennte
+    Namen angeben, an die der Brief zusaetzlich zum eigentlichen Empfaenger
+    gesendet wird.
+
+    Mail an mehrere Personen:
+    Man kann gleich beim Aufruf mehrere Namen durch Komma oder Leerzeichen
+    getrennt angeben, oder die anderen als cc. Auch eine Kombination ist
+    erlaubt. Gibt man mehr als einen Namen als Empfaenger an, so gilt der
+    erste als Empfaenger, die restlichen bekommen cc's.
+
+    Blind Carbon Copies (BCC):
+    Setzt man vor einen Namen ein `-', so wird der Brief auch an diese Adresse
+    gesendet, aber die Adresse steht nicht im Verteiler.
+    *Achtung:* Der eigentliche Empfaenger, also die erste angegebene Adresse,
+    darf keine BCC sein.
+
+ 2. Mail nach und von ausserhalb
+    
+    a) Mail in andere Muds ((Inter-)Mudmail)
+      Es ist moeglich, Mails in eine Reihe von anderen Muds zu schicken und
+      welche von dort zu empfangen.
+      Zum Empfangen muss man nix tun.
+      Zum Versenden gibt man den Charnamen des Empfaenger gefolgt von einem @
+      und dem Mudnamen des Empfaengers an, z.B. 'bla@unitopia'.
+
+    b) Mail in den Rest des Internets
+      
+      Achtung: Politische Vorgaben und das Anwachsen von Spam haben zur
+               Abschaltung dieser Funktionen gefuehrt.
+
+ 3. Mailaliase:
+    Mailaliase koennen wie Namen verwendet werden. Es gibt eine Anzahl
+    vordefinierter Aliase, eine Liste der Aliase bekommt man im Postmenue mit
+    `a'.
+    Magier haben die Moeglichkeit, sich eine Datei `.mailrc' in ihr
+    Verzeichnis zu legen, die eigene Mailaliase enthaelt.
+
+    Es gibt einige vordefinierte Mailaliase, die fuer alle gelten:
+
+     * `me' sendet an diejenige Adresse, die man selber als Emailadresse
+       angegeben hat. Das ist nuetzlich, wenn man Post an seinen eigenen
+       account weiterschicken will.
+     * `freunde' - das sind alle Deine Freunde, wie sie auf Deinem
+       Freundschaftsband stehen (falls Du eins hast).
+     * Rundschreiben an alle Mitarbeiter einer Region: Einfach `d.xyz' als
+       Empfaenger angeben, wobei `xyz' natuerlich der Name der Region ist.
+     * einige weitere Aliase wie `erzmagier', `polizei', `goetter', ... (siehe
+       Liste mit `a') erleichtern es, den richtigen Ansprechpartner zu finden.
+     * Einige Aliase sind eigentlich Nachsendeauftraege und werden bald
+       verschwinden.
+
+ 4. Mail lesen und die anderen Menuepunkte im Postmenue
+
+     Mail lesen:
+        Einfach die Nummer des Briefes tippen, die man lesen will. Um den
+        aktuellen Brief (das ist der, auf den der Pfeil zeigt) zu lesen, `.'
+        tippen, fuer den naechsten `+' (praktisch zum Durchblaettern), `-'
+        fuer den vorhergehenden.
+
+     Mail loeschen:
+        Alle Briefe werden gespeichert, bis man sie loescht. Als Argument
+        Nummer angeben, ansonsten wird der Brief geloescht, auf den der Pfeil
+        in der Liste zeigt.
+
+        Listenargumente der Form [nr] [nr-nr] ... sind zulaessig.
+
+        Beispiel: `d 18 12-14 2' loescht die Briefe Nummer 2,12,13,14,18.
+
+     Mail beantworten, Gruppenantwort:
+        Dasselbe wie `schreiben', nur dass der Empfaenger automatisch der
+        Absender des beantworteten Briefes ist, und, ausser man gibt eine
+        andere an, die Ueberschrift `Re: <Originalueberschrift>' lautet.
+
+        Bei "Gruppenantwort" wird die Antwort ausserdem an alle Empfaenger von
+        CC's des Originalbriefes verschickt.
+
+        Ist eine `Reply-to:'-Zeile im Text enthalten, wird der Brief an die
+        hier angegebene Adresse geschickt.
+
+        *Achtung:* Auch in diesem Fall werden Mailaliase und ggf.
+        Nachsendeauftraege ausgewertet!
+
+     Mail weitersenden (forward):
+        Der erhaltene Brief wird kopiert und an den neuen Empfaenger
+        weitergeschickt. Bei `F' bzw. `Weiter' kann man ausserdem noch
+        zusaetzlich eigenen Text anhaengen.
+
+        Nur fuer `f' (also ohne zusaetzlichen Text) gilt: Wird eine Liste als
+        Argument angegeben, so werden alle Briefe zu einem langen Brief
+        zusammengehaengt und dieser weitergesendet.
+
+ 5. Zum Thema Ordner:
+    Man kann Briefe, die man noch nicht loeschen will, in verschiedene Ordner
+    (folders) sortieren. Solche Ordner muss man zunaechst anlegen, dann kann
+    man die Briefe von einem zum anderen verschieben. Angezeigt werden
+    natuerlich immer nur die Briefe des aktuellen Ordners. Um andere zu lesen,
+    muss man zunaechst den Ordner wechseln.
+
+    Beim Einstieg ins Postmenue schlaegt man zunaechst den Ordner `newmail'
+    auf, in den alle ankommenden Briefe auch abgespeichert werden.
+
+    Alle Befehle, die Ordnernamen als Argumente verlangen, akzeptieren auch
+    `-' fuer den in der Liste vorhergehenden Ordner, `+' fuer den
+    nachfolgenden und jede eindeutige Abkuerzung.
+
+ 6. Nachsendeauftraege
+    Will man seine Post lieber an einen anderen Charakter ausgeliefert
+    bekommen, so geht das auch. Hierzu muss man aber als Emailadresse den
+    anderen Char in dieser Form angeben: 'neuer_empfaenger@morgengrauen' 
+    (siehe auch Befehl 'email').
+
+    Um einen solchen Nachsendeauftrag zu stellen, geht man zu irgendeinem
+    Postamt mit Paketschalter. Genaueres erzaehlt der Postbeamte auf
+    Nachfrage.
+
+    Man sollte sich dieses aber gut ueberlegen: hat ein Charakter keine
+    gueltige eMail-Adresse eingetragen, ist das Zuruecksetzen des Passwortes
+    erheblich komplizierter oder sogar unmoeglich.
+
+    Es ist NICHT moeglich, eine eMail-Adresse ausserhalb des Morgengrauens
+    anzugeben.
+
+ 7. Paketpost
+    Im MorgenGrauen gibt es eine Paketpost. Informationen erteilt der
+    Postbeamte an jedem Paketschalter.
+
+ 8. Absender ignorieren
+    Sollte man von einem bestimmten Absender ueberhaupt keine Post empfangen
+    wollen, so kann dies durch "ignoriere name.mail" erreicht werden, wobei
+    "name" natuerlich durch den konkreten Spielernamen zu ersetzen ist.
+
+------------------------------------------------------------------------------
+
+(c) 1993-1996 Morgengrauen Postverwaltung
+Abteilung Technik, Loco (Abteilungsleiter)
+Anregungen, Fehlermeldungen und Fragen bitte direkt an Loco,
+Flames direkt nach /dev/null.
+
+LETZTE AeNDERUNG:
+   28.10.2013, Zesstra
+

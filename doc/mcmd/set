@@ -1,0 +1,49 @@
+
+set
+---
+
+ MAGIERKOMMANDO:
+    set [<var> [<wert>]]
+
+ ARGUMENTE:
+
+     <var>
+        eine beliebige Zeichenkette
+     <wert>
+        der dazugehoerige Wert
+
+ BESCHREIBUNG:
+    Die Variable <var> wird auf den Wert <wert> gestezt.
+
+    Laesst man <wert> weg, wird die Variable <var> geloescht.
+
+    Ganz ohne Argumente werden die momentan definierten Variablen ausgegeben.
+
+    Die Variablen wirken sich bei den meisten Dateikommandos aus. Man kann sie
+    verwenden, um sich Abkuerzungen zu oft benutzten Dateien oder
+    Verzeichnissen zu legen.
+
+ BESONDERE VARIABLEN
+    Einige Umgebungsvariablen haben eine feste Bedeutung:
+
+     LS_OBJ   Diese Variablen sind im Zusammenhang mit dem ls-Befehl von
+     LS_DIR   Bedeutung und steuern die farbliche Darstellung der Ausgabe 
+     LS_VC    
+
+     CD_SHORT Wenn auf 1 gesetzt, wird bei 'cd' eine .readme-Datei nicht mit
+              ausgegeben.
+
+ BEISPIELE:
+    Eine Abkuerzung fuer einen Pfad:
+
+    > set ls /d/inseln/wargon/luftschloss
+
+    Nun kann man mit einem einfachen `cd $ls' in das Verzeichnis gelangen.
+    Ein cd $ls/mon fuehrt nach /d/inseln/wargon/luftschloss/mon.
+
+ SIEHE AUCH:
+    cd, ls, rm, mv, cat, head, tail, more
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon
+ 

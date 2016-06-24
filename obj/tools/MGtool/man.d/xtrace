@@ -1,0 +1,14 @@
+SYNOPSIS
+      xtrace <object>
+
+DESCRIPTION
+      Trace all function calls with arguments and their return values of
+      the specified object. Without any argument turns the tracing off again.
+
+EXAMPLE
+      xtrace $me.buggything
+      Lets debug an buggy object.
+
+      xtrace
+      Turn debugging off.
+

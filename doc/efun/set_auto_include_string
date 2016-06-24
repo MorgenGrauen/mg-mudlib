@@ -1,0 +1,19 @@
+DEPRECATED
+SYNOPSIS:
+	void set_auto_include_string(string arg)
+
+DESCRIPTION:
+
+	The arg will be automatically included into every compiled LPC
+	object. This is useful to enforce global definitions, e.g.
+	``#pragma combine_strings'' or ``#pragma strict_types''.  The
+	calling objectneeds to be privileged by the master object.
+
+NOTE:
+  Not available in LDMud 3.3.x
+  Please use the driver hook H_AUTO_INCLUDE in LDMud > 3.2.9
+
+SEE ALSO:
+	privilege_violation(M), pragma(LPC)
+  
+29.10.2006 Zesstra

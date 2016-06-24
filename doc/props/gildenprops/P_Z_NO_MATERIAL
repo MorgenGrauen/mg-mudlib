@@ -1,0 +1,18 @@
+P_Z_NO_MATERIAL
+
+NAME:
+     P_Z_NO_MATERIAL                     "npc_braucht_keine_kmp"
+
+DEFINIERT IN:
+     /p/zauberer/zauberer.h
+
+BESCHREIBUNG:
+     Setzt man diese Property in einem NPC, so benoetigt er fuer die
+     Sprueche der Zauberergilde keine Komponenten.
+
+BEMERKUNGEN:
+     NIEMALS diese Property einfach so in einem Spieler setzen.
+
+SIEHE AUCH:
+
+21.Okt 2006 Chagall

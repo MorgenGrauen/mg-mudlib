@@ -1,0 +1,13 @@
+SYNOPSIS
+      xuclone <filename>
+
+DESCRIPTION
+      Updates & Clones an object. On error, the error log file will be
+      printed. Moves the object (if possible) into your inventory. If the
+      object has been cloned successfully, the variable "$clone" will be set,
+      to make sure we don't lose the object out of sight :)
+
+EXAMPLE
+      xuclone /std/thing
+      xcall $clone->SetShort("a BIG thing!");
+

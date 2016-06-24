@@ -1,0 +1,14 @@
+SYNOPSIS
+      xdbg <object>
+
+DESCRIPTION
+      Prints out debug information buy using the efun debug_info().
+      Not all of these information is useful but it gives you information
+      of how many variables, functions, inherited objetcs and so on a object
+      has. It also shows if an object is living, if its heart beat is turned
+      on, when the next call of reset() will be (but don't take this value
+      not too seriously) etc.
+
+EXAMPLE
+      xdbg $me
+

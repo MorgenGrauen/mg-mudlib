@@ -1,0 +1,45 @@
+
+cp
+--
+
+ MAGIERKOMMANDO:
+    cp [ -irfv ] <von> <nach>
+    cp [ -irfv ] <von_1> [ ... <von_n> ] <verz>
+    cp [ -irfvm ] <von_1> [ ... <von_n> ] <verz> <maske>
+ 
+ ARGUMENTE:
+
+     <von>   Name der Quelldatei
+     <von_x> Name von Quelldateien oder -verzeichnissen
+     <nach>  Name der Zieldatei
+     <verz>  Name des Zielverzeichnisses
+     <maske> Dateimaske
+
+ BESCHREIBUNG:
+    Die Datei <von> wird nach Datei <nach> kopiert, bzw. die Datei(en) <von_1>
+    (- <von_n>) in das Verzeichnis <verz>.
+
+    Die Dateinamen koennen auch Muster wie * oder ? enthalten.
+
+    Zusaetzlich koennen folgende Flags angegeben werden:
+
+     -i  Vor jedem kopieren wird gefragt, ob kopiert werden soll
+     -r  Unterverzeichnisse werden rekursiv kopiert
+     -f  Vor dem Ueberschreiben einer existierenden Datei wird nicht gefragt
+     -v  Es wird jeder Arbeitsschritt auf dem Bildschirm ausgegeben
+     -m  Es werden nur Dateien kopiert, die der Maske <maske> entsprechen.
+         Letzere wird im glob-Format angegeben. (z.B. *.c, save*.o)
+    
+ BEISPIELE:
+
+    > cp datei1 datei2
+    > cp *.c temp
+    > cp /doc/s* .
+    > cp -irm /doc ~/KURS *.c 
+    > cp -rf ~mandragon/meloran /d/inseln/mandragon
+
+ SIEHE AUCH:
+    mv, rm, mkdir, rmdir
+
+ LETZTE AENDERUNG:
+    Mit, 02.10.2002, 02:00:00 von Mandragon

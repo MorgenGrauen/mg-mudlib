@@ -1,0 +1,20 @@
+Materialid:
+MAT_COBALT               "Co"
+
+Name:
+"Cobalt" "Cobalts" "Cobalt" "Cobalt"
+
+Geschlecht:
+N
+
+Beschreibung:
+hartes, sproedes Legierungmet.
+
+Erkennbarkeit:
+MAT_MISC_METAL:25
+MAT_COBALT
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_MAGNETIC:100
+MATGROUP_SOLID:100

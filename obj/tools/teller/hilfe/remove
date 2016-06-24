@@ -1,0 +1,16 @@
+BEFEHL:
+	remove, rem
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zerstoere das Objekt auf dem TOS. Gib dem Objekt die Gelegenheit,
+	Aufraeumarbeiten durchzufuehren.
+
+BEISPIELE:
+	,me remove
+	Man loggt sich selber aus.
+
+SIEHE AUCH:
+	"destruct"

@@ -1,0 +1,33 @@
+
+setcmsg
+-------
+
+ MAGIERKOMMANDO:
+    setcmsg [<text>]
+
+ ARGUMENTE:
+
+     <text> (optional)
+        Die neue Meldung
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du die Meldung festlegen, die andere Leute im
+    gleichen Raum sehen, wenn Du einen Gegenstand clonst. Vor den Text wird
+    noch Dein Name gestellt.
+
+    Ohne Argument wird die Defaultmeldung eingestellt.
+
+ BEISPIELE:
+    Angenommen, Wargon stellt folgende Clone-Meldung ein:
+
+    > setcmsg holt etwas aus den tiefen Taschen seines Mantels
+
+    Clont Wargon nun irgend etwas, sehen die Spieler im gleichen Raum:
+
+    Wargon holt etwas aus den tiefen Taschen seines Mantels.
+
+ SIEHE AUCH:
+    setdmsg, review, clone
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

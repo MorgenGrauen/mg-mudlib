@@ -1,0 +1,25 @@
+
+entgifte
+--------
+
+ KOMMANDO:
+    entgifte [<ziel>]
+
+ ARGUMENTE:
+
+     <ziel> (optional)
+        Das zu entgiftende Lebewesen.
+
+ BESCHREIBUNG:
+    Eigentlich ist dies eine Anrufung des Heiligen Ordens. Allerdings koennen
+    auch Angehoerige anderer Gilden diese Anrufung lernen, nachdem sie das
+    Abenteuer "Verhaengnis des Duesterwalds" geloest haben.
+
+    Falls das <ziel> vergiftet ist, so wird seine Vergiftung gelindert oder
+    gar geheilt (je nach Guete der Anrufung). Ohne Angabe von <ziel> wird
+    die eigene Vergiftung gelindert oder geheilt.
+
+    Die Anwendung der Anrufung kostet 30 Magiepunkte.
+
+ LETZTE AENDERUNG:
+    Fre, 26.11.1999, 15:16:00 von Tilly

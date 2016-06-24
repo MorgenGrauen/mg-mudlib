@@ -1,0 +1,30 @@
+fehler
+------
+
+KOMMANDO:
+    fehler
+
+BESCHREIBUNG:
+    Wer viel programmiert, kann auch viele Fehler machen. Die meisten
+    Probleme werden zwar schon vor dem Anschluss des neuen Gebietes oder
+    Objektes entdeckt, aber einiges bleibt bis zum Anschluss unentdeckt.
+    Manche Idee ist dem Magier auch nicht so klar, wie dem Spieler, der
+    spaeter einmal durchlaeuft.
+
+    Zum Melden dieser Fehler gibt es vier Kommandos, die durch das Kommando
+    'fehler' gelistet werden:
+    * 'bug'    - Meldung eines Fehlers / einer Fehlfunktion
+    * 'typo'   - Meldung eines Tippfehler
+    * 'detail' - Vorschlaege, ein fehlendes Detail zu ergaenzen
+    * 'idee'   - Vorschlaege mit Ideen zur Erweiterung
+
+BEMERKUNG:
+    Frueher hatte dieses Kommando die gleiche Funktionalitaet wie 'bug',
+    zu viele Spieler haben aber all die verschiedenen Fehlerarten nur als
+    'fehler' abgesetzt, daher wurde das geaendert.
+
+SIEHE AUCH:
+    bug, typo, idee, detail
+
+LETZTE AeNDERUNG:
+    12. Okt 2011 Gloinson

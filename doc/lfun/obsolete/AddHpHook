@@ -1,0 +1,29 @@
+********************* OBSOLETE LFUN ***********************************
+* Diese Efun bitte nicht mehr benutzen, sondern stattdessen die       *
+* Hooks (s. /doc/std/hooks).                                          *
+***********************************************************************
+AddHpHook()
+FUNKTION:
+     int AddHpHook(object ob)
+
+DEFINIERT IN:
+     /std/player/life.c
+
+ARGUMENTE:
+     ob - das Objekt, das sich eintragen moechte.
+
+BESCHREIBUNG:
+     Traegt ein Objekt in P_HP_HOOKS ein, wenn es nicht schon darin steht.
+
+     Aendern sich beim Spieler dann HP oder KP (nicht durch Set()), wird
+     an allen eingetragenen Objekten NotifyHpChange() gerufen.
+
+RUECKGABEWERT:
+     1, wenn Erfolg, 0 sonst
+
+SIEHE AUCH:
+     Gegenpart:	RemoveHpHook()
+     Props:	P_HP_HOOKS, P_HP
+     Verwandt:	reduce_hit_points(), do_damage(), buffer_hp()
+
+23.Feb.2004 Gloinson

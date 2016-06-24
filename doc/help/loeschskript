@@ -1,0 +1,18 @@
+Kriterieren fuer das Loeschskript
+=================================
+
+    Das Script zum Loeschen alter Charaktere laeuft jeweils am 20. eines
+    Monats.
+    Charaktere werden geloescht, wenn sie ALLE folgenden Bedingungen
+    erfuellen:
+
+    * 90 Tage nicht eingeloggt
+    * weniger als 30 Abenteuerpunkte
+    * weniger als 30000 Erfahrungspunkte
+    * Stufe kleiner 10
+
+ SIEHE AUCH:
+    selbstloeschung, spielpause
+
+ LETZTE AeNDERUNG:
+    09.03.2013 Zesstra

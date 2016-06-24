@@ -1,0 +1,18 @@
+P_WAITFOR_REASON
+NAME:
+     P_WAITFOR_REASON                  "waitfor_reason"                     
+
+DEFINIERT IN:
+     /sys/player/base.h
+
+BESCHREIBUNG:
+     Ein Mapping mit den Erwarteten als Schluessel und einem Grund als
+     Key, zB:
+     
+     (["Zook":"muh muh"])
+
+SIEHE AUCH:
+     erwarte (erwarte <wen> wegen <was>)
+     P_WAITFOR, P_WAITFOR_FLAGS
+
+16. Feb 2008 Gloinson

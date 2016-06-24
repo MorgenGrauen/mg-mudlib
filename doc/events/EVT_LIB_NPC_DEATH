@@ -1,0 +1,69 @@
+EVENT: 
+   EVT_LIB_NPC_DEATH(x)
+
+DEFINIERT IN:
+   /sys/events.h
+
+GETRIGGERT VON:
+   /std/living/life.c
+
+BESCHREIBUNG:
+   Dieser Event wird immer dann von einem NPC ausgeloest, wenn dieser gerade
+   getoetet wurde (um genau zu sein: im die()).
+   Dieser Event macht vermutlich die meisten Die-Hooks einfach unnoetig, da es
+   bei vielen nur darum geht, zu erfahren, ob der NPC tot ist, wer ihn
+   getoetet hat und ob derjenige genug Schaden gemacht hat. Dies laesst sich
+   aus den Daten dieses Event ebenfalls ermitteln, ohne den Aufwand eines
+   Hooks zu betreiben.
+
+   Bitte beachtet, dass in diesem Fall das ebenfalls gelieferte triggernde
+   Objekt (der NPC) bereits zerstoert ist, wenn ihr den Event empfangt,
+   'trigob' also 0 ist! Ihr muesst also den Eintrag E_OBNAME im Datenmapping 
+   des Events nutzen, um herauszufinden, welcher NPC getoetet wurde.
+
+PARAMETER:
+   Der an das Event-Define zu uebergebende Parameter "x" muss ein String 
+   sein.
+   Uebergibt man den Leerstring "", registriert man sich fuer das globale
+   Event EVT_LIB_NPC_DEATH(""), ueber das der Tod saemtlicher NPCs 
+   weitergemeldet wird.
+   Uebergibt man den load_name() des Zielobjekts als Parameter, so werden
+   nur die Tode von NPCs gemeldet, die sich von der Blueprint des
+   Zielobjekts ableiten, also auch aller Clones.
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ E_OBNAME:        (string)   Objektname des getoeteten NPCs,
+      E_ENVIRONMENT:   (object)   Environment des Opfer beim Tod,
+      E_TIME:          (int)      Zeitstempel des Todes,
+      P_NAME:          (string,string*)  P_NAME,
+      P_KILLER:        (object)   der Killer, s. Property,
+      P_ENEMY_DAMAGE:  (mapping)  s. Manpage P_ENEMY_DAMAGE,
+      P_LAST_DAMAGE:   (int)      s. Property,
+      P_LAST_DAMTYPES: (string *) s. Property,
+      E_EXTERNAL_DEATH:(int)      Flag, ob die() von aussen gerufen,
+      E_POISON_DEATH:  (int)      Flag, ob der Tod durch Gift ausgeloest,
+      E_CORPSE:        (object)   Leiche, sofern es eine gibt
+      P_XP:            (int)      P_XP,
+      P_ATTRIBUTES:    (int*)     P_ATTRIBUTES,
+      P_MAX_HP:        (int)      P_MAX_HP,
+      P_HANDS:         (mixed)    P_HANDS,
+      P_ALIGN:         (int)      P_ALIGN)
+      P_RACE:          (string)   P_RACE,
+      P_CLASS:         (string*)  P_CLASS,
+    ])
+
+BEMERKUNGEN:
+   Bei der Registrierung fuer die Todes-Events von einzelnen NPCs kann es 
+   im Fall von VC-generierten NPCs zu unerwarteten Effekten kommen, da hier
+   load_name() fuer jedes Objekt den Namen des VC-Standardobjekts 
+   zurueckliefert.
+   Die Registrierung fuer das Todes-Event eines einzelnen Clones ist nicht
+   moeglich.
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
+
+-----------------------------------------------------------------------------
+21.08.2007, Zesstra
+

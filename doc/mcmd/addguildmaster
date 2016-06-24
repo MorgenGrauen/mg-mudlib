@@ -1,0 +1,25 @@
+
+addguildmaster
+--------------
+
+ ERZMAGIERKOMMANDO:
+    addguildmaster <name> <gilde>
+
+ ARGUMENTE:
+
+     <name>
+        Name des Magiers
+     <gilde>
+        Name einer Gilde
+
+ BESCHREIBUNG:
+    Der Magier <name> wird zum Gildenmagier fuer die Gilde <gilde> 
+    ernannt.
+
+    Dieser Befehl steht nur Goettern zur Verfuegung.
+
+ SIEHE AUCH:
+    removeguildmaster, gilden
+
+ LETZTE AeNDERUNG:
+    2003-12-10, Zook

@@ -1,0 +1,43 @@
+SpellDefend()
+FUNKTION:
+     public int SpellDefend(object caster,mapping sinfo);
+
+DEFINIERT IN:
+     /std/living/combat.c
+
+ARGUMENTE:
+     object caster	- Gegner
+     mapping sinfo	- Zusatzinformationen zum Spell
+
+BESCHREIBUNG:
+     Ueber den Skill SK_SPELL_DEFEND mit den Aufrufparametern
+       SI_ENEMY    : <caster>
+     und
+       SI_SKILLARG : <sinfo>
+     wird eine Abwehrchance in 0.01%-Schritten fuer einen
+     Spell ermittelt, also 0% - 100% bzw. als Rueckgabewert
+     0 - 10000.
+     
+     Weiterhin wird automatisch P_MAGIC_RESISTANCE_OFFSET und der Skill
+     SK_SPELL_DEFEND beruecksichtigt.
+
+RUeCKGABEWERT:
+     Die Abwehrchance in 0.01%-Schritten.
+     
+     Fuer Spieler wird dieser Rueckgabewert auf 3333 maximal, also 33,33%
+     Abwehrmoeglichkeit beschraenkt.
+
+BEMERKUNGEN:
+     Die Spellbooks muessen selbst auf die Auswertung dieser Funktion
+     achten! Dies geschieht nur im Falle von TryGlobalAttackSpell()
+     und bei Spells fuer NPCs mittels P_SPELLS automatisch!
+
+     Bitte bei NPCs nicht pauschal 100% / 10000 zurueckgeben. Danke.
+
+SIEHE AUCH:
+     Verwandt:     P_MAGIC_RESISTANCE_OFFSET
+     Aehnlich:     P_NOMAGIC
+     Generell:     TryGlobalAttackSpell, /std/spellbook.c
+     Sonstiges:    UseSkill, SK_SPELL_DEFEND
+
+29.Dez 2007 Gloinson

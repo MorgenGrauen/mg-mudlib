@@ -1,0 +1,35 @@
+P_HUNTTIME (int)
+
+NAME:
+     P_HUNTTIME					"p_lib_hunttime"
+
+DEFINIERT IN:
+     /sys/living/combat.h
+
+BESCHREIBUNG:
+    Mit dieser Property laesst sich festlegen, wie lange ein Monster einen 
+    Gegner verfolgt (also automatisch angreift), nachdem dieser geflohen ist.
+    Die Angabe erfolgt in Sekunden.
+    Die Standardzeit ist 600s (300 Heartbeats).
+
+BEMERKUNGEN:
+    1. Wenn der Standardwert akzeptabel ist, bitte die Prop auch nicht setzen.
+    2. Enthaelt die Property keinen Integer oder ist sie <= 0, wird sie 
+       ignoriert und der Standardwert von 600s verwendet.
+    3. Kaempft man mit einem Lebenwesen mit einem groesseren Wert als man 
+       selber und man selber hat das Verfolgen eingestellt, der Gegner aber 
+       nicht, wird dieser beim Reinkommen den Kampf neu starten (und den 
+       ersten Schlag haben).
+
+BEISPIEL:
+    Ein NPC soll sich erst eine Stunde nach Flucht des Gegners beruhigen.
+    protected void create() {
+      ...
+      SetProp(P_HUNTTIME, 3600);
+    }
+
+SIEHE AUCH:
+     InsertSingleEnemy, InsertEnemy
+     /std/living/combat.c
+
+13.03.2008, Zesstra

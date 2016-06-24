@@ -1,0 +1,79 @@
+FUNKTION:
+        void tell_room(string|object obj, string str);
+        void tell_room(string|object obj, string str, object *exclude);
+
+        void tell_room(string|object obj, mixed *|mapping|struct|object msg)
+        void tell_room(string|object obj, mixed *|mapping|struct|object  msg
+                                        , object *exclude);
+
+BESCHREIBUNG:
+        Gibt einen Text <str> an den Raum <obj> aus. <obj> kann auch der
+        Objektname des Raumes als String sein.
+        Wenn das Raumobjekt mit seinem Namen angegeben ist, sucht der Driver
+        das Objekt unter diesem Namen und laedt es, falls notwendig.
+
+        Ist die Nachricht ein String, wird der Text an interaktive Objekte
+        direkt ausgegeben, fuer andere Objekte wird die lfun catch_tell()
+        in diesen aufgerufen.
+        Falls ein Lewebesen die Funktion catch_tell() definiert (-> shadow),
+        so wird der Text hier ausgewertet und nicht an den User ausgegeben.
+
+        Wenn das zweite Argument, die Nachricht, kein String ist, wird in
+        allen Lebewesen, die den Text erhalten, catch_msg() anstatt
+        catch_tell() aufgerufen.
+
+        Mit dem Array <*exclude> kann man verhindern, dass die Nachricht an
+        die darin enthaltenen Objekte gesendet wird.
+        Das ist sinnvoll, wenn zB ein Spieler Ausloeser einer Meldung ist
+        und diese selbst nicht erhalten soll.
+
+BEMERKUNGEN:
+        - der Eintrag von mehreren Anwesenden in *exclude ist moeglich
+        - wird in einem catch_msg() der Wert von <msg> veraendert, erhalten
+          alle nachfolgenden Objekte das veraenderte <msg> (Referenz!)
+
+        - say("str") ist verhaltensgleich zu
+          tell_room(environment(), "str", ({this_player()||this_object()}))
+
+BEISPIELE:
+        // Dies ist ein einfaches Beispiel fuer eine Meldung an alle An-
+        // wesenden im Raum.
+
+        tell_room(this_object(),"Ein leichter Wind kommt auf.\n");
+
+        // Diese Meldung wird im Raum /d/ebene/ark/raum.c ausgegeben, dieser
+        // Raum muss nicht derjenige sein, in dem das tell_room() ausgefuehrt
+        // wird.
+
+        tell_room("/d/ebene/ark/raum","Ein leichter Wind kommt auf.\n");
+
+
+        // Diese Meldung wird an alle Anwesenden im Raum AUSSER this_player()
+        // (der diese Meldung ausgeloest hat) ausgegeben. Der muss eine ge-
+        // sonderte Meldung ueber sein Stolpern per write() oder
+        // tell_object() bekommen.
+        tell_room(this_object(),
+                  break_string(this_player()->Name()+" stolpert.", 78),
+                  ({ this_player() }));
+        tell_object(this_player(), "Du stolperst.\n");
+
+        // Ein Beispiel mit zwei Objekten, das zeigt, wie das Zusammenspiel
+        // von catch_tell() und tell_room() ablaueft. Objekt1 ist ein
+        // Lebewesen mit Namen "Dummymonster", Objekt2 verteilt die Meldung:
+
+        Objekt1 (ein Lebewesen, steht im Env von this_player()):
+            void catch_tell(string str) {
+                write("Empfangen: "+str+"\n");
+            }
+
+        Objekt2:
+            void fun() {
+                tell_room(environment(this_player()), "Hallo Welt!\n");
+            }
+
+SIEHE AUCH
+        Aehnlich:   tell_object(E), write(E), shout(E), say(E), printf(E)
+        Verwandt:   catch_tell(E), catch_msg(A)
+        Sonstiges:  object_name(E)
+
+7.Aug 2007 Gloinson

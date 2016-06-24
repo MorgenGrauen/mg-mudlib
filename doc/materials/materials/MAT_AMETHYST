@@ -1,0 +1,21 @@
+Materialid:
+MAT_AMETHYST             "amethyst"
+
+Name:
+"Amethyst" "Amethysts" "Amethyst" "Amethyst"
+
+Geschlecht:
+M
+
+Beschreibung:
+violett (Quarz)
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_AMETHYST
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100
+MATGROUP_SOLID:100

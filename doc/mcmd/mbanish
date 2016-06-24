@@ -1,0 +1,31 @@
+
+mbanish
+-------
+
+ ERZMAGIERKOMMANDO:
+    mbanish <name> [<grund>]
+
+ ARGUMENTE:
+
+     <name>
+        Name des Opfers
+     <grund> (optional)
+        Der Grund der Sperre
+
+ BESCHREIBUNG:
+    Mit diesem Befehl laesst sich verhindern, dass der Spieler <name> von
+    beliebigen Magiern gesponsort (d.h. zum Magier gemacht) werden kann (aus
+    welchem <grund> auch immer).
+
+    Nur ein Erzmagier oder Gott kann in diesem Fall ein Sponsoring vornehmen.
+
+    Mit dem Grund 'loeschen' koennen gesperrte Namen wieder freigegeben werden.
+    Ohne Parameter wird die Liste aller gesperrten Namen ausgegeben.
+
+    Dieser Befehl kann nur von Erzmagiern und Goettern ausgefuehrt werden.
+
+ SIEHE AUCH:
+    banish, tbanish, sbanish
+
+ LETZTE AeNDERUNG:
+    Mon, 20.12.1999, 23:30:00 von Tiamak

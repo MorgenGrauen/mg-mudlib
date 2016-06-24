@@ -1,0 +1,20 @@
+Materialid:
+MAT_ALUMINIUM            "Al"
+
+Name:
+"Aluminium" "Aluminiums" "Aluminium" "Aluminium"
+
+Geschlecht:
+N
+
+Beschreibung:
+weich behandelt hart
+
+Erkennbarkeit:
+MAT_MISC_METAL:0
+MAT_SILVER:15
+MAT_ALUMINIUM
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_SOLID:100

@@ -1,0 +1,21 @@
+Materialid:
+MAT_EMERALD              "emerald"
+
+Name:
+"Smaragd" "Smaragds" "Smaragd" "Smaragd"
+
+Geschlecht:
+M
+
+Beschreibung:
+gruen
+
+Erkennbarkeit:
+MAT_MISC_JEWEL:25
+MAT_EMERALD
+
+Gruppenzugehoerigkeit:
+MATGROUP_MINERAL:100
+MATGROUP_SOLID:100
+MATGROUP_JEWEL:100
+MATGROUP_STONE:100

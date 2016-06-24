@@ -1,0 +1,22 @@
+KOMMANDO:
+	emailanzeige [Personenkreis]
+
+ARGUMENTE:
+	[Personenkreis]
+	  Die Personen, die beim finger-Befehl Deine Email angezeigt
+	  bekommen.
+
+BESCHREIBUNG:
+	Mit diesem Befehl kann man festlegen, welche Personen beim
+	finger-Befehl die EMail-Adresse angezeigt bekommen, die Du mit
+	den Befehl "email" oder beim ersten Login angegeben hast.
+	Als Optionen stehen zur Verfuegung: alle, freunde, niemand.
+	Achtung: Magier bekommen die Email-Adresse immer angezeigt,
+	auch dann, wenn man "emailanzeige niemand" eingibt.
+
+SIEHE AUCH:
+        Persoenliche Details: email, url, icq, messenger, ort
+        Sonstiges:            finger
+
+----------------------------------------------------------------------------
+Last modified: Mon Okt 16 20:32:44 2000 by Silvana

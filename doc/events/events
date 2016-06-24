@@ -1,0 +1,120 @@
+Was sind Events?
+================
+Events im MorgenGrauen sind Ereignisse, die von beliebigen Objekten ausgeloest
+werden koennen. Es gibt eine Reihe von vordefinierten Ereignissen, die die
+Basis-Lib bereitstellt (s.u.). Zusaetzlich zu diesen koennen Magier beliebige
+weitere Events erstellen bzw. benutzen.
+
+Wenn ein Objekt dem zentralen Event-Dispatcher einen bestimmten Event meldet,
+merkt dieser sich dies und die Daten, die ihm vom ausloesenden Objekt
+uebergeben wurde. Mit kurzer Verzoegerung (0-2s) informiert der
+Event-Dispatcher dann alle Objekte, die sich fuer diesen Event interessieren,
+d.h. dafuer angemeldet sind. Hierzu ruft er eine bestimmte Funktion in den
+angemeldeten Objekten auf.
+Hierbei ist zu beachten, dass die informierten Objekte das Ereignis in keinem
+Fall mehr beeinflussen koennen, da es bereits abgeschlossen wurde. Es ist
+lediglich eine Information ueber das Ereignis. Wenn ein Objekt Einfluss nehmen
+will (z.B. auf einen Tod), ist dafuer ein Hook zu verwenden.
+
+
+Welche Events definiert die Mudlib?
+==================================
+Diese Events haben in /sys/events.h vordefinierte Event-IDs und werden von der
+Basis-Mudlib mit den entsprechenden Daten ausgeloest (s. jew. Event):
+- EVT_LIB_LOGIN: Login eines Spielers
+- EVT_LIB_LOGOUT: Logout eines Spielers
+- EVT_LIB_PLAYER_DEATH: Ein Spieler ist gestorben
+- EVT_LIB_PLAYER_DELETION: Ein Spieler hat sich geloescht
+- EVT_LIB_PLAYER_CREATION: Ein Spieler wurde neu angelegt.
+- EVT_LIB_NPC_DEATH(): Ein NPC ist gestorben (Parameter s. Event-Manpage)
+- EVT_LIB_ADVANCE: Ein Spieler hat seine Spielerstufe erhoeht
+- EVT_LIB_PLAYER_ATTR_CHANGE: Die Attribute eines Spielers wurden geaendert
+- EVT_LIB_CLOCK: Die volle Stunde ist erreicht
+- EVT_LIB_DATECHANGE: Ein neuer Tag ist angebrochen. ;-)
+- EVT_LIB_QUEST_SOLVED: Ein Spieler hat eine Quest geloest
+- EVT_LIB_MINIQUEST_SOLVED: Ein Spieler hat eine Miniquest geloest
+
+Gilden muessen definieren (ggf. via /std/gilden_ob.c):
+- EVT_GUILD_CHANGE: Spieler hat seine Gilde gewechselt.
+- EVT_GUILD_ADVANCE: Ein Spieler hat seine Gildenstufe erhoeht
+
+
+Namenskonvention fuer Event-IDs:
+===============================
+- Die IDs aller Standardevents beginnen mit "evt_lib_". 
+  Dementsprechend sind alle Strings, die damit anfangen, fuer ALLE ausser 
+  der Mudlib TABU! D.h.
+  - diese Events werden NIEMALS von Objekten ausserhalb der Basislib
+    ausgeloest!
+  - es duerfen keine Events registriert werden, die mit dieser Zeichenfolge
+    anfangen, ausser mit den symbolischen Namen in /sys/events.h
+- Gilden-Events beginnen mit "evt_guild_", sofern es ein Event ist, den jede
+  Gilde definiert (s. /sys/events.h).
+  Die Events einzelner Gilden sollten mit "evt_gildenname_" beginnen.
+- Die IDs einzelner Magier sollten am besten zwecks Eindeutigkeit mit
+  "magiername_" beginnen.
+
+
+Was ist als lauschendes Objekt zu beachten?
+==========================================
+Das lauschende Objekt muss zunaechst /sys/events.h inkludieren und sich
+mittels Aufrufs von RegisterEvent() als Lauscher registrieren.
+Weiterhin muss es eine Funktion oeffentlich definieren (Name beliebig), die
+der EVENTD aufrufen kann. Diese Funktion bekommt 3 Argumente uebergeben:
+Event-ID, event-ausloesendes Objekt und die Event-Daten:
+   public void listen_event(string eid, object trigob, mixed data);
+'data' ist ein Datentyp, der vom Eventtyp abhaengt. Oft handelt es sich
+um ein Mapping. Fuer eine genaue Beschreibung schaut bitte die in die Manpage
+des konkreten Events.
+
+Bitte beachten: Die Daten in 'data' im Falle eines Arrays/Mappings niemals
+aendern. Aus Effizienzgruenden wird 'data' nicht kopiert, bevor es an die
+einzelnen Objekte uebergeben wird. Wenn ihr also Muell reinschreibt, werden
+nach euch informierte Lauscher euren Schrott empfangen. Sollte hier
+'Missbrauch' auffallen, wird das entsprechend geahndet!
+
+Und zum Schluss: Bitte missbraucht die Events nicht und meldet euch (speziell 
+fuer haeufige Events) nur an, wenn ihr mit den Informationen was sinnvolles 
+macht (also z.B. nicht nur, um ein Log der getoeteten NPCs im Spiel zu 
+erstellen. ;-)).
+
+
+Was ist als ausloesendes Objekt zu beachten?
+===========================================
+Eigentlich gar nicht viel. Ihr muesst lediglich /sys/events.h inkludieren und
+bei Auftreten des Events die Funktion TriggerEvent() im EVENTD aufrufen und
+ihr die Event-ID und die Event-Daten uebergeben.
+Bitte uebergebt als Event-Daten ggf. Kopien von Mappings/Arrays, da lauschende
+Objekte diese Daten veraendern koennen.
+
+
+Beispiele:
+========
+1. Ein Objekt moechte ueber Spielertode informiert werden:
+     EVENTD->RegisterEvent(EVT_LIB_PLAYER_DEATH, "spieler_ist_tot", 
+                           this_object());
+   Ab jetzt wird im Objekt jedes Mal, wenn ein Spieler stirbt, die Funktion
+   "spieler_ist_tot" aufgerufen.
+
+2. Ein Objekt moechte nicht mehr ueber Spielertode informiert werden:
+     EVENTD->UnregisterEvent(EVT_LIB_PLAYER_DEATH, this_object());
+
+3. Ein Objekt will informiert werden, wenn der Event
+   "boing_zwergenkoenig_angriff" ausgeloest wird:
+     EVENTD->RegisterEvent("boing_zwergenkoenig_angriff","alarm",
+                           this_object());
+
+4. Der Zwergenkoenig (oder einer seiner Waechter) wird angegriffen:
+   EVENTD->TriggerEvent("boing_zwergenkoenig_angriff", daten);
+   Anschliessend wird jedes Objekt, das es wissen will (s. 3.) vom EVENTD
+   informiert und kriegt dabei 'daten' uebergeben. Dies kann ein beliebiger
+   Datentyp sein (z.b. ein Mapping). In diesem Fall enthaelt 'daten'
+   zweckmaessigerweise den Angreifer.
+
+
+Siehe auch:
+==========
+  eventd, TriggerEvent(), RegisterEvent(), UnregisterEvent()
+
+18.08.2007, Zesstra
+

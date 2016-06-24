@@ -1,0 +1,19 @@
+Materialid:
+MAT_MISC_BASE            "misc_base"
+
+Name:
+"Lauge" "Lauge" "Lauge" "Lauge"
+
+Geschlecht:
+F
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_FLUID:100
+MATGROUP_BASIC:100
+MATGROUP_POISONOUS:100

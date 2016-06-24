@@ -1,0 +1,88 @@
+reset()
+FUNKTION:
+     void reset();
+     protected void reset();
+
+BESCHREIBUNG:
+     reset() wird vom GameDriver in jedem Objekt aufgerufen, um dem Objekt
+     die Gelegenheit zu geben, sich wieder in einen definierten Zustand zu
+     versetzen: Raeume und Monster erzeugen per AddItem() eingefuegte und
+     zwischenzeitlich entfernte Objekte neu, Tueren schliessen sich ...
+
+     Solange das Objekt "benutzt" wird, wird reset() regelmaessig alle
+     45 Minuten (+/-15 Minuten) mit einer Aufloesung von 2s aufgerufen
+     (d.h. der Driver prueft und ruft nur alle 2 Sekunden reset() auf
+     allen Objekten).
+
+     Wird eine Objekt nicht mehr "benutzt", d.h. wird an einem Objekt nicht
+     von aussen (durch call_other etc.) _nach_ einem reset() eine Methode
+     bzw. LFun gerufen, so bekommt dieses Objekt keinen weiteren reset().
+
+     Ein Funktionsaufruf am Objekt schaltet den reset() wieder ein.
+     Bei einem Objekt in einem Container waere das zB das Benutzen des
+     Containers (Hineinlegen/Herausnehmen/Hineinsehen). Das kann
+     sehr lange dauern.
+
+     Die Abschaltung kann man verhindern, indem man im reset() per call_out()
+     eine Funktion im Objekt ruft. Dies aber bitte _nur_ machen, wenn das
+     Objekt _unbedingt_ auf einen staendigen Reset angewiesen ist, auch wenn
+     es nicht "benutzt" wird.
+
+     Aendern laesst sich die Zeit zwischen den Aufrufen von reset() mit
+     set_next_reset(). Die Aufloesung von 2s kann man nicht aendern.
+
+BEMERKUNGEN:
+     - man kann reset() nutzen, um Ereignisse auszuloesen:
+       - es ist billiger als lange call_out()
+       - siehe Warnung bezueglich Abschalten des reset
+     - man kann reset() als protected oder static definieren, wenn man nicht
+       moechte, dass die Funktion von aussen gerufen werden kann. Dies
+       verhindert Einflussnahme von aussen, kann aber auch Debugmassnahmen
+       erschweren. Es ist aber dennoch fuer einige Objekte sinnvoll.
+     - der Driver ruft reset() unabhaengig von zusaetzlichen, "manuellen"
+       Rufen von reset()
+       - keine Rufe von reset() mit call_out() aus reset() (Callout-Ketten-
+         bildung droht), fuer solche Faelle ist set_next_reset(E) da!
+     - bei Blueprints sollte der reset() in der Regel abgeschaltet werden,
+       sofern er nicht auf wichtige Aufgaben in der BP zu tun hat:
+       protected void create() {
+         if(!clonep(ME)) {
+             set_next_reset(-1);
+             return;
+         }
+         ::create();
+         ...
+       }
+
+BEISPIELE:
+     // ein NPC, der bei jedem reset() schaut, ob um ihn herum bessere
+     // Ausruestung liegt als die, die er selbst gerade traegt:
+
+     ...
+     void reset() {
+       ::reset();
+
+       if(clonep(this_object()) && environment()) {
+         object o;
+         o=first_inventory(environment());
+         while(o) {
+             look_for_good_weapons_and_use_them_if_better(o);
+             o=next_inventory(o);
+         }
+       }
+     }
+
+     // ein reset fuer einen Gegenstand, der vielleicht in
+     // in einem Container landet und dann weiter einen reset
+     // bekommen muss/soll
+
+     void reset() {
+       // irgend ein Code hier
+       call_other(this_object(), "???"); // einfach nur was aufrufen
+     }
+
+SIEHE AUCH:
+     clean_up(), set_next_reset(E), query_next_reset(E)
+     memory
+
+letzte Aenderung: 2009-01-14 Rumata

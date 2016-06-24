@@ -1,0 +1,27 @@
+
+     **********************************************************
+     *  ACHTUNG: EFUN EXISTIERT NICHT MEHR! NICHT VERWENDEN!  *
+     **********************************************************
+
+SYNOPSIS:
+	mixed *exclude_array(mixed *arr, int from, int to)
+
+DESCRIPTION:
+  Deletes an section from an array.
+
+  Please use the slicing operator:
+  arr = arr[0..from-1]+arr[to+1..<1]
+  or even better:
+  arr[from..to] = ({});
+
+  This efun is temporarily a simulated efun until is finally
+  droppped.
+
+HISTORY
+        Removed in LDMud 3.3.
+
+SEE ALSO
+        [](E)
+
+16.12.2008 Zesstra
+

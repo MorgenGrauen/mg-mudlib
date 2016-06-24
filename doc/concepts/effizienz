@@ -1,0 +1,222 @@
+Effizienz
+ BESCHREIBUNG:
+     Effizienz in der Programmierung ist leider nicht ganz so einfach zu
+     beschreiben, da es viel mit der zugrundeliegenden Verarbeitung der
+     Programme zu tun hat. Es geht ganz gut am Beispiel.
+
+     Generell haben Lesbarkeit und Wartbarkeit von Code Vorrang vor dessen
+     Effizienz, gerade weil die wirklich arbeitslastigen Methoden in der Lib
+     stecken. Ausserdem ist es im Allgemeinen nicht empfehlenswert, (viel)
+     Aufwand in die Optimierung von Code zu stecken, solange nicht klar ist,
+     dass dies ueberhaupt notwendig ist.
+     Les-/Wartbarkeit und effizienter Stil schliessen sich aber nicht aus und
+     einige (einfache) Grundregeln lassen sich einfach einhalten.
+
+     Fuer diejenigen unter euch, die gerade erst mit LPC zusammenstossen
+     gibt es (*) an den besonders wichtigen Stellen. Auf Dauer solltet ihr
+     aber mal alle Eintraege ueberfliegen. Den ersten koennen alle hier
+     beherzigen:
+
+     LPC wird beim Laden nicht optimiert:
+      Das was ihr schreibt, wird auch so ausgefuehrt, es werden keine
+      Schleifen optimiert, keine unnoetigen Zuweisungen entfernt, nichts
+      wird veraendert:
+      - ueberlegt euch also euren Code gut, wenn er an kritischen Stellen
+        steht oder sehr viel Rechenzeit kostet (zB geschachtelte Schleifen)
+      - testet einfach mal Varianten und fragt auf -lpc nach Optimierung!
+
+     call_out und heart_beat erzeugen konstante Last:
+      Jeder call_out() steht in einer Liste, die im selben Takt wie der
+      heart_beat() durchsucht wird. Beides kostet Zeit. Beide Methoden
+      verhindern zudem das Ausswappen des entsprechenden Objektes. Deshalb
+      schalten sich Raummeldungen (AddRoomMessage funktioniert ueber
+      call_out()) und der heart_beat() von /std/npc nach dem Verlassen des
+      Raumes durch den letzten Spieler selbst aus.
+ *    - bitte achtet darauf, unnoetige call_out/heart_beat zu vermeiden.
+        (Insbesondere sich bewegende NPCs sollten sich auch irgendwann
+         wieder abschalten - es gibt einen funktionierenden MNPC mit diesen
+         Eigenschaften unter /p/service/padreic/mnpc.)
+      - fuer regelmaessige Aufrufe in einem Objekt, wo der genaue Zeitpunkt
+        nicht auf einige Sekunden ankommt,  bietet sich auch reset() mit
+        set_next_reset() an
+      - statt call_out()-Ketten in einem Raum laufen zu lassen, kann man
+        sich auch die letzte Aktivierung merken und bei einem init()
+        wieder ein entsprechend langes call_out() starten
+
+     Speicher und das Drumherum:
+      Die Speichersituation ist nicht mehr verzweifelt. Das heisst aber
+      nicht, dass damit geschlampt werden kann. Gleichzeitig ist die
+      Reservierung von Speicher und die Garbage Collection, das Einsammeln
+      freigegebenen Speichers bei Freigaben von Variablen (wie bei x+y,
+      x=0 (x,y==array/mapping)) immer kostspielig. Folgend ein paar
+      Tipps dazu:
+      Groesse:
+      - wenn moeglich, globale Variablen nach Nutzung freigeben - ggf.
+        #defines benutzen: Vorsicht jedoch bei Mapping/Array (siehe unten)
+      - globale oder in Properties abgespeicherte Mappings/Arrays/
+        Strings klein halten und nur dynamisch erweitern
+      - programmiert man an vielen Stellen gleichen Code, dann ist es
+        sinnvoll, diesen in eine eigene Datei/Klasse zu giessen und von
+        dieser zu erben - das spart Speicher und laesst sich besser warten
+      - replace_program bitte nur benutzen, wenn man weiss, was es bewirkt,
+        /std/room verwendet es bereits automagisch
+ *    - Objekte in Raeumen und NPCs sollten per AddItem() addiert werden,
+        da die generelle Aufraeumfunktion /std/room::clean_up() dann weiss
+        ob der Raum entfernt werden kann
+      - es sollte keine ewigen Objektquellen geben
+      - Blueprints:
+        - Soll es immer nur ein Objekt von etwas geben, stellt die Blueprint
+          per AddItem(...,...,1) dort hin.
+          Achtung: Blueprints neu zu laden, ist teuer im Vergleich zum clonen.
+                   Gerade bei NPCs (die beim Tod zerstoert werden), sollte
+                   man das im Hinterkopf behalten.
+        - Die BP von geclonten Objekten muss nicht immer initialisiert werden,
+          speziell bei komplexen Objekten kann es sich lohnen, die
+          Initialisierung der BP im create abzubrechen. (Denn meistens ist nur
+          ihr Programm interessant)
+          protected void create() {
+            if(!clonep(this_object())) {
+              set_next_reset(-1);   // falls die Clones im reset() was
+              return;               // machen
+            }
+            ::create(); ...
+          }
+      
+     Kosten:
+ *    - es lohnt, lokale Mappings oder Arrays mit bekannter Groesse via
+        allocate() oder m_allocate() vor Belegung in voller benoetiger
+        Groesse zu reservieren:
+        statt:
+          int *x = ({}); foreach(int i: 10) x+=({i});
+        lieber:
+          int *x = allocate(10); foreach(int i: 10) x[i] = i;
+ *    - wiederholtes Ausschneiden (slice) aus Arrays vermeiden, dabei wird
+        staendig Speicher neu alloziiert und benutzter Speicher freigegeben:
+        statt:
+          int *x; ...; while(sizeof(x)) { x[0]...; x=[1..x]; }
+        lieber:
+          int *x; ...; i=sizeof(x); while(j<i) { x[j]...; j++; }
+ *    - direkte Mapping/Array ({}), ([]) in Methoden (zB ueber #define)
+        sparen zwar globalen Platz, kosten aber Konstruktionszeit bei jedem
+        Aufruf dieser Methoden - fuer haeufig gerufene Methoden sollten
+        grosse Datenstrukturen einmal global konstruiert werden
+        statt:    #define GROSSES_MAPPING ([....])
+                  void haeufige_fun() { ... GROSSES_MAPPING ... }
+        lieber:   mapping GROSSES_MAPPING = ([....]);
+                  void haeufige_fun() { ... GROSSES_MAPPING ... }
+ *    - diverse efuns sind genauso schnell zugreifbar wie Variablen,
+        muessen also nur zugewiesen werden, wenn sich der Wert aendern kann:
+        this_player(), this_interactive(), environment(), previous_object(),
+        this_object().
+ *    - statt all_inventory() einer Variablen zuzuweisen und darueber
+        zu iterieren, kann man oft mit first_inventory() und next_inventory()
+        ein Inventory durchgehen
+
+     Methoden:
+      Die Methoden eines Objektes werden in einer Liste gespeichert, die
+      beim Aufruf einer Methode ueber call_other() (oder o->fun())
+      durchgesehen wird. Das hat folgende Konsequenzen:
+ *    - jede oeffentliche Methode wird bei call_other() durchsucht und
+        das kostet Zeit, wenn eine Methode also nicht oeffentlich sein
+        muss, dann schreibt auch ein "protected" davor, wenn sie in den
+        erbenden Klassen nicht sichtbar sein muss: "private"
+      - nutzt ihr eine fremde Methode mehrfach (zB QueryProp), dann ist es
+        an sehr kritischen Stellen sinnvoll, diese einmal zu suchen und an
+        eine Lfun-Closure zu binden, weitere Aufrufe sind schneller:
+         closure cl;
+         cl=symbol_function("QueryProp",this_player());
+         funcall(cl, P_LEVEL); funcall(cl, P_SIZE); ...
+      Nebenbei bemerkt:
+      - es gibt in LPC kein sog. fruehes Binden, "this_object()->function();"
+        ist fast immer unnoetig und fast immer nur ein Zeichen fuer Faulheit die
+        richtigen Prototypen zu inkludieren/formulieren.
+
+     Lambdas:
+      Lambda-Closures sind nicht nur schwer zu lesen, sondern oft auch langsamer
+      als andere Closures. Speziell wird bei jedem Auftreten von lambda() die
+      Lambda neu erzeugt.
+      Nehmt euch die Zeit aus einer Lambda-Closure eine Lfun-Closure zu
+      machen oder sie zumindest an eine globale Closure-Variable zu binden,
+      damits sie schnell ausgefuehrt werden kann. #define bietet sich hier
+      nicht an.
+      statt:  filter(users(),
+                       lambda(({'x}), ({#'call_other,'x,
+                                    "QueryProp",P_SECOND})));
+      lieber: private static int _isasec(object o) {
+                return o->QueryProp(P_SECOND);
+              }
+              ...
+              filter(users(), #'_isasec);
+      oder:   closure cl;
+              cl=lambda(({'x}), ... );
+              ...
+              filter(users(), cl);
+      oder:
+      Bessere Alternative zu Lambdas sind uebrigens inline-closures (man
+      inline-closures), die deutlich schneller und einfacher zu lesen sind.
+              filter(users(), function mixed (pl)
+                              {
+                                pl->QueryProp(P_SECOND);
+                              }
+                    );
+
+
+     Simul-efun und die Last der Vergangenheit:
+      Es gibt einige Simul-Efuns, die anstelle einer aehnlichen Efun verwendet
+      werden, aber langsamer sind. Beispiel: die sefun m_copy_delete() macht
+      fast das gleiche wie m_delete(), erzeugt aber vorher immer eine Kopie.
+      Wenn man diese nicht braucht, sollte man m_delete() den Vorzug geben.
+
+
+     Generelle Bemerkungen:
+ ***  - LAG entsteht vor allem dann, wenn zu viele Dinge auf einmal
+        identifiziert, bewegt, geladen, gecloned oder kopiert werden
+        sollen (in nur einem Kommando, in einem reset(), ...)
+        - zerlegt solche Aufgaben mit call_out/heart_beat in Haeppchen
+        - lasst es einen Erzmagier durchsehen
+ *    - Variablen sind immer auf 0 initialisiert,
+        allocate()-Arrays sind mit 0 oder Wunschwert initialisiert.
+      - gleicher Code sollte aus Schleifen sollten entfernt werden,
+        zB bei Iteration ueber ein Array gehoert das sizeof() vor die
+        Schleife, nicht in den Test
+ *    - beim Identifizieren eindeutiger Objekte ist present_clone()
+        wesentlich billiger als ein present() + geschuetzten IDs
+ *    - aus Arrays koennen mittels "-" viele identische Werte auf einmal
+        entfernt werden, es ist also sinnvoll bei Loeschoperationen
+        zu loeschende Werte auf einen bestimmten Wert zu setzen und diesen
+        dann mittels array-=({wert}) zu entfernen.
+        Wir entfernen alle getoeteten NPC, d.h. alle geloeschten Objekte
+        aus einer Liste: meinelistemitnpcs-=({0})
+      - efuns sind oft schneller als eigene Konstrukte, gerade was
+        Arrays betrifft. Pauschalisiert kann das nicht werden, man muss
+        auch immer die noetige Reservierung von Speicher mitbetrachten!
+        Zusammen mit einer Referenz sind sort_array(), filter(), map() etc.
+        dennoch oft euer Freund:
+        statt:   t=allocate(0);
+                 for (i=sizeof(a1); i--; )
+                   if (member(a2,a1[i])>=0) t+=({a1[i]});
+        lieber:  private static mixed _is_member(mixed x, a) {
+                   if (member(a,x)>=0) return 1;
+                   else return 0;
+                 }
+                 ...
+                 t=filter(a1, #'_is_member, &a2);
+        oder hier noch besser:
+                   t=a1&a2;
+      - x&y ist bei zwei grossen Arrays manchmal die schlechtere Wahl:
+        statt:   t=all_inventory(TO)&users();       // zwei Arrays
+        lieber:  t=filter(all_inventory(TO),        // ein Array!
+                          #'query_once_interactive);
+        Eventuell lohnt es sich hier, gleich mit first_inventory() und
+        next_inventory() ueber den Raum zu iterieren und auf allen
+        query_once_interactive() die gewuenschten Operationen vorzunehmen.
+      - foreach() ist oft gegenueber for() die bessere Alternative (etwas
+        schneller, einfacher formuliert)
+      - weitere schnelle efuns:
+        query_verb(), interactive(), query_once_interactive(), living(),
+        stringp(), intp(), closurep(), objectp(), ...
+
+ SIEHE AUCH:
+     memory, objekte, mudrechner, goodstyle, ticks
+
+ 6. Sep 2012 Gloinson

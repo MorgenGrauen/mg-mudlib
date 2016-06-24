@@ -1,0 +1,22 @@
+
+mecho
+-----
+
+ MAGIERKOMMANDO:
+    mecho <text>
+
+ ARGUMENTE:
+
+     <text>
+        ein beliebiger Text
+
+ BESCHREIBUNG:
+    Der Text <text> wird an alle Magier im MUD geschickt.
+
+    Der Befehl sollte mit groesster Sorgfalt behandelt werden.
+
+ SIEHE AUCH:
+    vertrag, emote, echo, echoall, echoto, teile (mit)
+
+ LETZTE AeNDERUNG:
+    Tue, 02.09.1997, 16:54:57 von Wargon

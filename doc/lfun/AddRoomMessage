@@ -1,0 +1,80 @@
+AddRoomMessage()
+
+FUNKTION:
+     void AddRoomMessage(string *msg, int time, mixed *func);
+
+DEFINIERT IN:
+     /std/room/description.c
+
+ARGUMENTE:
+     msg
+          Array von Strings mit den Meldungen.
+     time
+          Der Abstand zwischen zwei Meldungen in Sekunden.
+     func (optional)
+          String oder Array von Strings mit Funktionsnamen
+
+BESCHREIBUNG:
+     Mit dieser Funktion legt man fest, dass in bestimmten Zeitabstaenden
+     Meldungen an den Raum geschickt werden sollen.
+
+     Es wird alle time Sekunden zufaellig eine der in msg angegebenen
+     Meldungen ausgegeben. Hat man auch noch func angegeben, so wird
+     zusaetzlich diese Funktion (bei einem Array: eine zufaellig ausgesuchte
+     Funktion) im Raum aufgerufen. Als Parameter bekommt die Funktion die
+     Nummer der ausgegebenen Meldung.
+
+     Bevor man allerdings jeden Raum mit AddRoomMessage() pflastert, sollte
+     man folgendes bedenken:
+        o Viele Meldungen in vielen Raeumen tendieren dazu, den Spielern auf
+          die Nerven zu gehen!
+        o Da das Timing ueber einen call_out() gesteuert wird, ist das Ganze
+          aus Sicht des GameDrivers auch noch relativ teuer!
+     Fazit: weniger ist mehr!
+
+BEMERKUNGEN:
+     * Falls time < 15 Sekunden ist, wird auf 15 Sekunden aufgerundet.
+     * der Praefix Add... taeuscht hier. Ein Aufruf von AddRoomMessage()
+       ueberschreibt alle vorherigen Werte
+     * THIS_PLAYER() NICHT VERWENDEN!
+     In Funktionen, die durch AddRoomMessage() ausgeloest werden, darf
+     this_player() nicht verwendet werden. AddRoomMessage ist call_out-
+     gesteuert und speichert somit das this_player(). Damit ist this_player()
+     immer der Spieler, der den Raum geladen, also den Raum als erster
+     betreten hat. 
+     Spieler also bitte selbst ueber filter(all_inventory(this_object()),
+                                            #'interactive) suchen.
+
+BEISPIELE:
+     Es soll alle halbe Minute eine Meldung ausgegeben werden. Falls es
+     unter den Fuessen knackt, soll man zudem mit 30%-iger
+     Wahrscheinlichkeit zusammenzucken:
+
+     inherit "/std/room";
+
+     void create() {
+       ::create();
+       AddRoomMessage( ({ "In der Ferne schreit ein Kaeuzchen.\n",
+                          "Es raschelt im Gebuesch.\n",
+                          "Etwas knackt unter Deinen Fuessen.\n" }),
+                        30, ({"sound", "sound_more_rnd"}) );
+       ...
+     }
+
+     void sound(int msg) {
+       if (msg == 2)         // Es hat geknackt...
+         if (random(10) < 3) // Schreck lass nach! ;-)
+           tell_room(this_object(), "Erschrocken faehrst Du zusammen!\n" );
+     }
+
+     // Extra-Beispiel: wir setzen die Wartedauer (Parameter tim) neu
+     void sound_more_rnd() {
+       sound(0);   // die Message-Nummer ist hier unwichtig
+       SetProp(P_MSG_PROB, 25+random(20));  // neue Wartedauer
+     }
+
+SIEHE AUCH:
+     Verwandt: tell_room(), ReceiveMsg()
+     Props:    P_ROOM_MSG, P_FUNC_MSG, P_MSG_PROB
+
+2.Feb 2016 Gloinson

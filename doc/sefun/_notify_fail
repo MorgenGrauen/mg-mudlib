@@ -1,0 +1,18 @@
+simul_efun::_notify_fail(E)
+FUNKTION:
+     void _notify_fail(string str)
+
+ARGUMENTE:
+     str
+	umgebrochener Fehlermeldungsstring
+
+BESCHREIBUNG:
+     Identisches Verhalten zu notify_fail(E), bis darauf, dass bei bereits
+     gesetzter Fehlermeldung _keine_ neue Fehlermeldung gesetzt wird.
+
+SIEHE AUCH:
+     notify_fail(E), P_ACTUAL_NOTIFY_FAIL
+     add_action(E), AddCmd(L), AddAction(L),
+     query_verb(E)
+
+24 Maerz 2004 Gloinson

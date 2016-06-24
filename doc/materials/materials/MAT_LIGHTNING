@@ -1,0 +1,19 @@
+Materialid:
+MAT_LIGHTNING            "lightning"
+
+Name:
+"Blitz" "Blitzes" "Blitz" "Blitz"
+
+Geschlecht:
+M
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+- keine Einschraenkung -
+
+Gruppenzugehoerigkeit:
+MATGROUP_ELECTRICAL:100
+MATGROUP_GAS:100
+MATGROUP_INVIS:100

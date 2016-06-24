@@ -1,0 +1,30 @@
+DoUnwield()
+
+FUNKTION:
+     varargs int DoUnwield(int silent);
+
+DEFINIERT IN:
+     /std/weapon/combat.c
+
+ARGUMENTE:
+     silent
+          Ungleich 0, wenn die Waffe ohne Meldungen weggesteckt werden soll.
+
+BESCHREIBUNG:
+     Es wird versucht, die Waffe wegzustecken.
+
+RUeCKGABEWERT:
+     0, wenn die Waffe gar nicht gezueckt war, ansonsten 1.
+
+BEMERKUNGEN:
+     Anhand des Rueckgabewertes laesst sich nicht ersehen, ob die Waffe sich
+     wegstecken liess oder nicht!
+
+     Wenn die Waffe verflucht ist oder (falls definiert) UnwieldFunc() 0
+     zurueckgibt, laesst sie sich nicht wegstecken.
+
+SIEHE AUCH:
+     UnwieldFunc(), InformUnwield(), /std/weapon.c
+
+----------------------------------------------------------------------------
+Last modified: Sun Jun 27 22:24:00 1999 by Paracelsus

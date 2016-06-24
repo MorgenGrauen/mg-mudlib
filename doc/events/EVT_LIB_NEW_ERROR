@@ -1,0 +1,31 @@
+EVENT: 
+   EVT_LIB_NEW_ERROR
+
+DEFINIERT IN:
+   /sys/events.h
+   /secure/errord.h (Konstanten fuer Eventdaten sind dort definiert)
+
+GETRIGGERT VON:
+   /secure/errord.c
+
+BESCHREIBUNG:
+   Ein neuer Fehlereintrag wurde im ErrorD eingetragen. Hierbei muss es kein
+   echter Fehler sein, sondern kann auch eine Warnung oder eine Idee eines
+   Spielers sein (alle Fehlertypen T_* aus /secure/errord.h sind moeglich).
+
+EVENT-DATEN:
+   Die Daten werden als Mapping uebergeben:
+   ([ F_TYPE:     (int) Typ des Fehlereintrags
+      F_HASHKEY:  (string) ID des Fehlereintrages
+      F_UID:      (string) UID des Objektes, in welchen der Fehler auftrat
+    ])
+
+BEMERKUNGEN:
+
+SIEHE AUCH:
+   events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd,
+   fehlerteufel
+
+-----------------------------------------------------------------------------
+07.09.2011, Zesstra
+

@@ -1,0 +1,58 @@
+
+FUNKTION:
+     protected void NotifyMove(object dest, object oldenv, int method);
+
+DEFINIERT IN:
+     /std/thing/moving.c
+     /std/living/moving.c
+     /std/player/moving.c
+
+ARGUMENTE:
+     dest
+          Das Ziel des Moves bzw. das jetzt aktuelle Environment
+     oldenv
+          Das alte Environment des Objekts
+     method
+          Die Move-Methode(n), mit der/denen bewegt wurde.
+
+BESCHREIBUNG:
+     Diese Funktion wird vom move() im Objekt gerufen, sobald die Bewegung im
+     wesentlichen abgeschlossen ist. Sie soll einerseits das Objekt ueber eine
+     stattgefundene Bewegung informieren, aber auch einige Dinge erledigen,
+     die bei der Bewegung stattfinden muessen (bei Livings z.B. das Team
+     nachholen).
+
+RUeCKGABEWERT:
+     keiner
+
+BEMERKUNGEN:
+     Diese Funktion kann ueberschrieben werden, damit das Objekt Bewegungen
+     mitgekommt, ohne das move() selber zu ueberschreiben oder einen Move-Hook
+     zu setzen. Dabei aber bitte unbedingt beachten:
+     Das geerbte NotifyMove() _MUSS IN JEDEM FALL_ mit aufgerufen werden!
+     Solltet ihr das vergessen, werden eure Objekte buggen. ;-)
+     Die Funktion darf nur objektintern verwendet werden. Beim Ueberschreiben
+     das 'protected' nicht vergessen!
+
+BEISPIELE:
+     Eine Bombe, die in Seherhaustruhen explodiert:
+
+     protected void NotifyMove(object dest, object oldenv, int method) {
+         ::NotifyMove(dest, oldenv, method); // WICHTIG!
+         if (objectp(dest) &&
+             load_name(dest) == "/d/seher/haeuser/truhe") {
+             if (find_call_out("explodiere")==-1)
+                 call_out("explodiere",900);
+         }
+         else
+             remove_call_out("explodiere");
+     }
+
+
+SIEHE AUCH:
+     PreventLeave(), NotifyInsert(), NotifyLeave(), MayAddObject(),
+     PreventInsertLiving(), PreventLeaveLiving(), NotifyMove(),
+     PreventMove(), MayAddWeight(), move(), /std/container/restrictions.c
+
+----------------------------------------------------------------------------
+Last modified: 04.08.2007, Zesstra

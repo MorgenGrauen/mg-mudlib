@@ -1,0 +1,22 @@
+BEFEHL:
+	update, upd
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zerstoere die Blueprint des Objektes, das auf dem Stack liegt, damit
+	Aenderungen der Files aktiv werden koennen. Gebe der Blueprint
+	jedoch Gelegenheit, Aufraeumarbeiten zu taetigen. Soll die Blueprint
+	wirklich hart zerstoert werden, so ist ein Rufzeichen an den Befehl
+	anzuhaengen. (also `update!')
+	Wichtig: Das geclonte Objekt, ueber das die Blueprint zerstoert wird,
+	bleibt erhalten, ebenso wie alle anderen geclonten Objekte.
+
+BEISPIELE:
+	,me .teddy update
+	Zerstoert die Blueprint vom Teddy, den man hat. (Das ist natuerlich nur
+	fuer Magier sinnvoll, die das File editieren konnten.)
+
+SIEHE AUCH:
+	"roomupdate"

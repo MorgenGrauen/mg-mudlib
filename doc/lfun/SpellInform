@@ -1,0 +1,31 @@
+SpellInform
+
+FUNKTION:
+        void SpellInform(caster,spell,sinfo);
+
+DEFINIERT IN:
+        selber zu definieren
+
+ARGUMENTE:
+        pl
+          Das Lebewesen, das erfolgreich gezaubert hat.
+        spell
+          Der Name des gezauberten Spells
+        sinfo
+          Das komplette Spellmapping des gezauberten Spells
+
+BESCHREIBUNG:
+        Diese Funktion wird vom Spellbuch einer Gilde in der Umgebung
+        (Environment) eines Lebewesens aufgerufen, wenn immer das Lebewesen
+        einen Spell _erfolgreich_ gezaubert hat.
+        Bemerkung: Bitte vermeiden, aufwaendige Sachen in der Funktion zu
+        machen, da sonst u.U. deswegen Gilden anfangen zu buggen. Falls es
+        sein muss, macht dann lieber einen call_out mit 2s Wartezeit.
+
+RUeCKGABEWERT:
+        keiner
+
+SIEHE AUCH:
+        
+----------------------------------------------------------------------------
+16.04.2007, Zesstra

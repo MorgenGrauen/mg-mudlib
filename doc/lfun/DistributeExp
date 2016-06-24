@@ -1,0 +1,24 @@
+DistributeExp()
+FUNKTION:
+     private static void DistributeExp(object enemy, int exp_to_give)
+
+DEFINIERT IN:
+     /std/living/life.c
+
+ARGUMENTE:
+     object enemy     - toetender Feind
+     int exp_to_give  - zu verteilende XP (== P_XP/100)
+
+BESCHREIBUNG:
+     Das sterbende Wesen verteilt seine XP an seine Feinde.
+
+     Dabei bekommt jeder Gegner seinen Anteil (abhängig von 50% von seinem
+     gemachten Schaden) und einen Teamanteil (die anderen 50% über das
+     gesamte Team addiert und durch die Teamanzahl geteilt).
+
+SIEHE AUCH:
+     Funktionen:  AddExp()
+     Properties:  P_XP
+     Sonstiges:   teamkampf
+
+14.Feb 2007 Gloinson

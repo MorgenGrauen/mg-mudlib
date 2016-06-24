@@ -1,0 +1,54 @@
+
+Der Bezugspunkt
+-------------------
+
+    Der Bezugspunkt oder das Bezugsobjekt ist bei den Befehlen "schau",
+    "untersuche", "lies", "taste", "lausche" und "rieche" wichtig.
+
+    Diese Kommandos merken sich den jeweils zuletzt erfolgreich untersuchten
+    Gegenstand (bzw. den Gegenstand, an dem das zuletzt erfolgreich
+    untersuchte Detail klebt) als Bezugspunkt fuer das naechste Kommando.
+    Hierbei benutzen alle genannten Befehle den gleichen Bezugspunkt.
+
+ BEISPIELE:
+    Beispiel 1:
+    > "unt schrank"
+    -> gibt es einen Schrank, wird der beschrieben _und_ er wird der neue
+       Bezugspunkt.
+    > "unt tuer"
+    -> Jetzt wird "tuer" am Bezugsobjekt "schrank" gesucht. Existiert das
+       Detail, bleibt der Schrank auch weiterhin der Bezugspunkt. Existiert
+       es nicht, wird ein Detail "tuer" oder ein Objekt "tuer" im Raum und
+       dann in euch gesucht. Gibt es da sowas, wird es beschrieben und das
+       neue Bezugsobjekt. Wenn alles fehlschlaegt, gibt es eine
+       Fehlermeldung und der Bezugspunkt geloescht. Beim naechsten "unt" wird
+        zuerst im Raum und dann in euch gesucht.
+    (Es wuerde auch gehen: "unt tuer an schrank".)
+
+    Beispiel 2:
+    > "unt paket"
+    -> Das Paket wird beschrieben und der neue Bezugspunkt.
+    > "unt seil"
+    -> Das Seil im paket wird beschrieben (sofern sie existiert) und der
+       neue Bezugspunkt.
+    > "unt wolle"
+    -> Das Detail "wolle" am Seil wird beschrieben. Das Seil bleibt der
+       Bezugspunkt.
+    (In diesem Beispiel koennte man die Wolle auch direkter untersuchen,
+     indem man "unt wolle an seil in paket in mir" benutzt.)
+
+    Beispiel 3:
+    > "unt rucksack"
+    -> Der Rucksack wird untersucht und der neue Bezugspunkt.
+    > "lies schild"
+    -> Hat der Rucksack ein lesbares Detail "schild", wird es ausgegeben. Der
+       Rucksack bleibt der Bezugspunkt. Wenn nicht, wird ein lesbares Detail
+       oder ein lesbarer Gegenstand "schild" im Raum und in euch gesucht.
+    (Es wuerde auch gehen: "lies schild an rucksack")
+ 
+SIEHE AUCH:
+    schau, untersuche, lies, taste, lausche, rieche
+
+ LETZTE AeNDERUNG:
+    18.01.2013, Zesstra
+

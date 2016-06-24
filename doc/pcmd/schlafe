@@ -1,0 +1,37 @@
+
+schlafe ein
+-----------
+
+ KOMMANDO:
+    schlafe ein
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Unterbricht die Verbindung zum Spiel. Alle Gegenstaende, die man bei der
+    Eingabe des Kommandos bei sich hat, behaelt man. Beim Neu-Einloggen kommt
+    man normalerweise an der gleichen Stelle heraus, an der man das Spiel
+    verlassen hat. Von dieser Regel kann es aber auch Ausnahmen geben, von
+    denen die wichtigste die Seherhaeuser sind: schlaeft man in einem
+    Seherhaus ein, wacht man vor dem Haus wieder auf (Ausnahme von der
+    Ausnahme: der Hausbesitzer selbst ist davon nicht betroffen).
+    Grund fuer diese Massnahme ist, dass Spieler so nicht beabsichtigt
+    oder unbeabsichtigt im Seherhaus eingeschlossen werden koennen.
+
+    ACHTUNG: Falls das Spiel abstuerzt oder neu gestartet wird, verliert man
+    alle seine Gegenstaende und startet beim Einloggen wieder an seinem
+    lokalen Startpunkt!
+    (In der Regel gibt es dann aber eine (kleine) Entschaedigung fuer die
+    verlorenen Gegenstaende (ohne Gewaehr). )
+
+    ACHTUNG: Abenteuer koennen unter Umstaenden nach dem Wiederaufwachen nicht
+    mehr weitergespielt werden.
+
+                           BENUTZUNG AUF EIGENE GEFAHR!
+
+ SIEHE AUCH:
+    speichern, ende, keepalive
+
+ LETZTE AeNDERUNG:
+    Sat, 04.01.2003, 14:45:00 von Wargon

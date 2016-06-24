@@ -1,0 +1,28 @@
+FUNKTION:
+	string *old_explode(string str, string del)
+
+ARGUMENTE:
+	str - Der String, der aufgespaltet werden soll.
+	del - Der String, nach dem str aufgespalten werden soll.
+
+BESCHREIBUNG:
+	Durch Ausschneiden von del wird der String str in ein Array von Strings
+	zerlegt. Dieses Array wird anschliessend zuruckgegeben.
+
+RUECKGABEWERT:
+	Das Array mit den Bestandteilen der Zerlegung.
+
+BEMERKUNGEN:
+	Das Verhalten von old_explode() entspricht dem dem explode()-Verhalten,
+	das in /doc/efun/explode als "altes" Verhalten bezeichnet wird, d.h.
+	Leerstrings an Anfang und Ende des zerlegten Strings werden entfernt!
+
+BEISPIELE:
+	strs = explode( "nimm alles", " "); => strs = ({ "nimm", "alles" })
+	strs = explode( "abc", "abc" );     => strs = ({ })
+	strs = explode( "ein test", "" );   => strs = ({ "ein test" })
+	strs = explode( "a b", "a");        => strs = ({ " b" });
+
+SIEHE AUCH:
+	explode(E), new_explode(E), efun::explode(E), sscanf(E)
+        implode(E), regexplode(E)

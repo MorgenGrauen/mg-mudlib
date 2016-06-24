@@ -1,0 +1,22 @@
+Materialid:
+MAT_TIN                  "Sn"
+
+Name:
+"Zinn" "Zinns" "Zinn" "Zinn"
+
+Geschlecht:
+N
+
+Beschreibung:
+sehr weich, weiss
+
+Erkennbarkeit:
+MAT_MISC_METAL:0
+MAT_SILVER:15
+MAT_LEAD:30
+MAT_TIN
+
+Gruppenzugehoerigkeit:
+MATGROUP_METAL:100
+MATGROUP_FLEXIBLE:100
+MATGROUP_SOLID:100

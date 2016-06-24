@@ -1,0 +1,16 @@
+SYNOPSIS
+      xgoto [object]
+
+DESCRIPTION
+      Go inside <object>. Without an argument you will leave into your
+      workroom. If <object> is a living thing, goto it's environment
+      (never tested until now, when going to a living thing, inside
+      a living thing :)
+
+EXAMPLES
+      xgoto /room/shop
+      xgoto shop	 (both are the same, because if there is no shop in
+			  the current directory, a "/room/" will be appended
+			  to the argument)
+      xgoto public enemy (do this only when you are really bored)
+

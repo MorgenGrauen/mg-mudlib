@@ -1,0 +1,49 @@
+
+cicerone
+--------
+
+ KOMMANDO:
+    cicerone [<zustand>]
+
+
+ ARGUMENTE:
+
+    <zustand>
+      'ein', 'aus', 'status' oder 'zahl'
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du Dich selbst zu einem Cicerone, einem
+    Pfadfinder, Fremdenfuehrer oder Neulingsgehilfen ernennen oder
+    Dich wieder als solcher abmelden. Du weist damit dann explizit
+    darauf hin, dass Du bereit bist, Neulingen hier im MG zu helfen.
+
+    'zahl' macht Dich zum Cicerone, allerdings wirst Du neuen Spielern und bei
+    "kwer cicerone" nur dann angezeigt, wenn Du weniger als 'zahl' Minuten
+    idle bist. So muss man nicht dran denken, den Ciceronestatus
+    explizit auszuschalten, wenn man oefter laengerere Zeit idle ist.
+    'zahl' muss min. 1 und max. 1440 (1 Tag) sein.
+
+    'cicerone' ohne Parameter oder mit dem Parameter 'status' zeigt
+    Dir die aktuelle Einstellung an.
+
+    Bevor Du Dich allerdings darauf einlaesst solltest Du die
+    Hilfeseite zu cicerones lesen, dort werden die Aufgaben der
+    Cicerones naeher spezifiziert.
+
+    Cicerone kannst Du ab einem Spielerlevel von 20 werden.
+
+BEISPIELE:
+    cicerone ein -> Du bist permanent Cicerone (bis Ende/Reboot)
+    cicerone aus -> Du bist kein Cicerone
+    cicerone 5   -> Du bist Cicerone und wirst nur angezeigt, wenn Du weniger
+                    als 5min idle bist.
+
+BEMERKUNGEN:
+    Bitte benutzt die Zeitangabe, wenn ihr beim Idlen doch eher nicht auf den
+    Monitor schaut/erreichbar seid. Idle Cicerones sind wenig hilfreich.
+
+SIEHE AUCH:
+    einfuehrung, cicerones
+
+LETZTE AeNDERUNG:
+    11. Sep 2013 Gloinson

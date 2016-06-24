@@ -1,0 +1,24 @@
+Eine Familie umfasst den Erstie und alle Zweities, sprich alle diese haben den
+gleichen "Familiennamen". Dieser Name ist in der Regel die UUID des Ersties
+dieser Familie. Falls aber der Erstie sich aendern sollte (z.B. Magierwerdung
+eines Zweities) und sich der Familienname nicht aendern soll, dann koennen
+wir den Namen dieser Familie beibehalten (d.h. alter Erstie).
+
+Will man wissen, welcher Familie ein Char angehoert (egal, ob Erstie oder
+Zweitie), dann geht das mit:
+# xcall /secure/zweities->QueryFamilie(player_object)
+
+Des Weiteren liefert dieses Objekt auch noch zu jedem Zweitie den Erstie und
+zu jedem Erstie die Liste aller bekannten Zweities:
+# xcall /secure/zweities->QueryErstieName(player_object)
+# xcall /secure/zweities->QueryErstieUUID(player_object)
+# xcall /secure/zweities->QueryZweities(player_object)
+
+Der Datenbestand ist (noch) nicht vollstaendig, daher fehlen da noch viele
+Chars. Die werden aber in absehbarer Zeit dort nachgetragen.
+
+Die Familie wird in Zukunft genutzt, um Dinge zu personalisieren, welche fuer
+den Spieler, aber nicht fuer den Char individuell sein sollen. Sprich:
+personalisiert man irgendwas ueber die Familie, koennen alle Chars dieser
+Familie das irgendwas nutzen.
+

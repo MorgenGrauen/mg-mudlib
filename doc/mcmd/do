@@ -1,0 +1,30 @@
+
+do
+--
+
+ MAGIERKOMMANDO:
+    do <cmds>
+
+ ARGUMENTE:
+
+     <cmds>
+        Liste von Befehlen (mit `;' getrennt)
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kann man mehrere andere Befehle nacheinander ausfuehren.
+    Dies laesst sich zum Beispiel im Zusammenhang mit Aliasen ausnutzen.
+
+    Die einzelnen Befehle werden durch Semikolons (`;') getrennt; in den
+    Befehlen selbst duerfen keine Semikolons vorkommen.
+
+ BEISPIELE:
+    Wenn man sein Erscheinen in der Abenteurergilde mit einem freundlichen
+    Gruss verbinden moechte, koennte man folgendermassen vorgehen:
+
+    > do goto /gilden/abenteurer; sag Hallo!
+
+ SIEHE AUCH:
+    alias
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

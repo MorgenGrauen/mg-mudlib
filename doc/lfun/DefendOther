@@ -1,0 +1,85 @@
+DefendOther()
+
+FUNKTION:
+	mixed DefendOther(int dam,mixed dam_type,mixed spell,object enemy);
+
+DEFINIERT IN:
+	/std/living/combat.c
+
+ARGUMENTE:
+	dam
+	  Der Schaden, der voraussichtlich beim zu verteidigenden Lebewesen
+	  verursacht werden soll.
+	dam_type
+	  Der Schadenstyp (oder die Schadenstypen), der beim zu
+	  verteidigenden Lebewesen verursacht werden sollen.
+	spell
+	  Wenn das zu verteidigende Lebewesen mit Spells angegriffen wurde,
+	  so koennte man hier mehr Infos entnehmen.
+	enemy
+	  Der Feind, der ein zu verteidigendes Lebewesen angegriffen hat.
+
+RUeCKGABEWERT:
+	Array mit den Eintraegen der gegebenenfalls veraenderten
+	uebergebenen Parameter: 
+            (1) dam      [Typ int], 
+            (2) dam_type [Typ string*], 
+            (3) spell    [Typ mapping].
+
+BESCHREIBUNG:
+	Es ist moeglich, dass Objekte Angriffe auf Lebewesen abwehren oder
+	umwandeln, sofern diese Objekte bei dem angegriffenen Lebewesen
+	mittels AddDefender() angemeldet wurden und sich der selben Umgebung
+	befinden.
+	Zumeist wird es sich bei den Objekten natuerlich ebenfalls um
+	andere Lebewesen handeln, die das Lebewesen, bei dem sie angemeldet
+	sind, verteidigen sollen.
+	Bei einem Angriff auf das Lebewesen koennen alle Objekte per Aufruf
+	von DefendOther() in einen Angriff eingreifen, wobei die
+	Schadensstaerke, der Schadenstyp (die Schadenstypen),
+	Zusatzinformationen fuer Angriffsspells und der Angreifer als
+	Parameter uebergeben werden.
+	Desweiteren ist zu beachten, dass bei als physikalisch markierten
+	Angriffen in einem Team nur Verteidiger aus der ersten Reihe
+	beruecksichtigt werden und dass bei einem Angriff zufaellig aus
+	allen moeglichen Verteidigern ausgewaehlt wird.
+	Standardmaessig ist diese Funktion in Lebewesen bereits definiert,
+	wobei der Skill SK_DEFEND_OTHER, sofern vorhanden, aufgerufen wird.
+
+BEISPIEL:
+	Sehr beliebt sind in Gilden NPCs, die den Beschwoerer begleiten und
+	verteidigen, z.B. beschworene Daemonen:
+	  inherit "std/npc";
+	  include <properties.h>
+	  object owner;
+	  void create()
+	  { ::create();
+	    SetProp(P_NAME,"Daemon");
+	    ...
+	  }
+	// nach Clonen des Daemons folgende Funktion mit Beschwoerer als
+	// Parameter aufrufen
+	  Identify(object caster)
+	  { if(!objectp(caster))
+	      call_out(#'remove,0);
+	    owner=caster;
+	    owner->AddDefender(this_object());
+	  }
+	// der Daemon wehrt jeden Angriff mit Feuer voll ab, man muss zuerst
+	// den Verteidiger umbringen, um den Beschwoerer toeten zu koennen
+	  mixed DefendOther(int dam,mixed dam_type,mixed spell,object enemy)
+	  { if(sizeof(dam_type)&&member_array(DT_FIRE,dam_type)!=-1)
+	      dam=0;
+	    return({dam,dam_type,spell});
+	  }
+	Soll der Daemon sich auch in ein Team einordnen, in welchem sich der
+	Beschwoerer eventuell befindet, so ist zusaetzlich AssocMember() in
+	diesem Beschwoerer aufzurufen, wobei der Daemon als Parameter
+	uebergeben wird.
+
+SIEHE AUCH:
+	AddDefender(), RemoveDefender(), InformDefend(), Kill(), IsEnemy(),
+	P_DEFENDERS, /std/living/combat.c, /sys/new_skills.h
+
+----------------------------------------------------------------------------
+Last modified: Fri Feb 25 14:45:00 2000 by Paracelsus

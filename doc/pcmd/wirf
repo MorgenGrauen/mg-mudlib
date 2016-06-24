@@ -1,0 +1,25 @@
+
+wirf (weg)
+----------
+
+ KOMMANDO:
+    wirf <objekt> weg
+    wirf alles weg
+    lass <objekt> fallen
+    lass alles fallen
+
+ ARGUMENTE:
+
+     <objekt>
+        Das wegzuwerfende Objekt
+
+ BESCHREIBUNG:
+    Mit diesem Kommando kannst Du Gegenstaende aus Deinem Besitz wieder
+    loswerden. Allerdings lassen sich manche Gegenstaende nicht so ohne
+    weiteres weglegen!
+
+ SIEHE AUCH:
+    stecke (in), nimm [aus]
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

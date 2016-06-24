@@ -1,0 +1,24 @@
+Materialid:
+MAT_ROBINIA              "robinia"
+
+Name:
+"Robinienholz" "Robinienholzes" "Robinienholz" "Robinienholz"
+
+Geschlecht:
+N
+
+Beschreibung:
+sehr hart
+
+Erkennbarkeit:
+MAT_MISC_DECIDUOUS_WOOD:5
+MAT_ROBINIA
+
+Gruppenzugehoerigkeit:
+MATGROUP_DEAD:100
+MATGROUP_HERBAL:100
+MATGROUP_DECIDUOUS_WOOD:100
+MATGROUP_BIO:100
+MATGROUP_INFLAMMABLE:100
+MATGROUP_SOLID:100
+MATGROUP_WOOD:100

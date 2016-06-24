@@ -1,0 +1,24 @@
+
+trage
+-----
+
+ KOMMANDO:
+    trage <kleidung>
+
+ ARGUMENTE:
+
+     <kleidung>
+        Das anzulegende Kleidungsstueck
+
+ BESCHREIBUNG:
+    `trage' ist ein Kommando um Kleidung anzulegen. Robuste Kleidung bietet
+    nur dann Schutz gegen Angriffe, wenn sie angezogen wurde.
+
+    Man kann normalerweise von jeder Art Kleidung nur ein Stueck gleichzeitig
+    tragen (zwei Huete uebereinander saehen ja auch etwas laecherlich aus...).
+
+ SIEHE AUCH:
+    zuecke, ziehe (an/aus)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

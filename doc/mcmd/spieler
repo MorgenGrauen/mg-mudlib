@@ -1,0 +1,26 @@
+
+spieler
+-------
+
+ MAGIERKOMMANDO:
+    spieler aus ip <ip-adresse>
+    spieler aus ip von <spieler-name>
+
+ ARGUMENTE:
+     <ip-adresse>   IP-Adresse im Format x.x.x.x
+     <spieler-name> Name eines eingeloggten Spielers
+
+ BESCHREIBUNG:
+    Dieser Befehl zeigt alle Spieler an, die ueber die IP-Adresse
+    <ip-adresse> oder dieselbe IP-Adresse eingeloggt sind wie der
+    Spieler <spieler-name>.
+ 
+    Es werden zudem Informationen wie Einlogdatum, Idlezeit und
+    Zweitieeigenschaft angezeigt.	
+
+ SIEHE AUCH:
+    people, pwho, query_ip_number(E)
+
+
+ LETZTE AENDERUNG:
+    Fre, 04.10.2002, 13:00:00 von Mandragon

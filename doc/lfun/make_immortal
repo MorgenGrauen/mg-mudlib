@@ -1,0 +1,27 @@
+make_immortal()
+
+FUNKTION:
+     void make_immortal();
+
+DEFINIERT IN:
+     /std/npc/combat.c
+
+BESCHREIBUNG:
+     Macht den NPC für 5 Minuten unangreifbar und heilt ihn.
+
+     Wird bei Fehlern im Herzschlag des NPCs gerufen um Bugnutzung
+     zu unterbinden.
+
+     Ausschrift:
+     "... versteckt sich hinter einem Fehler im Raum-Zeit-Gefuege und
+      entgeht so voruebergehend allen Angriffen."
+
+BEMERKUNGEN:
+     Nicht missbrauchen.
+
+SIEHE AUCH:
+     Methoden:       heart_beat(), static _check_immortality()
+     Master:         heart_beat_error()
+     Properties:     "time_to_mortality"
+
+1.Juni 2007 Gloinson

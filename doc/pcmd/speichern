@@ -1,0 +1,23 @@
+
+speichern
+---------
+
+ KOMMANDO:
+    speichern
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Sichere alle Daten, die Deinen Charakter betreffen. Dieses Kommando wird
+    beim Ausloggen und regelmaessig automatisch durchgefuehrt. Eigentlich ist
+    dieses Kommando nur fuer besonders aengstliche Spieler, allerdings kann es
+    bei einem Absturz des Spiels auch sehr sinnvoll sein.
+
+    Eine Restaurierung findet nur statt, wenn Du Dich ins Spiel einloggst.
+
+ SIEHE AUCH:
+    ende, schlafe (ein)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

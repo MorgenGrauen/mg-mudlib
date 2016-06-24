@@ -1,0 +1,21 @@
+Materialid:
+MAT_DETONATING_GAS       "oxyhydrogen"
+
+Name:
+"Knallgas" "Knallgases" "Knallgas" "Knallgas"
+
+Geschlecht:
+N
+
+Beschreibung:
+- nicht vorhanden -
+
+Erkennbarkeit:
+MAT_MISC_GAS:20
+MAT_DETONATING_GAS
+
+Gruppenzugehoerigkeit:
+MATGROUP_INFLAMMABLE:100
+MATGROUP_GAS:100
+MATGROUP_EXPLOSIVE:100
+MATGROUP_INVIS:100

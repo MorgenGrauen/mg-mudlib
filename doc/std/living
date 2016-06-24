@@ -1,0 +1,120 @@
+
+OBJECT:
+	living 
+
+
+SYNOPSIS:
+	inherit "std/living";
+
+	#include <properties.h>
+	#include <living.h>
+
+
+DESCRIPTION:
+	This is the generic living object which 'lives', can move,
+	can fight.
+
+	It has a number of 'stats', also called 'attributes' in
+	the new system. These include the former stats 
+	strength, dexterity, intelligence and constitution.
+	These attributes determine the life functions and
+	variables like hitpoints and spellpoints, but also the
+	ability to perform certain actions like spellcasting or
+	swordfighting. Attributs are implemented as a property
+	P_ATTRIBUTES. Attributes can be set by using the functions
+
+	SetAttribute(string attribute, int value)
+	  Sets <attribute> to <value>. Certain restrictions might
+	  exist, and the requested attribute might not be set.
+	  Attributes are integer values, and are in the range
+	  of 1 (very bad) to 20 (excellent and highest possible
+	  for a normal human).
+
+	int QueryAttribute(string attribute)
+	  Returns value of <attribute>
+
+	Abilities. A living creature may have special abilities
+	to perform certain actions. These may be very different
+	types of actions, like fighting with a sword, casting
+	a fireball or climbing up a tree. Abilities are
+	implemented as the P_ABILITIES property. An ability may
+	be accompanied by an object which may define special
+	actions and which uses the values of P_ABILITES, for 
+	example a spellbook will store spell levels there or
+	a weapon uses a weapon ability (skill). The abilities
+	can be manipulated:
+
+	SetAbility(string ability, int value)
+	  Sets <ability> to <value>.
+
+	int QueryAbility(string ability)
+	  Ask the value of <ability>.
+
+	Equipment. Weaponclass and armourclass are defined. Unless
+	a weapon is used, the wc is 0. Unless an armour is used,
+	the ac is 0. (P_WC and P_AC)
+
+	Live variables. A living creature has several needs just
+	because it is alive. The complex life functions are
+	reducced to some crucial factors.
+
+	P_HP
+	  These are mainly determined by the constitution and give
+	  the ability of the body to absorb damage. If the
+	  hitpoints go below zero, the creature is dead.
+
+	P_SP
+	  Spellpoints (sometimes called mana) describe the magical
+	  (spiritual) capability of the creature. It is mainly
+	  determined by Intelligence and Wisdom. It is up to the
+	  creature how good it uses the spellpoint resource.
+	  Spellpoints will go down when supernatural actions are
+	  performed by the creature.
+
+	P_MAX_SP, P_MAX_HP
+	  Readonly variable which are computed from attributes.
+
+	P_FOOD, P_DRINK, P_ALCOHOL, (P_POISON)
+	  These three variables describe hunger, thirst and
+	  intoxication by alcohol. The max is dependent on the
+	  constitution of the living, and of the weight.
+	  These variables automatically decrease with time.
+	  When food or drink goes below zero, the creature
+	  suffers hunger or thirst and will lose hitpoints.
+
+	P_MAX_FOOD, P_MAX_DRINK, P_MAX_ALCOHOL
+	  Readonly variables which are computed from attributes.
+
+	P_WEIGHT, P_SIZE
+	  These variables describe the physical proportions of
+	  the creatures body. Both variables are standard properties
+	  and are also used in normal objects.
+
+	P_MAX_WEIGHT 
+	  This is a readonly variable which describes how much
+	  a living creature may carry around.
+
+	P_GENDER
+	  This is obvious. Gender may be MALE, FEMALE or NEUTER,
+	  as defined in <living.h>. Player gender may be only
+	  MALE or FEMALE.
+
+	P_RACE
+	  A string which defines the race.
+
+	P_ALIGNMENT
+	  The alignment of the living, ranging frO
+
+	P_AGE
+	  The age of the living creature in seconds
+	
+
+INHERITANCE TREE:
+	living
+	  |-thing/moving
+	  |-thing/properties
+	  `-thing/description
+
+
+SEE ALSO:
+	properties(C), units(C)

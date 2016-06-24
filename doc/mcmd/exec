@@ -1,0 +1,29 @@
+
+exec
+----
+
+ MAGIERKOMMANDO:
+    exec <datei>
+
+ ARGUMENTE:
+
+     <datei>
+        Dateiname des Zielobjektes
+
+ BESCHREIBUNG:
+    Es wird versucht, einen Clone von <datei> zu erschaffen und Deine
+    Verbindung zum MUD an diesen Clone weiterzugeben. Das Objekt sollte dazu
+    moeglichst eine Rassenshell, zumindest aber `/std/player/base.c' geerbt
+    haben.
+
+    Das Objekt muss die gleiche UID besitzen wie Du (sprich: es muss sich in
+    einem Deiner Verzeichnisse befinden).
+
+    Dieser Befehl kann nur von Regions- und hoeheren Magiern ausgefuehrt
+    werden.
+
+ SIEHE AUCH:
+    exec(E)
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

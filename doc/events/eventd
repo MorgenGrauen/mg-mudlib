@@ -1,0 +1,29 @@
+Event-Dispatcher: /p/daemon/eventd.c
+
+BENUTZUNG:
+   #include <events.h>
+   EVENTD->fun(bla);
+
+BESCHREIBUNG:
+   Der Event-Dispatcher merkt sich Event und Daten, die ihr ueber
+   TriggerEvent() an ihn meldet und informiert mit kurzer Zeitverzoegerung
+   alle fuer den jeweiligen Event-Typ angemeldeten Objekte.
+
+FUNKTIONEN:
+   - RegisterEvent(): anmelden fuer einen Event
+   - UnregisterEvent(): von einem Event abmelden
+   - TriggerEvent(): einen Event melden
+   - CheckEventID(): wieviele Lauscher gibt es fuer den Event?
+
+BEMERKUNGEN:
+   Wenn Bedarf fuer einen spezialisierten Event-Dispatcher besteht, der
+   Sonderfunktionen hat oder auch nicht-oeffentliche Events anbietet, besteht
+   die Moeglichkeit, den normalen eventd zu erben. Bitte sprecht in dem Fall
+   aber bitte vorher Zesstra an.
+
+SIEHE AUCH:
+   events, 
+   RegisterEvent(), UnregisterEvent(), TriggerEvent(), CheckEventID()
+
+18.08.2007, Zesstra
+

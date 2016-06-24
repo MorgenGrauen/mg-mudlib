@@ -1,0 +1,40 @@
+
+PresentTeamPositions()
+
+
+FUNKTION:
+        varargs mapping PresentTeamPositions(mixed pmap)
+
+DEFINIERT IN:
+        /std/living/team.c
+
+ARGUMENTE:
+        Rueckgabewert von PresentTeamRows() kann uebergeben werden.
+
+BESCHREIBUNG:
+        Ermittelt die Reihennummern aller anwesender Teammitglieder.
+
+RUECKGABEWERT:
+        Ein Mapping mit den Reihennummern (von 1 bis MAX_TEAMROWS)
+        der anwesenden Teammitglieder.
+
+BEMERKUNGEN:
+        Kann auch zur Konvertierung anderer Kampfreihen-Arrays in
+        ein Positions-Mapping verwendet werden.
+        Ist der Spieler in keinem Team, so steht er in Reihe 1.
+
+SIEHE AUCH:
+        Uebersicht: teamkampf
+        Properties: P_TEAM, P_ASSOC_MEMBERS, P_TEAM_ATTACK_CMD,
+                    P_TEAM_AUTOFOLLOW, P_TEAM_COLORS, P_TEAM_LEADER,
+                    P_TEAM_NEWMEMBER, P_TEAM_WANTED_ROW, P_TEAM_WIMPY_ROW
+        Bewegung:   IsTeamMove, TeamFlee
+        Mitglieder: IsTeamLeader, TeamMembers
+        Kampf:      AssocMember, DeAssocMember, InsertEnemyTeam,
+                    SelectNearEnemy, SelectFarEnemy
+        Positionen: PresentPosition, PresentRows, PresentEnemyRows,
+                    SwapRows
+        Sonstiges:  TeamPrefix, teamkampf_intern
+
+----------------------------------------------------------------------------
+Last modified: 16-08-2010, Gabylon

@@ -1,0 +1,14 @@
+BEFEHL:
+	destruct, dest, des
+
+ARGUMENTE:
+	TOS
+
+FUNKTION:
+	Zerstoere das Objekt auf dem TOS. In wirklichkeit wird aber nur remove
+	aufgerufen, das das die empfohlene Art derZerstoerung von Objekten
+	ist. Will man jedoch ein Objekt wirklich hart destructen, so
+	haenge man ein Rufzeichen ('!') an das Kommando (also 'destruct!').
+
+SIEHE AUCH:
+	"remove"

@@ -1,0 +1,28 @@
+QueryMoney()
+FUNKTION:
+     int QueryMoney()
+
+DEFINIERT IN:
+     /std/player/moneyhandler.c
+
+BESCHREIBUNG:
+     Testet, ob ein Spieler, Objekt, Raum oder Npc ueber eine definierte 
+     Geldmenge verfuegt, oder nicht.
+
+RUECKGABEWERT:
+     Geldmenge im Besitz des abgefragten Spielers
+
+BEISPIELE:
+     int i;
+     i=50+random(10);
+     if(!this_player()->QueryMoney())
+       write("Du besitzt keine Muenzen!\n");
+     if(this_player()->QueryMoney() < i)
+       write("Du besitzt nicht die erforderlichen "+i+" Muenzen.\n");
+
+SIEHE AUCH:
+     Geldhandling:	AddMoney(L)
+     Zentralbank:	PayIn(L), WithDraw(L), _query_current_money(L)
+     Sonstiges:		/items/money.c
+
+Last modified: Die,  1. Aug 2000, 16:39:06 by Tilly

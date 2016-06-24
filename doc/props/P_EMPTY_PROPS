@@ -1,0 +1,33 @@
+NAME:
+     P_EMPTY_PROPS                 "std_food_empty_props"
+
+DEFINIERT IN:
+     <sys/food.h>
+
+BESCHREIBUNG:
+     Mapping mit Properties fuer den leeren Behaelter, der uebrig bleibt,wenn
+     eine Speise aufgebraucht ist. Alle enthaltenen Properties werden gesetzt,
+     wenn keine Portionen mehr vorhanden sind.
+     Bereits in diesen Properties eingetragene Werte werden ueberschrieben!
+     Wenn diese Property nicht gesetzt ist, wird die Speise zerstoert, wenn
+     alle Portionen aufgebraucht ist - es bleibt also kein Behaelter zurueck.
+     Achtung: Es werden keine closures in diesem Mapping unterstuetzt!
+     
+BEMERKUNGEN:
+     Bei der Abfrage von P_VALUE und P_WEIGHT in der Speise, werden die dazu
+     in P_EMPTY_PROPS gespeicherten Werte verwendet, um das Gewicht/Wert des
+     leeren Behaelters zum Gesamtwert der Speise zu addieren.
+     Man kann alle Properties in dieses Mapping eintragen, die sich in der
+     Speise per SetProp setzen lassen. Zusaetzlich kann man Arrays in P_IDS
+     und P_ADJECTIVES speichern, die per Add-Methode in der Speise
+     hinzugefuegt werden, nachdem die im create() der Speise hinzugefuegten
+     Ids/Adjectives dort entfernt wurden.
+     
+BEISPIELE:
+     Beispiele zur Verwendung findet man unter /doc/beispiele/food
+
+SIEHE AUCH:
+     /std/food.c, wiz/food
+
+------------------------------------------------------------------------------
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra

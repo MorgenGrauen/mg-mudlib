@@ -1,0 +1,25 @@
+P_Z_NO_SPELL_SUPPORT
+
+NAME:
+     P_Z_NO_SPELL_SUPPORT	"zauberer_ruestung_unterstuetzt_noch_nicht"
+
+DEFINIERT IN:
+     /p/zauberer/zauberer.h
+
+BESCHREIBUNG:
+     Normalerweise unterstuetzt eine Ruestung den Zauberer, sobald sie im
+     entsprechenden Ruestungsmaster eingetragen ist. Moechte man allerdings
+     die Unterstuetzung an bestimmte Bedingungen knuepfen, z.B. das loesen
+     einer Miniquest, so kann man diese Property auf 1 setzen. Die Ruestung
+     unterstuetzt dann nicht. Um die Unterstuetzung wieder zu aktivieren,
+     setzt man die Property wieder auf 0.
+
+BEMERKUNGEN:
+     NIEMALS diese Property einfach so in fremden Zaubererruestungen 
+     setzen. Sollte der Gildenmagier erfahren, dass z.B. ein NPC
+     einfach so die Unterstuetzung der Ruestungen ausschaltet, wird
+     diese Property wieder deaktiviert.
+
+SIEHE AUCH:
+
+21.Okt 2006 Chagall

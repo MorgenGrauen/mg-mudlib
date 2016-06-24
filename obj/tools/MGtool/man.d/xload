@@ -1,0 +1,15 @@
+SYNOPSIS
+      xload <filename>
+
+DESCRIPTION
+      Update and load the object specified by the filename. If you update
+      your current environment, all players will be moved silently into
+      "/std/void" and after successful updating and loading back into it.
+
+EXAMPLES
+      xload $here
+      Update and reload the current room (but without a trip into the void :).
+
+      xload obj/little_thing.c
+      Update and load it.
+
