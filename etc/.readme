@@ -1,0 +1,14 @@
+Hier liegen verschiedene Datenfiles.
+
+FTP.MOTD     - FTP-Loginmeldung
+INETD-HOSTS  - Host-Liste fuer INETD/Intermud
+Magierliste  - welcher Magier hat welche Position inne
+NEWS*        - Login-Meldungen fuer die Spieler
+WELCOME      - Titelbild von MorgenGrauen
+WIZRULES     - die Magierregeln aus dem Vertrag
+maxusers.all - wieviele User waren max. gleichzeitig drin ?
+quests.o     - das Savefile fuer die Quests
+skills.o     - das Savefile fuer die Skills
+soul.liste   - Liste mit den Verben der Seele
+toplist.read - Top-Spieler-Liste (steht auch in den Pubs)
+traenke      - Einige Beispiel-ZT-Stellen
