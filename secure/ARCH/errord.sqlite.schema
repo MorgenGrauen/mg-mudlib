@@ -1,0 +1,137 @@
+Tabellen: rtissues, ctissues, userissues, rtnotes, rtstacktraces, ctnotes, usernotes
+Indexes:
+
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS rtissues(
+        id INTEGER PRIMARY KEY,
+        hashkey TEXT NOT NULL UNIQUE,
+        uid TEXT NOT NULL,
+        type INTEGER NOT NULL DEFAULT 1,
+        mtime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        ctime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        atime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        count INTEGER DEFAULT 1,
+        deleted INTEGER DEFAULT 0,
+        resolved INTEGER DEFAULT 0,
+        locked INTEGER DEFAULT 0,
+        locked_by TEXT,
+        locked_time INTEGER,
+        resolver TEXT,
+        message TEXT,
+        loadname TEXT DEFAULT '<Unbekannt>',
+        obj TEXT DEFAULT '<Unbekannt>',
+        prog TEXT DEFAULT '<Unbekannt>',
+        loc INTEGER,
+        titp TEXT,
+        tienv TEXT,
+        hbobj TEXT,
+        caught INTEGER,
+        command TEXT,
+        verb TEXT);
+
+//create unique index IF NOT EXISTS idx_rt_hashkey on rtissues(hashkey);
+create index IF NOT EXISTS idx_rt_uid on rtissues(uid);
+create index IF NOT EXISTS idx_rt_prog on rtissues(prog);
+create index IF NOT EXISTS idx_rt_loadname on rtissues(loadname);
+create unique index IF NOT EXISTS idx_rt_keys on rtissues(id,hashkey);
+
+CREATE TABLE IF NOT EXISTS rtnotes(
+        issueid INTEGER,
+        hashkey STRING NOT NULL,
+        time INTEGER DEFAULT CURRENT_TIMESTAMP,
+        user STRING NOT NULL,
+        txt STRING,
+        FOREIGN KEY(issueid,hashkey) REFERENCES rtissues(id, hashkey) ON DELETE CASCADE ON UPDATE CASCADE
+        );
+create index IF NOT EXISTS idx_rtnotes_id on rtissues(id);
+
+CREATE TABLE IF NOT EXISTS rtstacktraces(
+        issueid INTEGER,
+        hashkey STRING NOT NULL,
+        type INTEGER,
+        name STRING,
+        prog STRING,
+        obj STRING,
+        loc INTEGER,
+        ticks INTEGER,
+        FOREIGN KEY(issueid,hashkey) REFERENCES rtissues(id, hashkey) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+create index IF NOT EXISTS idx_rtstacktraces_id on rtissues(id);
+
+
+CREATE TABLE IF NOT EXISTS ctissues(
+        id INTEGER PRIMARY KEY,
+        hashkey TEXT NOT NULL UNIQUE,
+        uid TEXT NOT NULL,
+        type INTEGER NOT NULL DEFAULT 1,
+        mtime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        ctime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        atime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        count INTEGER DEFAULT 1,
+        deleted INTEGER DEFAULT 0,
+        resolved INTEGER DEFAULT 0,
+        locked INTEGER DEFAULT 0,
+        locked_by TEXT,
+        locked_time INTEGER,
+        resolver TEXT,
+        message TEXT,
+        loadname TEXT DEFAULT '<Unbekannt>'
+    );
+
+//create unique index IF NOT EXISTS idx_ct_hashkey on ctissues(hashkey);
+create index IF NOT EXISTS idx_ct_uid on ctissues(uid);
+create index IF NOT EXISTS idx_ct_loadname on ctissues(loadname);
+create unique index IF NOT EXISTS idx_ct_keys on ctissues(id,hashkey);
+
+CREATE TABLE IF NOT EXISTS ctnotes(
+        issueid INTEGER,
+        hashkey STRING NOT NULL,
+        time INTEGER DEFAULT CURRENT_TIMESTAMP,
+        user STRING NOT NULL,
+        txt STRING,
+        FOREIGN KEY(issueid,hashkey) REFERENCES ctissues(id, hashkey) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+create index IF NOT EXISTS idx_ctnotes_id on ctissues(id);
+
+
+CREATE TABLE IF NOT EXISTS userissues(
+        id INTEGER PRIMARY KEY,
+        hashkey TEXT NOT NULL UNIQUE,
+        uid TEXT NOT NULL,
+        type INTEGER NOT NULL DEFAULT 1,
+        mtime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        ctime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        atime INTEGER DEFAULT CURRENT_TIMESTAMP,
+        count INTEGER DEFAULT 1,
+        deleted INTEGER DEFAULT 0,
+        resolved INTEGER DEFAULT 0,
+        locked INTEGER DEFAULT 0,
+        locked_by TEXT,
+        locked_time INTEGER,
+        resolver TEXT,
+        message TEXT,
+        loadname TEXT DEFAULT '<Unbekannt>',
+        obj TEXT DEFAULT '<Unbekannt>',
+        prog TEXT DEFAULT '<Unbekannt>',
+        loc INTEGER,
+        titp TEXT,
+        tienv TEXT
+        );
+
+//create unique index IF NOT EXISTS idx_user_hashkey on userissues(hashkey);
+create index IF NOT EXISTS idx_user_uid on userissues(uid);
+create index IF NOT EXISTS idx_user_prog on userissues(prog);
+create index IF NOT EXISTS idx_user_loadname on userissues(loadname);
+create unique index IF NOT EXISTS idx_user_keys on userissues(id,hashkey);
+
+CREATE TABLE IF NOT EXISTS usernotes(
+        issueid INTEGER,
+        hashkey STRING NOT NULL,
+        time INTEGER DEFAULT CURRENT_TIMESTAMP,
+        user STRING NOT NULL,
+        txt STRING,
+        FOREIGN KEY(issueid,hashkey) REFERENCES userissues(id, hashkey) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+create index IF NOT EXISTS idx_usernotes_id on userissues(id);
+

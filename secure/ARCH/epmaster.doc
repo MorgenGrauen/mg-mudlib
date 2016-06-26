@@ -1,0 +1,293 @@
+Allgemein:
+----------
+
+ExplorationPoints (FP) koennen von beliebigen Objekten vergeben werden.
+Es stehen sechs verschiedene FP-Typen zur Auswahl (definiert in
+/secure/exploration.h):
+- EP_DETAIL: Diese FP werden fuer Details und SpecialDetails vergeben. Dies
+    ist die wohl am meisten genutzte Moeglichkeit.
+- EP_RDET: Wie EP_DETAIL, aber speziell fuer ReadDetails.
+- EP_EXIT: Diese FP gelten fuer Ausgaenge. Man kann sie benutzen, wenn der
+    Spieler einen FP fuer das Betreten eines bestimmten Gebietes bekommen
+    soll.
+- EP_CMD: Fuer Kommandos, die einen FP wert sind. Der FP wird nur bei
+    erfolgreich ausgefuehrtem Kommando vergeben. Das gilt nur bei
+    AddCmd()-Kommandos!
+- EP_INFO: Ein FP fuer Infos eines NPCs.
+- EP_PUB: Ein FP fuer das Verzehren eines bestimmten Getraenks oder einer
+    bestimmten Speise in einer Kneipe. Vergeben wird nur nach erfolgreichem
+    Verzehr, und nur, wenn Zahler und Empfaenger die gleiche Person sind.
+    Man kann also keine FP spendieren.
+- EP_MISC: Dies ist ein Sonderfall. Wenn ein FP vergeben werden soll, der
+    sich nicht in die obigen Kategorien einordnen laesst, oder es
+    noch Besonderheiten zu beruecksichtigen gibt, sollte man diesen Typ
+    waehlen.
+
+Die Vergabe der FP erfolgt, wenn er erst einmal eingetragen ist, vollkommen
+automatisch.
+Ausnahme: EP_MISC. Hier muss das Objekt, das den FP vergibt, "von Hand"
+GiveExplorationPoint() aufrufen.
+
+Die Vergabe richtet sich nach bestimmten Schluesselwoertern, die beim
+Eintragen der FP festgelegt werden. Diese Schluessel sollten sein bei
+- EP_DETAIL: Der Name des Details. Man sollte daran denken, alle Schluessel
+    fuer ein Detail anzugeben!
+- EP_RDET: dito.
+- EP_EXIT: Die Richtung, in die der Ausgang fuehrt.
+- EP_CMD:  Das Verb/die Verben.
+- EP_INFO: Die entsprechende Frage.
+- EP_PUB:  Die IDs des Menueeintrags.
+- EP_MISC: Ein beliebiger Schluessel.
+
+Ein Objekt kann nur einen FP vergeben, und nicht mehrere (auch nicht mehrere
+von verschiedenen Typen).
+
+Im Spieler dienen zwei Properties zur Verwaltung:
+- P_EP enthaelt einen Bitstring, in dem die schon gefundenen FP vermerkt sind.
+- P_EP_NUM enthaelt die Anzahl der schon gefundenen FP. Allerdings ist diese
+    Zahl mit einer gewissen Ungenauigkeit behaftet, um es dem Spieler nicht zu
+    leicht zu machen, FP-Stellen zu entdecken.
+
+Funktionen:
+-----------
+
+Zur Manipulation stehen in /secure/explorationmaster.c folgende Funktionen
+zur Verfuegung:
+
+FUNKTION:
+    int AddEPObject(object ob, mixed keys, int type);
+
+PARAMETER:
+    ob
+	Das Objekt, das den FP vergeben soll.
+
+    keys
+	String oder Array von Strings mit den Schluesselwoertern.
+
+    type
+	Einer der oben erwaehnten Typen.
+
+BESCHREIBUNG:
+    Falls ob ein gueltiges Objekt ist, wird ihm ein FP zum Schluessel keys
+    vom Typ type zugeordnet. Sollte fuer ob schon ein FP definiert gewesen
+    sein, so wird dieser ueberschrieben.
+
+    Gueltige Objekte sind prinzipiell alle ausser Spielern sowie Raeume, die
+    von einem virtual_compiler erzeugt wurden.
+
+RUECKGABEWERT:
+    <0, falls ein Fehler aufgetreten ist, ansonsten wird die Anzahl der momentan
+    erreichbaren FP zurueckgegeben.
+
+SIEHE AUCH:
+    RemoveEPObject(), ChangeEPObject(), ShowEPObjects(), QueryEPObject(),
+    /secure/ARCH/eprooms
+
+------------------------------
+
+FUNKTION:
+    int RemoveEPObject(object ob);
+
+PARAMETER:
+    ob
+	Das zu entfernende Objekt.
+
+BESCHREIBUNG:
+    Entfernt ein Objekt aus der Liste der FP-Spender.
+
+RUECKGABEWERT:
+    <0, falls ein Fehler aufgetreten ist, ansonsten die Zahl der verbliebenen
+    FP.
+
+BEMERKUNGEN:
+    Spielern, die diesen FP schon erhalten haben, wird dieser nicht aberkannt.
+    Der freigewordene Platz wird bei einem der naechsten AddEPObject()-Aufrufe
+    wiederverwendet. Spieler, die den FP am "alten" Ort gefunden haben,
+    bekommen ihn am "neuen" Ort jedoch nicht noch einmal zuerkannt.
+
+SIEHE AUCH:
+    AddEPObject(), ChangeEPObject(), ShowEPObjects(), QueryEPObject(),
+    /secure/ARCH/eprooms
+
+------------------------------
+
+FUNKTION:
+    int ChangeEPObject(object ob, int what, mixed new);
+
+PARAMETER:
+    ob
+	Das zu aendernde Objekt.
+
+    what
+	Die zu aendernde Eigenschaft.
+
+    new
+	Der neue Wert.
+
+BESCHREIBUNG:
+    Aendert eine Eigenschaft des Objektes ob (soweit dieses schon eingetragen
+    ist). Die neue Eigenschaft new haengt von der geforderten Aenderung what ab:
+    what = CHANGE_OB   => new ist das neue Objekt.
+    what = CHANGE_KEY  => new ist ein String oder Array von Strings mit den
+			  neuen Schluesseln.
+    what = CHANGE_TYPE => new enthaelt den neuen Typ
+
+    Der Vorteil von CHANGE_OB gegenueber RemoveEPObject - AddEPObject ist der,
+    dass die Nummer des FP sich hierbei garantiert nicht aendert.
+
+RUECKGABEWERT:
+    <0, wenn ein Fehler auftrat, sonst 1.
+
+SIEHE AUCH:
+    AddEPObject(), RemoveEPObject(), ShowEPObjects(), QueryEPObject(),
+    /secure/ARCH/eprooms
+
+------------------------------
+
+FUNKTION:
+    mixed QueryEPObject(object ob);
+
+PARAMETER:
+    ob
+	Das Objekt, dessen Informationen gewuenscht sind.
+
+BESCHREIBUNG:
+    Falls das Objekt in der FP-Liste existiert, werden seine Werte als Array
+    zurueckgegeben.
+
+RUECKGABEWERT:
+    Falls ein Fehler auftritt, wird eine Zahl <0 zurueckgegeben.
+    Ansonsten wird ein Array mit den Objektinformationen zurueckgegeben. Das
+    Array hat folgenden Aufbau: ({ string *keys, int Nummer, int Typ }).
+
+SIEHE AUCH:
+    AddEPObject(), RemoveEPObject(), ChangeEPObject(), ShowEPObjects(),
+    /secure/ARCH/eprooms
+
+------------------------------
+
+FUNKTION:
+    void ShowEPObjects();
+
+PARAMETER:
+    keine
+
+BESCHREIBUNG:
+    Die Liste der vorhandenen Objekte wird in lesbarer Form nach
+    /secure/ARCH/eprooms geschrieben und kann dort eingesehen werden.
+
+RUECKGABEWERT:
+    keiner
+
+BEMERKUNGEN:
+    Hier ist noch ein wenig Arbeit noetig... Magier < IS_LORD sollten
+    zumindest ihre eigenen FP abfragen koennen, Regionsmagier auch die
+    ihrere Region.
+
+SIEHE AUCH:
+    AddEPObject(), RemoveEPObject(), ChangeEPObject(), QueryEPObject(),
+    /secure/ARCH/eprooms
+
+------------------------------
+
+FUNKTION:
+    mixed QueryExplore(int type);
+
+PARAMETER:
+    type
+	Typ des gewuenschten FP.
+
+BESCHREIBUNG:
+    Diese Funktion wird von den Standardobjekten aufgerufen, wenn sie
+    FP-Informationen einholen (im create()).
+
+    Man braucht sich in eigenen Objekten nicht um diese Funktion zu
+    kuemmern (auch nicht bei EP_MISC-FPs).
+
+RUECKGABEWERT:
+    Ein Array von Strings, wenn fuer das aufrufende Objekt FP zum Typ type
+    vorhanden sind (die Strings entsprechen den Schluesseln),
+    0, wenn fuer das Objekt kein FP definiert ist oder nicht der richtige
+    Typ verlang wurde.
+
+SIEHE AUCH:
+    GiveExplorationPoint(), QueryMaxEP(), QueryExplorationPoints()
+
+------------------------------
+
+FUNKTION:
+    int QueryMaxEP();
+
+PARAMETER:
+    keine
+
+BESCHREIBUNG:
+    Liefert die maximal erreichbare FP-Zahl.
+
+RUECKGABEWERT:
+    Die Zahl der maximal erreichbaren FP.
+
+SIEHE AUCH:
+    GiveExplorationPoint(), QueryExplorationPoints()
+
+------------------------------
+
+FUNKTION:
+    void GiveExplorationPoint(string key);
+
+PARAMETER:
+    key
+	Schluessel, der die Vergabe ausloeste.
+
+BESCHREIBUNG:
+    Es wird versucht, einen FP des aufrufenden Objekts an this_interactive() zu
+    vergeben. Die Vergabe wird anhand von key entschieden.
+
+RUECKGABEWERT:
+    keiner
+
+BEMERKUNGEN:
+    Bei den meisten FP-Typen wird die Vergabe automatisch durchgefuehrt.
+    Nur bei EP_MISC-FPs muss man diese Funktion von Hand aufrufen. Als
+    key ist dabei der der Schluessel zu waehlen, der beim Eintragen des FP
+    verwendet wurde.
+
+SIEHE AUCH:
+    QueryExplore(), QueryExplorationPoints()
+
+------------------------------
+
+FUNKTION:
+    int QueryExplorationPoints(object pl)
+
+PARAMETER:
+    pl
+	Ein Spieler
+
+BESCHREIBUNG:
+    Die Zahl der vom Spieler pl schon gefundenen FP wird ermittelt.
+
+RUECKGABEWERT:
+    Zahl der schon gefundenen FP.
+
+BEMERKUNGEN:
+    Im Spieler sind zwei Properties definiert: P_EP enthaelt einen Bitstring
+    mit den schon gefundenen FP, P_EP_NUM enthaelt die ungefaehre Anzahl der
+    Traenke. QueryExplorationPoints() ermittelt aus P_EP die genaue Anzahl.
+
+SIEHE AUCH:
+    GiveExplorationPoint()
+
+------------------------------
+
+Tools:
+------
+
+Man kann die FP zwar auch mit dem MGtool eintragen, dummerweise werden aber
+xcall- und xeval-Aufrufe geloggt, und man koennte aus diesem Log eine FP-Liste
+erstellen...
+~wargon/obj/explorer stellt zumindest fuer die Manipulationsbefehle Kommandos
+zur Verfuegung, die diesen Umstand umgehen.
+Die Langbeschreibung sollte die Befehle wohl genuegend erklaeren... ;)
+
+Letzte Aenderung: 06 Mar 1997 Wargon
