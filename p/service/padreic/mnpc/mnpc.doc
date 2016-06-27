@@ -1,0 +1,103 @@
+/*
+ * Der ultimative NPC : mnpc.c (C) by Sir Lunch a lot
+ * $Id: mnpc.c,v 1.1 1993/10/12 16:23:07 djc Exp djc $
+ */
+
+Dieser urspruengliche mnpc wurde von mir weiterentwickelt und stark
+optimiert. Er ist gedacht um relativ einfach, effiziente Laufnpcs zu
+programmieren und erspart einem dadurch das Rad erneut erfinden zu muessen.
+Der Urspruengliche mnpc.c von Sir liegt fuer interessierte weiterhin in
++d/unterwelt/std/mnpc.sir.
+
+Die Eigenschaften im Ueberblick:
+
+MNPC_AREA - In diesem Feld stehen die Raeume, in denen der NPC herumlaufen
+   kann, ({}) bedeutet, das der NPC ueberall hin kann (bitte nur mit
+   aeusserster Vorsicht und Absprache des RMs benutzen!!!).
+   Bsp.: SetProp(MNPC_AREA, ({ "/d/ebene/room/ak_str" }));
+     Dieser NPC kann ueber saemtliche Raeume der Akademiestrasse laufen, also
+     z.b. in einen Raum mit dem Filenamen /d/ebene/room/ak_str1
+     aber auch in alle Raeume in einem Verzeichnis /d/ebene/room/ak_str/*
+
+MNPC_HOME - der Startraum des NPCs in den er spaeter ggf. auch wieder
+   zurueckkehrt. Setzt man diese Property nicht, wird versucht, den Ort des
+   Clonens zu erraten/bestimmen, aber wenn man sicher gehen moechte, dass der
+   MNPC das Home hat, was man denkt, sollte man es explizit setzen.
+
+MNPC_DELAY und. MNPC_RANDOM
+  MNPC_DELAY + random(MNPC_RANDOM) ergibt den Abstand zwischen zwei
+  Bewegungen des NPCs.
+  ACHTUNG: 
+    1. Diese Werte muessen gesetzt werden, _bevor_ MNPC_FLAGS 
+    gesetzt werden, da die Set-Methode von MNPC_FLAGS die Anmeldung im
+    walk_master durchfuehrt. Sonst werden die Default-Werte benutzt!
+    2. Wenn diese Werte geaendert werden, sollte man die MNPC_FLAGS neu
+    setzen, um so die Neuanmeldung im walk_master auszuloesen.
+
+MNPC_WALK_TIME - Zeitangabe wie lange es dauert bis der NPC stehen bleibt
+   falls er keinen Spieler mehr trifft. Dieser Wert sollte etwa 3-10 mal so
+   gross sein, wie die durchschnittliche Laufgeschwindigkeit. Wenn der NPC
+   dann einen reset lang keinen Spieler mehr trifft, movt er wieder in
+   seinen Startraum und wartet dort auf neue Spieler.
+   Defaultmaessig 600 sek.
+
+MNPC_FLAGS - property mit einem oder mehreren gesetzten Flags
+  MNPC_WALK  -  ueber dieses Flag kann das laufen ein- bzw. ausgeschaltet
+     werden.
+
+  MNPC_FOLLOW_PLAYER  -  der NPC verfolgt die Spieler, die er trifft
+
+  MNPC_NO_WALK_IN_FIGHT  -  der NPC bleibt beim kaempfen und rennt nicht weg
+
+  MNPC_GO_HOME_WHEN_STOPPED  -  der NPC geht sofort nach Hause wenn seine
+     Zeit abgelaufen ist.
+
+  MNPC_ONLY_EXITS - der NPC benutzt beim laufen keine SpecialExits
+     Diese Funktion ist sehr wichtig, da durch SpecialExits auch Raeume
+     betreten werden koennen die nicht in MNPC_AREA erlaubt wurden! Hierauf
+     muss dann bereits bei der Gebietskonstruktion geachtet werden.
+
+  MNPC_EXACT_AREA_MATCH - Die in MNPC_AREA angebeben Filenamen werden exakt
+     geprueft, d.h. tempel1 matcht auch nur tempel1, aber nicht mehr tempel14.
+     Folge: in MNPC_AREA muessten nun _alle_ Raeume einzeln angegeben werden, die
+     betreten werden duerfen.
+
+  MNPC_NO_MOVE_HOME - Der MNPC geht im reset() nicht nach Hause, wenn er
+     laenger keinen Spielerkontakt hatte, sondern bleibt an dem Standort,
+     wo er stehen blieb.
+     Achtung: sollte dieser Raum entladen werden, wird der MNPC dort
+     zuerstoert. Der Heimatraum des MNPC sollte dafuer vorsorgen (s. AddItem).
+     Ebenso kann es passieren, dass der MNPC sehr sehr lange nicht mehr
+     loslaeuft, sollte sein Standort einsam liegen.
+
+/***************************************************************************/
+
+Nun noch ein Beispiel fuer einen Laufnpc im Glockenwald:
+
+  create()
+  {
+     ::create();
+     SetProp(MNPC_DELAY, 30);
+     SetProp(MNPC_RANDOM, 30);
+     SetProp(MNPC_FLAGS, MNPC_WALK|MNPC_FOLLOW_PLAYER|MNPC_NO_WALK_IN_FIGHT);
+     SetProp(MNPC_AREA, ({ "/d/wald/troy/glockenwald" }));
+     ...
+  }
+
+  // diese Funktion entscheidet darueber ob ein Raum betreten werden darf,
+  // oder nicht (hier wird also auch MNPC_AREA abgearbeitet). Ein
+  // Ueberschreiben dieser Funktion kann manchmal sinnvoll sein, um
+  // komplexere Bedingungen zu implementieren.
+  int PreventEnter(string file)
+  {
+    call_other(file, "???");
+    if (::PreventEnter(file) || present("elster", find_object(file)))
+      return 1;
+    return 0;
+  }
+ 
+Dieser NPC laeuft durch den Glockenwald und sobald er einen Spieler trifft,
+verfolgt er diesen, bis zum Rande des Glockenwaldes. Wenn ein Spieler ihn
+angreift, bleibt er automatisch stehen. Die Spieler sind nur in Raeumen
+sicher, in denen sich eine Elster befindet, denn diese Raeume betritt der
+NPC nicht.

@@ -1,0 +1,23 @@
+/*
+ * Der ultimative NPC : mnpc.c (C) by Sir Lunch a lot
+ * $Id: mnpc.c,v 1.1 1993/10/12 16:23:07 djc Exp djc $
+ */
+
+Dieser urspruengliche mnpc wurde von mir weiterentwickelt und stark
+optimiert. Er ist gedacht um relativ einfach, effiziente Laufnpcs zu
+programmieren und erspart einem dadurch das Rad erneut erfinden zu muessen.
+Der Urspruengliche mnpc.c von Sir liegt fuer interessierte weiterhin in
++d/unterwelt/std/mnpc.sir.
+
+                                    Padreic
+
+mnpc.h   -  die Includedatei mit den zum mnpc gehoerenden Propertys
+mnpc.doc -  eine kleine Dokumentation zum mnpc
+mnpc.c   -  dieses File wird anstelle von std/npc inheritet um einen Laufnpc
+            zu erzeugen.
+moving.c -  die eigentlich Routinen wurden ausgelagert, damit sie auch
+            mit anderen stdnpcs zusammen (z.B. Gildennpcs) benutzt werden
+            koennen.
+walk_master.c - dieser Walkmaster muss in den seltensten Faellen direkt
+            verwendet werden, da ihn z.B. der mnpc.c automatisch von selbst
+            benutzt. Sinn des masters: call_out-Ketten einsparen.
