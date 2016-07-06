@@ -13,13 +13,13 @@
 #pragma no_range_check
 #pragma no_warn_deprecated
 
-
+/*
 #include <living/comm.h>
 #define ZDEBUG(x)        if (find_player("zesstra"))\
             find_player("zesstra")->ReceiveMsg(x, \
                 MT_DEBUG|MSG_DONT_STORE,0,"IM: ",this_object())
-
-//#define ZDEBUG(x)
+*/
+#define ZDEBUG(x)
 
 #include <udp.h>
 
