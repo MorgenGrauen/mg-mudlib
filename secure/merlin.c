@@ -941,7 +941,7 @@ void seer_sequenz2(mixed player, string plname)
   if (environment() != environment(player))
     move(environment(player), M_TPORT);
 
-  tell_object(player, break_string("\nMerlin hebt die Arme und "
+  tell_object(player, break_string("\nMerlin hebt die Arme "
        +"und macht einige beschwoerende Gesten. Um Dich herum erscheint "
        +"eine gelbliche Aura, die immer heller wird, bis Du Deine "
                                    +"Umwelt kaum mehr erkennen kannst.\n\n",
