@@ -205,7 +205,7 @@ static void mnpc_move()
     SetProp(MNPC_PURSUER, liv);
   }
   if (QueryProp(MNPC_FUNC))
-    ME->QueryProp(MNPC_FUNC);
+    call_other(ME, QueryProp(MNPC_FUNC));
 }
 
 static int PreventEnter(string file)
