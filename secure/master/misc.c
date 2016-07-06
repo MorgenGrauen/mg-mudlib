@@ -607,7 +607,7 @@ int renew_player_object(mixed who)
   {
     newob->set_realip( call_sefun("query_ip_number",who) );
   }
-  efun::configure_object(previous_object(), OC_COMMANDS_ENABLED, 0);
+  efun::configure_object(who, OC_COMMANDS_ENABLED, 0);
   efun::set_this_player(0);
   armours=(object *)who->QueryProp(P_ARMOURS);
   weapon=(object)who->QueryProp(P_WEAPON);
