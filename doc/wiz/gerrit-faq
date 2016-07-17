@@ -113,3 +113,14 @@
    BTW: Wenn ihr keine Rechte habe, obwohl u_<du> Rechte eingeraeumt werden,
    pruefe mal, ob Du ueberhaupt Mitglied in Gruppe u_<du> bist...
 
+15) Was hat es mit den Zweigen refs/heads/players/<magier>/* auf sich?
+   Unterhalb von refs/heads/players/<magier>/ darf ein Magier in allen
+   Projekten (in denen er was lesen kann) Zweige erstellen, veraendern und
+   loeschen. Es muss auch nicht durch einen Review. Diese Zweige werden auch
+   nicht ins MG synchronisiert.
+   Sprich: die perfekte Spielwiese zum Ausprobieren von Dingen oder um etwas
+   fuer das Projekt zu entwickeln, was man spaeter zum Review einreichen
+   oder mergen moechte.
+   Aber eine Bitte: wenn ihr einen Zweig dort nicht mehr benoetigt, loescht
+   ihn bitte wieder. ;-)
+
