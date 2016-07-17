@@ -27,3 +27,33 @@ SHA256-Fingerprint:
 EC:BF:F3:D1:02:86:5F:00:1A:3A:1D:7C:47:AB:C6:6F:FB:9C:D2:3F:EA:DC:47:
 86:D6:40:94:24:18:A2:67:D7
 
+
+Abschnitt fuer Erzmagier / Admins
+---------------------------------
+
+1) Accounts per Kommandozeile anlegen:
+   cat ~/.ssh/id_<magier>.pub | ssh mgg gerrit \
+     create-account --group "" --ssh-key - <magiername>
+
+2) Account in Gruppen aufnehmen (Web):
+  Auf https://anonymizer.zesstra.de:8443/#/admin/groups/
+  Gruppe auswaehlen und unter "Member" hinzufuegen.
+  (Vorsicht: nicht ohne weiteres eine andere Gruppe dort aufnehmen!)
+  
+3) Account per Kommandozeile in Gruppen aufnehmen:
+  gerrit set-members \
+      -a alice@example.com -a bob@example.com \
+        -r eve@example.com <group1> <group2> ...
+
+4) Magier bittet euch, in passende Gruppen aufgenommen zu werden:
+  Die folgenden Gruppen sollte er bekommen:
+  - u_<magier> (ggf. anlegen, wenn nicht existiert)
+  - Vollmagier (wenn kein Lehrling mehr)
+  - RM-* (wenn er RM-Posten hat)
+  - GM-* (wenn er Gildenmagier ist)
+  - Regionsmitglieder * (in den Regionen, in denen er Mitglied ist)
+
+  Achtung: der Username eines Magier kann, aber MUSS nicht mit dem Magiernamen
+  uebereinstimmen. Die Gruppe u_<magier> MUSS aber immer dem Magier
+  entsprechen.
+
