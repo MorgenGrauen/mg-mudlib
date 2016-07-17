@@ -1,0 +1,25 @@
+Was ist Gerrit?
+---------------
+
+Gerrit nenntn sich die Software, die im Morgengrauen die git-Repositories
+verwaltet. Sie kann auch zum Review verwendet werden.
+
+Welche Doku existiert im MG?
+----------------------------
+- gerrit-account: Accounterstellung
+- gerrit-cli: Kommandozeilenbefehle
+- gerrit-projekte: Anlegen von Gerrit-Projekten
+- gerrit-migration: von gitolite zu gerrit wechseln
+- gerrit-secure: secure/-Verzeichnisse in gerrit
+- gerrit-faq: FAQ-Sammlung
+- gerrit-scripts: welches Script tut was (mehr fuer EMs).
+(im Zweifelsfall: man -r gerrit eingeben)
+
+Welche Doku liefert gerrit?
+---------------------------
+Diese findest Du im Web unter dem Reiter "Documentation" bzw. unter der URL:
+https://anonymizer.zesstra.de:8443/Documentation/index.html
+Ganz wichtig ist sicher diese, welche erklaert, die man Aenderungen hochladen
+kann:
+https://anonymizer.zesstra.de:8443/Documentation/user-upload.html
+
