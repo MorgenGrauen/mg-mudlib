@@ -1,0 +1,15 @@
+support scripts for gerrit in MG
+
+These are not included in the public mudlib, but may be
+provided on request.
+
+gerrit-create-project: called from gerrit, creates sync repo
+               and imports stuff from mud
+gerrit-import: called by cron, creates new projects for dirs
+               with gerrit-create-project files
+gerrit-autocommit: called by cron, calls gerrit-sync2lib for
+               every gerrit repo
+gerrit-sync2lib: called by gerrit and gerrit-autocommit, syncs
+               between gerrit repos and mudlib
+gerrit.env: set environment variables for gerrit scripts
+

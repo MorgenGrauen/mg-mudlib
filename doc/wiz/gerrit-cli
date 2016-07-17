@@ -1,0 +1,13 @@
+gerrit: Kommandozeilenbedienung
+
+Will man die Weboberflaeche nicht benutzen, kann man einen groesseren Teil der
+dort machbaren Dinge auch ueber die Kommandozeile durch absetzen von
+ssh-Kommandos erreichen, z.B. gibt
+  ssh mgg gerrit ls-projects
+alle Projekte aus, in denen man zumindest irgendwo Leserechte hat. Gibt man
+dem Kommando ein -t als Argument mit, bekommt man eine Baumstruktur.
+
+Eine vollstaendige Liste mit Erklaerungen spare ich mir hier mal, die ist
+naemlich im Netz zu finden. ;-)
+https://anonymizer.zesstra.de:8443/Documentation/cmd-index.html#user_commands
+

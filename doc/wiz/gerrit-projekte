@@ -1,0 +1,26 @@
+Erstellung neuer Projekte / Repos in Gerrit
+-------------------------------------------
+
+Neue Projekte werden wie bisher aus dem Mud erstellt. Dies darf jeder, der
+Schreibrechte in dem Verzeichnis m Mud besitzt.
+Zur vollen Stunde werden Projekte fuer alle Verzeichnisse erzeugt, welche eine
+Datei gerrit-create-project enthalten. Dies ist unterschiedlich, je nachdem,
+was in der ersten Zeile dieser Datei steht:
+  import: Das Projekt wird erzeugt und der Inhalt des Verzeichnisses
+          aus dem Mud importiert.
+  create: Das Projekt wird LEER erzeugt und nichts importiert. Dies
+          ist dann nuetzlich, wenn man eine bestehen Historie aus einem
+          anderen git-Repo uebernehmen will. Diese kann man dann in das
+          neue, leer Repo pushen. Erst danach erfolgt auch die
+          Synchronisation mit dem Mud. (Tip: beim push sollte master
+          den gleichen Inhalt haben wie im Mud liegt.)
+
+Erzmagier haben zusaetzlich die Moeglichkeit, Projekte ohne Zeitverzoegerung
+ueber die Weboberflaeche oder den Befehl
+ssh mgg gerrit create-project ...
+anzulegen.
+
+Nur ueber die Anlage durch einen EM lassen sich Verzeichnisse ausserhalb von
+/d/, /p/service und /players/ sowie Verzeichnisse fuer nicht-existente Magier
+erzeugen.
+

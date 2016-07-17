@@ -1,0 +1,34 @@
+gerrit: secure-Verzeichnisse
+----------------------------
+
+Normalerweise sind Projekte in /d/ durch alle Vollmagier lesbar.
+Da git/gerrit sich nicht fuer secure/ interessiert, muessen Projekte mit
+secure/ leider anders behandelt werden: nur der eigentlich Eigentuemer, der
+zustaendige RM sowie W+ koennen sie lesen (nur nur secure/, sondern das
+komplette Repo).
+
+Ihr koennt sie genauso wie alle anderen Verzeichnisse importieren/anlegen. Das
+Script, was das tut, stellt automatisch die Benutzerrechte anders ein als bei
+normalen /d/-Verzeichnissen, sobald irgendein Unterverzeichnis den Namen
+"secure" hat.
+
+Ihr solltet euch zusammen mit dem RM ueberlegen, ob man wegen eines secure/
+das ganze Projekt fuer viele unlesbar machen muss oder ob ihr evtl. ein
+einzelnes Projekt nur fuer das secure/ anlegt.
+
+Ich moechte ein secure/ in meinem Projekt anlegen.
+-------------------------------------------------
+Dann solltest Du vorher die Projektkonfiguration so aendern, dass nicht
+mehr jeder lesen darf.
+- Stelle sicher, dass der RM, Du selbst und die Erzmagier das Recht
+  "Owner" auf refs/* haben.
+- Erbe die Rechte nicht mehr von d/<region>, sondern All-Projects
+Im Zweifelsfall lass Dich im MG erst beraten.
+    
+Ich moechte ein secure/ loeschen.
+--------------------------------
+Sehr gut!
+- Erbe in Deinem Projekt die Rechte nicht mehr von All-Projects, sondern
+  d/<region>
+Im Zweifelsfall lass Dich im MG erst beraten.
+ 

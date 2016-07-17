@@ -1,0 +1,54 @@
+Wie wechselt man von gitolite zu gerrit?
+---------------------------------------
+
+0) ssh-Hostalias einrichten (optional)
+Damit man sich auf der Kommandozeile sowas wie
+ git clone ssh://zesstra@anonymizer.zesstra.de:29418/d/anfaenger/ark/
+   knochentempel
+ ssh zesstra@anonymizer.zesstra.de -p 29418
+abkuerzen kann UND demnaechst nicht alle Repos aendern/neu clonen muss,
+koennt ihr euch in ~/.ssh/config ein Alias einrichten:
+Host mgg
+  Hostname anonymizer.zesstra.de
+  Port 29418
+  User <euer username>
+  IdentityFile ... (optional)
+
+Nun koennt ihr obiges ssh-kommando abkuerzen zu:
+ssh mgg
+und git-kommandos zu sowas:
+git clone mgg/players/zesstra/a a.git
+(Und wenn die gerrit-Instanz umzieht, brauch ihr nur das Hostalias zu
+ aendern.)
+
+1) Account in gerrit anlegen
+s. man gerrit-account
+
+2) in gerrit bestehendes Repo clonen
+ git clone ssh://mgg/<reponame> <reponame>
+ Und optional in neuem Repo:
+ git config user.name <magier> und git config user.email <mail> 
+
+3) Zweige von bestehendem Repo nach gerrit importieren
+ Wenn ihr in eurem alten Repo andere Zweige als master habt, koennt
+ ihr sie uebernehmen:
+ cd <bestehendes repo>
+ git push ssh://mgg/<repo> <zweig>:refs/heads/<zweig>
+ (git push ssh://mgg/<repo> *:* - aber vorsicht mit master!)
+  siehe 1)
+
+4) bestehendes Repo von gitolite nach gerrit wechseln
+   und Repo existiert in gerrit noch nicht
+ Ihr legt im Mud im Verzeichnis die Datei gerrit-create-project an und
+ schreibt "create" in die erste Zeile.
+ Zur vollen Stunde wird das Projekt/Repository in gerrit LEER angelegt.
+ Anschliessend koennt ihr alle gewuenschten Zweige wie in 2) in das
+ neue Repo pushen (inkl. master). Sobald master gepusht wurde, wird das
+ neue Repo mit dem Mud synchronisiert.
+ Zum Schluss clont ihr noch das das neue Repo wie in 1)
+
+Nachdem ihr das erste Mal in das Repo von gerrit gepusht habt, solltet ihr
+nicht mehr in das Repo von gitolite (git@mg.mud.de) pushen. Ihr koennt das
+verhindern, indem ihr dieses Kommando benutzt:
+ssh git@mg.mud.de writable <repo> off
+

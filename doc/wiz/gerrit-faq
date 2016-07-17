@@ -1,0 +1,105 @@
+1) Wo finde ich die Weboberflaeche?
+   https://anonymizer.zesstra.de:8443/
+
+2) Wo ist die Anleitung?
+   https://anonymizer.zesstra.de:8443/Documentation/index.html
+
+3) Wo ist die Anleitung fuer Projekteigentuemer?
+   https://anonymizer.zesstra.de:8443/Documentation/intro-project-owner.html
+
+4) Wie clone ich ein Projekt / Repository
+   git clone ssh://zesstra@anonymizer.zesstra.de:29418/d/anfaenger/...
+   mit SSH-Hostalias mgg:
+   git clone ssh://mgg/d/anfaenger/...
+   Auf der Weboberflaeche werden auch direkte Copy&Paste-Kommandos angezeigt.
+
+5) Wie bekomme ich Aenderungen in gerrit?
+   a) ohne Review
+     Das geht, falls ihr Schreibrechte fuer direkten Push in den Branch
+     habt:
+     git push origin <local_branch>:<remote_branch>
+     git push origin master:master
+   b) mit Review
+     Wenn ihr keine direkten Schreibrechte auf den Branch habt oder wollt,
+     dass eure Aenderung von jemand anderem gelesen wird:
+     git push origin <local_branch>:refs/for/<remote_branch>
+     git push origin master:refs/for/master
+
+   Nur der Zweig 'master' wird zwischen gerrit und dem Mud synchronisiert, alle
+   anderen Zweige bleiben nur in gerrit.
+   Eine ausfuehrlichere Darstellung gibt es in der Doku von gerrit:
+   https://anonymizer.zesstra.de:8443/Documentation/intro-user.html#upload-change
+   Und noch ausfuehrlicher:
+   https://anonymizer.zesstra.de:8443/Documentation/user-upload.html
+
+6) Welche Bedeutung haben die Review-Labels?
+   Wenn ihr Aenderungen ueber den Review-Prozess einreicht, gibt es folgende
+   Labels, die RMs (und andere) vergeben koennen:
+   a) Code-Review
+    -2 Dies darf nicht angeschlossen werden (veto)
+    -1 Ich wuerde vorziehen, es so nicht anzuschliessen
+     0 keine Meinung / keine Ahnung (Default)
+    +1 Sieht gut fuer mich aus, aber jemand anders muss genehmigen
+    +2 Sieht gut fuer mich aus, anschlussfaehig
+    Jeder Vollmagier kann in /d/ Werte von -1 bis +1 vergeben.
+    Zustaendige RMs (und EM+) koennen Werte von -2 bis +2 vergeben (sprich: sie
+    duerfen auch ein Veto einlegen).
+    Vergibt jemand -2, kann diese Aenderung nicht ins MG gehen, bis diese
+    Meinung geaendert/geloescht wurde.
+    Eine +2 ist noetig, damit eine Aenderung ins MG geschoben werden kann.
+
+   b) Balance-Genehmigung
+    -1 Benoetigt, aber liegt nicht vor
+     0 Keine benoetigt (Default)
+    +1 Benoetigt und liegt vor
+    Jeder Vollmagier darf alle diese Werte vergeben. -1 blockiert den
+    Anschluss, 0 und +1 geben ihn frei.
+
+7) Wie bekommen ich einen Magier dazu, meine Aenderung zu reviewen?
+   Gute Frage. ;-) Im Ernst: euer RM sollte es von sich aus tun, aber es
+   schadet nix, kurz Bescheid zu geben - speziell, wenn es eilig ist.
+   Ihr koennt auch jemanden zum Review einladen, sowohl auf der Weboberflaeche
+   wie auch per Kommandozeile:
+   https://anonymizer.zesstra.de:8443/Documentation/intro-user.html#adding-reviewers
+   ssh mgg gerrit set-reviewers
+
+8) Wie kann ich die Commits eines Projekt im Web angucken?
+   In der Projektliste dem Link zu gitweb in der ganz rechten Spalte folgen.
+   Oder: https://anonymizer.zesstra.de:8443/gitweb?p=d%2Fanfaenger%2Fennox%2Ftutorial.git;a=summary
+
+9) Wie kann ich Aenderungen in einem Projekt verfolgen?
+   Im gitweb eines Projektes kann man RSS- und Atom-Feeds abonnieren.
+
+10) Kann ich Aenderungen im Review aendern?
+    (Was sind diese Change-IDs?)
+   Klar - das geht, wenn der neue/geaenderte Commit die gleiche sog. Change-ID
+   hat wie der alte.
+   Details:
+   https://anonymizer.zesstra.de:8443/Documentation/user-changeid.html
+
+11) Wie bekomme ich Schreibrechte?
+   Fuer eure eigenen Projekte in /d/ und /players/ bekommt ihr normalerweise
+   automatisch die Rechte als Projekteigentuemer. Damit koennt ihr sogar nicht
+   nur Inhalt pushen, sondern auch Projekteinstellungen (inkl. Zugriffsrechte)
+   aendern. (Warnung: und euch selber aussperren.)
+   Als Projekteigentuemer duerft ihr auch in den meisten Projekten den
+   Review-Prozess umgehen. (Was aber vielleicht nicht immer sinnvoll und
+   manchmal nichtmals einfacher ist.)
+   (BTW: wenn ihr als Projekteigentuemer zuviel Unfug macht und RMs/EMs damit
+    unnoetig Arbeit, koennt ihr diese Rechte verlieren...)
+   Was ihr aber auch als Projekteigentuemer nicht duerft (weil das die
+   Synchronisation mit dem MG zerstoert), ist ein "forced push" in master,
+   d.h. ein push, der die Geschichte von master aendert.
+
+12) Ich bin aber in /d/ebene/<ich>/<dings> nicht Eigentuemer?
+   Dann wurde das Projekt vermutlich mit einer alten Version des
+   Importscriptes angelegt - das hat das leider noch nicht gemacht.
+   In diesem Fall wendet euch an den RM und bittet, euch als
+   Projekteigentuemer aufzunehmen.
+   (Alternativ koennt ihr diese Aenderung tatsaechlich selber vornehmen und
+    dann im Reviewprozess speichern. Der RM kann diese Aenderung mit einem
+    Befehl freigeben.)
+
+13) Ich moechte ein secure/ in meinem Projekt anlegen / loeschen.
+  Schau mal in die Manpage gerrit-secure.
+
