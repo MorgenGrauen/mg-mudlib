@@ -101,5 +101,15 @@
     Befehl freigeben.)
 
 13) Ich moechte ein secure/ in meinem Projekt anlegen / loeschen.
-  Schau mal in die Manpage gerrit-secure.
+   Schau mal in die Manpage gerrit-secure.
+
+14) Wie kann ich einem Magier (Benutzer) Rechte zuweisen?
+   Gerrit kann nur Gruppen Rechte geben, keinen einzelnen Benutzern. Wenn es
+   noetig ist, einem einzelnen Magier/Benutzer Rechte zuzuweisen, wird dafuer
+   eine Gruppe u_<magiername> benutzt, welche standardmaessig nur diesen
+   Magier enthaelt.
+   Dies ermoeglicht es allerdings auch, einen Magier B fuer alle Projekte von
+   Magier A zustaendig zu machen, indem man u_A die Gruppe u_B hinzufuegt.
+   BTW: Wenn ihr keine Rechte habe, obwohl u_<du> Rechte eingeraeumt werden,
+   pruefe mal, ob Du ueberhaupt Mitglied in Gruppe u_<du> bist...
 
