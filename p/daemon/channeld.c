@@ -276,7 +276,11 @@ private void setup(mixed c)
 void initialize()
 {
   mixed tmp;
+#if !defined(__TESTMUD__) && MUDNAME=="MorgenGrauen"
   tmp = read_file(object_name(this_object())+".init");
+#else
+  tmp = read_file(object_name(this_object())+".init.testmud");
+#endif
   tmp = regexp(old_explode(tmp, "\n"), "^[^#]");
   tmp = map(tmp, #'regexplode/*'*/, "[^:][^:]*$|[ \\t]*:[ \\t]*");
   tmp = map(tmp, #'regexp/*'*/, "^[^: \\t]");
