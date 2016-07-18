@@ -242,7 +242,7 @@ int verbrennen(string str) {
 // Aufruf aus rubriken() und ReadNextUnread(), wenn die gueltige
 // Rubrikenliste sowieso schon abgerufen wurde.
 
-static void KillGroup(name) { read_until=m_copy_delete(read_until,name); }
+static void KillGroup(string name) { read_until=m_copy_delete(read_until,name); }
 
 /* RebuildGroupList() - tut doch nicht so, weil /secure/news anders arbeitet.
  * Bleibt vorerst zum Nachschlagen.
@@ -997,11 +997,11 @@ static Uncatchup(string str)
 }
 
 
-QueryRead() { 
-  return read_until; 
+mapping QueryRead() {
+  return read_until;
 }
 
-static void CatchNewsError(int err,string text4minus3) {
+static int CatchNewsError(int err,string text4minus3) {
   switch (err) {
     case  1: return 1;
     case -1: write("Du darfst in dieser Rubrik nicht schreiben!\n"); return 0;
@@ -1011,7 +1011,9 @@ static void CatchNewsError(int err,string text4minus3) {
   }
 }
 
-static varargs int schreib(str,pretext,called_by_itself,statuslines) {
+static varargs int schreib(string str,string pretext,int called_by_itself,
+                           string statuslines)
+{
   int err;
 
   if (str=="?"||str=="-?") {
@@ -1291,7 +1293,8 @@ static int loesche(string str) {
     return 1;
   default: write("Interner Fehler. Bitte Erzmagier verstaendigen !\n");
     return 1;
-  }  
+  }
+  return 0;
 }
 
 // Low-level Funktion zum Abonnieren/Abbestellen von Rubriken
