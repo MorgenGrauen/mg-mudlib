@@ -122,7 +122,7 @@ string  GROUP;
 int GetTID(mixed message);
 private void InitialSubscriptions();
 
-create()
+protected void create()
 {
   ::create();
   seteuid(getuid());
@@ -173,7 +173,7 @@ Aktuelle Rubrik: "+GROUP+"\n\
 }
 
 
-init()
+void init()
 {
   ::init();
 
@@ -228,7 +228,7 @@ init()
   init_rescue();
 }
 
-verbrennen(str) {
+int verbrennen(string str) {
   if (!str || !id(str)) return 0;
   write("Du verbrennst Deine Zeitung mit groesstem Vergnuegen.\n");
   say(TP->Name(WER)+" verbrennt "+
@@ -242,7 +242,7 @@ verbrennen(str) {
 // Aufruf aus rubriken() und ReadNextUnread(), wenn die gueltige
 // Rubrikenliste sowieso schon abgerufen wurde.
 
-static KillGroup(name) { read_until=m_copy_delete(read_until,name); }
+static void KillGroup(name) { read_until=m_copy_delete(read_until,name); }
 
 /* RebuildGroupList() - tut doch nicht so, weil /secure/news anders arbeitet.
  * Bleibt vorerst zum Nachschlagen.
@@ -258,7 +258,7 @@ static RebuildGroupList() {
 */
 
 
-_set_autoloadobj(mixed arg) {
+void _set_autoloadobj(mixed arg) {
 
   if (pointerp(arg) && sizeof(arg)>=2)
   {
@@ -1001,7 +1001,7 @@ QueryRead() {
   return read_until; 
 }
 
-static CatchNewsError(int err,string text4minus3) {
+static void CatchNewsError(int err,string text4minus3) {
   switch (err) {
     case  1: return 1;
     case -1: write("Du darfst in dieser Rubrik nicht schreiben!\n"); return 0;
@@ -1011,7 +1011,7 @@ static CatchNewsError(int err,string text4minus3) {
   }
 }
 
-static varargs schreib(str,pretext,called_by_itself,statuslines) {
+static varargs int schreib(str,pretext,called_by_itself,statuslines) {
   int err;
 
   if (str=="?"||str=="-?") {
@@ -1254,7 +1254,7 @@ static artikel(str) {
 }
 
 
-static loesche(str) {
+static int loesche(string str) {
   int num;
   mixed *messages;
 
