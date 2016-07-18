@@ -1398,6 +1398,11 @@ static MoveMessage(str) {
   if (!str || sscanf(str,"artikel %d nach %s",num,gr)!=2) return (int)notify_fail(
         "verlege artikel <nr> nach <rubrik>, oder was?\n");
   if (!(gr=GetGroupName(gr))) return 1;
+  if (gr == GROUP)
+  {
+    write("Das waere reichlich sinnlos, nicht wahr?\n");
+    return 1;
+  }
   if (!(CatchNewsError(NEWSSERVER->AskAllowedWrite(gr),"Die Rubrik ist leider voll.\n"))) return 1;
 
   if (!pointerp(msg=NEWSSERVER->GetNotes(GROUP)))
