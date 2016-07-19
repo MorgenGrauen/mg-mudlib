@@ -4,7 +4,7 @@ gerrit: secure-Verzeichnisse
 Normalerweise sind Projekte in /d/ durch alle Vollmagier lesbar.
 Da git/gerrit sich nicht fuer secure/ interessiert, muessen Projekte mit
 secure/ leider anders behandelt werden: nur der eigentlich Eigentuemer, der
-zustaendige RM sowie W+ koennen sie lesen (nur nur secure/, sondern das
+zustaendige RM sowie W+ koennen sie lesen (nicht nur secure/, sondern das
 komplette Repo).
 
 Ihr koennt sie genauso wie alle anderen Verzeichnisse importieren/anlegen. Das
