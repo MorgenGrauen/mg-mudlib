@@ -281,6 +281,8 @@ void initialize()
 #else
   tmp = read_file(object_name(this_object())+".init.testmud");
 #endif
+  if (!stringp(tmp))
+    return;
   tmp = regexp(old_explode(tmp, "\n"), "^[^#]");
   tmp = map(tmp, #'regexplode/*'*/, "[^:][^:]*$|[ \\t]*:[ \\t]*");
   tmp = map(tmp, #'regexp/*'*/, "^[^: \\t]");
@@ -289,7 +291,7 @@ void initialize()
 
 // BEGIN OF THE CHANNEL MASTER IMPLEMENTATION
 
-void create()
+protected void create()
 {
   seteuid(getuid());
   restore_object(CHANNEL_SAVE);
