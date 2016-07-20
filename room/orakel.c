@@ -42,7 +42,8 @@ protected void create()
    "leuchtende Kugel, das heilige Orakel von Tingan. Im Osten fliesst das\n"+
    "Wasser des Sees durch einen schmalen Gang ab, dem Du folgen koenntest.\n");
    AddDetail("boden", "Der Boden ist groesstenteils mit Wasser bedeckt.\n");
-   AddDetail("decke", "Die Decke ist aus massivem Felsgestein, Du willst gar nicht wissen,\nwieviele Tonnen davon ueber Deinem Kopf lasten.\n");
+   AddDetail("decke", "Die Decke ist aus massivem Felsgestein, Du willst gar nicht wissen,\n"+
+             "wieviele Tonnen davon ueber Deinem Kopf lasten.\n");
    AddDetail(({"fels", "gestein", "felsgestein"}), "Sowas ist im Gebirge recht haeufig.\n");
    AddDetail(({"wand", "waende"}), "Die Waende sind feucht.\n");
    AddDetail(({"quellsee", "see"}), "Er ist die Quelle des Osterbachs.\n");
@@ -160,7 +161,8 @@ string Vision()
 //bis nach Reboot noetig!!! Rikus
 //  "/players/boing/orakel/orakel"->AddKnownPotion(nr);
 
-  return "Der Nebel ueber der Kugel beginnt sich zu bewegen, dann hoerst Du eine\ntiefe Stimme in Deinem Kopf erklingen:\n\n"+text[random(sizeof(text))];
+  return "Der Nebel ueber der Kugel beginnt sich zu bewegen, dann hoerst Du eine\n"+
+         "tiefe Stimme in Deinem Kopf erklingen:\n\n" + text[random(sizeof(text))];
 }
 
 string TipListe()
