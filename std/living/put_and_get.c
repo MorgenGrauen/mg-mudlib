@@ -360,10 +360,13 @@ varargs int put(object o, object dest, mixed msg)
 
   
     if (!msg) {
-        TME("Du steckst " + wen1 + " in " + dest->name(WEN, 1) + ".");
+        TME("Du steckst " + wen1 + " "
+             + dest->QueryProp(P_DEST_PREPOSITION) + " "
+             + dest->name(WEN, 1) + ".");
         if (environment())
-	  SAY(Name(WER, 1) + " steckt " + wen0 +
-	      " in " + dest->name(WEN, 0) + ".");
+            SAY(Name(WER, 1) + " steckt " + wen0 + " "
+                + dest->QueryProp(P_DEST_PREPOSITION) + " "
+                + dest->name(WEN, 0) + ".");
     }
     else if (pointerp(msg)) {
         switch (sizeof(msg)) {
