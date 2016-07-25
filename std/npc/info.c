@@ -139,25 +139,26 @@ public int frage(string str) {
   return do_frage( text );
 }
 
-static string infoDefaultReplace(string pstring, object pl)
+// ersetzt die alten @... durch die von replace_personal.
+private string conv2replace_personal(string pstring)
 {
   pstring=" "+pstring;
   if (strstr(pstring,"@WER",0) >-1 )
-    pstring= regreplace(pstring,"@WER",pl->name(WER,1),1);
+    pstring= regreplace(pstring,"@WER","@WER1",1);
   if (strstr(pstring,"@WESSEN",0) >-1 )
-    pstring= regreplace(pstring,"@WESSEN",pl->name(WESSEN,1),1);
+    pstring= regreplace(pstring,"@WESSEN","@WESSEN1",1);
   if (strstr(pstring,"@WEM",0) >-1 )
-    pstring= regreplace(pstring,"@WEM",pl->name(WEM,1),1);
+    pstring= regreplace(pstring,"@WEM","@WEM1",1);
   if (strstr(pstring,"@WEN",0) >-1 )
-    pstring= regreplace(pstring,"@WEN",pl->name(WEN,1),1);
+    pstring= regreplace(pstring,"@WEN","@WEN1",1);
   if (strstr(pstring,"@CAP_WER",0) >-1 )
-    pstring= regreplace(pstring,"@CAP_WER",pl->Name(WER,1),1);
+    pstring= regreplace(pstring,"@CAP_WER","@WER1",1);
   if (strstr(pstring,"@CAP_WESSEN",0) >-1 )
-    pstring= regreplace(pstring,"@CAP_WESSEN",pl->Name(WESSEN,1),1);
+    pstring= regreplace(pstring,"@CAP_WESSEN","@WESSEN1",1);
   if (strstr(pstring,"@CAP_WEM",0) >-1 )
-    pstring= regreplace(pstring,"@CAP_WEM",pl->Name(WEM,1),1);
+    pstring= regreplace(pstring,"@CAP_WEM","@WEM1",1);
   if (strstr(pstring,"@CAP_WEN",0) >-1 )
-    pstring= regreplace(pstring,"@CAP_WEN",pl->Name(WEN,1),1);
+    pstring= regreplace(pstring,"@CAP_WEN","@WEN1",1);
 
   return pstring[1..];
 }
@@ -231,7 +232,7 @@ public int do_frage(string text)
 
   // Replacements gehen auch in der Antwort des NPC. Das gibt den Antworten 
   // eine persoenliche Note, und so teuer is das auch nicht :)
-  answer = infoDefaultReplace(answer, this_player());
+  answer = replace_personal(answer, this_player(), 1);
 
   if( indent=info[1] )
   {
@@ -243,7 +244,7 @@ public int do_frage(string text)
                                  this_object());
        if (stringp(silent))
        {
-          silent=infoDefaultReplace(silent, this_player());
+          silent=replace_personal(silent, this_player(), 1);
           send_room(environment(), silent, MT_LISTEN, "frage",
                     Name(WER,2)+" ", ({this_player()}));
        }
@@ -265,7 +266,7 @@ public int do_frage(string text)
                                  this_object());
        if (stringp(silent))
        {
-          silent=infoDefaultReplace(silent, this_player());
+          silent=replace_personal(silent, this_player(), 1);
           send_room(environment(), silent, MT_LISTEN, "frage",
                     Name(WER,2)+" ", ({this_player()}) );
        }
@@ -283,11 +284,15 @@ public int do_frage(string text)
  *---------------------------------------------------------------------------
  */
 
-public varargs void AddInfo(mixed key, mixed info, string indent, 
+public varargs void AddInfo(mixed key, mixed info, string indent,
                             mixed silent, mixed casebased ) {
 
   if (stringp(casebased))
     casebased=symbol_function(casebased,this_object());
+  if (stringp(info))
+    info = conv2replace_personal(info);
+  if (stringp(silent))
+    silent = conv2replace_personal(silent);
 
   if( pointerp( key ) ) {
     int i;

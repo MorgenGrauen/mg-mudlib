@@ -52,9 +52,12 @@ BESCHREIBUNG:
       - return string:	Antwort mit string unter Beruecksichtigung eines
 			indent
 
-     Die Strings von 'silent' und 'meldung' werden geparsed. Dabei werden die
-     Schluesselworte @WER, @WESSEN, @WEM, @WEN durch TP->Name(..) ersetzt und
-     @CAP_WER, @CAP_WESSEN, @CAP_WEM, @CAP_WEN durch capitalize(TP-Name(..)).
+     Die Strings von 'silent' und 'meldung' werden geparsed.
+     Dabei koennen die @...-Tags von replace_personal() verwendet werden,
+     Objekt 1 ist this_player(). Ersetzte String am Satzanfang werden
+     automatisch gross geschrieben.
+     AddInfo() konvertiert die alten Schluesselworte @WER, @WESSEN, @WEM,
+     @WEN zu denen von replace_personal().
 
      Mittels der in <npc.h> definierten Frage DEFAULT_INFO kann eine
      Meldung gesetzt werden, die gegeben werden soll, wenn der Spieler
