@@ -291,17 +291,23 @@ public int cmd_fuelle(string str)
     object obj;
     // Flasche befuellen?
     if (id(strbottle)
-        && ( obj=present(strobj, environment(this_player())) 
-                 || present(strobj, this_player()) )
+        && ( ( obj=present(strobj, environment(this_player()))
+                   || present(strobj, this_player()) )
+             || (strobj == lower_case(DEFAULT_LIQ)
+                 && environment(this_player())->QueryProp(P_WATER)<W_OTHER)
+           )
+
        )
     {
-      if (fill_bottle(obj))
+      if (fill_bottle(obj || environment(this_player())))
       {
         write(break_string(
-              "Du fuellst etwas "+liquid_name+" aus " + obj->name(WEM,1) 
+              "Du fuellst etwas "+liquid_name
+              + (obj ? " aus " + obj->name(WEM,1) : "")
               + " in "+name(WEN,1)+".",78));
-        say(break_string(TP->Name(WER)+" fuellt etwas "+liquid_name+ " aus " 
-              + obj->name(WEM,1) + " in "+name(WEN)+".",78), TP);
+        say(break_string(TP->Name(WER)+" fuellt etwas "+liquid_name
+              + (obj ? " aus " + obj->name(WEM,1) : "")
+              + " in "+name(WEN)+".",78), TP);
       }
       return 1;
     }
