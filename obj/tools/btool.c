@@ -18,6 +18,7 @@ protected void create()
 {
   ::create();
   SetProp(P_NAME,"Balance-Tool");
+  SetProp(P_AUTOLOADOBJ,1);
   AddId(({"btool","balancetool","balance-tool"}));
   SetProp(P_SHORT,"Ein Balance-Tool light");
   SetProp(P_LONG,
