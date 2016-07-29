@@ -104,9 +104,9 @@ protected void create()
         if(sizeof(check))
         {
           tmp=filter(tmp,
-            function int(int key, string title, int time, string uid)
+            function int(int key, <int|string>* values)
             {
-              return uid==check;
+              return values[2]==check;
             });
         }
       }
