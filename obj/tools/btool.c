@@ -25,8 +25,9 @@ protected void create()
     "- btop <n>: Zeigt den letzten genehmigten Antrag zu Top n.\n"
     "- bsuch [-s] <str>: Sucht case-sensitiv nach str, -s bricht jeden "
     "Eintrag nach 78 Zeichen ab.\n"
-    "- binhalt [-s]: Zeigt den gesamten Inhalt des Balancearchives, -s "
-    "bricht jeden Eintrag nach 78 Zeichen ab.\n\n"
+    "- binhalt [-s] [uid]: Zeigt den gesamten Inhalt des Balancearchives, -s "
+    "bricht jeden Eintrag nach 78 Zeichen ab, uid filtert auf "
+    "_vollstaendige_ uids.\n\n"
     "Es kann vorkommen, dass Eintraege der falschen UID zugeordnet sind, "
     "oder dass die Genehmigung nicht sehr aussagekraeftig ist, in diesem "
     "Fall bitte eine Mail an das Balanceteam schreiben."));
@@ -80,6 +81,9 @@ protected void create()
     function int(string str)
     {
       int short;
+      string check;
+      
+      mapping tmp=BARCHIV->GetIndexForWizards();
       if(sizeof(str))
       {
         string* arr=old_explode(str," ");
@@ -87,10 +91,27 @@ protected void create()
         if(arr[0]=="-s")
         {
           short=1;
+          if(sizeof(arr)>=2)
+          {
+            check=arr[1];
+          }
+        }
+        else
+        {
+          check=arr[0];
+        }
+        
+        if(sizeof(check))
+        {
+          tmp=filter(tmp,
+            function int(int key, string title, int time, string uid)
+            {
+              return uid==check;
+            });
         }
       }
     
-      print_map(BARCHIV->GetIndexForWizards(),short);
+      print_map(tmp,short);
       return 1;
     });
 }
