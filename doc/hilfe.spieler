@@ -5,23 +5,23 @@ Fuer folgende allgemeine Befehle und Themen kann mit "hilfe <thema>" eine
 Erlaeuterung angezeigt werden:
 
 Einfuehrung und erste Schritte:
-    Grundlegend: 
-      syntax, bewegung, regeln, einfuehrung
+    Grundlegend:
+      syntax, bewegung, regeln, einfuehrung, syntaxhilfe
     Charakter:
       attribute, zaubertraenke, stufen, stufenpunkte
-    Spiel:   
+    Spiel:
       abenteuer, gilden, zauberei
-    Neuspieler:  
+    Neuspieler:
       cicerones, tutorial
 
 Kommunikation:
-    Im Raum:	
+    Im Raum:
       sage, gespraech, frage, antworte
-    Privat:	
+    Privat:
       teile (mit), erzaehle, erwidere, fluestere,
-    MUD-weit:	
+    MUD-weit:
       rufe, ebenen, post, mrufe
-    Anderes:	
+    Anderes:
       ignoriere, kobold, weg, parties, senderwiederholung, klingelton
       teamspeak
 

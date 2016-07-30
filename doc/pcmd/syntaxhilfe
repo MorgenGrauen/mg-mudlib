@@ -1,0 +1,19 @@
+
+syntaxhilfe
+-----------
+
+ KOMMANDO:
+    syntaxhilfe <objekt>
+
+ ARGUMENTE:
+
+     <objekt>
+        Eine Bezeichnung fuer das Objekt, zu dem man eine Syntaxhilfe will
+
+ BESCHREIBUNG:
+    Wenn das gewuenschte Objekt gefunden wird und eine Syntaxhilfe anbietet,
+    wird diese angezeigt.
+
+    Hierbei kann es sein, dass die Syntaxhilfe nur unter bestimmten
+    Bedingungen (z.B. Gildenmitgliedschaft, Seher, etc.) angezeigt wird.
+

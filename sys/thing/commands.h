@@ -10,6 +10,7 @@
 // properties
 
 #define P_COMMANDS           "commands"
+#define P_SYNTAX_HELP        "lib_p_syntaxhelp"
 
 #endif // __THING_COMMANDS_H__
 

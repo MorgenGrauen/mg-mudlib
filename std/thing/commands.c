@@ -36,8 +36,11 @@
 #include <moving.h>
 #include <thing/language.h>
 #include <exploration.h>
+#include <defines.h>
+#include <living/comm.h>
 
 #define NEED_PROTOTYPES
+#include <thing/properties.h>
 #include <thing/description.h>
 #include <thing/commands.h>
 #undef NEED_PROTOTYPES
@@ -49,13 +52,82 @@
 
 private nosave mapping added_cmds;
 
+protected int _cmd_syntaxhelp(string str, string *args)
+{
+  mapping|closure restr;
+  mixed help = QueryProp(P_SYNTAX_HELP);
+  if (pointerp(help))
+  {
+    restr = help[1];
+    help = help[0];
+  }
+  // Restriktionen vor dem Anzeigen pruefen.
+  if (mappingp(restr))
+  {
+    string res = "/std/restriction_checker"->check_restrictions(PL,restr);
+    if (res)
+    {
+      PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
+                     "die Syntaxhilfe (noch) nicht lesen:\n"
+                     + res,
+                     MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
+                     "syntaxhilfe",0,this_object());
+      return 1;
+    }
+  }
+  else if (closurep(restr))
+  {
+    string res = funcall(restr, ME);
+    if (res)
+    {
+      if (intp(res))
+        PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
+                       "die Syntaxhilfe (noch) nicht lesen.",
+                       MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
+                       "syntaxhilfe",0,this_object());
+      else if (stringp(res))
+        PL->ReceiveMsg(res,
+                       MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
+                       "syntaxhilfe",0,this_object());
+      return 1;
+    }
+  }
+
+  if (stringp(help))
+  {
+    help = "Fuer " + name(WEN,1) + " gibt es folgende Syntaxhilfe:\n"
+           + help;
+  }
+  else if (closurep(help))
+  {
+    help = funcall(help, this_object());
+  }
+  else
+  {
+    // wenn das Objekt keine Syntaxhilfe hat, braucht es das Kommando auch
+    // nicht.
+    notify_fail("Fuer " + name(WEN,1)
+                + " gibt es keine Syntaxhilfe.\n");
+    RemoveCmd(0,0, "_cmd_syntaxhelp");
+    return 0;
+  }
+  if (stringp(help) && sizeof(help))
+    PL->ReceiveMsg(help, MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
+                   "syntaxhilfe",0,this_object());
+
+  return 1;
+}
+
 protected void create()
 {
+  AddCmd("syntaxhilfe&@ID", #'_cmd_syntaxhelp,
+         "Fuer WAS moechtest Du eine Syntaxhilfe?\n",
+         "_cmd_syntaxhelp");
 }
 
 protected void create_super() {
   set_next_reset(-1);
-}     
+}
 
 varargs void AddCmd(mixed cmd, mixed func, mixed flag, mixed cmdid) {
  int i,j;
