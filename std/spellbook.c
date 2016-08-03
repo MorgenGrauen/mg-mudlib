@@ -390,10 +390,11 @@ UseSpell(object caster, string spell, mapping sinfo) {
     // Spruch ausfuehren.
     res=(int)call_other(this_object(),fname,caster,ski);
   }
-  if (!caster)
+  // TODO: Wenn die ausgefuehrte Spellfunktion eine 0 zurueckgibt, sollen jetzt
+  // noch notify_fails zum Zuge kommen koennen. Daher in diesem Fall auch 0
+  // zurueckgeben.
+  if (!res || !caster)
     return 1;
-  if (!res)
-    return 0;
 
   if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY))
   	{
