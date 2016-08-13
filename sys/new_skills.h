@@ -30,6 +30,7 @@
 #define ERFOLG                      1
 #define MISSERFOLG                  -1
 #define ABGEWEHRT                   2
+#define NICHT_ZUSTAENDIG            -2
 
 // ===== Properties des Gilden-Masters: =====
 
