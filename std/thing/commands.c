@@ -52,7 +52,7 @@
 
 private nosave mapping added_cmds;
 
-protected int _cmd_syntaxhelp(string str, string *args)
+protected int _cmd_syntaxhelp(string str, mixed *args)
 {
   mapping|closure restr;
   mixed help = QueryProp(P_SYNTAX_HELP);
