@@ -133,10 +133,7 @@ P_RESISTANCE          : Was fuer Resistenzen sind gesetzt? Enthaelt ein
 
 P_RESISTANCE_MODIFIER : Hier steht die Summe aller Modifikatoren, die 
                         Resistenzen und Anfaelligkeiten betreffen. Diese
-                        Propertie sollte NIE direkt manipuliert werden
-
-P_RESISTANCE_STRENGHTS: Huebscher Typo bei Realisierung von Anfaelligkeiten
-                        und Resistenzen eines Lebenwesens :-)
+                        Property sollte NIE direkt manipuliert werden
 
 P_RESISTANCE_STRENGTHS: Was fuer Resistenzen oder Anfaelligkeiten hat das
                         Lebewesen? Gesetzt wird ein Mapping mit den
