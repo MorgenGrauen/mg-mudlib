@@ -144,6 +144,12 @@ P_RESISTANCE_STRENGTHS: Was fuer Resistenzen oder Anfaelligkeiten hat das
                         Wert. Dieser Wert geht von -1 .. 0 .. 1, ist er
                         negativ, so ist das Lebewesen resistent, ist er 
                         positiv, so ist das Lebewesen anfaellig
+                        
+                        In Ruestungen werden Prozentwerte von -100
+                        (maximale Anfaelligkeit) bis zu +100 (maximale
+                        Resistenz) gesetzt. Fuer die Umrechnung in den
+                        verschiedenen Ruestungstypen siehe "man
+                        resistenzen".
 
 P_RESTRICTIONS        : Wird vor dem Zuecken oder Anziehen einer Waffe oder
                         Ruestung geprueft. Hier lassen sich diverse Werte

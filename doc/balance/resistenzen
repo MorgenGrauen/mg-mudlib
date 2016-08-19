@@ -24,7 +24,7 @@
        
        Bei Ruestungen darf maximal eine relative Resistenz von 
        (logischerweise) 100% eingetragen werden. 100% in der Property
-       P_RESISTANCE_STRENGTH einer Ruestung bedeuten folgende Resistenzen
+       P_RESISTANCE_STRENGTHS einer Ruestung bedeuten folgende Resistenzen
        im Traeger:
        
        AT_ARMOR,
@@ -37,6 +37,10 @@
        AT_MISC   : nicht gestattet!
 
        andere    : -0.05
+       
+       Achtung: In Ruestungen bedeuten +100 tatsaechlich eine Resistenz
+       und -100 eine Anfaelligkeit, also genau entgegengesetzt zu der
+       Property in Livings.
        
     d) Zur leichteren 'Identifizierbarkeit' sollten die ResistanceModifier
        sollten die gesetzten Modifier auch in dem setzenden Objekt als
