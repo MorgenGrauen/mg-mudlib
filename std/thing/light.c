@@ -46,7 +46,7 @@ static int _set_light( int light )
       light = 100;
     else if (light < -100)
       light = -100;
-   
+
     while ( objectp(env = environment(env)) )
         // Ja. Man ruft die _set_xxx()-Funktionen eigentlich nicht direkt auf.
         // Aber das Lichtsystem ist schon *so* rechenintensiv und gerade der
@@ -56,7 +56,35 @@ static int _set_light( int light )
         //
         // Tiamak
         env->_set_last_content_change();
-    
+
     return Set( P_LIGHT, light, F_VALUE);
 }
 
+
+//                       ##############
+//######################## Lichttypen ############################
+//                       ##############
+
+// Lichttypen pruefen
+varargs int CheckLightType(int lighttype, int mode)
+{
+  int my_light_type = QueryProp(P_LIGHT_TYPE);
+
+  switch( mode )
+  {
+    // mind. alle angegebenen muessen vertreten sein
+    case LT_CHECK_ALL:
+      return ((lighttype & my_light_type) == lighttype);
+     // Genau diese Typen muessen vertreten sein.
+    case LT_CHECK_MATCH:
+      return (lighttype == my_light_type);
+    // Es darf kein Typ vertreten sein.
+    case LT_CHECK_NONE:
+      return !(lighttype & my_light_type);
+    // mind. einer der uebergebenen Typen muss vertreten sein
+    case LT_CHECK_ANY:
+    default:
+      return (lighttype & my_light_type);
+  }
+  return 0;
+}
