@@ -12,13 +12,16 @@ grafik
      Rufst Du den Befehl ohne Parameter auf, dann wird Dir angezeigt,
      ob Du Grafiken sehen moechtest oder nicht.
 
-     *** ACHTUNG ***
+     Hinweis:
      Dieser Befehl wurde am 18. Oktober 2005 eingefuehrt. Daher
      ist davon auszugehen, dass die Einstellung erst nach und nach
      an den jeweiligen Stellen im MorgenGrauen beruecksichtigt wird.
-     Wenn Dir eine solche Stelle auffaellt, wo es noch nicht 
-     beruecksichtigt wird, dann schreibe doch bitte eine E-Mail an
-     Zook, Ennox oder Bugfix
-     
+     Wenn Dir eine Stelle auffaellt, wo es noch nicht beruecksichtigt 
+     wird, dann setz doch dort bitte einen Fehler ab oder wende Dich
+     per Mail an den zustaendigen (Regions-)Magier.
+
+ SIEHE AUCH:
+     bug, post
+
  LETZE AENDERUNG:
-     2009-09-10 von Zook
+     2016-08-16 von Arathorn
