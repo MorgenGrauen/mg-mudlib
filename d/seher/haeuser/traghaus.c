@@ -51,6 +51,10 @@ void create()
 richtiges Seherhaus, in das Du sofort einziehen kannst. Es ist allerdings\n\
 noetig, dass der Magier, der den Raum erschaffen hat, in dem Du es abstellen\n\
 moechtest, dem Bau eines Seherhauses in diesem Raum zustimmt.\n");
+   SetProp(P_INFO, break_string(
+     "Du kannst das Haus mit dem Befehl 'lass haus fallen' abstellen und "
+     "dann mit 'giesse haus' Dein Seherhaus spriessen lassen.",78));
+   SetProp(P_SYNTAX_HELP, QueryProp(P_INFO));
    SetProp(P_NAME, "Haus");
    SetProp(P_NEVERDROP, 1);
    SetProp(P_GENDER, 0);
