@@ -57,7 +57,7 @@ moechtest, dem Bau eines Seherhauses in diesem Raum zustimmt.\n");
    SetProp(P_SYNTAX_HELP, QueryProp(P_INFO));
    SetProp(P_NAME, "Haus");
    SetProp(P_NEVERDROP, 1);
-   SetProp(P_GENDER, 0);
+   SetProp(P_GENDER, NEUTER);
    AddId(({"haus", "sehe\rhaus"}));
    SetProp(P_VALUE, 0);
    SetProp(P_WEIGHT, 0);
