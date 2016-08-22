@@ -106,7 +106,7 @@ string get_mag(mixed dest)
   return ret;
 }
 
-int move(mixed dest, int method)
+varargs int move(object|string dest, int method)
 {
   int nix;
 
