@@ -102,7 +102,7 @@
 
 // prototypes
 
-void smart_log(string myname, string str);
+void smart_log(string myname, string str, object obj);
 int QueryGuest();
 int invis(string inform);
 int vis(string inform);

@@ -1267,139 +1267,118 @@ static int fehlerhilfe(string str) {
   return 1;
 }
 
-/** Setzt eine Fehlermeldung an Magier ab (Spielerkommando).
-  * Fragt nach der Fehlermeldung und liest sie via bug2() ein, fall der
-  * Spieler kein Argument angeben hat.
-  * \param[in] str optionale Spielereingabe der Fehlerbeschreibung
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see bug2(string)
-  */
-static int bug(string str) {
-  if (!(str=_unparsed_args())) {
-    write( "Wie sieht der Fehler denn aus?\n" );
-    input_to("bug2", INPUT_PROMPT, "]");
-    return 1;
+static varargs int ReportError2(string player_input, string error_type)
+{
+  if ( stringp(player_input) && sizeof(player_input) &&
+       player_input != "~q" && player_input != ".." )
+  {
+    object obj;
+    // Eingabe am : aufsplitten, da dieser als Trennzeichen verwendet wird,
+    // wenn sich die Eingabe auf ein bestimmtes Objekt beziehen soll. Das
+    // erste Element im Ergebnisarray wird dann als dessen ID aufgefasst,
+    // nach der weiter unten gesucht wird.
+    // Zusaetzlich Whitespace drumherum wegschneiden.
+    string *input_segments = regexplode(player_input,
+      "[[:blank:]]*:[[:blank:]]*", RE_OMIT_DELIM | RE_PCRE);
+
+    // Wenn mind. 2 Segmente erzeugt wurden, soll offenbar ein bestimmtes
+    // Objekt angesprochen werden, so dass dieses nun gesucht werden kann.
+    if ( sizeof(input_segments) > 1 )
+    {
+      // Findet sich hinter dem ersten : nur ein Leerstring, wird davon
+      // ausgegangen, dass da keine Meldung kam.
+      // Fuer seltene Sonderfaelle wie mehrfache ":" wird noch geprueft, ob
+      // von der rekonstruierten Meldung abzueglich der ":" ein Leerstring
+      // uebrigbleibt. Wenn ja, war es wohl wirklich eine unbrauchbare
+      // Meldung, und es wird eine neue angefordert.
+      if ( input_segments[1] == "" &&
+           implode(input_segments[1..],"") == "" )
+      {
+        _notify("Du hast hinter dem : nix eingegeben, bitte nochmal "
+          "versuchen.\n", MA_UNKNOWN);
+        // Eine neue Eingabe wird aber nur angefordert, wenn der aktuelle
+        // Input ohnehin schon aus einem input_to()-Durchlauf stammte.
+        // In diesem Fall ist extern_call() wahr.
+        if ( extern_call() )
+          input_to("ReportError2", INPUT_PROMPT, "]", error_type);
+        return 1;
+      }
+
+      // ID kleinschreiben, denn nur eine solche kann von Spielern eingegeben
+      // werden, um ein Objekt anzusprechen, wir haben aber die Eingabe
+      // per _unparsed_args(0) geholt, d.h. ggf. mit Grossbuchstaben.
+      string obnam = lower_case(input_segments[0]);
+
+      // Und das Objekt suchen, dabei zuerst im env() schauen. Nur present()
+      // ginge auch, wuerde aber zuerst im Inv suchen, was aber nicht
+      // gewuenscht ist.
+      obj = present(obnam, environment(this_object())) || present(obnam);
+
+      // Wenn das Objekt gefunden wird, wird nur der Teil hinter dem ersten
+      // : rekonstruiert und als Fehlermeldung abgesetzt.
+      // Gibt es ein solches Objekt nicht, wird der Raum als Fallback
+      // verwendet. Die Eingabe vor dem : gehoerte dann offenbar zur Meldung
+      // dazu, und es wird dann spaeter die gesamte Spielereingabe im Original
+      // als Fehlermeldung abgesetzt.
+      if ( objectp(obj) )
+        player_input = implode(input_segments[1..],":");
+      else
+        obj = environment(this_object());
+    }
+    else
+    {
+      // Hat der Spieler keinen : verwendet, verwenden wir das Bezugsobjekt
+      // oder den aktuellen Raum.
+      obj = QueryProp(P_REFERENCE_OBJECT);
+      if (!objectp(obj) || !present(obj))
+        obj = environment(this_interactive());
+    }
+    _notify("Vielen Dank fuer die Hilfe.\n", MA_UNKNOWN);
+    smart_log(error_type, player_input, obj);
   }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("BUGS",str);
+  else
+    _notify("Eingabe abgebrochen.\n", MA_UNKNOWN);
   return 1;
 }
 
-/** Setzt eine Fehlermeldung an Magier ab (Spielerkommando).
-  * Lies Fehlerbeschreibung ein und speichert sie ab.
-  * \param[in] str Spielereingabe der Fehlerbeschreibung.
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see bug(string)
-  */
-static int bug2(string str) {
-  if (!str || str == "") {
-    write("Bug abgebrochen...\n");
-    return 1;
-  }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("BUGS",str);
-  return 1;
-}
+static int ReportError(string player_input)
+{
+  // ungeparstes Kommando einlesen, um die Meldung unmodifiziert zu erhalten
+  player_input = _unparsed_args(0);
+  string pl_msg, error_type;
 
-/** Setzt eine Typomeldung an Magier ab (Spielerkommando).
-  * Fragt nach der Typomeldung und liest sie via typo2() ein, fall der
-  * Spieler kein Argument angeben hat.
-  * \param[in] str optionale Spielereingabe der Typobeschreibung
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see typo2(string)
-  */
-static int typo(string str) {
-  if (!(str=_unparsed_args())) {
-    write( "Wo ist denn der Tippfehler?\n" );
-    input_to("typo2", INPUT_PROMPT, "]");
-    return 1;
+  // Anhand des eingegebenen Kommandoverbs wird der Typ der Fehlermeldung
+  // ermittelt.
+  switch(query_verb())
+  {
+    case "idee":
+      pl_msg = "Was fuer eine Idee hast Du denn?\n";
+      error_type = "IDEA";
+      break;
+    case "md":
+    case "detail":
+      pl_msg = "Fuer welches Detail fehlt denn die Beschreibung?\n";
+      error_type = "DETAILS";
+      break;
+    case "typo":
+      pl_msg = "Wo ist denn der Tippfehler?\n";
+      error_type = "TYPO";
+      break;
+    case "bug":
+      pl_msg = "Wie sieht der Fehler denn aus?\n";
+      error_type = "BUGS";
+      break;
   }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("TYPO",str);
-  return 1;
-}
 
-/** Setzt eine Fehlermeldung an Magier ab (Spielerkommando).
-  * Liest die Typobeschreibung ein und speichert sie.
-  * \param[in] str Spielereingabe der Typobeschreibung
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see typo(string)
-  */
-static int typo2(string str) {
-  if (!str || str == "") {
-    write("Typo abgebrochen...\n");
-    return 1;
+  // Hat der Spieler etwas eingegeben, wird die Eingabe direkt an die Hilfs-
+  // funktion weitergereicht. Ansonsten wird eine Meldung ausgegeben und die
+  // Eingabe manuell per input_to() abgefragt.
+  if ( stringp(player_input) && sizeof(player_input) )
+  {
+    return ReportError2(player_input, error_type);
   }
-  smart_log("TYPO",str);
-  write("Vielen Dank fuer die Hilfe.\n");
-  return 1;
-}
-
-/** Setzt eine Idee an Magier ab (Spielerkommando).
-  * Fragt nach der Idee und liest sie via idee2() ein, falls der
-  * Spieler kein Argument angeben hat.
-  * \param[in] str optionale Spielereingabe der Idee
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see idea2(string)
-  */
-static int idea(string str) {
-  if (!(str=_unparsed_args())) {
-    write( "Was fuer eine Idee hast Du denn?\n" );
-    input_to("idea2",INPUT_PROMPT, "]");
-    return 1;
-  }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("IDEA",str);
-  return 1;
-}
-
-/** Setzt eine Idee an Magier ab (Spielerkommando).
-  * Liest die Idee ein und speichert sie.
-  * \param[in] str Spielereingabe der Idee
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see idea(string)
-  */
-static int idea2(string str) {
-  if (!str || str == "") {
-    write("Idee abgebrochen...\n");
-    return 1;
-  }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("IDEA",str);
-  return 1;
-}
-
-/** Setzt ein fehlendes Detail an Magier ab (Spielerkommando).
-  * Fragt nach dem Detail und liest es via idee2() ein, falls der
-  * Spieler kein Argument angeben hat.
-  * \param[in] str optionale Spielereingabe des fehlenden Details
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see md2(string)
-  */
-static int md(string str) {
-  if (!(str=_unparsed_args())) {
-    write( "Fuer welches Detail fehlt denn die Beschreibung?\n" );
-    input_to("md2",INPUT_PROMPT, "]");
-    return 1;
-  }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("DETAILS",str);
-  return 1;
-}
-
-/** Setzt ein fehlendes Detail an Magier ab (Spielerkommando).
-  * Liest das Detail ein und speichert es.
-  * \param[in] str Spielereingabe des fehlenden Details.
-  * \return 1 bei Erfolg, 0 sonst.
-  * @see md(string)
-  */
-static int md2(string str) {
-  if (!str || str == "") {
-    write("Details abgebrochen...\n");
-    return 1;
-  }
-  write("Vielen Dank fuer die Hilfe.\n");
-  smart_log("DETAILS",str);
+  ReceiveMsg(pl_msg, MT_NOTIFICATION);
+  input_to("ReportError2", INPUT_PROMPT, "]", error_type);
   return 1;
 }
 
@@ -1411,27 +1390,8 @@ static int md2(string str) {
   * \param[in] myname Art der Spielermeldung (DETAILS, BUG, TYPO, MD)
   * @see md(string), idea(string), bug(string), typo(string)
   */
-void smart_log(string myname, string str)
+void smart_log(string myname, string str, object obj)
 {
-  string obnam;
-  object obj;
-
-  string *tmp = explode(str, ":");
-  if (sizeof(tmp) > 1) {
-    obnam = lower_case(trim(tmp[0]));
-    obj = present(obnam, environment()) || present(obnam);
-    if (!obj) {
-      obj = environment(this_object());
-    }
-    else // nur hier Teil vor dem : wegschneiden
-      str = trim(implode(tmp[1..],":"));
-  }
-  else {
-    obj = QueryProp(P_REFERENCE_OBJECT);
-    if (!obj || !present(obj))
-      obj = environment(this_interactive());
-  }
-
   mapping err = ([ F_PROG: "unbekannt",
            F_LINE: 0,
            F_MSG: str,
@@ -4042,12 +4002,12 @@ static mixed _query_localcmds()
            ({"selbstloeschung","self_delete",0,0}),
            ({"spielpause","spielpause",0,0}),
            ({"spieldauer","spieldauer",0,0}),
-           ({"idee","idea",0,0}),
-           ({"typo","typo",0,0}),
-           ({"bug","bug",0,0}),
+           ({"idee","ReportError",0,0}),
+           ({"typo","ReportError",0,0}),
+           ({"bug","ReportError",0,0}),
            ({"fehler","fehlerhilfe",0,0}),
-           ({"md","md",0,0}),
-           ({"detail","md",0,0}),
+           ({"md","ReportError",0,0}),
+           ({"detail","ReportError",0,0}),
            ({"vorsicht","toggle_whimpy",0,0}),
            ({"stop","stop",0,0}),
            ({"kwho","kwho",0,0}),
