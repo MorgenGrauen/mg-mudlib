@@ -368,7 +368,7 @@ public string LogReportedError(mapping err)
     issue->count=1;
     issue->loadname = load_name(err[F_OBJ]);
     issue->message = err[F_MSG];
-    issue->obj = object_name(err[F_OBJ]);
+    issue->obj = objectp(err[F_OBJ]) ? object_name(err[F_OBJ]) : err[F_OBJ];
     // Normalisieren auf fuehrenden / und kein .c
     if (err[F_PROG]!="unbekannt")
         issue->prog = load_name(err[F_PROG]);

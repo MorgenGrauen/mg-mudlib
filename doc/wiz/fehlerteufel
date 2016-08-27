@@ -51,11 +51,14 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
   zu diesem Objekt gehoerenden Eintraege auf einmal geloescht, z.B.
     fehlerloeschen d/unterwelt/raeume/wald3
 
-- fehlereingabe <objekt>
-  Hiermit laesst sich per Hand ein Eintrag fuer das angegebene Objekt im
-  Fehlerteufel erstellen. Das Objekt kann mit einer seiner IDs oder seinem
-  vollstaendigen Objektnamen angegeben werden. Wird kein Objekt angegeben,
-  wird die Umgebung des Magiers als Objekt genutzt. Bsp:
+- fehlereingabe <objekt|dateiname>
+  Hiermit laesst sich per Hand ein Eintrag fuer das angegebene Objekt oder
+  die angegebene Datei im Fehlerteufel erstellen. Ein Objekt kann mit einer
+  seiner IDs oder seinem  vollstaendigen Objektnamen angegeben werden. Falls
+  ein Dateiname eingegeben wird, muss die Datei existieren, damit daran ein
+  Fehler abgesetzt werden kann. Wird kein Objekt angegeben, wird die
+  Umgebung des Magiers als Objekt genutzt. Dies ist ebenso der Fall, wenn
+  das Objekt oder die Datei nicht existieren. Bsp:
     fehlereingabe seil
     fehlereingaeb /obj/seil#5635
 

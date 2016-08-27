@@ -93,11 +93,11 @@ protected int _feingabe_fertig(string arg) {
 }
 
 public int CmdFehlerEingabe(string arg) {
-  object target;
+  object|string target;
 
   if (feingabe)
   {
-    tell_object(PL, "Du gibts doch bereits einen Fehler ein!\n");
+    tell_object(PL, "Du gibst doch bereits einen Fehler ein!\n");
     return 1;
   }
   feingabe = ([]);
@@ -107,10 +107,17 @@ public int CmdFehlerEingabe(string arg) {
     target = present(arg);
     if (!target)
       target = find_object(arg); // vielleicht direkt angegeben?
+    // Vielleicht gibt es ja eine Datei, die so heisst?
+    if (!target && file_size(arg) >= 0)
+      target = arg;
   }
   // wenn nix gefunden, Environment des Magiers nehmen.
   if (!target)
+  {
+    tell_object(PL, break_string("Kein Objekt und keine Datei "
+      "angegeben, Fehler wird fuer den Raum eingetragen.",78));
     target = environment(environment());
+  }
 
   feingabe[F_OBJ] = target;
 
