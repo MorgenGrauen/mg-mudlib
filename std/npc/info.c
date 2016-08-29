@@ -232,7 +232,7 @@ public int do_frage(string text)
 
   // Replacements gehen auch in der Antwort des NPC. Das gibt den Antworten 
   // eine persoenliche Note, und so teuer is das auch nicht :)
-  answer = replace_personal(answer, this_player(), 1);
+  answer = replace_personal(answer, ({this_player()}), 1);
 
   if( indent=info[1] )
   {
@@ -244,7 +244,7 @@ public int do_frage(string text)
                                  this_object());
        if (stringp(silent))
        {
-          silent=replace_personal(silent, this_player(), 1);
+          silent=replace_personal(silent, ({this_player()}), 1);
           send_room(environment(), silent, MT_LISTEN, "frage",
                     Name(WER,2)+" ", ({this_player()}));
        }
@@ -266,7 +266,7 @@ public int do_frage(string text)
                                  this_object());
        if (stringp(silent))
        {
-          silent=replace_personal(silent, this_player(), 1);
+          silent=replace_personal(silent, ({this_player()}), 1);
           send_room(environment(), silent, MT_LISTEN, "frage",
                     Name(WER,2)+" ", ({this_player()}) );
        }
