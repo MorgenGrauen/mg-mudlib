@@ -71,13 +71,13 @@ protected void create()
     // /std/npc in npc1 und npc2 dann in npc3 beim npc1::create();
     // npc2:create(); im zweiten create() die Infos nicht
     // ueberschrieben/geloescht werden.
-    if (!mappingp(infos)) {
-        infos = ([
-            DEFAULT_INFO:"schaut Dich fragend an.\n";0;
-            "schaut @WEN fragend an.\n";0,
-            DEFAULT_NOINFO:"moechte Dir nicht antworten.\n";0;
-            "verweigert @WEM die Antwort.\n";1
-            ]);
+    if (!mappingp(infos))
+    {
+        infos = m_allocate(20,4);
+        AddInfo(DEFAULT_INFO, "schaut Dich fragend an.\n", 0,
+                              "schaut @WEN1 fragend an.\n", 0);
+        AddInfo(DEFAULT_NOINFO, "moechte Dir nicht antworten.\n", 0,
+                                "verweigert @WEM1 die Antwort.\n", 1);
     }
 }
 
