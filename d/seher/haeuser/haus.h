@@ -115,7 +115,7 @@
 
 varargs void Save(int crunched);
 void Load();
-varargs string QueryOwner(int withNr);
+string QueryOwner();
 varargs string SetOwner(string o, int nr);
 protected void AddExitNoCheck(mixed cmd, mixed dest);
 void RemoveExitNoCheck(mixed cmd);

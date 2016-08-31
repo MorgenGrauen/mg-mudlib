@@ -129,7 +129,7 @@ Save(int crunched)
          " broken) objects in room "+
          object_name(this_object()) + ".");
 
-  save_object( HAUSSAVEPATH+QueryOwner(1));
+  save_object( HAUSSAVEPATH+QueryOwner());
 
   Set(P_DETAILS, o1, F_VALUE);
   Set(P_READ_DETAILS, o2, F_VALUE);
@@ -143,7 +143,7 @@ Load()
   mixed prop;
   int i;
 
-  restore_object( HAUSSAVEPATH+QueryOwner(1));
+  restore_object( HAUSSAVEPATH+QueryOwner());
 
   // Details und Kommandos werden beim Speichern de-dupliziert und in einem
   // speziellen Format abgespeichert (s. PCrunch() im Hausverwalter). Sie
@@ -258,7 +258,7 @@ static int reload_error(string file, mixed data,  string message)
         broken_furniture+=([file:data]);
         log_file("seher/haeuser/autoloader_error",
                  dtime(time())+"\n"+
-                 break_string(object_name(this_object())+" ("+QueryOwner(1)+")",78, " FILE: ",1)+
+                 break_string(object_name(this_object())+" ("+QueryOwner()+")",78, " FILE: ",1)+
                  break_string(message, 78, " MSG:  ",1)+
                  break_string(sprintf("%O", data),78, " DATA: ",1)+"\n");
                  
