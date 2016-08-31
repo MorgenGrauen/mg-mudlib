@@ -196,7 +196,7 @@ static int saeuber_cmd(string str){
       text="Du reinigst die Vitrine gruendlich. Das wurde auch langsam "
       "Zeit!";
       if(getuuid(TP)!=besitzer)
-        text+="Du fragst Dich, wieso Du fremde Moebel reinigst.";
+        text+=" Du fragst Dich, wieso Du fremde Moebel reinigst.";
 
       write(BS(text));
       say(BS(TPN+" reinigt die Vitrine gruendlich. Das wurde auch langsam "
