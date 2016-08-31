@@ -53,6 +53,7 @@ inherit "/std/living/helpers";
 #define NEED_PROTOTYPES
 #include <player/skills.h>
 #include <player/gmcp.h>
+#include <player/base.h>
 #undef NEED_PROTOTYPES
 #include <player.h>
 #include <properties.h>
