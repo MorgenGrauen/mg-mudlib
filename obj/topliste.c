@@ -3,7 +3,7 @@ inherit "/std/thing";
 #include <properties.h>
 #include <language.h>
 
-// ({Funktionsname, ({argumente}), tttel })
+// ({Funktionsname, ({argumente}), toplistentitel })
 nosave <string|mixed*>* watdenn;
 
 string _liesliste();
