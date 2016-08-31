@@ -1009,6 +1009,7 @@ static int CatchNewsError(int err,string text4minus3) {
     case -3: write(text4minus3+"\n"); return 0;
     default: write("Interner Fehler "+err+", Erzmagier verstaendigen!\n"); return 0;
   }
+  return 0;
 }
 
 static varargs int schreib(string str,string pretext,int called_by_itself,
