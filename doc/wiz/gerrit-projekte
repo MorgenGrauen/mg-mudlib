@@ -24,3 +24,17 @@ Nur ueber die Anlage durch einen EM lassen sich Verzeichnisse ausserhalb von
 /d/, /p/service und /players/ sowie Verzeichnisse fuer nicht-existente Magier
 erzeugen.
 
+Hinweise fuer Erzmagier / Admins
+--------------------------------
+- Beim Erstellen von Projekten per Weboberflaeche oder Kommandozeile immer
+  dran denken, das richtig Rechtetemplat auszuwaehlen:
+  fuer d/<region>/<magier>/bla also d/<region>
+  Weiterhin sollte in /d/ jeweils die Gruppe u_<magier> "Owner"-Rechte
+  auf refs/* erhalten.
+- Laesst man ein Projekt die Rechte von All-Projects (dem glob. Default) erben
+  (z.B. wenn Projekt ein secure/ enthaelt):
+  bitte _vorher_ den Gruppen Erzmagier, u_<magier> und ggf. dem passenden
+  RM-* "Owner"-Rechte auf refs/* geben.
+- Beim Loeschen von Projekten in gerrit muss das Projekt haendisch auch
+  in ~/gerrit/ geloescht werden.
+
