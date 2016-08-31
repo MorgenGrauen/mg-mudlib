@@ -28,8 +28,12 @@ BEMERKUNGEN:
      ansprechbar sein (gueltige ID, nicht unsichtbar), da das durch derzeitige
      Entfluchmoeglichkeiten vorausgesetzt wird.
 
-SIEHE AUCH:
-     /std/armour.c, /std/weapon.c
+     Flueche koennen ein P_LEVEL 1-100 haben, welches die Schwierigkeit des
+     Enfluchens festlegt. Der Klerus behandelt das nicht linear.
 
-----------------------------------------------------------------------------
-Last modified: Sun May 19 14:45:28 1996 by Wargon
+SIEHE AUCH:
+     Eigenschaften: P_LEVEL
+     Aehnlich:      AddClass (CL_CURSE)
+     Code:         /std/armour, /std/weapon, /gilden/files.klerus/prayermaster
+
+25. Aug 2016 Gloinson

@@ -10,7 +10,7 @@ BESCHREIBUNG:
    Eintraege koennen mit dieser Funktion (vorzeitig) wieder entfernt werden.
 
 ARGUMENTE:
-  - string key:
+  - string look:
     Schluesselwort, unter dem der Eintrag, den man entfernen moechte, von
     AddExtraLook() registriert wurde.
 

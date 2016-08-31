@@ -12,3 +12,4 @@ SP_RECURSIVE Defend
 SP_REDUCE_ARMOUR Defend
 SP_SHOW_DAMAGE Defend
 TestIgnoreExt TestIgnore
+QueryPreferredEnemy QueryPreferedEnemy

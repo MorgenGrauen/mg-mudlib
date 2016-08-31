@@ -52,3 +52,4 @@ SI_PREPARE_TIME skill_info_liste
 SI_ATTACK_BUSY_MSG skill_info_liste
 SI_NO_ATTACK_BUSY skill_info_liste
 SI_ATTACK_BUSY_AMOUNT skill_info_liste
+P_PREFERRED_ENEMY P_PREFERED_ENEMY
