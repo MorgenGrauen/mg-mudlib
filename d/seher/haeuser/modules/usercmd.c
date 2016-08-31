@@ -10,12 +10,13 @@
 #include <properties.h>
 #include <wizlevels.h>
 #include <thing/properties.h>
+#include <thing/commands.h>
 
 private string ucFilter(string str);
 private string ucText(string str);
 private void splitCmd(string *cmd, string *verb, string *para);
 
-create()
+protected void create()
 {
   Set(H_COMMANDS, SAVE, F_MODE);
   Set(H_COMMANDS, ([]));
