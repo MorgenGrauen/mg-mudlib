@@ -119,6 +119,7 @@ string QueryOwner();
 varargs string SetOwner(string o, int nr);
 protected void AddExitNoCheck(mixed cmd, mixed dest);
 void RemoveExitNoCheck(mixed cmd);
+int allowed_check(object _test);
 
 #endif	/* __HAUS_H_PROTOS__ */
 #endif	/* NEED_PROTOTYPES */
