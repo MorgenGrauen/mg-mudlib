@@ -1810,7 +1810,8 @@ varargs string replace_personal(string str, mixed *obs, int caps) {
   parts = regexplode(str, "@WE[A-SU]*[0-9]");
   i = sizeof(parts);
 
-  if (i>1) {
+  if (i>1)
+  {
     int j, t;
     closure *name_cls;
 
@@ -1823,7 +1824,8 @@ varargs string replace_personal(string str, mixed *obs, int caps) {
       else if (stringp(obs[j]))
         name_cls[j] = obs[j];
 
-    while ((i-= 2)>0) {
+    while ((i-= 2)>0)
+    {
       int ob_nr;
       // zu ersetzendes Token in Fall und Objektindex aufspalten
       ob_nr = parts[i][<1]-'1';
@@ -1889,27 +1891,36 @@ varargs string replace_personal(string str, mixed *obs, int caps) {
         default:
           continue;
       }
-      
+
       // wenn tmp ein String war, weisen wir es hier pauschal zu
       if (stringp(tmp))
         parts[i] = tmp;
 
       // auf Wunsch wird nach Satzenden gross geschrieben
       if (caps)
-        switch (parts[i-1][<2..]) {
-          case ". ":  case "! ":  case "? ":
-          case ".":   case "!":   case "?":
-          case ".\n": case "!\n": case "?\n":
-          case "\" ": case "\"\n":
+      {
+        // Wenn das vorhergehende parts[i] == "" ist, sind wir am Anfang vom
+        // String und dies wird wie ein Satzende vorher behandelt.
+        if (parts[i-1] == "")
             parts[i] = capitalize(parts[i]);
-            break;
+        else
+        {
+          switch (parts[i-1][<2..])
+          {
+            case ". ":  case "! ":  case "? ":
+            case ".":   case "!":   case "?":
+            case ".\n": case "!\n": case "?\n":
+            case "\" ": case "\"\n":
+              parts[i] = capitalize(parts[i]);
+              break;
+          }
         }
+      }
     }
     return implode(parts, "");
   }
   return str;
 }
-
 
 //replacements for dropped efuns in LD
 #if !__EFUN_DEFINED__(extract)
