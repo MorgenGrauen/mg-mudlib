@@ -8,16 +8,16 @@ Was ist Git?
   anbietet:
   https://code.google.com/p/gitextensions/
 
+  Die Repositories auf dem MG-Rechner werden von einer Software namens gerrit
+  verwaltet. Wie man diese benutzt, koennt ihr in den Manpage gerrit-*
+  nachlesen. Am besten fangt ihr mit 'man gerrit' an.
 
 SIEHE AUCH
-  git-repositories: Repository-Verwaltung im Mud
+  gerrit
   git-howto: Wie git benutzt wird
   git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
   git-kooperation: Erweiterung fuer Fortgeschrittene zu git-workflow
-  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  gerrit-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
   git-faq: haeufig gestellte Fragen/Probleme
   git-links: Verweise ins WWW
-
-LETZTE AeNDERUNG:
-  25.03.2011, Zesstra
 

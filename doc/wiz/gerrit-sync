@@ -3,8 +3,7 @@ Synchronisation zwischen git-Repositories und Mud
 
 I. Push von aussen ins Mud.
 
-Am Ende es Pushes (im sog. post-update hook) wird ein Script gestartet,
-was folgendes macht:
+Am Ende es Pushes wird ein Script gestartet, was folgendes macht:
 
 1) Wenn fuer die Synchronisation mit dem Mud aktiv ist, wird mit der Mudlib
    gesynct. Wenn nicht: Ende
@@ -31,19 +30,17 @@ was folgendes macht:
 
 II. Automatischer regelmaessiger Commit vom Mud
 
-Jeden Tag um 05:11 wird via cronjob und das Script ~/scripts/git-autocommit
-fuer jedes Repo in ~/git-repositories/ das unter I. beschriebene Script
-~/scripts/git-sync2lib ausgefuehrt.
+Jeden Tag um 05:11 wird via cronjob und das Script ~/scripts/gerrit-autocommit
+fuer jedes Repo in ~/gerrit/ das unter I. beschriebene Script
+~/scripts/gerrit-sync2lib ausgefuehrt.
 
 
 III. Import von Verzeichnissen aus dem Mud
 
 Zu jeder vollen Stunde wird in allen Verzeichnissen unter /d/, /p/ und
-/players/ die Datei 'git-mud-import' gesucht. Alle Verzeichnisse, in denen
-diese existiert, werden in gitolite importiert und gleichzeitig auch ein Clone
-in ~/git-repositories/ erstellt, d.h. dass die Synchronisationsmassnahmen
+/players/ die Datei 'gerrit-create-project' gesucht. Alle Verzeichnisse, in denen
+diese existiert, werden in gerrit importiert und gleichzeitig auch ein Clone
+in ~/gerrit/ erstellt, d.h. dass die Synchronisationsmassnahmen
 unter I. und II. fuer dieses neue git-Repository aktiv sind.
 
-LETZTE AeNDERUNG:
-05.04.2011, Zesstra
 

@@ -5,11 +5,11 @@ Haeufig gestellte Fragen zum Thema Git im Morgengrauen
 * synchronisiert wird?
   Eine Synchronisation findet automatisch statt, wenn man einen Import eines
   Verzeichnisses aus dem Mud durchfuehrt.
-  Macht man dies nicht, sondern erstellt sich unabhaengig vom Mud das Repo,
-  muss man sich an einen Erzmagier mit Shellzugang wenden.
+  Macht man dies nicht, sondern ein Erzmagier erstellt unabhaengig vom Mud ein
+  Repo, muss dieser wissen, was er tut und wie man das einrichtet. ;-)
 
 * Aufnahme als Regionsmitarbeiter/Regionsmagier/Weiser/Erzmagier/Gott
-  Dies ist zurzeit nur durch einen EM moeglich.
+  Dies ist zurzeit nur durch einen EM+ moeglich.
 
 * Wie benutze ich Git unter Windows?
   GitHub hat eine Anleitung fuer msysgit, welche im wesentlichen auch fuers MG
@@ -31,13 +31,13 @@ Haeufig gestellte Fragen zum Thema Git im Morgengrauen
   > git log -p --color-words
   Alternativ kann man .git/config folgende Parameter setzen:
   [color]
-  	color.diff=auto
-	color.grep=auto
-	color.status=auto
+    color.diff=auto
+    color.grep=auto
+    color.status=auto
 
   Wenn man es generell bunt haben will, setzt man einfach
   [color]
-  	color.ui=auto
+    color.ui=auto
 
   in die Konfigurationsdatei.
 
@@ -73,11 +73,9 @@ Wie kann ich ein Changelog anzeigen lassen?
 Wie kann ich ein Changelog mit Diff anzeigen lassen?
 
 SIEHE AUCH:
-  git-repositories: Repository-Verwaltung im Mud
+  gerrit: Repository-Verwaltung im Mud
   git-howto: Wie git benutzt wird
   git-workflow: Ein simples Beispiel eines Arbeitsflusses mit Git
-  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  gerrit-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
   git-links: Verweise ins WWW
-
-10.03.2015 Amaryllis
 

@@ -18,8 +18,11 @@ Welche Doku existiert im MG?
 Welche Doku liefert gerrit?
 ---------------------------
 Diese findest Du im Web unter dem Reiter "Documentation" bzw. unter der URL:
-https://anonymizer.zesstra.de:8443/Documentation/index.html
+https://mg.mud.de:8443/Documentation/index.html
 Ganz wichtig ist sicher diese, welche erklaert, die man Aenderungen hochladen
 kann:
-https://anonymizer.zesstra.de:8443/Documentation/user-upload.html
+https://mg.mud.de:8443/Documentation/user-upload.html
 
+SIEHE AUCH:
+  git
+  

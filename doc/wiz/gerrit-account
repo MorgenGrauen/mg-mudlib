@@ -2,10 +2,10 @@ Wie bekomme ich einen Account in gerrit?
 ----------------------------------------
 
 1) Ihr habt einen Github- oder Google-Account
-Dann geht ihr auf https://anonymizer.zesstra.de:8443/ und benutzt oben rechts
+Dann geht ihr auf https://mg.mud.de:8443/ und benutzt oben rechts
 "Sign-in".
 Anschliessend geht ihr oben rechts in die Einstellungen eures Accounts oder
-hierhin: https://anonymizer.zesstra.de:8443/#/settings/
+hierhin: https://mg.mud.de:8443/#/settings/
 Dort koennt ihr euren SSH-Key hinterlegen und einige andere Einstellungen
 vornehmen. Im Falle des Login via Google koennt ihr (glaube ich) auch euren
 Usernamen einmalig festlegen. In jedem Fall koennt ihr einen Anzeigenamen
@@ -22,11 +22,11 @@ Dieser kann einen Benutzer anlegen. In diesem Fall koennt ihr gerrit aber
 NICHT ueber die Weboberflaeche benutzen, nur via git + ssh. Auch muss dann
 der Gerrit-Admin euren SSH-Key eintragen.
 
-Und da ich immer noch ein self-signed Zertifikat verwende: es hat den
-SHA256-Fingerprint:
-EC:BF:F3:D1:02:86:5F:00:1A:3A:1D:7C:47:AB:C6:6F:FB:9C:D2:3F:EA:DC:47:
-86:D6:40:94:24:18:A2:67:D7
-
+Bis auf weiteres ist das Zertifikat von gerrit selbst-signiert und hat die
+folgenden Fingerprints:
+SHA1: 04:F5:38:C9:F6:57:6A:FB:A1:0A:66:9A:3F:9F:F6:30:DB:B4:FC:3A
+SHA256: 8C:8B:FD:01:DD:22:2F:07:A5:0A:E6:9B:BA:CD:0A:21:
+        DF:B6:5C:CB:41:C4:60:D3:5A:04:92:33:B9:5F:51:F7
 
 Abschnitt fuer Erzmagier / Admins
 ---------------------------------

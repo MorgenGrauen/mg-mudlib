@@ -16,7 +16,7 @@ Falls ich mit anderen Leuten meinen Code teilen will, dieser aber nicht im
 MUD im 'master'-Zweig auftauchen (also als Dateiaenderung fuer alle Spieler
 gelten) soll, kann ich auch nur meinen Zweig selbst ins MUD schicken:
 > git checkout neue_kampftaktik
-> git push -u git@mg.mud.de:/dings/bums neue_kampftaktik
+> git push -u ssh://mgg/dings/bums neue_kampftaktik
 
 Als Antwort duerfte sowas wie:
  * [new branch]      neue_kampftaktik -> neue_kampftaktik
@@ -53,7 +53,7 @@ fuehren, damit die Spieler was davon haben.
 Wenn wir also irgendwann diesen Merge durchgefuehrt haben und der Zweig
 'neue_kampftaktik' unnoetig geworden ist, koennen wir ihn auf der Seite
 des MUDs mit:
-> git push git@mg.mud.de:/dings/bums :neue_kampftaktik
+> git push ssh://mgg/dings/bums :neue_kampftaktik
 aufraeumen. Der einzige Unterschied zum Erstellen des Zweiges auf MUD-Seite
 ist tatsaechlich der ':' vor dem Namen des Zweigs.
 Achtung: das geht momentan (noch) nicht und auf 'master' ohnehin nie.

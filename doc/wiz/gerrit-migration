@@ -3,13 +3,13 @@ Wie wechselt man von gitolite zu gerrit?
 
 0) ssh-Hostalias einrichten (optional)
 Damit man sich auf der Kommandozeile sowas wie
- git clone ssh://zesstra@anonymizer.zesstra.de:29418/d/anfaenger/ark/
+ git clone ssh://zesstra@mg.mud.de:29418/d/anfaenger/ark/
    knochentempel
- ssh zesstra@anonymizer.zesstra.de -p 29418
+ ssh zesstra@mg.mud.de -p 29418
 abkuerzen kann UND demnaechst nicht alle Repos aendern/neu clonen muss,
 koennt ihr euch in ~/.ssh/config ein Alias einrichten:
 Host mgg
-  Hostname anonymizer.zesstra.de
+  Hostname mg.mud.de
   Port 29418
   User <euer username>
   IdentityFile ... (optional)
@@ -46,9 +46,3 @@ s. man gerrit-account
  neue Repo pushen (inkl. master). Sobald master gepusht wurde, wird das
  neue Repo mit dem Mud synchronisiert.
  Zum Schluss clont ihr noch das das neue Repo wie in 1)
-
-Nachdem ihr das erste Mal in das Repo von gerrit gepusht habt, solltet ihr
-nicht mehr in das Repo von gitolite (git@mg.mud.de) pushen. Ihr koennt das
-verhindern, indem ihr dieses Kommando benutzt:
-ssh git@mg.mud.de writable <repo> off
-

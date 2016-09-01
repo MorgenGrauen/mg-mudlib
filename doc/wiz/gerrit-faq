@@ -1,14 +1,14 @@
 1) Wo finde ich die Weboberflaeche?
-   https://anonymizer.zesstra.de:8443/
+   https://mg.mud.de:8443/
 
 2) Wo ist die Anleitung?
-   https://anonymizer.zesstra.de:8443/Documentation/index.html
+   https://mg.mud.de:8443/Documentation/index.html
 
 3) Wo ist die Anleitung fuer Projekteigentuemer?
-   https://anonymizer.zesstra.de:8443/Documentation/intro-project-owner.html
+   https://mg.mud.de:8443/Documentation/intro-project-owner.html
 
 4) Wie clone ich ein Projekt / Repository
-   git clone ssh://zesstra@anonymizer.zesstra.de:29418/d/anfaenger/...
+   git clone ssh://zesstra@mg.mud.de:29418/d/anfaenger/...
    mit SSH-Hostalias mgg:
    git clone ssh://mgg/d/anfaenger/...
    Auf der Weboberflaeche werden auch direkte Copy&Paste-Kommandos angezeigt.
@@ -28,9 +28,9 @@
    Nur der Zweig 'master' wird zwischen gerrit und dem Mud synchronisiert, alle
    anderen Zweige bleiben nur in gerrit.
    Eine ausfuehrlichere Darstellung gibt es in der Doku von gerrit:
-   https://anonymizer.zesstra.de:8443/Documentation/intro-user.html#upload-change
+   https://mg.mud.de:8443/Documentation/intro-user.html#upload-change
    Und noch ausfuehrlicher:
-   https://anonymizer.zesstra.de:8443/Documentation/user-upload.html
+   https://mg.mud.de:8443/Documentation/user-upload.html
 
 6) Welche Bedeutung haben die Review-Labels?
    Wenn ihr Aenderungen ueber den Review-Prozess einreicht, gibt es folgende
@@ -60,12 +60,12 @@
    schadet nix, kurz Bescheid zu geben - speziell, wenn es eilig ist.
    Ihr koennt auch jemanden zum Review einladen, sowohl auf der Weboberflaeche
    wie auch per Kommandozeile:
-   https://anonymizer.zesstra.de:8443/Documentation/intro-user.html#adding-reviewers
+   https://mg.mud.de:8443/Documentation/intro-user.html#adding-reviewers
    ssh mgg gerrit set-reviewers
 
 8) Wie kann ich die Commits eines Projekt im Web angucken?
    In der Projektliste dem Link zu gitweb in der ganz rechten Spalte folgen.
-   Oder: https://anonymizer.zesstra.de:8443/gitweb?p=d%2Fanfaenger%2Fennox%2Ftutorial.git;a=summary
+   Oder: https://mg.mud.de:8443/gitweb?p=d%2Fanfaenger%2Fennox%2Ftutorial.git;a=summary
 
 9) Wie kann ich Aenderungen in einem Projekt verfolgen?
    Im gitweb eines Projektes kann man RSS- und Atom-Feeds abonnieren.
@@ -75,7 +75,7 @@
    Klar - das geht, wenn der neue/geaenderte Commit die gleiche sog. Change-ID
    hat wie der alte.
    Details:
-   https://anonymizer.zesstra.de:8443/Documentation/user-changeid.html
+   https://mg.mud.de:8443/Documentation/user-changeid.html
 
 11) Wie bekomme ich Schreibrechte?
    Fuer eure eigenen Projekte in /d/ und /players/ bekommt ihr normalerweise
@@ -127,6 +127,6 @@
 16) Gibts das User-Interface fuer den Review auch einfacher?
    Es gibt zumindest eine Erklaerung mit Bildchen, was da dargestellt ist.
    Vielleicht hilft sie euch:
-   https://anonymizer.zesstra.de:8443/Documentation/user-review-ui.html
+   https://mg.mud.de:8443/Documentation/user-review-ui.html
    Man kann Aenderungen editieren, Kommentare an einzelne Zeilen heften etc.
 

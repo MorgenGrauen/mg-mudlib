@@ -9,7 +9,7 @@ Alle der folgenden Schritt werden auf eurem eigenen Rechner in eurem lokalen
 Clone des jeweiligen Repositories durchgefuehrt.
 
 # Schritt 1: Repository clonen und/oder updaten
-> git clone git@mg.mud.de:/dings/bums
+> git clone ssh://mgg/dings/bums
 > git checkout master
 > git pull
 Zuerst einmal wird ein checkout des Zweiges 'master' gemacht. Und in diesen
@@ -91,27 +91,10 @@ Mit diesem Kommando hole ich nun alle Aenderungen aus meinem Zweig
 
 # Schritt 5: Aenderungen in das MUD-Repository uebertragen
 Jetzt bin ich bereit, die Aenderungen ins Mud zu uebertragen:
-> git push 
+> git push origin <lokaler_zweigname>:<zweigname_im_mg>
 Job done!
-Hier kommen jetzt div. Ausgaben vom Mud, die etwas ueber den Erfolg und
-Misserfolg des Pushes sagen. ;-)
-Wenn am Ende steht
-  'Your changes were copied to the mudlib.'
-ist alles erfolgreich.
-
-Steht am Ende ein
-  'Your changes were merged successfull with changes in the mudlib and the
-   merged state was copied to the mudlib. Do not forget to pull the merge
-   commit!" 
-ist an sich auch alles gut. Aber dann gab es im Mud eben doch noch
-Aenderungen, die es nicht im Git-Repo gab, die gemerged wurden. In diesem
-Fall sollte man den aktuellen Zustand sich nochmal holen:
-> git pull
-Und dann anschauen, dieser Merge auch das richtige gemacht hat:
-> git log -p
-Hiermit kriege ich eine schoene Liste aller Commits angezeigt und -p sorgt
-dafuer, dass dabei alle Aenderungen angezeigt werden, nicht nur die
-Commit-Nachricht.
+(Hinweis: nur der Branch "master" wird ins Mud selber synchronisiert, alle
+ anderen Zweige existieren nur in den git-Repositories.)
 
 # Sonderfaelle und erweiterte Moeglichkeiten
 # Schritt 4.1.extra: Zwischenzeitliche Aenderungen im MUD beruecksichtigen
@@ -141,11 +124,10 @@ lokaler 'master' sind intakt.
 Und jetzt geht es wie oben weiter.
 
 SIEHE AUCH
-  git-repositories: Repository-Verwaltung im Mud
+  gerrit
   git-howto: Wie git benutzt wird
   git-kooperation: Ein ueber git-workflow hinausgehendes Beispiel zur
                    Synchronisation bzw Kooperation mehrerer Magier/Rechner
-  git-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
+  gerrit-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
   git-faq: haeufig gestellte Fragen/Probleme
 
-02. Feb 2013 Gloinson
