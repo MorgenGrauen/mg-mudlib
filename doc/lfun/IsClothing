@@ -1,0 +1,29 @@
+IsClothing()
+
+FUNKTION:
+    status IsClothing()
+
+DEFINIERT IN:
+    /std/clothing.c
+    /std/clothing_container.c
+
+RUeCKGABEWERT:
+    1 wenn ein Kleidungsstueck
+    0 sonst
+
+BESCHREIBUNG:
+    Gibt 1 zurueck, wenn entsprechende Klassen irgendwo geerbt wurden, es
+    also ein Kleidungsstueck (oder ein Kleidungsstueck mit Taschen) ist.
+
+BEISPIEL:
+    // enthaelt im Gegensatz zu P_CLOTHING auch nichtgetragenen Kram
+    // im Inventory L1
+    object *allcloth =
+      filter_objects(all_inventory(this_player()), "IsClothing")
+
+SIEHE AUCH:
+    Aehnlich: living, interactive
+    Aehnlich: IsArmour, IsBottle, IsPlayerCorpse, IsRoom, IsUnit
+    Props:    P_CLOTHING
+
+3. Sep 2016, Gloinson
