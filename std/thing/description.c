@@ -465,7 +465,7 @@ private void _add_details(string|string* keys,
                           mapping details )
 {
   if (stringp(keys))
-    details[keys]=descr;
+    details[lower_case(keys)]=descr;
   else if (pointerp(keys))
   {
     foreach(string key : keys)
