@@ -5,13 +5,12 @@
 #include <wizlevels.h>
 #include <moving.h>
 
-create()
+protected void create()
 {
-  call_out("invcheck",120);
   "/obj/sperrer"->NixGibts();
 }
 
-weg(ob)
+private void weg(object ob)
 {
   if (!objectp(ob))
     return;
@@ -20,10 +19,10 @@ weg(ob)
     destruct(ob);
 }
 
-wegraeumen(ob)
+private void wegraeumen(object ob)
 {
   object *x;
-  
+
   if (!objectp(ob))
     return;
   for (x=deep_inventory(ob);sizeof(x);x=x[1..])
@@ -32,9 +31,9 @@ wegraeumen(ob)
   weg(ob);
 }
 
-invcheck()
-{ 
-  while(remove_call_out("invcheck")!=-1);
+void reset()
+{
+  set_next_reset(120);
   foreach(object ob: all_inventory(this_object()))
   {
     if (interactive(ob))
@@ -43,13 +42,12 @@ invcheck()
       set_object_heart_beat(ob,1);
     }
     else if (!query_once_interactive(ob) && object_name(ob)!="/obj/sperrer")
-      call_out("wegraeumen",1,ob);
+      call_out(#'wegraeumen,1,ob);
   }
-  call_out("invcheck",120);
   "/obj/sperrer"->upd();
 }
 
-init()
+void init()
 {
   if (!this_player())
     return;
@@ -65,26 +63,27 @@ init()
   set_object_heart_beat(this_player(),0);
 }
 
-int_long()
+public string int_long()
 {
   return "Dies ist der Netztotenraum. Es ist dunkel. Du siehst nichts.\n";
 }
 
-int_short()
+public string int_short()
 {
   return "Nichts zu sehen.\n";
 }
 
-QueryProp(string str)
+public mixed QueryProp(string str)
 {
   switch (str) {
     case "int_long": return int_long();
     case "int_short": return int_short();
   }
+  return 0;
 }
 
 // Nicht jeder Magier darf den Netztotenraum entsorgen.
-string NotifyDestruct(object caller) {
+public string NotifyDestruct(object caller) {
     if( (caller!=this_object() && !ARCH_SECURITY) || process_call() ) {
       return "Du darfst den Netztotenraum nicht zerstoeren!\n";
     }
