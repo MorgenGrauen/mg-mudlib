@@ -12,14 +12,14 @@ FUNKTION:
        Wenn Du Dein Reiseziel (oder das Verkehrsmittel) bereits
        kennst, kannst Du mit diesem Befehl Deine Reise einfacher
        gestalten.
-       
+
        Benutzt Du den reise-Befehl, so wirst Du automatisch ein
        Transportmittel betreten (falls dies moeglich ist) und es
        am Zielort (falls angegeben) auch wieder verlassen.
 
        Folgende Argumente / Funktionen werden unterstuetzt:
 
-reise 
+reise
        Deine aktuelle Reiseroute wird ausgegeben. Du kannst sie mit
        o.g. Argumenten immer wieder aendern.
 
@@ -67,6 +67,9 @@ BEMERKUNGEN:
        festgelegt hast. Nach erfolgreicher Reise wird sie automatisch 
        geloescht, ansonsten bleibt sie bis zum expliziten Loeschen 
        bestehen.
+       Wenn Du den Raum verlaesst und mit immer noch gesetzter Reiseroute
+       erneut betrittst und dann das Transportmittel schon da ist, reist Du
+       erst, wenn es das naechste Mal kommt.
 
        Nicht jedes Transportmittel / Ziel kann mittels 'reise' ausge-
        waehlt werden. Es besteht keinerlei Anspruch darauf, das 'reise'
@@ -74,12 +77,12 @@ BEMERKUNGEN:
 
 BEISPIELE:
        reise ins verlorene land
-       
+
        reise ans ende der welt
        reise zum ende der welt
-       
+
        reise nach port vain
-  
+
        Einige Zielorte sind auch per Kuerzel zu erreichen:
        - Verlorenes Land: vland
        - Werwolfinsel: wwi
