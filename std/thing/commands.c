@@ -339,7 +339,8 @@ static int _execute(mixed fun, string str, mixed *parsed) {
 
 // Regeln fuer ein (nun unwichtiges) Verb triggern
 static int _process_command(string str, string *noparsestr,
-			     mixed fun, mixed flag, mixed rule) {
+                            mixed fun, mixed flag, mixed rule, mixed id)
+{
  mixed *parsed, *objmatches;
 
  // eine Regel ... auswerten ...
@@ -524,12 +525,15 @@ public int _cl(string str) {
    // dann matche ungeparsten Input gegen etwaige Regeln
    // -- nicht aendern: neue Kommandos sollen alte "ueberschreiben" koennen
    while(nindex--)
-    if(_process_command(&str, noparsestr,
-		       fun[nindex], flag[nindex], rule[nindex]))
+   {
+    mixed cmd_id = (pointerp(ids) && sizeof(ids)>nindex) ? ids[nindex] : 0;
+    if(_process_command(&str, noparsestr, fun[nindex], flag[nindex],
+                        rule[nindex], cmd_id))
     {
       GiveEP(EP_CMD, query_verb());
       return 1;
     }
+   }
   }
 
   // keine Regel passte, unscharfe Auswertung auf alle
