@@ -33,8 +33,8 @@ static mapping _query_commands();
 
 // internal
 static int _execute(mixed fun, string str, mixed *parsed);
-static int _process_command(string str, string *noparsestr,mixed fun, mixed flag, mixed rule);
-
+static int _process_command(string str, string *noparsestr,mixed fun,
+                            mixed flag, mixed rule, mixed id);
 public int _cl(string str);
 
 #endif // __THING_COMMANDS_H_PROTO__
