@@ -571,7 +571,7 @@ varargs void Reconnect( int silent )
     // life.c will ggf. was aufraeumen
     life::reconnect();
 
-    log_file( "REENTER", sprintf( "%-11s %s, %-15s (%s).\n",
+    log_file( "syslog/shell/REENTER", sprintf( "%-11s %s, %-15s (%s).\n",
                                   capitalize(getuid(ME)), ctime(time())[4..15],
                                   query_ip_number(ME)||"Unknown",
                                   query_ip_name(ME)||"Unknown" ),

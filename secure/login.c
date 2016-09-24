@@ -888,7 +888,7 @@ static void load_player_ob_2( string obname, int guestflag )
       return;
     }
     /* start player activity */
-    log_file( "ENTER", sprintf( "%-11s %s, %-15s (%s).\n",
+    log_file( "syslog/shell/ENTER", sprintf( "%-11s %s, %-15s (%s).\n",
                                 capitalize(name), ctime(time())[4..15],
                                 query_ip_number(this_object()),
                                 query_ip_name(this_object()) ), 200000 );
