@@ -121,12 +121,12 @@ static int check_too_many_logons()
                && query_ip_number(ob) == addr;
     }, ip );
 
-    if ( sizeof(u) > 5 ){
+    if ( sizeof(u) > 2) {
         write( "\nEs laufen schon zu viele Anmeldungen von Deiner Adresse "
                "aus.\nProbier es bitte in ein bis zwei Minuten noch "
                "einmal.\n" );
 
-        log_file( "LOGIN_DENY", sprintf( "%s: >5 Logons von %-15s (%s)\n",
+        log_file( "LOGIN_DENY", sprintf( "%s: >2 Logons von %-15s (%s)\n",
                                          ctime(time())[4..15],
                                          query_ip_number(this_object()),
                                          query_ip_name(this_object()) ) );
