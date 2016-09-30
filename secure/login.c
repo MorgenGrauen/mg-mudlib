@@ -117,7 +117,7 @@ static int check_too_many_logons()
     ip = query_ip_number(this_object());
     // users() nehmen, falls nicht-interaktive Clones von login.c existieren.
     u = filter( users(), function status (object ob, string addr) {
-        return object_name(ob) == "/secure/login"
+        return load_name(ob) == "/secure/login"
                && query_ip_number(ob) == addr;
     }, ip );
 
