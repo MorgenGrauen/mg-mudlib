@@ -170,36 +170,34 @@ static string *unify( string *str )
 
 #define MG_NAMES ({ MUDNAME, "mg", "morgengrauen", "mud", "mg.mud.de" })
 
-string expandSystemRecursive(string addr,int maxrec){
-  string *list,*tlist;
-  string ret,tmp;
-  int i,size;
-  
-  if(maxrec>8 || !addr){
+string expandSystemRecursive(string addr,int maxrec)
+{
+  if(maxrec>8 || !addr)
+  {
     return addr;
   }
-  maxrec++;
+  ++maxrec;
   
-  tlist=({});
-  ret="";
-
-  list=explode(addr,",");
-  list-=({""});
-  size=sizeof(list);
-  for(i=0;i<size;i++){
-    if(tmp=alias[list[i]]){
-      tlist+=explode(tmp,",");
+  string *retlist = ({});
+  int alias_found;
+  foreach(string add : explode(addr,","))
+  {
+    if (add == "")
+      continue;
+    string tmp = alias[add];
+    if (stringp(tmp))
+    {
+      retlist += explode(tmp, ",");
+      ++alias_found;
     }
-    else{
-      tlist+=({list[i]});
-    }
+    else
+      retlist += ({add});
   }
-  tlist-=({""});  
-  ret=implode(tlist,",");
+  string ret = implode(retlist-({""}), ",");
+  // Wenn Aliase aufgeloest wurden: noch einmal versuchen...
+  if (alias_found)
+    ret = expandSystemRecursive(ret, maxrec);
 
-  if((ret!=addr)!=0){
-    ret=expandSystemRecursive(ret,maxrec);
-  }
   return ret;
 }
 
@@ -229,7 +227,7 @@ static string *expand( string *addr, int expa )
         else
             ret += ({ addr[i] });
     }
-    
+
     for ( i = sizeof(ret); i--; ){
         if ( ret[i][0] == '\\' )
             ret[i] = ret[i][1..];
