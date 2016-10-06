@@ -157,7 +157,7 @@ void NewbieIntroMsg()
 				"auf Deinen ersten Schritten im "MUDNAME
 				" zu begleiten. \n\nDerzeit "
 				+IstSindMsg(namen)+" eingeloggt. Du kannst "
-				"einen oder eine von Ihnen ansprechen, "
+				"einen oder eine von ihnen ansprechen, "
 				"indem Du z.B. einfach \n"
 				"  'teile "+
 				lower_case(namen[random(sizeof(namen))])+
