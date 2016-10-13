@@ -154,26 +154,22 @@ public varargs object AddItem(mixed filename, int refresh, mixed props)
 private void ri_rem_ob(object ob)
 {
   object *inv;
-  int i;
 
-  if(objectp(ob) && present(ob,ME))
+  if(objectp(ob) && environment(ob)==this_object())
   {
     inv=deep_inventory(ob);
-      
-    for(i=sizeof(inv);i--;)
+
+    foreach(object o : inv)
     {
-      if(inv[i])
+      o->remove(1);
+      if(objectp(o))
       {
-        inv[i]->remove(1);
-              
-        if(inv[i])
-        {
-          destruct(inv[i]);
-        }
+        destruct(o);
       }
     }
+
     ob->remove(1);
-      
+
     if(ob)
     {
       destruct(ob);
@@ -181,47 +177,52 @@ private void ri_rem_ob(object ob)
   }
 }
 
-
-private int ri_filter(mixed *ritem, mixed file)
+private int ri_filter(<int|<string|string*>|object>* ritem, 
+  string|string* file)
 {
-  object ob, *inv;
-  int i;
-
+  object ob;
+  
   ob=ritem[RITEM_OBJECT];
-
+  
   if(stringp(file) && ritem[RITEM_FILE]==file)
-    return ri_rem_ob(ob), 0;
+  {
+    ri_rem_ob(ob);
+    return 0;
+  }
   else if(pointerp(ritem[RITEM_FILE]) && pointerp(file) &&
-            sizeof(file&ritem[RITEM_FILE])==sizeof(ritem[RITEM_FILE]))
-    return ri_rem_ob(ob), 0;
+          sizeof(file & ritem[RITEM_FILE])==sizeof(ritem[RITEM_FILE]))
+  {
+    ri_rem_ob(ob);
+    return 0;
+  }
 
   return 1;
 }
 
 
-public void RemoveItem(mixed filename)
+public void RemoveItem(string|string* filename)
 {
-  mixed *items;
-  int i;
+  < <int|<string|string*>|object>* >* items=QueryProp(P_ITEMS);
 
-  if(!pointerp(items=QueryProp(P_ITEMS)) || !sizeof(items))
+  if(!pointerp(items) || !sizeof(items))
+  {
     return;
+  }
 
   if(pointerp(filename))
   {
-    for(i=sizeof(filename);i--;)
+    foreach(string fn: &filename)
     {
-      filename[i] = (string)master()->_get_path( filename[i], "?" );
+      fn=master()->_get_path(fn,"?");
     }
   }
   else
   {
-    filename = (string)master()->_get_path( filename, "?" );
+    filename=master()->_get_path( filename,"?");
   }
-
-  SetProp(P_ITEMS,filter(items,#'ri_filter,filename));
+  
+  SetProp(P_ITEMS,filter(items, #'ri_filter/*'*/,filename));
 }
-
 
 private mixed _do_refresh(mixed item)
 {
