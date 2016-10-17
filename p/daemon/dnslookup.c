@@ -62,7 +62,7 @@ public string resolve( string hostname )
 public int check_tor(string ip, int localport)
 {
   string *arr=explode(ip,".");
-  if (!sizeof(arr)==4)
+  if (sizeof(arr)!=4)
     return 0;
   string req =
     sprintf("%s.%s.%s.%s.%d.60.24.79.87.ip-port.exitlist.torproject.org",
@@ -75,7 +75,7 @@ public int check_tor(string ip, int localport)
 public int check_dnsbl(string ip)
 {
   string *arr=explode(ip,".");
-  if (!sizeof(arr)==4)
+  if (!sizeof(arr)!=4)
     return 0;
   string req =
     sprintf("%s.%s.%s.%s.dnsbl.dronebl.org",
