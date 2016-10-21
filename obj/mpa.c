@@ -81,6 +81,8 @@ inherit NEDIT;
       "d.vland", \
       "d.anfaenger", \
       "entwicklung", \
+      "treffen.bekanntmachungen", \
+      "party.bekanntmachungen", \
    })
 
 // Makros etc.
