@@ -86,7 +86,6 @@ protected void create();
 public string short();
 public string query_real_name();
 public nomask int query_prevent_shadow();
-static void time_out();
 public int remove();
 // the following 3 lfuns deal with dummy player creation
 public mixed new_logon( string str);
@@ -176,7 +175,7 @@ public nomask int logon()
 
     input_to( "logon2", INPUT_PROMPT,
         "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-    call_out( "time_out", 300 );
+    set_next_reset(300);
     return 1;
 }
 
@@ -520,10 +519,7 @@ static int again_password( string str )
         return 1;
     }
 
-    while ( remove_call_out( "time_out" ) != -1 )
-        ;
-    call_out( "time_out", 600 );
-
+    set_next_reset(600);
     password = md5_crypt( password, 0 );
     save_object( SECURESAVEPATH + loginname[0..0] + "/" + loginname );
     master()->RemoveFromCache( loginname );
@@ -980,7 +976,11 @@ protected void create()
 void reset()
 {
   if (clonep())
+  {
+    if (interactive(this_object()))
+      tell_object(this_object(),"Time out!");
     remove();
+  }
 }
 
 public string short()
@@ -998,14 +998,6 @@ public string query_real_name()
 public nomask int query_prevent_shadow()
 {
     return 1;
-}
-
-
-static void time_out()
-{
-    if (this_player())
-      tell_object(this_player(),"Time out!");
-    destruct( this_object() );
 }
 
 
