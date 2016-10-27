@@ -156,7 +156,10 @@ public string convert_tn(mapping ldata) {
 public void print_mssp_response() {
  string ip = query_ip_number(previous_object());
  mapping ldata;
- if (stringp(ip)) {
+ if (sizeof(peers) > 1000)
+     peers = ([:1]);
+ if (stringp(ip))
+ {
      // Vollen Datensatz alle ("CRAWL DELAY" / 2) h, daher * 1800.
    if (peers[ip] > (time() - (to_int(data["CRAWL DELAY"]) || 1) * 1800)) {
        // this peers asks to often and gets only the minimal dataset
@@ -192,6 +195,9 @@ public void print_mssp_response() {
 public string get_telnegs_str() {
   string ip = query_ip_number(previous_object());
   string res;
+
+  if (sizeof(peers) > 1000)
+     peers = ([:1]);
 
   if (stringp(ip)) {
     // Vollen Datensatz alle ("CRAWL DELAY" / 2) h, daher * 1800.
