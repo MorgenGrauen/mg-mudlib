@@ -3,8 +3,7 @@
 // transport.c -- Basisklasse fuer Schiffe und aehnliche Transporter
 //
 // $Id: transport.c 9400 2015-12-11 21:56:14Z Zesstra $
-#pragma strong_types
-//#pragma save_types
+#pragma strong_types,rtt_checks
 #pragma range_check
 #pragma no_clone
 #pragma pedantic
