@@ -84,6 +84,12 @@ Welche Hooks gibt es zur Zeit in der Basis-Mudlib?
 * H_HOOK_EXIT_USE
   Wird von einem Raum ausgeloest, wenn ein Lebewesen einen Ausgang benutzt.
   Abbruch und Aenderung der Daten des Ausgangs moeglich.
+* H_HOOK_EXIT_USE
+  Wird von einem Raum ausgeloest, wenn init() gerufen wird (d.h. ein Lebewesen
+  den Raum betritt). Hat keine Daten.
+  Abbruch moeglich.
+  ACHTUNG: bei Abbruch von init() sind schwere Bugs moeglich!
+
 
 HOOK-KONSUMENTEN
 ================

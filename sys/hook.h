@@ -23,6 +23,7 @@
 #define H_HOOK_TEAMROWCHANGE  13
 #define H_HOOK_INSERT         14
 #define H_HOOK_EXIT_USE       15
+#define H_HOOK_INIT           16
 
 // the possible consumer types
 #define H_HOOK_SURVEYOR       0

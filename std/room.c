@@ -32,6 +32,7 @@ inherit "/std/room/doors";
 #include <defines.h>
 #include <doorroom.h>
 #include <functionlist.h>
+#include <hook.h>
 
 void reset()
 {
@@ -86,6 +87,7 @@ protected void create()
   exits::create();
   items::create();
   doors::create();
+  offerHook(H_HOOK_INIT, 1);
 
   SetProp(P_NAME,0);
   SetProp(P_NAME_ADJ,({}));
@@ -213,8 +215,9 @@ toggle_exits(string str)
 void
 init()
 {
+  if (HookFlow(H_HOOK_INIT, 0)[H_RETCODE] == H_CANCELLED)
+      return;
   Set(" clean counter ",2);
-
   exits::init();
   commands::init();
   description::init();
