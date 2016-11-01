@@ -158,14 +158,20 @@ private int _remove_data(string|object key, int what)
 // Ein komplettes Schiff entfernen.
 public int RemoveTransporter(object|string transporter)
 {
-  if (extern_call() && !IS_ARCH(getuid(previous_object()))) return -1;
+  if (extern_call()
+      && previous_object() != transporter
+      && !IS_ELDER(getuid(previous_object())))
+      return -1;
   return _remove_data(transporter,TRANSPORTER);
 }
 
 // Entfernt einen kompletten Hafen aus dem Daemon
 public int RemoveStop(object|string stop)
 {
-  if (extern_call() && !IS_ARCH(getuid(previous_object()))) return -1;
+  if (extern_call()
+      && previous_object() != stop
+      && !IS_ELDER(getuid(previous_object())))
+      return -1;
   return _remove_data(stop,STOP);
 }
 
