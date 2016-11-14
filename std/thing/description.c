@@ -443,7 +443,7 @@ public string short()
 }
 
 // Namens-Adjektive setzen
-static string* _set_name_adj(string|string* adjectives)
+static <string|string*>* _set_name_adj(string|<string|string*>* adjectives)
 {
   if (!adjectives)
       adjectives=({});
