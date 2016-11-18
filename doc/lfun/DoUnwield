@@ -9,6 +9,8 @@ DEFINIERT IN:
 ARGUMENTE:
      silent
           Ungleich 0, wenn die Waffe ohne Meldungen weggesteckt werden soll.
+          Wenn silent&M_NOCHECK wird die Waffe auch weggesteckt wenn sie
+          verflucht ist und UnwieldFunc() wird nicht ausgewertet.
 
 BESCHREIBUNG:
      Es wird versucht, die Waffe wegzustecken.
@@ -27,4 +29,4 @@ SIEHE AUCH:
      UnwieldFunc(), InformUnwield(), /std/weapon.c
 
 ----------------------------------------------------------------------------
-Last modified: Sun Jun 27 22:24:00 1999 by Paracelsus
+Letzte Aenderung: 18.11.2016, Bugfix
