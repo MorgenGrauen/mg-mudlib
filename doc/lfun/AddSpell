@@ -3,7 +3,7 @@ AddSpell()
 FUNKTION:
     varargs int AddSpell(int rate, int damage, string TextForEnemy,
                          string TextForOthers, string|string* dam_type,
-                         string func, int|mapping spellarg)
+                         string|closure func, int|mapping spellarg)
 
 DEFINIERT IN:
     /std/npc/combat.c
@@ -17,9 +17,10 @@ ARGUMENTE:
     TextForOthers - Text, den andere im Raum erhalten sollen
     dam_type      - Schadenstyp(en) fuer Defend(),
                     (Default: ({DT_MAGIC}) )
-    func          - Funktionsname, die nach Anwendung aufgerufen werden soll
-                    (Optional, gerufen an this_object(), bekommt als Argumente
-                     object enemy, int real_damage, string* dam_type)
+    func          - Funktionsname oder Closure, die nach Anwendung
+                    aufgerufen werden soll
+                    (Optional, bekommt als Argumente object enemy, 
+                    int real_damage, string* dam_type)
     spellarg      - Spell-Argument fuer Defend(), Default ist "1"
 
 BESCHREIBUNG:
@@ -58,8 +59,8 @@ BEMERKUNGEN:
 
     In der von AddSpell gerufenen Methode "func" koennen speziellere
     Sachen mit dem aktuellen Feind angestellt werden koennen. Die Methode
-    darf als Sichtbarkeitsmodifikator maximal "", "public" oder "static"
-    (obsolet) haben und muss im selben Objekt definiert sein.
+    muss im selben Objekt definiert sein, sofern der Funktionsname und
+    keine Closure uebergeben wird.
 
     Will man einen physischen Angriff ausloesen, MUSS <spellarg> ein Mapping
     mit ([SP_PHYSICAL_ATTACK: 1]) sein. Bei Uebergeben einer 0 oder Weglassen
@@ -146,4 +147,4 @@ SIEHE AUCH:
      Abwehr:     Defend, Defend_bsp, SpellDefend
      Methoden:   modifiers
 
-11.12.2015 Arathorn
+Zuletzt geaendert: 20.11.2016, Bugfix

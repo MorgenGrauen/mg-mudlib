@@ -133,10 +133,12 @@ static int _query_hb()
 #define SPELL_ARG 6
 
 varargs int AddSpell(int rate, int damage, string TextForEnemy,
-                     string TextForOthers, string|string* dam_type, string func,
-                     int|mapping spellarg) {
+                     string TextForOthers, string|string* dam_type, 
+                     string|closure func, int|mapping spellarg)
+{
   mixed *spells;
   int total_rates;
+  closure cl;
 
   if (rate<0 || damage<=0 || !stringp(TextForEnemy) ||
       !stringp(TextForOthers))
@@ -154,6 +156,22 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
   if (intp(spellarg))
     spellarg = ([SP_PHYSICAL_ATTACK: 0]);
 
+  // Falls func ein String ist eine Closure erstellen und diese speichern.
+  if(stringp(func))
+  {
+    cl=symbol_function(func,this_object());
+    if(!closurep(func))
+    {
+      catch(raise_error(
+        "AddSpell(): Es konnte keine Closure fuer "+func+" erstellt werden.");
+        publish);
+    }
+  }
+  else
+  {
+    cl=func;
+  }
+  
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
   // die im heart_beat() beim Ausgeben der Meldung verwendet wird.
   if ( strstr(TextForOthers, "@", 0) != -1 )
@@ -172,7 +190,7 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
   if (!pointerp(spells))
     spells=({});
   spells+=({({total_rates, damage, TextForEnemy, TextForOthers,
-              dam_type, func, spellarg})});
+              dam_type, cl, spellarg})});
   Set(P_SPELLS,spells);
   Set("npc:total_rates",total_rates);
   return 1;
@@ -315,12 +333,15 @@ protected void heart_beat() {
   if ( !objectp(ME) || !objectp(enemy) 
       || enemy->QueryProp(P_GHOST) ) return;
   
-  if (spells[i][SPELL_FUNC] && stringp(spells[i][SPELL_FUNC]))
-    catch(call_other(this_object(),
-         spells[i][SPELL_FUNC],
-         enemy,
-         damage,
-         spells[i][SPELL_DAMTYPE]);publish);
+  closure cl = spells[i][SPELL_FUNC];
+  if (cl)
+  {
+    if (closurep(cl))
+      catch(funcall(cl, enemy, damage, spells[i][SPELL_DAMTYPE]);publish);
+    else
+      raise_error(sprintf("P_SPELL defekt: SPELL_FUNC in Spell %i ist keine "
+                          "Closure.\n", i));
+  }
 }
 
 // Heartbeats nachholen.
