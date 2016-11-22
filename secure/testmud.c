@@ -4,6 +4,7 @@
 #pragma pedantic, range_check
 
 #include <files.h>
+#include <config.h>
 
 // Variablen fuer das Savefile von Jof, was dieses Objekt schreibt.
 string name = "jof";
@@ -19,7 +20,7 @@ public varargs int remove(int s)
 
 protected void create()
 {
-# ifndef __TESTMUD__
+# if !defined(__TESTMUD__) && MUDHOST==__HOST_NAME__
   remove();
   return;
 # endif
