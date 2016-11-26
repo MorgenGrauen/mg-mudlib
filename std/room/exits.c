@@ -96,6 +96,17 @@ protected void create()
 {
   offerHook(H_HOOK_EXIT_USE, 1);
   SetProp( P_EXITS, ([:2]) );
+  // Falls dieser Raum ein Haltepunkt von Transportern ist, werden diese
+  // Transporter informiert, dass dieser Raum neugeladen wurde - evtl. will
+  // der Transporter jetzt diesen Raum ansteuern, wenn er pausiert war.
+  object *trans = TRAVELD->HasTransporter(this_object());
+  if (pointerp(trans))
+  {
+    foreach (object t : trans)
+    {
+      t->Continue();
+    }
+  }
 }
 
 protected void create_super() {

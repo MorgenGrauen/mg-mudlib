@@ -17,6 +17,8 @@ inherit "/std/room";
 #include <language.h>
 #include <transport.h>
 #include <regexp.h>
+#include <hook.h>
+
 
 /* transport.c
  * 
@@ -49,6 +51,10 @@ inherit "/std/room";
 nosave mixed *route;    /* Liste der Haltepunkte. */
 nosave int rpos;        /* Momentane Position in obiger Liste. */
 nosave string roomCode; /* Code des aktuellen Raumes (oder 0). */
+nosave int meet_last_player; // Letzter Spielerkontakt
+
+private void unsubscribe_init();
+private int subscribe_init();
 
 /*
  ********** Management der builtin-properties **********
@@ -66,15 +72,17 @@ mixed _query_transparent()
   return 0; 
 }
 
-mixed *_set_route(mixed *r) { return route = r; }
-mixed *_query_route()       { return route; }
+static mixed *_set_route(mixed *r) { return route = r; }
+static mixed *_query_route()       { return route; }
+static int _query_mnpc_last_meet() { return meet_last_player; }
 
 /*
  **************** Zugriffsfunktionen ***************
  */
 
-void Halt()
+public void Halt()
 {
+  // stop, but keep rpos counter.
   while (remove_call_out( "changeHp" )>-1);
   while (remove_call_out( "disconnect" )>-1);
 }
@@ -96,13 +104,40 @@ private void ReportRoute()
   }
 }
 
-varargs void Start(int pos)
+public varargs void Start(int pos)
 {
   Halt();
   rpos = (pos >= sizeof(route))?-1:pos-1;
   call_out("changeHp",0);
   // Tell TRAVELD our current route
   ReportRoute();
+}
+
+// continues the current route at the point we stopped.
+public int Continue()
+{
+  if (find_call_out("changeHp") == -1
+      && find_call_out("disconnect") == -1)
+  {
+      unsubscribe_init();
+      Start(rpos);
+      return 1;
+  }
+  return 0;
+}
+
+// pauses the transporter temporarily in a way that it continues along its
+// route as soon as a living enters one of the stop points. If that is not
+// possible, we do nothing.
+public int Pause()
+{
+  // ok, stop
+  if (subscribe_init() == 1)
+  {
+      Halt();
+      return 1;
+  }
+  return 0;
 }
 
 void SetTravelCmds()
@@ -393,7 +428,7 @@ protected void create()
   SetProp(P_TRANSPARENT,1);
 
   AddId("Transporter");
-  
+
   call_out("SetTravelCmds",1);
 }
 
@@ -485,6 +520,70 @@ static varargs void connect(string room, string code)
 // again.
 int clean_up(int arg) { return 0; }
 
+public void init()
+{
+  "*"::init();
+  // if we have player contact (even if the player is just in the same
+  // environment), we update the time.
+  if (this_player() && query_once_interactive(this_player()))
+      meet_last_player = time();
+}
+
+// we try to continue our route once some living triggers init.
+private mixed InitHookCallback(object source, int hookid, mixed hookdata)
+{
+  if (hookid == H_HOOK_INIT && previous_object() == source)
+    Continue();
+
+  return ({H_NO_MOD, hookdata});
+}
+
+// subscribes to H_HOOK_INIT in all rooms along the route
+// == 1 for success, < 0 for the number of errors
+private int subscribe_init()
+{
+  // subscribe to the H_HOOK_INIT of all rooms in the route...
+  int no_hook;
+  foreach(mixed* arr : route)
+  {
+    if (arr[0] == HP_ROOM)
+    {
+      if (arr[1]->HRegisterToHook(H_HOOK_INIT, #'InitHookCallback,
+                                  H_HOOK_LIBPRIO(1), H_LISTENER,
+                                  0) <= 0)
+          --no_hook; // Count non-success while subscribing
+    }
+  }
+  return no_hook < 0 ? no_hook : 1;
+}
+
+// unsubscribes from all the H_HOOK_INIT.
+private void unsubscribe_init()
+{
+  foreach(mixed* arr : route)
+  {
+    if (arr[0] == HP_ROOM)
+      arr[1]->HUnregisterFromHook(H_HOOK_INIT, #'InitHookCallback);
+  }
+}
+
+private int maybe_pause()
+{
+  // we check for time of last player contact. If too long ago, we pause our
+  // service.
+  if (meet_last_player < time() - 600)
+  {
+    // we don't stop if players currently are in the transporter or in the same
+    // environment (e.g. idling).
+    object *pls = filter(all_inventory(this_object()) 
+                         + all_inventory(environment(this_object())),
+                         #'interactive);
+    if (!sizeof(pls))
+      return Pause();
+  }
+  return 0;
+}
+
 void changeHp()
 {
   if (++rpos == sizeof(route))
@@ -492,6 +591,10 @@ void changeHp()
     rpos = 0;
     //TRAVELD die aktuelle Route uebermitteln
     ReportRoute();
+    // everytime, we pass the end of our route, we check if we should
+    // pause our service.
+    if (maybe_pause())
+        return;
   }
   if (route[rpos][0] == HP_MSG)
   {
@@ -510,11 +613,3 @@ void changeHp()
   }
 }
 
-void __restart(string funname)
-{
-  if (!funname || funname == "" || (funname != "changeHp" && 
-                                    funname != "disconnect"))
-    return;
-  while(remove_call_out(funname) != -1);
-  call_out(funname,funname == "changeHp"?15:5);
-}
