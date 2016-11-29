@@ -58,12 +58,10 @@ protected void message(string prop) {
   object env = environment(this_object());
   if (objectp(env)) {
     if (interactive(env)) {
-      tell_object(env,
-        break_string(eval_property(prop,env),78,"",BS_LEAVE_MY_LFS));
+      tell_object(env, eval_property(prop,env));
     }
     else if(!living(env)) {
-      tell_room(env,
-        break_string(eval_property(prop,0),78,"",BS_LEAVE_MY_LFS));
+      tell_room(env, eval_property(prop,0));
     }
   }
 }
