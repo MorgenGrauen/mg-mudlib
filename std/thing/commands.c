@@ -11,22 +11,29 @@
 //
 // AddCmd(verb,fun1,1);
 // AddCmd(verb+syn1a|syn1b&syn2a|syn2b|syn2c,fun2,
-//	   error1_notify|error2_notify^error2_write);
+//        error1_notify|error2_notify^error2_write);
 // -->
-// ([verb:({fun1,fun2});					// funs
-//	  ({1,({error1_notify, error2_write^error2_say, 1})});  // flags
-//        ({0,({({syn1a,syn1b}),({syn2a,syn2b,syn2c})})});	// rules
-//        0])							// IDs
+// ([verb:
+//    ({fun1,fun2});                                        // funs
+//    ({1,({error1_notify, error2_write^error2_say, 1})});  // flags
+//    ({0,({({syn1a,syn1b}),({syn2a,syn2b,syn2c})})});      // rules
+//    0;                                                    // IDs
+//    ({closure auf fun1, closure auf fun2}) ])             // Cache
 //
+// Funs:  ({<fun1> ,...
+//          'fun' kann sein: Closure
+//                           String: Methodenname - wird etwas geprueft
+//                           Objekt: wenn keine Methode, this_object() fuer
+//                                   intern, previous_object() fuer extern
+//                           0 (erloschenes externes Objekt)
 // Rules: ({<Regelsatz fuer fun1>, ({<1. Synonymgruppe>,
-//				     <2. Synonymgruppe, ...}), ...})
+//                                   <2. Synonymgruppe, ...}), ...})
 // Flags: ({<Flag fuer fun1>, ({<Fehlermeldung 1. Synonymgruppe>, ... ,
-//				[, Index fuer write anstatt notify_fail]}),
-//	    ... })
+//                              [, Index fuer write anstatt notify_fail]}),
+//            ... })
 // IDs:   0 oder ({<ID fuer fun1>}) oder ({0, <ID fuer fun2>}) ...
-//
-// IDEA: save no 0s in rules/flags if possible (as in IDs)
-//       (adressing especially old-style-AddCmd-MUDs)
+// Cache: ({<closure fuer fun1>, ...
+//        Cache-Closures sind bei Export (QueryProp) immer genullt
 #pragma strict_types
 #pragma save_types
 #pragma range_check
@@ -38,12 +45,21 @@
 #include <exploration.h>
 #include <defines.h>
 #include <living/comm.h>
+#include <functionlist.h>
 
 #define NEED_PROTOTYPES
 #include <thing/properties.h>
 #include <thing/description.h>
 #include <thing/commands.h>
 #undef NEED_PROTOTYPES
+
+#define CMDS_WIDTH 5
+// Mapping-Indizes
+#define CMDIDX_FUN   0
+#define CMDIDX_FLAG  1
+#define CMDIDX_RULE  2
+#define CMDIDX_ID    3
+#define CMDIDX_CACHE 4
 
 #ifdef DBG
 #undef DBG
@@ -129,9 +145,39 @@ protected void create_super() {
   set_next_reset(-1);
 }
 
+private closure _check_stringmethod(mixed func, int ex, string resp) {
+  closure cl;
+  if(!function_exists(func))
+    raise_error(sprintf(
+      resp+"string-Methode '%s' fehlt oder ist private.\n", func));
+
+  // extern erstellte auf Sichtbarkeit pruefen und abbrechen/davor warnen
+  if(ex) {
+    mixed *fl = functionlist(this_object(), RETURN_FUNCTION_NAME|
+                                            RETURN_FUNCTION_FLAGS);
+    int index = member(fl, func)+1;
+    if(index<=0 || sizeof(fl)<=index)
+      raise_error(sprintf(
+        resp+"string-Methode '%s' nicht in functionlist.\n", func));
+    else if(fl[index]&TYPE_MOD_PROTECTED || fl[index]&TYPE_MOD_STATIC)
+      raise_error(sprintf(
+        resp+"string-Methode '%s' ist protected/static. Extern "
+        "definiertes Kommando darf so eine Methode nicht aufrufen!\n",
+        func));
+  }
+
+  // ansonsten Methode erstmal cachen
+  cl = symbol_function(func, this_object());
+  if(!cl)
+    raise_error(sprintf(
+      resp+"string-Methode '%s' nicht in Closure wandelbar?\n", func));
+
+  return cl;
+}
+
 varargs void AddCmd(mixed cmd, mixed func, mixed flag, mixed cmdid) {
  int i,j;
- closure cl;
+ closure cachedcl;
  mixed *rule;
 
  // potentielle AddCmd mit Regel?
@@ -196,37 +242,41 @@ varargs void AddCmd(mixed cmd, mixed func, mixed flag, mixed cmdid) {
  if(!pointerp(cmd))
    raise_error("AddCmd: missing string/pointer-parameter for command.\n");
 
- // Closure aus einem String erzeugen, wenn moeglich und sicher
- // (function_exists() filtert unnoetigerweise auch reine "static" funs,
- //  die genaue Pruefung ueber functionlist() kostet jedoch zuviel)
- if(stringp(func) &&
-    (!extern_call() || function_exists(func,this_object())) &&
-    closurep(cl=symbol_function(func,this_object())))
-  func=cl;
+  // String-Methode auf Sichtbarkeit pruefen, Cache gleich anpassen
+  switch(typeof(func)) {
+    case T_STRING:
+      cachedcl=_check_stringmethod(func, extern_call(), "AddCmd: ");
+      break;
+    case T_CLOSURE:
+      cachedcl=func;
+      break;
+    default:
+      if(extern_call()) func=previous_object();
+      else func=this_object();
+      break;
+  }
 
- // jedes einzelne Verb mit seinen Regeln und Funktionen eintragen
+  // jedes einzelne Verb mit seinen Regeln und Funktionen eintragen
  i=sizeof(cmd);
- if(!added_cmds) added_cmds=m_allocate(i,4);
+ if(!added_cmds) added_cmds=m_allocate(i, CMDS_WIDTH);
  while(i--) {
   string str;
   str=cmd[i];
-  if(!func)
-   if(extern_call()) func=previous_object();
-   else func=this_object();
   if(!member(added_cmds,str))
-   added_cmds+=([str:allocate(0);allocate(0);allocate(0);0]);
+   added_cmds+=([str:allocate(0);allocate(0);allocate(0);0;allocate(0)]);
   // existierendes Verb ergaenzen
-  added_cmds[str,0]+=({func});
-  added_cmds[str,1]+=({flag});
-  added_cmds[str,2]+=({rule});
+  added_cmds[str, CMDIDX_FUN]+=({func});
+  added_cmds[str, CMDIDX_FLAG]+=({flag});
+  added_cmds[str, CMDIDX_RULE]+=({rule});
+  added_cmds[str, CMDIDX_CACHE]+=({cachedcl});
   // ggf. id in das ID-Mapping eintragen
   if(cmdid) {
    mixed *tmp;
-   j=sizeof((string*)added_cmds[str,0]);
-   tmp=added_cmds[str,3]||allocate(j);
+   j=sizeof((string*)added_cmds[str, CMDIDX_FUN]);
+   tmp=added_cmds[str, CMDIDX_ID]||allocate(j);
    if(sizeof(tmp)<j) tmp+=allocate(j-sizeof(tmp));
    tmp[<1]=cmdid;
-   added_cmds[str,3]=tmp;
+   added_cmds[str, CMDIDX_ID]=tmp;
   }
  }
 }
@@ -254,7 +304,7 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
   added_cmds=(mapping)0; 
  else {
   int i, j;
-  mixed *rule, *flag, *fun, *delrule, *ids;
+  mixed *rule, *flag, *fun, *delrule, *ids, *cachecl;
 
   if(stringp(cmd)) {
    // Regeln entdeckt - Zerlegen (wie AddCmd)
@@ -275,7 +325,7 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
   while(i--) {
    // keine Regeln da und Regeln loeschen erlaubt: alles loeschen
    if(!delrule && !del_norule && !onlyid) m_delete(added_cmds,cmd[i]);
-   else if(m_contains(&fun, &flag, &rule, &ids, added_cmds, cmd[i])) {
+   else if(m_contains(&fun, &flag, &rule, &ids, &cachecl, added_cmds, cmd[i])) {
     j=sizeof(fun);
     while(j--) {
      int k;
@@ -294,9 +344,10 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
       }
       // alles korrekt: Löschen!
       // (Arraybereich durch leeres Array loeschen)
-      flag[j..j]  = allocate(0);
-      fun[j..j]   = allocate(0);
-      rule[j..j]  = allocate(0);
+      flag[j..j]    = allocate(0);
+      fun[j..j]     = allocate(0);
+      rule[j..j]    = allocate(0);
+      cachecl[j..j] = allocate(0);
       if(ids) {
        ids[j..j] = allocate(0);
        if(!sizeof(ids-allocate(1))) ids=(mixed*)0;
@@ -307,10 +358,11 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
    }
    // Funktions/Regelliste update oder ggf. Kommando voellig loeschen
    if(sizeof(rule)) {
-    added_cmds[cmd[i],0]=fun;
-    added_cmds[cmd[i],1]=flag;
-    added_cmds[cmd[i],2]=rule;
-    added_cmds[cmd[i],3]=ids;
+    added_cmds[cmd[i], CMDIDX_FUN]=fun;
+    added_cmds[cmd[i], CMDIDX_FLAG]=flag;
+    added_cmds[cmd[i], CMDIDX_RULE]=rule;
+    added_cmds[cmd[i], CMDIDX_ID]=ids;
+    added_cmds[cmd[i], CMDIDX_CACHE]=cachecl;
    } else m_delete(added_cmds,cmd[i]);
   }
   if(!sizeof(added_cmds)) added_cmds=(mapping)0;
@@ -320,11 +372,20 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
 
 // Ausfuehren samt geparstem Inputstring und getriggerten Parserergebnissen
 static int _execute(mixed fun, string str, mixed *parsed) {
- if(closurep(fun))
-  return ((int)funcall(fun,str,&parsed));
- if(stringp(fun))
-  return ((int)call_other(this_object(),fun,str,&parsed));
- return 0;
+  switch(typeof(fun)) {
+    case T_CLOSURE:
+      return ((int)funcall(fun,str,&parsed));
+    case T_STRING:
+      int ret;
+      if(!call_resolved(&ret, this_object(), fun, str, &parsed))
+        raise_error(sprintf(
+          "AddCmd: String-Methode '%s' in Kommando %#O scheint zu fehlen "
+          "oder nicht zugreifbar zu sein.\n", fun, parsed));
+      return ret;
+    default:
+      break;
+  }
+  return 0;
 }
 
 #define CHECK_PRESENT     1
@@ -339,8 +400,8 @@ static int _execute(mixed fun, string str, mixed *parsed) {
 
 // Regeln fuer ein (nun unwichtiges) Verb triggern
 static int _process_command(string str, string *noparsestr,
-                            mixed fun, mixed flag, mixed rule, mixed id)
-{
+                            mixed fun, mixed flag, mixed rule,
+                            mixed id, mixed cachedcl) {
  mixed *parsed, *objmatches;
 
  // eine Regel ... auswerten ...
@@ -505,7 +566,7 @@ static int _process_command(string str, string *noparsestr,
    parsed[objmatches[objsize]]=objmatches[objsize+1];
 
  // erfolgreich Methode gefunden/eine Regel bis zum Ende durchgeparst:
- return(_execute(&fun,&str,&parsed));
+ return(_execute(cachedcl||fun, str, &parsed));
 }
 
 // Auswertung - add_action-Fun 
@@ -515,10 +576,10 @@ public int _cl(string str) {
  mixed *flag;
  // Verb existiert, Kommandos auch, Eintrag fuer Verb gefunden
  if(mappingp(added_cmds) && query_verb()) {
-  mixed *fun, *rule, *ids;
+  mixed *fun, *rule, *ids, *cachecl;
 
   // ist das Verb ein Key im Kommandomapping?
-  if(m_contains(&fun, &flag, &rule, &ids, added_cmds, query_verb())) {
+  if(m_contains(&fun, &flag, &rule, &ids, &cachecl, added_cmds, query_verb())) {
    string *noparsestr;
    nindex=sizeof(fun);
    noparsestr=explode((str||"")," ")-({""});
@@ -528,8 +589,7 @@ public int _cl(string str) {
    {
     mixed cmd_id = (pointerp(ids) && sizeof(ids)>nindex) ? ids[nindex] : 0;
     if(_process_command(&str, noparsestr, fun[nindex], flag[nindex],
-                        rule[nindex], cmd_id))
-    {
+                        rule[nindex], cmd_id, cachecl[nindex])) {
       GiveEP(EP_CMD, query_verb());
       return 1;
     }
@@ -542,20 +602,21 @@ public int _cl(string str) {
   nindex=sizeof(keys);
   while(nindex--)
    if(!strstr(query_verb(),keys[nindex]) &&
-      member((flag=added_cmds[keys[nindex],1]),1)>=0) {
+      member((flag=added_cmds[keys[nindex], CMDIDX_FLAG]),1)>=0) {
     int i,ret;
     i=sizeof(flag);
     // Reihenfolge nicht aendern !
     while(i--)
       if(flag[i]==1) {
-        mixed *exec = added_cmds[keys[nindex],0];
-        if(!pointerp(exec) || sizeof(exec)<=i)
+        mixed *fuzzyfuns   = added_cmds[keys[nindex], CMDIDX_FUN];
+        mixed *fuzzycache  = added_cmds[keys[nindex], CMDIDX_CACHE];
+        if(!pointerp(fuzzyfuns) || sizeof(fuzzyfuns)<=i)
           catch(raise_error(
             "AddCmd-Auswertung: CatchAll-Kommando \""+keys[nindex]+"\""
             " wurde waehrend der Ausfuehrung veraendert oder geloescht. "
             "Klartext: Das ist schlecht. Sucht ein RemoveCmd? ");
             publish);
-        else if(_execute(exec[i],str,0)) {
+        else if(_execute(fuzzycache[i]||fuzzyfuns[i], str, 0)) {
           GiveEP(EP_CMD, query_verb());
           return 1;
         }
@@ -570,39 +631,51 @@ void init() {
 }
 
 
-static void _check_copy_commands(string ind, mixed *fun,
-				  mixed *flag, mixed *rule) {
- if(pointerp(fun)) added_cmds[ind,0]=fun+allocate(0);
- else added_cmds[ind,0]=({fun});
- if(pointerp(flag)) added_cmds[ind,1]=flag+allocate(0);
- else if(flag) added_cmds[ind,1]=({flag});
- else added_cmds[ind,1]=allocate(sizeof(added_cmds[ind]));
- if(pointerp(rule)) added_cmds[ind,2]=rule+allocate(0);
- else added_cmds[ind,2]=allocate(sizeof(added_cmds[ind]));
-
- if(sizeof(added_cmds[ind])!=sizeof(added_cmds[ind,1]) ||
-    sizeof(added_cmds[ind])!=sizeof(added_cmds[ind,2])) {
-  added_cmds=(mapping)0;
-  raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");
- }
+private void _check_importentry(string ind, mixed *fun, mixed *flag,
+                                mixed *rule, int|mixed id, mixed *cachedcl) {
+  // Check der Stringmethoden
+  cachedcl = map(fun, function int|closure(string clfun) {
+                        closure ret;
+                        catch(ret=_check_stringmethod(
+                                    clfun, 1,
+                                    "Warnung SetProp(P_COMMANDS): ");
+                              publish);
+                        return ret;
+                      });
+  if(sizeof(fun)!=sizeof(flag) || sizeof(fun)!=sizeof(rule))
+    raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");
 }
 
-static mapping _set_commands(mapping commands) {
- if(!commands) added_cmds=(mapping)0;
- else if(mappingp(commands)) {
-  added_cmds=m_allocate(sizeof(commands),4);
-  walk_mapping(commands,#'_check_copy_commands);
- }
- if (mappingp(added_cmds))
-   return(deep_copy(added_cmds));
- else
-   return (mapping)0;
+private void _cleanup_exportcl(string ind, mixed *fun, mixed *flag,
+                               mixed *rule, int|mixed id,
+                               mixed *cachedcl, mixed *fl) {
+  cachedcl = allocate(sizeof(fun));
+  foreach(string func: filter(fun, #'stringp))
+    catch(_check_stringmethod(func, 1, "Warnung QueryProp(P_COMMANDS): ");
+          publish);
 }
 
 static mapping _query_commands() {
- if (mappingp(added_cmds))
-   return(deep_copy(added_cmds));
- else
-   return (mapping)0;
+  mapping ret;
+  if(mappingp(added_cmds)) {
+    ret = deep_copy(added_cmds);
+    // Hier kann man nicht mehr herausfinden, ob es ein extern_call() ist:
+    // Closures im Cache werden immer geloescht.
+    walk_mapping(ret, #'_cleanup_exportcl,
+                 functionlist(this_object(), RETURN_FUNCTION_NAME|
+                                             RETURN_FUNCTION_FLAGS));
+  }
+  return ret;
 }
 
+static mapping _set_commands(mapping commands) {
+  if(!commands) added_cmds=(mapping)0;
+  else if(mappingp(commands)) {
+    if(widthof(commands) != CMDS_WIDTH)
+      raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");
+    mapping tmp = deep_copy(commands);
+    walk_mapping(tmp, #'_check_importentry);
+    commands = tmp;
+  }
+  return _query_commands();
+}
