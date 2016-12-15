@@ -127,6 +127,9 @@ BEMERKUNGEN:
         dieser maechtigeren Funktion aus Gruenden der Abwaertskompatibilitaet
         simuliert, sollen aber nicht mehr eingesetzt werden.
         
+        Die alten Platzhalter && etc. (s.u.) werden weiterhin unterstuetzt,
+        sollten aber fuer bessere Wartbarkeit nicht mehr verwendet werden.
+        
         Fuer das Testen der Kneipe gibt es in jeder Kneipe den Befehl
         'pubinit'. Hiermit lassen sich die Speisen und Getraenke durch-
         checken. Steht in der Ausgabe bei einem Getraenk/Essen ein FAIL,
@@ -143,13 +146,13 @@ BEISPIEL:
         AddToMenu("'Opa's Drachenkeule'",({"drachenkeule","keule"}),
         ([P_HP:63,P_SP:63,P_FOOD:9,P_VALUE:528]), 5,
         ({"Du isst die Keule mit einem schlechten Gewissen.",
-          "&& isst die Keule mit einem schlechten Gewissen."}),
+          "@WER1 isst die Keule mit einem schlechten Gewissen."}),
         ([ PR_USER : 4; 1 , PR_ALL : 20; 3 ]), 9,
         ({"Der unsichtbare Kneipier schneidet einem Rentner ein grosses "
           "Stueck aus dessen Keule und bereitet sie Dir zu. Komisch, muss "
           "wohl ein Tippfehler auf der Karte gewesen sein.",
           "Der unsichtbare Kneipier schneidet einem hilflosen Opa ein "
-          "Stueck aus dessen Keule und braet diese fuer &&."}) );
+          "Stueck aus dessen Keule und braet diese fuer @WEN1."}) );
         }
 
         1) Name der Speise (des Getraenks) auf der Karte (bei menue).
@@ -175,28 +178,11 @@ BEISPIEL:
            ben werden (also NICHT der Bestell-Text).
 
            ({"Du isst die Keule mit einem schlechten Gewissen.",
-             "&& isst die Keule mit einem schlechten Gewissen."}),
+             "@WER1 isst die Keule mit einem schlechten Gewissen."}),
 
-           Verfuegbare Platzhalter sind (pl = this_player()):
-
-           &&  - pl->name(WER,2)
-           &1& - pl->name(WER,2)
-           &2& - pl->name(WESSEN,2)
-           &3& - pl->name(WEM,2)
-           &4& - pl->name(WEN,2)
-           &1# - capitalize(pl->name(WER,2))
-           &2# - capitalize(pl->name(WESSEN,2))
-           &3# - capitalize(pl->name(WEM,2))
-           &4# - capitalize(pl->name(WEN,2))
-           &!  - pl->QueryPronoun(WER)
-           &5& - pl->QueryPronoun(WE);
-           &6& - pl->QueryPronoun(WESSEN)
-           &7& - pl->QueryPronoun(WEM)
-           &8& - pl->QueryPronoun(WEN)
-           &5# - capitalize(pl->QueryPronoun(WER))
-           &6# - capitalize(pl->QueryPronoun(WESSEN))
-           &7# - capitalize(pl->QueryPronoun(WEM))
-           &8# - capitalize(pl->QueryPronoun(WEN))
+           Die Ausgabe-Strings werden vor der Ausgabe mit dem Empfaenger
+           als Objekt an replace_personal() uebergeben. Fuer die
+           moeglichen Platzhalter siehe dort.
           
         6) Die Speise ist in ihrer Anzahl begrenzt. Fuer jeden Spieler
            sind 4 Keulen pro reset() da. Ausserdem gibt es noch einen
@@ -224,10 +210,31 @@ BEISPIEL:
            "Stueck aus dessen Keule und bereitet sie Dir zu. Komisch, muss "
            "wohl ein Tippfehler auf der Karte gewesen sein.",
            "Der unsichtbare Kneipier schneidet einem hilflosen Opa ein "
-           "Stueck aus dessen Keule und braet diese fuer &&."}));
+           "Stueck aus dessen Keule und braet diese fuer @WEN1."}));
+
+LISTE DER ALTEN PLATZHALTER (DEPRECATED):
+           &&  - pl->name(WER,2)
+           &1& - pl->name(WER,2)
+           &2& - pl->name(WESSEN,2)
+           &3& - pl->name(WEM,2)
+           &4& - pl->name(WEN,2)
+           &1# - capitalize(pl->name(WER,2))
+           &2# - capitalize(pl->name(WESSEN,2))
+           &3# - capitalize(pl->name(WEM,2))
+           &4# - capitalize(pl->name(WEN,2))
+           &!  - pl->QueryPronoun(WER)
+           &5& - pl->QueryPronoun(WE);
+           &6& - pl->QueryPronoun(WESSEN)
+           &7& - pl->QueryPronoun(WEM)
+           &8& - pl->QueryPronoun(WEN)
+           &5# - capitalize(pl->QueryPronoun(WER))
+           &6# - capitalize(pl->QueryPronoun(WESSEN))
+           &7# - capitalize(pl->QueryPronoun(WEM))
+           &8# - capitalize(pl->QueryPronoun(WEN))
+
 
 SIEHE AUCH:
         AddFood(), AddDrink(), /sys/pub.h
-        RemoveFromMenu()
+        RemoveFromMenu(), replace_personal()
 ----------------------------------------------------------------------------
 Last modified: Sam, 01. Okt 2011, 23:40 by Arathorn

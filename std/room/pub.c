@@ -71,6 +71,34 @@ protected void create_super() {
   set_next_reset(-1);
 }
 
+// Die alten durch die neuen Platzhalter ersetzen
+private string replace_dummy(string str)
+{
+  switch(str)
+  {
+    case "&&": return "@WERU1";
+    case "&1&": return "@WERU1";
+    case "&2&": return "@WESSENU1";
+    case "&3&": return "@WEMU1";
+    case "&4& ": return "@WENU1";
+    case "&1#": return "@WERU1";
+    case "&2#": return "@WESSENU1";
+    case "&3#": return "@WEMU1";
+    case "&4# ": return "@WENU1";
+    case "&!": return "@WERQP1";
+    case "&5&": return "@WERQP1";
+    case "&6&": return "@WESSENQP1";
+    case "&7&": return "@WEMQP1";
+    case "&8&": return "@WENQP1";
+    case "&5#": return "@WERQP1";
+    case "&6#": return "@WESSENQP1";
+    case "&7#": return "@WEMQP1";
+    case "&8#": return "@WENQP1";
+    default: return str;
+  }
+  return str;
+}
+
 /* Zur Syntax:
  *
  * menuetext - Der Text steht im Menue
@@ -136,6 +164,18 @@ varargs string AddToMenu(string menuetext, mixed ids, mapping minfo,
   for( i=sizeof(ids)-1;i>=0;i-- )
     id_list += ([ ids[i] : ident ]);
 
+  if(pointerp(msg) && sizeof(msg)>=2)
+  {
+    msg[0]=regreplace(msg[0],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+    msg[1]=regreplace(msg[1],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+  }
+
+  if(pointerp(d_msg) && sizeof(d_msg)>=2)
+  {
+    d_msg[0]=regreplace(msg[0],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+    d_msg[1]=regreplace(msg[1],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+  }    
+  
   if ( intp(refresh) && (refresh>0) )
     refresh = ([ PR_ALL : refresh; 1 ]);
   else if ( !mappingp(refresh) )
@@ -509,35 +549,16 @@ mapping adjust_info(string ident, mapping minfo, object zahler,
   return 0;
 }
 
-/* Hier hats jede Menge neue Platzhalter */
+
 string mess(string str,object pl)
 {
-  string dummy1, dummy2;
-
   if ( !pl )
     pl=PL;
 
   if ( !stringp(str) || str=="" )
     return str;
 
-  str=implode(explode(str,"&&"),pl->name(WER,2));
-  str=implode(explode(str,"&1&"),pl->name(WER,2));
-  str=implode(explode(str,"&2&"),pl->name(WESSEN,2));
-  str=implode(explode(str,"&3&"),pl->name(WEM,2));
-  str=implode(explode(str,"&4&"),pl->name(WEN,2));
-  str=implode(explode(str,"&1#"),capitalize(pl->name(WER,2)));
-  str=implode(explode(str,"&2#"),capitalize(pl->name(WESSEN,2)));
-  str=implode(explode(str,"&3#"),capitalize(pl->name(WEM,2)));
-  str=implode(explode(str,"&4#"),capitalize(pl->name(WEN,2)));
-  str=implode(explode(str,"&!"),pl->QueryPronoun(WER));
-  str=implode(explode(str,"&5&"),pl->QueryPronoun(WER));
-  str=implode(explode(str,"&6&"),pl->QueryPronoun(WESSEN));
-  str=implode(explode(str,"&7&"),pl->QueryPronoun(WEM));
-  str=implode(explode(str,"&8&"),pl->QueryPronoun(WEN));
-  str=implode(explode(str,"&5#"),capitalize(pl->QueryPronoun(WER)));
-  str=implode(explode(str,"&6#"),capitalize(pl->QueryPronoun(WESSEN)));
-  str=implode(explode(str,"&7#"),capitalize(pl->QueryPronoun(WEM)));
-  str=implode(explode(str,"&8#"),capitalize(pl->QueryPronoun(WEN)));
+  str=replace_personal(str,({pl}),1);
 
   return break_string(capitalize(str),78,"", BS_LEAVE_MY_LFS);
 }
