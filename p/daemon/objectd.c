@@ -61,7 +61,7 @@ int RemoveObject(object|string obj, string env)
   if(!obj || !env || !stringp(env))
     return 0;
 
-  // save information
+  int ret;
   if(member(objects, env))
   {
     mixed oblist = objects[env];
@@ -70,6 +70,7 @@ int RemoveObject(object|string obj, string env)
       if (load_name(arr[CLASS]) == load_name(obj))
       {
         arr = 0;
+        ++ret;
         // nur eins Austragen, nicht alle, falls mehr als einmal angemeldet
         break;
       }
@@ -80,7 +81,7 @@ int RemoveObject(object|string obj, string env)
     m_delete(objects, env);
 
   do_save=1;
-  return 1;
+  return ret;
 }
 
 // Fragt nicht wirklich ab, sondern erstellt die angemeldeten Objekt in env.
@@ -148,3 +149,31 @@ public varargs int remove(int silent)
   return 1;
 }
 
+/*
+void clean(string *list)
+{
+  if (!list)
+      list = m_indices(objects);
+  while (sizeof(list) && get_eval_cost() > 50000)
+  {
+    tell_object(this_player(),"Cleaning: "+list[0]+"\n");
+    mixed arrarr = objects[list[0]];
+    foreach(mixed arr: &arrarr)
+    {
+      if (load_name(arr[CLASS]) == "/p/service/miril/advent/obj/tuerchen")
+      {
+        arr = 0;
+      }
+    }
+    objects[list[0]] = arrarr - ({0});
+    list = list[1..];
+  }
+  if (sizeof(list))
+      call_out(#'clean, 4);
+  else
+  {
+    save_object(OBJECTD_SAVE); 
+    tell_object(this_player(), "Fertig!");
+  }
+}
+*/
