@@ -2047,7 +2047,8 @@ static int remote(string str, int flag)
   switch(m)
   {
     case MSG_DELIVERED:
-      _recv(destpl, capitalize(destpl->name()) + "->" + str, MSGFLAG_REMOTE);
+      ReceiveMsg(capitalize(destpl->name()) + "->" + str, MT_COMM|MT_FAR,
+                 MA_EMOTE, 0, ME);
       break;
     case MSG_BUFFERED:
       write( capitalize(destpl->name(WER) + " ist gerade beschaeftigt.\n") );
