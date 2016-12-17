@@ -533,9 +533,9 @@ private varargs void add_to_tell_history( string uid, int sent, int recv,
       "sent: %d, recv: %d, flags: %d, msg: %s", 
       uid, sent, recv, flags, message),MT_DEBUG|MSG_BS_LEAVE_LFS,0,0,ME);              
   }
-  
+
   // letzten Gespraechspartner fuer erwidere.
-  if (!(flags & MSGFLAG_REMOTE))
+  if (flags & (MSGFLAG_TELL|MSGFLAG_RTELL))
     last_comm_partner = uid;
 
   // ist ein sortiertes Array von max. MAX_SAVED_CHATS Groesse, welches die
@@ -1123,7 +1123,7 @@ varargs int _tell(string who, mixed msg)
       {
         write("Nachricht abgeschickt.\n");
         add_to_tell_history(who, 1, 0, msg,
-          "Du teilst " + capitalize(who) + " mit: ", MSGFLAG_TELL, 1);
+          "Du teilst " + capitalize(who) + " mit: ", MSGFLAG_RTELL, 1);
       }
     }
     else
@@ -1863,7 +1863,8 @@ public varargs int ReceiveMsg(string msg, int msg_type, string msg_action,
         uid = origin->query_real_name();
       else
         uid = origin->name(WER) || "<unbekannt>";
-      add_to_tell_history(uid, 0, 1, msg, msg_prefix, 0);
+      add_to_tell_history(uid, 0, 1, msg, msg_prefix,
+                          (msg_action == MA_TELL ? MSGFLAG_TELL : 0 ) );
     }
 
     // ggf. Uhrzeit bei abwesenden Spielern anhaengen, aber nicht bei
