@@ -1,6 +1,6 @@
 SetAttr()
 FUNKTION:
-     private static int SetAttr(string attr, int val)
+     public int SetAttr(string attr, int val)
 
 DEFINIERT IN:
      /std/living/attributes.c
@@ -28,4 +28,4 @@ SIEHE AUCH:
      P_ATTRIBUTES, P_ATTRIBUTES_OFFSETS, P_ATTRIBUTES_MODIFIER,
      P_X_ATTR_MOD, P_M_ATTR_MOD, /std/living/attributes.c
 
-13.Nov.2002, Gloinson
+Letzte Aenderung: 22.12.2016, Bugfix

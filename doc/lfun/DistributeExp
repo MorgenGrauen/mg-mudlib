@@ -1,6 +1,6 @@
 DistributeExp()
 FUNKTION:
-     private static void DistributeExp(object enemy, int exp_to_give)
+     private void DistributeExp(object enemy, int exp_to_give)
 
 DEFINIERT IN:
      /std/living/life.c
@@ -21,4 +21,4 @@ SIEHE AUCH:
      Properties:  P_XP
      Sonstiges:   teamkampf
 
-14.Feb 2007 Gloinson
+Letzte Aenderung: 22.12.2016, Bugfix

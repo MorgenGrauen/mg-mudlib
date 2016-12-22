@@ -76,7 +76,7 @@ BEISPIELE
     // bei Nichtverwendung von Regeln muss man Parameter selbst auswerten
     AddCmd(({"bohr","bohre"}),#'action_bohren);
     ...
-    private static int action_bohren(string str) {
+    private int action_bohren(string str) {
       string *tmp;
       notify_fail("Wo willst (etwas) Du bohren?\n");
       if(!str) return 0;       // Tja, keine Argumente ...
@@ -106,7 +106,7 @@ BEISPIELE
  ## Variante 1a, OHNE REGELN ##
     // prinzipiell koennte die Methode action_bohren auch so
     // aussehen, ist aber nicht ganz so flexibel:
-    private static int action_bohren(string str) {
+    private int action_bohren(string str) {
      string tmp;
      if(!str || (sprintf(str,"loch in erde%s",tmp)!=1 &&
                  sprintf(str,"loch durch erde%s",tmp)!=1 &&
@@ -127,7 +127,7 @@ BEISPIELE
            "Willst du das Loch in etwas bohren?|"
            "Wohin willst du das Loch bohren?");
     ...
-    private static int action_bohren(string str, mixed *param) {
+    private int action_bohren(string str, mixed *param) {
      write("Du bohrst ein Loch in den Boden.\n");
      say(this_player()->Name(WER)+" bohrt ein Loch in den Boden.\n");
      ...
@@ -142,7 +142,7 @@ BEISPIELE
            "Willst du das Loch in etwas @verben?|"
            "@WER3 was willst du das Loch @verben?");
     ...
-    private static int action_bohren(string str, mixed *param) ...
+    private int action_bohren(string str, mixed *param) ...
 
  ## Variante 4, MIT REGEL, FEHLERMELDUNG UND RETURN 1 ##
     // in Variante 1 kam sinnvollerweise sehr frueh der Abbruch mit
@@ -153,7 +153,7 @@ BEISPIELE
            "Willst du das Loch in etwas @verben?^|"
            "@WER3 was willst du das Loch @verben?^");
     ...
-    private static int action_bohren(string str, mixed *param) ...
+    private int action_bohren(string str, mixed *param) ...
 
  ## Variante 5, MIT REGEL, FEHLERMELDUNG, RETURN 1, OHNE FUN ##
     // und falls in action_bohren() nichts ausser Ausgaben passiert, koennen
@@ -176,7 +176,7 @@ BEISPIELE
     // mit PreventInsert() basteln sollte)
     AddCmd(({"stopf","stopfe"}),#'action_stopf);
     ...
-    private static int action_stopf(string str) {
+    private int action_stopf(string str) {
      string tmp,tmp2;
      object o;
 
@@ -216,7 +216,7 @@ BEISPIELE
     ...
     // dabei werden wie immer die gefunden Matches als Parameterarray
     // uebergeben ... und die @PRESENT und @ID als Objekte!
-    private static int action_stopf(string str, mixed *param) {
+    private int action_stopf(string str, mixed *param) {
      if(param[0]->QueryProp(...)) {
       write(break_string(
        "Du stopfst "+param[0]->name(WEN,1)+" in den Automaten.",78));
@@ -317,4 +317,4 @@ BEISPIELE
 
     --- Ende Komplexbeispiel mehrere Regeln ---
 
-10 Juni 2004 Gloinson
+Letzte Aenderung: 22.12.2016, Bugfix

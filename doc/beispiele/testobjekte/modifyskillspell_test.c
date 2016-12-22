@@ -37,7 +37,7 @@ void create() {
 
 // Testfunktion, weil im Code dazu aufgefordert wird, das Objekt auch
 // mal zu wegzulegen. Spieler sollten nicht an sich herumfummeln.
-private static int _checkLearner(object pl) {
+private int _checkLearner(object pl) {
   if(!IS_LEARNER(this_player())) {
     notify_fail("Du bist kein Magier, deshalb geht das nicht.\n");
     call_out(#'remove, 1);

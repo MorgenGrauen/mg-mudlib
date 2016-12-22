@@ -142,7 +142,7 @@ Effizienz
       statt:  filter(users(),
                        lambda(({'x}), ({#'call_other,'x,
                                     "QueryProp",P_SECOND})));
-      lieber: private static int _isasec(object o) {
+      lieber: private int _isasec(object o) {
                 return o->QueryProp(P_SECOND);
               }
               ...
@@ -195,7 +195,7 @@ Effizienz
         statt:   t=allocate(0);
                  for (i=sizeof(a1); i--; )
                    if (member(a2,a1[i])>=0) t+=({a1[i]});
-        lieber:  private static mixed _is_member(mixed x, a) {
+        lieber:  private mixed _is_member(mixed x, a) {
                    if (member(a,x)>=0) return 1;
                    else return 0;
                  }
@@ -219,4 +219,4 @@ Effizienz
  SIEHE AUCH:
      memory, objekte, mudrechner, goodstyle, ticks
 
- 6. Sep 2012 Gloinson
+Letzte Aenderung: 22.12.2016, Bugfix
