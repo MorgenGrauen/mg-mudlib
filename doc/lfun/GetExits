@@ -17,7 +17,10 @@ RUeCKGABEWERT:
      String mit der Liste der sichtbaren Ausgaenge.
 
 SIEHE AUCH:
-     AddExit(), AddSpecialExit(), /std/room/exits.c
+     AddExit(), AddSpecialExit(), GetExits(),
+     RemoveExit(), RemoveSpecialExit(),
+     GuardExit(),
+     H_HOOK_EXIT_USE, P_EXITS, P_HIDE_EXITS, /std/room/exits.c
+     ausgaenge
 
-----------------------------------------------------------------------------
-Last modified: Wed May 8 10:18:47 1996 by Wargon
+Letzte Aenderung: 22.12.2016, Bugfix
