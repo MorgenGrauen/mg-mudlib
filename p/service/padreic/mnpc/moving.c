@@ -170,9 +170,9 @@ static void mnpc_init()
     {
       RegisterWalk();
     }
-    if ( (QueryProp(MNPC_FLAGS) & MNPC_FOLLOW_PLAYER) &&
-         (member(QueryProp(MNPC_PURSUER), PL)==-1) &&
-        (!(QueryProp(MNPC_FLAGS) & MNPC_FOLLOW_ENEMY) || IsEnemy(PL)))
+    if ( ((QueryProp(MNPC_FLAGS) & MNPC_FOLLOW_PLAYER) &&
+         (member(QueryProp(MNPC_PURSUER), PL)==-1)) ||
+        ((QueryProp(MNPC_FLAGS) & MNPC_FOLLOW_ENEMY) && IsEnemy(PL)))
     {
       PL->AddPursuer(ME);
       SetProp(MNPC_PURSUER, QueryProp(MNPC_PURSUER)+({ PL }));
