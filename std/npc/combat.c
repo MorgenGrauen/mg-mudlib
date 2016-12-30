@@ -160,7 +160,7 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
   if(stringp(func))
   {
     cl=symbol_function(func,this_object());
-    if(!closurep(func))
+    if(!closurep(cl))
     {
       catch(raise_error(
         "AddSpell(): Es konnte keine Closure fuer "+func+" erstellt werden.");
