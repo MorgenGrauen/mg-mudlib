@@ -157,7 +157,7 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
     spellarg = ([SP_PHYSICAL_ATTACK: 0]);
 
   // Falls func ein String ist eine Closure erstellen und diese speichern.
-  if(stringp(func))
+  if(stringp(func) && sizeof(func))
   {
     cl=symbol_function(func,this_object());
     if(!closurep(cl))
