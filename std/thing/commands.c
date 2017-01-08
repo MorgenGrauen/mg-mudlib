@@ -671,7 +671,7 @@ static mapping _set_commands(mapping commands) {
       raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");
     mapping tmp = deep_copy(commands);
     walk_mapping(tmp, #'_check_importentry);
-    added_commands = tmp;
+    added_cmds = tmp;
   }
   return _query_commands();
 }
