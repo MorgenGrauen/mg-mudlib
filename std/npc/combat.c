@@ -169,7 +169,15 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
   }
   else
   {
-    cl=func;
+    // Leerstrings durch 0 ersetzen.
+    if(stringp(func))
+    {
+      cl=0;
+    }
+    else
+    {
+      cl=func;
+    }
   }
   
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
