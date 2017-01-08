@@ -633,7 +633,8 @@ void init() {
 
 private void _check_importentry(string ind, mixed *fun, mixed *flag,
                                 mixed *rule, int|mixed id, mixed *cachedcl) {
-  // Check der Stringmethoden
+  // Check der Stringmethoden: Fehler werden abgefangen, um generelles
+  // Kopieren zu ermoeglichen. Es koennen aber Kommandomethoden verloren gehen.
   cachedcl = map(fun, function int|closure(string clfun) {
                         closure ret;
                         catch(ret=_check_stringmethod(
@@ -648,22 +649,17 @@ private void _check_importentry(string ind, mixed *fun, mixed *flag,
 
 private void _cleanup_exportcl(string ind, mixed *fun, mixed *flag,
                                mixed *rule, int|mixed id,
-                               mixed *cachedcl, mixed *fl) {
+                               mixed *cachedcl) {
   cachedcl = allocate(sizeof(fun));
-  foreach(string func: filter(fun, #'stringp))
-    catch(_check_stringmethod(func, 1, "Warnung QueryProp(P_COMMANDS): ");
-          publish);
 }
 
 static mapping _query_commands() {
   mapping ret;
   if(mappingp(added_cmds)) {
     ret = deep_copy(added_cmds);
-    // Hier kann man nicht mehr herausfinden, ob es ein extern_call() ist:
-    // Closures im Cache werden immer geloescht.
-    walk_mapping(ret, #'_cleanup_exportcl,
-                 functionlist(this_object(), RETURN_FUNCTION_NAME|
-                                             RETURN_FUNCTION_FLAGS));
+    // Closures im Cache werden immer geloescht, da sonst versehentlich
+    // doch exportiert werden koennte
+    walk_mapping(ret, #'_cleanup_exportcl);
   }
   return ret;
 }
@@ -675,7 +671,7 @@ static mapping _set_commands(mapping commands) {
       raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");
     mapping tmp = deep_copy(commands);
     walk_mapping(tmp, #'_check_importentry);
-    commands = tmp;
+    added_commands = tmp;
   }
   return _query_commands();
 }
