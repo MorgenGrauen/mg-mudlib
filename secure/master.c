@@ -1048,8 +1048,8 @@ private void call_runtime_error(string err, string prg, string curobj,
 
   //Fehlerdaten an den Errord zur Speicherung weitergeben, falls wir sowas
   //haben.
-#ifdef ERRORD
   int issueid;
+#ifdef ERRORD
   // Wenn die sefuns gerade geladen werden, erfolgt keine Weitergabe an den
   // ErrorD, da dabei wieder sefuns gerufen werden, was zu einer Rekursion
   // fuehrt.
