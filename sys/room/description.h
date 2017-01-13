@@ -44,7 +44,7 @@
 #define __ROOM_DESCRIPTION_H_PROTO__
 
 // prototypes
-// no prototypes
+varargs void AddRoomMessage(string *mesg, int prob, mixed func);
 
 #endif // __ROOM_DESCRIPTION_H_PROTO__
 
