@@ -70,12 +70,12 @@ protected void create()
 
 private void process()
 {
+  players -= ({0});
   foreach(object pl : &players)
   {
     if (get_eval_cost() < 200000)
     {
       call_out(#'process, 2);
-      players -= ({0});
       return;
     }
     sl_exec("INSERT OR REPLACE INTO topliste(name, gilde, rasse, "
@@ -95,7 +95,7 @@ private void process()
                );
     pl=0;
   }
-  players -= ({0});
+  players = ({});
 }
 
 public void listen(string eid, object trigob, mixed data)
