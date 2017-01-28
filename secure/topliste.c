@@ -83,7 +83,7 @@ private void process()
                 "VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11);",
                 pl->query_real_name(),
                 pl->QueryProp(P_GUILD) || "unbekannt",
-                pl->QueryProp(P_RACE),
+                pl->QueryProp(P_REAL_RACE),
                 pl->QueryProp(P_AGE),
                 query_wiz_level(pl),
                 time(),
