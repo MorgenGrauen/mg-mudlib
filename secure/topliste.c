@@ -122,6 +122,22 @@ public void listen(string eid, object trigob, mixed data)
   }
 }
 
+// Falls ein Spieler sich aus Toplisten austragen will
+public varargs mixed DeletePlayer(string real_name)
+{
+  // (interaktive) Spielershells duerfen sich selber austragen, EM+ beliebige
+  // Spieler
+  if (!ARCH_SECURITY)
+  {
+      if (interactive(previous_object()))
+          real_name = previous_object()->query_real_name();
+      else
+          raise_error("Spieler aus Toplisten loeschen koennen nur Spieler "
+              "selber oder ein EM+.\n");
+  }
+  return sl_exec("DELETE FROM topliste WHERE name = ?1;", real_name);
+}
+
 public varargs < <string|int>* >* Liste(string rasse, string gilde,
                                      int limit, string sort)
 {

@@ -4133,7 +4133,8 @@ int topliste(string arg)
     else
     {
         SetProp(P_NO_TOPLIST,1);
-        write("Du wirst jetzt nicht in der Topliste auftauchen.\n");
+        "/secure/topliste"->DeletePlayer();
+        write("Du wirst jetzt nicht (mehr) in den Toplisten auftauchen.\n");
     }
     Set(P_NO_TOPLIST,SAVE|PROTECTED,F_MODE_AS);
     return 1;

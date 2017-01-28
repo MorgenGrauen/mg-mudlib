@@ -17,5 +17,10 @@
 
     wird dies wieder rueckgaengig gemacht.
 
+    Hinweis: das Sperren fuer die Toplisten hat sofortigen Effekt (d.h. man
+             wird aus den Listen geloescht), das
+             Entsperren wirkt sich jedoch erst nach dem naechsten Login aus
+             (KEIN 'ende' noetig).
+
  LETZTE AeNDERUNG:
-    Son, 30.8.1998, 22:10:00 von Paracelsus
+    28.1.2017, Zesstra
