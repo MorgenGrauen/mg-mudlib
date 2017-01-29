@@ -926,16 +926,21 @@ int restore_object(string name)
   int i;
   closure cl;
 
-  // abs. Pfad erzeugen. *seufz*
-  if (name[0]!='/')
-    name = "/" + name;
+  // Wenn name vermutlich ein Pfad (also nicht mit #x:y anfaengt)
+  if (name[0] != '#')
+  {
+    // abs. Pfad erzeugen *seufz*
+    if (name[0] != '#' && name[0]!='/')
+      name = "/" + name;
 
-  // wenn kein /data/ vorn steht, erstmal gucken, ob das Savefile unter /data/
-  // existiert. Wenn ja, wird das geladen.
-  if (strstr(name,"/"LIBDATADIR"/") != 0) {
-    string path = "/"LIBDATADIR + name;
-    if (file_size(path + ".o") >= 0)
-      name = path;
+    // wenn kein /data/ vorn steht, erstmal gucken, ob das Savefile unter
+    // /data/ existiert. Wenn ja, wird das geladen.
+    if (name[0]!='#' && strstr(name,"/"LIBDATADIR"/") != 0)
+    {
+      string path = "/"LIBDATADIR + name;
+      if (file_size(path + ".o") >= 0)
+        name = path;
+    }
   }
 
   // get actual property settings (by create())
