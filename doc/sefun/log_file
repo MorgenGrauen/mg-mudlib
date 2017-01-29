@@ -9,6 +9,8 @@ ARGUMENTE:
 
 BESCHREIBUNG:
 	log_file schreibt den Text text in die Datei /log/file.
+	Sollte file schon mit einem /log/ beginnen, wird kein erneutes /log/ davor
+	eingefuegt.
 
 RUECKGABEWERT:
 	1 bei Erfolg oder 0, falls ein Fehler beim Schreiben auftrat.
@@ -23,9 +25,11 @@ BEMERKUNGEN:
 BEISPIELE:
 	log_file( "report/wargon.rep", "TYPO von bla in blubb:\ntest\n");
 	In /log/report/wargon.rep finde ich nun die neueste Typomeldung... ;)
+	log_file( "/log/report/wargon.rep", "TYPO von bla in blubb:\ntest\n");
+	Gleiches Ergebnis. ;-)
 
 SIEHE AUCH:
 	write_file(E)
 
-09.06.2014, Zesstra
+29.01.2017, Zesstra
 

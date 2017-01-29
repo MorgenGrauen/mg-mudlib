@@ -48,17 +48,29 @@ public varargs int write_data(string file, string str, int flags)
 varargs int log_file(string file, string txt, int size_to_break)
 {
     mixed *st;
+    // Wenn file schon mit /log/ anfaengt, schreiben wir nicht noch eins
+    // davor.
+    if (strstr(file,"/"LIBLOGDIR"/") != 0)
+    {
+      file="/log/"+file;
+    }
 
-    file="/log/"+file;
+    // Achtung: es ist verfuehrerisch, diese Pruefung zu entfernen und
+    // stattdessen, den Aufruf von write_file() an den Aufrufer zu binden.
+    // Dies funktioniert aber nicht, weil log_file gesonderte Behandlung in
+    // valid_write() erfaehrt.
     file=implode((efun::explode(file,"/")-({".."})),"/");
-
     if (!funcall(bind_lambda(#'efun::call_other,PO),"secure/master",//')
                 "valid_write",file,geteuid(PO),"log_file",PO))
       return 0;
+
+    // Wenn zu gross, rotieren.
     if ( size_to_break >= 0 & (
         sizeof(st = get_dir(file,2) ) && st[0] >= (size_to_break|MAX_LOG_SIZE)))
         catch(rename(file, file + ".old");publish); /* No panic if failure */
 
+    // Die Zugriffspruefung hier laeuft mit Rechten der simul_efuns...
+    // Rechtepruefung oben
     return(write_file(file,txt));
 }
 
