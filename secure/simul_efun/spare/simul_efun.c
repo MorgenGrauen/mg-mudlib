@@ -829,6 +829,7 @@ mixed save_object(mixed name)
   mapping save;
   mixed index, res;
   int i;
+  string oldpath;
 
   // nur Strings und 0 zulassen
   if ((!stringp(name) || !sizeof(name)) && 
@@ -837,6 +838,24 @@ mixed save_object(mixed name)
       raise_error(sprintf(
          "Only non-empty strings and 0 may be used as filename in "
          "sefun::save_object()! Argument was %O\n",name));
+  }
+
+  if (stringp(name)) {
+    // abs. Pfad erzeugen. *seufz*
+    if (name[0]!='/')
+      name = "/" + name;
+    oldpath = name;
+    // automatisch in LIBDATADIR speichern
+    if (strstr(name,"/"LIBDATADIR"/") != 0) {
+      name = "/"LIBDATADIR + name;
+      // wenn das Verzeichnis nicht existiert, ggf. anlegen
+      string dir = name[0..strrstr(name,"/")-1];
+      if (file_size(dir) != FSIZE_DIR) {
+        if (mkdirp(dir) != 1)
+          raise_error("save_object(): kann Verzeichnis " + dir
+              + " nicht anlegen!");
+      }
+    }
   }
 
   save = m_allocate(0, 2);
@@ -862,12 +881,19 @@ mixed save_object(mixed name)
   // save object!
   previous_object()->_set_save_data(save);
   // format: wie definiert in config.h
-  if (stringp(name))
+  if (stringp(name)) {
     res = funcall(bind_lambda(#'efun::save_object, previous_object()), name,
        __LIB__SAVE_FORMAT_VERSION__);
+    // wenn erfolgreich und noch nen Savefile existiert, was nicht unter
+    // /data/ liegt, wird das geloescht.
+    if (!res && oldpath
+        && file_size(oldpath+".o") >= 0)
+      rm(oldpath+".o");
+  }
   else
     res = funcall(bind_lambda(#'efun::save_object, previous_object()),
        __LIB__SAVE_FORMAT_VERSION__);
+
   previous_object()->_set_save_data(0);
 
 #ifdef IOSTATS
@@ -899,6 +925,23 @@ int restore_object(string name)
   mapping properties;
   int i;
   closure cl;
+
+  // Wenn name vermutlich ein Pfad (also nicht mit #x:y anfaengt)
+  if (name[0] != '#')
+  {
+    // abs. Pfad erzeugen *seufz*
+    if (name[0] != '#' && name[0]!='/')
+      name = "/" + name;
+
+    // wenn kein /data/ vorn steht, erstmal gucken, ob das Savefile unter
+    // /data/ existiert. Wenn ja, wird das geladen.
+    if (name[0]!='#' && strstr(name,"/"LIBDATADIR"/") != 0)
+    {
+      string path = "/"LIBDATADIR + name;
+      if (file_size(path + ".o") >= 0)
+        name = path;
+    }
+  }
 
   // get actual property settings (by create())
   properties = (mapping)previous_object()->QueryProperties();
