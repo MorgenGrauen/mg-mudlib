@@ -1,0 +1,18 @@
+SYNOPSIS
+        string read_data(string file, int start, int anzahl)
+
+BESCHREIBUNG
+        Diese Funktion macht genau das, was read_file() tut (also siehe dort),
+        allerdings stellt sie sicher, dass <file> immer mit einem /data/
+        beginnt (setzt es also notfalls davor).
+        Es wird also immer irgendwo unterhalb von /data/ gelesen.
+
+BEISPIEL
+        # read_data("/d/ebene/zesstra/blupp");
+        -> liest das File /data/d/ebene/zesstra/blupp.
+        # read_data("/data/d/ebene/zesstra/blupp");
+        -> tut dasselbe.
+
+SIEHE AUCH
+        write_data()
+        read_file(E), write_file(E), read_bytes(E), write_file(E)
