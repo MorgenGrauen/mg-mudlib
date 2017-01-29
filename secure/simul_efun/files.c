@@ -1,6 +1,8 @@
 #include "/sys/files.h"
 
-public varargs string read_data(string file, int start, anzahl)
+#define PO        efun::previous_object(0)
+
+public varargs string read_data(string file, int start, int anzahl)
 {
     if (!stringp(file))
       raise_error("Bad arg 1 to read_data(): expected 'string'.\n");
@@ -115,4 +117,5 @@ public nomask int copy_file(string source, string dest)
 }
 #endif //!__EFUN_DEFINED__(copy_file)
 
+#undef PO
 
