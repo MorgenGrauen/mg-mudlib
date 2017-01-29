@@ -715,10 +715,6 @@ string query_fptips(string user) {
   return userlist[user,USER_FPTIPS];
 }
 
-#define PLAYERSHELLS ({"/std/shells/darkelf", "/std/shells/dwarf", \
-    "/std/shells/elf", "/std/shells/feline", "/std/shells/hobbit", \
-    "/std/shells/human" })
-
 // Aendert die Shells eines Users.
 int set_player_object( string user, string objectname )
 {
