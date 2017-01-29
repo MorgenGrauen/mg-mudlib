@@ -911,6 +911,13 @@ int restore_object(string name)
   int i;
   closure cl;
 
+  if (sizeof(name) < 1)
+  {
+    set_this_object(previous_object());
+    raise_error("Bad arg 1 to restore_object(): expected non-empty "
+                "'string'.\n");
+  }
+
   // Wenn name vermutlich ein Pfad (also nicht mit #x:y anfaengt)
   if (name[0] != '#')
   {
