@@ -86,6 +86,7 @@ int member_array(mixed item, mixed arraystring);
 #include __DIR__"shadow.c"
 #include __DIR__"livings.c"
 #include __DIR__"comm.c"
+#include __DIR__"files.c"
 
 #define TO        efun::this_object()
 #define TI        efun::this_interactive()
@@ -389,22 +390,6 @@ int file_time(string path) {
   set_this_object(previous_object());
   if (sizeof(v=get_dir(path,GETDIR_DATES))) return v[0];
   return(0); //sonst
-}
-
-// * Bei 50k Groesse Log-File rotieren
-varargs int log_file(string file, string txt, int size_to_break) {
-  mixed *st;
-
-  file="/log/"+file;
-  file=implode((efun::explode(file,"/")-({".."})),"/");
-//  tell_object(find_player("jof"),sprintf("LOG FILE: %O -> %O\n",previous_object(),file));
-  if (!funcall(bind_lambda(#'efun::call_other,PO),"secure/master",//')
-              "valid_write",file,geteuid(PO),"log_file",PO))
-      return 0;
-  if ( size_to_break >= 0 & (
-      sizeof(st = get_dir(file,2) ) && st[0] >= (size_to_break|MAX_LOG_SIZE)))
-      catch(rename(file, file + ".old");publish); /* No panic if failure */
-  return(write_file(file,txt));
 }
 
 // * Magier-Level abfragen
@@ -930,12 +915,12 @@ int restore_object(string name)
   if (name[0] != '#')
   {
     // abs. Pfad erzeugen *seufz*
-    if (name[0] != '#' && name[0]!='/')
+    if (name[0]!='/')
       name = "/" + name;
 
     // wenn kein /data/ vorn steht, erstmal gucken, ob das Savefile unter
     // /data/ existiert. Wenn ja, wird das geladen.
-    if (name[0]!='#' && strstr(name,"/"LIBDATADIR"/") != 0)
+    if (strstr(name,"/"LIBDATADIR"/") != 0)
     {
       string path = "/"LIBDATADIR + name;
       if (file_size(path + ".o") >= 0)
@@ -1802,47 +1787,6 @@ nomask varargs int query_next_reset(object ob) {
     return efun::object_info(ob, OI_NEXT_RESET_TIME);
 }
 
-
-#if !__EFUN_DEFINED__(copy_file)
-#define MAXLEN 50000
-nomask int copy_file(string source, string dest)
-{
-
-  int ptr;
-  string bytes;
-
-  set_this_object(previous_object());
-  if (!sizeof(source)||!sizeof(dest)||source==dest||(file_size(source)==-1)||
-      (!call_other(master(),"valid_read",source,
-                   getuid(this_interactive()||
-                 previous_object()),"read_file",previous_object()))||
-      (!call_other(master(),"valid_read",source,
-                   getuid(this_interactive()||
-                 previous_object()),"write_file",previous_object())))
-    return 1;
-  switch (file_size(dest))
-  {
-  case -1:
-    break;
-  case -2:
-    if (dest[<1]!='/') dest+="/";
-    dest+=efun::explode(source,"/")[<1];
-    if (file_size(dest)==-2) return 1;
-    if (file_size(dest)!=-1) break;
-  default:
-    if (!rm(dest)) return 1;
-    break;
-  }
-  do
-  {
-    bytes = read_bytes(source, ptr, MAXLEN); ptr += MAXLEN;
-    if (!bytes) bytes="";
-    write_file(dest, bytes);
-  }
-  while(sizeof(bytes) == MAXLEN);
-  return 0;
-}
-#endif //!__EFUN_DEFINED__(copy_file)
 
 
 // ### Ersatzaufloesung in Strings ###
