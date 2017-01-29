@@ -971,14 +971,17 @@ static int set_email(string str)
   */
 static int self_delete()
 {
-  write(
-    "     B I S T  D U  D I R  W I R K L I C H  S I C H E R ????????????\n"+
-    "Wenn Du Dich selbstloeschen willst, ist Dein Charakter UNWIDERRUFLICH\n"+
-    "verloren. Es gibt KEINE Moeglichkeit ihn wiederzuerschaffen. Solltest\n"+
-    "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte\n"+
+  string msg = sprintf("%s\n"
+    "Wenn Du Dich selbstloeschen willst, ist Dein Charakter UNWIDERRUFLICH"
+    "verloren. Es gibt KEINE Moeglichkeit, ihn wiederzuerschaffen. Solltest"
+    "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte"
     "den Befehl 'spielpause'.\n"+
-    "Fallst Du Dich immer noch selbstloeschen willst, gib Dein Password ein."+
-    "\n\n");
+    "Fallst Du %s immer noch selbstloeschen willst, gib Dein Password "
+    "ein.\n\n",
+    (QueryProp(P_NO_ASCII_ART) ? "Bist Du Dir wirklich sicher?\n"
+     : "     B I S T  D U  D I R  W I R K L I C H  S I C H E R ???????\n"),
+    query_real_name());
+  write(break_string(msg,78,0,BS_LEAVE_MY_LFS));
   input_to("self_delete2",INPUT_PROMPT|INPUT_NOECHO, "Bitte das Password angeben: ");
   return 1;
 }
