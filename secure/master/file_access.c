@@ -272,7 +272,7 @@ mixed valid_write(string path, string euid, string fun, object obj)
       if (euid==MAILID || strs[1]=="spool") break;
       return 0;
 
-    case LIBSAVEDIR:
+    case "save":
       if (lvl>=ARCH_LVL) return 1;
       if (s==3 && strs[1] == euid[0..0] &&
           (strs[2]==euid+".o" || strs[2]==euid)) break;
@@ -476,7 +476,7 @@ mixed valid_read(string path, string euid, string fun, object obj)
       return 0;
 
     case "backup":
-    case LIBSAVEDIR:
+    case "save":
       if (lev>WIZARD_LVL) return path;
 
       /* Objekte in /p/* haben bisher leider wizlevel 0 */
