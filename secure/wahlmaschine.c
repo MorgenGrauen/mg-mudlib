@@ -125,7 +125,9 @@ static int waehle()
     return 0;
   }
   if ((second=RPL->QueryProp(P_SECOND)) &&
-      (!stringp(second) || (file_size("/save/"+lower_case(second[0..0])+"/"+lower_case(second)+".o")<=0))) {
+      (!stringp(second)
+       || !master()->find_userinfo(second)))
+  {
     notify_fail("Nicht richtig markierte Zweities sind von der Wahl ausgeschlossen.\n");
     return 0;
   }

@@ -108,7 +108,7 @@ public string AddSin(string who, string text)
 
     if ( text[0..2]=="-f " )
       text=text[3..];
-    else if ( file_size(sprintf("/save/%s/%s.o",who[0..0],who))<1)
+    else if ( !master()->find_userinfo(who))
       return sprintf("Es gibt keinen Spieler namens '%s'\n",who);
 
     text = dtime(time()) + " ("+CAP(getuid(RPL))+")\n" 

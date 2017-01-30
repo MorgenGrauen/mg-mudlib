@@ -136,7 +136,7 @@ static int cmd_scan()
 
 	if( !becomes_pl() && ( !objectp(top()) || !living(top()) ) )
 	{
-		if( stringp(top()) && file_size( "/save/"+top()[0..0]+"/"+top()+".o") > 0 )
+		if( stringp(top()) && master()->find_userinfo(top()))
 		{
 			obj = clone_object( T_PLAYER );
 			obj->Load( top() );

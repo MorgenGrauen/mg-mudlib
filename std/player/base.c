@@ -2277,17 +2277,22 @@ varargs nomask int start_player( string str, string ip )
     InitPlayer();
 
     // Padreic 01.02.1999
-    if ( !IS_LEARNER(ME) && second = QueryProp(P_SECOND) ) {
-        if ( stringp(second) && lower_case(second)[0..3] == "von " ) {
+    if ( !IS_LEARNER(ME) && (second = QueryProp(P_SECOND)) )
+    {
+        if ( stringp(second) && lower_case(second)[0..3] == "von " )
+        {
             second = lower_case(second[4..]);
             SetProp( P_SECOND, second );
         }
 
         if ( !stringp(second ) ||
-             file_size( "/save/" + second[0..0] + "/" + second + ".o" ) <= 0 ){
+             !master()->find_userinfo(second))
+        {
+            // Wenns nur an Gross-/Kleinschreibung liegt, wird automatisch
+            // korrigiert.
             if ( stringp(second) &&
-                 file_size( "/save/" + lower_case(second[0..0]) + "/" +
-                            lower_case(second) + ".o" ) >0 ){
+                 master()->find_userinfo(lower_case(second)))
+            {
                 SetProp( P_SECOND, lower_case(second) );
                 log_file( "WRONG_SECOND",
                           sprintf( "%s: %s: P_SECOND = %O -> Automatisch "

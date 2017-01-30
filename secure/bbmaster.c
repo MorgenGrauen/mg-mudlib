@@ -338,10 +338,7 @@ public varargs int remove(int silent) {
 // Alles ab hier nur zum Ueberwachen von FTP-Aktivitaeten.
 private int player_exists( string user )
 {
-    if ( !stringp( user ) || sizeof( user ) < 2 )
-        return 0;
-    
-  return file_size( "/save/" + user[0..0] + "/" + user + ".o" ) > 0;
+  return master()->find_userinfo(user);
 }
 
 public int add( string user, int timeout )

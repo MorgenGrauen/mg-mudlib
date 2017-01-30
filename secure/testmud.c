@@ -33,7 +33,7 @@ protected void create()
   {
     copy_file("/std/def_workroom.c","/players/jof/workroom.c");
   }
-  if(file_size("/secure/save/j/jof.o") == FSIZE_NOFILE)
+  if (!master()->find_userinfo("jof"))
   {
     save_object("/secure/save/j/jof");
   }

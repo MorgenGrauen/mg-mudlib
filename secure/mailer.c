@@ -384,8 +384,8 @@ public string *DeliverMail( mixed msg, int expa )
 
         }
         else
-            if ( file_size( SAVEPATH + recipients[i][0..0] + "/" +
-                            recipients[i] + ".o" ) >=0 ){
+            if (master()->find_userinfo(recipients[i]) )
+            {
                 save_msg( newmsg, recipients[i] );
                 recok += ({ recipients[i] });
             }
@@ -595,15 +595,15 @@ public int MakeFolder( string folder, string user )
 public int query_recipient_ok( string name )
 {
 #if INTERNET_MAIL_ENABLED
-    return  (file_size( "secure/save/" + name[0..0] + "/" + name + ".o" ) > 0
-        || member( name, '%' ) > 0 || member( name, '@' ) > 0 );
+    return  (master()->find_userinfo(name)
+             || member( name, '%' ) > 0 || member( name, '@' ) > 0 );
 #else
     // es darf zwar ein @ in der Adresse vorkommen, dahinter aber kein . mehr
     // (dann ist es ne Mail via Intermud-Mail, nicht ins Internet).
     string *tmp;
-    return  (file_size( "secure/save/" + name[0..0] + "/" + name + ".o" ) > 0
-        || member( name, '%' ) > 0
-        || (sizeof(tmp=explode(name,"@")) == 2 && strstr(tmp[1],".") == -1));
+    return  (master()->find_userinfo(name)
+             || member( name, '%' ) > 0
+             || (sizeof(tmp=explode(name,"@")) == 2 && strstr(tmp[1],".") == -1));
 #endif
 }
 

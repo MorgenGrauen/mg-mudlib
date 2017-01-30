@@ -176,7 +176,8 @@ varargs void BanishName( string name, string reason, int force )
       return;
   }
 
-  if ( !force && file_size(SAVEPATH+name[0..0]+"/"+name+".o") > 0 ){
+  if ( !force && find_userinfo(name))
+  {
       write("Es existiert bereits ein Spieler dieses Namens.\n");
       return;
   }
@@ -243,7 +244,8 @@ int TBanishName(string name, int days)
     return 0;
   }
 
-  if (file_size(SAVEPATH+name[0..0]+"/"+name+".o")<=0){
+  if (!find_userinfo(name))
+  {
     write("Es existiert kein Spieler dieses Namens!\n");
     return 0;
   }

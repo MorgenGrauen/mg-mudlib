@@ -131,7 +131,7 @@ int AddGroup(string name, string owner)
 
   if (member(grouplist, name)) return -2; // Gibt es schon
 
-  if (file_size("/"+SAVEPATH+owner[0..0]+"/"+owner+".o")<0) return -3;
+  if (!master()->find_userinfo(owner)) return -3;
 
   savefilea = old_explode(name,".");
   savefile = implode(savefilea,"/");

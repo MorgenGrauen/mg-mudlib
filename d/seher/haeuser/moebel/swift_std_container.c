@@ -319,9 +319,9 @@ int erlaubnis(string str)
         +(zweitieerlaubnis==""?"nicht mehr ":"")+"oeffnen/schliessen."));
     return 1;
   }
-  wen=CAP(wen);
-  if( file_size("//save//"+LOWER(wen[0..0])+"//"+LOWER(wen)+".o") != -1 ) // Spieler gibt es auch!
+  if( master()->find_userinfo(wen)) // Spieler gibt es auch!
   {
+    wen=CAP(wen);
     if( member(erlaubnis, wen) != -1 )  // Spieler hat Erlaubnis -> verbieten!
     {
       erlaubnis-=({wen});
@@ -336,7 +336,7 @@ int erlaubnis(string str)
     return 1;
   }
   else
-    write("Es gibt keinen Spieler namens "+wen+"!\n");
+    write("Es gibt keinen Spieler namens "+CAP(wen)+"!\n");
   return 1;
 }
 
