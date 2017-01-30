@@ -2875,7 +2875,7 @@ void save_me(mixed value_items)
     catch(call_other(gilde,"GuildRating",this_object());publish);
 
   // Speichern des Spielers
-  save_object("/"+SAVEPATH+getuid()[0..0]+"/" + getuid());
+  save_object(SAVEPATH+getuid()[0..0]+"/" + getuid());
 }
 
 static varargs void log_autoload( string file, string reason, mixed data, string error )
