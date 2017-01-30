@@ -40,7 +40,6 @@
 /* define general pathnames */
 #define MASTER          "secure/master"
 #define MAILPATH        "mail/"
-#define SAVEPATH        "save/"
 #define NEWSPATH        "news/"
 #define NEWSSERVER      "secure/news"
 #define SECURESAVEPATH  "secure/save/"
@@ -53,7 +52,6 @@
 #define GUILDDIR        "gilden"
 #define SPELLBOOKDIR    "spellbooks"
 #define MAILDIR         "mail"
-#define LIBSAVEDIR      "save"
 #define FTPDIR          "open"
 #define TMPDIR          "tmp"
 #define STDDIR          "std"
@@ -65,6 +63,8 @@
 #define NEWSDIR         "news"
 #define SECUREDIR       "secure"
 #define LIBDATADIR      "data"
+#define LIBSAVEDIR      "/"LIBDATADIR"/save"
+#define SAVEPATH        LIBSAVEDIR"/"
 #define LIBITEMDIR      "items"
 
 #define NETDEAD_ROOM "/room/netztot"
