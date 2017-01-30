@@ -37,9 +37,6 @@ BESCHREIBUNG:
      @WER1/@WESSEN1/@WEM1/@WEN1 - name(casus) des Getroffenen (TO)
      @WER2/@WESSEN2/@WEM2/@WEN2 - name(casus) des Feindes (enemy)
 
-BEISPIEL:
-     
-
 SIEHE AUCH:
      Defend()
      /std/living/combat.c

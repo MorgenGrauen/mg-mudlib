@@ -1,20 +1,18 @@
-P_WEAPON_TEACHER   "weapon_teacher"
-----------------
+NAME:
+    P_WEAPON_TEACHER              "weapon_teacher"
+
 
 DEFINIERT IN:
--------------
+    combat.h
 
-combat.h
+BESCHREIBUNG:
+    Diese Property wird in einem Azubi gesetzt (zur Zeit nur fuer die 
+    Kaempfer-Gilde), der selbst ueber die allgemeinen Waffenskills
+    verfuegt.
 
-BESCHREIBUNG
-------------
+    In diese Property wird der Name eines Kaempfergilden-Ausbilders
+    eingetragen.
 
-Diese Property wird in einem Azubi gesetzt (zur Zeit nur fuer die 
-Kaempfer-Gilde), der selbst ueber die allgemeinen Waffenskills
-verfuegt.
+    Unter Anleitung des Ausbilders lernt der Azubi dann etwas schneller
+    die allgemeinen Waffenskills.
 
-In diese Property wird der Name eines Kaempfergilden-Ausbilders
-eingetragen.
-
-Unter Anleitung des Ausbilders lernt der Azubi dann etwas schneller
-die allgemeinen Waffenskills.
