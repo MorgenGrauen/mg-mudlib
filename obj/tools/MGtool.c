@@ -157,8 +157,7 @@ static varargs object XFindObj(string str, int silent)
   str=string_replace(str, "\\\\", "\\");
   if (find_object(str)) return find_object(str);
   if (file_size(str)>1) {
-     call_other(str, "???");
-     return find_object(str);
+     return load_object(str);
   }
   s=sizeof(strs=strip_explode(str, "."));
   while(s--)

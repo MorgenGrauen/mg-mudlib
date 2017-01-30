@@ -949,14 +949,7 @@ int Xlag(string str)
   object daemon;
   string lags;
 
-  if(file_size(LAG_O_DAEMON+".c")<=0)
-  {
-    WLN("Sorry, lag-o-daemon is missing!");
-    return TRUE;
-  }
-  
-  LAG_O_DAEMON->MachHin();
-  if(!(daemon=find_object(LAG_O_DAEMON)))
+  if(!(daemon=load_object(LAG_O_DAEMON)))
     lag=({-1.0,-1.0,-1.0});
   else
     lag=(float *)daemon->read_lag_data();
