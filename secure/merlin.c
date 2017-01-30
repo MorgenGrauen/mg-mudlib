@@ -573,9 +573,7 @@ void catch_tell(string str)
     if (sscanf(str,"%s sagt: %s",name,message)!=2)
       return;
 
-  if (!name || name=="" ||            
-      catch(s=file_size("save/"+name[0..0]+"/"+name+".o");publish)            
-      || s<=0 )
+  if (!name || !sizeof(name) || !master()->find_userinfo(name))
     return;
 
   if (name!=getuid(this_interactive()) && !ARCH_SECURITY)

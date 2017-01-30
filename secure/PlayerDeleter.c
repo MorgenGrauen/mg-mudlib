@@ -73,7 +73,7 @@ public varargs int Delete(string plname, int nobanish, int noclone) {
   }
 
   // Files loeschen
-  if (file_size("/"SECUREDIR"/save"+part_filename) > FSIZE_NOFILE)
+  if (file_size(LIBDATADIR"/"SECUREDIR"/save"+part_filename) > FSIZE_NOFILE)
     rm("/"SECUREDIR"/save"+part_filename);
   if (file_size("/"LIBSAVEDIR + part_filename) > FSIZE_NOFILE)
     rm("/"LIBSAVEDIR + part_filename);
