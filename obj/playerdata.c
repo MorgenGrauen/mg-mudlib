@@ -47,7 +47,7 @@ public int LoadPlayer(string name)
   if (!pl)
   {
     // wenn nicht: Savefile einlesen.
-    restore_object("/"SAVEPATH + name[0..0] + "/" + name);
+    restore_object(SAVEPATH + name[0..0] + "/" + name);
     pl = name;
   }
   user = previous_object();

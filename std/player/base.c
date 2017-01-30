@@ -2211,7 +2211,7 @@ varargs nomask int start_player( string str, string ip )
     }
 
     /* try to restore player. If it doesn't exist, set the new flag */
-    newflag = !restore_object( "/" + SAVEPATH + lower_case(str)[0..0] + "/"
+    newflag = !restore_object( SAVEPATH + lower_case(str)[0..0] + "/"
                                +lower_case(str) );
 
     updates_after_restore(newflag);
