@@ -7,7 +7,7 @@ DEFINIERT IN:
      /std/npc/combat.c
 
 BESCHREIBUNG:
-     Macht den NPC für 5 Minuten unangreifbar und heilt ihn.
+     Macht den NPC fuer 5 Minuten unangreifbar und heilt ihn.
 
      Wird bei Fehlern im Herzschlag des NPCs gerufen um Bugnutzung
      zu unterbinden.

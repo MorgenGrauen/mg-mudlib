@@ -10,7 +10,7 @@ ARGUMENTE:
 
 BESCHREIBUNG:
      Der zu key gehoerende Eintrag in P_TIMED_ATTR_MOD wird geloescht und
-     update_max_sp_and_hp ausgeführt.
+     update_max_sp_and_hp ausgefuehrt.
 
 RUeCKGABEWERT:
      TATTR_INVALID_ARGS      -     Im Falle eines fehlenden key-Arguments 

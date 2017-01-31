@@ -15,7 +15,7 @@ BESCHREIBUNG:
      negative Werte fuer einzelne Magieklassen sinnvoll.
 
      P_MAGIC_RESISTANCE_OFFSET und SpellDefend werden von den Spellbooks
-     ausgewertet. Der Einfluss ist daher abhängig vom Spellbook.
+     ausgewertet. Der Einfluss ist daher abhaengig vom Spellbook.
 
 BEISPIELE:
      // Goblins

@@ -44,7 +44,7 @@ BEMERKUNGEN:
      im Raum sind. Will man darauf reagieren, muesste man die Registrierung
      pruefen.
      Ein NPC, welcher GuardExit() definiert, aber im aktuellen Environment
-     keine Wache halten will, könnte sich selber de-registrieren.
+     keine Wache halten will, koennte sich selber de-registrieren.
 
 BEISPIELE:
      <int|<string|closure>* >* GuardExit(object room, int hookid,

@@ -30,7 +30,7 @@ BEISPIELE:
        "Ratten aller MUDs, vereinigt euch gegen %s!");
 
 
-     // Um auch mal eine Closure zu zeigen: die Ratte könnte auch ihre
+     // Um auch mal eine Closure zu zeigen: die Ratte koennte auch ihre
      // Meldung erst bei ihrem Tod erstellen lassen:
      private string moerder_meldung() {
        return ({"Achweh!", "Au!", "Weia!"})[random(3)];
@@ -40,7 +40,7 @@ BEISPIELE:
 
 BEMERKUNGEN:
      - P_NOCORPSE:
-       Ist in dem Npc die Property P_NOCORPSE gesetzt, so wird die
+       Ist in dem NPC die Property P_NOCORPSE gesetzt, so wird die
        Moerdermeldung nicht auf dem Kanal gesendet, da diese Ausgabe ueber
        /std/corpse laeuft.
        Will man dennoch eine Meldung, so sollte man /std/corpse im die()
@@ -48,7 +48,7 @@ BEMERKUNGEN:
        Objekt wieder entsorgen.
 
      - Closures:
-       Closures bieten sich an, wenn ein zentrales Objekt für mehrere NPCs
+       Closures bieten sich an, wenn ein zentrales Objekt fuer mehrere NPCs
        bestimmte Moerdermeldungen generieren soll. Dann muss nur noch bei
        den NPCs die Closure, die auf die erstellende Methode zeigt gesetzt
        werden.

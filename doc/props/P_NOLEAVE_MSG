@@ -20,7 +20,7 @@ BESCHREIBUNG:
      ganz.
 
 BEISPIELE:
-     Nur Bierschüttler sollen eine Bierflasche aus einem Kasten nehmen
+     Nur Bierschuettler sollen eine Bierflasche aus einem Kasten nehmen
      koennen, neben einer entsprechenden Behandlung im PreventLeave setzt man
      dazu die Property:
      SetProp(P_NOLEAVE_MSG, "Nur Bierschuettler duerfen das!");

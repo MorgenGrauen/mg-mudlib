@@ -8,8 +8,8 @@ BESCHREIBUNG:
      Im Normalfall bekommt man im Kampf gegen einen Gegner fuer Treffer
      und beim Toeten eine XP-Gutschrift.
 
-     Ist P_NO_XP gesetzt, so erhält man keinerlei XP-Gutschriften
-     für den Kampf oder den Tod des NPCs.
+     Ist P_NO_XP gesetzt, so erhaelt man keinerlei XP-Gutschriften
+     fuer den Kampf oder den Tod des NPCs.
 
 BEISPIEL:
      Folgendermassen unterbindet man die Vergabe von Erfahrungspunkte

@@ -10,7 +10,7 @@ BESCHREIBUNG:
     Legt die Reichweite einer Schusswaffe fest. Ist ein Schuetze in einem
     Raum mit gueltigem P_TARGET_AREA (andere Raum) oder environment() und
     ist fuer diesen Raum P_SHOOTING_AREA festgelegt, dann kann er mit seiner
-    Schusswaffe in diesen anderen Raum schieﬂen, wenn die P_RANGE groesser
+    Schusswaffe in diesen anderen Raum schiessen, wenn die P_RANGE groesser
     als P_SHOOTING_AREA ist.
 
 BEISPIELE:

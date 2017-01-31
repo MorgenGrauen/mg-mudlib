@@ -12,8 +12,8 @@ ARGUMENTE:
 BESCHREIBUNG:
      Das sterbende Wesen verteilt seine XP an seine Feinde.
 
-     Dabei bekommt jeder Gegner seinen Anteil (abhängig von 50% von seinem
-     gemachten Schaden) und einen Teamanteil (die anderen 50% über das
+     Dabei bekommt jeder Gegner seinen Anteil (abhaengig von 50% von seinem
+     gemachten Schaden) und einen Teamanteil (die anderen 50% ueber das
      gesamte Team addiert und durch die Teamanzahl geteilt).
 
 SIEHE AUCH:

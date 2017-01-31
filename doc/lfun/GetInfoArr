@@ -10,7 +10,7 @@ ARGUMENTE:
 
 BESCHREIBUNG:
      Sucht nach einem Schluesselwort in den abgelegten Antworten
-     und gibt die Informationen oder einen 0er-Array zurück.
+     und gibt die Informationen oder einen 0er-Array zurueck.
 
 BEMERKUNGEN:
      Ueberschreibbar :)
