@@ -9,7 +9,8 @@
 #define __MAND_H__
 
 #define MAND_DOCDIR "/doc/"
-#define MAND_EXCLUDE ({ "3.0","KURS","beispiele","old","new", "infomails"})
+#define MAND_EXCLUDE ({ "3.0","KURS","beispiele","old","new", "infomails",\
+                        "sphinx"})
 #define MAND "/p/daemon/mand"
 
 #endif
