@@ -75,9 +75,9 @@ public void expire_ftp_user() {
       m_delete(ftpuser,u);
       continue;
     }
-    int zeit = call_sefun("file_time",
-                     "/"SECURESAVEPATH + u[0..0] + "/" + u + ".o");
-    if (zeit < time()-1209600) {
+    int zeit = call_sefun("file_time",secure_savefile(u)+".o");
+    if (zeit < time()-1209600)
+    {
       m_delete(ftpuser,u);
       continue;
     }
@@ -585,10 +585,10 @@ public string secure_savefile(string name)
   if(!name||name=="")
     return "";
   name=explode(name,".")[0];
-  if (file_size("/"LIBDATADIR"/"SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
-    return "/"LIBDATADIR"/"SECURESAVEPATH+name[0..0]+"/"+name;
-  else if (file_size(SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
+  if (file_size(SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
     return SECURESAVEPATH+name[0..0]+"/"+name;
+  else if (file_size("/"LIBDATADIR"/"SECURESAVEPATH+name[0..0]+"/"+name+".o")>=0)
+    return "/"SECUREDIR"/save/"+name[0..0]+"/"+name;
 
   return "";
 }
@@ -964,12 +964,13 @@ protected void save_userinfo(string user) {
   if(!fptips) fptips="";
   uidstotakecare=userlist[name,USER_UIDS_TO_TAKE_CARE];
 
-  if (save_object(SECURESAVEPATH+name[0..0]+"/"+name) != 0) {
+  string ssavef=secure_savefile(name);
+  if (save_object(ssavef) != 0) {
     // autsch. Buggen damit dieser moeglichst schnell auffaellt, dass hier
     // Savefiles in /secure/save/ nicht geschrieben wurden.
     raise_error(sprintf(
           "Savefile %O konnte nicht erstellt werden!\n",
-          SECURESAVEPATH+name[0..0]+"/"+name));
+          ssavef));
   }
 }
 
