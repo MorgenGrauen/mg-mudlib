@@ -4,6 +4,7 @@
 #include "teller.h"
 inherit T_BASE;
 
+#include <config.h>
 #include <moving.h>
 #include <attributes.h>
 #include <terminal.h>
@@ -173,7 +174,7 @@ static string IpName( object obj )
 		ip_name = obj->QueryProp(P_CALLED_FROM_IP);
 		if( !ip_name ) ip_name = obj->Query(P_IP_NAME);
 		return ip_name + " ("
-			+ dtime(get_dir("/save/"+nm[0..0]+"/"+nm+".o",4)[0]) +")";
+			+ dtime(get_dir(SAVEPATH+nm[0..0]+"/"+nm+".o",4)[0]) +")";
 	}
 	else
 	{
@@ -184,7 +185,7 @@ static string IpName( object obj )
 			ip_name = obj->QueryProp(P_CALLED_FROM_IP);
 			if( !ip_name ) ip_name = obj->Query(P_IP_NAME);
 			return ip_name + " ("
-				+ dtime(get_dir("/save/"+nm[0..0]+"/"+nm+".o",4)[0]) +")";
+				+ dtime(get_dir(SAVEPATH+nm[0..0]+"/"+nm+".o",4)[0]) +")";
 		}
 		return ip_name + " [" + query_ip_number(obj) + "]";
 	}

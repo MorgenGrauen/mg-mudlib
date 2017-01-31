@@ -2,6 +2,7 @@
 // Zwischenobjekt zum Lesen der Spielerdaten auch von nichteingeloggten.
 // ----------------------------------------------------------------------
 #include "teller.h"
+#include <config.h>
 
 inherit "std/player/base";
 
@@ -12,7 +13,7 @@ create() {
 string name;
 string race;
 string hands;
-mapping autoload;
+//mapping autoload;
 
 _query_name() { return name; }
 playername() { return name; }
@@ -40,7 +41,7 @@ _query_autoload()
 
 Load( str )
 {
-	restore_object( "/save/"+str[0..0]+"/"+str );
+	restore_object( SAVEPATH+str[0..0]+"/"+str );
 }
 
 Notlogged() { return TRUE; }
