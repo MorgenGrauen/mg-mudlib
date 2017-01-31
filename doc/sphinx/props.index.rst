@@ -129,5 +129,5 @@ Gesamtverzeichnis der dokumentierten Properties:
    :maxdepth: 1
    :glob:
 
-   props/*
+   propsliste
 
