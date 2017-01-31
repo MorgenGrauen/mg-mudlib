@@ -1,7 +1,7 @@
 .. Morgengrauen-Mudlib - sefun-Doku.
 
-Ueber sefuns (simulated efuns)
-==============================
+sefuns (simulated efuns)
+========================
 
 sefuns sind Funktionen, die aehnlich wie echte efuns im Driver allen Objekten
 (ausser dem Masterobjekt) zur Verfuegung stehen ohne dass die explizit geerbt

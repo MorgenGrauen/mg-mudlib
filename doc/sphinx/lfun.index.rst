@@ -1,7 +1,7 @@
 .. Morgengrauen-Mudlib - lfuns
 
-Ueber lfuns (local functions)
-=============================
+lfuns
+=====
 
 lfuns sind in LPC geschriebene Funktionen innerhalb von Objekten.
 Oft kann man diese von aussen rufen, einige lfuns sind jedoch auch privat.
@@ -16,11 +16,4 @@ Verzeichnis der dokumentierten lfuns:
 
    lfun/*
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
