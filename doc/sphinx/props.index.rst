@@ -13,7 +13,8 @@ BESCHREIBUNG:
 Im Gegensatz zu Variablen innerhalb eines Objektes, kann man Properties
 von aussen veraendern, ohne eine besondere Funktion geschrieben zu haben.
 
-1. Das zugrundeliegende Prinzip
+Das zugrundeliegende Prinzip
+++++++++++++++++++++++++++++
    Das grundlegende Konzept der MUDlib ist, dass wichtige, objektbezogene
    Informationen in den sogenannnten Properties gespeichert werden (engl.
    property -- Eigenschaft, Eigentum).
@@ -27,7 +28,7 @@ von aussen veraendern, ohne eine besondere Funktion geschrieben zu haben.
    sprochen:
 
    #. ein Name oder Kennung und
-   #.ein Wert, der durch den Namen repraesentiert wird.
+   #. ein Wert, der durch den Namen repraesentiert wird.
 
   Das reine Verwalten einer Property mit Namen und Wert ist aber nicht sehr
   sinnvoll und so gehoeren zu jeder Property noch zwei weitere wichtige
@@ -63,32 +64,36 @@ von aussen veraendern, ohne eine besondere Funktion geschrieben zu haben.
     (VORSICHT bei mappings/arrays, diese werden bei QueryProp()
     als Referenz zurueckgegeben, sind also so aenderbar)
 
-2. Implementation
+Implementation
+++++++++++++++
    Die Klasse /std/thing/properties.c stellt folgende Funktionen fuer die
    Behandlung von Properties bereit:
 
    * Normaler Zugriff
 
-     * mixed SetProp(<name>, <wert>)
+     * ``mixed SetProp(<name>, <wert>)``
        setzt den Wert von <name> auf <wert>
-     * mixed QueryProp(<name>)
+     * ``mixed QueryProp(<name>)``
        gibt den Wert von <name> zurueck
 
    * Direkter Zugriff
 
-     * mixed Set(<name>, <wert>, <interpretation>)
-       setzt fuer <name> einen <wert>:
+     * ``mixed Set(<name>, <wert>, <interpretation>)``
+       wird genutzt, um eines der folgenden zu setzen:
 
-        * den normalen Wert: <interpretation> := F_VALUE
-        * eine Methode: <wert>:= closure, <interpretation> := F_SET_METHOD, F_QUERY_METHOD
-        * ein Flag/Modus: <wert>:= SAVE, SECURED, PROTECTED, NOSETMETHOD, <interpretation>:= F_MODE, F_MODE_AS, F_MODE_AD
-     * mixed Query(<name>, <interpretation>)
+        * den normalen Wert (aber fast immer besser: :doc:`/lfun/SetProp` verwenden!)
+        * eine Query- oder Setmethode
+        * ein Flag/Modus: Speicherstatus/Zugriffsschutz
+
+     * ``mixed Query(<name>, <interpretation>)``
        fragt fuer <name> einen <wert> ab
 
-       * F_SET_METHOD, F_QUERY_METHOD: die Closure/0
-       * F_MODE: das (veroderte!) Flag
+       * den normalen Wert (aber fast immer besser: :doc:`QueryProp` verwenden!)
+       * die Closure der Query- oder Setmethode
+       * den Modus der Property
 
-3. Besonderheiten/Eingebaute Properties
+Besonderheiten/Eingebaute Properties
+++++++++++++++++++++++++++++++++++++
    Existiert zu einer Property eine Funktion mit dem selben Namen und einem
    ``_set_`` bzw ``_query_`` davor, so wird nicht auf die das Property-Mapping
    zugegriffen, sondern es werden die Argumente an diese Funktion uebergeben
@@ -112,13 +117,14 @@ von aussen veraendern, ohne eine besondere Funktion geschrieben zu haben.
 SIEHE AUCH:
 -----------
 
-* SetProp(L), QueryProp(L), Set(L), Query(L), SetProperties(L),
-* QueryProperties(L)
+* :doc:`/lfun/SetProp`(L), :doc:`/lfun/QueryProp`(L), :doc:`/lfun/Set`(L),
+  :doc:`/lfun/Query`(L),
+* :doc:`/lfun/SetProperties`(L), :doc:`/lfun/QueryProperties`(L)
 * objekte, effizienz, closures
 
 
-Verzeichnis der dokumentierten Properties:
-------------------------------------------
+Gesamtverzeichnis der dokumentierten Properties:
+------------------------------------------------
 .. toctree::
    :maxdepth: 1
    :glob:
