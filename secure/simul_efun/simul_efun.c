@@ -829,9 +829,9 @@ mixed save_object(mixed name)
     // abs. Pfad erzeugen. *seufz*
     if (name[0]!='/')
       name = "/" + name;
-    oldpath = name;
     // automatisch in LIBDATADIR speichern
     if (strstr(name,"/"LIBDATADIR"/") != 0) {
+      oldpath = name;
       name = "/"LIBDATADIR + name;
       // wenn das Verzeichnis nicht existiert, ggf. anlegen
       string dir = name[0..strrstr(name,"/")-1];
