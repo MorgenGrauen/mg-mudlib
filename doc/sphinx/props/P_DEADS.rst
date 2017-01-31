@@ -1,0 +1,22 @@
+P_DEADS
+=======
+
+NAME
+----
+::
+
+    P_DEADS                       "deads"                       
+
+DEFINIERT IN
+------------
+::
+
+    /sys/living/life.h
+
+BESCHREIBUNG
+------------
+::
+
+     Anzahl der Tode des Spielers seit Einfuehrung dieser Property (irgendwann
+     im Dezember 94)
+

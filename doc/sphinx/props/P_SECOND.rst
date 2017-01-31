@@ -1,0 +1,40 @@
+P_SECOND
+========
+
+NAME
+----
+::
+
+    P_SECOND                      "second"                      
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/base.h
+
+BESCHREIBUNG
+------------
+::
+
+     Wenn diese Prop gesetzt ist, ist der Spieler ein Zweitie. Inhalt der
+     Prop ist ein String mit dem (lowercase) Namen des Ersties.
+
+BEISPIEL
+--------
+::
+
+     if (this_player()->QueryProp(P_SECOND)=="notstrom") {
+       tell_object(this_player(), "Nicht alles aufessen!\n");
+     }
+
+SIEHE AUCH
+----------
+::
+
+     Properties: P_SECOND_MARK
+     Sonstiges:  /secure/zweities.c
+
+
+Last modified: 18-Jun-2015, Arathorn.
+

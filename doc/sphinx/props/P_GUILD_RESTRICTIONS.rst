@@ -1,0 +1,59 @@
+P_GUILD_RESTRICTIONS
+====================
+
+NAME
+----
+::
+
+    P_GUILD_RESTRICTIONS        "guild_rest"                  
+
+DEFINIERT IN
+------------
+::
+
+    /sys/new_skills.h
+
+BESCHREIBUNG
+------------
+::
+
+    Diese Gildenproperty enthaelt ein Mapping mit den
+    Eintrittsbeschraenkungen fuer die jeweilige Gilde.
+
+BEMERKUNGEN
+-----------
+::
+
+    Im allgemeinen sollte das Mapping mit den Eintrittsbeschraenkungen
+    mit den Beschraenkungen fuer Level 1 im Mapping von P_GUILD_LEVELS
+    uebereinstimmen.
+
+BEISPIELE
+---------
+::
+
+    Ein paar moegliche Abfragen waeren folgende:
+    string check(object pl);
+
+    SetProp(P_GUILD_RESTRICTIONS,
+            ([P_LEVEL:3,
+              P_QP:100,
+              SR_FUN:#'check]));
+
+    string check(object pl) {
+      if(pl->QueryProp(P_MALE))
+        return 0;
+      return "Fuer Frauen ist das nichts!\n";
+    }
+
+SIEHE AUCH
+----------
+::
+
+    Gildenfkt.:
+    * Ein/Austritt: beitreten, bei_oder_aus_treten, austreten
+    * Sonstiges:    P_GUILD_LEVELS
+    Sonstiges:      /std/restriction_checker.c
+
+3. Okt 2011 Gloinson
+

@@ -1,0 +1,22 @@
+P_MAX_PASSENGERS
+================
+
+NAME
+----
+::
+
+    P_MAX_PASSENGERS              "maxpass"                     
+
+DEFINIERT IN
+------------
+::
+
+    /sys/transport.h
+
+BESCHREIBUNG
+------------
+::
+
+     Numerischer Wert fuer die maximale Anzahl von Wesen in dem Transporter.
+     0 bedeutet unbeschaenkte Spielerzahl.
+

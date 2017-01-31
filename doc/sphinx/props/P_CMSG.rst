@@ -1,0 +1,21 @@
+P_CMSG
+======
+
+NAME
+----
+::
+
+    P_CMSG                        "clonemsg"                    
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/base.h
+
+BESCHREIBUNG
+------------
+::
+
+     *** OBSOLET! *** Siehe P_CLONE_MSG
+

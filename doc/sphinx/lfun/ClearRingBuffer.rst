@@ -1,0 +1,58 @@
+ClearRingBuffer()
+=================
+
+FUNKTION
+--------
+::
+
+    protected struct std_ringbuffer ClearRingBuffer(struct std_ringbuffer b);
+
+DEFINIERT IN
+------------
+::
+
+    /std/util/ringbuffer.c
+    /sys/util/ringbuffer.h
+
+ARGUMENTE
+---------
+::
+
+    b - der zu loeschende Ringpuffer
+
+BESCHREIBUNG
+------------
+::
+
+    Diese Funktion loescht alle Daten aus dem Puffer <b> und re-initialisiert
+    ihn.
+
+    
+
+RUeCKGABEWERT
+-------------
+::
+
+    Der geloeschte Puffer <b> wird wieder zurueckgegeben.
+
+BEISPIELE
+---------
+::
+
+    // Ringpuffer anlegen:
+    struct std_ringbuffer buffer=CreateRingBuffer(10, MODE_FIFO);
+    // mit irgendwelchen Daten fuellen...
+    // ...
+    // Puffer loeschen
+    buffer = ClearRingBuffer(buffer);
+    // oder:
+    ClearRingBuffer(buffer);
+
+SIEHE AUCH
+----------
+::
+
+    CreateRingBuffer(), RingBufferGet(), ResizeRingBuffer()
+
+23.05.2008, Zesstra
+

@@ -1,0 +1,22 @@
+P_RACESTRING
+============
+
+NAME
+----
+::
+
+    P_RACESTRING                  "racestring"                  
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Gibt eine dem Geschlecht angepasste Beschreibung der Rasse zurueck
+     ("Zwerg" oder "Zwergin" etc.)
+

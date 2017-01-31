@@ -1,0 +1,21 @@
+P_INPC_WALK_DELAYS
+==================
+
+NAME
+----
+::
+
+    P_INPC_WALK_DELAYS            "inpc_walk_delay"             
+
+DEFINIERT IN
+------------
+::
+
+    /sys/inpc/walking.h
+
+BESCHREIBUNG
+------------
+::
+
+    *** KEINE BESCHREIBUNG VORHANDEN ***
+

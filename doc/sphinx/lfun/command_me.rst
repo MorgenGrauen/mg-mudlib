@@ -1,0 +1,110 @@
+command_me()
+============
+
+FUNKTION
+--------
+::
+
+    int command_me(string str)
+
+ARGUMENTE
+---------
+::
+
+    string str - auszufuehrendes Kommando
+
+DEFINIERT IN
+------------
+::
+
+    /std/npc.c, /std/player/command.c
+
+BESCHREIBUNG
+------------
+::
+
+    Fuehrt 'str' wie ein Kommando aus, welches direkt vom Living
+    abgegeben wurde.
+
+    Der Rueckgabewert ist >=1 fuer Erfolg und 0 fuer Misserfolg. 
+    Rueckgabewert ist im Erfolgsfall die Hoehe der EvalCost in Ticks. 
+
+    command_me() leitet den Befehl an command()(E) weiter und erlaubt
+    dadurch auch den Aufruf von sonst durch "static", "protected" oder
+    "private" vor externem Aufruf geschuetzten Kommando-Funktionen.
+
+    Kommandos mit oeffentlichen Kommandofunktionen (also damit alle mit
+    AddCmd definierten Kommandos) koennen auch durch command()(E)
+    von aussen ausgeloest werden.
+
+BEMERKUNGEN:    
+    - beruecksichtigt Aliase, d.h. wenn man Aliase eines Spielers
+      ignorieren will, muss man ein \\ (fuer ein \ im Eingabestring)
+      vor den Befehl stellen
+    - fuer objektinterne Kommandos funktioniert also auch command()(E)
+
+BEISPIEL
+--------
+::
+
+    (Code des Testraum ist in /doc/beispiele/testobjekte/command_me_testraum)
+    // #1: Testraum, zwinge Spieler bei "schleiche heran" zum Furzen
+    //     command_me() ist hier noetig, da das Furzen eine geschuetzte
+    //     Kommandofunktion hat
+    inherit "/std/room";
+
+    void create() {
+      ::create();
+      AddCmd("schleiche&heran|herum", "action_schleichen");
+    }
+
+    
+
+    void init() {
+      ::init();
+      add_action("action_kriechen", "kriech", 1);
+    }
+
+    static int action_schleichen(string str) {
+      string tmp = this_player()->QueryProp(P_RACE);
+      // ... 
+      if(tmp[<1]=='e') tmp=tmp[0..<2];
+      write(break_string("Du versuchst leise zu schleichen, dabei passiert "
+        "dir aber ein allzu "+
+        (tmp=="Mensch"?"menschliches":lower_case(tmp)+"isches")+
+        " Missgeschick. Verflucht!", 78));
+      this_player()->command_me("\\furze");
+      return 1;
+    }
+
+    
+
+    static int action_kriechen(string str) {
+      write(break_string("Deine Knie tun zu sehr weh dafuer.", 78));
+      tell_room(this_object(), break_string(this_player()->Name(WER)+
+        " knackt mit den Knien.", 78));
+      return 1;
+    }
+
+    
+
+    // #2 (in obigem Raum): zwinge Spieler in Raum zu obigem Kommando
+    //    Beide Kommandos gelingen, da Kommando mit AddCmd definiert.
+    find_player("naddl")->command_me("schleiche herum")
+    command("schleiche herum", find_player("naddl")); 
+
+    // #3 (in obigem Raum): zwinge Spieler in Raum zu obigem Kommando
+    find_player("naddl")->command_me("krieche")
+    //    Folgendes Kommando schlaegt fehl, da Kommandofunktion static ist.
+    command("krieche", find_player("naddl"));
+
+    
+
+SIEHE AUCH
+----------
+::
+
+     enable_commands(E), command(E)
+
+06 Sep 2012 Gloinson
+

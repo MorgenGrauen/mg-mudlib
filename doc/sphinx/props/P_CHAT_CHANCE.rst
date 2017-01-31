@@ -1,0 +1,21 @@
+P_CHAT_CHANCE
+=============
+
+NAME
+----
+::
+
+    P_CHAT_CHANCE                 "chat_chance"                 
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Wahrscheinlichkeit, mit der die Chats ausgegeben werden.
+

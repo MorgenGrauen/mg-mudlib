@@ -1,0 +1,7 @@
+remove_alist()
+==============
+
+mixed *remove_alist(mixed key, mixed *alist)
+
+Removes element associated by key key from alist.
+

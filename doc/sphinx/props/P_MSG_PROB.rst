@@ -1,0 +1,35 @@
+P_MSG_PROB
+==========
+
+NAME
+----
+::
+
+    P_MSG_PROB                    "msg_prob"                    
+
+DEFINIERT IN
+------------
+::
+
+    /sys/room/description.h
+
+BESCHREIBUNG
+------------
+::
+
+     Parameter fuer die Wartezeit in Sekunden bis zur naechsten Ausgabe
+     einer Raumnachricht.
+     Wird in AddRoomMessage() explizit mitgesetzt. Koennte natuerlich von
+     einer Nachrichtenmethode auch regelmaessig geaendert werden, um
+     mehr Zufall in die Intervalle zu bringen.
+
+SIEHE AUCH
+----------
+::
+
+     LFuns:    AddRoomMessage()
+     Props:    P_ROOM_MSG, P_MSG_PROB
+     Verwandt: call_out()
+
+2.Feb 2016 Gloinson
+

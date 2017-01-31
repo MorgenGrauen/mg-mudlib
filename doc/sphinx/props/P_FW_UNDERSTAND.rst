@@ -1,0 +1,21 @@
+P_FW_UNDERSTAND
+===============
+
+NAME
+----
+::
+
+    P_FW_UNDERSTAND               "fw_understand"               
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+    *** KEINE BESCHREIBUNG VORHANDEN ***
+

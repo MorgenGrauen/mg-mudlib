@@ -1,0 +1,39 @@
+P_HANDS_USED_BY
+===============
+
+NAME
+----
+::
+
+     P_HANDS_USED_BY           "hands_used_by"
+
+DEFINIERT IN
+------------
+::
+
+     /sys/living/combat.h
+
+BESCHREIBUNG
+------------
+::
+
+     Enthaelt eine Liste mit den Objekten, die derzeit die Haende
+     des Livings belegen. Dabei koennen Objekte mehrmals auftauchen,
+     je nachdem wie viele Haende sie belegen.
+
+BEMERKUNGEN
+-----------
+::
+
+     Darf nur ueber UseHands() und FreeHands() manipuliert werden.
+
+SIEHE AUCH
+----------
+::
+
+     P_HANDS
+     P_MAX_HANDS, P_USED_HANDS, P_FREE_HANDS
+     UseHands, FreeHands
+
+1.Feb.2004 Gloinson
+

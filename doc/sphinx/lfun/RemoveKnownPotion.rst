@@ -1,0 +1,45 @@
+RemoveKnownPotion()
+===================
+
+FUNKTION
+--------
+::
+
+     int RemoveKnownPotion(int nr)
+
+DEFINIERT IN
+------------
+::
+
+     /std/player/potion.c
+
+ARGUMENTE
+---------
+::
+
+     int nr       Nummer eines ZTs
+
+BESCHREIBUNG
+------------
+::
+
+     Entfernt einen bekannten ZT aus einen Spieler. Nur vom Orakel rufbar.
+
+RUeCKGABEWERT
+-------------
+::
+
+     1  Erfolg
+     -1 fehlende Berechtigung
+     -2 Nummer nicht eingetragen
+
+SIEHE AUCH
+----------
+::
+
+     Sonstiges: zaubertraenke, /secure/potionmaster.c, /room/orakel.c
+     Verwandt:  FindPotion(), AddKnownPotion(), InList()
+     Props:     P_POTIONROOMS, P_KNOWN_POTIONROOMS
+
+6.Feb 2016 Gloinson
+

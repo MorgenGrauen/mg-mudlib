@@ -1,0 +1,40 @@
+P_HP
+====
+
+NAME
+----
+::
+
+    P_HP                          "hp"
+
+DEFINIERT IN
+------------
+::
+
+    /sys/living/life.h
+
+BESCHREIBUNG
+------------
+::
+
+     - Lebewesen
+       Anzahl der Lebenspunkte des Wesens.
+
+     - Speisen/Kneipen
+       Heilwirkung einer Portion der Speise auf die Lebenspunkte
+       des Konsumenten
+
+SIEHE AUCH
+----------
+::
+
+     Props:		P_MAX_HP
+     Veraenderung:	reduce_hit_points(), restore_hit_points()
+			do_damage(L), Defend(L)
+			buffer_hp()
+     Ueberwachung:	AddHpHook(L)
+     Speisen/Kneipen:   std/pub, wiz/food, consume
+
+
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra
+

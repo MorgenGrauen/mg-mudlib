@@ -1,0 +1,21 @@
+P_FW_ALWAYS_READABLE
+====================
+
+NAME
+----
+::
+
+    P_FW_ALWAYS_READABLE          "fw_always_readable"          
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+    *** KEINE BESCHREIBUNG VORHANDEN ***
+

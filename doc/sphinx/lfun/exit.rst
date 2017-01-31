@@ -1,0 +1,56 @@
+exit()
+======
+
+FUNKTION
+--------
+::
+
+  varargs void exit(object liv, object dest);
+
+DEFINIERT IN
+------------
+::
+
+  /std/room/description.c
+
+ARGUMENTE
+---------
+::
+
+  liv - (object) Das bewegte Lebewesen.
+  dest - (object) Das Environment, in welches bewegt wird.
+
+BESCHREIBUNG
+------------
+::
+
+  Diese Funktion wird immer dann aufgerufen, wenn ein Lebewesen den
+  Raum verlaesst. Standardmaessig werden hier ggf. die Raummeldungen
+  abgestellt, man kann aber auch eigene Checks einhaengen. In dem Fall MUSS
+  man aber das geerbte exit() auf jeden Fall aufrufen.
+
+RUeCKGABEWERT
+-------------
+::
+
+  keiner
+
+BEMERKUNG
+---------
+::
+
+  Man beachte, dass this_player() 0 sein kann, wenn z.B. ein netztoter Spieler
+  Spieler den Raum verlaesst.
+  Man beachte ausserdem, dass this_player() nicht unbedingt das bewegte Living
+  sein muss. Wenn z.B. jemand ein Lebewesen bewegt, ist TP der, der die
+  Bewegung durchfuehrt, nicht das Lebewesen.
+
+SIEHE AUCH
+----------
+::
+
+  init(), this_player(), previous_object(), caller_stack(),
+  NotfiyLeave(), NotifyRemove(), NotifyDestruct()
+
+Last modified: 25.02.2009, Zesstra
+

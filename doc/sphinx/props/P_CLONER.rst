@@ -1,0 +1,28 @@
+P_CLONER
+========
+
+NAME
+----
+::
+
+    P_CLONER                      "cloner"                      
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Enthaelt einen String mit dem Namen desjenigen, der das Objekt gecloned 
+     hat.
+
+SIEHE AUCH
+----------
+::
+
+     P_CLONE_TIME
+

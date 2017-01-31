@@ -1,0 +1,108 @@
+DefendFunc()
+============
+
+DefendFunc(L)
+-------------
+::
+
+FUNKTION
+--------
+::
+
+     int DefendFunc(string|string *dtyp, int|mappingspell, object enemy);
+
+DEFINIERT IN
+------------
+::
+
+     eigenen Objekten; fuer /std/armour/combat.c
+
+ARGUMENTE
+---------
+::
+
+     dtyp
+          Schadenstypen der Angriffsart.
+          Sollte heute ein string* sein.
+     spell
+          0 bei veralteten konventionellen Angriffen im Regelfall jedoch
+          ein Mapping mit weiteren Infos.
+          Bei einem konventionellen Angriff ist spell[SP_PHYSICAL_ATTACK] gleich
+          1.
+     enemy
+          Der angreifende Gegner
+
+BESCHREIBUNG
+------------
+::
+
+     Anhand der uebergebenen Parameter kann hier ein Ruestungsbonus (oder
+     auch ein Ruestungsmalus) errechnet werden, der zu dem normalen
+     Ruestungswert (abhaengig von der Angriffsart) hinzuaddiert wird.
+
+RUeCKGABEWERT
+-------------
+::
+
+     Der Ruestungsbonus, der zur Ruestungsklasse addiert werden soll.
+
+BEMERKUNGEN
+-----------
+::
+
+     Auch wenn man eine DefendFunc() benutzt, darf der Rueckgabewert
+     zusammen mit der P_AC insgesamt nur in sehr seltenen, wohldurch-
+     dachten Ausnahmefaellen die maximal zulaessige P_AC fuer diesen
+     Ruestungstyp ueberschreiten. In solchen Ausnahmefaellen duerfen
+     die DefendFuncs nicht konstant wirken.
+
+     Bei aktivem Zurueckschlagen IMMER auf Flags wie SP_RECURSIVE und
+     SP_NO_ACTIVE_DEFENSE pruefen und ggf. abbrechen.
+
+BEISPIELE
+---------
+::
+
+     Eine Ruestung, die bei Angriffen mit Feuer ihre volle Staerke entfaltet
+     und bei Angriffen durch Geister geschwaecht wird:
+
+     void create()
+     {
+       ::create();
+
+       SetProp(P_ARMOUR_TYPE, AT_ARMOUR);
+       SetProp(P_AC, 20);
+       ...
+       // Die DefendFunc() ist in der Ruestung selbst definiert
+       SetProp(P_DEFEND_FUNC, this_object());
+     }
+
+     int DefendFunc(string *dtyp, mixed spell, object enemy)
+     {
+       int prot;
+
+       // Zuerst fragen wir den Angriff durch Feuer ab:
+       if (member(dtyp, DT_FIRE) >= 0)  // Feuer gehoert zu den Schadenstypen
+         prot = 5 + random(10); // Das ergibt maximal 14. Zusammen mit P_AC
+                                // kommt man also maximal auf 14+20 = 34,
+                                // liegt also unter der fuer AT_ARMOUR
+                                // geltenden Obergrenze
+
+       // Und jetzt der Geistertest
+       if (enemy->QueryProp(P_RACE) == "Geist" ||
+           enemy->is_class_member(CL_GHOST))
+         prot -= random(10);
+
+       // Der Rueckgabewert wird auf den aus P_AC errechneten Wert draufgeschlagen
+       return prot;
+     }
+
+SIEHE AUCH
+----------
+::
+
+     P_DEFEND_FUNC, QueryDefend(), /std/armour/combat.c
+
+
+Last modified: 18.Jul 2006 Muadib
+

@@ -1,0 +1,22 @@
+P_TPORT_COST_IN
+===============
+
+NAME
+----
+::
+
+    P_TPORT_COST_IN               "tport_cost_in"               
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     In einem Raum mit Sehertor: Kostenanteil, um sich in den Raum zu
+     teleportieren
+

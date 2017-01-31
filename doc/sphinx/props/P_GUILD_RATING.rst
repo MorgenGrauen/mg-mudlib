@@ -1,0 +1,41 @@
+P_GUILD_RATING
+==============
+
+NAME
+----
+::
+
+	P_GUILD_RATING			"guild_rating"                
+
+DEFINIERT IN
+------------
+::
+
+	/sys/new_skills.h
+
+BESCHREIBUNG
+------------
+::
+
+	In dieser Property wird die Einstufung des Spielers innerhalb
+	seiner Gilde festgelegt. Der dafuer zu ermittelnde Wert muss in
+	einem Bereich von 0 bis 10000 liegen. Wie sich die Einstufung
+	zusammensetzt, bleibt der jeweiligen Gilde ueberlassen.
+
+BEMERKUNGEN
+-----------
+::
+
+	Der Wert muss von der Gilde ermittelt werden! Meist setzt er sich
+	aus den Faehigkeiten des Mitglieds zusammen und mitunter fliessen
+	auch Gildenquests oder aehnliches mit ein.
+
+SIEHE AUCH
+----------
+::
+
+    P_NEWSKILLS, GuildRating
+
+
+Last modified: Wed Jan 14 19:17:06 1998 by Patryn
+

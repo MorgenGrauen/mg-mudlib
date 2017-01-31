@@ -1,0 +1,114 @@
+P_RESISTANCE_STRENGTHS
+======================
+
+NAME
+----
+::
+
+     P_RESISTANCE_STRENGTHS     "resistance_strengths"
+
+DEFINIERT IN
+------------
+::
+
+     /sys/living/combat.h
+
+BESCHREIBUNG
+------------
+::
+
+     Lebewesen:
+
+     Mapping mit Schadensarten, gegen die das Lebewesen resistent oder
+     anfaellig ist. Durch eine _query_method werden alle existierenden
+     Resistenzen hier zusammengefasst.
+
+     Die Staerke der Resistenz oder Anfaelligkeit wird numerisch aus-
+     gedrueckt:
+     - Resistenzen gehen bis von 0 bis -1.0 (absolute Resistenz)
+       - -0.5 == halbierter Schaden, -0.75 == geviertelter Schaden
+       -> in % des "aufgehaltenen" Schadens interpretierbar
+     - Empfindlichkeiten gehen von 0 bis MAX_INT
+       -  1.0 == verdoppelter Schaden, 3.0 == vervierfachter Schaden
+       -> als Faktor (x+1.0) interpretierbar
+
+     Ruestungen:
+
+     Mapping mit Prozentwerten der Maximalwerte fuer Ruestungen des
+     entsprechenden Typs. Dabei sind positive Werte Resistenzen und
+     negative Empfindlichkeiten. Dabei duerfen die Prozentwerte nur
+     im Bereich von +100 bis -800 (-1000 ?!) liegen.
+
+     Bei Ruestungen ist es damit unnoetig, Resistenzen mittels
+     AddResistanceModifier() im Traeger zu setzen, da dies bereits
+     in /std/armour automatisch gemacht wird. Der Schluessel fuer
+     den Eintrag ist dabei P_ARMOUR_TYPE.
+
+     Die Maximalwerte sind derzeit:
+      AT_CLOAK, AT_RING, AT_AMULET: max 10% Resistenz
+      AT_SHIELD, AT_ARMOUR:  max 15% Resistenz
+      alle anderen:   max 5% Resistenz
+
+BEMERKUNGEN
+-----------
+::
+
+     Ruestungen:
+     * die Property muss _nach_ P_ARMOUR_TYPE gesetzt werden (_set-Method)
+
+     Lebewesen:
+     * -1.0 bedeutet bereits absolute Resistenz, bei kleineren Werten werden
+       die anderen Schadensanteile im Kampf u.U. nicht mehr wie gewuenscht
+       bilanziert. Bitte daher drauf verzichten. ;-)
+     * Aenderungen an P_RESISTANCE und P_VULNERABILITY werden direkt in 
+       P_RESISTANCE_STRENGTHS gespeichert:
+       -> daher niemals im Nachhinein bei fremden NPCs P_RESISTANCE_STRENGTHS
+          manipulieren, dafuer gibt es AddResistanceModifier
+     * QueryProp(P_RESISTANCE_STRENGTHS) enthaelt die gesamten Resistenzen
+       P_RESISTANCE, P_VULNERABILITY, P_RESISTANCE_MODIFIER (_query-Method)
+
+     Die Werte in P_RESISTANCE_STRENGTHS sollten nur in Ausnahmefaellen oder
+     gut begruendet den Hoechstwert haben. Ein Eiswesen kann zwar sehr
+     resistent gegen Kaelteschaden sein, sollte aber zu gleichem Teil auch
+     anfaellig auf Feuerschaden sein.
+
+     Auf dieser Property liegt eine Querymethode, welche eine Kopie der
+     Daten zurueckliefert.
+
+BEISPIELE
+---------
+::
+
+     // ein Eistroll
+     SetProp(P_RESISTANCE_STRENGTHS,([DT_FIRE:0.5,DT_COLD:-0.5,
+                                      DT_MAGIC:0.1]));
+
+     Feuerangriffe werden mit 1.5 multipliziert, magische mit 1.1 und
+     der Schadenswert von Kaelteangriffen wird halbiert. Zum Beispiel
+     wuerde
+     Defend(100, ({DT_FIRE,DT_MAGIC}), ...)
+     einen Schaden von 130 statt den normalen 100 verursachen.
+
+
+     // eine Eisruestung
+     SetProp(P_RESISTANCE_STRENGTHS, ([DT_COLD:50, DT_FIRE:-100]));
+
+     Dieses Kettenhemd schuetzt nun mit 50% des Maximalwertes gegen
+     Kaelte (also 0.5*15%=7,5% Resistenz) und macht mit dem Maximal-
+     wert anfaellig gegen Feuer (1*15%=15% Empfindlichkeit).
+
+     ! der Code spricht zusaetzlich von
+       Empfindlichkeit=(Empfindlichkeit/4)*5 -> 15/4*5=18.75% !
+
+SIEHE AUCH
+----------
+::
+
+     simple Resistenz: P_RESISTANCE, P_VULNERABILITY
+     Modifikatoren: AddResistanceModifier, RemoveResistanceModifier(),
+     P_RESISTANCE_MODIFIER
+     Berechnung: CheckResistance(), UpdateResistanceStrengths()
+     anderes:  balance, /std/armour/combat.c, /std/living/combat.c
+
+6.Feb 2016 Gloinson
+

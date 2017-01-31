@@ -1,0 +1,50 @@
+AddSingularId()
+===============
+
+FUNKTION
+--------
+::
+
+     void AddSingularId(mixed id);
+
+DEFINIERT IN
+------------
+::
+
+     /std/unit.c
+
+ARGUMENTE
+---------
+::
+
+     id
+          Identifikationsstring oder Array von Strings
+
+BESCHREIBUNG
+------------
+::
+
+     Es werden ein oder mehrere Bezeichner hinzugefuegt, mit denen sich eine
+     einzelne Einheit ansprechen laesst.
+
+RUeCKGABEWERT
+-------------
+::
+
+     keiner
+
+BEISPIELE
+---------
+::
+
+     siehe /items/money.c
+
+SIEHE AUCH
+----------
+::
+
+     AddPluralId(), RemoveSingularId(), AddId(), id(), /std/unit.c
+
+
+Last modified: Mon Jul 14 11:31:00 1997 by Silvana
+

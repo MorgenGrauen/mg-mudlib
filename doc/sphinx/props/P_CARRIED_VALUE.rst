@@ -1,0 +1,21 @@
+P_CARRIED_VALUE
+===============
+
+NAME
+----
+::
+
+    P_CARRIED_VALUE               "carried"                     
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/base.h
+
+BESCHREIBUNG
+------------
+::
+
+     Entschaedigung, die der Spieler beim Einloggen erhaelt.
+

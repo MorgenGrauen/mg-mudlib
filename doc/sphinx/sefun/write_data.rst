@@ -1,0 +1,39 @@
+write_data()
+============
+
+SYNOPSIS
+--------
+::
+
+        string write_data(string file, int start, int anzahl)
+
+BESCHREIBUNG
+------------
+::
+
+        Diese Funktion macht genau das, was write_file() tut (also siehe dort),
+        allerdings stellt sie sicher, dass <file> immer mit einem /data/
+        beginnt (setzt es also notfalls davor).
+        Es wird also immer irgendwo unterhalb von /data/ geschrieben.
+
+        Die Benutzung dieser sefun wird dringend empfohlen, falls Daten
+        ausserhalb von Spielerobjekten gepeichert werden, damit Daten und
+        Code getrennt abgelegt sind. Dies vereinfacht z.B. die
+        Datensicherung.
+
+BEISPIEL
+--------
+::
+
+        # write_file("/d/ebene/zesstra/blupp", "Testdaten.\n");
+        -> schreibt in das File /data/d/ebene/zesstra/blupp.
+        # write_file("/data/d/ebene/zesstra/blupp", "Testdaten.\n");
+        -> tut dasselbe.
+
+SIEHE AUCH
+----------
+::
+
+        read_data()
+        read_file(E), write_file(E), read_bytes(E), write_file(E)
+

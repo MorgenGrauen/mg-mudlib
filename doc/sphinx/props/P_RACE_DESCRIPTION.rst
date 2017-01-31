@@ -1,0 +1,21 @@
+P_RACE_DESCRIPTION
+==================
+
+NAME
+----
+::
+
+    P_RACE_DESCRIPTION            "racedescr"                   
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Beschreibung der Vor/Nachteile einer Rasse.
+

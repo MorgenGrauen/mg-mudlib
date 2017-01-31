@@ -1,0 +1,21 @@
+P_FROG
+======
+
+NAME
+----
+::
+
+    P_FROG                        "frog"                        
+
+DEFINIERT IN
+------------
+::
+
+    /sys/living/life.h
+
+BESCHREIBUNG
+------------
+::
+
+     Gesetzt, wenn der Spieler ein Frosch ist.
+

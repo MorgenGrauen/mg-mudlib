@@ -1,0 +1,21 @@
+P_KEEP_ON_SELL
+==============
+
+NAME
+----
+::
+
+    P_KEEP_ON_SELL                "keep_on_sell"                
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Bei "verkaufe alles" wird das Objekt behalten.
+

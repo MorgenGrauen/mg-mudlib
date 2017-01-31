@@ -1,0 +1,22 @@
+P_TPORT_COST_OUT
+================
+
+NAME
+----
+::
+
+    P_TPORT_COST_OUT              "tport_cost_out"              
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     In einem Raum mit Sehertor: Kostenanteil, sich aus dem Raum heraus
+     zu teleportieren
+

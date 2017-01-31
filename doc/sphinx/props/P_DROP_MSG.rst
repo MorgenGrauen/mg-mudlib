@@ -1,0 +1,100 @@
+P_DROP_MSG
+==========
+
+NAME
+----
+::
+
+     P_DROP_MSG				"drop_message" 
+
+DEFINIERT IN
+------------
+::
+
+     /sys/living/put_and_get.h
+
+BESCHREIBUNG
+------------
+::
+
+     Mit P_DROP_MSG kann man die Meldung, die man beim Ablegen eines
+     Objektes bekommt, modifizieren.
+
+     Folgende Werte sind moeglich:
+
+	
+
+     o 0
+       Es wird eine Standardmeldung ausgegeben. Dies ist Voreinstellung. 
+
+	  
+
+     o NO_PNG_MSG       == -1
+       Es wird keinerlei Meldung ausgegeben
+
+	  
+
+     o Ein Array aus Strings 
+       Der erste String wird an den Spieler ausgegeben, der zweite 
+       (optionale) an den Raum. 
+
+	  
+
+       Die Strings werden durch die Funktion replace_personal() geparst.
+	Objekt1 - Spieler
+        Objekt2 - das Objekt, das fallengelassen wird
+
+	  
+
+       Wird der zweite String nicht angegeben, erfolgt keine Meldung an
+       den Raum.
+
+				
+
+BEISPIEL
+--------
+::
+
+     void create() {
+      ...
+      SetProp( P_SHORT, "Ugars Handaxt" );
+      SetProp( P_LONG, break_string(
+       "Dieses ist eine Kampfaxt, wie sie Orks normalerweise benutzen. "
+       "Da Du Zeit hast, sie Dir anzuschauen, ist der Besitzer wohl "
+       "bereits bei Lars.",78 ));
+
+	  
+
+      SetProp( P_NAME, "Axt" );
+      AddId( ({"handaxt","axt"}) );
+      SetProp( P_GENDER, FEMALE );
+
+	  
+
+      SetProp( P_DROP_MSG, ({
+       "Du schmeisst @WEN2 hin.",
+       "@WER1 schmeisst Dir @WENU2 vor die Fuesse.\n"}));
+      ...
+     }
+
+     Will Ugar seine Axt ablegen und gibt "lasse axt fallen" ein, werden 
+     folgende Meldungen ausgegeben:
+
+	
+
+     Ugar: "Du schmeisst die Axt hin."
+     Raum: "Ugar schmeisst Dir eine Axt vor die Fuesse."
+
+	
+
+SIEHE AUCH
+----------
+::
+
+     Aehnliches: P_PICK_MSG, P_PUT_MSG, P_GIVE_MSG, P_WEAR_MSG, P_WIELD_MSG
+     Fehler:     P_TOO_HEAVY_MSG, P_ENV_TOO_HEAVY_MSG, P_TOO_MANY_MSG,
+                 P_NOINSERT_MSG, P_NOLEAVE_MSG, P_NODROP, P_NOGET 
+     Sonstiges:  replace_personal(E), drop_obj(L), /std/living/put_and_get.c
+
+14. Maerz 2004 Gloinson
+

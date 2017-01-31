@@ -1,0 +1,21 @@
+P_AWAY
+======
+
+NAME
+----
+::
+
+    P_AWAY                        "away"                        
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     String der ausgegeben wird, wenn man weg ist und eine Mitteilung bekommt.
+

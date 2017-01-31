@@ -1,0 +1,21 @@
+query_once_interactive()
+========================
+
+SYNOPSIS
+--------
+::
+
+        int query_once_interactive(object obj);
+
+BESCHREIBUNG
+------------
+::
+
+        Wahr, wenn <obj> interaktiv ist oder dies einmal war.
+
+SIEHE AUCH
+----------
+::
+
+        remove_interactive(E)
+

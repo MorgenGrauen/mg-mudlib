@@ -1,0 +1,48 @@
+P_WEIGHT
+========
+
+NAME
+----
+::
+
+    P_WEIGHT                      "weight"                      
+
+DEFINIERT IN
+------------
+::
+
+    /sys/thing/restrictions.h
+
+BESCHREIBUNG
+------------
+::
+
+     - Objekte
+       Das Gewicht eines Objetes in Gramm.
+
+     - Speisen
+       Gewicht einer Portion der Speise.
+
+       
+
+BEMERKUNGEN
+-----------
+::
+
+     In tragbaren Speisen (erben von /std/food) setzt man mit SetProp
+     das Gewicht _einer_ Portion. Per QueryProp erhaelt man aber das
+     Gesamtgewicht der Speise inclusive des eventuell vorhandenen Behaelters.
+     Das Gewicht des Behaelters wird dabei aus P_EMPTY_PROPS[P_WEIGHT]
+     gelesen.
+
+     
+
+SIEHE AUCH
+----------
+::
+
+     Speisen: wiz/food, P_EMPTY_PROPS
+
+
+Last modified: Thu Oct 28 12:15:00 2010 by Caldra
+

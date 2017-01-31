@@ -1,0 +1,35 @@
+P_POTIONROOMS
+=============
+
+NAME
+----
+::
+
+    P_POTIONROOMS                 "potionrooms"                 
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/potion.h
+
+BESCHREIBUNG
+------------
+::
+
+    Array mit den Nummern der Raeume, in denen der Spieler noch Zauber-
+    traenke hat. Die Freischaltung als bekannt geschieht im Orakel.
+    Die Zuordnung der Raeume und Nummern geschieht im Potionmaster.
+
+    Nur lesbare _query - Property.
+
+SIEHE AUCH
+----------
+::
+
+    Sonstiges: zaubertraenke, /secure/potionmaster.c, /room/orakel.c
+    Verwandt:  FindPotion(), AddKnownPotion(), RemoveKnownPotion(), InList()
+    Props:     P_KNOWN_POTIONROOMS
+
+6.Feb 2016 Gloinson
+

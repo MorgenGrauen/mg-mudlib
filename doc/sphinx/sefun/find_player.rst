@@ -1,0 +1,63 @@
+find_player()
+=============
+
+FUNKTION
+--------
+::
+
+        object find_player(string uid)
+
+BESCHREIBUNG
+------------
+::
+
+        Findet den Spieler mit dem Namen bzw. der User-ID <uid>.
+
+        
+
+        Akzeptiert auch die UUID statt einer UID. In diesem Fall erfolgt aber
+        nur eine Pruefung, ob die UID des gefundenen Spielers zur angegebenen
+        UUID passt (d.h. "jof_-1" wuerde dann ggf. auch das Spielerobjekt Jof
+        zurueckliefern, wenn das die UUID "Jof_1234" hat).
+
+        Rueckgabewert ist das Spielerobjekt (wenn Spieler anwesend),
+        ansonsten 0.
+
+BEISPIEL
+--------
+::
+
+        object ob;
+        ob = find_player("deepthought");
+
+        if(ob)
+          tell_object(ob,"Tach Du!\n");
+
+        oder auch 
+
+        if(ob = find_player("deepthought"))
+          tell_object(ob,"Tach Du!\n");
+
+ANMERKUNGEN
+-----------
+::
+
+        Via find_player() werden auch unsichtbare Magier gefunden. In 
+        Objekten, die fuer Spieler gedacht sind, muss dies dann extra
+        per Abfrage auf if(ob->QueryProp(P_INVIS)) getestet werden.
+
+        Netztote Spieler und Monster werden nicht gefunden da find_player
+        den Namen aus set_living_name() verwendet, der in player.c ge-
+        setzt wird.
+
+        
+
+SIEHE AUCH
+----------
+::
+
+        find_living(E), set_living_name(E), find_object(E), find_netdead(E)
+
+
+Letzte Aenderung: 06.01.2009, Zesstra 
+

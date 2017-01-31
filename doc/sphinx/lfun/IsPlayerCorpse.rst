@@ -1,0 +1,38 @@
+IsPlayerCorpse()
+================
+
+FUNKTION
+--------
+::
+
+    public int IsPlayerCorpse()
+
+DEFINIERT IN
+------------
+::
+
+    /std/corpse.c
+
+RUeCKGABEWERT
+-------------
+::
+
+    1 wenn Spielerleiche
+    0 sonst
+
+BESCHREIBUNG
+------------
+::
+
+    Gibt 1 zurueck, wenn diese Leiche eine Spielerleiche ist. Es kann auch
+    eine "normale" NPC-Leiche sein.
+
+SIEHE AUCH
+----------
+::
+
+    Aehnlich: living, interactive
+    Aehnlich: IsArmour, IsBottle, IsClothing, IsRoom, IsUnit
+
+3. Sep 2016, Gloinson
+

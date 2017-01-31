@@ -1,0 +1,99 @@
+NotifyPlayerDeath()
+===================
+
+FUNKTION
+--------
+::
+
+  void NotifyPlayerDeath(object victim,object killer,int lost_exp);
+
+DEFINIERT IN
+------------
+::
+
+  /std/player/life.c
+
+ARGUMENTE
+---------
+::
+
+  victim
+    Getoeteter Spieler.
+  killer
+    Objekt, welches den Spieler getoetet hat.
+  lost_exp
+    Erfahrungspunkte, die der Spieler durch den Tod verloren hat.
+
+BESCHREIBUNG
+------------
+::
+
+  Diese Funktion wird aus dem Spielerobjekt heraus immer dann
+  aufgerufen, wenn der Spieler stirbt und zwar:
+    1) im Gegner, der den Spieler getoetet hat,
+    2) im Environment des getoeteten Spielers,
+    3) in der Gilde des Spielers,
+    4) in allen Objekten in diesem Environment und
+    5) in allen Objekten (auch innerhalb Containern) im Spieler.
+  Der Gegner wird hierbei nur einmal informiert, also bei letzteren
+  Faellen herausgefiltert, falls noetig!
+  Hauptaufgabe dieser Funktion ist es somit, auf Tode von Spielern zu
+  reagieren oder selbige einfach nur mitzuloggen.
+
+  Zu dem Zeitpunkt des Aufrufs dieser Funktion ist der Spieler noch _nicht_
+  Geist und noch _nicht_ im Todesraum - dies wird im Anschluss an den Aufruf
+  der NotifyPlayerDeath() durchgefuehrt.
+
+  
+
+  Aufgerufen wird die Funktion aus '/std/player/life.c' mittels catch() und
+  werden mit limited() auf max. 150k (Gegner, Environment, Gilde) bzw. 80k 
+  (alle anderen Objekte) Ticks beschraenkt.
+  Fehler in dieser Funktion haben somit keine negativen Auswirkungen
+  auf das Sterben des Spielers.
+
+RUeCKGABEWERT
+-------------
+::
+
+  keiner
+
+BEISPIELE
+---------
+::
+
+  Folgendes Beispiel demonstriert beispielsweise, wie man Tode von
+  Spielern mitloggen kann (das Beispiel ist hierbei auf den am
+  haeufigsten auftretenden Fall bezogen, dass nur das toetende Objekt
+  den Tod protokollieren soll):
+
+    void NotifyPlayerDeath(object dead, object killer, int lost_exp) 
+    { 
+      if ( intp(lost_exp) && objectp(dead) && objectp(killer) && 
+           killer==this_object() )
+        write_file( "/log/patryn/dead", sprintf(
+          "%s - %s von %s getoetet. XP: -%d", ctime(), getuid(dead),
+           killer->name(WEM), lost_exp) );
+    }
+
+  Bitte beachten: write_file() schreibt ohne Groessenbegrenzung in das
+  Logfile. Da dies auf Dauer bzw. in Gebieten mit hoher Log-Aktivitaet
+  zu Logfiles von enormer Groesse fuehren kann, ist die Verwendung
+  von write_file() nicht empfehlenswert. Ausnahmen koennen natuerlich
+  mit dem zustaendigen Regionsmagier abgesprochen werden, z.B. fuer
+  begrenzte Anwendung etwa bei sehr starken, selten besiegten Gegnern.
+
+  Weiterhin ist es empfehlenswert, das toetende Objekt (killer) nicht
+  im NotifyPlayerDeath() zu zestoeren, sondern etwas zeitversetzt,
+  damit nicht etwa im nachfolgenden NotifyPlayerDeath() eines anderen
+  Objektes (s.o. Reihenfolge) killer==0 ist.
+
+SIEHE AUCH
+----------
+::
+
+  Defend(), do_damage(), NotifyHpChange(), catch(), write_file(), log_file()
+  P_LAST_DEATH_PROPS
+
+24.03.2012, Zesstra
+

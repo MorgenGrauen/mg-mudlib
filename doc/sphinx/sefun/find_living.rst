@@ -1,0 +1,42 @@
+find_living()
+=============
+
+SYNOPSIS
+--------
+::
+
+        object find_living(string str)
+
+BESCHREIBUNG
+------------
+::
+
+        Findet das erste "lebende" Objekt, welches per set_living_name() den
+        Namen <str> setzte.
+
+        
+
+        Das Objekt muss ausserdem per enable_commands() als Lebewesen
+        markiert worden sein. Dies ist fuer alle von /std/npc erbenden NPCs
+        _automatisch_ der Fall und sollte daher nicht nochmal explizit gemacht
+        werden.
+
+BEISPIEL
+--------
+::
+
+        object ob;
+        ob = find_living("Public Enemy");
+
+SIEHE AUCH
+----------
+::
+
+        find_player(E), enable_commands(E), set_living_name(E)
+
+LETZTE AeNDERUNG
+----------------
+::
+
+09.10.2011, Zesstra
+

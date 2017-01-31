@@ -1,0 +1,38 @@
+query_shadowing()
+=================
+
+DEPRECATED
+----------
+::
+
+query_shadowing(E)
+
+FUNKTION
+--------
+::
+
+     object query_shadowing(object obj)
+
+BESCHREIBUNG
+------------
+::
+
+     Die Funktion gibt das derzeit vom Objekt <obj> beschattete Objekt
+     victim oder 0 zurueck.
+
+BEISPIELE
+---------
+::
+
+     // B beschattet A
+     query_shadowing(find_object(B)) == A
+
+SIEHE AUCH
+----------
+::
+
+     Generell:	     shadow(E), unshadow(E)
+     Rechte:	     query_allow_shadow(M), query_prevent_shadow(L)
+
+23.02.2016, Zesstra
+

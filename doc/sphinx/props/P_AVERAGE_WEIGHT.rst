@@ -1,0 +1,21 @@
+P_AVERAGE_WEIGHT
+================
+
+NAME
+----
+::
+
+    P_AVERAGE_WEIGHT                "average_weight"
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/description.h
+
+BESCHREIBUNG
+------------
+::
+
+     Durchschnittliche Gewicht eines Wesens dieser Rasse (derzeit nur Player)
+

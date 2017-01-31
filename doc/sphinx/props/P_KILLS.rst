@@ -1,0 +1,23 @@
+P_KILLS
+=======
+
+NAME
+----
+::
+
+    P_KILLS                       "playerkills"                 
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Anzahl der Spieler, die dieser Spieler schon getoetet hat.
+     Unerlaubte Manipulation ist ein SCHWERES VERGEHEN gegen
+     die Mudreglen.
+

@@ -1,0 +1,21 @@
+P_BRIEF
+=======
+
+NAME
+----
+::
+
+    P_BRIEF                       "brief"                       
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/viewcmd.h
+
+BESCHREIBUNG
+------------
+::
+
+     Ist gesetzt, wenn der Spieler nur die Kurzbeschreibung sehen will.
+

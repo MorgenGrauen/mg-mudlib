@@ -1,0 +1,46 @@
+find_netdead()
+==============
+
+FUNKTION
+--------
+::
+
+        object find_netdead(string name)
+
+ARGUMENTE
+---------
+::
+
+        name - Name des gesuchten Spielers
+
+BESCHREIBUNG
+------------
+::
+
+        Falls der Spieler name netztot ist, liefert diese Funktion das Spieler-
+        objekt zurueck.
+
+        Akzeptiert auch die UUID statt einer UID. In diesem Fall erfolgt aber
+        nur eine Pruefung, ob die UID des gefundenen Spielers zur angegebenen
+        UUID passt (d.h. "jof_-1" wuerde dann ggf. auch das Spielerobjekt Jof
+        zurueckliefern, wenn das die UUID "Jof_1234" hat).
+
+RUECKGABEWERT
+-------------
+::
+
+        Der netztote Spieler oder 0, falls es keinen Netztoten diesen Namens
+        gibt.
+
+SIEHE AUCH
+----------
+::
+
+        find_living(E), find_player(E)
+
+LETZT AeNDERUNG
+---------------
+::
+
+06.01.2009, Zesstra
+

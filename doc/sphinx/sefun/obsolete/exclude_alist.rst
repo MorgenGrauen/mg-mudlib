@@ -1,0 +1,11 @@
+exclude_alist()
+===============
+
+SYNOPSIS
+--------
+::
+
+	mixed *exclude_alist(int i, mixed *alist)
+
+Remove element i from alist.
+

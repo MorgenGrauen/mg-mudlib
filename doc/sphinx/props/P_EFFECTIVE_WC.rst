@@ -1,0 +1,112 @@
+P_EFFECTIVE_WC
+==============
+
+NAME
+----
+::
+
+     P_EFFECTIVE_WC     "effective_wc"
+
+DEFINIERT IN
+------------
+::
+
+     <combat.h>
+
+BESCHREIBUNG
+------------
+::
+
+     Diese Property kommt sowohl in Waffen als auch Ruestungen, die Schaden
+     machen sollen, zum Einsatz.
+
+     Falls die Staerke einer Waffe noch durch eine HitFunc() modifiziert
+     wird, sollte hier der Effektivwert der Waffenklasse vermerkt werden,
+     soweit er sich angeben laesst.
+     Diese Property dient vor allem dazu, eine Waffe mit HitFunc() korrekt
+     einzuschaetzen.
+
+     In einigen Gilden koennen Ruestungen auch als Waffen eingesetzt werden
+     (z.B. ein Paar Schuhe zum Treten). In dieser Property kann man die
+     Waffenklasse eintragen, die die Ruestung bei solchen Aktionen aufweisen
+     soll. Dabei ist man an die ueblichen Beschraenkungen der Waffenklasse
+     gebunden! (s. /sys/combat.h)
+     Der Ruestung kann man dann auch einen Schadenstyp mit auf den Weg
+     geben.
+
+BEMERKUNGEN
+-----------
+::
+
+     Das Kaempferspellbook verwendet bei Ruestungen P_AC, wenn
+     P_EFFECTIVE_WC nicht gesetzt ist.
+
+BEISPIELE
+---------
+::
+
+     * HitFuncs:
+       Der doppelte Mittelwert der HitFunc wird zur Basis-WC dazuaddiert,
+       da sich der 'Angriffswert = random(Basis-WC) + absolut(HitFunc-Wert)'
+       berechnet.
+
+     // #1 Waffe mit Basis-WC 120 und randomisierter HitFunc
+        SetProp(P_WC, 120);
+        SetProp(P_HIT_FUNC, this_object());
+
+       
+
+        int HitFunc(...) {
+          return random(30);                       // Mittelwert: 15
+        }
+        -> SetProp(P_EFFECTIVE_WC, 150);           // 120 + 2*15 = 150
+
+     
+
+     // #2 Waffe mit Basis-WC 120 und teilweise absoluter HitFunc
+        SetProp(P_WC, 120);
+        SetProp(P_HIT_FUNC, this_object());
+
+       
+
+        int HitFunc(...) {
+          return 30 + random(10);                  // Mittelwert: 30 + 5
+        }
+        -> SetProp(P_EFFECTIVE_WC, 190);           // 120 + 2*(30+5) = 190
+
+     * Ruestungen (zB Gildennutzung):
+       Der Maximalwert fuer die P_EFFECTIVE_WC bei Kaempfern ist der jeweils
+       doppelte maximale P_AC-Wert. Angabe eines Schadenstyps ist sinnvoll.
+
+     // #3 Ein paar Schuhe, mit maximalem Schlag-/Saeureschaden.
+        SetProp(P_ARMOUR_TYPE, AT_BOOT);
+        SetProp(P_AC, 2);
+        SetProp(P_DAM_TYPE, ({DT_BLUDGEON,DT_ACID}));
+        -> SetProp(P_EFFECTIVE_WC, 12);  // hoechstmoeglicher Wert bei
+                                         // Schuhen, da deren max. P_AC = 6
+     // aequivalent und zukunftssicher:
+        -> SetProp(P_EFFECTIVE_WC, 2 * VALID_ARMOUR_CLASS[AT_BOOT]);
+
+     // #4 Ein Schild mit spitzem Dorn. (Stichschaden beim Schildstoss.)
+        SetProp(P_ARMOUR_TYPE, AT_SHIELD);
+        SetProp(P_AC, 5);
+        SetProp(P_DAM_TYPE, ({DT_PIERCE}));
+        SetProp(P_EFFECTIVE_WC, 55);
+
+     // #5 Ein Gummischild ist schlecht fuer Angriffe. BOING!
+        SetProp(P_ARMOUR_TYPE, AT_SHIELD);
+        SetProp(P_AC, 30);
+        SetProp(P_DAM_TYPE, ({DT_BLUDGEON}));
+        SetProp(P_EFFECTIVE_WC, 10);
+
+SIEHE AUCH
+----------
+::
+
+     Waffen:     P_WC, P_TOTAL_WC, HitFunc()
+     Ruestungen: P_AC, P_TOTAL_AC, P_EFFECTIVE_AC, DefendFunc()
+     Files:      /std/weapon.c, /std/weapon/combat.c
+     Balance:    waffen, ruestungen, properties, kaempferboni
+
+6. Nov 2011 Gloinson
+

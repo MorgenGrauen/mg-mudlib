@@ -1,0 +1,21 @@
+P_SPELLS
+========
+
+NAME
+----
+::
+
+    P_SPELLS                      "spells"                      
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     NPC-Spells
+

@@ -1,0 +1,21 @@
+P_ACHATS
+========
+
+NAME
+----
+::
+
+    P_ACHATS                      "achats"                      
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Chats, die das Monster im Kampf ausgibt.
+

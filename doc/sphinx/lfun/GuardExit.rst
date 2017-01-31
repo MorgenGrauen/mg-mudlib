@@ -1,0 +1,112 @@
+GuardExit()
+===========
+
+FUNKTION
+--------
+::
+
+     protected <int|<string|closure>* >* GuardExit(object room, int hookid,
+                                                   <string|closure>* hdata);
+
+DEFINIERT IN
+------------
+::
+
+     /std/npc/moving.c
+
+ARGUMENTE
+---------
+::
+
+     room
+          Der den Hook ausloesende Raum (environment())
+     hookid
+          Die ID des Hooks (H_HOOK_EXIT_USE)
+     hdata
+          Ein Array mit 3 Elementen:
+          ({
+              verb - Das Kommandoverb/Ausgangsname (string)
+              dest - Zielraum (string) oder closure (special exits)
+              msg  - Bewegungsrichtung (string) oder 0
+          })
+
+BESCHREIBUNG
+------------
+::
+
+     Ist diese Funktion in einem NPC definiert, traegt sich der NPC bei jeder
+     Bewegung automatisch als Konsument von H_HOOK_EXIT_USE ein und diese
+     Funktion wird immer gerufen, wenn ein Lebewesen im gleichen Environment
+     wie der NPC versucht, einen Ausgang zu benutzen.
+     Der NPC kann dann die Bewegung abbrechen (und so den Ausgang
+     blockieren), Ziel oder Bewegungsmeldung aendern oder keine Veraenderung
+     vornehmen.
+     Die Konstanten fuer Hookid und Hookstatus (s. Rueckgabewert) sind in
+     <hook.h> definiert.
+
+RUeCKGABEWERT
+-------------
+::
+
+     Array mit zwei Elementen:
+     ({
+         H_NO_MOD / H_ALTERED / H_CANCELLED,
+         hdata
+     })
+     hdata ist ggf. das geaenderte Array, welches die Funktion uebergeben
+     wird. Weitere Details s. auch /doc/std/hooks
+
+BEMERKUNGEN
+-----------
+::
+
+     Die Anzahl an Konsumenten eines Hooks ist begrenzt. Es ist daher
+     moeglich, dass die Registrierung nicht klappt, wenn zuviele (>5) Waechter
+     im Raum sind. Will man darauf reagieren, muesste man die Registrierung
+     pruefen.
+     Ein NPC, welcher GuardExit() definiert, aber im aktuellen Environment
+     keine Wache halten will, koennte sich selber de-registrieren.
+
+BEISPIELE
+---------
+::
+
+     <int|<string|closure>* >* GuardExit(object room, int hookid,
+                                         <string|closure>* hdata)
+     {
+       // Nur in Gefaengnisraeumen Wache halten
+       if (strstr(object_name(environment()), "/room/jail")==0)
+       {
+         // Hier gehts nicht raus. ;-)
+         if (hdata[0] == "raus") {
+             tell_object(this_player(), ...);
+             return ({H_CANCELLED, hdata});
+         }
+         // Special exits ersetzen wir durch einen eigenen
+         else if (closurep(hdata[1])) {
+           hdata[1] = #'my_special_exit;
+           return ({H_ALTERED, hdata});
+         }
+         // alle anderen Ausgaenge in die persoenliche Zelle
+         else {
+           tell_object(this_player(), ...);
+           hdata[1] = "/room/jail_"+getuid(this_player());
+           hdata[2] = "Sueden";
+           return ({H_ALTERED, hdata});
+         }
+      }
+      // in allen anderen Raeumen nicht eingreifen
+      return ({H_NO_MOD, hdata});
+    }
+
+SIEHE AUCH
+----------
+::
+
+     AddExit, AddSpecialExit, RemoveExit
+     HRegisterToHook, HRegisterModifier, HUnregisterFromHook
+     /doc/std/hooks
+
+20.02.2016, Zesstra
+22.05.2016, Mupfel (Beispiel korrigiert)
+

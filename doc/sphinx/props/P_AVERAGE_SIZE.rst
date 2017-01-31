@@ -1,0 +1,21 @@
+P_AVERAGE_SIZE
+==============
+
+NAME
+----
+::
+
+    P_AVERAGE_SIZE                "average_size"                
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/description.h
+
+BESCHREIBUNG
+------------
+::
+
+     Durchschnittliche Groesse eines Wesens dieser Rasse (derzeit nur Player)
+

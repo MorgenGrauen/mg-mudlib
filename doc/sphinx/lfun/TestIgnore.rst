@@ -1,0 +1,88 @@
+TestIgnore()
+============
+
+FUNKTION
+--------
+::
+
+     public int TestIgnore(string|string* arg)
+
+DEFINIERT IN
+------------
+::
+
+     /std/player/comm.c
+
+ARGUMENTE
+---------
+::
+
+     arg
+         String oder Array von Strings, die getestet werden sollen,
+         Format jeweils: [spieler].aktion[.qualifizierer]
+
+RUeCKGABEWERT
+-------------
+::
+
+     0, wenn arg nicht ignoriert wird
+     MSG_IGNORED, wenn (min. ein Element von) arg ignoriert wird
+
+BESCHREIBUNG
+------------
+::
+
+     Es wird geprueft, ob der Spieler irgendeinen Eintrag auf seiner Liste
+     hat, der dazu fuehrt, dass <arg> ignoriert wird. Hierbei kommen je nach
+     den Angaben in <arg> folgende Regeln zum Tragen:
+     1) spieler
+        Wird der Spieler ignoriert?
+     2) .aktion
+        Ignoriert der Spieler .aktion, d.h. die Aktion komplett (OHNE
+        Qualifizierer)?
+     3) spieler.aktion
+        Ignoriert der Spieler spieler, .aktion oder spieler.aktion?
+     4) spieler.aktion.qualifizierer
+        Ignoriert der Spieler spieler, .aktion, spieler.aktion oder
+        spieler.aktion.qualifizierer?
+     5) .aktion.qualifizierer
+        Ignoriert der Spieler .aktion oder .aktion.qualifizierer?
+
+     Da TestIgnore() damit durchaus etwas aufwendiger sein kann, sollte
+     man dies nicht unnoetig oft aufrufen. (Braucht man das Ergebnis z.B.
+     kurz spaeter nochmal, koennte man das Ergebnis speichern.) Wird der
+     Qualifizierer nicht gebraucht, sollte man ihn weglassen.
+
+BEISPIEL
+--------
+::
+
+     if (!this_player()->TestIgnore("andy"))
+       tell_object(this_player(), "Andy teilt Dir mit: Hallo!\n");
+
+     // Beispiel fuer eine Ignore-Check fuer Aktion (kratzen) fuer einen
+     // Spieler (this_player()) an einem anderen Spieler (target)
+     if (!target->TestIgnore( ({getuid(this_player()) + ".kratze",
+                                   getuid(this_player()) + ".kratz"}) ))
+     {
+       tell_object(target, this_player()->Name()+" kratzt dich.\n");
+       tell_object(this_player(), "Du kratzt "+target->Name()+".\n");
+     }
+     else
+       tell_object(this_player(), target->Name()+" ignoriert dich.\n");
+
+     // allumfassender Ignorier-Check in einer Gilde (Klerus) auf
+     // eine Aktion (kurieren) fuer einen bestimmten Spieler (den caster)
+     // an einem zu kurierenden Spieler (target)
+     if (target->TestIgnore(getuid(caster)+".kuriere.klerus"))
+       tell_object(caster, break_string(
+         target->Name()+" ignoriert deinen Versuch.", 78));
+
+SIEHE AUCH
+----------
+::
+
+     P_IGNORE, AddIgnore, RemoveIgnore, TestIgnoreSimple, /std/player/comm.c
+
+26.04.2014 Zesstra
+

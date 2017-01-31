@@ -1,0 +1,60 @@
+sell_obj()
+==========
+
+sell_obj()
+
+Funktion:
+    static string sell_obj(object ob, int short)
+
+Definiert in:
+    /std/room/shop
+
+Argumente:
+    ob:
+      Das anzukaufende Objekt
+    short:
+      Gibt an, ob der Verkaeufer nur ein Objekt (0) oder mehrere (1) 
+      verkauft. (Verkaufe alles etc.)
+
+Beschreibung:
+    Ermittelt ob der Laden bereit ist, <ob> anzukaufen.
+
+Rueckgabewert:
+    Meldung die ausgegeben wird, wenn ein Objekt abgelehnt wird oder 0.
+
+Bemerkung:
+    Man sollte im normalfall _niemals_ einfach 0 zurueckgeben, sondern das 
+    geerbte sell_obj() aus /std/room/shop, damit beispielsweise P_NOBUY 
+    beachtet wird.
+
+Beispiel:
+    Ein Schmied, der nur Waffen ankauft:
+
+    
+
+    protected void create()
+    {
+      ...
+    }
+
+    
+
+    static string sell_obj(object ob, int short)
+    {
+      if(!ob->QueryProp(P_WEAPON_TYPE))
+      {
+        return "Ich bin nur an Waffen interessiert.";
+      }
+      return ::sell_obj(ob,short);
+    }
+
+Siehe auch:
+    Funktionen:
+      AddFixedObject(), RemoveFixedObject(), SetStorageRoom(), 
+      QueryStorageRoom(), QueryBuyValue(), QueryBuyFact(), buy_obj()
+    Properties:
+      P_KEEPER, P_MIN_STOCK, P_STORE_CONSUME
+
+
+Letzte Aenderung: 21.05.2014, Bugfix
+

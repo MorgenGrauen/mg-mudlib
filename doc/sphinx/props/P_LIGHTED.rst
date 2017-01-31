@@ -1,0 +1,21 @@
+P_LIGHTED
+=========
+
+NAME
+----
+::
+
+    P_LIGHTED                     "lighted"                     
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Flag, ob die Lichtquelle in Betrieb ist.
+

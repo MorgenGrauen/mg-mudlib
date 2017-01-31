@@ -1,0 +1,21 @@
+P_DESTRUCT_MSG
+==============
+
+NAME
+----
+::
+
+    P_DESTRUCT_MSG                "destruct_msg"                
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/base.h
+
+BESCHREIBUNG
+------------
+::
+
+     Meldung, die beim Destructen Obj ausgegegen wird (nur Magier)
+

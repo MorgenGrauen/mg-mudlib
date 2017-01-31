@@ -1,0 +1,22 @@
+P_TRANK_FINDEN
+==============
+
+NAME
+----
+::
+
+    P_TRANK_FINDEN                "trank_finden"                
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/potion.h
+
+BESCHREIBUNG
+------------
+::
+
+     Wenn die Property auf 1 steht kann immer ein Zaubertrank gefunden
+     werden, auch wenn er nicht in der Liste des Spielers steht.
+

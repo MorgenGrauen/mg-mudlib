@@ -1,0 +1,21 @@
+P_ORIG_NAME
+===========
+
+NAME
+----
+::
+
+    P_ORIG_NAME                   "original_name"               
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     In einer Leiche der Name des Gestorbenen. (name(RAW))
+

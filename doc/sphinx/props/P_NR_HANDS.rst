@@ -1,0 +1,46 @@
+P_NR_HANDS
+==========
+
+NAME
+----
+::
+
+     P_NR_HANDS "nr_hands"
+
+DEFINIERT IN
+------------
+::
+
+     <weapon.h>
+
+BESCHREIBUNG
+------------
+::
+
+     Wieviele Haende muss man frei haben, um die Waffe zuecken oder den
+     Schild tragen zu koennen?
+     Dieser Wert muss mindestens 1 betragen!
+
+     Sollen Spieler die Waffe benutzen koennen, so sind hier nur die Werte 1
+     und 2 moeglich. Falls die Waffe nur von Monstern benutzbar sein soll,
+     kann man hier auch hoehere Werte eintragen (dazu muss man beim Monster
+     P_MAX_HANDS entsprechend hoch setzen). Als Beispiel sei hier nur das
+     vierhaendige Schwert aus dem Friedhof genannt.
+
+     Defaultmaessig sind alle Waffen Zweihaender.
+
+     Diese Property kann auch bei Zaubern benutzt werden, bei denen man eine
+     oder mehrere Haende frei haben muss.
+
+SIEHE AUCH
+----------
+::
+
+     P_HANDS, P_HANDS_USED_BY
+     P_MAX_HANDS, P_USED_HANDS, P_FREE_HANDS
+     UseHands, FreeHands
+     /std/weapon.c, /std/spellbook.c
+
+
+Last modified: Sun May 19 15:00:02 1996 by Wargon
+

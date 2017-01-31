@@ -1,0 +1,50 @@
+CannotSee()
+===========
+
+FUNKTION
+--------
+::
+
+     varargs int CannotSee(int silent);
+
+DEFINIERT IN
+------------
+::
+
+     /std/living/light.c
+
+ARGUMENTE
+---------
+::
+
+     silent - Soll an das Lebewesen direkt automatisch eine Meldung
+              ausgegeben werden wenn es nichts sehen kann?
+
+BESCHREIBUNG
+------------
+::
+
+     Diese Funktion prueft ob das Lebewesen etwas sehen kann, oder nicht.
+     Hierbei wird sowohl das Lichtlevel mit saemtlichen Modifikatoren,
+     als auch Nachtsicht und die Property P_BLIND beruecksichtigt. Da
+     diese Funktion bei zukuenftigen Mudlibaenderungen immer aktualisiert
+     werden duerfte, sollte man sie nach Moeglichkeit benutzen und die
+     Abfragen nicht selbst implementieren.
+
+RUeCKGABEWERT
+-------------
+::
+
+     0, wenn der Spieler etwas sehen kann
+     1, wenn der Spieler nichts sehen kann: Blindheit
+     2, wenn der Spieler nichts sehen kann: zu wenig Licht/keine Nachtsicht
+
+SIEHE AUCH
+----------
+::
+
+     P_BLIND, P_LIGHT_MODIFIER, P_PLAYER_LIGHT
+
+
+Last modified: Mon Jan 17 18:22:27 2000 by Padreic
+

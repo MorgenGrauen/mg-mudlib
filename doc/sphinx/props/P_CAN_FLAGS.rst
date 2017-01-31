@@ -1,0 +1,22 @@
+P_CAN_FLAGS
+===========
+
+NAME
+----
+::
+
+    P_CAN_FLAGS                   "can_flags"                   
+
+DEFINIERT IN
+------------
+::
+
+    /sys/player/can.h
+
+BESCHREIBUNG
+------------
+::
+
+    Flags die bestimmte Befehle freischalten:
+    CAN_EMOTE, CAN_ECHO, CAN_REMOTE, CAN_PRESAY
+

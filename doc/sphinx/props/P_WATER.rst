@@ -1,0 +1,131 @@
+P_WATER
+=======
+
+NAME
+----
+::
+
+    P_WATER                       "water"                       
+
+DEFINIERT IN
+------------
+::
+
+    /sys/fishing.h
+
+BESCHREIBUNG
+------------
+::
+
+    Enthaelt den Gewaessertyp. Kann in Raeumen, Angeln und Wasserbehaeltern
+    verwendet werden. Die verfuegbaren Optionen und Funktionsweisen sind in 
+    den nachfolgenden Abschnitten aufgefuehrt.
+
+    Raum:
+    *****
+      Legt den Typ des Gewaessers fest, das es in diesem Raum gibt. Von
+      diesem Typ haengt ab, welche Arten von Fischen es hier standardmaessig
+      gibt und welche Arten von Angeln verwendet werden koennen. 
+
+      
+
+      Beispiel:
+
+      SetProp(P_WATER, W_HARBOR);
+
+      
+
+      Folgende
+      Typen stehen zur Verfuegung, von denen in Raeumen nur einer gesetzt
+      werden darf:
+
+      Salzwasser:
+        W_BEACH   Strand: Scholle, Flunder, Rochen, Seezunge, Katzenhai
+        W_HARBOR  Hafen: Dorsch, Rochen, Seezunge, Hering, Katzenhai
+        W_OCEAN   Ozean/Meer: Hai, Thunfisch, Kabeljau, Schwertfisch, Seehase,
+                  Seeteufel, Seewolf
+
+      Suesswasser:
+        W_RIVER   Fluss: Piranha, Lachs, Forelle, Bachsaibling
+        W_POOL    Teich: Stichling, Goldfisch, Schlei, Karpfen, Goldorfe
+        W_LAKE    See: Karpfen, Barsch, Hecht, Seesaibling
+        W_ROCK    Bergbach: Lachs, Forelle, Bachsaibling
+        W_STREAM  Bach: Stichling, Bachforelle, Neuauge, Bachsaibling
+
+      Sonstige:
+        W_USER    wenn dieser Gewaessertyp gesetzt wird, MUSS der Raum 
+                  zusaetzlich die Funktion GetAquarium() definieren, die
+                  eine Liste der hier fangbaren Fische zurueckgeben muss.
+                  Beispiel:
+
+                  string* GetAquarium(){ 
+                    return ({"/d/ebene/fraggle/angel/fisch"}); 
+                  }
+        W_DEAD    Lebloses Wasser. Enthaelt keine Fische, man kann
+                  aber die Standardflasche fuellen.
+
+        W_OTHER   1024   // Flasche enthaelt Fluessigkeit!=Wasser
+
+
+    Angel:
+    ******
+      Angeln sind ueblicherweise auf bestimmte Anwendungsbereiche ausgelegt.
+      Ob eine Angel in einem Gewaesser benutzt werden kann, haengt davon ab,
+      ob P_WATER in der Angel den Gewaessertyp des Raumes enthaelt. Von den
+      oben genannten Typen koennen mehrere ver-ODER-t gesetzt werden.
+      Verwendung einer fuer das oertliche Gewaesser ungeeigneten Angel fuehrt
+      zu einer um 60+random(60) Sekunden verlaengerten Wartezeit beim Angeln.
+
+      
+
+      Beispiel: Setzt man den Gewaessertyp mit 
+
+        SetProp(P_WATER, W_HARBOR|W_OCEAN);
+
+      schaltet das die Angel sowohl fuer Haefen, als auch fuer offene Meere
+      (Ozeane) frei.
+
+      Folgende kombinierte Gewaessertypen sind fuer einfache Angeln 
+      vordefiniert:
+
+      Kurze Standardangeln:
+        W_SHORT W_HARBOR|W_RIVER|W_POOL|W_LAKE|W_ROCK|W_USER|W_OCEAN|W_STREAM
+      Spezielle Strandruten:
+        W_LONG  W_BEACH|W_USER
+      funktioniert in allen Salzgewaessern:
+        W_SALT  W_HARBOR|W_OCEAN|W_BEACH
+      funktioniert in allen Suessgewaessern:
+        W_SWEET W_RIVER|W_POOL|W_LAKE|W_ROCK|W_STREAM
+
+      Hinweis: W_DEAD ist in diesen Kombinationen nicht enthalten, da es
+      in solchen Gewaessern ohnehin keine Fische gibt.
+      Die Kombi-Typen enthalten W_USER, um bei entsprechenden Gewaessern
+      zu vermeiden, dass es dort standardmaessig einen Malus auf die 
+      Wartezeit gibt. Standardwert fuer P_WATER in Angeln ist ebenfalls 
+      W_USER.
+
+    Koeder:
+    *******
+      Auch Koeder koennen fuer die Verwendung in bestimmten Gewaessern besser
+      geeignet sein als in anderen, z.B. eine Seeschnecke fuer Salzwasser,
+      ein Mehlwurm hingegen fuer Suesswasser. Gesetzt wird P_WATER hierfuer
+      auf die oben aufgefuehrten Werte.
+      Verwendung eines ungeeigneten Koeders fuehrt zu einer um 60+random(60)
+      Sekunden laengeren Wartezeit beim Angeln.
+
+    Wasserbehaelter:
+    ****************
+      Die Property gibt an, ob der Behaelter Wasser enthaelt oder nicht.
+      Der Wert sollte immer auf den Typ jenes Gewaessers gesetzt sein, aus
+      dem der Behaelter aufgefuellt wurde.
+
+SIEHE AUCH
+----------
+::
+
+    Properties: P_FISH
+    Methoden:   GetAquarium(L)
+
+
+Zuletzt geaendert: 2014-Aug-21, Arathorn
+

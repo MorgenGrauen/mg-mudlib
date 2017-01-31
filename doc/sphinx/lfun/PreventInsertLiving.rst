@@ -1,0 +1,57 @@
+PreventInsertLiving()
+=====================
+
+FUNKTION
+--------
+::
+
+     int PreventInsertLiving(object ob);
+
+DEFINIERT IN
+------------
+::
+
+     /std/container/restrictions.c
+
+ARGUMENTE
+---------
+::
+
+     ob
+          Das Living, das in den Behaelter eingefuegt werden soll.
+
+BESCHREIBUNG
+------------
+::
+
+     Mit dieser Funktion kann ein Behaelter pruefen, ob er das Living ob
+     aufnehmen moechte oder nicht.
+
+RUeCKGABEWERT
+-------------
+::
+
+     0, wenn das Living aufgenommen werden kann; ein Wert groesser als 0
+     zeigt an, dass das Living nicht aufgenommen werden soll.
+
+BEMERKUNGEN
+-----------
+::
+
+     Wenn ob mit dem Flag M_NOCHECK bewegt wird, wird PreventInsertLiving() 
+     zwar aufgerufen, das Living wird jedoch auf jeden Fall in den Behaelter
+     bewegt, unabhaengig vom Rueckgabewert!
+
+SIEHE AUCH
+----------
+::
+
+     PreventLeaveLiving(), /std/container/restrictions.c,
+     PreventMove(), PreventInsert(), PreventLeave(),
+     NotifyMove(), NotifyInsert(), NotifyLeave(), NotifyRemove(),
+     move(), init(), exit(),
+     InitAttack(), ExitAttack()
+
+
+Last modified: 04.08.2007, Zesstra
+

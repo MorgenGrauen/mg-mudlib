@@ -1,0 +1,21 @@
+P_CHATS
+=======
+
+NAME
+----
+::
+
+    P_CHATS                       "chats"                       
+
+DEFINIERT IN
+------------
+::
+
+    /sys/properties.h
+
+BESCHREIBUNG
+------------
+::
+
+     Alist mit Strings, die das Monster zufaellig ausgibt.
+

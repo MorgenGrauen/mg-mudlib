@@ -1,0 +1,21 @@
+P_LONG_FULL
+===========
+
+NAME
+----
+::
+
+    P_LONG_FULL                   "w_longdesc_full"             
+
+DEFINIERT IN
+------------
+::
+
+    /sys/fishing.h
+
+BESCHREIBUNG
+------------
+::
+
+    *** KEINE BESCHREIBUNG VORHANDEN ***
+

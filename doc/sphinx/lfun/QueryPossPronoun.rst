@@ -1,0 +1,74 @@
+QueryPossPronoun()
+==================
+
+FUNKTION
+--------
+::
+
+     varargs string QueryPossPronoun(mixed what, int casus, int anzahl);
+
+DEFINIERT IN
+------------
+::
+
+     /std/thing/language.c
+
+ARGUMENTE
+---------
+::
+
+     what
+          Geschlecht des Objektes, das besessen wird, oder das Objekt
+          selbst.
+
+     casus
+          Der Fall, in dem das Objekt besessen wird.
+
+     anzahl
+          Handelt es sich um nur ein Objekt oder um mehrere?
+
+BESCHREIBUNG
+------------
+::
+
+     Diese Funktion gibt ein Possessivpronomen zurueck, das das
+     Besitzverhaeltnis eines Objektes zu diesem Objekt anzeigt.
+
+RUeCKGABEWERT
+-------------
+::
+
+     Das Possessivpronomen im entsprechenden Fall.
+
+BEMERKUNGEN
+-----------
+::
+
+     what und casus beziehen sich auf das Objekt, welches besessen wird, und
+     nicht auf den Besitzer!!!
+
+BEISPIELE
+---------
+::
+
+     Um eine korrekte Ausgabe beim Haendeklatschen zu erreichen, koennte man
+     zB. folgende Zeile verwenden:
+
+      printf("%s klatscht in %s Haende.\n",this_player()->name(WER),
+           this_player()->QueryPossPronoun(FEMALE, WEN, PLURAL));
+
+     FEMALE, da "die Hand" weiblich ist, WEN, da man im Akkusativ klatscht,
+     und PLURAL, da man dazu beide Haende braucht.
+
+     Ein beliebter Fehler ist es, als Fall WESSEN zu verwenden (in WESSEN
+     Haende klatscht man? => in seine).
+     Die richtige Frage waere aber: WEN klatscht man? (in die Haende)
+
+SIEHE AUCH
+----------
+::
+
+     QueryOwn(), QueryPronoun(), /std/thing/language.c
+
+Last modified: Wed Jan 11 13:13:35 CET 2006 by Rumata
+

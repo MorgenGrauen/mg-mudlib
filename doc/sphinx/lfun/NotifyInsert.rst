@@ -1,0 +1,48 @@
+NotifyInsert()
+==============
+
+FUNKTION
+--------
+::
+
+     void NotifyInsert(object ob, object oldenv);
+
+ARGUMENTE
+---------
+::
+
+     ob
+          Das Objekt, das in den Behaelter eingefuegt wurde.
+     oldenv
+          Das Objekt, aus dem <ob> kam.
+
+BESCHREIBUNG
+------------
+::
+
+     Diese Funktion wird im Behaelter aufgerufen, nachdem ein Objekt in
+     besagten Behaelter hinein bewegt wurde. 
+
+RUeCKGABEWERT
+-------------
+::
+
+     keiner
+
+BEMERKUNGEN
+-----------
+::
+
+     Diese Funktion wird nur im Falle unbelebter Objekte gerufen. Fuer 
+     Lebewesen s. bitte. init().
+
+SIEHE AUCH
+----------
+::
+
+    NotifyLeave(), PreventInsert(), PreventLeave(), move(), NotifyRemove()
+    exit(), init(), NotifyMove(), PreventMove()
+
+
+Last modified: 21.05.2012, Zesstra
+

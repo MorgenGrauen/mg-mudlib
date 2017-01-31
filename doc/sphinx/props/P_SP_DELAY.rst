@@ -1,0 +1,23 @@
+P_SP_DELAY
+==========
+
+NAME
+----
+::
+
+    P_SP_DELAY                 "sp_delay"                     
+
+DEFINIERT IN
+------------
+::
+
+    /sys/living/life.h
+
+BESCHREIBUNG
+------------
+::
+
+     Anzahl der heart_beats, bis die Magiepunkte um einen Punkt steigen.
+     Aenderungen dieser Property in Spielern beduerfen der 
+     Genehmigung des EM fuer Balance.
+
