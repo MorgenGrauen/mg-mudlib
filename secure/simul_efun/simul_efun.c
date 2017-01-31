@@ -1744,19 +1744,9 @@ nomask int set_light(int i)
 
 public string iso2ascii( string str )
 {
-    if ( !stringp(str) || !sizeof(str) )
+    if ( !sizeof(str) )
        return "";
-
-    str = regreplace( str, "ä", "ae", 1 );
-    str = regreplace( str, "ö", "oe", 1 );
-    str = regreplace( str, "ü", "ue", 1 );
-    str = regreplace( str, "Ä", "Ae", 1 );
-    str = regreplace( str, "Ö", "Oe", 1 );
-    str = regreplace( str, "Ü", "Ue", 1 );
-    str = regreplace( str, "ß", "ss", 1 );
-    str = regreplace( str, "[^ -~]", "?", 1 );
-
-    return str;
+    return convert_charset(str, "ISO-8859-15", "ASCII//TRANSLIT");
 }
 
 
