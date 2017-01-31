@@ -44,8 +44,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Morgengrauen-Mudlib - Dokumentation'
-copyright = '2017, die Morgengrauen-Magier'
+project = 'Morgengrauen-Mudlib'
+copyright = '1992-2017, die Morgengrauen-Magier'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

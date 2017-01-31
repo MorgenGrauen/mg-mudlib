@@ -3,17 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Willkommen bei der Morgengrauen-Mudlib - Dokumentation!
-=======================================================
+Welcome to Morgengrauen-Mudlib - lfuns
+======================================
 
-Inhalt:
+Verzeichnis der dokumentierten lfuns:
 
 .. toctree::
    :maxdepth: 1
    :glob:
 
-   sefun/*
-   props/*
    lfun/*
 
 
