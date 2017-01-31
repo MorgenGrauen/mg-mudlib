@@ -1,10 +1,11 @@
-.. Morgengrauen-Mudlib - Dokumentation documentation master file, created by
-   sphinx-quickstart on Mon Jan 30 11:51:27 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Morgengrauen-Mudlib - Ueber Properties
 
-Welcome to Morgengrauen-Mudlib - Properties
-===========================================
+Ueber properties
+================
+
+Properties sind im MG Eigenschaften eines Objektes, welche von (in der Regel)
+von aussen gesetzt werden koennen (im Gegensatz zu Variablen innerhalb von
+Objekten).
 
 Verzeichnis der dokumentierten Properties:
 

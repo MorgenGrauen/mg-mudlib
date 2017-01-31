@@ -1,10 +1,12 @@
-.. Morgengrauen-Mudlib - Dokumentation documentation master file, created by
-   sphinx-quickstart on Mon Jan 30 11:51:27 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Morgengrauen-Mudlib - lfuns
 
-Welcome to Morgengrauen-Mudlib - lfuns
-======================================
+Ueber lfuns (local functions)
+=============================
+
+lfuns sind in LPC geschriebene Funktionen innerhalb von Objekten.
+Oft kann man diese von aussen rufen, einige lfuns sind jedoch auch privat.
+In den meisten Faellen beeinflusst man Objekte im Spiel durch das Rufen von
+jeweils passenden lfuns.
 
 Verzeichnis der dokumentierten lfuns:
 
