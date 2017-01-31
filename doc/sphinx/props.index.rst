@@ -88,7 +88,7 @@ Implementation
      * ``mixed Query(<name>, <interpretation>)``
        fragt fuer <name> einen <wert> ab
 
-       * den normalen Wert (aber fast immer besser: :doc:`QueryProp` verwenden!)
+       * den normalen Wert (aber fast immer besser: :doc:`/lfun/QueryProp` verwenden!)
        * die Closure der Query- oder Setmethode
        * den Modus der Property
 
@@ -117,9 +117,9 @@ Besonderheiten/Eingebaute Properties
 SIEHE AUCH:
 -----------
 
-* :doc:`/lfun/SetProp`(L), :doc:`/lfun/QueryProp`(L), :doc:`/lfun/Set`(L),
-  :doc:`/lfun/Query`(L),
-* :doc:`/lfun/SetProperties`(L), :doc:`/lfun/QueryProperties`(L)
+* :doc:`/lfun/SetProp`, :doc:`/lfun/QueryProp`, :doc:`/lfun/Set`,
+  :doc:`/lfun/Query`,
+* :doc:`/lfun/SetProperties`, :doc:`/lfun/QueryProperties`
 * objekte, effizienz, closures
 
 
