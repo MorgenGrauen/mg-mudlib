@@ -12,9 +12,9 @@ Inhalt:
    :maxdepth: 1
    :glob:
 
-   sefun
-   props
-   lfun
+   sefun.index
+   props.index
+   lfun.index
 
 
 Indices and tables
