@@ -42,7 +42,6 @@
 #define MAILPATH        "mail/"
 #define NEWSPATH        "news/"
 #define NEWSSERVER      "secure/news"
-#define SECURESAVEPATH  "secure/save/"
 #define COMBAT_MASTER   "secure/combat"
 
 #define WIZARDDIR       "players"
@@ -65,6 +64,7 @@
 #define LIBDATADIR      "data"
 #define LIBSAVEDIR      "/"LIBDATADIR"/save"
 #define SAVEPATH        LIBSAVEDIR"/"
+#define SECURESAVEPATH  "/"LIBDATADIR"/"SECUREDIR"/save/"
 #define LIBITEMDIR      "items"
 
 #define NETDEAD_ROOM "/room/netztot"
