@@ -358,8 +358,12 @@ static int logon2( string str )
     loginname = str;
 
     /* read the secure save file to see if character already exists */
+    string ssavef;
     if ( loginname != "gast" &&
-         !restore_object( master()->secure_savefile(loginname) ) ){
+         (ssavef=master()->secure_savefile(loginname)) &&
+         sizeof(ssavef) &&
+         !restore_object(ssavef) )
+    {
         object *user;
 
         if ( !neu )
