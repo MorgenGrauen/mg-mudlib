@@ -64,7 +64,7 @@ b) in der blueprint:      nur non-interactive
 
 #include "post.h"
 
-inherit "std/thing";
+inherit "/std/thing";
 //inherit "std/more";   // wird vom nedit inherited
 inherit NEDIT;
 
@@ -83,7 +83,7 @@ inherit NEDIT;
 //		    (geteuid(o)=="p:service"|| \
 //		     geteuid(o)==geteuid(this_interactive())))
 
-#define MAILFILE(name) ("/"+MAILPATH+name[0..0]+"/"+name)
+#define MAILFILE(name) (MAILPATH+name[0..0]+"/"+name)
 #define MAILFILEO(name) (MAILFILE(name)+".o")
 #define MAILDEMON0297    // Maildemon-Version 8.Feb.97 vorhanden?
 
