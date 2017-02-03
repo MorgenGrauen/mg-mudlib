@@ -38,9 +38,9 @@
 #define _MUDLIB_VERSION_ "3.3.5"
 
 /* define general pathnames */
-#define MASTER          "secure/master"
-#define NEWSSERVER      "secure/news"
-#define COMBAT_MASTER   "secure/combat"
+#define MASTER          "/secure/master"
+#define NEWSSERVER      "/secure/news"
+#define COMBAT_MASTER   "/secure/combat"
 
 #define WIZARDDIR       "players"
 #define DOMAINDIR       "d"
@@ -117,10 +117,10 @@
 
 
 #ifndef SIMUL_EFUN_FILE
-#define SIMUL_EFUN_FILE       "secure/simul_efun/simul_efun"
+#define SIMUL_EFUN_FILE       "/secure/simul_efun/simul_efun"
 #endif
 #ifndef SPARE_SIMUL_EFUN_FILE
-#define SPARE_SIMUL_EFUN_FILE "secure/simul_efun/spare/simul_efun"
+#define SPARE_SIMUL_EFUN_FILE "/secure/simul_efun/spare/simul_efun"
 #endif
 
 #define MAX_MAILS_PER_HOUR 200
