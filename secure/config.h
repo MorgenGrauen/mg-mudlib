@@ -39,8 +39,6 @@
 
 /* define general pathnames */
 #define MASTER          "secure/master"
-#define MAILPATH        "mail/"
-#define NEWSPATH        "news/"
 #define NEWSSERVER      "secure/news"
 #define COMBAT_MASTER   "secure/combat"
 
@@ -65,6 +63,8 @@
 #define LIBSAVEDIR      "/"LIBDATADIR"/save"
 #define SAVEPATH        LIBSAVEDIR"/"
 #define SECURESAVEPATH  "/"LIBDATADIR"/"SECUREDIR"/save/"
+#define MAILPATH        "/"LIBDATADIR"/"MAILDIR"/"
+#define NEWSPATH        "/"LIBDATADIR"/"NEWSDIR""/"
 #define LIBITEMDIR      "items"
 
 #define NETDEAD_ROOM "/room/netztot"

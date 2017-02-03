@@ -35,7 +35,7 @@ protected void create()
   }
   if (!master()->find_userinfo("jof"))
   {
-    save_object("/secure/save/j/jof");
+    save_object(SECURESAVEPATH+"j/jof");
   }
   remove();
 }
