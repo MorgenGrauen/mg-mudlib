@@ -64,7 +64,7 @@
 #define SAVEPATH        LIBSAVEDIR"/"
 #define SECURESAVEPATH  "/"LIBDATADIR"/"SECUREDIR"/save/"
 #define MAILPATH        "/"LIBDATADIR"/"MAILDIR"/"
-#define NEWSPATH        "/"LIBDATADIR"/"NEWSDIR""/"
+#define NEWSPATH        "/"LIBDATADIR"/"NEWSDIR"/"
 #define LIBITEMDIR      "items"
 
 #define NETDEAD_ROOM "/room/netztot"
