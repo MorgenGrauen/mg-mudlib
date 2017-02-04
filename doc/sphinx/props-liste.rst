@@ -9,9 +9,6 @@ Verzeichnis der dokumentierten Properties:
    :maxdepth: 1
    :glob:
 
-   Aktuelle Properties
    props/*
-   Properties von Gilden
-   props/gildenprops/*
-   Obsolete Properties
-   props/obsolete/*
+   props-gilden
+   props-obsolet

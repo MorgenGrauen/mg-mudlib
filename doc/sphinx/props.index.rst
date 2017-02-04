@@ -127,7 +127,7 @@ Gesamtverzeichnis der dokumentierten Properties:
 ------------------------------------------------
 .. toctree::
    :maxdepth: 1
-   :glob:
 
-   propsliste
-
+   props-liste
+   props-gilden
+   props-obsolet
