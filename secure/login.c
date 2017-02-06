@@ -562,7 +562,7 @@ static int check_password( string str )
           "Solltest Du weiterhin Probleme mit dem Einloggen haben, kannst "
           "Du Dein Passwort zuruecksetzen lassen, indem Du Dich als Gast "
           "anmeldest und einen Erzmagier ansprichst, oder indem Du Dich "
-          "mittels einer E-Mail an mud@md.mud.de mit uns in Verbindung "
+          "mittels einer E-Mail an mud@mg.mud.de mit uns in Verbindung "
           "setzt.",78));
     
       log_file( (level < 60 ? "LOGINFAIL" : "ARCH/LOGINFAIL"),
