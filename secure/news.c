@@ -417,7 +417,7 @@ protected varargs void expire(string grp,int etime)
   if (!first_to_keep) // alle behalten?
     return;
   // Zu loeschende Artikel wegschreiben.
-  dump_file("news/OLD."+grp,group[0..first_to_keep-1]);
+  dump_file("/data/news/OLD."+grp,group[0..first_to_keep-1]);
   // dann loeschen
   if (first_to_keep == size) // alle wegwerfen?
     group=({});
@@ -437,7 +437,7 @@ void dump_group(string grp)
   size=sizeof(group);
   last=size;
   if (!last) return;
-  dump_file("news/DUMP."+grp,group[0..last-1]);
+  dump_file("/data/news/DUMP."+grp,group[0..last-1]);
 }
 
 protected void expire_all(string *keys) {
