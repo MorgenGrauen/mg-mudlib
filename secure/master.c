@@ -65,8 +65,16 @@ private nosave int handling_error;
 protected void inaugurate_master(int arg) {
 
   set_driver_hook(H_REGEXP_PACKAGE, RE_TRADITIONAL);
-  
+
   efun::configure_object(this_object(), OC_EUID, ROOTID);
+
+  // Bei Neustart wizinfo initialisieren und ggf. Ordner in /data erstellen.
+  if (!arg)
+  {
+    set_extra_wizinfo(0, allocate(BACKBONE_WIZINFO_SIZE));
+    CreateDataDirectories();
+  }
+
   userinfo::create();
   LoadPLDenylists();
 
@@ -77,11 +85,7 @@ protected void inaugurate_master(int arg) {
   ReloadBanishFile();
   ReloadDeputyFile();
   ReloadInsecureFile();
- 
-  // Bei Neustart wizinfo initialisieren
-  if (!arg)
-    set_extra_wizinfo(0, allocate(BACKBONE_WIZINFO_SIZE));
-  
+
   //simul_efun.c nach inaugurate_master() starten und initialisieren, 
   //(so richtig seh ich den Sinn hier momentan nicht ein...
   //call_out("start_simul_efun",0);

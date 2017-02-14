@@ -65,6 +65,7 @@
 
 #include <config.h>
 #include <mail.h>
+#include <files.h>
 #include <wizlevels.h>
 
 // debugging
@@ -121,6 +122,13 @@ protected void create()
         for ( i = sizeof(tmp); i--; )
             if ( sscanf( tmp[i], "%s %s", s1, s2 ) == 2 )
                 alias[s1] = s2;
+    }
+    
+    // Ggf. Ordner erstellen.
+    if(file_size(MAILPATH)==FSIZE_NOFILE)
+    {
+        // LIBDATADIR wird vom Master erstellt, ist also schon vorhanden.
+        mkdir(MAILPATH);
     }
 }
 

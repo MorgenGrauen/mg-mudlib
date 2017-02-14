@@ -10,6 +10,7 @@
 #include "/sys/lpctypes.h"
 #include "/sys/object_info.h"
 #include "/sys/interactive_info.h"
+#include "/sys/files.h"
 
 #include "/secure/master.h"
 #include "/mail/post.h"
@@ -773,3 +774,31 @@ void RestartBeats()
   rename("log/call_out_stop","log/call_out_stop.old");
 }
 
+protected void CreateDataDirectories()
+{
+  if(file_size("/"LIBDATADIR)==FSIZE_NOFILE)
+  {
+    mkdir("/"LIBDATADIR);
+  }
+
+  if(file_size(SAVEPATH)==FSIZE_NOFILE)
+  {
+    mkdir(SAVEPATH);
+    // Die Ordner von a bis z erstellen
+    foreach(int n : 'a'..'z')
+    {
+      mkdir(sprintf(SAVEPATH+"%c",n));
+    }
+  }
+
+  if(file_size(SECURESAVEPATH)==FSIZE_NOFILE)
+  {
+    mkdir("/"LIBDATADIR"/"SECUREDIR);
+    mkdir(SECURESAVEPATH);
+    // Die Ordner von a bis z erstellen
+    foreach(int n : 'a'..'z')
+    {
+      mkdir(sprintf(SECURESAVEPATH+"%c",n));
+    }
+  }
+}
