@@ -27,8 +27,8 @@ BESCHREIBUNG
 	aus der Property P_HANDS (Kaempfen mit blossen Haenden).
 	Die Waffenklasse von einhaendigen Waffen sollte 150 nicht
 	ueberschreiten, die Obergrenze fuer zweihaendige Waffen liegt bei
-	200. Ausnahmen von dieser Regel beduerfen der Absprache mit dem
-	Erzmagier fuer Ruestungen, Waffen und Monster!
+	200. Ausnahmen von dieser Regel beduerfen der Absprache mit der
+	Balance.
 	Negative Werte bewirken keinen Schaden, allerdings auch keine
 	Heilung.
 
@@ -52,5 +52,5 @@ SIEHE AUCH
 	P_DAMAGED, P_EFFECTIVE_WC, P_WEAPON_TYPE
 	Damage()
 
-02.10.2007, Zesstra
+14.02.2017, Bugfix
 
