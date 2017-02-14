@@ -2,6 +2,12 @@
 
     Waffen:
    
+      Maximalwerte fuer P_WC:
+      Einhaendige Waffen 150
+      Zweihaendige Waffen 200
+
+      Genehmigungspflichtig sind
+
       Einhaendige Waffen  :    ab P_WC >= 140
       Zweihaendige Waffen :    ab P_WC >= 175
 
