@@ -1,11 +1,6 @@
 P_EXTRA_LOOK
 ============
 
-********************* VERALTETE PROPERTY ******************************
-* Diese Property ist veraltet. Bitte benutzt sie NICHT mehr, sondern  *
-* stattdessden AddExtraLook().                                        *
-***********************************************************************
-
 NAME
 ----
 ::
@@ -23,11 +18,11 @@ BESCHREIBUNG
 ::
 
 	Diese Property enthaelt einen String. Sie wird entweder in Lebewesen
-	direkt oder in Objekten gesetzt wird, die im Besitz von Lebewesen
+	direkt oder in Objekten gesetzt, die im Besitz von Lebewesen
 	sein koennen.
 	Diese Strings erscheinen dann zusaetzlich in der Langbeschreibung
 	des Lebewesens bzw. des Besitzers (wenn das Objekt sich direkt im
-	 Lebewesen befindet, jedoch nicht in einem Behaelter im Lebewesen).
+ Lebewesen befindet, jedoch nicht in einem Behaelter im Lebewesen).
 	Fuer den Zeilenumbruch muss man selbst sorgen.
 
 BEISPIEL
@@ -43,7 +38,8 @@ BEMERKUNG
 ---------
 ::
 
-  BITTE NICHT MEHR BENUTZEN!
+  NUR dann benutzen, wenn ihr auch unabhaengig vom Extralook ein Objekt im
+  Spieler benoetigt, ansonsten IMMER AddExtraLook() verwenden.
 
 SIEHE AUCH
 ----------
@@ -53,5 +49,5 @@ SIEHE AUCH
   AddExtraLook(), RemoveExtraLook()
 
 
-13.05.2007, Zesstra
+16.02.2017, Bugfix
 
