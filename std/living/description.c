@@ -187,6 +187,8 @@ void create()
   // Extralook-Property speichern und vor manueller Aenderung schuetzen
   // EMs duerfen, die wissen hoffentlich, was sie tun.
   Set(P_INTERNAL_EXTRA_LOOK, SAVE|PROTECTED, F_MODE_AS);
+  SetProp(P_EXTRA_LOOK_OBS,({}));
+  Set(P_EXTRA_LOOK, PROTECTED, F_MODE_AS);
   SetProp(P_CLOTHING,({}));
   AddId("Living");
 }
@@ -242,12 +244,25 @@ varargs string long() {
     str += tmp;
   if (stringp(tmp = QueryProp(P_INTERNAL_EXTRA_LOOK)))
     str += tmp;
-  for(ob = first_inventory(ME); ob; ob = next_inventory(ob))
-    if(exl = ob->QueryProp(P_EXTRA_LOOK)) 
-      str += exl;
-    else if(exl = ob->extra_look()) 
-      str += exl; // TO BE REMOVED
-
+  foreach(ob : QueryProp(P_EXTRA_LOOK_OBS))
+  {
+    if(objectp(ob) && environment(ob)==ME)
+    {
+      if((stringp(exl = ob->QueryProp(P_EXTRA_LOOK)))
+      {
+        str += exl;
+      }
+      else if(stringp(exl = ob->extra_look()))
+      {
+        str += exl; // TO BE REMOVED
+      }
+    }
+    else
+    {
+      // Bereinigen
+      SetProp(P_EXTRA_LOOK_OBS,QueryProp(P_EXTRA_LOOK_OBS)-({ob}));
+    }
+  }
   
   if(filter_ldfied = QueryProp(P_TRANSPARENT))
   {
@@ -330,3 +345,30 @@ mapping _query_material() {
   return ([MAT_MISC_LIVING:100]);
 }
 
+public void NotifyInsert(object ob, object oldenv)
+{
+  // Wenn ob mal einen Extralook hat und mal nicht, muss Magier sich was
+  // ueberlegen.
+  if(stringp(ob->QueryProp(P_EXTRA_LOOK)))
+  {
+    SetProp(P_EXTRA_LOOK_OBS,QueryProp(P_EXTRA_LOOK_OBS)+({ob}));
+  }
+  
+  // Muss leider auch beachtet werden, sollte aber mal raus fliegen ...
+  if(function_exists("extra_look",ob))
+  {
+    SetProp(P_EXTRA_LOOK_OBS,QueryProp(P_EXTRA_LOOK_OBS)+({ob}));
+    catch(raise_error(
+      "Obsolete lfun extra_look() in "+load_name(ob));
+      publish);
+  }
+}
+
+public void NotifyLeave(object ob, object dest)
+{
+  object *els=QueryProp(P_EXTRA_LOOK_OBS);
+  if(member(els,ob)!=-1)
+  {
+    SetProp(P_EXTRA_LOOK_OBS,QueryProp(els-({ob}));
+  }
+}

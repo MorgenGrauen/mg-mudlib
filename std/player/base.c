@@ -282,6 +282,18 @@ protected void NotifyMove(object dest, object oldenv, int method)
     GMCP_Room();
 }
 
+public void NotifyInsert(object ob, object oldenv)
+{
+  restrictions::NotifyInsert(ob,oldenv);
+  description::NotifyInsert(ob,oldenv);
+}
+  
+public void NotifyLeave(object ob, object dest)
+{
+  restrictions::NotifyLeave(ob,dest);
+  description::NotifyLeave(ob,dest);
+}
+
 string Forschung()
 {
   return LEPMASTER->QueryForschung();

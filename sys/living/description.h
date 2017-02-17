@@ -7,6 +7,7 @@
 #define P_VISIBLE_GUILD           "visible_guild"
 
 #define P_EXTRA_LOOK              "extralook"
+#define P_EXTRA_LOOK_OBS          "p_lib_extralook_obs"
 #define P_INTERNAL_EXTRA_LOOK     "internal_extralook"
 
 #define P_PLAYER_LIGHT            "player_light"

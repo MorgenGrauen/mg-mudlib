@@ -169,6 +169,19 @@ protected void NotifyMove(object dest, object oldenv, int method) {
       _clone_items();
 }
 
+public void NotifyInsert(object ob, object oldenv)
+{
+  restrictions::NotifyInsert(ob,oldenv);
+  description::NotifyInsert(ob,oldenv);
+}
+  
+public void NotifyLeave(object ob, object dest)
+{
+  restrictions::NotifyLeave(ob,dest);
+  description::NotifyLeave(ob,dest);
+}
+  
+
 string _query_race()
 {
    if (stringp(Query(P_RACE))) return capitalize(Query(P_RACE));
