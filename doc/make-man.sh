@@ -6,8 +6,8 @@ export MDOCDIR=$MUDLIB/doc
 export MRSTDIR=$MDOCDIR/sphinx
 export MHTMLDIR=$MDOCDIR/sphinx/_build/html
 export MTEXTDIR=$MDOCDIR/sphinx/_build/text
-export MMANDIR=$MDOCDIR/sphinx/man/
-export MANWIDTH=78
+export MMANDIR=$MDOCDIR//
+#export MANWIDTH=78
 
 cd $MRSTDIR
 
@@ -21,6 +21,6 @@ do
   DIR=`dirname ${FILE}`
   BASE=`basename ${FILE} .txt`
   mkdir -p ${MMANDIR}/${DIR}
-  cp $FILE ${MMANDIR}/${DIR}/${BASE}
+  cp -av $FILE ${MMANDIR}/${DIR}/${BASE}
 done
 

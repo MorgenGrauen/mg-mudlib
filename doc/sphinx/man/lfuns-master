@@ -1,0 +1,13 @@
+
+Verzeichnis der lfuns in master()
+*********************************
+
+* AddWizardForUID()
+
+* QueryUIDAlias()
+
+* QueryUIDsForWizard()
+
+* QueryWizardsForUID()
+
+* RemoveWizardFromUID()

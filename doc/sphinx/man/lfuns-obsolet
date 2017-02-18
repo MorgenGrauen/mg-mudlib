@@ -1,0 +1,29 @@
+
+Verzeichnis der veralteten lfuns
+********************************
+
+* AddHpHook()
+
+* AddInsertHook()
+
+* ModifySkillAttributeOld()
+
+* NotifyGiveQuest()
+
+* NotifyHpChange()
+
+* QueryEnemy()
+
+* QueryInsertHooks()
+
+* QueryOptQP()
+
+* RemoveHpHook()
+
+* RemoveInsertHook()
+
+* TestAttributeLock()
+
+* extra_look()
+
+* paramove()
