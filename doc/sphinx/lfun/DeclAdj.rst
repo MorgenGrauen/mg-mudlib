@@ -5,7 +5,7 @@ FUNKTION
 --------
 ::
 
-     varargs string DeclAdj( string adj, int casus, int demon);
+     varargs string DeclAdj( string|string* adj, int casus, int demon);
 
 DEFINIERT IN
 ------------
@@ -65,5 +65,5 @@ SIEHE AUCH
      /std/thing/language.c
 
 
-Last modified: Wed May 8 10:18:05 1996 by Wargon
+Letzte Aenderung: 18.02.2017, Bugfix
 

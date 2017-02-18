@@ -275,7 +275,7 @@ static string* _set_adjectives(string* adjectives)
 // Im Fall von mehreren Adjektiven muessen diese mit komma
 // zusamengebaut werden, dazu muss ich das leerzeichen aber erstmal
 // abschneiden und so weiter ...
-private string depointer_adj( string* adj, int casus, int demon ) {
+private string depointer_adj( <string|string*>* adj, int casus, int demon ) {
   string msg;
   int start;
   string res,a;
