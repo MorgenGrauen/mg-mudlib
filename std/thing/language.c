@@ -161,7 +161,7 @@ string QueryGenderString()
 
 // Artikel durchdeklinieren nach Kasus, Numerus, Genus und Art
 // des Artikels (demon==bestimmt)
-varargs string DeclAdj(mixed adj, int casus, int demon)
+varargs string DeclAdj(string|string* adj, int casus, int demon)
 {
 	// Unregelmaessige Adjektive
 	if( pointerp(adj) ) return adj[casus]+" ";

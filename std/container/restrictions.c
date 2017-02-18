@@ -179,6 +179,7 @@ public int PreventLeave( object ob, mixed dest ) { return 0; }
 public int PreventInsertLiving( object ob ) { return 0; }
 public int PreventLeaveLiving( object ob, mixed dest ) { return 0; }
 public void NotifyInsert(object ob, object oldenv) { }
+public void NotifyLeave(object ob, object dest) { }
 
 // **** local property methods
 static int _query_total_weight() 
