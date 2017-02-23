@@ -97,6 +97,6 @@ SIEHE AUCH:
         DoDecay(), doDecayMessage(), SetGramsPerUnits(), SetCoinsPerUnits(), 
         AddSingularId(), AddPluralId(), QueryCoinsPerUnits(),
         QueryGramsPerUnits()
-        /std/unit.c
+        /std/unit.c, AddAmount()
 
-14.10.2007, Zesstra
+Letzte Aenderung: 23.02.2017, Bugfix

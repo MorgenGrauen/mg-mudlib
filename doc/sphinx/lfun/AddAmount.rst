@@ -39,7 +39,6 @@ SIEHE AUCH
 ::
 
      /std/unit.c
+     :doc:`../P_AMOUNT`
 
-
-Last modified: Wed May 8 10:15:50 1996 by Wargon
 

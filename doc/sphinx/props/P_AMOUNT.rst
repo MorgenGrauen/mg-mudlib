@@ -19,3 +19,9 @@ BESCHREIBUNG
 
      Anzahl der Objekte, fuer die das Objekt steht.
 
+Siehe auch
+----------
+::
+
+     /std/unit
+     :doc:`../lfun/AddAmount`
