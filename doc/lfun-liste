@@ -720,6 +720,8 @@ Verzeichnis der dokumentierten lfuns
 
 * defuel_food()
 
+* depointer_adj()
+
 * deregister_modifier()
 
 * die()
