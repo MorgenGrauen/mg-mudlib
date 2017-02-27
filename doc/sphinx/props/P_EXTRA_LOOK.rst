@@ -25,6 +25,11 @@ BESCHREIBUNG
         Lebewesen befindet, jedoch nicht in einem Behaelter im Lebewesen).
         Fuer den Zeilenumbruch muss man selbst sorgen.
 
+        Zu beachten: der Extralook taucht an einem Lebewesen nur auf, wenn
+        dieser schon existiert, wenn das Objekt in das Lebewesen bewegt wird
+        (oder im Fall von F_QUERY_METHOD-Methoden: diese bereits gesetzt
+         ist.)
+
 BEISPIEL
 --------
 ::
@@ -39,16 +44,13 @@ BEMERKUNG
 ::
 
         NUR dann benutzen, wenn ihr auch unabhaengig vom Extralook ein
-        Objekt im Spieler benoetigt, ansonsten IMMER AddExtraLook()
-        verwenden.
+        Objekt im Spieler benoetigt, ansonsten IMMER
+        :doc:`../lfun/AddExtraLook` verwenden.
 
 SIEHE AUCH
 ----------
 ::
 
-        long(), /std/living/description.c, /std/player/base.c
-        AddExtraLook(), RemoveExtraLook()
-
-
-16.02.2017, Bugfix
+        :doc:`../lfun/long`, :doc:`AddExtraLook`, :doc:`RemoveExtraLook`
+        /std/living/description.c, /std/player/base.c
 
