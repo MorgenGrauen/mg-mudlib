@@ -22,7 +22,12 @@ BESCHREIBUNG
   Diese Strings erscheinen dann zusaetzlich in der Langbeschreibung
   des Lebewesens bzw. des Besitzers (wenn das Objekt sich direkt im
   Lebewesen befindet, jedoch nicht in einem Behaelter im Lebewesen).
-  Fuer den Zeilenumbruch muss man selbst sorgen.
+
+  P_EXTRA_LOOK nutzt replace_personal() um @WER1 etc. zu ersetzen.
+
+  Ist das letzte Zeichen im String kein Zeilenumbruch, wird auf 78 Zeichen
+  umgebrochen. Wenn die Platzhalter von replace_personal() verwendet werden,
+  sollte man das Umbrechen der Mudlib ueberlassen.
 
   **Nur** dann benutzen, wenn ihr auch unabhaengig vom Extralook ein
   Objekt im Spieler benoetigt, ansonsten **immer**
@@ -52,4 +57,5 @@ SIEHE AUCH
   - :doc:`../lfun/long`
   - :doc:`../lfun/AddExtraLook`, :doc:`../lfun/RemoveExtraLook`
   - /std/living/description.c, /std/player/base.c
+  - :doc:`../sefun/replace_personal`
 

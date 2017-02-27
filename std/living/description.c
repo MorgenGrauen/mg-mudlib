@@ -250,6 +250,12 @@ varargs string long() {
     {
       if(stringp(exl = ob->QueryProp(P_EXTRA_LOOK)))
       {
+        exl=replace_personal(exl,ME);
+        // Ist das letzte Zeichen kein \n, brechen wir um.
+        if(exl[<1]!='\n')
+        {
+          exl=break_string(exl,78);
+        }
         str += exl;
       }
       else if(stringp(exl = ob->extra_look()))
