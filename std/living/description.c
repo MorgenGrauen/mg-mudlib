@@ -347,13 +347,14 @@ mapping _query_material() {
 
 public void NotifyInsert(object ob, object oldenv)
 {
-  // Wenn ob mal einen Extralook hat und mal nicht, muss Magier sich was
-  // ueberlegen.
-  if(stringp(ob->QueryProp(P_EXTRA_LOOK)))
+  // Unterstuetzung dyn. Querymethoden (z.B. bei Kleidung, welche nur in
+  // getragenem Zustand nen Extralook hat).
+  if(stringp(ob->QueryProp(P_EXTRA_LOOK))
+     || ob->Query(P_EXTRA_LOOK, F_QUERY_METHOD))
   {
     SetProp(P_EXTRA_LOOK_OBS,QueryProp(P_EXTRA_LOOK_OBS)+({ob}));
   }
-  
+
   // Muss leider auch beachtet werden, sollte aber mal raus fliegen ...
   if(function_exists("extra_look",ob))
   {
