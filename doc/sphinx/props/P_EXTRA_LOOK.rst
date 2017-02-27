@@ -9,8 +9,9 @@ NAME
 
 DEFINIERT IN
 ------------
+::
 
-  ``/sys/living/description.h``
+  /sys/living/description.h
 
 BESCHREIBUNG
 ------------
@@ -23,30 +24,32 @@ BESCHREIBUNG
   Lebewesen befindet, jedoch nicht in einem Behaelter im Lebewesen).
   Fuer den Zeilenumbruch muss man selbst sorgen.
 
-  Zu beachten: der Extralook taucht an einem Lebewesen nur auf, wenn
-  dieser schon existiert, wenn das Objekt in das Lebewesen bewegt wird
-  (oder im Fall von F_QUERY_METHOD-Methoden: diese bereits gesetzt
-  ist.)
+  **Nur** dann benutzen, wenn ihr auch unabhaengig vom Extralook ein
+  Objekt im Spieler benoetigt, ansonsten **immer**
+  :doc:`../lfun/AddExtraLook` verwenden.
+
+  .. note::
+  
+    Der Extralook taucht an einem Lebewesen nur auf, wenn
+    dieser schon existiert, wenn das Objekt in das Lebewesen bewegt wird
+    (oder im Fall von F_QUERY_METHOD-Methoden: diese bereits gesetzt
+    ist.)
 
 BEISPIEL
 --------
 
-  Ein Spieler hat eine Pfeife im Mund. In dieser Pfeife setzt man z.B.
-  in der Funktion zum Pfeife Rauchen folgendes:
-  ``SetProp(P_EXTRA_LOOK,break_string(
-            this_player()->Name(WER)+" ist ganz umnebelt.",78);``
+  Ein Spieler hat eine gefaehrliche Krankheit. In dem Krankheitsobjekt setzt
+  man z.B. folgendes:  
 
-BEMERKUNG
----------
+  .. code-block:: pike
 
-  **NUR** dann benutzen, wenn ihr auch unabhaengig vom Extralook ein
-  Objekt im Spieler benoetigt, ansonsten IMMER
-  :doc:`../lfun/AddExtraLook` verwenden.
+    SetProp(P_EXTRA_LOOK,break_string(this_player()->Name(WER)
+            +" sieht leichenblass aus.",78);
 
 SIEHE AUCH
 ----------
 
-  * :doc:`../lfun/long`
-  * :doc:`AddExtraLook`, :doc:`RemoveExtraLook`
-  * ``/std/living/description.c``, ``/std/player/base.c``
+  - :doc:`../lfun/long`
+  - :doc:`../lfun/AddExtraLook`, :doc:`../lfun/RemoveExtraLook`
+  - /std/living/description.c, /std/player/base.c
 
