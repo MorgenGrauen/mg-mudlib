@@ -248,7 +248,7 @@ varargs string long() {
   {
     if(objectp(ob) && environment(ob)==ME)
     {
-      if((stringp(exl = ob->QueryProp(P_EXTRA_LOOK)))
+      if(stringp(exl = ob->QueryProp(P_EXTRA_LOOK)))
       {
         str += exl;
       }
@@ -369,6 +369,6 @@ public void NotifyLeave(object ob, object dest)
   object *els=QueryProp(P_EXTRA_LOOK_OBS);
   if(member(els,ob)!=-1)
   {
-    SetProp(P_EXTRA_LOOK_OBS,QueryProp(els-({ob}));
+    SetProp(P_EXTRA_LOOK_OBS, els-({ob}) );
   }
 }
