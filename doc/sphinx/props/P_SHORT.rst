@@ -20,9 +20,11 @@ BESCHREIBUNG
      Diese Property enthaelt die Kurzbeschreibung des Objektes als String 
      oder Closure (diese muss einen String zurueckgeben).
 
-     ACHTUNG: Die Kurzbeschreibung sollte dabei weder mit einem
-	      Satzzeichen noch mit einem "\n" abgeschlossen sein
-	      (dies wird von den zustaendigen Funktionen erledigt).
+     ACHTUNG: Die Kurzbeschreibung sollte dabei nicht mit einem "\n" 
+     abgeschlossen sein (dies wird von den zustaendigen Funktionen
+     erledigt).
+     Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
+     Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
 
      Setzt man diese Property auf 0, so ist das Objekt unsichtbar, allerdings
      ansprechbar, wenn der Spieler eine ID des Objektes kennt. D.h. Objekte

@@ -438,8 +438,16 @@ public string short()
   // Unsichtbar? Dann gibts nichts zu sehen ...
   if (QueryProp(P_INVIS)||!(sh=QueryProp(P_SHORT)))
     return 0;
-  
-  return process_string(sh)+".\n";
+
+  sh=process_string(sh);
+
+  // Ist das letzte Zeichen kein Satzzeichen, einen Punkt anhaengen.
+  // Note: matchen mit regexp [[:punct:]]$ waere sauberer bzgl. non-ASCII.
+  int i=sh[<1];
+  if(i!='.' && i!='!' && i!='?')
+    return sh+".\n";
+
+  return sh+"\n";
 }
 
 // Namens-Adjektive setzen

@@ -143,16 +143,24 @@ string int_short(mixed viewer,mixed viewpoint)
   string descr, inv_descr;
 
   descr = process_string( QueryProp(P_INT_SHORT)||"");
-  if( IS_LEARNER(viewer) && viewer->QueryProp( P_WANTS_TO_LEARN ) )
-    descr += " [" + object_name(ME) + "].\n";
+
+  // Ist das letzte Zeichen kein Satzzeichen einen Punkt anhaengen, sonst nur
+  // den \n.
+  int i=descr[<1];
+  if(i!='.' && i!='!' && i!='?')
+    descr+=".\n";
   else
-    descr += ".\n";
+    descr+="\n";
+
+  // Aber ggf. den Pfad fuer Magier vor dem \n einfuegen.
+  if(IS_LEARNING(viewer))
+    descr[<1..<2]=" [" + object_name(ME) + "]";
 
   if ( ( viewer->QueryProp(P_SHOW_EXITS)
          || ( environment(viewer) == ME && !viewer->QueryProp(P_BRIEF) ) )
        && (!QueryProp(P_HIDE_EXITS) || pointerp(QueryProp(P_HIDE_EXITS))) )
     descr += GetExits(viewer) || "";
-  
+
   // Viewpoint (Objekt oder Objektarray) sind nicht sichtbar
   inv_descr = (string) make_invlist( viewer, all_inventory(ME) 
 		  - (pointerp(viewpoint)?viewpoint:({viewpoint})) );
