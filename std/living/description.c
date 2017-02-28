@@ -248,7 +248,8 @@ varargs string long() {
   {
     if(objectp(ob) && environment(ob)==ME)
     {
-      if(stringp(exl = ob->QueryProp(P_EXTRA_LOOK)))
+      exl=ob->QueryProp(P_EXTRA_LOOK);
+      if(stringp(exl) && sizeof(exl))
       {
         exl=replace_personal(exl, ({ME}), 1);
         // Ist das letzte Zeichen kein \n, brechen wir um.
