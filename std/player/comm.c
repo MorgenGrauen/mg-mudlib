@@ -1161,7 +1161,7 @@ varargs int _tell(string who, mixed msg)
   }
   else
     myname=((IS_LEARNER(ME) && (QueryProp(P_CAN_FLAGS) & CAN_PRESAY)) ?
-              QueryProp(P_PRESAY):"") + name();
+              QueryProp(P_PRESAY):"") + capitalize(getuid(ME));
   if (myname && sizeof(myname)) myname=capitalize(myname);
   // erstmal an Empfaenger senden
   _send(ob, permutate(msg), MT_COMM|MT_FAR, MA_TELL,
