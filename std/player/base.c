@@ -2062,8 +2062,10 @@ static int remote(string str, int flag)
   switch(m)
   {
     case MSG_DELIVERED:
+      // Als origin muss der Empfaenger uebergeben werden, sonst kann die
+      // Meldung in der tmhist nicht richtig zugeordnet werden.
       ReceiveMsg(capitalize(destpl->name()) + "->" + str, MT_COMM|MT_FAR,
-                 MA_EMOTE, 0, ME);
+                 MA_EMOTE, 0, destpl);
       break;
     case MSG_BUFFERED:
       write( capitalize(destpl->name(WER) + " ist gerade beschaeftigt.\n") );
