@@ -37,5 +37,10 @@ protected void create()
   {
     save_object(SECURESAVEPATH+"j/jof");
   }
+
+  if(file_size("/room/konstrukt") > 0)
+  {
+    load_object("/room/konstrukt");
+  }
   remove();
 }
