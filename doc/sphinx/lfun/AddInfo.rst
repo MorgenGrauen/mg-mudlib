@@ -3,35 +3,33 @@ AddInfo()
 
 FUNKTION
 --------
-::
 
      varargs void AddInfo( frage, meldung
-			   [, indent [, [silent [, casebased] ] ] );
+               [, indent [, [silent [, casebased] ] ] );
 
 DEFINIERT IN
 ------------
-::
 
      /std/npc/info.c
 
 ARGUMENTE
 ---------
-::
 
      string/string* frage
-	Schluesseltext(e) auf die Informationen gegeben werden sollen.
+       Schluesseltext(e) auf die Informationen gegeben werden sollen.
      string/closure meldung
-	Information, die gegeben werden soll/Closure
+       Information, die gegeben werden soll/Closure
+       Bekommt nichts uebergeben.
      string indent
-	Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
+       Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
      int/string silent
-	Ist silent gesetzt, so erfolgt Antwort nur an Fragenden.
+       Ist silent gesetzt, so erfolgt Antwort nur an Fragenden.
      string/closure casebased
-	Closure mit Returnwert string oder int.
+       Closure mit Returnwert string oder int.
+       Bekommt nichts uebergeben.
 
 BESCHREIBUNG
 ------------
-::
 
      Wenn ein Spieler ein NPC mittels "frage <monstername> nach <frage>" nach
      einer Information mit dem Schluessel 'frage' fragt, so wird die
@@ -49,8 +47,7 @@ BESCHREIBUNG
 
      Indent:
       Wird ein 'indent' angegeben so wird jeder Zeile hinter dem
-      Monsternamen noch das 'indent' vorangesetzt. Zusaetzlich wird
-      'meldung' auf jeden Fall sauber umgebrochen.
+      Monsternamen noch das 'indent' vorangesetzt.
       Ein typisches indent ist "sagt: ".
 
      Silent:
@@ -61,13 +58,16 @@ BESCHREIBUNG
      Casebased:
       Die als Closure angegebene Methode entscheidet, ob oder wie der NPC 
       auf diese Frage antworten soll:
-      - return 0:	normale Antwort mit "meldung"
-      - return 1:	keine Antwort/Antwort mit DEFAULT_NOINFO
-      - return string:	Antwort mit string unter Beruecksichtigung eines
-			indent
+
+      # return 0:    normale Antwort mit "meldung"
+
+      # return 1:    keine Antwort/Antwort mit DEFAULT_NOINFO
+
+      # return string: Antwort mit string unter Beruecksichtigung eines indent
+
 
      Die Strings von 'silent' und 'meldung' werden geparsed.
-     Dabei koennen die @...-Tags von replace_personal() verwendet werden,
+     Dabei koennen die @[...]-Tags von replace_personal() verwendet werden,
      Objekt 1 ist this_player(). Ersetzte String am Satzanfang werden
      automatisch gross geschrieben.
      AddInfo() konvertiert die alten Schluesselworte @WER, @WESSEN, @WEM,
@@ -80,27 +80,31 @@ BESCHREIBUNG
 
 BEISPIELE
 ---------
-::
+     Siehe auch: /doc/beispiele/AddInfo/
 
-     ### eine Standardantwort setzen ###
+.. code-block:: pike
+
+     // Beispiel 1: ### eine Standardantwort setzen ###
      AddInfo(DEFAULT_INFO, "starrt Dir boese in die Augen.\n");
      // identisch zu
-     SetProp(P_DEFAULT_INFO, "starrt Dir boese in die Augen.\n");
+     // obsolet: SetProp(P_DEFAULT_INFO, "starrt Dir boese in die Augen.\n");
 
-     ### einfache Beispiele, auch mit casebased ###
+.. code-block:: pike
+
+     // Beispiel 2: einfache Beispiele, auch mit casebased
      AddInfo(({"knete","kohle"}),
-	     "sagt: ich habe so etwas nicht.\n");
+         "sagt: ich habe so etwas nicht.\n");
      AddInfo("geld",
-	     "Ich habe zwar kein Geld, aber ... blablabla ...",
-	     "sagt: " );
+         "Ich habe zwar kein Geld, aber [...] blablabla [...]",
+         "sagt: ");
      AddInfo("muenzen",
-	     "fluestert: Du willst Geld?\n",
-	     0,
-	     "fluestert @WEM etwas zu.\n");
+         "fluestert: Du willst Geld?",
+         0,
+         "fluestert @WEM etwas zu.");
 
      // "frage monster nach geld": alle im Raum hoeren
-     //  Das Monster sagt: Ich habe zwar kein Geld, aber ...
-     //  Das Monster sagt: ... blablabla ...
+     //  Das Monster sagt: Ich habe zwar kein Geld, aber [...]
+     //  Das Monster sagt: [...] blablabla [...]
 
      // "frage monster nach muenzen":
      // - der Fragensteller hoert:
@@ -108,47 +112,52 @@ BEISPIELE
      // - alle andere hoeren:
      //   "Das Monster fluestert <Fragenstellernamen> etwas zu."
 
-     ### dynamisch ###
-     // ein Prototyp, damit wir die Methode bekannt machen
-     static string query_kekse();
-     ...
-     AddInfo(({"keks","kekse"}),
-	     #'query_kekse,		// ein Verweis auf die Funktion
-	     "sagt: ");
-     ...
-     static string query_kekse() {
-      if(present("keks"))
-       return("Ich hab noch welche. Aetsch!");
-      return("Menno. Keine mehr da!");
-     }
+.. code-block:: pike
 
+     // Beispiel 3: dynamisch
+     // ein Prototyp, damit wir die Methode bekannt machen
+     protected string query_kekse();
+
+     AddInfo(({"keks","kekse"}),
+         #'query_kekse,        // ein Verweis auf die Funktion
+         "sagt: ");
+
+     protected string query_kekse() {
+       if(present("keks", this_object()))
+         return("Ich hab noch welche. Aetsch!");
+       else if(present("keks", environment()))
+         return("Da liegt einer!");
+       return("Menno. Keine mehr da!");
+     }
      // "frage monster nach keks":
      // - wenn es noch Kekse hat, hoeren alle:
      //   "Das Monster sagt: Ich hab noch welche. Aetsch!
      // - sonst:
      //   "Das Monster sagt: "Menno. Keine mehr da!
 
-     ### dynamischer ###
+.. code-block:: pike
+
+     // Beispiel 4: dynamischer
      // ein Prototyp, damit wir die Methode bekannt machen
-     static string query_kekse();
-     static mixed case_fighting();
-     ...
+     protected string query_kekse();
+     protected mixed case_fighting();
+     
      AddInfo(({"keks","kekse"}),
-	     #'query_kekse,"		// ein Verweis auf die Funktion
-	     sagt: ",
-	     0,				// nicht silent :)
-	     #'case_fighting);		// noch ein Funktionsverweis
-     ...
-     static string query_kekse() {
-      if(present("keks"))
-       return("Ich hab noch welche. Aetsch!");
-      return("Menno. Keine mehr da!");
+         #'query_kekse,"        // ein Verweis auf die Funktion
+         sagt: ",
+         0,                     // nicht silent :)
+         #'case_fighting);      // noch ein Funktionsverweis
+
+     protected string query_kekse() {
+       if(present("keks"))
+         return("Ich hab noch welche. Aetsch!");
+       return("Menno. Keine mehr da!");
      }
 
-     static mixed case_fighting() {
-      if(InFight())
-       return("Keine Zeit fuer Kekse. Muss kaempfen.");
-      return 0;
+     protected mixed case_fighting() {
+       if(InFight())
+         return("Keine Zeit fuer Kekse. Muss kaempfen.");
+       return 0;
      }
 
      // "frage monster nach keks":
@@ -159,59 +168,55 @@ BEISPIELE
      // - sonst:
      //   "Das Monster sagt: "Menno. Keine mehr da!
 
+.. code-block:: pike
 
-     ### dynamisch und komplex ###
+     // Beispiel 5: ### dynamisch und komplex ###
      // ein Prototyp, damit wir die Methode bekannt machen
-     static string question_gold();
-     ...
+     protected string question_gold();
 
      // "gold" wird eine Closure auf die Methode question_gold()
      // zugewiesen, ausserdem soll es still bleiben (wir informieren
      // den Restraum selbst)
-     AddInfo("gold",#'question_gold,"murmelt: ",1);
-     ...
+     AddInfo("gold", #'question_gold, "murmelt: ", 1);
 
      // los gehts, wir generieren unsere Antwort selbst
-     static string question_gold() {
-      int money;
-      string *y, objstr;
-      object o;
-      // wieviel Kohle hat der Spieler
-      money=this_player()->QueryMoney();
-      y=allocate(0);
-      // und jetzt suchen wir die Dinge aus Gold
-      o=first_inventory(this_player());
-      while(o) {
-       if(o->QueryMaterial(MAT_GOLD)>0 &&
-          strstr(object_name(o),"/obj/money"))
-        y+=({o->name(WER,1)});
-       o=next_inventory(o);
-      }
+     protected string question_gold() {
+       // wieviel Kohle hat der Spieler
+       int money = this_player()->QueryMoney();
+       string *y = map(deep_inventory(this_player()),
+                     function string(object o) {
+                       if(o->QueryMaterial(MAT_GOLD)>0 &&
+                          strstr(object_name(o),"/items/money")<0 &&
+                          o->QueryProp(P_NAME))
+                         return o->name(WER,1);
+                     })-({0});
 
-      // das geht an alle anderen im Raum, silent bietet sich hier
-      // nicht an, weil es mehrere Moeglichkeiten gibt
-      say(break_string(
-       Name(WER,1)+" murmelt "+
-       this_player()->name(WEM,1)+
-       " etwas zu"+
-       ((money || sizeof(y))?
-        " und glotzt "+
-        this_player()->QueryPronoun(WEN)+" gierig an.":
-        "."),78),({this_player()}));
-
-      // und hier die Antwort an den Spieler selbst, mit vielen
-      // Verzweigungen fuer dessen Besitztum
-      return("Ich hab kein Gold bei mir."+
+       // das geht an alle anderen im Raum, silent bietet sich hier
+       // nicht an, weil es mehrere Moeglichkeiten gibt
+       send_room(environment(),
+         (Name(WER,1)+" murmelt "+
+          this_player()->name(WEM,1)+
+          " etwas zu"+
           ((money || sizeof(y))?
+            " und glotzt "+this_player()->QueryPronoun(WEN)+" gierig an.":
+            ".")),
+         MT_LOOK|MT_LISTEN,
+         MA_EMOTE, 0, ({this_player()}));
+
+       // und hier die Antwort an den Spieler selbst, mit vielen
+       // Verzweigungen fuer dessen Besitztum
+       return("Ich hab kein Gold bei mir."+
+         ((money || sizeof(y))?
            " Aber du "+
-           (money?"hast ja jede Menge Kohle bei dir, so etwa "+money+
-            " Muenzen."+
-            (sizeof(y)?
-             " Ausserdem "+
-             ((sizeof(y)==1)?"ist":"sind")+
-             " auch noch "+CountUp(y)+" aus Gold.":
-             ""):
-            (sizeof(y)?" Aber was du so bei dir hast: "+
+           (money?
+             "hast ja jede Menge Kohle bei dir, so etwa "+money+
+             " Muenzen."+
+             (sizeof(y)?
+               " Ausserdem "+
+               ((sizeof(y)==1)?"ist":"sind")+
+               " auch noch "+CountUp(y)+" aus Gold.":
+               ""):
+             (sizeof(y)?"hast ja ein paar Wertsachen dabei: "+
              CountUp(y)+
              (sizeof(y)==1?" ist":" sind")+
              " aus Gold.":"")):
@@ -229,15 +234,19 @@ BEISPIELE
      //   oder
      //   "Das Monster murmelt @WEM etwas zu und glotzt ihn/sie gierig an."
 
+
 SIEHE AUCH
 ----------
-::
 
-     Verwandt:  AddSpecialInfo(L), RemoveInfo(L)
-     Props:     P_PRE_INFO, P_DEFAULT_INFO
-     Files:     /std/npc/info.c
-     Loggen:    P_LOG_INFO
-     Interna:   GetInfoArr, do_frage
+     Verwandt:
+       :doc:`AddSpecialInfo`, :doc:`RemoveInfo`
+     Props:
+       :doc:`../props/P_PRE_INFO`
+     Files:
+       /std/npc/info.c
+     Loggen:
+       :doc:`P_LOG_INFO`
+     Interna:
+       :doc:`GetInfoArr` , :doc:`do_frage`
 
-7.Apr 2004 Gloinson
-
+7. Mar 2017 Gloinson

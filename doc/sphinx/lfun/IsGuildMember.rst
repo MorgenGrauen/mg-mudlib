@@ -32,7 +32,7 @@ BESCHREIBUNG
 BEISPIEL
 --------
 
-    .. code-block:: pike
+.. code-block:: pike
     
     protected int clown_weihe(string str)
     {
@@ -44,7 +44,8 @@ BEISPIEL
         send_room(
           this_object(),
           this_player()->Name()+" kniet nieder und wird wuerdig getortet.",
-          MT_LOOK|MT_LISTEN);
+          MT_LOOK|MT_LISTEN,
+          MA_EMOTE, 0, ({this_player()}));
         return 1;
       }
       return 0;
