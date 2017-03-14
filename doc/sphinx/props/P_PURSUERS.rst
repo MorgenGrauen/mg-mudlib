@@ -3,28 +3,32 @@ P_PURSUERS
 
 NAME
 ----
-::
 
-    P_PURSUERS                    "pursuers"                    
+  P_PURSUERS:
+    "pursuers"                    
 
 DEFINIERT IN
 ------------
 ::
 
-    /sys/living/moving.h
+  /sys/living/moving.h
 
 BESCHREIBUNG
 ------------
-::
 
-     Enthaelt Verfolger - nicht von Hand manipulieren!
+  Enthaelt ein zweielementiges Array mit folgendem Aufbau:
+  0: Objekt welches verfolg wird oder 0.
+  1: Array der Objekte welche verfolgen.
+
+BEMERKUNG
+---------
+
+  Kann auch 0 sein, also auf pointerp() pruefen.
+  
+  NICHT von Hand, sondern nur mit den dafuer gedachten Funktionen 
+  modifizieren.
 
 SIEHE AUCH
 ----------
-::
 
-     AddPursuer(L), RemovePursuer(L)
-
-
-16.06.2016, Arathorn
-
+  - :doc:`../lfun/AddPursuer`, :doc:`../lfun/RemovePursuer`
