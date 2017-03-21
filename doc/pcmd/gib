@@ -3,6 +3,7 @@ gib
 
  KOMMANDO:
     gib <ziel> <objekt>
+    gib <objekt> an <ziel>
 
  ARGUMENTE:
 
@@ -19,5 +20,3 @@ gib
  SIEHE AUCH:
     nimm [aus], hole (aus)
 
- LETZTE AeNDERUNG:
-    14. Okt 2011 Gloinson
