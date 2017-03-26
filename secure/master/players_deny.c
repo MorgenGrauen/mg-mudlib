@@ -12,10 +12,11 @@
 #pragma range_check
 #pragma warn_deprecated
 
-#define WHITELIST "/secure/ARCH/players_deny_whitelist.o"
-#define TARGETLIST "/secure/ARCH/players_deny_targets.o"
-#define WHITELISTDUMP "/secure/ARCH/players_deny_whitelist.dump"
-#define TARGETLISTDUMP "/secure/ARCH/players_deny_targets.dump"
+#include "/secure/config.h"
+#define WHITELIST "/"LIBDATADIR"/secure/ARCH/players_deny_whitelist.o"
+#define TARGETLIST "/"LIBDATADIR"/secure/ARCH/players_deny_targets.o"
+#define WHITELISTDUMP "/"LIBDATADIR"/secure/ARCH/players_deny_whitelist.dump"
+#define TARGETLISTDUMP "/"LIBDATADIR"/secure/ARCH/players_deny_targets.dump"
 
 //#define PLDENY_LEARNMODE
 
