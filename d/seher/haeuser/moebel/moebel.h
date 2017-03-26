@@ -5,7 +5,7 @@
 #define RAUM_VOR_LADEN "/d/unterwelt/wurzel/dorf/nstr2"
 #define IDEEN_LOG "ideen.log"
 #define SHVERWALTER "/d/seher/haeuser/hausverwalter"
-#define VERANTWORTLICHER_MAGIER "Seleven" 
+#define VERANTWORTLICHER_MAGIER "Zook" 
 // Der Erhaelt Bug-Mails der Spieler!
 #define SCHRANKMASTER load_object(LADEN("schrankmaster"))
 
