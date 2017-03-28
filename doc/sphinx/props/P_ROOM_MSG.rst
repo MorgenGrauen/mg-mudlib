@@ -3,19 +3,16 @@ P_ROOM_MSG
 
 NAME
 ----
-::
 
     P_ROOM_MSG                    "room_msg"                    
 
 DEFINIERT IN
 ------------
-::
 
     /sys/room/description.h
 
 BESCHREIBUNG
 ------------
-::
 
      Liste mit Meldungen, die zufaellig im Raum ausgegeben werden.
 
@@ -23,17 +20,17 @@ BESCHREIBUNG
 
 ANMERKUNGEN
 -----------
-::
 
      Bitte AddRoomMessage() zum Hinzufuegen/Ueberschreiben benutzen!
 
 SIEHE AUCH
 ----------
-::
 
-     LFuns:    AddRoomMessage()
-     Verwandt: tell_room(), ReceiveMsg()
-     Props:    P_FUNC_MSG, P_MSG_PROB
+     LFuns:
+       :doc:`../lfun/AddRoomMessage`
+     Verwandt:
+       tell_room(), :doc:`../sefun/send_room`, :doc:`../lfun/ReceiveMsg`
+     Props:
+       :doc:`P_MSG_PROB`, :doc:`P_FUNC_MSG`
 
 2.Feb 2016 Gloinson
-

@@ -3,19 +3,16 @@ P_FUNC_MSG
 
 NAME
 ----
-::
 
     P_FUNC_MSG                    "func_msg"                    
 
 DEFINIERT IN
 ------------
-::
 
     /sys/room/description.h
 
 BESCHREIBUNG
 ------------
-::
 
      Liste mit Funktionen, die zufaellig im Raum aufgerufen werden.
 
@@ -24,17 +21,18 @@ BESCHREIBUNG
 
 ANMERKUNGEN
 -----------
-::
 
      Bitte AddRoomMessage() zum Hinzufuegen/Ueberschreiben benutzen!
 
 SIEHE AUCH
 ----------
-::
 
-     LFuns:    AddRoomMessage()
-     Verwandt: tell_room(), ReceiveMsg()
-     Props:    P_ROOM_MSG, P_MSG_PROB
+     LFuns:
+       :doc:`../lfun/AddRoomMessage`
+     Verwandt:
+       tell_room(), :doc:`../sefun/send_room`, :doc:`../lfun/ReceiveMsg`
+     Props:
+       :doc:`P_MSG_PROB`, :doc:`P_ROOM_MSG`
 
 2.Feb 2016 Gloinson
 
