@@ -38,15 +38,37 @@ void SetAttackChats(int chance, mixed strs) {
   SetProp(P_ACHATS,strs);
 }
 
+#define SR_CHAT_MSG 0
+#define SR_CHAT_TYP 1
+
+protected void process_chat(mixed strs) {
+  if(pointerp(strs) && sizeof(strs)) {
+    int msg_typ;
+    mixed entry = strs[random(sizeof(strs))];
+
+    if(pointerp(entry) && sizeof(entry)>=2 && intp(entry[SR_CHAT_TYP])) {
+      msg_typ = entry[SR_CHAT_TYP];
+      entry = entry[SR_CHAT_MSG];
+    }
+    if(closurep(entry))
+      entry = funcall(entry, &msg_typ);
+
+    if(msg_typ)
+      msg_typ|=MSG_DONT_STORE|MSG_DONT_BUFFER;
+    send_room(environment(),
+              process_string(entry),
+              msg_typ||(MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL|
+                        MSG_DONT_STORE|MSG_DONT_BUFFER|MSG_DONT_WRAP));
+  }
+}
+
 void DoAttackChat() {
   string* c;
   if (!ME || !environment(ME))
     return;
   if (QueryProp(P_DISABLE_ATTACK)>0)return ;
   if (random(100) < QueryProp(P_ACHAT_CHANCE))
-    if ((c = QueryProp(P_ACHATS)) && sizeof(c)) 
-      tell_room(environment(ME),
-		process_string(c[random(sizeof(c))]));
+    process_chat(QueryProp(P_ACHATS));
 }
 
 void DoChat() {
@@ -54,9 +76,7 @@ void DoChat() {
   if (!ME || !environment(ME))
     return;
   if (random(100) < QueryProp(P_CHAT_CHANCE))
-    if ((c = QueryProp(P_CHATS)) && sizeof(c)) 
-      tell_room(environment(ME),
-		process_string(c[random(sizeof(c))]));
+    process_chat(QueryProp(P_CHATS));
 }
 
 protected void heart_beat()

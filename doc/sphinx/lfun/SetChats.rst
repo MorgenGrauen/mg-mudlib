@@ -3,93 +3,139 @@ SetChats()
 
 FUNKTION
 --------
-::
 
-	void SetChats(int chance,mixed strs);
+    void SetChats(int chance, mixed strs);
 
 DEFINIERT IN
 ------------
-::
 
-	/std/npc/chat.c
+    /std/npc/chat.c
 
 ARGUMENTE
 ---------
-::
 
-	chance
-	  Prozentuale Wahrscheinlichkeit einer Ausgabe
-	strs
-	  Stringarray mit den Monsterchats
+    int chance
+      Prozentuale Wahrscheinlichkeit einer Ausgabe
+    mixed strs
+      Array mit den verschiedenen Moeglichkeiten der Monsterchats
 
 BESCHREIBUNG
 ------------
-::
 
-	Der NPC gibt mit der Wahrscheinlichkeit <chance> pro Heartbeat einen
-	zufaellig gewaehlten Text aus dem Array <strs> von sich.
-	Die Arrayelemente koennen auch Closures oder
-	process_string()-Funktionen ("@@func@@") enthalten, die dann
-	aufgerufen werden und deren Rueckgabewerte das Monster dann ausgibt.
-	 (Fuer keine Ausgabe dann Leerstring "" zurueckgeben!)
-	In diesen Funktionen ist this_player() das Monster selbst!
-	Fuer Zeilenumbrueche ist immer selbst zu sorgen.
+    Der NPC gibt mit der Wahrscheinlichkeit <chance> pro Heartbeat einen
+    zufaellig gewaehlten Text aus dem Array <strs> in den Raum aus. Dabei
+    wird per Default send_room() ohne erneutes Umbrechen mit den Messagetypen
+    MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL verwendet.
 
-RUECKGABEWERT
--------------
-::
+    Die einzelnen Arrayelemente koennen:
+    
+      * Strings sein
+      * Closures sein, deren Rueckgabe ausgegeben wird und die zusaetzlich
+        einen aenderbaren und in send_room() verwendeten 'msg_typ' per
+        Referenz uebergeben bekommen
+      * Arrays mit der Struktur
+        `({<string|closure msg >, <int msg_typ>})` sein, fuer
+        die obige Regeln auf 'msg' angewendet werden und bei denen 'msg_typ'
+        im send_room() verwendet wird
 
-	keiner
-
-BEISPIELE
----------
-::
-
-	Ein einfaches Beispiel:
-	  // Prototype fuer Closure.
-	  static string info1();
-	  void create()
-	  { ...
-	    SetChats(20,
-	   ({"Der Ork sagt: Hau ab, bevor ich Dich fresse.\n",
-	     "Der Ork grinst Dich unverschaemt an.\n",
-	     "Der Ork wedelt mit seinem Saebel vor Deinem Gesicht herum.\n",
-	     "Der Ork droht Dir mit der Faust.\n",
-             #'info1,
-	     "@@info2@@"}));
-          }
-	  // Funktion als Closure. Prototype notwendig!
-	  static string info1()
-	  { if(QueryProp(P_HP)<QueryProp(P_ALIGN))
-	      return"Gleich werde ich von hier fliehen!\n";
-	    return"";
-	  }
-	  // Funktion als process_string().
-	  string info2()
-	  { return QueryProp(P_HP)==QueryProp(P_MAX_HP)?
-	 "Der Ork grinst: Mir geht es fantastisch!\n":
-	 "Der Ork seufzt: Mir ging es wirklich schon mal besser.\n";
-	  }
+    Fuer keine Ausgabe muss man einen Leerstring "" zurueckgeben oder
+    verwenden. In allen Funktionen ist this_player() das Monster selbst.
+    Normalerweise muss man die Nachrichten selbst umbrechen, ausser man
+    uebergibt die Message-Typen explizit und uebergibt kein MSG_DONT_WRAP.
 
 BEMERKUNGEN
 -----------
-::
 
-	Im Kampf werden keine Chats ausgegeben. Es ist dann SetAttackChats()
-	zu verwenden.
-	Funktionen als process_string() sollte man nicht mehr verwenden.
-	<chance> wird in der Property P_CHAT_CHANCE abgelegt. Um einen NPC
-	voruebergehend 'stillzulegen', kann man P_CHAT_CHANCE auf 0 setzen.
-  Wenn kein Spieler anwesend ist, haben NPC in der Regel keinen Heartbeat,
-  weswegen dann auch die Chats ausgeschaltet sind.
-  Spieler koennen NPC 'stillen', d.h. Chats und AttackChats abschalten.
+    * im Kampf werden keine Chats ausgegeben, man muss dann SetAttackChats()
+      verwenden
+    * die strings werden (noch) durch process_string() geschickt, 
+      dieses sollte man aber nicht mehr verwenden
+    * 'chance' gilt sowohl fuer Attack- als auch normale Chats
+    * 'chance' wird in der Property P_CHAT_CHANCE abgelegt. Um einen NPC
+      voruebergehend 'stillzulegen', kann man P_CHAT_CHANCE auf 0 setzen
+    * Spieler koennen P_CHAT_CHANCE temporaer auf 0 setzen ('stillen')
+    * NPC haben bei Abwesenheit von Spielern in der Regel keinen Heartbeat,
+      weswegen dann auch die Chats ausgeschaltet sind
+    * send_room() bekommt immer MSG_DONT_STORE|MSG_DONT_BUFFER uebergeben
+
+BEISPIELE
+---------
+
+.. code-block:: pike
+
+    // Ein einfaches Beispiel:
+    SetChats(20,
+     ({"Der Ork sagt: Hau ab, bevor ich Dich fresse.\n",
+       "Der Ork grinst Dich unverschaemt an.\n",
+       "Der Ork wedelt mit seinem Saebel vor dir herum.\n",
+       "Der Ork stupst Dich mit dem Finger hart.\n"}));
+
+.. code-block:: pike
+
+    // Ein Beispiel mit send_room-Typen ohne MSG_DONT_WRAP
+    SetChats(20,
+     ({({"Der Ork sagt: Hau ab, bevor ich Dich fresse.", MT_LISTEN}),
+       ({"Der Ork grinst Dich unverschaemt an.", MT_LOOK}),
+       ({"Der Ork wedelt mit seinem Saebel vor dir herum.", MT_LOOK}),
+       ({"Der Ork stupst Dich mit dem Finger hart.", MT_LOOK|MT_FEEL})}));
+
+.. code-block:: pike
+
+    // Laengeres Beispiel mit Closures
+    protected string chat_flightinfo(int msg_typ);
+    protected string chat_trysteal(int msg_typ);
+
+    void create() {
+      SetChats(20,
+       ({({"Der Ork sagt: Hau ab, bevor ich Dich fresse.\n", MT_LISTEN}),
+         #'chat_flightinfo,
+         #'chat_trysteal}));
+      // [...]
+    }
+
+    protected string chat_flightinfo(int msg_typ) {
+      msg_typ = MT_LISTEN;
+      return ("Der Ork sagt: "+
+              (QueryProp(P_HP)<QueryProp(P_WIMPY)?
+                "Ich hab Angst!":
+                "Guck mich nicht so an, Schwaechling!"));
+    }
+
+    protected string chat_trysteal(int msg_typ) {
+      object *pls = filter(all_inventory(environment()), #'interactive);
+      if(sizeof(pls)) {
+        object pl = pls[random(sizeof(pls))];
+        if(!IS_LEARNER(pl)) {
+          object *objs = all_inventory(pl);
+          if(sizeof(objs)) {
+            object ob = objs[random(sizeof(objs))];
+            if(ob->move(this_object(),
+                        M_NO_SHOW|M_GIVE|M_MOVE_ALL)==MOVE_OK) {
+              if(pl->ReceiveMsg(Name(WER)+" stiehlt dir "+ob->name(WEN, 0)+".",
+                                MT_FEEL|MT_LOOK)<0)
+                pl->ReceiveMsg("Irgendwie scheint dir jetzt etwas zu fehlen.",
+                               MT_FEEL|MT_LOOK|MSG_DONT_IGNORE);
+              send_room(environment(),
+                Name(WER, 1)+" bestiehlt "+pl->name(WEN)+".",
+                MT_LOOK, 0, 0, ({pl}));
+              return "";
+            }
+          }
+        }
+      }
+      msg_typ = MT_LOOK;
+      return Name(WER, 1)+" schaut sich verstohlen um.";
+    }
+
 
 SIEHE AUCH
 ----------
-::
 
-	P_CHAT_CHANCE, SetAttackChats(), process_string()
+     Verwandt:
+       :doc:`SetAttackChats`
+     Props:
+       :doc:`../props/P_CHAT_CHANCE`
+     Sonstiges:
+       :doc:`../sefun/send_room`, :doc:`../sefun/process_string`
 
-
-Last modified: Sat Jan 18 18:48:06 2003 by Patryn
-
+03. April 2017 Gloinson
