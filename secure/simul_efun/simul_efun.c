@@ -925,6 +925,10 @@ int restore_object(string name)
     if (name[0]!='/')
       name = "/" + name;
 
+    // .c am Ende loeschen, sonst wird das File ggf. nicht gefunden.
+    if(name[<2..]==".c")
+      name=name[..<3];
+
     // wenn kein /data/ vorn steht, erstmal gucken, ob das Savefile unter
     // /data/ existiert. Wenn ja, wird das geladen.
     if (strstr(name,"/"LIBDATADIR"/") != 0)
