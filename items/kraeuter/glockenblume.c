@@ -25,7 +25,7 @@ void create()
    +"glockenfoermige Blumenkrone mit ihren fuenf breiten, nicht bis zur "
    +"Mitte reichenden Zipfeln erfreut Dich mit ihrer Schoenheit."));
   SetProp(PLANT_ROOMDETAIL, 
-    "Eine anmutige, schoene Glockenblume nickt dir auffordernd zu. Ob man sie "
+    "Eine anmutige, schoene Glockenblume nickt dir auffordernd zu. Ob man sie\n"
    +"pfluecken kann?\n");
   SetProp(P_SHORT,    "Eine Glockenblume");
   AddId(({ "blume", "glockenblume" }));
