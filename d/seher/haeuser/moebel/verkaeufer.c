@@ -254,6 +254,11 @@ int container_kaufen(string str)
                             cnt_file="lesepult";
                             preis=60000;
                              break;
+      case "15":
+      case "aquarium": 
+                             cnt_file="aquarium";
+                             preis=3000;
+                             break;
       default:               return 0; break;
     }
     if( member(RABATT, geteuid(TP)) != -1 )  // 10% Rabatt fuer bestimmte Leute,

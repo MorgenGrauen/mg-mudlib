@@ -1,5 +1,5 @@
 int access_rights(string user, string file) {
-  if(user == "swift" && file!="autoloadertruhe.c")
-    return 1;  // Swift hat auf die Moebel Zugriff.
+  if(user == "notstrom" && file == "aquarium.c")
+    return 1;
   return 0;
 }
