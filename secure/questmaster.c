@@ -1083,6 +1083,9 @@ mapping QueryOpenMiniQuestsForPlayer(object spieler) {
   // hat, aber die Voraussetzungen erfuellt.
   foreach ( string mq_obj : list ) 
   {
+    // Ist die MQ nicht aktiv, ist der Rest hinfaellig.
+    if(!miniquests[mq_obj,MQ_DATA_ACTIVE]) continue;
+
     // Nur wenn der Spieler die MQ noch nicht hat, kann er ueberhaupt einen
     // Tip dazu bekommen.
     if ( !HasMiniQuest(spieler, mq_obj) ) {
