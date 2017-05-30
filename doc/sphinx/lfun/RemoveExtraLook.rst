@@ -3,7 +3,7 @@ RemoveExtraLook()
 
 RemoveExtraLook()
 
-int RemoveExtraLook(string look);
+int RemoveExtraLook(string key);
 ----------------------------------------------------
 ::
 
@@ -11,20 +11,20 @@ DEFINIERT IN
 ------------
 ::
 
-   /std/living/description.c
+  /std/living/description.c
 
 BESCHREIBUNG
 ------------
 ::
 
-   Der Extralook erscheint in der Langbeschreibung des Lebewesens.
-   Eintraege koennen mit dieser Funktion (vorzeitig) wieder entfernt werden.
+  Der Extralook erscheint in der Langbeschreibung des Lebewesens.
+  Eintraege koennen mit dieser Funktion (vorzeitig) wieder entfernt werden.
 
 ARGUMENTE
 ---------
 ::
 
-  - string look:
+  - string key:
     Schluesselwort, unter dem der Eintrag, den man entfernen moechte, von
     AddExtraLook() registriert wurde.
 
@@ -48,18 +48,19 @@ BEISPIELE
 ---------
 ::
 
-  # Extralook registrieren.
-  living->AddExtraLook("@WER1 wird von einer Horde Daemonen verfolgt.",
-                       "ennox_daemonenhordenverfolgerlook");
-  # Nun kann der Eintrag auch wieder entfernt werden:
+  // Extralook registrieren.
+  living->AddExtraLook(
+    "@WER1 wird von einer Horde Daemonen verfolgt.",
+    1800,
+    // Ohne das gehts nicht, sonst gibt es keine ID, die man zum Loeschen
+    // verwenden koennte.
+    "ennox_daemonenhordenverfolgerlook");
+  // Nun kann der Eintrag auch wieder entfernt werden:
   living->RemoveExtraLook("ennox_daemonenhordenverfolgerlook");
 
 SIEHE AUCH
 ----------
-::
 
-   AddExtraLook(),
-   P_INTERNAL_EXTRA_LOOK
-
-14.05.2007, Zesstra
-
+  :doc:`AddExtraLook`
+  :doc:`../props/P_INTERNAL_EXTRA_LOOK`
+  :doc:`../props/P_EXTRA_LOOK`
