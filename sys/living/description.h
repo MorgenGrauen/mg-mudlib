@@ -31,6 +31,14 @@
 
 #define P_AVATAR_URI              "p_lib_avataruri"
 
+// Extrallook - Returnkonstanten
+#define XL_OK                1
+#define XL_NOKEY            -1
+#define XL_INVALIDEXTRALOOK -2
+#define XL_KEYDOESNOTEXIST  -2
+#define XL_INVALIDDURATION  -3
+#define XL_KEYEXISTS        -4
+
 #endif // __LIVING_DESCRIPTION_H__
 
 

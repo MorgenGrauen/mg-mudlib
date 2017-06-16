@@ -24,6 +24,13 @@ inherit "/std/container/description";
 #include <class.h>
 #include <sys_debug.h>
 
+#define XL_DURATION "xlduration"
+#define XL_LOOKSTR  "xllook"
+#define XL_FUN      "xlfun"
+#define XL_ENDMSG   "xlende"
+#define XL_ENDFUN   "xlendefun"
+#define XL_OBJNAME  "xlobjectname"
+
 public string _query_internal_extralook() {
   mixed xl;
   int zeit;
@@ -34,7 +41,7 @@ public string _query_internal_extralook() {
     return(0);
 
   foreach(string key, mapping xld: xl) {
-    if (intp(zeit=xld["xlduration"])) {
+    if (intp(zeit=xld[XL_DURATION])) {
       //hat offenbar nen Ablaufdatum
       if ( (zeit > 0 && zeit < time()) ||
            (zeit < 0 && abs(zeit) < object_time(ME)) ) {
@@ -45,12 +52,12 @@ public string _query_internal_extralook() {
         m_delete(xl,key);
         // ggf. Meldung ausgeben
         if (interactive(ME)) {
-          if (sizeof(xld["xlende"])) {
-            tell_object(ME,xld["xlende"]);
+          if (sizeof(xld[XL_ENDMSG])) {
+            tell_object(ME,xld[XL_ENDMSG]);
           }
           //kein einfacher String, aber Objekt+Funktion gegeben?
-          else if (sizeof(xld["xlendefun"]) && sizeof(xld["xlobjectname"]) &&
-            (!catch(res=call_other(xld["xlobjectname"],xld["xlendefun"],ME)
+          else if (sizeof(xld[XL_ENDFUN]) && sizeof(xld[XL_OBJNAME]) &&
+            (!catch(res=call_other(xld[XL_OBJNAME],xld[XL_ENDFUN],ME)
                     ;publish))) {
               if (stringp(res) && sizeof(res))
                 tell_object(ME,res);
@@ -61,11 +68,11 @@ public string _query_internal_extralook() {
     }
     // Der Eintrag ist offenbar noch gueltig, Meldung anhaengen, bzw. via
     // Funktionsaufruf beschaffen.
-    if (sizeof(xld["xllook"]))
-      look+=xld["xllook"];
-    else if (sizeof(xld["xlfun"]) && sizeof(xld["xlobjectname"])) {
+    if (sizeof(xld[XL_LOOKSTR]))
+      look+=xld[XL_LOOKSTR];
+    else if (sizeof(xld[XL_FUN]) && sizeof(xld[XL_OBJNAME])) {
       closure cl;
-      if (catch(cl=symbol_function(xld["xlfun"],xld["xlobjectname"]);publish)
+      if (catch(cl=symbol_function(xld[XL_FUN],xld[XL_OBJNAME]);publish)
           || !cl) {
           // wenn Fehler beim Laden/Closure erstellen, dann Eintrag loeschen
           // -> Annahme, dass dieser Fehler permanent sein wird, z.B. Eintrag
@@ -90,6 +97,7 @@ public string _query_internal_extralook() {
     return(0);
 }
 
+
 public varargs int AddExtraLook(string look, int duration, string key, 
                                 string lookende, object ob) {
   mapping xl;
@@ -98,22 +106,22 @@ public varargs int AddExtraLook(string look, int duration, string key,
     // Automatisch erzeugen, wenn moeglich
     if (!objectp(previous_object()) || 
         !stringp(key=object_name(previous_object())) || !sizeof(key))
-      return(-1);
+      return XL_NOKEY;
   }
 
   if (!stringp(look) || !sizeof(look))
-    return(-2);
+    return XL_INVALIDEXTRALOOK;
   if (!intp(duration))
-    return(-3);
+    return XL_INVALIDDURATION;;
 
   xl=Query(P_INTERNAL_EXTRA_LOOK,F_VALUE); // dran denken: liefert referenz zurueck
   if (!mappingp(xl)) {
-    Set(P_INTERNAL_EXTRA_LOOK, xl=([]) );
+    Set(P_INTERNAL_EXTRA_LOOK, xl=([]));
   }
 
   // kein Automatisches Ueberschreiben.
   if (member(xl,key))
-    return(-4);
+    return XL_KEYEXISTS;
 
   // neg. Werte: "bis Ende/reboot", abs(duration) == Eintragzeit
   // 0: "fuer ewig", >0: Zeitdauer in Sekunden
@@ -135,30 +143,30 @@ public varargs int AddExtraLook(string look, int duration, string key,
            "permanente Extralooks durch Clone (%s) nicht registrierbar.\n",
            duration, object_name(ob)));
 
-    xl[key]=(["xlobjectname":object_name(ob),
-              "xlfun": look,
+    xl[key]=([XL_OBJNAME:object_name(ob),
+              XL_FUN: look,
              ]);
     // ggf. Name der Funktion speichern, die bei Ablauf aufgerufen wird.
     if (stringp(lookende) && sizeof(lookende))
-        xl[key]["xlendefun"]=lookende;
+        xl[key][XL_ENDFUN]=lookende;
   }
   else {
     // Einfacher Eintrag, nur den bearbeiteten String merken. ;-)
-    xl[key]=(["xllook": break_string(replace_personal(look,({ME}),1),78,
+    xl[key]=([XL_LOOKSTR: break_string(replace_personal(look,({ME}),1),78,
                                      "",BS_LEAVE_MY_LFS),
              ]);
     // ggf. Meldung speichern, die bei Ablauf ausgegeben werden soll.
     if (stringp(lookende) && sizeof(lookende)) {
-      xl[key]["xlende"]=break_string(replace_personal(lookende,({ME}),1),78,
+      xl[key][XL_ENDMSG]=break_string(replace_personal(lookende,({ME}),1),78,
                                      "",BS_LEAVE_MY_LFS);
     }
   }
   // Endezeit vermerken.
   if (duration != 0)
-    xl[key]["xlduration"]=duration;
+    xl[key][XL_DURATION]=duration;
 
   // Kein Set noetig, weil Query das Mapping ja als Referenz lieferte.
-  return(1);
+  return XL_OK;
 }
 
 public int RemoveExtraLook(string key) {
@@ -167,17 +175,17 @@ public int RemoveExtraLook(string key) {
     // Automatisch erzeugen, wenn moeglich
     if (!objectp(previous_object()) ||
         !stringp(key=object_name(previous_object())) || !sizeof(key))
-      return(-1);
+      return XL_NOKEY;
   }
   xl=Query(P_INTERNAL_EXTRA_LOOK,F_VALUE); // dran denken: liefert referenz zurueck
   if (!mappingp(xl))
-    return (-2);
+    return XL_KEYDOESNOTEXIST;
   if (!member(xl,key))
-    return(-2);
+    return XL_KEYDOESNOTEXIST;
 
   m_delete(xl,key);
   // Kein Set noetig, weil Query das Mapping ja als Referenz lieferte.
-  return(1);
+  return XL_OK;
 }
 
 void create()
