@@ -18,9 +18,10 @@
 #define T_REPORTED_TYPO  32   // von Spielern gemeldete Typos
 #define T_REPORTED_IDEA  64   // von Spielern gemeldete Ideen 
 #define T_REPORTED_MD    128  // von Spielern gemeldete fehlende Details
+#define T_REPORTED_SYNTAX 256 // Von Spielern gemeldete Syntaxprobleme
 #define ALL_ERR_TYPES ({T_RTERROR, T_RTWARN, T_CTERROR, T_CTWARN, \
                         T_REPORTED_ERR, T_REPORTED_TYPO, T_REPORTED_IDEA, \
-                        T_REPORTED_MD })
+                        T_REPORTED_MD, T_REPORTED_SYNTAX })
 
 // Status
 #define STAT_DELETED  0x1

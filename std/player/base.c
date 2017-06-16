@@ -1274,11 +1274,13 @@ static int change_password4( string str )
  *-----------------------------------------------------------------
  */
 static int fehlerhilfe(string str) {
-  write("Welche Art von Fehler moechtest Du denn melden?\n"
+  ReceiveMsg("Welche Art von Fehler moechtest Du denn melden?\n"
       "Fehlfunktionen    ->  bug\n"
       "Ideen/Anregungen  ->  idee\n"
       "Tippfehler/Typos  ->  typo\n"
-      "fehlende Details  ->  detail\n");
+      "fehlende Details  ->  detail\n"
+      "Syntax-Probleme   ->  syntaxhinweis",
+      MT_NOTIFICATION|MSG_BS_LEAVE_LFS);
 
   return 1;
 }
@@ -1384,6 +1386,10 @@ static int ReportError(string player_input)
       pl_msg = "Wie sieht der Fehler denn aus?\n";
       error_type = "BUGS";
       break;
+    case "syntaxhinweis":
+      pl_msg = "Mit welcher Syntax gibt es denn was fuer Probleme?\n";
+      error_type = "SYNTAX";
+      break;
   }
 
   // Hat der Spieler etwas eingegeben, wird die Eingabe direkt an die Hilfs-
@@ -1431,6 +1437,10 @@ void smart_log(string myname, string str, object obj)
     case "TYPO":
       desc="einen Typo";
       err[F_TYPE]=T_REPORTED_TYPO;
+      break;
+    case "SYNTAX":
+      desc="einen Syntaxhinweis";
+      err[F_TYPE]=T_REPORTED_SYNTAX;
       break;
   }
 
@@ -4032,6 +4042,7 @@ static mixed _query_localcmds()
            ({"fehler","fehlerhilfe",0,0}),
            ({"md","ReportError",0,0}),
            ({"detail","ReportError",0,0}),
+           ({"syntaxhinweis","ReportError",0,0}),
            ({"vorsicht","toggle_whimpy",0,0}),
            ({"stop","stop",0,0}),
            ({"kwho","kwho",0,0}),

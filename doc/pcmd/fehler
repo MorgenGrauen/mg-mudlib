@@ -11,12 +11,13 @@ BESCHREIBUNG:
     Manche Idee ist dem Magier auch nicht so klar, wie dem Spieler, der
     spaeter einmal durchlaeuft.
 
-    Zum Melden dieser Fehler gibt es vier Kommandos, die durch das Kommando
+    Zum Melden dieser Fehler gibt es fuenf Kommandos, die durch das Kommando
     'fehler' gelistet werden:
-    * 'bug'    - Meldung eines Fehlers / einer Fehlfunktion
-    * 'typo'   - Meldung eines Tippfehler
-    * 'detail' - Vorschlaege, ein fehlendes Detail zu ergaenzen
-    * 'idee'   - Vorschlaege mit Ideen zur Erweiterung
+    * 'bug'           - Meldung eines Fehlers / einer Fehlfunktion
+    * 'typo'          - Meldung eines Tippfehler
+    * 'detail'        - Vorschlaege, ein fehlendes Detail zu ergaenzen
+    * 'idee'          - Vorschlaege mit Ideen zur Erweiterung
+    * 'syntaxhinweis' - Problematische oder unklare Syntax
 
 BEMERKUNG:
     Frueher hatte dieses Kommando die gleiche Funktionalitaet wie 'bug',
@@ -24,7 +25,6 @@ BEMERKUNG:
     'fehler' abgesetzt, daher wurde das geaendert.
 
 SIEHE AUCH:
-    bug, typo, idee, detail
+    bug, typo, idee, detail, syntax
 
-LETZTE AeNDERUNG:
-    12. Okt 2011 Gloinson
+Letzte Aenderung: 16.06.2017, Bugfix

@@ -340,7 +340,8 @@ int db_insert_issue(struct fullissue_s issue)
 }
 
 
-// loggt einen T_REPORTED_ERR, T_REPORTED_IDEA, T_REPORTED_TYPO, T_REPORTED_MD
+// loggt einen T_REPORTED_ERR, T_REPORTED_IDEA, T_REPORTED_TYPO,
+// T_REPORTED_MD, T_REPORTED_SYNTAX
 public string LogReportedError(mapping err)
 {
     //darf nur von Spielershells oder Fehlerteufel gerufen werden.
@@ -1235,6 +1236,9 @@ public string format_error_spieler(struct fullissue_s issue)
     case T_REPORTED_MD:
       label=({"Fehlendes Detail","Dieses fehlende Detail"});
       break;
+    case T_REPORTED_SYNTAX:
+      label=({"Syntaxproblem","Dieses Syntaxproblem"});
+      break;
     case T_RTWARN:
       label=({"Laufzeitwarnung","Diese Laufzeitwarnung"});
       break;
@@ -1286,6 +1290,9 @@ public string format_error(struct fullissue_s issue, int only_essential)
       break;
     case T_REPORTED_MD:
       label=({"Fehlendes Detail","Dieses fehlende Detail"});
+      break;
+    case T_REPORTED_SYNTAX:
+      label=({"Syntaxproblem","Dieses Syntaxproblem"});
       break;
     case T_RTWARN:
       label=({"Laufzeitwarnung","Diese Laufzeitwarnung"});
@@ -1437,7 +1444,8 @@ private int versende_mail(struct fullissue_s issue)
   // Erledigung informiert, wenn deren letzter Logout weniger als 180 Tage her
   // ist.
   if ( (issue->type &
-        (T_REPORTED_ERR|T_REPORTED_TYPO|T_REPORTED_IDEA|T_REPORTED_MD))
+        (T_REPORTED_ERR|T_REPORTED_TYPO|T_REPORTED_IDEA|T_REPORTED_MD|
+        T_REPORTED_SYNTAX))
       && issue->titp
       && recent_lastlogout(issue->titp, time() - 15552000) )
   {

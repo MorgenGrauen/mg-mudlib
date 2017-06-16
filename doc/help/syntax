@@ -27,8 +27,8 @@ Die Syntax der Eingaben im MorgenGrauen
     > steck das zweite Schwert in den Beutel
 
     Solltest Du irgendwo im Spiel auf eine Stelle stossen, wo keine
-    grammatikalisch richtige Eingabe erwartet wird, gib bitte einem Magier
-    Bescheid.
+    grammatikalisch richtige Eingabe erwartet wird, setz bitte mit 
+    'syntaxhinweis' einen Hinweis ab.
 
     Wenn Du bei der Verwendung eines Adverbs in Zusammenhang mit einem Verb
     Probleme hast, so vergewissere Dich, ob das Verb ueberhaupt die Verwendung
@@ -54,7 +54,6 @@ Die Syntax der Eingaben im MorgenGrauen
     > grinse /was-neues-was-auch-nicht-in-der-"adverb"-Liste-steht
 
  SIEHE AUCH:
-    verben, adverb, idee
+    syntaxhinweis, verben, adverb, idee
 
- LETZTE AeNDERUNG:
-    Thu, 24.07.1997, 09:00:00 von Wargon
+Letzte Aenderung: 16.06.2017, Bugfix

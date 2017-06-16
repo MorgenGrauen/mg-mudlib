@@ -299,7 +299,8 @@ private int select_modus(string arg) {
     case "alles":
     case "alle":
       lmodus = T_RTERROR | T_RTWARN | T_CTERROR | T_CTWARN | T_REPORTED_ERR
-               | T_REPORTED_IDEA | T_REPORTED_TYPO | T_REPORTED_MD;
+               | T_REPORTED_IDEA | T_REPORTED_TYPO | T_REPORTED_MD | 
+               T_REPORTED_SYNTAX;
       break;
     case "fehler":
     case "error":
@@ -334,6 +335,11 @@ private int select_modus(string arg) {
     case "typos":
       lmodus=T_REPORTED_TYPO;
       break;
+    case "syntax":
+    case "syntaxhinweis":
+    case "syntaxhinweise":
+      lmodus=T_REPORTED_SYNTAX;
+      break;
     case "laufzeitwarnungen":
     case "runtimewarnings":
       lmodus=T_RTWARN;
@@ -361,6 +367,8 @@ private string  * errorlabel(int t)
       return ({"fehlende Detail","fehlende Details","Dieses fehlende Detail"});
     case T_REPORTED_TYPO:
       return ({"Typo","Typos","Dieser Typo"});
+    case T_REPORTED_SYNTAX:
+      return ({"Syntaxhinweis","Syntaxhinweise","Dieser Syntaxhinweis"});
     case T_RTWARN:
       return ({"Laufzeitwarnung","Laufzeitwarnungen","Diese Laufzeitwarnung"});
     case T_CTWARN:
@@ -578,6 +586,8 @@ public int CmdModus(string arg) {
       modstr+=({"fehlende Details"});
   if (modus & T_REPORTED_TYPO)
       modstr+=({"Typo"});
+  if(modus&T_REPORTED_SYNTAX)
+    modstr+=({"Syntaxhinweise"});
 
   tell_object(PL, break_string(
       "Dein Fehlerteufel wird Dir nun ueber aufgetretene "
