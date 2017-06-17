@@ -83,6 +83,7 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
     typos: Typos, die Spieler/Magier abgesetzt haben
     md: Fehlende Details, die Spieler/Magier abgesetzt haben
     fehler: alle moeglichen Fehler werden ausgegeben
+    syntaxhinweise: Syntaxhinweise, die Spieler abgesetzt haben.
     warnungen: alle moeglichen Warnungen werden ausgegeben
     alle: alle Fehler + Warnungen werden ausgegeben
     
