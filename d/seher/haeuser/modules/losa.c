@@ -67,7 +67,7 @@ void RemoveSpecial(string key)
 void
 reset()
 {
-  if (QueryOwner() &&
+  if (QueryOwner(0) &&
       !sizeof(filter(all_inventory(),#'interactive)) &&
       !csaved)
     Save(1);
@@ -129,7 +129,7 @@ Save(int crunched)
          " broken) objects in room "+
          object_name(this_object()) + ".");
 
-  save_object( HAUSSAVEPATH+QueryOwner());
+  save_object( HAUSSAVEPATH+QueryOwner(1));
 
   Set(P_DETAILS, o1, F_VALUE);
   Set(P_READ_DETAILS, o2, F_VALUE);
@@ -143,7 +143,7 @@ Load()
   mixed prop;
   int i;
 
-  restore_object( HAUSSAVEPATH+QueryOwner());
+  restore_object( HAUSSAVEPATH+QueryOwner(1));
 
   // Details und Kommandos werden beim Speichern de-dupliziert und in einem
   // speziellen Format abgespeichert (s. PCrunch() im Hausverwalter). Sie
@@ -217,7 +217,7 @@ Load()
   {
     if (Query(H_CHEST))
       this_object()->AddItem(PATH+"truhe",REFRESH_NONE,
-                             ([ "owner" : QueryOwner() ]));
+                             ([ "owner" : QueryOwner(0) ]));
 /* Das scheint nirgendwo benutzt zu werden und in allen Seherhaeusern leer zu
  * sein.
     mapping special = Query(H_SPECIAL, F_VALUE);
@@ -258,7 +258,7 @@ static int reload_error(string file, mixed data,  string message)
         broken_furniture+=([file:data]);
         log_file("seher/haeuser/autoloader_error",
                  dtime(time())+"\n"+
-                 break_string(object_name(this_object())+" ("+QueryOwner()+")",78, " FILE: ",1)+
+                 break_string(object_name(this_object())+" ("+QueryOwner(1)+")",78, " FILE: ",1)+
                  break_string(message, 78, " MSG:  ",1)+
                  break_string(sprintf("%O", data),78, " DATA: ",1)+"\n");
                  

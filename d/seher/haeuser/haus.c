@@ -70,7 +70,6 @@ void create()
   AddCmd( ({"beschreib", "beschreibe"}), "beschreiben");
   AddCmd( ({"aender", "aendere"}), "aendern");
   AddCmd( ({"klopf","klopfe"}), "klopfen");
-  AddCmd("verbiete", "verbieten");
   AddCmd("notiz", "merktext");
 }
 
@@ -137,7 +136,7 @@ varargs string SetOwner(string o)
 }
 
 // liefert den Name des Haus-Besitzers
-string QueryOwner() { return owner; }
+varargs string QueryOwner(int withNr) { return owner; }
 
 private int tp_ownercheck()
 {

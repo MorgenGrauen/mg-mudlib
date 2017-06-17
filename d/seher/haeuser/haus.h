@@ -20,7 +20,7 @@
 
 /*** Pfade ***/
 #define HAEUSERPFAD     "/d/seher/haeuser/"
-#define HAUSSAVEPATH	HAEUSERPFAD+"save/"
+#define HAUSSAVEPATH	"/data"+HAEUSERPFAD+"save/"
 #define SPECIALPATH	HAEUSERPFAD+"special/"
 #define VERWALTER	(HAEUSERPFAD+"hausverwalter")
 #define HAUS		HAEUSERPFAD+"haus"
@@ -115,7 +115,7 @@
 
 varargs void Save(int crunched);
 void Load();
-string QueryOwner();
+varargs string QueryOwner(int withNr);
 varargs string SetOwner(string o, int nr);
 protected void AddExitNoCheck(mixed cmd, mixed dest);
 void RemoveExitNoCheck(mixed cmd);
