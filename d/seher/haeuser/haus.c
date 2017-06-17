@@ -70,7 +70,6 @@ void create()
   AddCmd( ({"beschreib", "beschreibe"}), "beschreiben");
   AddCmd( ({"aender", "aendere"}), "aendern");
   AddCmd( ({"klopf","klopfe"}), "klopfen");
-  AddCmd("erlaube", "erlauben");
   AddCmd("verbiete", "verbieten");
   AddCmd("notiz", "merktext");
 }
