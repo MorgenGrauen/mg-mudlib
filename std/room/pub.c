@@ -172,8 +172,8 @@ varargs string AddToMenu(string menuetext, mixed ids, mapping minfo,
 
   if(pointerp(d_msg) && sizeof(d_msg)>=2)
   {
-    d_msg[0]=regreplace(msg[0],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
-    d_msg[1]=regreplace(msg[1],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+    d_msg[0]=regreplace(d_msg[0],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
+    d_msg[1]=regreplace(d_msg[1],"[&][1-8,&,#,!]*", #'replace_dummy, 1);
   }    
   
   if ( intp(refresh) && (refresh>0) )
