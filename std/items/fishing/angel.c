@@ -98,7 +98,6 @@ protected void create() {
     "Was willst Du woran @verben?|"
     "Woran willst Du @WEN2 denn @verben?");
 
-  AddCmd("atell","tell_stat");
   AddCmd("angeltest","qangel");
 }
  
