@@ -66,7 +66,7 @@ protected void inaugurate_master(int arg) {
 
   set_driver_hook(H_REGEXP_PACKAGE, RE_TRADITIONAL);
   
-  seteuid(ROOTID);
+  efun::configure_object(this_object(), OC_EUID, ROOTID);
   userinfo::create();
   LoadPLDenylists();
 
@@ -210,7 +210,7 @@ protected string *epilog(int eflag) {
   string *files, *domains;
   int i;
 
-  seteuid(ROOTID);
+  efun::configure_object(this_object(), OC_EUID, ROOTID);
   ReloadBanishFile();
   ReloadDeputyFile();
   ReloadInsecureFile();
@@ -253,13 +253,7 @@ protected void preload(string file) {
   // Datei und Besitzer ausgeben
   printf("%-50s%-15s",file,name);
 
-  // Euid kann nicht geaendert werden -> Meldung, fertig
-  if (!seteuid(name))
-  {
-    printf("\nEuid konnte nicht auf %s gesetzt werden\n"+
-             "Sie ist nun %s.\n",name,geteuid(TO));
-    return;
-  }
+  efun::configure_object(this_object(), OC_EUID, name);
 
   // Dann mal laden .. dabei Zeit messen
   zeit = apply(#'+,rusage()[0..1]);
@@ -279,7 +273,7 @@ protected void preload(string file) {
   }
 
   // Noch EUID zuruecksetzen
-  seteuid(ROOTID);
+  efun::configure_object(this_object(), OC_EUID, ROOTID);
 
   return;
 }
