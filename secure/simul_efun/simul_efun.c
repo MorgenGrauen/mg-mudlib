@@ -87,6 +87,7 @@ int member_array(mixed item, mixed arraystring);
 #include __DIR__"livings.c"
 #include __DIR__"comm.c"
 #include __DIR__"files.c"
+#include __DIR__"seteuid.c"
 
 #define TO        efun::this_object()
 #define TI        efun::this_interactive()
