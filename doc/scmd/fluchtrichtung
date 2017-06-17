@@ -15,8 +15,8 @@ fluchtrichtung
 
     Diese Richtung wird bei der Flucht mit einer gewissen Wahrscheinlichkeit
     als erstes ausprobiert, falls moeglich. Die Wahrscheinlichkeit betraegt
-    60% bei Stufe 30 und nimmt mit jeder weiteren Stufe um ca. 1,3 Prozent-
-    punkte zu.
+    61% bei Stufe 30 und nimmt mit jeder weiteren Stufe um ca. 1,3 Prozent-
+    punkte zu, bei Stufe 60 betraegt sie also 100%.
 
     Falls die Flucht in diese Richtung nicht gelingt, werden die anderen
     Richtungen wie bisher ausprobiert.
@@ -36,5 +36,4 @@ fluchtrichtung
  SIEHE AUCH:
     vorsicht, report
 
- LETZTE AeNDERUNG:
-    Mit, 07.01.2004,  von Rikus
+Letzte Aenderung: 17.06.2017, Bugfix
