@@ -27,11 +27,11 @@ BESCHREIBUNG:
     nicht zu finden ist, wird die ganze Eingabe als Meldung aufgefasst.
 
 BEMERKUNG:
-    Der Befehl 'syntax' bezieht sich bei Nichtangabe eines Bezugsobjekts
-    auf das letzte betrachtete Objekt. Hast Du also ein Objekt untersucht,
-    dann wird die Meldung fuer dieses Objekt abgegeben. Hast Du aber den
-    Raum untersucht oder 'schau' eingegeben, wird die Meldung fuer Deinen
-    momentanen Raum abgesetzt.
+    Der Befehl 'syntaxhinweis' bezieht sich bei Nichtangabe eines 
+    Bezugsobjekts auf das letzte betrachtete Objekt. Hast Du also ein
+    Objekt untersucht, dann wird die Meldung fuer dieses Objekt abgegeben.
+    Hast Du aber den Raum untersucht oder 'schau' eingegeben, wird die
+    Meldung fuer Deinen momentanen Raum abgesetzt.
 
 SIEHE AUCH:
     bug, idee, typo, detail, bezugsobjekt
