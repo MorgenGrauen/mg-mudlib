@@ -65,7 +65,7 @@ protected void create()
     "@PRESENT", "cmd_fuellen",
     "Was willst Du fuellen?|Willst Du etwas in etwas fuellen?|"
     "Worein willst Du den Kesselinhalt fuellen?");
-  AddCmd(({"tauch", "tauche"}), "cmd_tauchen");
+//  AddCmd(({"tauch", "tauche"}), "cmd_tauchen");
 }
 
 #define TRANKFERTIG "_lib_p_krauttrankfertig"
