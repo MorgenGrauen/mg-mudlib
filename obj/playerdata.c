@@ -1,6 +1,6 @@
 // Dieses Ding kriegt die UID vom Clonenden.
-// Der Master exportiert allerdings per export_uid() ggf. eine UID an dieses
-// Objekt.
+// Spielerladen duerfen nur Objekte, welche die gleiche UID wie der Cloner
+// (also dieses Objekt) haben.
 // Abfragen kann es nur das Objekt, welches den Spieler geladen hat.
 
 #pragma no_inherit,no_shadow
@@ -17,7 +17,7 @@ object user;
 protected void create()
 {
   ::create();
-  seteuid(0);
+  seteuid(getuid());
   set_next_reset(300);
 }
 
@@ -25,18 +25,19 @@ public int ReleasePlayer()
 {
   pl = 0;
   user = 0;
-  // Das Objekt darf keine EUID mehr haben, damit ROOT-Objekte ihm ggf. eine
-  // neue UID exportieren koennen, damit es einen neuen Spieler laden kann.
-  seteuid(0);
   return 1;
 }
 
 public int LoadPlayer(string name)
 {
+  // Es duerfen nur Objekte mit der gleichen UID wie wir diesen Clone
+  // benutzen! Ansonsten koennten z.B. nicht-ROOT-Objekte einen von einem
+  // ROOT-Objekt erzeugten Clone hiervon nutzen und alles lesen...
+  if (!previous_object()
+      || getuid(previous_object()) != getuid(this_object()))
+    return 0;
   if (query_wiz_level(getuid(previous_object())) < WIZARD_LVL)
     return 0;
-
-  seteuid(getuid());
 
   mixed userinfo=MASTER->get_userinfo(name);
   if (!pointerp(userinfo))
