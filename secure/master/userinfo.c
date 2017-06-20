@@ -881,7 +881,7 @@ public mapping get_all_players() {
   mapping allplayer=([]);
   string *tmp;
   foreach(string dir: dirs) {
-    tmp=get_dir("/secure/save/"+dir+"/*")
+    tmp=get_dir(SECURESAVEPATH+dir+"/*")
       - ({".","..",".KEEP",".svn"});
     allplayer[dir] = map(tmp,function string (string fn) 
                      { return explode(fn,".")[0]; } );
