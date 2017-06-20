@@ -16,6 +16,15 @@ varargs void send_room(object|string room, string msg, int msg_type,
   dest->ReceiveMsg(msg, msg_type, msg_action, msg_prefix, origin);
 }
 
+varargs void send_debug(object|string wiz, string msg, string msg_prefix)
+{
+  if (stringp(wiz))
+    wiz=find_player(wiz);
+  if (objectp(wiz))
+      wiz->ReceiveMsg(msg, MT_DEBUG|MSG_BS_LEAVE_LFS|MSG_DONT_STORE,
+                      0, msg_prefix, previous_object());
+}
+
 static int _shout_filter( object ob, string pat )
 {
     string *ignore;
