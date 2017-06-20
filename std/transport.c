@@ -107,7 +107,15 @@ private void ReportRoute()
 public varargs void Start(int pos)
 {
   Halt();
-  rpos = (pos >= sizeof(route))?-1:pos-1;
+  // negative pos sind ein Fehler
+  if (pos<0)
+      raise_error(sprintf("Start(): Positionszaehler < 0: %d\n",pos));
+
+  // wenn pos zu gross fuer die Route ist, rpos auf Ende der Route setzen
+  // (i.e. sizeof(route)-1), damit bei der naechsten Bewegung am Anfang der
+  // Route begonnen wird.
+  rpos = min(pos, sizeof(route)-1);
+
   call_out("changeHp",0);
   // Tell TRAVELD our current route
   ReportRoute();
