@@ -148,8 +148,9 @@ protected void create_super() {
 private closure _check_stringmethod(mixed func, int ex, string resp) {
   closure cl;
   if(!function_exists(func))
-    raise_error(sprintf(
+    catch(raise_error(sprintf(
       resp+"string-Methode '%s' fehlt oder ist private.\n", func));
+      publish);
 
   // extern erstellte auf Sichtbarkeit pruefen und abbrechen/davor warnen
   if(ex) {
@@ -157,20 +158,23 @@ private closure _check_stringmethod(mixed func, int ex, string resp) {
                                             RETURN_FUNCTION_FLAGS);
     int index = member(fl, func)+1;
     if(index<=0 || sizeof(fl)<=index)
-      raise_error(sprintf(
+      catch(raise_error(sprintf(
         resp+"string-Methode '%s' nicht in functionlist.\n", func));
+        publish);
     else if(fl[index]&TYPE_MOD_PROTECTED || fl[index]&TYPE_MOD_STATIC)
-      raise_error(sprintf(
+      catch(raise_error(sprintf(
         resp+"string-Methode '%s' ist protected/static. Extern "
         "definiertes Kommando darf so eine Methode nicht aufrufen!\n",
         func));
+        publish);
   }
 
   // ansonsten Methode erstmal cachen
   cl = symbol_function(func, this_object());
   if(!cl)
-    raise_error(sprintf(
+    catch(raise_error(sprintf(
       resp+"string-Methode '%s' nicht in Closure wandelbar?\n", func));
+      publish);
 
   return cl;
 }
