@@ -146,36 +146,35 @@ protected void create_super() {
 }
 
 private closure _check_stringmethod(mixed func, int ex, string resp) {
-  closure cl;
-  if(!function_exists(func))
+  closure cl = symbol_function(func, this_object());
+  if(!cl)
+  {
     catch(raise_error(sprintf(
       resp+"string-Methode '%s' fehlt oder ist private.\n", func));
       publish);
+    return 0;
+  }
 
   // extern erstellte auf Sichtbarkeit pruefen und abbrechen/davor warnen
   if(ex) {
     mixed *fl = functionlist(this_object(), RETURN_FUNCTION_NAME|
                                             RETURN_FUNCTION_FLAGS);
     int index = member(fl, func)+1;
-    if(index<=0 || sizeof(fl)<=index)
-      catch(raise_error(sprintf(
-        resp+"string-Methode '%s' nicht in functionlist.\n", func));
-        publish);
-    else if(fl[index]&TYPE_MOD_PROTECTED || fl[index]&TYPE_MOD_STATIC)
+    if(index<=0 || sizeof(fl)<=index) // sollte nicht passieren, s.o.
+      raise_error(sprintf(
+        resp+"string-Methode '%s' trotz function_exists() nicht in "
+             "functionlist. WTF?\n", func));
+    else if(fl[index]&TYPE_MOD_PROTECTED || fl[index]&TYPE_MOD_STATIC) {
       catch(raise_error(sprintf(
         resp+"string-Methode '%s' ist protected/static. Extern "
         "definiertes Kommando darf so eine Methode nicht aufrufen!\n",
         func));
         publish);
+      return 0;
+    }
   }
 
   // ansonsten Methode erstmal cachen
-  cl = symbol_function(func, this_object());
-  if(!cl)
-    catch(raise_error(sprintf(
-      resp+"string-Methode '%s' nicht in Closure wandelbar?\n", func));
-      publish);
-
   return cl;
 }
 
@@ -334,19 +333,19 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
     while(j--) {
      int k;
      // DBG(rule[j]);
-    	// Regeln nicht löschen und Regel?
+    	// Regeln nicht lÃ¶schen und Regel?
      if(!(del_norule && pointerp(rule[j])) &&
-        // nur bestimmte ID löschen und ID passt nicht?
+        // nur bestimmte ID lÃ¶schen und ID passt nicht?
         !(onlyid && (!pointerp(ids) || sizeof(ids)<=j || ids[j]!=onlyid)) &&
-        // Löschregel existiert und passt nicht auf Regel?
+        // LÃ¶schregel existiert und passt nicht auf Regel?
         !(delrule && (k=sizeof(rule[j]))!=sizeof(delrule))) {
-      // partielles Testen einer Löschregel ...
+      // partielles Testen einer LÃ¶schregel ...
       if(delrule) {
        while(k--)
         if(!sizeof(rule[j][k]&delrule[k])) break;
        if(k>=0) continue;
       }
-      // alles korrekt: Löschen!
+      // alles korrekt: LÃ¶schen!
       // (Arraybereich durch leeres Array loeschen)
       flag[j..j]    = allocate(0);
       fun[j..j]     = allocate(0);
@@ -465,7 +464,7 @@ static int _process_command(string str, string *noparsestr,
      while((range=r_end-q_start)>=0) {
       mixed tmpobj;
 
-      // wie weit wollen wir zurückgehen?
+      // wie weit wollen wir zurÃ¼ckgehen?
       if(range)
         if(!(check_present&CHECK_PUTGET))
           range=range>2?2:range; // 3 Fragmente fuer @ID/@PRESENT (Adverb/Nr)
