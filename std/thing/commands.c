@@ -252,6 +252,9 @@ varargs void AddCmd(mixed cmd, mixed func, mixed flag, mixed cmdid) {
       break;
     case T_CLOSURE:
       cachedcl=func;
+      // an und fuer sich koennte man LFun-Stringnamen hier extrahieren,
+      // um Serialisierung via P_COMMANDS zu ermoeglichen. Momentan: nein.
+      func=0;
       break;
     default:
       if(extern_call()) func=previous_object();
