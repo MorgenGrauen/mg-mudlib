@@ -117,6 +117,7 @@ char *telcmds[] = {
 #define  TELOPT_ZMP           93        /* Zenith Mud Protocol */
 #define  TELOPT_MUSHCLIENT   102        /* Mushclient/Aardwolf Protocol */
 #define  TELOPT_ATCP         200        /* Achaea Telnet Client Protocol */
+#define  TELOPT_GMCP         201        /* General Mud Comunication Protocol*/
 
 #define  NTELOPTS            256        /* was: (1+TELOPT_NEWENV) */
 
