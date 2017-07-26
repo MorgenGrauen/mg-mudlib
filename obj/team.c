@@ -938,19 +938,15 @@ static void RemoveMemberAndAssocs(object caster) {
   DoRemoveMember(caster);
 }
 
+// Teams mit nur einem Living loesen sich auf.
 private void RemoveSingles() {
-  object *obs;
-  mixed aso;
-
-  if (!IsMember(leader)) return;
-  if (!query_once_interactive(leader)) return; // NPC Team
-  obs=Members()-({leader});
-  if (pointerp(aso=assoc_mem[leader]))
-    obs-=aso;
-  if (sizeof(obs)) return;
-  gtell("Das Team loest sich auf.\n");
-  RemoveMemberAndAssocs(leader);
-  TryRemove();
+  object *obs=Members();
+  if (sizeof(obs) <= 1)
+  {
+    gtell("Das Team loest sich auf.\n");
+    RemoveMemberAndAssocs(obs[0]);
+    TryRemove();
+  }
 }
 
 int RemoveMember(mixed arg) {
