@@ -845,9 +845,9 @@ int delete_player(string passwd, string real_name)
   TBanishName(real_name, 0);
 
   part_filename="/"+real_name[0..0]+"/"+real_name+".o";
-  rm("/"SECUREDIR"/save"+part_filename);
-  rm("/"LIBSAVEDIR"/"+part_filename);
-  rm("/"MAILDIR"/"+part_filename);
+  rm(SECURESAVEPATH+part_filename);
+  rm(LIBSAVEDIR+part_filename);
+  rm(MAILPATH+part_filename);
   
   m_delete(userlist,real_name);
   
