@@ -119,21 +119,33 @@ protected void aufraeumen() {
   }
 }
 
-void reset() {
-  int i, to, stock;
-  mixed *itemlist;
+public void reset()
+{
+  int i, to;
+  mixed itemlist;
   
   items::reset();
   _set_store_percent_left();
 
-  if (!(all=all_inventory()) || !sizeof(all)) {
+  all=all_inventory();
+  if (!all || !sizeof(all))
+  {
     all=0; // Speicher freigeben
     return;
   }
-  if (sizeof(itemlist=QueryProp(P_ITEMS))) {
-    itemlist=filter(itemlist, #'[, 0);
+  itemlist=QueryProp(P_ITEMS);
+  if (sizeof(itemlist))
+  {
+    // Elemente ohne konkretes Objekt (Index 0 im Wertearray fuer den Key)
+    // ausfiltern.
+    itemlist=filter(itemlist,
+      function int(<object|<string|string*>|int>* arg)
+      {
+        return objectp(arg[0]);
+      });
     all-=itemlist;
-    if (!sizeof(all)) {
+    if (!sizeof(all))
+    {
       all=0; // Speicher freigeben
       return;
     }
@@ -141,15 +153,13 @@ void reset() {
 
   i=sizeof(all)-1;
   to=i*QueryProp(P_STORE_CONSUME)/100;
-  if ( to < (stock=QueryProp(P_MIN_STOCK)) )
-    to=stock;
-  else
-    stock=0;
-
+  to=max(to,QueryProp(P_MIN_STOCK));
   // Hinterer Teil des Inventories wird zerstoert, also alle aelteren
   // und somit vermutlich selten gekaufte Objekte
-  for (;i>=to;i--)
+  for (;i>=to;--i)
+  {
     RemoveObjectFromStore(all[i]);
+  }
   all2=([]);
   call_out(#'aufraeumen,random(10));
   update_money();
