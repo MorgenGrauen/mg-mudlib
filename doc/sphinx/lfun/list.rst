@@ -1,0 +1,34 @@
+list()
+==============
+
+FUNKTION
+--------
+
+    int list(string str)
+
+DEFINIERT IN
+------------
+    /std/room/shop.c
+
+ARGUMENTE
+---------
+    string str: Durch den Spieler eingegebene Argumente
+
+BESCHREIBUNG
+------------
+
+    Diese Funktion wird aufgerufen, wenn ein Spieler im Laden 'zeige'
+    eingibt. Anhand von str wird geprueft, welche Art von Waren er
+    aufgelistet haben moechte und in welchem Format. Diese Informationen
+    werden dann zur Ausgabe an PrintList() weitergeleitet.
+
+RUECKGABEWERTE
+--------------
+
+    1 bei erfolgreichem Erkennen der Parameter, sonst 0.
+    (siehe auch AddCmd())
+
+SIEHE AUCH
+----------
+
+    :doc:`PrintList`, :doc:`AddCmd`
