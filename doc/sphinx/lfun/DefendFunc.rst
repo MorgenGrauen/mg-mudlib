@@ -1,32 +1,23 @@
 DefendFunc()
 ============
 
-DefendFunc(L)
--------------
-::
-
 FUNKTION
 --------
-::
 
-     int DefendFunc(string|string *dtyp, int|mappingspell, object enemy);
+     public int DefendFunc(string* dtyp, mapping spell, object enemy);
 
 DEFINIERT IN
 ------------
-::
 
-     eigenen Objekten; fuer /std/armour/combat.c
+     Eigenen Objekten; fuer /std/armour/combat.c
 
 ARGUMENTE
 ---------
-::
 
      dtyp
           Schadenstypen der Angriffsart.
-          Sollte heute ein string* sein.
      spell
-          0 bei veralteten konventionellen Angriffen im Regelfall jedoch
-          ein Mapping mit weiteren Infos.
+          Ein Mapping mit weiteren Infos.
           Bei einem konventionellen Angriff ist spell[SP_PHYSICAL_ATTACK] gleich
           1.
      enemy
@@ -34,7 +25,6 @@ ARGUMENTE
 
 BESCHREIBUNG
 ------------
-::
 
      Anhand der uebergebenen Parameter kann hier ein Ruestungsbonus (oder
      auch ein Ruestungsmalus) errechnet werden, der zu dem normalen
@@ -42,31 +32,29 @@ BESCHREIBUNG
 
 RUeCKGABEWERT
 -------------
-::
 
      Der Ruestungsbonus, der zur Ruestungsklasse addiert werden soll.
 
 BEMERKUNGEN
 -----------
-::
 
      Auch wenn man eine DefendFunc() benutzt, darf der Rueckgabewert
      zusammen mit der P_AC insgesamt nur in sehr seltenen, wohldurch-
      dachten Ausnahmefaellen die maximal zulaessige P_AC fuer diesen
      Ruestungstyp ueberschreiten. In solchen Ausnahmefaellen duerfen
      die DefendFuncs nicht konstant wirken.
+     Ausserdem sind solche Ruestungen immer genehmigungspflichtig.
 
      Bei aktivem Zurueckschlagen IMMER auf Flags wie SP_RECURSIVE und
      SP_NO_ACTIVE_DEFENSE pruefen und ggf. abbrechen.
 
 BEISPIELE
 ---------
-::
 
      Eine Ruestung, die bei Angriffen mit Feuer ihre volle Staerke entfaltet
      und bei Angriffen durch Geister geschwaecht wird:
 
-     void create()
+     protected void create()
      {
        ::create();
 
@@ -77,7 +65,7 @@ BEISPIELE
        SetProp(P_DEFEND_FUNC, this_object());
      }
 
-     int DefendFunc(string *dtyp, mixed spell, object enemy)
+     public int DefendFunc(string* dtyp, mapping spell, object enemy)
      {
        int prot;
 
@@ -99,10 +87,6 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-     P_DEFEND_FUNC, QueryDefend(), /std/armour/combat.c
-
-
-Last modified: 18.Jul 2006 Muadib
-
+     :doc:`../props/P_DEFEND_FUNC`, :doc:`QueryDefendd`
+     /std/armour/combat.c
