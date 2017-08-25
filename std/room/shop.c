@@ -223,9 +223,6 @@ protected object* GetShopItems()
   return m_values(items) + map(fixed_obj, #'load_object);
 }
 
-#define LIST_LONG  1
-#define LIST_SHORT 0
-
 // Kuemmert sich um die Listenausgabe fuer den Befehl "zeige"
 varargs protected int PrintList(string filter_fun, int liststyle)
 {

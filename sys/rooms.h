@@ -48,6 +48,10 @@
 #define MR_NOUID  0x1
 #define MR_NOINFO 0x2
 
+// Anzeige-Formate fuer den shop.c
+#define LIST_LONG  1
+#define LIST_SHORT 0
+
 #endif // __ROOM_H__
 
 #ifdef NEED_PROTOTYPES
