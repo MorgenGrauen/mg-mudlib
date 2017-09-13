@@ -31,8 +31,6 @@ nicht laden :-)
 inherit "/std/room";
 
 #include <properties.h>
-#include <language.h>
-#include <moving.h>
 
 /*
    Fuer properties und sonstige Definitionen zum Seherhaus.
@@ -48,7 +46,8 @@ private void haus_create();
 /*
 Es folgt nun das normale create() eines Raumes
 */
-void create(){
+protected void create()
+{
   ::create();
   /* ... div. Konfiguration des Raum ... */
 
@@ -69,7 +68,7 @@ private void haus_create()
   Wenn das Haus im Raum steht. Hat den Vorteil, dass bei einem Verlegen
   des Hauses, Cmd's usw nicht mehr verfuegbar sind -> Keine evtl Bugs :)
   */
-  if(objectp(ob))
+  if(objectp(ob) && environment(ob)==this_object())
   {
     /*
     Der Spieler wollte es ja nicht anders
