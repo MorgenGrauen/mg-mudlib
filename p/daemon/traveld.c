@@ -103,6 +103,25 @@ protected void create()
     if (MEMORY->Save("transporters",transporters) != 1)
       raise_error("Could not save memory to /secure/memory.");
   }
+  set_next_reset(10800);
+}
+
+public void reset()
+{
+  set_next_reset(10800);
+  // Als Wuergaround fuer das Problem, dass selten genutzte Transporter in
+  // spielerunzugaenglichen Raeumen stehen bleiben und der spielerzugaengliche Raum
+  // mangels Benutzung ausgeswappt wird, lassen wir hier alle paar Stunden mal
+  // alle bekannten Transporter loslaufen. Ohne Spielerkontakt bleiben sie
+  // nach einem Routenumlauf wieder stehen.
+  // TODO: Problem "richtig" loesen.
+  foreach(string ship: transporters)
+  {
+    // ja, geht nur fuer Blueprints. BTW: hart zerstoerte Transporter, die
+    // sich nicht abgemeldet haben, werden jetzt neugeladen. Das muss nicht
+    // immer gut sein, ist momentan aber sogar willkommen.
+    ship->Continue();
+  }
 }
 
 varargs int remove(int s)
