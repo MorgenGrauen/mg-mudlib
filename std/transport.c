@@ -594,16 +594,21 @@ private int maybe_pause()
 
 void changeHp()
 {
-  if (++rpos == sizeof(route))
+  // Nicht am Ende der Route? Eins weiter.
+  if (rpos < sizeof(route) - 1)
+      ++rpos;
+  else
   {
-    rpos = 0;
     //TRAVELD die aktuelle Route uebermitteln
     ReportRoute();
     // everytime, we pass the end of our route, we check if we should
     // pause our service.
     if (maybe_pause())
         return;
+    // wenn keine Pause, wieder zum Anfang der Route bewegen.
+    rpos = 0;
   }
+
   if (route[rpos][0] == HP_MSG)
   {
     call_out("changeHp",route[rpos][2]);
