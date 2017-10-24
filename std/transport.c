@@ -127,6 +127,12 @@ public int Continue()
   if (find_call_out("changeHp") == -1
       && find_call_out("disconnect") == -1)
   {
+      // Nach einer Pause wird die Route am aktuellen Haltepunkt fortgesetzt
+      // (im Regelfall also am Ende der Route). Am Routenende wird auch
+      // geprueft, wann der letzte Spielerkontakt war. Das darf nach einem
+      // Continue() aber nicht passieren, sonst wuerde der Transporter ggf.
+      // sofort wieder anhalten.
+      meet_last_player*=-1;  // neg. vorzeichen als Markierung
       unsubscribe_init();
       Start(rpos);
       return 1;
@@ -599,12 +605,23 @@ void changeHp()
       ++rpos;
   else
   {
-    //TRAVELD die aktuelle Route uebermitteln
-    ReportRoute();
-    // everytime, we pass the end of our route, we check if we should
-    // pause our service.
-    if (maybe_pause())
-        return;
+    // Routenende
+    // Nach einem expliziten Continue() ist meet_last_player < 0. Dann wird
+    // nicht geprueft, ob wir sofort wieder anhalten. Auch muss dann die Route
+    // nicht uebermittelt werden (hat Start() schon gemacht).
+    if (meet_last_player >= 0)
+    {
+        // TRAVELD die aktuelle Route uebermitteln
+        ReportRoute();
+        // everytime, we pass the end of our route, we check if we should
+        // pause our service.
+        if (maybe_pause())
+            return;
+    }
+    else
+        // Wieder pruefen im naechsten Durchlauf.
+        meet_last_player=abs(meet_last_player);
+
     // wenn keine Pause, wieder zum Anfang der Route bewegen.
     rpos = 0;
   }
