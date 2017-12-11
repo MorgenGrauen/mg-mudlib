@@ -2848,6 +2848,8 @@ SoulComm(string str, string _verb)  {
     else if (who->is_class_member(({CL_MAMMAL_LAND,CL_FELINE,"tiger",
                                     "steinbeisser","knuddeleisbaer"})))
       str1="Fell";
+    else if(who->is_class_member(({CL_PLANT})))
+      str1="Blaetter";
     else str1="Haare";
     out_sel="Du verwuschelst@@adverb@@ @@wessen@@ "+str1+".";
     out_vic="@@name@@ verwuschelt@@adverb@@ Dein"
