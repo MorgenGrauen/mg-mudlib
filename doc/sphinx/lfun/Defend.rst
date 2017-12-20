@@ -3,31 +3,36 @@ Defend()
 
 FUNKTION
 --------
+::
+
      public int Defend(int dam, string|string* dam_type, int|mapping spell, 
                         object enemy)
 
 DEFINIERT IN
 ------------
+::
 
      /std/living/combat
 
 ARGUMENTE
 ---------
+::
 
      int dam                  initiale Staerke des Angriffs (10 dam ~ 1 HP)
      string* dam_type         Art(en) des Schadens, der angerichtet werden
                               soll
                               Muss ein Array von Schadenstypen sein,
                               alte Objekte uebergeben hier manchmal strings.
-     mapping spell            Mapping mit zusaetzlichen Informationen zum 
-                              Angriff(Siehe unten)
-                              Alte Objekte uebergeben manchmal einen
-                              Integer (0 fuer Physikalischen Angriff, 1
-                              fuer Zauber.
+     int/mapping spell        - 0 fuer normale Angriffe (keine Zauber)
+                              - 1 fuer Zauber (Standardruestungen ignorieren)
+                              - mapping fuer mehr Informationen
+                              Heute bitte nach Moeglichkeit ein Mapping
+                              uebergeben.
      object enemy             der Feind/Schadenverursacher
 
 BESCHREIBUNG
 ------------
+::
 
      1. Generell
      Wenn das Lebewesen angegriffen wird, wird geprueft, wie stark die
@@ -62,8 +67,6 @@ BESCHREIBUNG
                 -> verhindert Rekursionsprobleme
      - SP_NAME --------------------- string
                 Name des Spells
-     - SP_GLOBAL_ATTACK ------------ 0/1
-                1 bei Flaechenspells
      - SP_REDUCE_ARMOUR ------------ Mapping: keys AT_X/P_BODY, values int>=0
                 Die Schutzwirkung durch P_AC/Magie einer Ruestung wird
                 typabhaengig reduziert. Aufbau eines Mappings im Beispiel:
@@ -118,6 +121,7 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
+::
 
      Ruestungen wirken konventionell nur, wenn mindestens ein Schadensanteil
      mechanisch ist und es kein Spell oder ein Spell mit SP_PHYSICAL_ATTACK
@@ -131,6 +135,7 @@ BEMERKUNGEN
 
 RUECKGABEWERT
 -------------
+::
 
      Hoehe des tatsaechlichen Schadens. Dies kann mehr sein als die
      Lebenspunkte des Lebewesens.
@@ -148,24 +153,22 @@ BEISPIELE (SIEHE AUCH Defend_bsp):
 
 SIEHE AUCH
 ----------
+::
 
-     Angriff: :doc:`Attack`, :doc:`../props/P_NO_ATTACK`, :doc:`InsertEnemy`
-     Schaden:   :doc:`../props/P_ENABLE_IN_ATTACK_OUT`, 
-                :doc:`../props/P_LAST_MOVE`, :doc:`do_damage`,
-                :doc:`reduce_hit_points`
-     Schutz:    :doc:`../props/P_DEFENDERS`, :doc:`InformDefend`,
-                :doc:`DefendOther`, :doc:`../props/P_ARMOURS`,
-                :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`,
-                :doc:`QueryDefend`, :doc:`../props/P_BODY`
-     Daten:     :doc:`../props/P_LAST_COMBAT_TIME`,
-                :doc:`../props/P_LAST_DAMTYPES`,
-                :doc:`../props/P_LAST_DAMTIME`, :doc:`../props/P_LAST_DAMAGE`,
-                :doc:`../props/P_DAMAGE_MSG`
-     Resistenz: :doc:`../props/P_RESISTANCE_STRENGTHS`,
-                :doc:`CheckResistance`
-     Sonstiges: :doc:`CheckSensitiveAttack`,
-                :doc:`InternalModifyDefend`,
-                :doc:`UseSkill`,
-                :doc:`DefendInfo`
+     Angriff:   Attack(L), P_NO_ATTACK, InsertEnemy(L)
+     Schaden:   P_ENABLE_IN_ATTACK_OUT, P_LAST_MOVE,
+                do_damage(L), reduce_hit_points(L)
+     Schutz:    P_DEFENDERS, InformDefend(L), DefendOther(L)
+                P_ARMOURS, P_AC, P_DEFEND_FUNC, QueryDefend(L)
+                P_BODY, A_DEX
+     Daten:     P_LAST_COMBAT_TIME
+                P_LAST_DAMTYPES, P_LAST_DAMTIME, P_LAST_DAMAGE
+                P_DAMAGE_MSG
+     Resistenz: P_RESISTANCE_STRENGTHS, CheckResistance(L)
+     Sonstiges: CheckSensitiveAttack(L)
+                InternalModifyDefend(L)
+                UseSkill(L),
+                DefendInfo
 
-Letzte Aenderung: 11.12.2017, Bugfix
+15.09.2010, Zesstra
+
