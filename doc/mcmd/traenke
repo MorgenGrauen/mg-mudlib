@@ -17,12 +17,17 @@ traenke
     Der Befehl wirkt als Umschalter: Kann man Traenke finden, so wird das
     Verhalten nun ausgeschaltet, und umgekehrt.
 
+    Lehrlingen steht dieser Befehl noch nicht zur Verfuegung. Zaubertraenke
+    im Gesellenstueck koennen jedoch bereits problemlos im Homemud ueberprueft
+    werden.
+
  HINWEIS:
     Wenn man mit eingeschaltetem "traenke" Zaubertraenke findet, werden
     diese NICHT aus der ZT-Liste ausgetragen.
+
 
  SIEHE AUCH:
     attribute, zaubertraenke
 
  LETZTE AeNDERUNG:
-   13.08.2015, Arathorn 
+    4. Januar 2018, durch Deaddy
