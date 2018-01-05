@@ -187,11 +187,11 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
     // Zeichen nach @WER & Co in runde Klammern einschliessen, damit es als
     // Sub-Pattern im Ausgabestring wiederholt werden kann. Ansonsten wuerde
     // es mit ersetzt.
-    TextForOthers = regreplace(TextForOthers, "@WER([^1-9])", "@WER1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WESSEN([^1-9])",
+    TextForOthers = regreplace(TextForOthers, "@WER([^1-9QU])", "@WER1\\1", 1);
+    TextForOthers = regreplace(TextForOthers, "@WESSEN([^1-9QU])",
                                "@WESSEN1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WEM([^1-9])", "@WEM1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WEN([^1-9])", "@WEN1\\1", 1);
+    TextForOthers = regreplace(TextForOthers, "@WEM([^1-9QU])", "@WEM1\\1", 1);
+    TextForOthers = regreplace(TextForOthers, "@WEN([^1-9QU])", "@WEN1\\1", 1);
   }
   total_rates=Query("npc:total_rates")+rate;
   spells=Query(P_SPELLS);
