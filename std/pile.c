@@ -117,7 +117,7 @@ void reset() {
   ::reset();
   // wenn nur noch unsichtbare items im Haufen: aufloesen
   if (!sizeof(filter(all_inventory(), function int (object o)
-          { return !o->short();} )))
+          { return stringp(o->short());} )))
     remove(1);
 
 }
