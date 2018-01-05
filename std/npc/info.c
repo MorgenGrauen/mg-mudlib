@@ -144,13 +144,13 @@ private string conv2replace_personal(string pstring)
 {
   pstring=" "+pstring;
   if (strstr(pstring,"@WER",0) >-1 )
-    pstring= regreplace(pstring, "@WER([^1-9])", "@WER1\\1", 1);
+    pstring= regreplace(pstring, "@WER([^1-9QU])", "@WER1\\1", 1);
   if (strstr(pstring,"@WESSEN",0) >-1 )
-    pstring= regreplace(pstring, "@WESSEN([^1-9])", "@WESSEN1\\1", 1);
+    pstring= regreplace(pstring, "@WESSEN([^1-9QU])", "@WESSEN1\\1", 1);
   if (strstr(pstring,"@WEM",0) >-1 )
-    pstring= regreplace(pstring, "@WEM([^1-9])", "@WEM1\\1", 1);
+    pstring= regreplace(pstring, "@WEM([^1-9QU])", "@WEM1\\1", 1);
   if (strstr(pstring,"@WEN",0) >-1 )
-    pstring= regreplace(pstring, "@WEN([^1-9])", "@WEN1\\1", 1);
+    pstring= regreplace(pstring, "@WEN([^1-9QU])", "@WEN1\\1", 1);
   if (strstr(pstring,"@CAP_WER",0) >-1 )
     pstring= regreplace(pstring,"@CAP_WER","@WER1",1);
   if (strstr(pstring,"@CAP_WESSEN",0) >-1 )
