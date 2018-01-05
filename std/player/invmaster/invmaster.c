@@ -143,7 +143,7 @@ static string ComposeDesc(object item)
   string text, *buff;
   
   text=regreplace(item->QueryProp(P_SHORT)
-                ||item->QueryProp(P_NAME)
+                ||item->name(RAW)
                 ||"<?>",
                 "^(Ein Paar|Ein|Eine|Der|Die|Das) ","",0);
                 
@@ -378,7 +378,7 @@ mapping weapon_names=([
 		       WT_MISC  : "Irgendwas",
 		       WT_MAGIC : "Artefakt",
 		       WT_AXE   : "Axt",
-	       WT_RANGED_WEAPON : "Fernwaffe"
+	         WT_RANGED_WEAPON : "Fernwaffe"
 		       ]);
 
 string SimpleInv(object player) {
@@ -392,7 +392,7 @@ string SimpleInv(object player) {
     if (!objectp(ob)) continue;
       int idx = member(armour_order, ob->QueryProp(P_ARMOUR_TYPE));	      
       if (idx>=0)
-        list[idx]=ob->QueryProp(P_SHORT);
+        list[idx]=ob->QueryProp(P_SHORT)||ob->name(RAW);
   }
 
   // AT_MISC (letztes Element in list und armour_order) weglassen.
@@ -401,12 +401,23 @@ string SimpleInv(object player) {
   }
 
   object ob=ob=player->QueryProp(P_WEAPON);
-  if (objectp(ob)) {
-    result+=sprintf("%-20s %-57s\n",
-		    (ob->QueryProp(P_NR_HANDS)==1 ? "Einhand-":"Zweihand-")
-		    +weapon_names[ob->QueryProp(P_WEAPON_TYPE)],
-		    ob->QueryProp(P_SHORT));
-  } else result+="Keine Waffe\n";
+  if (objectp(ob)) 
+  {
+    string waffentyp;
+    if ( ob->QueryProp(P_WEAPON_TYPE)!=WT_HANDS ) 
+    { 
+      waffentyp = (ob->QueryProp(P_NR_HANDS)==1 ? "Einhand-":"Zweihand-")
+		               +weapon_names[ob->QueryProp(P_WEAPON_TYPE)];
+    }
+    else
+    {
+      waffentyp = "Waffe";
+    }
+    result+=sprintf("%-20s %-57s\n", waffentyp,
+		    ob->QueryProp(P_SHORT)||ob->name(RAW));
+  } 
+  else 
+    result+="Keine Waffe\n";
 
   return result;
 }
