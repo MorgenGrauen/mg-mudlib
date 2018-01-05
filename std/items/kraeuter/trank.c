@@ -110,6 +110,9 @@ private string num2desc(int bumms)
   return "ungenehmigt viel"; // kommt hoffentlich nicht vor.
 }
 
+// Ermittelt den betragsmaessig staerksten wirksamen Effekt, d.h. wenn ein 
+// Trank eine starke negative Wirkung und eine mittelstarke positive Wirkung 
+// hat, wird hier die negative Wirkung ermittelt.
 varargs private string DetermineStrongestEffect(int pos)
 {
   // globale Werteliste befuellen, wenn da noch nichts drinsteht.
@@ -536,11 +539,19 @@ private int act_attr_dam_animals(int effekt)
   {
     if (!mappingp(att_classes)) att_classes=m_allocate(1);
     att_classes[CL_ANIMAL] = effekt/20;
-    tell_object(environment(), break_string(
+    if ( effekt > 0 )
+      tell_object(environment(), break_string(
         "Du spuerst in Dir ein seltsames Verlangen aufsteigen, auf die Jagd "
         "zu gehen - als wuerde Artemis persoenlich Deine Angriffe "
         + num2desc_fight(effekt)
-        + " verbessern.",78));
+        + " verbessern."),78);
+    else 
+      tell_object(environment(), break_string(
+        "Dein Verlangen, auf die Jagd zu gehen, ist auf einmal sehr "
+        "gedaempft, denn Du spuerst, dass Artemis Dich im Kampf gegen "
+        "ihre Schuetzlinge "
+        + num2desc_fight(effekt)
+        + "schwaechen wuerde.",78);
     return 1;
   }
   return 0;
@@ -561,7 +572,7 @@ private int act_attr_dam_magical(int effekt)
         "Merkwuerdig. Du hast gerade das Gefuehl, als fiele Dir der "
         "Kampf gegen von Hekate beschenkte Wesen "
         + num2desc_fight(effekt)
-        + " leichter.",78));
+        + (effekt<0?" schwerer":" leichter."),78));
     return 1;
   }
   return 0;
@@ -583,7 +594,7 @@ private int act_attr_dam_undead(int effekt)
         "Auf einmal hast Du den Eindruck, dass die Kreaturen des "
         "Hades Deinen Angriffen "
         + num2desc_fight(effekt)
-        + " weniger entgegen zu setzen haben.",78));
+        + (effekt<0?" mehr":" weniger")+" entgegenzusetzen haben.",78));
     return 1;
   }
   return 0;
@@ -595,10 +606,21 @@ private int act_attr_prot_animals(int effekt)
   {
     if (!mappingp(prot_classes)) prot_classes=m_allocate(1);
     prot_classes[CL_ANIMAL] = effekt/20;
-    tell_object(environment(), break_string(
+    if ( effekt>0 ) 
+    {
+      tell_object(environment(), break_string(
         "Du hast das Gefuehl, dass Artemis ihre schuetzende Hand "
         + num2desc_fight(effekt)
         + " ueber Dich haelt.",78));
+    }
+    else
+    {
+      tell_object(environment(), break_string(
+        "Du hast das Gefuehl, dass Artemis Dich im Kampf gegen ihre "
+        "Schuetzlinge "
+        + num2desc_fight(effekt)
+        + " schwaechen wird.",78));
+    }
     return 1;
   }
   return 0;
@@ -616,7 +638,7 @@ private int act_attr_prot_magical(int effekt)
     tell_object(environment(), break_string(
         "Du hast das Gefuehl, dass von Hekate beschenkte Wesenheiten Dir "
         +num2desc_fight(effekt)
-        + " weniger anhaben koennen.",78));
+        +(effekt<0?" mehr":" weniger")+" anhaben koennen.",78));
     return 1;
   }
   return 0;
@@ -630,10 +652,9 @@ private int act_attr_prot_undead(int effekt)
     if (!mappingp(prot_classes)) prot_classes=m_allocate(1);
     prot_classes[CL_UNDEAD] =  effekt/20;
     tell_object(environment(), break_string(
-        "Du bist ploetzlich zuversichtlich, Angriffen der Kreaturen "
-        "des Hades "
+        "Du bist Dir ploetzlich sicher, Angriffen der Kreaturen des Hades "
         + num2desc_fight(effekt)
-        + " besser widerstehen zu koennen.",78));
+        + (effekt<0?" schlechter":" besser")+" widerstehen zu koennen.",78));
     return 1;
   }
   return 0;
@@ -1088,7 +1109,7 @@ static int cmd_trinken(string str, mixed *param)
 {
   if (environment(this_object()) != PL)
   {
-    write("Aus auf dem Boden liegende Flaschen trinkt es sich so "
+    write("Aus auf dem Boden liegenden Flaschen trinkt es sich so "
        "schlecht!\n");
   }
   else if (data==0)
