@@ -31,7 +31,7 @@ void create()
   AddId(({ "blume", "glockenblume" }));
   
   AddDetail(({"blickfang","schoenheit"}),BS(
-     "Diese Glockenblume besticht durch ihre Schoenheit. Ihre Farben sind " 
+     "Diese Glockenblume besticht durch ihre Schoenheit. Ihre Farben " 
     +"sind ein wahrer Blickfang.\n"));
   AddDetail(({"farben","blueten"}),BS(
      "Die Blueten der Glockenblume sind blau-violett.\n"));
