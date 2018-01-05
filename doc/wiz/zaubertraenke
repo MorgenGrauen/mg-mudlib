@@ -6,7 +6,12 @@ Wie man die Traenke jetzt genau versteckt bleibt dem betreffenden Magier
 ueberlassen, es sollte halt insgesamt ein breites Spektrum von sehr leicht
 zu finden bis fast unmoeglich abgedeckt sein.
 Fuer das Orakel der Hochebene sollte dann ein entsprechender Spruch
-vorbereitet werden, nicht zu kryptisch aber doch orakleig.
+vorbereitet werden, nicht zu kryptisch aber doch orakelig. Wichtig ist auch,
+dass der Spruch nicht in Dateien oder Code festgehalten wird. Gerade im
+modernen Workflow mit Git ist darauf zu achten, da hier auch temporaere
+Kommentare oder Dateien wieder hergestellt werden koennten; am besten haelt
+man den Spruch also fest, in dem man sich selbst im Mud eine Mail schickt oder
+ihn an einem sonstwie sicheren Ort verwahrt.
 
 Die zufaellige Auswahl an zugeordneten Zaubertraenken wird beim ersten
 Einloggen des Spielers festgelegt.
@@ -18,30 +23,30 @@ Labyrinth schwieriger zu erreichen, als einer auf der Hochebene), und von
 dem Versteck selbst ab.
 Questraeume, die nur im Rahmen der Quest erreichbar sind, sind ungeeignet.
 
-
+BEISPIEL:
 Mein Standardbeispiel fuer ein Versteck ist immer folgendes:
- 
+
 > schaue
 blablablabla .... Ein Schreibtisch steht in der Ecke. ... blablabla
 > unt schreibtisch
 Er hat eine Schublade.
-> oeffne schublade                         
+> oeffne schublade
 Du oeffnest die Schublade.
 > unt schublade
 In der Schublade enteckst Du ein paar Papiere.
 > unt papiere
 Beim Rumwuehlen in den Papieren entdeckst Du einen kleinen Zaubertrank, den
 Du sofort trinkst.
- 
+
 Dann kommt die Auswahlsequenz, welche Eigenschaft man erhoehen will.
- 
+
 In diesem Fall reichen Details, Details mit Closure und eine Kommando fuer
 "oeffne" aus. Etwa wie folgt:
 
   void create() {
     [...]
     SetProp(P_INT_LONG, ... Ein Schreibtisch steht in der Ecke ...);
-  
+
     AddDetail(({"tisch", "schreibtisch"}),
       "Er hat eine Schublade.");
 
@@ -59,12 +64,12 @@ In diesem Fall reichen Details, Details mit Closure und eine Kommando fuer
     AddDetail("papiere", #'detail_papiere);
   }
 
-  // Zaubertrankgebendes Detail  
+  // Zaubertrankgebendes Detail
   private string detail_papiere() {
     if (this_player()->FindPotion(
         break_string("Beim Rumwuehlen in den Papieren entdeckst Du einen "
                      "kleinen Zaubertrank, den Du sofort trinkst.", 78)))
-      return "";  
+      return "";
       // Es muss ein String zurueckgegeben werden, da man sonst
       // die Fehlermeldung "Sowas siehst du hier nicht." bekommt
     else
@@ -79,17 +84,21 @@ In diesem Fall reichen Details, Details mit Closure und eine Kommando fuer
     }
     ::reset();
   }
-  
+
 FindPotion() gibt 1 zurueck, wenn der Spieler den Zaubertrank finden darf.
 
 Wer also Traenke verstecken will, macht sowas in der Art und meldet dann den
-Raum persoenlich oder per Post bei den Erzmagiern bzw seinem aktiven
-Regionsmagier an.
- 
+Raum persoenlich oder per Post bei den Erzmagiern bzw. seinem aktiven
+Regionsmagier an. Diese sollten dann auch den zugehoerigen Spruch erhalten,
+welcher, wie oben erwaehnt, ja nicht im Code oder in einer dabeiliegenden
+Datei stehen sollte.
+
 SIEHE AUCH:
     Weitere Dateinamen mit Beispielen fuer Trankverstecke kann man der
     Datei /etc/traenke entnehmen.
 
-    Befehl:    traenke (fuer Magier zum Einschalten des Findens von ZTs)
+    FindPotion - die Funktion, mit welcher man den Trank im Code einbaut
+    traenke    - Magierbefehl zum Einschalten des Findens von ZTs
 
-10. August 2015 Gloinson
+LETZTE AeNDERUNG:
+  4. Januar 2018 durch Deaddy
