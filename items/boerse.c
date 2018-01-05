@@ -25,7 +25,7 @@ protected void create()
   ::create();
   SetProp(P_NAME, "Geldboerse");
   SetProp(P_SHORT, "Eine Geldboerse");
-  SetProp(P_LONG,  "Eine schoene aus Leder gefertigte Geldboerse.\n");
+  SetProp(P_LONG,  "Eine schoene, aus Leder gefertigte Geldboerse.\n");
   SetProp(P_MATERIAL, ([MAT_LEATHER:100]));
   SetProp(P_GENDER, FEMALE);
   SetProp(P_VALUE,  80);
