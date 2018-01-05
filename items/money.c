@@ -310,7 +310,7 @@ protected void create()
   AddDetail(({"rand","muenzrand"}),#'DetRand);
   AddDetail(({"oberflaeche","flaeche"}),break_string(
    "Diese Muenze ist schon durch viele Haende gegangen. Die Kratzer "
-   "zeugen davon, dass sie nicht selten allein getragen wurde und die "
+   "zeugen davon, dass sie selten allein getragen wurde, und die "
    "Bissspuren von mangelndem Vertrauen.",78));
   AddDetail("kratzer",break_string(
    "Das Konterfei ist schon ganz schoen zerkratzt.",78));
