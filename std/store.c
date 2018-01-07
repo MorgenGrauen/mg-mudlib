@@ -122,7 +122,7 @@ protected void aufraeumen() {
 public void reset()
 {
   int i, to;
-  mixed itemlist;
+  < <int|<string|string*>|object>* >* itemlist;
   
   items::reset();
   _set_store_percent_left();
@@ -138,12 +138,13 @@ public void reset()
   {
     // Elemente ohne konkretes Objekt (Index 0 im Wertearray fuer den Key)
     // ausfiltern.
-    itemlist=filter(itemlist,
-      function int(<object|<string|string*>|int>* arg)
+    itemlist=filter(itemlist, #'[, 0);
+    all-=map(itemlist,
+      function object(<int|<string|string*>|object>* arr)
       {
-        return objectp(arg[0]);
+        return arr[0];
       });
-    all-=itemlist;
+
     if (!sizeof(all))
     {
       all=0; // Speicher freigeben
