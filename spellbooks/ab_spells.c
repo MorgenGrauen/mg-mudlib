@@ -531,5 +531,9 @@ schnell(object caster, mapping sinfo) {
     dauer = 60;
   caster->ModifySkillAttribute(SA_SPEED, 100, dauer);
 
+  call_out(function void (object pl)
+      {if (pl) tell_object(pl, "Du wirst wieder langsamer.\n"); },
+        dauer-__HEART_BEAT_INTERVAL__, caster);
+
   return ERFOLG;
 }
