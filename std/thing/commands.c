@@ -307,7 +307,7 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
  }
  
  if(!added_cmds || (!cmd && !del_norule && !onlyid))
-  added_cmds=(mapping)0; 
+  added_cmds=m_allocate(0, CMDS_WIDTH); 
  else {
   int i, j;
   mixed *rule, *flag, *fun, *delrule, *ids, *cachecl;
@@ -371,7 +371,6 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
     added_cmds[cmd[i], CMDIDX_CACHE]=cachecl;
    } else m_delete(added_cmds,cmd[i]);
   }
-  if(!sizeof(added_cmds)) added_cmds=(mapping)0;
  }
  return ret;
 }
