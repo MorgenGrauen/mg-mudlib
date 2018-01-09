@@ -122,3 +122,18 @@ void reset() {
 
 }
 
+// Verhindert die Zerstoerung im reset() von Containern, die mit
+// remove_multiple() nach identischen Objekten suchen, um Muell zu
+// reduzieren. Das ist aber nur dann sinnvoll, wenn nach dem Zerstoeren
+// nicht mehr Muell rumliegt als vorher, daher geben wir 0 zurueck, wenn
+// der Haufen mehr als ein Objekt enthaelt. Weiterhin raeumt sich der Pile
+// im Lauf der Zeit selber auf/weg.
+// Objekte, die 0 zurueckgeben, werden in remove_multiple() uebersprungen.
+public string description_id()
+{
+  if ( sizeof(all_inventory(this_object())) > 1 )
+  {
+    return 0;
+  }
+  return ::description_id();
+}
