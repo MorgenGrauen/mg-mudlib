@@ -544,14 +544,14 @@ private int act_attr_dam_animals(int effekt)
         "Du spuerst in Dir ein seltsames Verlangen aufsteigen, auf die Jagd "
         "zu gehen - als wuerde Artemis persoenlich Deine Angriffe "
         + num2desc_fight(effekt)
-        + " verbessern."),78);
+        + " verbessern.",78));
     else 
       tell_object(environment(), break_string(
         "Dein Verlangen, auf die Jagd zu gehen, ist auf einmal sehr "
         "gedaempft, denn Du spuerst, dass Artemis Dich im Kampf gegen "
         "ihre Schuetzlinge "
         + num2desc_fight(effekt)
-        + "schwaechen wuerde.",78);
+        + "schwaechen wuerde.",78));
     return 1;
   }
   return 0;
