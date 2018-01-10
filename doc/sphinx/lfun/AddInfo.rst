@@ -71,7 +71,8 @@ BESCHREIBUNG
      Objekt 1 ist this_player(). Ersetzte String am Satzanfang werden
      automatisch gross geschrieben.
      AddInfo() konvertiert die alten Schluesselworte @WER, @WESSEN, @WEM,
-     @WEN zu denen von replace_personal().
+     @WEN zu denen von replace_personal(), jedoch nicht in den Rueckgabe-
+     werten von Closures.
 
      Mittels der in <npc.h> definierten Frage DEFAULT_INFO kann eine
      Meldung gesetzt werden, die gegeben werden soll, wenn der Spieler
