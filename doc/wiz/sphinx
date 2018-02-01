@@ -1,0 +1,97 @@
+Sphinx
+======
+
+Was ist Sphinx?
+---------------
+
+    Sphinx ist ein Tool, welches Dokumentation aus Dateien im rST-Format
+    generiert. Also beispielsweise manpages, wie beispielsweise inzwischen
+    die Manpages fuer sefuns und lfuns. Also man schreibt alle Manpages im
+    rST-Format und dann kann Sphinx da alles draus machen, z.B. Manpages,
+    HTML-Seiten, PDFs, epubs etc.
+
+    Das rST-Format ist dabei ein sogenanntes Markdownformat. Man schreibt
+    eigentlich alles so, wie man es auch in einem einfachen Text, also
+    beispielsweise dieser Manpage schreiben wuerde, und nur an Stellen,
+    welche besonders sein sollen, benutzt man mal gar nicht so komplizierte
+    Auszeichnungen.
+
+    "Hm, kann ich nicht einfach meine Manpages wie vorher schreiben?" fragst
+    Du und eigentlich hast Du recht. Vorausgesetzt, Du hast Deine Manpages
+    vorher bereits einigermassen schoen formatiert, und die Ueberschrift der
+    Manpage beispielsweise mit einer Reihe Gleichheitszeichen, die
+    Unterueberschriften mit einer Reihe Minuszeichen abgetrennt, und alles
+    darunter ein bisschen und vor allem gleichmaessig eingerueckt.
+
+    "Also schreibe ich meine Manpages, und dann roedelt da eine Maschine ewig
+    lange drueber und am Ende sieht es doch wieder genauso aus, wie es vorher
+    aussah?" Streng genommen. Muss man zugeben. Ja. Oder auch nicht. Die
+    Vorteile kriegen besser mal einen eigenen Abschnitt.
+
+
+Vorteile von Sphinx
+-------------------
+
+    - Dokumentation in verschiedenen Formaten verfuegbar, beispielsweise
+      findet man die schon in Sphinx ueberfuehrten Seiten in HTML formatiert
+      und durchsuchbar unter http://mg.mud.de/mglibdoc/
+      -- hier profitiert man auch gut von den Verlinkungen.
+
+    - es unterstuetzt Magier sich an ein paar wenige Regeln zu halten, welche
+      die Manpages auf jeden Fall uebersichtlicher halten.
+
+    - fast gar kein Mehraufwand fuer den dokuschreibenden Magier; rST sieht
+      eigentlich genauso aus, wie man es eh schreiben wuerde, es gibt einem
+      nur noch weitere Möglichkeiten
+
+
+Wo finde ich mehr ueber dieses Sphinx und rST?
+----------------------------------------------
+
+    Zunaechst sei angemerkt, dass rST ein ziemlich unspezifisches Format ist.
+    Generell empfiehlt es sich, nicht nur die Dokumentation zu rST zu lesen,
+    sondern auch ein paar Dateien im MorgenGrauen anzuschauen, die dann
+    zeigen, wie es schon konkret umgesetzt wurde; letztere fuehre ich
+    natuerlich auch auf:
+
+    - http://www.sphinx-doc.org/en/stable/rest.html
+      die Sphinx-Dokumentation von diesem rST-Format
+
+    - doc/sphinx
+      der Ort in der Mudlib, an dem die sphinx-Dateien landen
+
+    - doc/sphinx/lfun/AddRoomMessage.rst, doc/sphinx/lfun/AddInfo.rst
+      doc/sphinx/lfun/RemoveExtraLook.rst, doc/sphinx/send_room.rst
+      Beispiele fuer Dateien die bereits in das rST-Format ueberfuehrt wurden
+
+    - http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html --
+      eine etwas ausfuehrlichere Referenz zu rST
+
+    - http://www.sphinx-doc.org/ -- die Sphinx-Webseite
+
+    
+Hilfe, alle .rST-Files sind graesslich formatiert!
+--------------------------------------------------
+
+    Derzeit sind die meisten noch automatisch durch ein Skript in das neue
+    Format ueberfuehrt worden. Das erkennt man daran, dass meistens direkt
+    nach der Ueberschrift ein :: folgt, und alles mit unzaehligen Spaces
+    eingerueckt ist. Da muesste jemand wirklich mal anpacken und das schoen
+    machen! 
+
+    > unt jemand
+    Du!
+
+    Ausserdem ist noch gar nicht alles in Sphinx drin, aber zumindest
+    schonmal lfuns, efuns und PROPS.
+
+SIEHE AUCH
+----------
+
+    andere Dokumentationen zu Dokumentation und Workflow:
+
+    wiz/man, wiz/gerrit, wiz/git, wiz/regionsleitfaden
+    concepts/goodstyle
+
+
+Letzte Aenderung: 2018-02-01 von Deaddy
