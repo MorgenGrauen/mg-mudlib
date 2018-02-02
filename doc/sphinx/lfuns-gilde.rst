@@ -7,5 +7,5 @@ Verzeichnis der lfuns speziell in/für Gilden
    :maxdepth: 1
    :glob:
 
-   lfuns/gilde/*
+   lfun/gilde/*
 

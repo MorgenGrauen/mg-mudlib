@@ -5,7 +5,7 @@ FUNKTION
 --------
 
     varargs void send_room(object|string room, string msg, int msg_type,
-            string msg_action, string msg_prefix, object *exclude,
+            string msg_action, string msg_prefix, object \*exclude,
             object origin)
 
 BESCHREIBUNG
