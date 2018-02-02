@@ -19,4 +19,4 @@ Verzeichnis der dokumentierten sefuns im Morgengrauen:
    :glob:
 
    sefun/*
-
+   sefun-obsolet

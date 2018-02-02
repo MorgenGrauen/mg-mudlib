@@ -1,6 +1,6 @@
 .. Morgengrauen-Mudlib - lfuns
 
-Verzeichnis der lfuns speziell in/für Gilden
+Verzeichnis der lfuns speziell in/fuer Gilden
 ============================================
 
 .. toctree::
