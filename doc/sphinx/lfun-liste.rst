@@ -9,6 +9,7 @@ Verzeichnis der dokumentierten lfuns
 
    lfun/*
    lfuns-gilde
+   lfuns-spellbook
    lfuns-master
    lfuns-obsolet
 
