@@ -31,7 +31,8 @@ ARGUMENTE
 BESCHREIBUNG
 ------------
 
-  1. Generell
+    Generell
+
     Wenn das Lebewesen angegriffen wird, wird geprueft, wie stark die
     Ruestungen und koerpereigenen Abwehrkraefte sind und die Staerke des
     Schadens dementsprechend vermindert.
@@ -40,7 +41,8 @@ BESCHREIBUNG
     (dam-Summe(Ruestungsstaerken)-random(P_BODY+A_DEX))*CheckResistance/10
     aber nicht unter 0.
 
-  2. Der Parameter 'spell'
+    Der Parameter 'spell'
+
     Ist 'spell' 0, dann gilt der Angriff als normale physische Attacke
     Uebergibt man als 'spell'-Parameter ein Mapping, so gibt es dafuer
     diverse Flags, die das Ergebnis manipulieren (in new_skills.h
@@ -68,15 +70,18 @@ BESCHREIBUNG
     - SP_REDUCE_ARMOUR ------------ Mapping: keys AT_X/P_BODY, values int>=0
       Die Schutzwirkung durch P_AC/Magie einer Ruestung wird typabhaengig 
       reduziert. Aufbau eines Mappings im Beispiel:
-        ([AT_BOOTS: 0,  // Stiefel schuetzen gar nicht
-        P_BODY:  50,  // Koerper zu 50%
-        AT_BELT: 600  // Guertel zu 600%
-        ])
+      
+      ([AT_BOOTS: 0,  // Stiefel schuetzen gar nicht
+      P_BODY:  50,  // Koerper zu 50%
+      AT_BELT: 600  // Guertel zu 600%
+      ])
       -> alle 'fehlenden' Eintraege wirken normal
+
     - SP_SHOW_DAMAGE -------------- 0/1 oder Array von Arrays
       0, fuer keine Treffermeldung, 1 sonst
       In einem Array koennen Ersatz-Treffermeldungen definiert werden. Format ist:
-                  ({
+
+        ({
         ({ int lphit1, string mess_me, string mess_en, string mess_room }),
         ({ lphit2, mess_me, mess_en, mess_room }),
         ...
@@ -91,27 +96,30 @@ BESCHREIBUNG
       In den Meldungen mess_me (an den Getroffenen), mess_en (an den Feind),
       mess_room (an die restlichen Umstehenden) koennen Ersatzstrings wie
       folgt verwendet werden:
-        @WER1/@WESSEN1/@WEM1/@WEN1 - name(casus) des Getroffenen (TO)
-        @WER2/@WESSEN2/@WEM2/@WEN2 - name(casus) des Feindes (enemy)
-    - EINFO_DEFEND ------------ Mapping
+
+      @WER1/@WESSEN1/@WEM1/@WEN1 - name(casus) des Getroffenen (TO)
+      @WER2/@WESSEN2/@WEM2/@WEN2 - name(casus) des Feindes (enemy)
+
+      EINFO_DEFEND ------------ Mapping
       Dieses Mapping liefert erweiterte Informationen zu dem
       bisherigen Ablauf des aktiven Attacks.
       Die verfuegbaren Informationen sind in der Manpage zu
       DefendInfo festgehalten.
 
-  3. Reihenfolgen in Defend
-    - das Living wird angegriffen, wenn
-      - P_NO_ATTACK != 0
-      - 'enemy' existiert und kein netztoter Spieler ist
-    - P_DEFENDERS werden durchgegangen (und eventuell benachrichtigt)
-    - P_TMP_ATTACK_HOOK wird abgefragt
-    - die Ruestungen werden vom Schaden gegebenenfalls abgezogen
-    - magischer Ausweichskill beruecksichtigt
-    - sensitive Objekte werden ggf. benachrichtigt
-    - InternalModifyDefend wird gerufen
-    - Koerperabwehr abgezogen
-    - der Schaden an do_damage()/reduce_hit_points() uebergeben
-    - Flucht ueberpruefen mit CheckWimpyAndFlee()
+  Reihenfolgen in Defend
+
+  * das Living wird angegriffen, wenn
+    * P_NO_ATTACK != 0
+    * 'enemy' existiert und kein netztoter Spieler ist
+  * P_DEFENDERS werden durchgegangen (und eventuell benachrichtigt)
+  * P_TMP_ATTACK_HOOK wird abgefragt
+  * die Ruestungen werden vom Schaden gegebenenfalls abgezogen
+  * magischer Ausweichskill beruecksichtigt
+  * sensitive Objekte werden ggf. benachrichtigt
+  * InternalModifyDefend wird gerufen
+  * Koerperabwehr abgezogen
+  * der Schaden an do_damage()/reduce_hit_points() uebergeben
+  * Flucht ueberpruefen mit CheckWimpyAndFlee()
 
 BEMERKUNGEN
 -----------
@@ -132,7 +140,10 @@ RUECKGABEWERT
   Hoehe des tatsaechlichen Schadens. Dies kann mehr sein als die
   Lebenspunkte des Lebewesens.
 
-BEISPIELE (SIEHE AUCH Defend_bsp):
+BEISPIELE (SIEHE AUCH Defend_bsp)
+---------------------------------
+::
+
   // ein simpler Angriff:
   enem->Defend(100, ({DT_BLUDGEON}), ([SP_PHYSICAL_ATTACK:1]), this_object());
 
@@ -147,22 +158,27 @@ SIEHE AUCH
 ----------
 
   Angriff: :doc:`Attack`, :doc:`../props/P_NO_ATTACK`, :doc:`InsertEnemy`
+
   Schaden:   :doc:`../props/P_ENABLE_IN_ATTACK_OUT`, 
-    :doc:`../props/P_LAST_MOVE`, :doc:`do_damage`,
-    :doc:`reduce_hit_points`
+  :doc:`../props/P_LAST_MOVE`, :doc:`do_damage`,
+  :doc:`reduce_hit_points`
+
   Schutz:    :doc:`../props/P_DEFENDERS`, :doc:`InformDefend`,
-    :doc:`DefendOther`, :doc:`../props/P_ARMOURS`,
-    :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`,
-    :doc:`QueryDefend`, :doc:`../props/P_BODY`
+  :doc:`DefendOther`, :doc:`../props/P_ARMOURS`,
+  :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`,
+  :doc:`QueryDefend`, :doc:`../props/P_BODY`
+
   Daten:     :doc:`../props/P_LAST_COMBAT_TIME`,
-    :doc:`../props/P_LAST_DAMTYPES`,
-    :doc:`../props/P_LAST_DAMTIME`, :doc:`../props/P_LAST_DAMAGE`,
-    :doc:`../props/P_DAMAGE_MSG`
+  :doc:`../props/P_LAST_DAMTYPES`,
+  :doc:`../props/P_LAST_DAMTIME`, :doc:`../props/P_LAST_DAMAGE`,
+  :doc:`../props/P_DAMAGE_MSG`
+
   Resistenz: :doc:`../props/P_RESISTANCE_STRENGTHS`,
-    :doc:`CheckResistance`
+  :doc:`CheckResistance`
+
   Sonstiges: :doc:`CheckSensitiveAttack`,
-    :doc:`InternalModifyDefend`,
-    :doc:`UseSkill`,
-    :doc:`DefendInfo`
+  :doc:`InternalModifyDefend`,
+  :doc:`UseSkill`,
+  :doc:`DefendInfo`
 
 Letzte Aenderung: 29.12.2017, Bugfix
