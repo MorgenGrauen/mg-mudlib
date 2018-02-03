@@ -143,10 +143,10 @@ static string *_query_racestring()
 {
   if (pointerp(Query(P_RACESTRING)))
     return Query(P_RACESTRING);
-  else
-    return
-    ({QueryProp(P_RACE),QueryProp(P_RACE),
-      QueryProp(P_RACE),QueryProp(P_RACE)});
+  else {
+    string rstring = (QueryProp(P_GENDER)==FEMALE ? "Magierin" : "Magier");
+    return (string*)allocate(4, rstring);
+  }
 }
 
 
