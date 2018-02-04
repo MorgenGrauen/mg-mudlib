@@ -4,7 +4,7 @@ AddRoomMessage()
 FUNKTION
 --------
 
-     void AddRoomMessage(string *msg, int time, mixed *func);
+     void AddRoomMessage(string* msg, int time, mixed* func);
 
 DEFINIERT IN
 ------------
@@ -65,7 +65,7 @@ BEMERKUNGEN
 BEISPIELE
 ---------
 
-  .. code-block:: pike
+.. code-block:: pike
 
      // Beispiel 1:
      // Es soll alle halbe Minute eine Meldung ausgegeben werden. Falls es
@@ -96,7 +96,7 @@ BEISPIELE
      }
 
 
-  .. code-block:: pike
+.. code-block:: pike
 
      // Beispiel 2: Abschalten der Raumnachrichten
      public int action_laerm(string str);
@@ -128,7 +128,7 @@ BEISPIELE
          "Du schreist dir kurz die Seele aus dem Leib. Alle Tiere "
          "verstummen sofort.", MT_NOTIFICATION);
        send_room(this_object(),
-         this_player()->Name()+" schreit laut. Alle Tiere verstimmen "
+         this_player()->Name()+" schreit laut. Alle Tiere verstummen "
          "sofort.", MT_LISTEN, 0, 0, ({this_player()}));
        return 1;
      }

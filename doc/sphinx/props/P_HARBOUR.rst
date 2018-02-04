@@ -3,25 +3,21 @@ P_HARBOUR
 
 NAME
 ----
-::
 
     P_HARBOUR                                  "harbour_name"                   
 
 DEFINIERT IN
 ------------
-::
 
     /sys/transport.h
 
 BESCHREIBUNG
 ------------
-::
 
     Array mit eindeutiger Bezeichnung des 'Hafens'
 
 BEMERKUNGEN
 -----------
-::
 
     Diese Property wird in Raeumen gesetzt, die als Anleger fuer Transporter
     dienen sollen. Sie enthaelt ein Array aus zwei Elementen, einem String
@@ -30,8 +26,11 @@ BEMERKUNGEN
     ({ "zur Sonneninsel", ({"sonneninsel"}) }) oder 
     ({ "nach Titiwu", ({"titiwu"}) })
 
-    Damit bekommt der Spieler bei einer Abfrage seiner Reiseroute mittels
-    "reise route" eine Ausgabe wie 
+    Hafen der Sonneninsel: ({ "zur Sonneninsel", ({"sonneninsel"}) }) oder
+    Hafen von Titiwu:      ({ "nach Titiwu", ({"titiwu"}) })
+
+    Damit bekommt der Spieler bei einer Abfrage seiner Reiseroute mittels 
+    "reise route", sofern er schon eine gesetzt hat, eine Ausgabe wie
       'Du reist mit dem Floss nach Titiwu' oder
       'Du reist mit dem Wal zur Sonneninsel'.
 
@@ -54,7 +53,6 @@ BEMERKUNGEN
 
 HINWEISE
 --------
-::
 
     Wird der zweite Parameter in dieser Property, d.h. die Liste der 
     Anleger-IDs, nicht korrekt gesetzt, kann das dazu fuehren, dass Spieler
@@ -67,7 +65,6 @@ HINWEISE
 
 HISTORIE
 --------
-::
 
     Frueher war der zweite Eintrag in dieser Property ein einzelner String.
     Es existiert eine SetMethode auf dieser Property, die solche Daten in
@@ -76,21 +73,17 @@ HISTORIE
     den Daten im File uebereinstimmen. Dies moege aber bitte niemand 
     zum Anlass nehmen, in neuem Code veraltete Daten in die Property zu 
     schreiben!
-
     
 
 SIEHE AUCH
 ----------
-::
 
-  Properties:     P_NO_TRAVELING, P_TRAVEL_INFO
-  Funktionen:     AddRoute(L)
+  Properties:     :doc:`P_NO_TRAVELING`, :doc:`P_TRAVEL_INFO`
+  Funktionen:     :doc:`../lfun/AddRoute`
   Spielerbefehle: reise
   weitere Doku:   /d/inseln/schiffe/HowTo
 
 LETZTE AENDERUNG
 ----------------
-::
 
-2015-Jan-18, Arathorn
-
+04.02.2018, Arathorn

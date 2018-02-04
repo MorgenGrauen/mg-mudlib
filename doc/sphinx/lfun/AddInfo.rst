@@ -246,7 +246,7 @@ SIEHE AUCH
      Files:
        /std/npc/info.c
      Loggen:
-       :doc:`P_LOG_INFO`
+       :doc:`../props/P_LOG_INFO`
      Interna:
        :doc:`GetInfoArr` , :doc:`do_frage`
 
