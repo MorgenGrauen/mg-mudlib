@@ -52,13 +52,19 @@ protected void process_chat(mixed strs) {
     }
     if(closurep(entry))
       entry = funcall(entry, &msg_typ);
+    entry = process_string(entry);
 
     if(msg_typ)
       msg_typ|=MSG_DONT_STORE|MSG_DONT_BUFFER;
-    send_room(environment(),
-              process_string(entry),
-              msg_typ||(MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL|
-                        MSG_DONT_STORE|MSG_DONT_BUFFER|MSG_DONT_WRAP));
+
+    // Nur nicht-leere Meldungen ausgeben, und nur dann, wenn der NPC noch
+    // existiert, denn im Falle von Attack-Chats koennte dieser z.B. durch
+    // reflektierten Schaden zerstoert worden sein.
+    if ( stringp(entry) && sizeof(entry) && objectp(this_object()) )
+      send_room(environment(),
+                entry,
+                msg_typ||(MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL|
+                          MSG_DONT_STORE|MSG_DONT_BUFFER|MSG_DONT_WRAP));
   }
 }
 
