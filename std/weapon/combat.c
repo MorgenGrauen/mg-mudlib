@@ -308,7 +308,7 @@ varargs int DoWield(int silent)
         {
             // Sonst Meldung ausgeben
             notify_fail("Das geht nicht, solange Du noch eine andere "+
-                 "Paierwaffe gezueckt hast.\n");
+                 "Parierwaffe gezueckt hast.\n");
             return 0;
         }
     }
