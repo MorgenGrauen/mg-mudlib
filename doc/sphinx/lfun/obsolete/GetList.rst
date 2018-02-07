@@ -9,7 +9,7 @@ GetList()
 FUNKTION
 --------
 
-    static mixed *GetList()
+    static mixed \*GetList()
 
 DEFINIERT IN
 ------------
@@ -28,4 +28,4 @@ RUECKGABEWERTE
 SIEHE AUCH
 ----------
 
-    :doc:`GetShopItems`
+    :doc:`../GetShopItems`

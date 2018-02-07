@@ -28,4 +28,4 @@ RUECKGABEWERTE
 SIEHE AUCH
 ----------
 
-    :doc:`PrintList`
+    :doc:`../PrintList`
