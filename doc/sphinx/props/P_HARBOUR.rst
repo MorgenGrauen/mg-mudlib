@@ -31,6 +31,8 @@ BEMERKUNGEN
 
     Damit bekommt der Spieler bei einer Abfrage seiner Reiseroute mittels 
     "reise route", sofern er schon eine gesetzt hat, eine Ausgabe wie
+    ..
+
       'Du reist mit dem Floss nach Titiwu' oder
       'Du reist mit dem Wal zur Sonneninsel'.
 
