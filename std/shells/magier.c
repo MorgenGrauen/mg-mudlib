@@ -145,7 +145,7 @@ static string *_query_racestring()
     return Query(P_RACESTRING);
   else {
     string rstring = (QueryProp(P_GENDER)==FEMALE ? "Magierin" : "Magier");
-    return (string*)allocate(4, rstring);
+    return allocate(4, rstring);
   }
 }
 
