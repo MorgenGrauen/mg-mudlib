@@ -6,7 +6,8 @@ P_SYNTAX_HELP
 NAME
 ====
 
-   P_SYNTAX_HELP              "lib_p_syntax_help"
+   P_SYNTAX_HELP
+      "lib_p_syntax_help"
 
 
 DEFINIERT IN
@@ -18,34 +19,35 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   In dieser Property kann man fuer Spieler eine ausfuehrliche Syntaxhilfe zu
-   den Kommandos eines Objektes ablegen. Diese wird angezeigt, wenn der
-   Spieler das Kommando "synxtaxhilfe <objekt>" eingibt.
-   Die Property kann verschiedene Datenstrukturen enthalten:
+   In dieser Property kann man fuer Spieler eine ausfuehrliche
+   Syntaxhilfe zu den Kommandos eines Objektes ablegen. Diese wird
+   angezeigt, wenn der Spieler das Kommando "syntaxhilfe <objekt>"
+   eingibt. Die Property kann verschiedene Datenstrukturen enthalten:
 
-   1) ein String
-   Der String wird angezeigt, hierbei ggf. umgebrochen, vorhandene
-   Zeilenumbrueche werden beibehalten.
+   1) ein String Der String wird angezeigt, hierbei ggf. umgebrochen,
+   vorhandene Zeilenumbrueche werden beibehalten.
 
-   2) ein Array: ({hilfetext, bedingungen})
+   2. ein Array: ({hilfetext, bedingungen})
 
    <hilfetext>:
-     * ein string:
-       Der String wird angezeigt, hierbei ggf. umgebrochen, vorhandene
-       Zeilenumbrueche werden beibehalten.
-     * eine lfun-closure:
-       Diese erhaelt beim Aufruf das betreffende Objekt als Argument.
-       Wenn diese dann einen String zurueckliefert, wird dieser dem Spieler
-       angezeigt. Hierbei wird ggf. umgebrochen, vorhandene Zeilenumbrueche
-       werden beibehalten.
+      * ein string: Der String wird angezeigt, hierbei ggf.
+        umgebrochen, vorhandene Zeilenumbrueche werden beibehalten.
 
-   <bedingungen>, welche erfuellt sein muessen, damit dem Spieler die Hilfe
-   angezeigt wird. Die Bedingungen sind entweder:
-     * ein Mapping fuer check_restriction()
-     * eine lfun-closure
-       Diese erhaelt beim Aufruf das betreffende Objekt als Argument und darf
-       eine 0 fuer 'erlaubt', 1 fuer 'nicht erlaubt (mit Standardtext)' oder
-       einen string fuer 'nicht erlaubt mit individuellem Text' sein.
+      * eine lfun-closure: Diese erhaelt beim Aufruf das betreffende
+        Objekt als Argument. Wenn diese dann einen String
+        zurueckliefert, wird dieser dem Spieler angezeigt. Hierbei
+        wird ggf. umgebrochen, vorhandene Zeilenumbrueche werden
+        beibehalten.
+
+   <bedingungen>, welche erfuellt sein muessen, damit dem Spieler die
+   Hilfe angezeigt wird. Die Bedingungen sind entweder:
+
+      * ein Mapping fuer check_restriction()
+
+      * eine lfun-closure Diese erhaelt beim Aufruf das betreffende
+        Objekt als Argument und darf eine 0 fuer 'erlaubt', 1 fuer
+        'nicht erlaubt (mit Standardtext)' oder einen string fuer
+        'nicht erlaubt mit individuellem Text' sein.
 
 
 BEMERKUNGEN
@@ -59,4 +61,4 @@ BEMERKUNGEN
 SIEHE AUCH
 ==========
 
-   AddCmd
+   *AddCmd()*

@@ -1,0 +1,10 @@
+
+Verzeichnis der obsoleten und entfernten simulated efuns
+********************************************************
+
+Bitte die folgenden sefuns in neuem Code keinesfalls benutzten und
+nach Moeglichkeit auch in existierendem Code entfernen.
+
+* exclude_alist()
+
+* remove_alist()

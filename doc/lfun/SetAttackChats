@@ -18,87 +18,108 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   chance
-        Prozentuale Wahrscheinlichkeit einer Ausgabe
-   strs
-        Stringarray mit den Monsterchats
+   int chance
+      Prozentuale Wahrscheinlichkeit einer Ausgabe
+
+   mixed strs
+      Array mit den verschiedenen Moeglichkeiten der Monsterchats
 
 
 BESCHREIBUNG
 ============
 
-   Der NPC gibt mit der Wahrscheinlichkeit 'chance' einen zufaellig
-   gewaehlten Text aus 'strs' von sich. Die Arrayelemente koennen
-   auch Funktionen ("@@func@@") oder Closures enthalten, die dann
-   aufgerufen werden und deren Rueckgabewerte das Monster dann ausgibt.
+   Der NPC gibt mit der Wahrscheinlichkeit <chance> waehrend des
+   Kampfes pro Heartbeat einen zufaellig gewaehlten Text aus dem Array
+   <strs> in den Raum aus. Dabei wird per Default send_room() ohne
+   erneutes Umbrechen mit den Messagetypen
+   MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL verwendet.
 
+   Die einzelnen Arrayelemente koennen:
 
-RUECKGABEWERT
-=============
+      * Strings sein
 
-   keiner
+      * Closures sein, deren Rueckgabe ausgegeben wird und die
+        zusaetzlich einen aenderbaren und in send_room() verwendeten
+        'msg_typ' per Referenz uebergeben bekommen
+
+      * Arrays mit der Struktur *({<string|closure msg >, <int
+        msg_typ>})* sein, fuer die obige Regeln auf 'msg' angewendet
+        werden und bei denen 'msg_typ' im send_room() verwendet wird
+
+   Fuer keine Ausgabe muss man einen Leerstring "" zurueckgeben oder
+   verwenden. In allen Funktionen ist this_player() das Monster
+   selbst. Normalerweise muss man die Nachrichten selbst umbrechen,
+   ausser man uebergibt die Message-Typen explizit und uebergibt kein
+   MSG_DONT_WRAP.
 
 
 BEMERKUNGEN
 ===========
 
-   AttackChats werden nur im Kampf ausgegeben. Ansonsten ist SetChats()
-   zu verwenden.
+   * ausserhalb des  Kampf werden keine AttackChats ausgegeben, man
+     muss dann SetChats() verwenden
 
+   * die strings werden (noch) durch process_string() geschickt,
+     dieses sollte man aber nicht mehr verwenden
 
+   * 'chance' gilt sowohl fuer Attack- als auch normale Chats
 
-   'chance' wird in der Property P_ACHAT_CHANCE abgelegt. Um einen NPC
-   voruebergehend 'stillzulegen', kann man P_ACHAT_CHANCE auf 0 setzen.
+   * 'chance' wird in der Property P_CHAT_CHANCE abgelegt. Um einen
+     NPC voruebergehend 'stillzulegen', kann man P_CHAT_CHANCE auf 0
+     setzen
 
+   * Spieler koennen P_CHAT_CHANCE temporaer auf 0 setzen
+     ('stillen')
 
+   * NPC haben bei Abwesenheit von Spielern in der Regel keinen
+     Heartbeat, weswegen dann auch die Chats ausgeschaltet sind
 
-   Man kann AttackChats nutzen, um Monsterspells zu realisieren. Besser
-   ist es aber, dafuer 'AddSpell' zu verwenden.
+   * send_room() bekommt immer MSG_DONT_STORE|MSG_DONT_BUFFER
+     uebergeben
+
+   Man kann AttackChats nutzen, um Monsterspells zu realisieren.
+   Besser ist es aber, dafuer 'AddSpell' zu benutzen, ausser man
+   moechte zB die Spielerfaehigkeit des Abschaltens der Chats
+   verwenden.
 
 
 BEISPIELE
 =========
 
+   protected string knirschschrei(int msg_typ);
+
    SetAttackChats( 20,
-     ({ "Der Ork tritt Dir in den Hintern.\n",
-        "Der Ork bruellt: Lebend kommst Du hier nicht raus!\n",
-        "Der Ork blutet schon aus mehreren Wunden.\n",
-        "@@knirsch@@" }) );
+    ({"Der Ork tritt Dir in den Hintern.\n",
+      ({"Der Ork bruellt: Lebend kommst Du hier nicht raus!\n", MT_LISTEN}),
+      ({"Der Ork blutet schon aus mehreren Wunden.\n", MT_LOOK}),
+      #'knirschschrei}));
 
-
-
-   string knirsch()
-   {
-     object *ruestung, *tmp, helm;
-
-
-
-     ruestung = this_player()->QueryProp(P_ARMOURS); // getragene Ruestung
-     tmp = filter_objects(ruestung, "id", AT_HELMET);
-     // Wenn der Spieler einen Helm traegt, enthaelt 'tmp' jetzt
-     // ein Array mit dem Helmobjekt als einzigem Element
-     if (sizeof(tmp)) helm = tmp[0];
-       if (objectp(helm))
-       {
-         // AC nur dann senken, wenn sie nicht schon 0 ist.
-         if (helm->QueryProp(P_AC)>0) {
-           helm->Damage(1);
-           return "Der Ork beschaedigt Deinen Helm!\n";
-         }
-         return "";
+   protected string knirsch(int msg_typ) {
+     object helm = this_player()->QueryArmourByType(AT_HELMET);
+     if (objectp(helm)) {
+       // AC nur dann senken, wenn sie nicht schon 0 ist.
+       if (helm->QueryProp(P_AC)>0) {
+         helm->Damage(1);
+         msg_typ = MT_LISTEN|MT_FEEL;
+         return ("Der Ork schreit dich so laut an, dass dabei "+
+                 helm->QueryOwn(WER)+" "+
+                 helm->name(RAW)+" beschaedigt wird.");
        }
-       else
-         return ""; // keine Meldung
+     }
+     return ""; // keine Meldung
    }
 
 
 SIEHE AUCH
 ==========
 
-   P_ACHAT_CHANCE, SetChats(), /std/npc/chat.c, AddSpell()
+   Verwandt:
+      *SetChats()*, *AddSpell()*
 
+   Props:
+      *P_CHAT_CHANCE*
 
-LETZTE AENDERUNG
-================
+   Sonstiges:
+      *send_room()*, *process_string()*
 
-   Don, 27.12.2007, 16:35:00 von Arathorn
+3. April 2017 Gloinson

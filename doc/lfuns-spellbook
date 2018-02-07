@@ -1,0 +1,17 @@
+
+Verzeichnis der lfuns speziell in/fuer Spellbooks
+*************************************************
+
+* AddSpell()
+
+* Erfolg()
+
+* Learn()
+
+* Misserfolg()
+
+* QuerySpell()
+
+* SpellSuccess()
+
+* TryAttackSpell()

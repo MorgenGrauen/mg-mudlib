@@ -60,8 +60,6 @@ Verzeichnis der dokumentierten lfuns
 
 * AddResistanceModifier()
 
-* AddRoomCmd()
-
 * AddRoomMessage()
 
 * AddRoute()
@@ -238,6 +236,8 @@ Verzeichnis der dokumentierten lfuns
 
 * GetReputations()
 
+* GetShopItems()
+
 * GetValue()
 
 * GetValueO()
@@ -251,6 +251,8 @@ Verzeichnis der dokumentierten lfuns
 * GroupName()
 
 * GuardExit()
+
+* GuildName()
 
 * Halt()
 
@@ -297,6 +299,8 @@ Verzeichnis der dokumentierten lfuns
 * IsEnemy()
 
 * IsEqual()
+
+* IsGuildMember()
 
 * IsPlayerCorpse()
 
@@ -387,6 +391,8 @@ Verzeichnis der dokumentierten lfuns
 * PreventLeaveLiving()
 
 * PreventMove()
+
+* PrintList()
 
 * Query()
 
@@ -788,6 +794,8 @@ Verzeichnis der dokumentierten lfuns
 
 * lfun()
 
+* list()
+
 * locate_objects()
 
 * logon()
@@ -866,7 +874,9 @@ Verzeichnis der dokumentierten lfuns
 
 * wield_me()
 
-* Verzeichnis der lfuns speziell in/für Gilden
+* Verzeichnis der lfuns speziell in/fuer Gilden
+
+* Verzeichnis der lfuns speziell in/fuer Spellbooks
 
 * Verzeichnis der lfuns in master()
 

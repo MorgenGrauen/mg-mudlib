@@ -1,3 +1,29 @@
 
-Verzeichnis der lfuns speziell in/für Gilden
-********************************************
+Verzeichnis der lfuns speziell in/fuer Gilden
+*********************************************
+
+* AddSkill()
+
+* AddSpell()
+
+* GuildRating()
+
+* InitialSkillAbility()
+
+* LearnSkill()
+
+* LearnSpell()
+
+* QuerySkill()
+
+* QuerySpell()
+
+* SkillListe()
+
+* UseSpell()
+
+* austreten()
+
+* bei_oder_aus_treten()
+
+* beitreten()

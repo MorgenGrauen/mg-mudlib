@@ -6,6 +6,12 @@ Verzeichnis der veralteten lfuns
 
 * AddInsertHook()
 
+* AddRoomCmd()
+
+* DoList()
+
+* GetList()
+
 * ModifySkillAttributeOld()
 
 * NotifyGiveQuest()

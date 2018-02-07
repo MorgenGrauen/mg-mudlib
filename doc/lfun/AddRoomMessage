@@ -6,7 +6,7 @@ AddRoomMessage()
 FUNKTION
 ========
 
-   void AddRoomMessage(string *msg, int time, mixed *func);
+   void AddRoomMessage(string* msg, int time, mixed* func);
 
 
 DEFINIERT IN
@@ -18,67 +18,80 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   msg
-        Array von Strings mit den Meldungen.
-   time
-        Der Abstand zwischen zwei Meldungen in Sekunden.
-   func (optional)
-        String oder Array von Strings mit Funktionsnamen
+   string* msg
+      Array von Strings mit den Meldungen.
+
+   int time
+      Der Abstand zwischen zwei Meldungen in Sekunden.
+
+   string|string* func (optional)
+      String oder Array von Strings mit Funktionsnamen
 
 
 BESCHREIBUNG
 ============
 
-   Mit dieser Funktion legt man fest, dass in bestimmten Zeitabstaenden
-   Meldungen an den Raum geschickt werden sollen.
+   Mit dieser Funktion legt man fest, dass in bestimmten
+   Zeitabstaenden Meldungen an den Raum geschickt werden sollen.
 
-   Es wird alle time Sekunden zufaellig eine der in msg angegebenen
-   Meldungen ausgegeben. Hat man auch noch func angegeben, so wird
-   zusaetzlich diese Funktion (bei einem Array: eine zufaellig ausgesuchte
-   Funktion) im Raum aufgerufen. Als Parameter bekommt die Funktion die
-   Nummer der ausgegebenen Meldung.
+   Es wird alle 'time' Sekunden (beim ersten Betreten durch einen
+   Spieler ein random() des Wertes) zufaellig eine der in msg
+   angegebenen Meldungen ausgegeben. Hat man func angegeben, so wird
+   diese Funktion (bei einem Array: eine zufaellig ausgesuchte
+   Funktion) im Raum aufgerufen. Als Parameter bekommt die Funktion
+   die Nummer der ggf zuvor ausgegebenen Meldung (Default also 0).
 
-   Bevor man allerdings jeden Raum mit AddRoomMessage() pflastert, sollte
-   man folgendes bedenken:
-      o Viele Meldungen in vielen Raeumen tendieren dazu, den Spielern auf
-        die Nerven zu gehen!
-      o Da das Timing ueber einen call_out() gesteuert wird, ist das Ganze
-        aus Sicht des GameDrivers auch noch relativ teuer!
-   Fazit: weniger ist mehr!
+   Bevor man allerdings jeden Raum mit AddRoomMessage() pflastert,
+   sollte man folgendes bedenken (Fazit: weniger ist mehr):
+
+   * Viele Meldungen in vielen Raeumen tendieren dazu, den Spielern
+     auf die Nerven zu gehen.
+
+   * Die das Timing steuernden call_out() sind nicht umsonst.
 
 
 BEMERKUNGEN
 ===========
 
-   * Falls time < 15 Sekunden ist, wird auf 15 Sekunden aufgerundet.
-   * der Praefix Add... taeuscht hier. Ein Aufruf von AddRoomMessage()
-     ueberschreibt alle vorherigen Werte
-   * THIS_PLAYER() NICHT VERWENDEN!
+   * falls time < 15 Sekunden ist, wird auf 15 Sekunden aufgerundet
+
+   * der Praefix Add... taeuscht hier. Ein Aufruf von
+     AddRoomMessage() ueberschreibt alle vorherigen Werte
+
+   * this_player() NICHT VERWENDEN!
+
+   * Abschalten der Raumnachrichten:
+
+     * passiert automatisch nur, wenn alle Spieler den Raum
+       verlassen haben
+
+     * ist manuell nur ueber Loeschen der Nachrichten umsetzbar,
+       also mit "AddRoomMessage((string)0, 0, (string)0);"
+
    In Funktionen, die durch AddRoomMessage() ausgeloest werden, darf
-   this_player() nicht verwendet werden. AddRoomMessage ist call_out-
-   gesteuert und speichert somit das this_player(). Damit ist this_player()
-   immer der Spieler, der den Raum geladen, also den Raum als erster
-   betreten hat.
-   Spieler also bitte selbst ueber filter(all_inventory(this_object()),
-                                          #'interactive) suchen.
+   this_player() nicht verwendet werden, da die call_out()-Kette den
+   ersten ausloesenden Spieler speichert. Anwesende Spieler also bitte
+   ggf mit "filter(all_inventory(this_object()), #'interactive)"
+   suchen.
 
 
 BEISPIELE
 =========
 
-   Es soll alle halbe Minute eine Meldung ausgegeben werden. Falls es
-   unter den Fuessen knackt, soll man zudem mit 30%-iger
-   Wahrscheinlichkeit zusammenzucken:
+   // Beispiel 1:
+   // Es soll alle halbe Minute eine Meldung ausgegeben werden. Falls es
+   // unter den Fuessen knackt, soll man zudem mit 30%-iger
+   // Wahrscheinlichkeit zusammenzucken:
 
    inherit "/std/room";
 
    void create() {
      ::create();
-     AddRoomMessage( ({ "In der Ferne schreit ein Kaeuzchen.\n",
-                        "Es raschelt im Gebuesch.\n",
-                        "Etwas knackt unter Deinen Fuessen.\n" }),
-                      30, ({"sound", "sound_more_rnd"}) );
-     ...
+     AddRoomMessage(({"In der Ferne schreit ein Kaeuzchen.\n",
+                       "Es raschelt im Gebuesch.\n",
+                       "Etwas knackt unter Deinen Fuessen.\n"}),
+                    30,
+                    ({"sound", "sound_more_rnd"}) );
    }
 
    void sound(int msg) {
@@ -88,16 +101,60 @@ BEISPIELE
    }
 
    // Extra-Beispiel: wir setzen die Wartedauer (Parameter tim) neu
-   void sound_more_rnd() {
-     sound(0);   // die Message-Nummer ist hier unwichtig
+   void sound_more_rnd(int msg) {
+     sound(msg);
      SetProp(P_MSG_PROB, 25+random(20));  // neue Wartedauer
+   }
+
+   // Beispiel 2: Abschalten der Raumnachrichten
+   public int action_laerm(string str);
+   protected void reset_room_messages();
+
+   void create() {
+     ::create();
+     reset_room_messages();
+
+     AddCmd("mach|mache&laerm|krach",
+            "action_laerm",
+            "Was willst du machen?");
+     AddCmd("schlag|schlage&laerm|krach",
+            "action_laerm",
+            "Was willst du schlagen?");
+   }
+
+   protected void reset_room_messages() {
+     AddRoomMessage(({"Das Reh quakt leise.\n",
+                      "Der Frosch grunzt.\n",
+                      "Gelbe Schnorpfel pupsen im Takt.\n"}),
+                    45);
+   }
+
+   public int action_laerm(string str) {
+     AddRoomMessage((string)0, 0, (string)0);
+
+     this_player()->ReceiveMsg(
+       "Du schreist dir kurz die Seele aus dem Leib. Alle Tiere "
+       "verstummen sofort.", MT_NOTIFICATION);
+     send_room(this_object(),
+       this_player()->Name()+" schreit laut. Alle Tiere verstummen "
+       "sofort.", MT_LISTEN, 0, 0, ({this_player()}));
+     return 1;
+   }
+
+   void reset() {
+     :reset();
+     if(!QueryProp(P_ROOM_MSG))
+       reset_room_messages();
    }
 
 
 SIEHE AUCH
 ==========
 
-   Verwandt: tell_room(), ReceiveMsg()
-   Props:    P_ROOM_MSG, P_FUNC_MSG, P_MSG_PROB
+   Verwandt:
+      tell_room(), *send_room()*, *ReceiveMsg()*
 
-2.Feb 2016 Gloinson
+   Props:
+      *P_MSG_PROB*, *P_FUNC_MSG*, *P_ROOM_MSG*
+
+28. Mar 2016 Gloinson

@@ -22,9 +22,12 @@ BESCHREIBUNG
    als String oder Closure (mit String-Rueckgabewert).
 
    Container sind hierbei z.B. Raeume.
-   ACHTUNG: Die Kurzbeschreibung sollte dabei weder mit einem
-            Satzzeichen noch mit einem "\n" abgeschlossen sein
+   ACHTUNG: Die Kurzbeschreibung sollte dabei nicht  mit einem
+            "\n" abgeschlossen sein
             (dies wird von den zustaendigen Funktionen erledigt).
+
+   Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
+   Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
 
    Man sollte die Property nicht auf 0 setzen.
 
