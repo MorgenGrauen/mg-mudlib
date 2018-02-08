@@ -6,4 +6,5 @@ K_BRAWLING_WC             Waffenschlag          ==> Max:  30
 K_WEAPON_SHATTER          Waffenbruch           ==> Max:  50
 K_DISTRACTING_WEAPON      Finte / Waffentrick   ==> Max:  50
 K_CRITICAL_HIT            Todesstoss            ==> Max: 100
+K_ABLENKEN_BONUS          Ablenken (Amazonen)   ==> Max: 100
 
