@@ -109,13 +109,22 @@ TryAttackSpell(object victim, int damage, mixed dtypes,
 
   if (no_attack = (mixed)victim->QueryProp(P_NO_ATTACK)) {
     if (stringp(no_attack))
-      write(no_attack);
+      caster->ReceiveMsg(
+        no_attack,
+        MT_NOTIFICATION,
+        MA_FIGHT);
     else
-      write(victim->Name(WER,1)+" laesst sich nicht angreifen!\n");
+      caster->ReceiveMsg(
+        victim->Name(WER,1)+" laesst sich nicht angreifen!",
+        MT_NOTIFICATION,
+        MA_FIGHT);
     return 0;
   }
   if (victim->QueryProp(P_GHOST)) {
-    write(victim->Name(WER,1)+" ist ein Geist!\n");
+    caster->ReceiveMsg(
+      victim->Name(WER,1)+" ist ein Geist!",
+      MT_NOTIFICATION,
+      MA_FIGHT);
     return 0;
   }
 
@@ -204,12 +213,18 @@ CanTrySpell(object caster, mapping sinfo) {
   string res;
 
   if (caster->QueryProp(P_GHOST)) {
-    write("Als Geist kannst Du nicht zaubern.\n");
+    caster->ReceiveMsg(
+      "Als Geist kannst Du nicht zaubern.",
+      MT_NOTIFICATION,
+      MA_SPELL);
     return 0;
   }
   if ((rmap=sinfo[SI_SKILLRESTR_USE])
       && (res=check_restrictions(caster,rmap))) {
-    write(res);
+    caster->ReceiveMsg(
+      res,
+      MT_NOTIFICATION,
+      MA_SPELL);
     return 0;
   }
   return 1;
@@ -260,8 +275,11 @@ Erfolg(object caster, string spell, mapping sinfo) {
 
 void
 Misserfolg(object caster, string spell, mapping sinfo) {
-  write("Der Zauberspruch ist missglueckt.\n");
-  write("Du lernst aus Deinem Fehler.\n");
+  caster->ReceiveMsg(
+    "Der Zauberspruch ist missglueckt.\n"
+    "Du lernst aus Deinem Fehler.\n",
+    MT_NOTIFICATION|MSG_DONT_WRAP,
+    MA_SPELL);
   Learn(caster,spell,sinfo);
 }
 
@@ -306,8 +324,16 @@ UseSpell(object caster, string spell, mapping sinfo) {
     return 1;
 
   if (caster->QueryProp(P_SP) < (cost=GetFValueO(SI_SPELLCOST,ski,caster))) {
-    if(txt=ski[SI_SP_LOW_MSG])write(txt);
-    else write("Du hast zu wenig Zauberpunkte fuer diesen Spruch.\n");
+    if(txt=ski[SI_SP_LOW_MSG])
+      caster->ReceiveMsg(
+        txt,
+        MT_NOTIFICATION,
+        MA_SPELL);
+    else
+      caster->ReceiveMsg(
+      "Du hast zu wenig Zauberpunkte fuer diesen Spruch.",
+      MT_NOTIFICATION,
+      MA_SPELL);
     return 1;
   }
   // printf("cost: %d\n",cost);
@@ -319,23 +345,37 @@ UseSpell(object caster, string spell, mapping sinfo) {
         function int (string key, int val)
         { return (int)caster->CheckSpellFatigue(key); } );
     if (sizeof(tmp)) {
-        write(ski[SI_TIME_MSG] ||
-            "Du bist noch zu erschoepft von Deinem letzten Spruch.\n");
+        caster->ReceiveMsg(
+          ski[SI_TIME_MSG] || 
+          "Du bist noch zu erschoepft von Deinem letzten Spruch.",
+          MT_NOTIFICATION,
+          MA_SPELL);
       return 1;
     }
   }
   else {
     if (caster->CheckSpellFatigue()) {
-        write(ski[SI_TIME_MSG] ||
-            "Du bist noch zu erschoepft von Deinem letzten Spruch.\n");
+        caster->ReceiveMsg(
+          ski[SI_TIME_MSG] ||
+          "Du bist noch zu erschoepft von Deinem letzten Spruch.",
+          MT_NOTIFICATION,
+          MA_SPELL);
       return 1;
     }
   }
 
   if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY) &&
       caster->QueryProp(P_ATTACK_BUSY)) {
-    if (txt=ski[SI_ATTACK_BUSY_MSG]) write(txt);
-    else write("Du bist schon zu sehr beschaeftigt.\n");
+    if (txt=ski[SI_ATTACK_BUSY_MSG])
+      caster->ReceiveMsg(
+        txt,
+        MT_NOTIFICATION,
+        MA_SPELL);
+    else
+      caster->ReceiveMsg(
+        "Du bist schon zu sehr beschaeftigt.",
+        MT_NOTIFICATION,
+        MA_SPELL);
     return 1;
   }
 
@@ -346,7 +386,10 @@ UseSpell(object caster, string spell, mapping sinfo) {
       if (time()<ps[0]) {
         if (!stringp(txt=ski[SI_PREPARE_BUSY_MSG]))
           txt="Du bist noch mit der Spruchvorbereitung beschaeftigt.\n";
-        write(txt);
+        caster->ReceiveMsg(
+          txt,
+          MT_NOTIFICATION,
+          MA_SPELL);
         return 1;
       }
     }
@@ -381,9 +424,15 @@ UseSpell(object caster, string spell, mapping sinfo) {
   if((ski[SI_NOMAGIC] < environment(caster)->QueryProp(P_NOMAGIC)) &&
       random(100) < environment(caster)->QueryProp(P_NOMAGIC)) {
     if (txt=ski[SI_NOMAGIC_MSG])
-      write(txt);
+      caster->ReceiveMsg(
+        txt,
+        MT_NOTIFICATION,
+        MA_SPELL);
     else
-      write("Dein Zauberspruch verpufft im Nichts.\n");
+      caster->ReceiveMsg(
+        "Dein Zauberspruch verpufft im Nichts.",
+        MT_NOTIFICATION,
+        MA_SPELL);
     res=ABGEWEHRT;
   }
   else {
@@ -624,7 +673,10 @@ FindVictim(string wen, object pl, string msg) {
   object vic;
 
   if (!(vic=find_victim(wen,pl)) && msg)
-    write(msg);
+    pl->ReceiveMsg(
+      msg,
+      MT_NOTIFICATION,
+      MA_SPELL);
   return vic;
 }
 varargs object
@@ -663,24 +715,39 @@ DoFindEnemyVictim(string wen, object pl, string msg,
   }
   if (no_attack = (mixed)vic->QueryProp(P_NO_ATTACK)) {
     if (stringp(no_attack))
-      write(no_attack);
+      pl->ReceiveMsg(
+        no_attack,
+        MT_NOTIFICATION,
+        MA_FIGHT);
     else
-      write(vic->Name(WER,1)+" laesst sich nicht angreifen.\n");
+      pl->ReceiveMsg(
+        vic->Name(WER,1)+" laesst sich nicht angreifen.",
+        MT_NOTIFICATION,
+        MA_FIGHT);
     return 0;
   }
   if (vic==pl) {
-    write("Du koenntest Dir dabei wehtun.\n");
+    pl->ReceiveMsg(
+      "Du koenntest Dir dabei wehtun.",
+      MT_NOTIFICATION,
+      MA_FIGHT);
     return 0;
   }
   if (stringp(func)) {
     switch(func) {
     case "SelectNearEnemy":
       if (pl->PresentPosition()>1) {
-        write("Du stehst nicht in der ersten Kampfreihe.\n");
+        pl->ReceiveMsg(
+          "Du stehst nicht in der ersten Kampfreihe.",
+          MT_NOTIFICATION,
+          MA_FIGHT);
         return 0;
       }
       if (vic->PresentPosition()>1) {
-        write(vic->Name(WER,1)+" ist in einer hinteren Kampfreihe.\n");
+        pl->ReceiveMsg(
+          vic->Name(WER,1)+" ist in einer hinteren Kampfreihe.",
+          MT_NOTIFICATION,
+          MA_FIGHT);
         return 0;
       }
       break;
@@ -690,17 +757,29 @@ DoFindEnemyVictim(string wen, object pl, string msg,
       if (row>=min && row<=max)
         break;
       if (row<min)
-        write(vic->Name(WER,1)+" ist zu nahe.\n");
+        pl->ReceiveMsg(
+          vic->Name(WER,1)+" ist zu nahe.",
+          MT_NOTIFICATION,
+          MA_FIGHT);
       else if (row>max)
-        write(vic->Name(WER,1)+" ist zu weit weg.\n");
+        pl->ReceiveMsg(
+          vic->Name(WER,1)+" ist zu weit weg.",
+          MT_NOTIFICATION,
+          MA_FIGHT);
       else
-        write(vic->Name(WER,1)+" ist unerreichbar.\n");
+        pl->ReceiveMsg(
+          vic->Name(WER,1)+" ist unerreichbar.",
+          MT_NOTIFICATION,
+          MA_FIGHT);
       return 0;
     default:;
     }
   } else if (pointerp(func)) {
     if (member(func,vic)<0) {
-      write(vic->Name(WER,1)+" ist unerreichbar.\n");
+      pl->ReceiveMsg(
+        vic->Name(WER,1)+" ist unerreichbar.",
+        MT_NOTIFICATION,
+        MA_FIGHT);
       return 0;
     }
   }
