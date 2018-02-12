@@ -21,6 +21,6 @@ do
   DIR=`dirname ${FILE}`
   BASE=`basename ${FILE} .txt`
   mkdir -p ${MMANDIR}/${DIR}
-  cp -av $FILE ${MMANDIR}/${DIR}/${BASE}
+  cp -a $FILE ${MMANDIR}/${DIR}/${BASE}
 done
 
