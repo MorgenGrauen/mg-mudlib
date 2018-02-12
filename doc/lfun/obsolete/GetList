@@ -12,7 +12,7 @@ benutzen, sondern stattdessen           * * GetShopItems()
 FUNKTION
 ========
 
-   static mixed >>*<<GetList()
+   static mixed *GetList()
 
 
 DEFINIERT IN
@@ -36,4 +36,4 @@ RUECKGABEWERTE
 SIEHE AUCH
 ==========
 
-   "GetShopItems"
+   *GetShopItems()*
