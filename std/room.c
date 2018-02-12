@@ -136,8 +136,8 @@ clean_up(int arg)
     {
       if (query_once_interactive(names[i]))
       {
-	Set(" clean counter ",2);
-	return 1;
+        Set(" clean counter ",2);
+        return 1;
       }
       if(objectp(names[i])) names[i] = explode(object_name(names[i]),"#")[0];
     }
@@ -153,15 +153,15 @@ clean_up(int arg)
       // 3. Wenn es ein REFRESH_DESTRUCT ist und noch existiert, aber nicht
       //    hier ist, KEIN clean_up.
       if (!pointerp(itema[i][RITEM_OBJECT]) 
-	  && ((itema[i][RITEM_REFRESH] == REFRESH_NONE 
-	      && (!itema[i][RITEM_OBJECT] 
-		|| environment(itema[i][RITEM_OBJECT])!=this_object())) 
-	    || (itema[i][RITEM_REFRESH] == REFRESH_DESTRUCT 
-	      && itema[i][RITEM_OBJECT] 
-	      && environment(itema[i][RITEM_OBJECT]) != this_object())))
-	  return 1;
+          && ((itema[i][RITEM_REFRESH] == REFRESH_NONE 
+              && (!itema[i][RITEM_OBJECT] 
+                || environment(itema[i][RITEM_OBJECT])!=this_object())) 
+            || (itema[i][RITEM_REFRESH] == REFRESH_DESTRUCT 
+              && itema[i][RITEM_OBJECT] 
+              && environment(itema[i][RITEM_OBJECT]) != this_object())))
+          return 1;
       names -= (pointerp(itema[i][RITEM_FILE]) ?
-	  itema[i][RITEM_FILE] : ({ itema[i][RITEM_FILE] }));
+          itema[i][RITEM_FILE] : ({ itema[i][RITEM_FILE] }));
     }
     // if there are objects left in the room do not clean up but try again later
     if(sizeof(names) && !check_clean_count()) return 1;
@@ -172,8 +172,8 @@ clean_up(int arg)
 
   // do clean_up
   //log_file("clean_up_log",sprintf(
-  //	"%s:%s: %O\n",ctime(time())[11..18],__HOST_NAME__,this_object()));
-  
+  //        "%s:%s: %O\n",ctime(time())[11..18],__HOST_NAME__,this_object()));
+
   remove();
   // wenn der Raum sich im remove() nicht zerstoert, hat er dafuer vermutlich
   // nen Grund. Evtl. klappts ja naechstes Mal.
