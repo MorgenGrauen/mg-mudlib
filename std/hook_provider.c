@@ -43,7 +43,7 @@ struct hook_s {
 */
 private nosave mapping hookMapping=([]);
 
-protected void CleanHookMapping(int *hookids);
+protected int CleanHookMapping(int *hookids);
 
 // Debugging - ggf. ueberschreiben
 protected int h_dbg() {return 0;}
@@ -86,12 +86,16 @@ int HPriorityIsAllowed(int prio, object consumer){
 }
 
 // clean internal hook data structures of stale hook consumers.
-protected void CleanHookMapping(int *hookids){
+// returns the number of valid consumers left.
+protected int CleanHookMapping(int *hookids)
+{
   // hooks enthaelt die aufzuraeumenden Hooks. Wenn kein Array -> alle Hooks
   if (!pointerp(hookids))
     hookids=m_indices(hookMapping);
 
-  foreach(int hookid : hookids) { // alle Hooks
+  int count;
+  foreach(int hookid : hookids)
+  { // alle Hooks
     struct hook_s hooks = hookMapping[hookid];
     if (!structp(hooks))
       continue;
@@ -101,16 +105,29 @@ protected void CleanHookMapping(int *hookids){
       // Yeah - compute struct lookup at runtime... ;-)
       struct hook_entry_s *consumers = hooks->(consumertype);
       // Hookeintraege / Consumer
-      foreach(struct hook_entry_s h : &consumers) {
+      foreach(struct hook_entry_s h : &consumers)
+      {
         // alle abgelaufenen Eintraege oder solche mit zerstoerten Objekten
-        // nullen
+        // nullen und die anderen/gueltigen zaehlen.
         if (!h->cl || h->endtime < time() )
             h = 0;
+        else
+            ++count;
       }
       // 0 noch rauswerfen.
       hooks->(consumertype) -= ({0});
     }
   }
+  return count;
+}
+
+// Returns the number of valid consumers for the given hooks (or all, if
+// hooks==0).
+// Side effect: Cleans the internal structures and removes any stale
+// consumers.
+public varargs int HHasConsumers(int *hookids)
+{
+  return CleanHookMapping(hookids);
 }
 
 protected void offerHook(int hookid, int offerstate)
