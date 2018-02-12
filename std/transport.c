@@ -58,6 +58,7 @@ nosave int meet_last_player = 1;
 
 private void unsubscribe_init();
 private int subscribe_init();
+void changeHp();
 
 /*
  ********** Management der builtin-properties **********
