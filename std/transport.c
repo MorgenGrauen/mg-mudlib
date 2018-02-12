@@ -51,7 +51,10 @@ inherit "/std/room";
 nosave mixed *route;    /* Liste der Haltepunkte. */
 nosave int rpos;        /* Momentane Position in obiger Liste. */
 nosave string roomCode; /* Code des aktuellen Raumes (oder 0). */
-nosave int meet_last_player; // Letzter Spielerkontakt
+// Letzter Spielerkontakt. Das muss != 0 sein (sonst funktioniert der
+// Mechanismus zum Fortsetzen der Route nach einer Pause nicht ordentlich,
+// daher wird es auf 1 initialisiert.
+nosave int meet_last_player = 1;
 
 private void unsubscribe_init();
 private int subscribe_init();
