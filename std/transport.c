@@ -119,9 +119,14 @@ public varargs void Start(int pos)
   // Route begonnen wird.
   rpos = min(pos, sizeof(route)-1);
 
-  call_out("changeHp",0);
   // Tell TRAVELD our current route
   ReportRoute();
+  // changeHp() inkrementiert zu Beginn rpos um 1. D.h. damit wir keinen
+  // Haltepunkt ueberspringen, muss dieses vorweg kompensiert werden. Da dies
+  // wiederum den Transporter aber ggf. buggen laesst (rpos<0), darf das
+  // changeHp() hier nicht asynchron per call_out gerufen werden.
+  --rpos;
+  changeHp();
 }
 
 // continues the current route at the point we stopped.
