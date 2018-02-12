@@ -109,14 +109,18 @@ check_clean_count()
 int
 clean_up(int arg)
 {
-  mixed itema;
+  // Never try again when P_NEVER_CLEAN is set.
+  if (Query(P_NEVER_CLEAN)) return 0;
 
-  if(arg>1) return 1; // better not ;)
+  // do not cleanup, if this room is used as blueprint for clones or inherited
+  // (arg>1) or if there are valid hook consumers waiting for something to
+  // happen here. This is temporary and could change, so return 1;
+  if (arg>1 || HHasConsumers())
+      return 1;
 
-  if (Query(" never clean ")) return 0;
-
-  // if there are any item we have produced ourselfes check them
-  if(pointerp(itema = QueryProp(P_ITEMS)))
+  // if there are any items we have produced ourselfes check them
+  mixed itema = QueryProp(P_ITEMS);
+  if(pointerp(itema))
   {
     mixed names;
     int i;
