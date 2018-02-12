@@ -47,21 +47,11 @@ _query_noget()
   return 1;
 }
 
-//#define DB(x) if (find_player("jof")) tell_object(find_player("jof"),x); else write(x)
-//#undef DB
-//#define DB(x)
 void maybe_replace_program()
 {
   string *list, first;
   object first_ob;
 
-// Debugkram auskommentiert, Zesstra, 04.11.06
-//  DB("MAYBE_REPLACE_PROGRAM\n");
-//  DB(sprintf("FILENAME: %O\n",object_name(this_object())));
-//  DB(sprintf("FIRST_OB: %O\n",inherit_list(this_object())));
-//  first_ob=find_object(first=(list=inherit_list(this_object()))[1]);
-//  DB(sprintf("%O ?= %O\n",sizeof(list),1+sizeof(inherit_list(first_ob))));
-//  DB(sprintf("%O ?= sizeof(%O)\n",1,list=functionlist(this_object(),RETURN_FUNCTION_NAME|NAME_INHERITED)));
   if (object_name(this_object())=="/std/room" ||
       !(first_ob=find_object(first=(list=inherit_list(this_object()))[1])) ||
       (sizeof(list)!=1+sizeof(inherit_list(first_ob))) ||
@@ -69,7 +59,6 @@ void maybe_replace_program()
            RETURN_FUNCTION_NAME|NAME_INHERITED))) ||
       list[0]!="create")
     return;
-//  DB("REPLACING\n");
   replace_program(first);
 }
 
