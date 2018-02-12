@@ -31,7 +31,8 @@ ARGUMENTE
 BESCHREIBUNG
 ------------
 
-    Generell
+Generell
+++++++++
 
     Wenn das Lebewesen angegriffen wird, wird geprueft, wie stark die
     Ruestungen und koerpereigenen Abwehrkraefte sind und die Staerke des
@@ -41,7 +42,8 @@ BESCHREIBUNG
     (dam-Summe(Ruestungsstaerken)-random(P_BODY+A_DEX))*CheckResistance/10
     aber nicht unter 0.
 
-    Der Parameter 'spell'
+Der Parameter 'spell'
++++++++++++++++++++++
 
     Ist 'spell' 0, dann gilt der Angriff als normale physische Attacke
     Uebergibt man als 'spell'-Parameter ein Mapping, so gibt es dafuer
@@ -106,20 +108,21 @@ BESCHREIBUNG
       Die verfuegbaren Informationen sind in der Manpage zu
       DefendInfo festgehalten.
 
-  Reihenfolgen in Defend
+Reihenfolgen in Defend
+++++++++++++++++++++++
 
-  * das Living wird angegriffen, wenn
-    * P_NO_ATTACK != 0
-    * 'enemy' existiert und kein netztoter Spieler ist
-  * P_DEFENDERS werden durchgegangen (und eventuell benachrichtigt)
-  * P_TMP_ATTACK_HOOK wird abgefragt
-  * die Ruestungen werden vom Schaden gegebenenfalls abgezogen
-  * magischer Ausweichskill beruecksichtigt
-  * sensitive Objekte werden ggf. benachrichtigt
-  * InternalModifyDefend wird gerufen
-  * Koerperabwehr abgezogen
-  * der Schaden an do_damage()/reduce_hit_points() uebergeben
-  * Flucht ueberpruefen mit CheckWimpyAndFlee()
+    * das Living wird angegriffen, wenn
+      * P_NO_ATTACK != 0
+      * 'enemy' existiert und kein netztoter Spieler ist
+    * P_DEFENDERS werden durchgegangen (und eventuell benachrichtigt)
+    * P_TMP_ATTACK_HOOK wird abgefragt
+    * die Ruestungen werden vom Schaden gegebenenfalls abgezogen
+    * magischer Ausweichskill beruecksichtigt
+    * sensitive Objekte werden ggf. benachrichtigt
+    * InternalModifyDefend wird gerufen
+    * Koerperabwehr abgezogen
+    * der Schaden an do_damage()/reduce_hit_points() uebergeben
+    * Flucht ueberpruefen mit CheckWimpyAndFlee()
 
 BEMERKUNGEN
 -----------
@@ -142,7 +145,8 @@ RUECKGABEWERT
 
 BEISPIELE (SIEHE AUCH Defend_bsp)
 ---------------------------------
-::
+
+.. code-block:: pike
 
   // ein simpler Angriff:
   enem->Defend(100, ({DT_BLUDGEON}), ([SP_PHYSICAL_ATTACK:1]), this_object());
