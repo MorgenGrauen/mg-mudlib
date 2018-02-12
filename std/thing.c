@@ -23,13 +23,6 @@ protected void create()
 {
   seteuid(getuid());
   properties::create();
-  // Wenn das Objekt jetzt schon ein gueltiges P_CLONER hat, wurde create()
-  // zweimal gerufen. Dies ist ein Fehler und vermutlich ist das Objekt
-  // jetzt kaputt.
-  if (stringp(QueryProp(P_CLONER)))
-      catch(raise_error("create() wurde ein zweites Mal gerufen. Dieses "
-            "Objekt ist nun vermutlich kaputt.\n"); publish);
-
   light::create();
   commands::create();
   description::create();

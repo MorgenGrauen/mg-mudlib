@@ -68,25 +68,36 @@ protected void create()
   // Aenderungen an dieser Prop sind tabu.
   Set( P_CLONE_TIME, NOSETMETHOD|SECURED, F_MODE_AS );
 
-  // Id des Cloners und des Besitzers kommen nach P_CLONER
-  if (objectp( tp=this_interactive()||this_player() ))
+  // Wenn das Objekt bereits ein P_CLONER hat, wurde create() zweimal gerufen.
+  // Dies ist ein Fehler und vermutlich ist das Objekt jetzt kaputt. In jedem
+  // Fall wird das alte P_CLONER nicht ueberschrieben.
+  if (Query(P_CLONER, F_MODE))
   {
-    tpid=geteuid(tp);
-    if (!(tpid=geteuid(tp))) tpid=getuid(tp);
+      catch(raise_error("create() wurde ein zweites Mal gerufen. Dieses "
+            "Objekt ist nun vermutlich kaputt.\n"); publish);
   }
   else
-    tpid="UNKNOWN";
-
-  if (previous_object())
   {
-    if (!(poid = geteuid(previous_object())))
-      poid = getuid(previous_object());
-  }
-  else
-    poid="UNKNOWN";
+    // Id des Cloners und des Besitzers kommen nach P_CLONER
+    if (objectp( tp=this_interactive()||this_player() ))
+    {
+      tpid=geteuid(tp);
+      if (!(tpid=geteuid(tp))) tpid=getuid(tp);
+    }
+    else
+      tpid="UNKNOWN";
 
-  Set( P_CLONER, (poid != tpid ? poid+":"+tpid: tpid) );
-  Set( P_CLONER, NOSETMETHOD|SECURED, F_MODE_AS );
+    if (previous_object())
+    {
+      if (!(poid = geteuid(previous_object())))
+        poid = getuid(previous_object());
+    }
+    else
+      poid="UNKNOWN";
+
+    Set( P_CLONER, (poid != tpid ? poid+":"+tpid: tpid) );
+    Set( P_CLONER, NOSETMETHOD|SECURED, F_MODE_AS );
+  }
 
   // Gibt es FPs ?
   explore = (mixed *)EPMASTER->QueryExplore();
