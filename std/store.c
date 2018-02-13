@@ -122,8 +122,8 @@ protected void aufraeumen() {
 public void reset()
 {
   int i, to;
-  < <int|<string|string*>|object>* >* itemlist;
-  
+  < <int|<string|string*>|object|mapping>* >* itemlist;
+
   items::reset();
   _set_store_percent_left();
 
@@ -140,7 +140,7 @@ public void reset()
     // ausfiltern.
     itemlist=filter(itemlist, #'[, 0);
     all-=map(itemlist,
-      function object(<int|<string|string*>|object>* arr)
+      function object(<int|<string|string*>|object|mapping>* arr)
       {
         return arr[0];
       });
