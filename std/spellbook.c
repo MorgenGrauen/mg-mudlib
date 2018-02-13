@@ -209,9 +209,6 @@ SpellSuccess(object caster, mapping sinfo) {
 
 int
 CanTrySpell(object caster, mapping sinfo) {
-  mapping rmap;
-  string res;
-
   if (caster->QueryProp(P_GHOST)) {
     caster->ReceiveMsg(
       "Als Geist kannst Du nicht zaubern.",
@@ -219,7 +216,9 @@ CanTrySpell(object caster, mapping sinfo) {
       MA_SPELL);
     return 0;
   }
-  if ((rmap=sinfo[SI_SKILLRESTR_USE])
+  string res;
+  mapping rmap=sinfo[SI_SKILLRESTR_USE];
+  if (mappingp(rmap)
       && (res=check_restrictions(caster,rmap)))
   {
     caster->ReceiveMsg(res, MT_NOTIFICATION|MSG_BS_DONT_WRAP, MA_SPELL);
