@@ -22,7 +22,8 @@ ARGUMENTE
     rate          - Relative Haeufigkeit der Anwendung (*),
                     muss >= 0 sein
     damage        - Der Schadenswert fuer Defend(),
-                    muss > 0 sein
+                    muss >= 0 sein. Bei Schaden von 0 MUSS eine Funktion
+                    eingetragen werden.
     TextForEnemy  - Text, den der Feind erhalten soll
     TextForOthers - Text, den andere im Raum erhalten sollen
     dam_type      - Schadenstyp(en) fuer Defend(),

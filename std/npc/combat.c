@@ -193,6 +193,14 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
     }
   }
   
+  if(damage==0 && !closurep(cl))
+  {
+    catch(raise_error(
+      "AddSpell(): Bei damage=0 muss eine Funktion eingetragen werden.");
+      publish);
+    return 0;
+  }
+
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
   // die im heart_beat() beim Ausgeben der Meldung verwendet wird.
   if ( strstr(TextForOthers, "@", 0) != -1 )
@@ -345,10 +353,15 @@ protected void heart_beat() {
         ({ enemy, this_object()}));
     return ;
   }
-  int damage = random(spells[i][SPELL_DAMAGE])+1;
-  enemy->Defend(damage, spells[i][SPELL_DAMTYPE],
-                spells[i][SPELL_ARG],
-                this_object());
+  int damage;
+  // Bei 0 sparen wir uns das Defend() und rufen nur die Funktion auf.
+  if(spells[i][SPELL_DAMAGE])
+  {
+    damage=random(spells[i][SPELL_DAMAGE])+1;
+    enemy->Defend(damage, spells[i][SPELL_DAMTYPE],
+      spells[i][SPELL_ARG],
+      this_object());
+  }
 
   // Falls der Gegner (oder wir) im Defend stirbt, hier abbrechen
   if ( !objectp(ME) || !objectp(enemy) 
