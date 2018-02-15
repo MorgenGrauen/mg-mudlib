@@ -140,9 +140,7 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
   int total_rates;
   closure cl;
 
-  if (rate<0 || damage<=0 || !stringp(TextForEnemy) ||
-      !stringp(TextForOthers))
-     return 0;
+  if(rate<=0 || damage<0) return 0;
 
   if (stringp(dam_type))
      dam_type = ({dam_type});
