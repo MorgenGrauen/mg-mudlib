@@ -23,10 +23,8 @@ BEMERKUNGEN
     dienen sollen. Sie enthaelt ein Array aus zwei Elementen, einem String
     und einem String-Array, zum Beispiel:
 
-    ({ "zur Sonneninsel", ({"sonneninsel"}) }) oder 
-    ({ "nach Titiwu", ({"titiwu"}) })
-
-    Hafen der Sonneninsel: ({ "zur Sonneninsel", ({"sonneninsel"}) }) oder
+    Hafen der Sonneninsel: ({ "zur Sonneninsel", ({"sonneninsel"}) }) 
+    oder
     Hafen von Titiwu:      ({ "nach Titiwu", ({"titiwu"}) })
 
     Damit bekommt der Spieler bei einer Abfrage seiner Reiseroute mittels 
