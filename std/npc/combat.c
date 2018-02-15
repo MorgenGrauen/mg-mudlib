@@ -142,17 +142,32 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
 
   if(rate<=0 || damage<0) return 0;
 
-  if (stringp(dam_type))
-     dam_type = ({dam_type});
-  else if (!pointerp(dam_type))
-      dam_type = ({DT_MAGIC});
-  
-  // Tatsaechlich ist es immer ein nicht-physischer Angriff, wenn spellarg ein
+ // Tatsaechlich ist es immer ein nicht-physischer Angriff, wenn spellarg ein
   // int ist, weil wenn spellarg==0 ist der Default nicht-physischer Angriff
   // und bei spellarg!=0 auch. Nur mit einem mapping kann man einen phys.
   // Angriff erzeugen.
   if (intp(spellarg))
     spellarg = ([SP_PHYSICAL_ATTACK: 0]);
+
+  if(stringp(dam_type))
+    dam_type=({dam_type});
+  else if(!pointerp(dam_type))
+  {
+    if(spellarg[SP_PHYSICAL_ATTACK])
+      dam_type=({DT_BLUDGEON});
+    else
+      dam_type=({DT_MAGIC});
+  }
+
+  foreach(string s : dam_type)
+  {
+    if(!VALID_DAMAGE_TYPE(s))
+    {
+      catch(raise_error(
+        "AddSpell(): Ungueltiger Schadenstyp: "+s);
+        publish);
+    }
+  }
 
   // Falls func ein String ist eine Closure erstellen und diese speichern.
   if(stringp(func) && sizeof(func))
