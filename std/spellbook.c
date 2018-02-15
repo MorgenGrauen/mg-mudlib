@@ -221,7 +221,7 @@ CanTrySpell(object caster, mapping sinfo) {
   if (mappingp(rmap)
       && (res=check_restrictions(caster,rmap)))
   {
-    caster->ReceiveMsg(res, MT_NOTIFICATION|MSG_BS_DONT_WRAP, MA_SPELL);
+    caster->ReceiveMsg(res, MT_NOTIFICATION|MSG_DONT_WRAP, MA_SPELL);
     return 0;
   }
   return 1;
