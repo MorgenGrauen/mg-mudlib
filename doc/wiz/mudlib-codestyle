@@ -4,6 +4,8 @@ beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
 * Einrueckungen per Leerzeichen, nicht Tabs
 * Einrueckung von 2 Leerzeichen pro Ebene
 * praegnante und viele Kommentare
+* Kommentare sollen nicht (nur) beschreiben, was der Code tut, sondern
+  vor allem, was er tun soll und warum.
 * keine lambdas
 * Bei inline-closures die function-Syntax statt der (: :)-Syntax verwenden.
 * else, else if in eine eigene Zeile
@@ -16,6 +18,20 @@ beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
   unterschiedlich sind. Daher bei gewuenschten Konversionen to_type() nehmen.
 * Pfade, die absolut sind, sollen auch mit / beginnen, z.B. 
   inherit "/std/thing", nicht inherit "std/thing"
+
+Commits und Patches
+* Bei Patches bitte keine inhaltlichen Aenderungen mit jeder Menge
+  Whitespace-Aenderungen vermischen.
+* Pro Patch bitte nur eine inhaltliche Aenderungen einschliessen
+* Jeder Commit muss eine aussagekraeftige Commitmeldung haben und
+  folgendem Style entsprechen:
+  * Die erste Zeile ist der Betreff
+    Dieser beschreibt in 50-60 Zeichen, worum es geht
+  * Eine leere Zeile
+  * Beliebig viele Zeilen mit Beschreibung von max. 70 Zeichen Laenge
+    Dieser Text sollte erklaeren, Warum und Wieso der Aenderung.
+* Commits sollten sich sauber auf die aktuelle Spitze vom master-Zweig
+  anwenden lassen. (Bzw. zumindest nicht schon Wochen alt sein.)
 
 Benennung von Properties:
 * der interne Name von Properties in der Basis-Mudlib beginnt immer mit
