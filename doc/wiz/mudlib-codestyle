@@ -30,7 +30,9 @@ Sonstiges:
 * Patches muessen eine Zusammenfassung haben, welche kurz erlaeutert,
   was dieser Patch fixen/aendern/verbessern soll und auf welche Weise
   diese umgesetzt wird. (Anders gesagt: eine Commit-Message)
+* Bei Aenderungen von Manpages bitte nur bei inhaltlichen Aenderungen den
+  Abschnitt "Letzte (inhaltliche) Aenderung" aktualisieren.
 
-LETZTE AeNDERUNG:
-  15.8.2015, Zesstra
+LETZTE INHALTLICHE AeNDERUNG:
+  18.2.2018, Zesstra
 
