@@ -211,9 +211,16 @@ void reset() {
     }
     if ( stringp(corpseobject) ) {
       object muell=clone_object(corpseobject);
-      if ( muell->move(environment(), M_GET) != MOVE_OK ) {
-        muell->move(environment(environment()), M_GET);
-      }
+      // Environments der Reihe nach vom innersten zum aeussersten
+      // durchgehen, bis sich das Muellobjekt hineinbewegen laesst. Einfach
+      // direkt das aeusserste zu nehmen, koennte bei Spielern in
+      // Transportern dazu fuehren, dass das Objekt anschliessend im
+      // Hafenraum liegt. Es wird davon ausgegangen, dass im Normalfall
+      // spaetestens die Bewegung  gelingt, die den Fisch in den Raum bewegt,
+      // in dem der Spieler steht.
+      foreach(object ziel : all_environment(this_object())) {
+        if (muell->move(ziel, M_GET)==MOVE_OK)
+          break;
     }
     call_out("remove",0);
     return; 
