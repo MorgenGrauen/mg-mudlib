@@ -147,3 +147,23 @@ public mapping _query_lib_p_helper_objects() {
   return deep_copy(Query(P_HELPER_OBJECTS,F_VALUE));
 }
 
+public varargs object GetHelperObject(int type, int|closure strength)
+{
+  object ob;
+  // Wir brauchen strength als kleineren Wert, als den minimal akzeptierten,
+  // damit wir mit > arbeiten koennen, ist meistens egal, aber wenn kein
+  // Wert uebergeben wird ist strength = 0, in dem Fall duerfte aber
+  // mehrheitlich 1 gemeint sein.
+  --strength;
+  foreach(closure cl : Query(P_HELPER_OBJECTS)[type]-({0}))
+  {
+    if((intp(strength) && 
+      funcall(cl,this_object(),previous_object())>strength) ||
+      (closurep(strength) && funcall(strength,this_object(),cl)))
+    {
+      ob=get_type_info(cl,2);
+      break;
+    }
+  }
+  return ob;
+}

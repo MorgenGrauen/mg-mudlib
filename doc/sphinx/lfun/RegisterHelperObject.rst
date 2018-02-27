@@ -137,7 +137,7 @@ SIEHE AUCH
 ----------
 ::
 
-     Funktionen:  UnregisterHelperObject()
+     Funktionen:  UnregisterHelperObject(), GetHelperObject()
      Properties:  P_HELPER_OBJECTS, P_AERIAL_HELPERS, P_AQUATIC_HELPERS
      Sonstiges:   /sys/living/helpers.h
 
