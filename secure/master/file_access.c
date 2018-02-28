@@ -166,10 +166,16 @@ mixed valid_write(string path, string euid, string fun, object obj)
   // Erstellung eines Verezeichnisses jedem erlaubt sein, wenn es das
   // entsprechende Verzeichnis ausserhalb /data/ schon gibt.
   if (sizeof(path) > 6
-      && path[0..5] == "/"LIBDATADIR"/") {
+      && path[0..5] == "/"LIBDATADIR"/")
+  {
     if (fun=="mkdir")
-        return file_size(path[5..]) == FSIZE_DIR;
-
+    {
+      // wenn schon ausserhalb /data/ existent: erlauben
+      if (file_size(path[5..]) == FSIZE_DIR)
+        return 1;
+      // sonst fall-through und normale gucken, ob der Aufrufer ausserhalb
+      // /data/ denn duerfte.
+    }
     return valid_write(path[5..], euid, fun, obj) != 0;
   }
 
