@@ -132,9 +132,9 @@ static int _query_hb()
 #define SPELL_FUNC 5
 #define SPELL_ARG 6
 
-varargs int AddSpell(int rate, int damage, string TextForEnemy,
-                     string TextForOthers, string|string* dam_type, 
-                     string|closure func, int|mapping spellarg)
+varargs int AddSpell(int rate, int damage,
+  string|<int|string>* TextForEnemy, string|<int|string>* TextForOthers,
+  string|string* dam_type, string|closure func, int|mapping spellarg)
 {
   mixed *spells;
   int total_rates;
@@ -201,18 +201,51 @@ varargs int AddSpell(int rate, int damage, string TextForEnemy,
     return 0;
   }
 
+  if(!sizeof(TextForEnemy) ||
+    (pointerp(TextForEnemy) && !sizeof(TextForEnemy[0])))
+  {
+    TextForEnemy=0;
+  }
+  else if(stringp(TextForEnemy))
+  {
+    TextForEnemy=({TextForEnemy,MT_LOOK});
+  }
+  else if(pointerp(TextForEnemy) && 
+    (!stringp(TextForEnemy[0]) || !intp(TextForEnemy[1])))
+  {
+    raise_error(
+      "AddSpell(): Falsche Datentypen fuer TextForEnemy");
+  }
+  
+  if(!sizeof(TextForOthers) || 
+    (pointerp(TextForOthers) && !sizeof(TextForOthers[0])))
+  {
+    TextForOthers=0;
+  }
+  else if(stringp(TextForOthers))
+  {
+    TextForOthers=({TextForOthers,MT_LOOK});
+  }
+  else if(pointerp(TextForOthers) && 
+    (!stringp(TextForOthers[0]) || !intp(TextForOthers[1])))
+  {
+    raise_error(
+      "AddSpell(): Falsche Datentypen fuer TextForOthers");
+  }
+  
+
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
   // die im heart_beat() beim Ausgeben der Meldung verwendet wird.
-  if ( strstr(TextForOthers, "@", 0) != -1 )
+  if ( strstr(TextForOthers[0], "@", 0) != -1 )
   {
     // Zeichen nach @WER & Co in runde Klammern einschliessen, damit es als
     // Sub-Pattern im Ausgabestring wiederholt werden kann. Ansonsten wuerde
     // es mit ersetzt.
-    TextForOthers = regreplace(TextForOthers, "@WER([^1-9QU])", "@WER1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WESSEN([^1-9QU])",
+    TextForOthers[0] = regreplace(TextForOthers[0], "@WER([^1-9QU])", "@WER1\\1", 1);
+    TextForOthers[0] = regreplace(TextForOthers[0], "@WESSEN([^1-9QU])",
                                "@WESSEN1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WEM([^1-9QU])", "@WEM1\\1", 1);
-    TextForOthers = regreplace(TextForOthers, "@WEN([^1-9QU])", "@WEN1\\1", 1);
+    TextForOthers[0] = regreplace(TextForOthers[0], "@WEM([^1-9QU])", "@WEM1\\1", 1);
+    TextForOthers[0] = regreplace(TextForOthers[0], "@WEN([^1-9QU])", "@WEN1\\1", 1);
   }
   total_rates=Query("npc:total_rates")+rate;
   spells=Query(P_SPELLS);
@@ -329,16 +362,27 @@ protected void heart_beat() {
   r=random(Query("npc:total_rates"));
   for (i=sizeof(spells)-1;(i>0 && spells[i-1][SPELL_TOTALRATE]>r);i--)
     ;
-  string akt_spell_mess = spells[i][SPELL_TEXT_FOR_ENEMY];
-  if ( sizeof(akt_spell_mess) )
-    tell_object(enemy, break_string(akt_spell_mess, 78));
-  akt_spell_mess = spells[i][SPELL_TEXT_FOR_OTHERS];
+  <int|string>* akt_spell_mess=spells[i][SPELL_TEXT_FOR_ENEMY];
   // Nur, wenn ueberhaupt eine Meldung gesetzt wurde, muss diese verarbeitet
   // werden.
-  if (stringp(akt_spell_mess) && sizeof(akt_spell_mess))
+  if(pointerp(akt_spell_mess))
   {
-    akt_spell_mess = replace_personal(akt_spell_mess, ({enemy}), 1);
-    say(break_string(akt_spell_mess, 78),({enemy, this_object()}));
+    enemy->ReceiveMsg(
+      akt_spell_mess[0],
+      akt_spell_mess[1],
+      MA_SPELL);
+  }
+  akt_spell_mess=spells[i][SPELL_TEXT_FOR_OTHERS];
+  if(pointerp(akt_spell_mess))
+  {
+    akt_spell_mess[0]=replace_personal(akt_spell_mess[0], ({enemy}), 1);
+    send_room(environment(),
+      akt_spell_mess[0],
+      akt_spell_mess[1],
+      MA_SPELL,
+      0,
+      ({enemy,this_object()}),
+      this_object());
   }
   sinfo = deep_copy(spells[i][SPELL_ARG]);
   if(!mappingp(sinfo))
@@ -348,9 +392,16 @@ protected void heart_beat() {
   if(!sinfo[SP_PHYSICAL_ATTACK] &&
      (enemy->SpellDefend(this_object(),sinfo) >
       random(MAX_ABILITY+QueryProp(P_LEVEL)*50))){
-    tell_object(enemy,"Du wehrst den Spruch ab.\n");
-    say(enemy->Name(WER,1)+" wehrt den Spruch ab.\n",
-        ({ enemy, this_object()}));
+    enemy->ReceiveMsg(
+      "Du wehrst den Spruch ab.",
+      MT_NOTIFICATION,
+      MA_SPELL);
+    send_room(environment(),
+      enemy->Name(WER,1)+" wehrt den Spruch ab.",
+      MT_LOOK,
+      MA_SPELL,
+      0,
+      ({ enemy, this_object()}));
     return ;
   }
   int damage;
