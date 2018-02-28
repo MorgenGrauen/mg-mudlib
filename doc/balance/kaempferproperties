@@ -6,5 +6,9 @@ K_BRAWLING_WC             Waffenschlag          ==> Max:  30
 K_WEAPON_SHATTER          Waffenbruch           ==> Max:  50
 K_DISTRACTING_WEAPON      Finte / Waffentrick   ==> Max:  50
 K_CRITICAL_HIT            Todesstoss            ==> Max: 100
+K_KO                      Ko-Schlag             ==> Max: 50
 K_ABLENKEN_BONUS          Ablenken (Amazonen)   ==> Max: 100
 
+K_BRAWLING_DT             Schadensart fuer Waffenschlag. Wenn nicht gesetzt,
+                          wird die Schadensart der Waffe genommen.
+K_NO_HONING               Waffe laesst sich nicht schaerfen.
