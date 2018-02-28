@@ -5,9 +5,9 @@ FUNKTION
 --------
 ::
 
-  varargs int AddSpell(int rate, int damage,
-    string|<int|spell>* TextForEnemy, string|<int|string>* TextForOthers,
-    string|string* dam_type, string|closure func, int|mapping spellarg)
+    varargs int AddSpell(int rate, int damage, string TextForEnemy,
+                         string TextForOthers, string|string* dam_type,
+                         string|closure func, int|mapping spellarg)
 
 DEFINIERT IN
 ------------
@@ -25,13 +25,7 @@ ARGUMENTE
                     muss >= 0 sein. Bei Schaden von 0 MUSS eine Funktion
                     eingetragen werden.
     TextForEnemy  - Text, den der Feind erhalten soll
-                    String <text> oder
-                    Array der Form ({<text>,<messagetype>})
-                    (Siehe ReceiveMsg())
     TextForOthers - Text, den andere im Raum erhalten sollen
-                    String <text> oder
-                    Array der Form ({<text>,<messagetype>})
-                    (Siehe ReceiveMsg())
     dam_type      - Schadenstyp(en) fuer Defend(),
                     (Default: ({DT_MAGIC}) )
     func          - Funktionsname oder Closure, die nach Anwendung
@@ -176,4 +170,5 @@ SIEHE AUCH
      Abwehr:     Defend, Defend_bsp, SpellDefend
      Methoden:   modifiers
 
-Letzte Aenderung: 15.02.2018, Bugfix
+Zuletzt geaendert: 20.11.2016, Bugfix
+
