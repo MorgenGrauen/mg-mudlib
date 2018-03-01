@@ -221,6 +221,7 @@ void reset() {
       foreach(object ziel : all_environment(this_object())) {
         if (muell->move(ziel, M_GET)==MOVE_OK)
           break;
+      }
     }
     call_out("remove",0);
     return; 
