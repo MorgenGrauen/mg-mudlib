@@ -158,12 +158,13 @@ protected void inaugurate_master(int arg) {
          ({#'?,({#'!=,'item,({#'this_object})}),
            ({#'raise_error,                        // ->Fehler!
              "Illegal to move other object than this_object()\n"}) }),
+         ({#'=,'oldenv,({#'environment,'item}) }), // altes Env merken
          ({#'efun::set_environment,'item,'dest}),  // item nach dest bewegen
          ({#'?,
            ({#'living,'item}),                     // living(item)?
            ({#',,
              ({#'efun::set_this_player,'item}),    // set_this_player(item)
-             ({#'call_other,'dest,"init"}),        // dest->init()
+             ({#'call_other,'dest,"init",'oldenv}),// dest->init(oldenv)
              ({#'?!, 
                ({#'&&,                             // !objectp(item)||
                  ({#'objectp, 'item}),             // env(item)!=dest?
@@ -173,7 +174,7 @@ protected void inaugurate_master(int arg) {
 #ifdef EMACS_NERV 
          })   // Emacs kann ({#'({ nicht parsen    // others=all_inv(dest)-
 #endif                                             //        ({item})
-         ({#'filter,'others,lambda(({'ob,'item}),
+         ({#'filter,'others,lambda(({'ob,'item,'lastenv}),
             ({#'?,                                     
               ({#'&&,
                 ({#'objectp,'item}),               // objectp(item)&&
@@ -181,21 +182,21 @@ protected void inaugurate_master(int arg) {
                 ({#'==,({#'environment,'item}),({#'environment,'ob})})}),
               ({#',,                               // env(item)==env(ob)?
                 ({#'efun::set_this_player, 'ob}),  // set_this_player(ob)
-                ({#'call_other,'item, "init"})     // item->init()
-              })})),'item}),
+                ({#'call_other,'item, "init",'lastenv}) // item->init(lastenv)
+              })})),'item,'oldenv}),
          ({#'?,
            ({#'living,'item}),                     // living(item)?
               ({#',,
                 ({#'efun::set_this_player,'item}), // set_this_player(item)
-                ({#'filter,'others,lambda(({'ob,'item}),
+                ({#'filter,'others,lambda(({'ob,'item,'lastenv}),
                     ({#'?,                          
                       ({#'&&,                 
                         ({#'objectp,'item}),       // objectp(item)&&
                         ({#'objectp,'ob}),         // objectp(ob)&&
                         ({#'==,({#'environment,'item}),({#'environment,'ob})})
                       }),                          // env(item)==env(ob)?
-                      ({#'call_other,'ob,"init"})  // ob->init()
-                    })),'item})})}),
+                      ({#'call_other,'ob,"init",'lastenv}) // ob->init(lastenv)
+                    })),'item, 'oldenv})})}),
          ({#'?,
            ({#'&&,
              ({#'objectp,'item}),                  // objectp(item)&&
@@ -204,7 +205,7 @@ protected void inaugurate_master(int arg) {
            }),
            ({#',,
              ({#'efun::set_this_player,'dest}),    // set_this_player(dest)
-             ({#'call_other,'item,"init"})})})})));// item->init()
+             ({#'call_other,'item,"init",'oldenv})})})}))); //item->init(oldenv)
   DEBUG("Master inaugurated");
   return;
 }
