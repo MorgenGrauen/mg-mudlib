@@ -236,7 +236,7 @@ varargs int AddSpell(int rate, int damage,
 
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
   // die im heart_beat() beim Ausgeben der Meldung verwendet wird.
-  if ( strstr(TextForOthers[0], "@", 0) != -1 )
+  if ( pointerp(TextForOthers) && strstr(TextForOthers[0], "@", 0) != -1 )
   {
     // Zeichen nach @WER & Co in runde Klammern einschliessen, damit es als
     // Sub-Pattern im Ausgabestring wiederholt werden kann. Ansonsten wuerde
