@@ -164,13 +164,9 @@ protected int fill_bottle(object src)
       write(Name(WER,1)+" ist bereits voll!\n");
       return 1;
     }
-    // Wasser von Umgebung abziehen!
-    // Man kann als Magier die Funktion AddWater(int n) dazu benuetzten,
-    // beispielsweise eine Pfuetze zu leeren, ...
-    src->AddWater(-QueryProp(P_LIQUID));
-    object cont_obj;
     if(liquidtype&W_OTHER)
     {
+      object cont_obj;
       // Mittels GetLiquid() kann die Flasche mit was anderem als Wasser
       // gefuellt werden.
       co_filename=src->GetLiquid();
@@ -181,7 +177,6 @@ protected int fill_bottle(object src)
         {
           // Hier passiert eigentlich das gleiche wie nach dem ifblock, aber
           // auch noch Funktion beenden.
-          // TODO: Rueckgaenig machen von AddWater()?
           // TODO: Die Meldung aus dem PreventInsert() muesste eigentlich
           // _vorher_ noch mit einer Befuellmeldung begleitet werden.
           cont_obj->remove(1);
@@ -198,6 +193,10 @@ protected int fill_bottle(object src)
         if ( cont_obj ) cont_obj->move("/room/muellraum",M_PUT);
       }
     }
+    // Wasser von Umgebung abziehen!
+    // Man kann als Magier die Funktion AddWater(int n) dazu benuetzten,
+    // beispielsweise eine Pfuetze zu leeren, ...
+    src->AddWater(-QueryProp(P_LIQUID));
     SetProp(P_WATER,liquidtype);
     AddId(lower_case(liquid_name));
     //wie praktisch, 1 ml == 1 g :) // Aber nur fuer Wasser, du VOGEL! :-|
