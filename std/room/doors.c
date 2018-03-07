@@ -81,7 +81,7 @@ varargs int NewDoor(string|string* cmds, string dest, string|string* ids,
   return call_other(DOOR_MASTER,"NewDoor",cmds,dest,ids,props);
 }
 
-void init()
+public varargs void init(object origin)
 {
   mixed *info;
   string *cmds;

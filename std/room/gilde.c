@@ -102,7 +102,7 @@ void create()
   AddCmd(({"treff"}), "GotoMagierTreff");
  }
 
-void init()
+public varargs void init(object origin)
 {
   int lvl;
 

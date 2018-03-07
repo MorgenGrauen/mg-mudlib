@@ -631,7 +631,7 @@ public int _cl(string str) {
  return 0;
 }
 
-void init() {
+public varargs void init(object origin) {
  add_action("_cl","",1);
 }
 

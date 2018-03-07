@@ -205,16 +205,15 @@ toggle_exits(string str)
   return 1;
 }
 
-void
-init()
+public varargs void init(object origin)
 {
   if (HookFlow(H_HOOK_INIT, 0)[H_RETCODE] == H_CANCELLED)
       return;
   Set(" clean counter ",2);
-  exits::init();
-  commands::init();
-  description::init();
-  doors::init();
+  exits::init(origin);
+  commands::init(origin);
+  description::init(origin);
+  doors::init(origin);
 
   add_action("toggle_exits", "exits");
   add_action("toggle_exits", "ausgang");

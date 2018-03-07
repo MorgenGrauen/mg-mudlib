@@ -32,7 +32,7 @@ void create()
   AddId(({"raum", "hier"}));
 }
 
-void init()
+public varargs void init(object origin)
 {
   // Wenn P_ROOM_MSG gesetzt oder P_FUNC_MSG und kein Callout laeuft,
   // Callout starten.

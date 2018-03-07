@@ -39,8 +39,8 @@ void reset() {
   items::reset();
 }
 
-void init() {
-  npc::init();
+public varargs void init(object origin) {
+  npc::init(origin);
   if (TP && query_once_interactive(TP))
     SetProp(P_INPC_LAST_PLAYER_CONTACT,time());
 }

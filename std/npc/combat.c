@@ -475,8 +475,8 @@ private void catch_up_hbs() {
   }
 }
 
-void init() {
-
+public varargs void init(object origin)
+{
   // ggf. Heartbeats nachholen und wieder einschalten.
   if (!heartbeat) {
     set_heart_beat(1);

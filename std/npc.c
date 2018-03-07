@@ -150,12 +150,12 @@ void give_notify(object ob)
 // Force the monster to do a command.
 int command_me(string cmd) { return command(cmd); }
 
-void init()
+public varargs void init(object origin)
 {
-  combat::init();
-  info::init();
-  commands::init();
-//  description::init();
+  combat::init(origin);
+  info::init(origin);
+  commands::init(origin);
+//  description::init(origin);
 }
 
 // items initialisieren?

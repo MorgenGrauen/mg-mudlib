@@ -241,7 +241,7 @@ varargs string GetExits( object viewer )
 
 // Richtungsbefehle nur interpretieren, wenn der Spieler *im* Raum steht und
 // nicht davor (Transporter etc.)/o
-void init()
+public varargs void init(object origin)
 {
     if ( environment(this_player()) == this_object() )
         add_action( "_normalfunction", "", 1 );

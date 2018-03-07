@@ -82,7 +82,8 @@ protected void create()
 }
 
 
-void init() {
+public varargs void init(object origin)
+{
   add_action( "frage", "frag", 1 );
 }
 

@@ -18,8 +18,8 @@ protected void create()
   gilde::create();
 }
 
-void init()
+public varargs void init(object origin)
 {
-  room::init();
-  gilde::init();
+  room::init(origin);
+  gilde::init(origin);
 }

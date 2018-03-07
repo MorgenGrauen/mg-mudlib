@@ -331,8 +331,8 @@ private void check_start_timer(object oldenv) {
 }
 
 // hier wird geprueft, ob das Futter dem Spieler zugaenglich ist.
-void init() {
-  ::init();
+public varargs void init(object origin) {
+  ::init(origin);
   check_start_timer(environment());
 }
 

@@ -53,9 +53,9 @@ varargs int remove(int silent)
   return thing::remove();
 }
 
-void init()
+public varargs void init(object origin)
 {
-  thing::init();
+  thing::init(origin);
   add_action("schreib","schreib",1);
   add_action("lies","lies");
   add_action("loesche","loesch",1);

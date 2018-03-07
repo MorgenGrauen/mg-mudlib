@@ -107,8 +107,8 @@ int _set_weight(int gramm) {
   return tmp;
 }
 
-void init() {
-  ::init();
+public varargs void init(object origin) {
+  ::init(origin);
   if( QueryProp(P_FISH)&F_REPLACE ) {
     if(query_once_interactive(environment(ME))) {
       call_out("ReplaceFish",0);

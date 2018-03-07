@@ -41,14 +41,6 @@ void create()
   AddId(({"Ding","waffe"}));
 }
 
-/*
-void init()
-{
-  commands::init();
-  description::init();
-}
-*/
-
 void reset()  // Man kann in ALLEN Standardobjekten ::reset aufrufen!
 { }
 

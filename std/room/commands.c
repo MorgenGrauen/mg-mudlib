@@ -20,9 +20,9 @@ inherit "/std/thing/commands";
 #include <language.h>
 #include <defines.h>
 
-void init() 
+public varargs void init(object origin)
 {
-  ::init();
+  ::init(origin);
 
   add_action("imposs", "such");
   add_action("imposs", "suche");

@@ -52,14 +52,6 @@ protected void create_super() {
   set_next_reset(-1);
 }
 
-/*
-void init() 
-{
-  commands::init();
-  description::init();
-}
-*/
-
 void reset()
 {
   items::reset();

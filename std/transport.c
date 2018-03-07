@@ -543,9 +543,9 @@ static varargs void connect(string room, string code)
 // again.
 int clean_up(int arg) { return 0; }
 
-public void init()
+public varargs void init(object origin)
 {
-  "*"::init();
+  "*"::init(origin);
   // if we have player contact (even if the player is just in the same
   // environment), we update the time.
   if (this_player() && query_once_interactive(this_player()))
