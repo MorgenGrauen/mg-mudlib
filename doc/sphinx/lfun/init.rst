@@ -14,7 +14,9 @@ DEFINIERT IN
 ARGUMENTE
 ---------
 
-	keine
+  object origin
+    Ursprungsumgebung der Bewegung / letzte Umgebung des Lebewesen (sofern
+    existent)
 
 BESCHREIBUNG
 ------------
@@ -49,6 +51,9 @@ BESCHREIBUNG
     3. Schliesslich wird in dem Fall, dass D lebendig ist, in X init()
        aufgerufen, wobei this_player() auf D gesetzt ist.
 
+  Das Argument <origin> kann genutzt werden, um herauszufinden, wo das
+  Lebewesen nun eigentlich herkam.
+
 RUeCKGABEWERT
 -------------
 
@@ -59,6 +64,9 @@ BEMERKUNGEN
 
   * Wenn man init() ueberschreibt und vergisst, in etwaigen geerbten Programmen
     das init() zu rufen, resultiert das in schweren Bugs
+  * Das Argument <origin> gab es frueher nicht und es ist weitgehend optional.
+    Die Standardlib uebergibt es, aber nicht alle (speziell) aeltere Programme
+    uebergeben es weiter an ihre geerbten init().
 
 BEISPIELE
 ---------
