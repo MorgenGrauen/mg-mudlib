@@ -83,7 +83,7 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-  :doc:`RegisterHelperObject`, :doc:UnregisterHelperObject`
+  :doc:`RegisterHelperObject`, :doc:`UnregisterHelperObject`,
   :doc:`../props/P_AERIAL_HELPERS`, :doc:`../props/P_AQUATIC_HELPERS`, :doc:`../props/P_HELPER_OBJECTS`
 
 Letzte Aenderung: 9.3.2018, Zesstra
