@@ -20,6 +20,9 @@ ARGUMENTE
   strength:
     minimal geforderte Staerke des Helfers oder Closure zum Filtern der
     Helferobjekte.
+  extra:
+    Beliebige und beliebig viele Argumente, welche an die Closure <strength>
+    weitergegeben werden.
 
 BESCHREIBUNG
 ------------
@@ -80,7 +83,7 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-  :doc:`RegisterHelperObject`, :doc:ÙnregisterHelperObject`
+  :doc:`RegisterHelperObject`, :doc:UnregisterHelperObject`
   :doc:`../props/P_AERIAL_HELPERS`, :doc:`../props/P_AQUATIC_HELPERS`, :doc:`../props/P_HELPER_OBJECTS`
 
 Letzte Aenderung: 9.3.2018, Zesstra
