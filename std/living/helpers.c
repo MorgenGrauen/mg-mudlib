@@ -147,23 +147,36 @@ public mapping _query_lib_p_helper_objects() {
   return deep_copy(Query(P_HELPER_OBJECTS,F_VALUE));
 }
 
-public varargs object GetHelperObject(int type, int|closure strength)
+public varargs object GetHelperObject(int type, int|closure strength,
+                                      varargs mixed* extra)
 {
   object ob;
-  // Wir brauchen strength als kleineren Wert, als den minimal akzeptierten,
-  // damit wir mit > arbeiten koennen, ist meistens egal, aber wenn kein
-  // Wert uebergeben wird ist strength = 0, in dem Fall duerfte aber
-  // mehrheitlich 1 gemeint sein.
-  --strength;
-  foreach(closure cl : Query(P_HELPER_OBJECTS)[type]-({0}))
+  // Wenn kein Wert uebergeben wird ist strength 0, in dem Fall duerfte aber
+  // mehrheitlich 1 gemeint sein. Daher auf 1 setzen, wenn 0 uebergeben wurde.
+  strength ||= 1;
+
+  if (intp(strength))
   {
-    if((intp(strength) && 
-      funcall(cl,this_object(),previous_object())>strength) ||
-      (closurep(strength) && funcall(strength,this_object(),cl)))
+    foreach(closure cl : Query(P_HELPER_OBJECTS)[type]-({0}))
     {
-      ob=get_type_info(cl,2);
-      break;
+      if(funcall(cl, this_object(), previous_object()) >= strength)
+      {
+        return get_type_info(cl,2);
+      }
     }
   }
-  return ob;
+  else
+  {
+    foreach(closure cl : Query(P_HELPER_OBJECTS)[type]-({0}))
+    {
+      ob=get_type_info(cl,2);
+      if(apply(strength, ob, funcall(cl, this_object(), previous_object()),
+               extra) )
+      {
+        return ob;
+      }
+    }
+  }
+
+  return 0;
 }
