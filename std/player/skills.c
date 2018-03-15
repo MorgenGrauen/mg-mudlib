@@ -267,8 +267,14 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
 
 
   /* Lernen: Wird immer schwieriger, nur bei jedem 20. Schlag im Schnitt,
-   * und nur dann, wenn der Gegner auch XP gibt. */
-  if (random(MAX_ABILITY+1)>sinfo[SI_SKILLABILITY] && !random(10))
+   * und nur dann, wenn der Gegner auch XP gibt. 
+   * EM-Beschluss: Lernen wird leichter (jeder 5. Schlag, skillabhaengig)
+   * und bei jedem 300. Schlag lernt man auch so. Ferner wird noch 
+   * ueberprueft, ob der Skill schon maximal ist, wenn man sonst in
+   * jedem Falle lernen wurde. 
+   */
+  if ((random(MAX_ABILITY+1)>sinfo[SI_SKILLABILITY] && !random(5))
+       || (!random(300) && sinfo[SI_SKILLABILITY]<MAX_ABILITY))
   {
          enemy=sinfo[SI_ENEMY];
          if (objectp(enemy) && (enemy->QueryProp(P_XP)>0))
