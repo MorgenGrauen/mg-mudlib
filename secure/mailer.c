@@ -400,7 +400,7 @@ public string *DeliverMail( mixed msg, int expa )
             else {
                 string *tmpmsg = copy(newmsg);
                 tmpmsg[MSG_BODY] = "--- Text der Mail geloescht. ---\n";
-                write_file( sprintf( "/mail/outbound/postmaster.%d-%d",
+                write_file( sprintf( "/data/mail/outbound/postmaster.%d-%d",
                                      time(), random(time()) ),
                             sprintf( "postmaster\n" + BOUNCE_ADDR + 
                                      "\nSubject: Undeliverable Mail\n%O\n",
