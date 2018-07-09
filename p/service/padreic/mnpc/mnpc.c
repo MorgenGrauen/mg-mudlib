@@ -22,9 +22,9 @@ void reset()
    moving::mnpc_reset();
 }
 
-void init()
+public varargs void init(object origin)
 {
-   npc::init();
+   npc::init(origin);
    moving::mnpc_init();
 }
 
