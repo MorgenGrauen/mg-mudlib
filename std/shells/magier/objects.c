@@ -63,8 +63,8 @@ static int _clone(string cmdline)
 
   if (err=catch(ob=clone_object(cmdline))||!ob)
     return printf("clone: %s: Objekt konnte nicht erzeugt werden.\n"
-                  "Grund: %O",
-                  args[0],err||"unbekannt"),1;
+                  "Grund: %O\n",
+                  args[0], regreplace(err, "\n$", "", 1)||"unbekannt"),1;
   if (!objectp(ob))
     return printf("clone: %s: Objekt beim Erzeugen zerstoert.\n",
                   args[0]),1;
