@@ -169,7 +169,7 @@ Load()
   if (pointerp(prop))
   {
     foreach(<string*|string>* item : prop)
-      AddDetail(item[0], item[1]);
+      AddReadDetail(item[0], item[1]);
   }
   else if (mappingp(prop))
   {
