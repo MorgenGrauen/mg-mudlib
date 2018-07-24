@@ -34,6 +34,10 @@ BESCHREIBUNG
   Ausgabe von Meldungen kommentieren, oder irgendwelche Daten
   abspeichern, oder das Zerstoeren ganz verhindern (auf diesem Weg... Mit
   destruct() kann das Objekt immer noch direkt zerstoert werden!)
+  
+  ACHTUNG: Wenn ein Objekt durch remove() nicht zerstoert wird, koennte das
+  einen Grund haben. Bitte nicht einfach destruct() verwenden, das ist nur
+  fuer Notfaelle wie ein buggendes remove().
 
 RUeCKGABEWERT
 -------------
