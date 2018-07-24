@@ -12,6 +12,7 @@ DEFINIERT IN
   /std/thing/moving.c
   /std/living/moving.c
   /std/room/moving.c
+  /std/unit.c
 
 ARGUMENTE
 ---------
@@ -22,8 +23,14 @@ ARGUMENTE
 BESCHREIBUNG
 ------------
 
-  Beim Aufruf dieser Funktion entfernt sich das Objekt selbst. Durch
-  Ueberladen dieser Funktion kann man diesen Vorgang noch durch die
+  Die meisten Objekte zerstoeren sich durch den Aufruf von remove() selbst.
+  
+  Unitobjekte reduzieren P_AMOUNT um U_REQ Einheiten. Will man ein Unit-
+  Objekt vollstaendig zerstoeren, ist vor dem Aufruf von remove() U_REQ auf
+  P_AMOUNT zu setzen. Wird durch remove() P_AMOUNT 0, wird das Objekt
+  natuerlich zerstoert.
+
+  Durch Ueberladen dieser Funktion kann man diesen Vorgang noch durch die
   Ausgabe von Meldungen kommentieren, oder irgendwelche Daten
   abspeichern, oder das Zerstoeren ganz verhindern (auf diesem Weg... Mit
   destruct() kann das Objekt immer noch direkt zerstoert werden!)
@@ -42,8 +49,9 @@ BEMERKUNGEN
 SIEHE AUCH
 ----------
 
-  :doc:`../efun/destruct`
+  :doc:`../efun/destruct`,
+  :doc:`../props/U_REQ`, :doc:`../props/P_AMOUNT`
 
 
-Last modified: Wed May 8 10:23:40 1996 by Wargon
+Letzte Aenderung: 24.07.2018, Bugfix
 
