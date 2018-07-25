@@ -1,0 +1,21 @@
+Materialid:
+MAT_CHOCOLATE                  "chocolate"
+
+Name:
+"Schokolade" "Schokolade" "Schokolade" "Schokolade"
+
+Geschlecht:
+F
+
+Beschreibung:
+kakaohaltige Suessspeise mit Extra-Milch
+
+Erkennbarkeit:
+MAT_SHIT:-50
+MAT_MISC_FOOD:-25
+MAT_CHOCOLATE
+
+Gruppenzugehoerigkeit:
+MATGROUP_EATABLE:100
+MATGROUP_BIO:100
+MATGROUP_SOLID:100
