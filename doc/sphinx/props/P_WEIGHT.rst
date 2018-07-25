@@ -3,46 +3,49 @@ P_WEIGHT
 
 NAME
 ----
-::
 
-    P_WEIGHT                      "weight"                      
+    P_WEIGHT                      "weight"
 
 DEFINIERT IN
 ------------
-::
 
     /sys/thing/restrictions.h
 
 BESCHREIBUNG
 ------------
-::
 
-     - Objekte
-       Das Gewicht eines Objetes in Gramm.
-
-     - Speisen
-       Gewicht einer Portion der Speise.
-
-       
+  * Objekte
+    Das Gewicht eines Objetes in Gramm.
+  * Speisen
+    Gewicht einer Portion der Speise.
+  * Container
+    Das Gewicht des Containers ohne Inhalt
+  * Lebewesen
+    Das Gewicht des Lebewesens ohne Inhalt
 
 BEMERKUNGEN
 -----------
-::
 
-     In tragbaren Speisen (erben von /std/food) setzt man mit SetProp
-     das Gewicht _einer_ Portion. Per QueryProp erhaelt man aber das
-     Gesamtgewicht der Speise inclusive des eventuell vorhandenen Behaelters.
-     Das Gewicht des Behaelters wird dabei aus P_EMPTY_PROPS[P_WEIGHT]
-     gelesen.
+  Das Gewicht eines Objektes (in Gramm).
+  Bei normalen Objekten ist es das Gesamtgewicht dieses Objektes.
+  Bei Containern (und Lebewesen) ist es das Gewicht des Containers ohne
+  etwaigen Inhalt.
 
-     
+  In tragbaren Speisen (welche von von /std/food erben) setzt man mit
+  SetProp das Gewicht _einer_ Portion. Per QueryProp erhaelt man aber das
+  Gesamtgewicht der Speise inclusive des eventuell vorhandenen Behaelters.
+  Das Gewicht des Behaelters wird dabei aus P_EMPTY_PROPS[P_WEIGHT]
+  gelesen.
+
 
 SIEHE AUCH
 ----------
-::
 
-     Speisen: wiz/food, P_EMPTY_PROPS
+  :doc:`../props/P_TOTAL_WEIGHT`
+  :doc:`../props/P_EMPTY_PROPS`, :doc:`../props/P_WEIGHT_PERCENT`,
+  :doc:`../props/P_WEIGHT_PER_UNIT`,
+  zu Speisen: wiz/food
 
 
-Last modified: Thu Oct 28 12:15:00 2010 by Caldra
+Last modified: 25.07.2018 by Zesstra
 
