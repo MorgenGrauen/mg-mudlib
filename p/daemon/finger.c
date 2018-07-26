@@ -429,6 +429,7 @@ data=filter(data-({"erzmagier"}),#'stringp);
     }
   }
   properties=0;
+  text=break_string(text,78,0,BS_LEAVE_MY_LFS);
   if (!local)
     return text;
   this_player()->More(text);
