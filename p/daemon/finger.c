@@ -387,17 +387,17 @@ varargs string finger_single(string str,int local)
   if (/*wiz && */userinfo) {
     data=userinfo[3];
     if (sizeof(data))
-      text+="Regionsmagier"+IN+" von     : "+implode(map(data,#'capitalize),", ")+".\n";
+      text+=break_string("Regionsmagier"+IN+" von     : "+implode(map(data,#'capitalize),", ")+".\n", 78);
     data="/secure/master"->get_domain_homes(str);
 data=filter(data-({"erzmagier"}),#'stringp); 
     if ((wizlevel>=DOMAINMEMBER_LVL) && (sizeof(data)))
-      text+="Regionsmitarbeiter"+IN+" von: "+implode(map(data,#'capitalize),", ")+".\n";  /* #' */ 
+      text+=break_string("Regionsmitarbeiter"+IN+" von: "+implode(map(data,#'capitalize),", ")+".\n", 78);  /* #' */ 
     }
 
   if (userinfo) {
     data=userinfo[8];
     if (sizeof(data))
-      text += "Gildenmagier"+IN+" von      : "+implode(map(data, #'capitalize), ", ")+".\n";   /* #' */
+      text += break_string("Gildenmagier"+IN+" von      : "+implode(map(data, #'capitalize), ", ")+".\n", 78);   /* #' */
   }
 
   // ggf. Avatar-URI mit ausgeben.
