@@ -3791,7 +3791,6 @@ static int erwarte(string str)
 {
   string *list,*str1;
   mixed mlist;
-  int i;
 
   if (!mappingp(mlist=QueryProp(P_WAITFOR_REASON)))
      mlist=([]);
@@ -3876,6 +3875,7 @@ static int erwarte(string str)
      else
      {
         // Menge an erwarte-wegen Eintraegen begrenzen.
+        int lim;
         if (IS_ARCH(ME)) lim=120;
         else if (IS_LEARNER(ME)) lim=80;
         else if (IS_SEER(ME)) lim=60;
