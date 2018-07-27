@@ -36,7 +36,8 @@ BESCHREIBUNG:
      <Spieler> erwartet. Wird als <Grund> `nichts' oder `loeschen'
      angegeben, entfernt man den Eintrag wieder.
      Spieler koennen 30 Textmeldungen setzen, Seher 60, Magier 80 und
-     Erzmagier 120.
+     Erzmagier 120. Die Laenge jedes Grundes ist auf max. 78 Zeichen
+     beschraenkt.
      Mit 'erwarte aus' kann man Erwarte-Meldungen voruebergehend
      deaktivieren. 'erwarte ein' bzw. 'erwarte an' aktiviert es dann
      wieder, ohne dass die Liste der Erwarteten verloren geht.
