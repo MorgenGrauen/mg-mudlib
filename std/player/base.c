@@ -3849,10 +3849,11 @@ static int erwarte(string str)
      }
      else
      {
-        if (sizeof(mlist) && sizeof(list=m_indices(mlist)))
+        if (sizeof(mlist))
         {
            write("Du erwartest aus einem bestimmten Grund:\n");
-           write(break_string(CountUp(sort_array(list,#'>))+".",78));
+           write(break_string(CountUp(sort_array(m_indices(mlist),
+                                                 #'>))+".",78));
         }
         else write("Du erwartest niemanden aus einem bestimmten Grund.\n");
      }
