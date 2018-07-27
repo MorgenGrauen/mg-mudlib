@@ -3884,7 +3884,7 @@ static int erwarte(string str)
            write("Sorry, aber Du erwartest schon genuegend Leute!\n");
         else
         {
-           SetProp(P_WAITFOR_REASON, mlist+([s:implode(str1[2..]," ")]));
+           SetProp(P_WAITFOR_REASON, mlist+([s:implode(str1[2..80]," ")]));
            Show_WaitFor_Reason(s,0);
         }
      }
