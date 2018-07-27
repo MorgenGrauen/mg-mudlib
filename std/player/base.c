@@ -3874,13 +3874,16 @@ static int erwarte(string str)
         }
      else
      {
-        if (IS_ARCH(ME)) i=80; else if (IS_LEARNER(ME)) i=40;
-        else if (IS_SEER(ME)) i=20; else i=10;
-        if (!mlist[s] && sizeof(mlist)>=i)
+        // Menge an erwarte-wegen Eintraegen begrenzen.
+        if (IS_ARCH(ME)) lim=120;
+        else if (IS_LEARNER(ME)) lim=80;
+        else if (IS_SEER(ME)) lim=60;
+        else lim=30;
+        if (!mlist[s] && sizeof(mlist)>=lim)
            write("Sorry, aber Du erwartest schon genuegend Leute!\n");
         else
         {
-           SetProp(P_WAITFOR_REASON,mlist+([s:implode(str1[2..]," ")]));
+           SetProp(P_WAITFOR_REASON, mlist+([s:implode(str1[2..]," ")]));
            Show_WaitFor_Reason(s,0);
         }
      }
