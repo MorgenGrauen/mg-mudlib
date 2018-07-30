@@ -96,7 +96,7 @@ public int TimeToLive()
 {
   if ( age == DRIED_PLANT )
     return __INT_MAX__;
-  return age-time()+PLANT_LIFETIME;
+  return object_time() + FRESH_TIME + PLANT_LIFETIME - time();
 }
 
 //TODO: vielleicht etwas zufall? Sonst Kraeuterqualitaet hieran ermittelbar.
