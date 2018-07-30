@@ -10,7 +10,7 @@ inherit "/std/thing";
 #define PLANT_LIFETIME  (24*3600)
 #define FRESH_TIME      (6*3600)
 // Die plantID wird fuer ungueltig erschaffene Kraeuter auf -1 gesetzt.
-#define DRIED_PLANT     -1
+#define PLANT_DRIED     1
 
 private int state;
 // enthaelt die Nummer des Krauts
@@ -60,7 +60,7 @@ public string short()
       return 0;
   if (plantId==-1)
       return str+" (unwirksam).\n";
-  else if (state==DRIED_PLANT)
+  else if (state==PLANT_DRIED)
      return str+" (getrocknet).\n";
   else if (object_time() + FRESH_TIME + PLANT_LIFETIME < time())
      return str+" (verfault).\n";
@@ -78,10 +78,11 @@ public int PlantQuality()
   int factor;
   // schon getrocknet oder nicht aelter als 6 h? 
   // Dann keine (weitere) Reduktion.
-  if ( state == DRIED_PLANT || object_time() + FRESH_TIME > time())
+  if ( state == PLANT_DRIED || object_time() + FRESH_TIME > time())
     factor = 100;
   // >30 Stunden nach dem Pfluecken ist das Kraut verschimmelt.
   else if ( object_time() + FRESH_TIME + PLANT_LIFETIME < time() )
+    factor = 1; //TODO -> 0
   // Zeit zwischen 6 und 30 Stunden nach dem Pfluecken in 99 gleichmaessige
   // Abschnitte unterteilen. 24 h sind 86400 s, 86400/99 = 873.
   else
@@ -93,7 +94,7 @@ public int PlantQuality()
 // Wie lange (in Sekunden) ist das Kraut noch haltbar?
 public int TimeToLive()
 {
-  if ( state == DRIED_PLANT )
+  if ( state == PLANT_DRIED )
     return __INT_MAX__;
   return object_time() + FRESH_TIME + PLANT_LIFETIME - time();
 }
@@ -109,7 +110,7 @@ static int _query_value()
 
 static string _query_nosell() 
 {
-  if (state != DRIED_PLANT)
+  if (state != PLANT_DRIED)
     return "Mit ungetrockneten Kraeutern handele ich nicht. Die verderben "
       "immer so schnell im Lager, und dann werde ich sie nicht wieder los.";
   return 0;
@@ -138,7 +139,7 @@ static string _query_nosell()
 public void DryPlant(int qual) 
 {
   // Keine mehrfache Trocknung zulassen.
-  if ( state == DRIED_PLANT )
+  if ( state == PLANT_DRIED )
     return;
 
   // Nur bestimmte Objekte duerfen Trocknungen ausloesen.
@@ -160,7 +161,7 @@ public void DryPlant(int qual)
     return;
   }
   // Kraut als getrocknet kennzeichnen.
-  state=DRIED_PLANT;
+  state=PLANT_DRIED;
   quality = qual;
 }
 
@@ -189,5 +190,5 @@ nomask string QueryCloner()
 
 nomask int QueryDried()
 {
-  return (state == DRIED_PLANT);
+  return (state == PLANT_DRIED);
 }
