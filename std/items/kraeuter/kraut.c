@@ -12,7 +12,7 @@ inherit "/std/thing";
 // Die plantID wird fuer ungueltig erschaffene Kraeuter auf -1 gesetzt.
 #define DRIED_PLANT     -1
 
-private int age=time();
+private int state;
 // enthaelt die Nummer des Krauts
 private int plantId;
 // enthaelt den Pfad des clonenden Objekts
@@ -60,9 +60,9 @@ public string short()
       return 0;
   if (plantId==-1)
       return str+" (unwirksam).\n";
-  else if (age==DRIED_PLANT)
+  else if (state==DRIED_PLANT)
      return str+" (getrocknet).\n";
-  else if (age+FRESH_TIME+PLANT_LIFETIME<time())
+  else if (object_time() + FRESH_TIME + PLANT_LIFETIME < time())
      return str+" (verfault).\n";
   return str+".\n";
 }
@@ -77,16 +77,15 @@ public int PlantQuality()
 {
   int factor;
   // schon getrocknet oder nicht aelter als 6 h? 
-  // Dann keine weitere Reduktion.
-  if ( age == DRIED_PLANT || age+FRESH_TIME > time()) 
+  // Dann keine (weitere) Reduktion.
+  if ( state == DRIED_PLANT || object_time() + FRESH_TIME > time())
     factor = 100;
   // >30 Stunden nach dem Pfluecken ist das Kraut verschimmelt.
-  else if ( age + FRESH_TIME + PLANT_LIFETIME < time() ) 
-    factor = 1;
+  else if ( object_time() + FRESH_TIME + PLANT_LIFETIME < time() )
   // Zeit zwischen 6 und 30 Stunden nach dem Pfluecken in 99 gleichmaessige
   // Abschnitte unterteilen. 24 h sind 86400 s, 86400/99 = 873.
   else
-    factor=(time()-age-FRESH_TIME)/873;
+    factor=(time() - object_time() - FRESH_TIME)/873;
 
   return QueryProp(P_QUALITY)*factor/100;
 }
@@ -94,7 +93,7 @@ public int PlantQuality()
 // Wie lange (in Sekunden) ist das Kraut noch haltbar?
 public int TimeToLive()
 {
-  if ( age == DRIED_PLANT )
+  if ( state == DRIED_PLANT )
     return __INT_MAX__;
   return object_time() + FRESH_TIME + PLANT_LIFETIME - time();
 }
@@ -110,7 +109,7 @@ static int _query_value()
 
 static string _query_nosell() 
 {
-  if (age != DRIED_PLANT)
+  if (state != DRIED_PLANT)
     return "Mit ungetrockneten Kraeutern handele ich nicht. Die verderben "
       "immer so schnell im Lager, und dann werde ich sie nicht wieder los.";
   return 0;
@@ -139,9 +138,9 @@ static string _query_nosell()
 public void DryPlant(int qual) 
 {
   // Keine mehrfache Trocknung zulassen.
-  if ( age == DRIED_PLANT )
+  if ( state == DRIED_PLANT )
     return;
- 
+
   // Nur bestimmte Objekte duerfen Trocknungen ausloesen.
   if ( member(DRYING_ALLOWED, load_name(previous_object())) == -1 )
     return;
@@ -149,10 +148,10 @@ public void DryPlant(int qual)
   // Qualitaet auf 100 deckeln.
   if ( qual>100 )
     qual = 100;
-  
+
   // Qualitaet mittels PlantQuality() runterskalieren.
   qual = PlantQuality()*qual/100;
-  
+
   if ( qual < 1 ) {
     if(objectp(this_player()))
       tell_object(this_player(), 
@@ -161,7 +160,7 @@ public void DryPlant(int qual)
     return;
   }
   // Kraut als getrocknet kennzeichnen.
-  age=DRIED_PLANT;
+  state=DRIED_PLANT;
   quality = qual;
 }
 
@@ -173,7 +172,6 @@ nomask int SetPlantId(int new_id)
   if (plantId != 0)
     return -1;
   cloner=0;
-  age=time();
   if (catch(cloner=call_other(PLANTMASTER, "CheckPlant", new_id)) || !cloner)
     new_id = -1;
   return (plantId=new_id);
@@ -189,7 +187,7 @@ nomask string QueryCloner()
   return cloner;
 }
 
-nomask int QueryDried() 
+nomask int QueryDried()
 {
-  return (age == DRIED_PLANT);
+  return (state == DRIED_PLANT);
 }
