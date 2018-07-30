@@ -116,7 +116,7 @@ public int PlantQuality()
     factor = 100;
   // >30 Stunden nach dem Pfluecken ist das Kraut verschimmelt.
   else if ( object_time() + FRESH_TIME + PLANT_LIFETIME < time() )
-    factor = 1; //TODO -> 0
+    factor = 0;
   // Zeit zwischen 6 und 30 Stunden nach dem Pfluecken in 99 gleichmaessige
   // Abschnitte unterteilen. 24 h sind 86400 s, 86400/99 = 873.
   else
@@ -154,7 +154,7 @@ static string _query_nosell()
 // wert uebergeben, auf den die Qualitaet sinken soll. Als Ausgangswert
 // dieser Berechnung wird der Rueckgabewert von PlantQuality() verwendet.
 // Hintergrund: Die Qualitaet des Krauts sinkt im ungetrockneten Zustand
-// ueber einen Zeitraum von 24 h kontinuierlich von 100 auf 1 ab, sobald
+// ueber einen Zeitraum von 24 h kontinuierlich von 100 auf 0 ab, sobald
 // es aelter als 6 Stunden ist. Danach ist es verschimmelt, was aber seiner
 // verbleibenden "Wirkung" keinen Abbruch tut.
 // Es wird die zum Zeitpunkt des Trocknungsvorganges gueltige Qualitaet
