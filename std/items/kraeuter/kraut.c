@@ -10,7 +10,6 @@ inherit "/std/thing";
 #define PLANT_LIFETIME  (24*3600)
 #define FRESH_TIME      (6*3600)
 // Die plantID wird fuer ungueltig erschaffene Kraeuter auf -1 gesetzt.
-#define PLANT_DRIED     1
 
 private int state;
 // enthaelt die Nummer des Krauts

@@ -36,5 +36,10 @@
 #define IS_PLANT(x) (member(inherit_list(x), \
                      "/std/items/kraeuter/kraut.c")>=0)
 
+// States of plants
+#define PLANT_FRESH      0
+#define PLANT_DRIED      1
+#define PLANT_EXPIRED   -1
+
 #endif // __KRAEUTER_H__
 
