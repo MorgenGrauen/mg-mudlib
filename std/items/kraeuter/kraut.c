@@ -40,16 +40,51 @@ protected void create()
     return;
   }
   ::create();
- 
+
   Set(P_QUALITY, function int () { return quality; }, F_QUERY_METHOD);
   SetProp(P_WEIGHT, 120);
   SetProp(P_VALUE, 70);
   SetProp(P_MATERIAL, MAT_MISC_PLANT);
+  // Zeitpunkt des Verfaulens
+  set_next_reset(FRESH_TIME + PLANT_LIFETIME);
 }
 
 protected void create_super()
 {
   set_next_reset(-1);
+}
+
+// wird gerufen, wenn sich der Zustand des Krautes (frisch, getrocknet,
+// verfault) aendert. Kann genutzt werden, um die Beschreibung des Krautes zu
+// aendern.
+protected void ChangeState(int newstate)
+{
+  state = newstate;
+  // Vorlaeufig muessen erbende Kraeuter die Beschreibung aendern.
+  // Mittelfristig soll es dieses Objekt aber machen.
+}
+
+void reset()
+{
+  // wenn getrocknet oder schon verfault, wurden die Beschreibungen bereits
+  // dabei geaendert und dieses reset() muss nix machen.
+  if ( state == PLANT_DRIED || state == PLANT_EXPIRED )
+      return;
+  // Ist es (frisch) verfault?
+  else if (object_time() + FRESH_TIME + PLANT_LIFETIME < time())
+  {
+    // ja, Zustand aendern
+    ChangeState(PLANT_EXPIRED);
+  }
+  else
+  {
+    // noch frisch genug -> keine Aenderung.
+    // Evtl. hat jemand am Reset rumgespielt oder ein Krautautor benutzt den
+    // reset auch fuer andere Zwecke... Nix machen, aber sicherstellen, dass
+    // der naechste Reset spaetestens am Ende der Lebensdauer passiert...
+    set_next_reset(min(object_time() + FRESH_TIME + PLANT_LIFETIME,
+                       query_next_reset()));
+  }
 }
 
 public string short()
@@ -61,7 +96,7 @@ public string short()
       return str+" (unwirksam).\n";
   else if (state==PLANT_DRIED)
      return str+" (getrocknet).\n";
-  else if (object_time() + FRESH_TIME + PLANT_LIFETIME < time())
+  else if (state==PLANT_EXPIRED)
      return str+" (verfault).\n";
   return str+".\n";
 }
@@ -160,7 +195,7 @@ public void DryPlant(int qual)
     return;
   }
   // Kraut als getrocknet kennzeichnen.
-  state=PLANT_DRIED;
+  ChangeState(PLANT_DRIED);
   quality = qual;
 }
 
