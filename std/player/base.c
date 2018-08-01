@@ -291,7 +291,9 @@ public void NotifyInsert(object ob, object oldenv)
 public void NotifyLeave(object ob, object dest)
 {
   restrictions::NotifyLeave(ob,dest);
-  description::NotifyLeave(ob,dest);
+  // Die Inserthooks machen oefter mal Objekte kaputt...
+  if (objectp(ob))
+    description::NotifyLeave(ob,dest);
 }
 
 string Forschung()
