@@ -295,8 +295,8 @@ static int mampf( string str )
       // Verdammt. eat_food() kann TP umgebracht haben und im Falle eines NPC
       // ist der dann weg.
       if (objectp(this_player())) {
-	write(mampf_heilung(nahrung_aktuell));
-	say( sprintf("%s wird von %s voll Hingebung verspeist.\n",
+          write(mampf_heilung(nahrung_aktuell));
+          say( sprintf("%s wird von %s voll Hingebung verspeist.\n",
                    capitalize(name(WER)),
                    (string) this_player()->name(WEM)) );
       }
