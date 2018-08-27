@@ -8,7 +8,7 @@ inherit "std/thing";
 
 #define UA PL->_unparsed_args()
 
-void create()
+protected void create()
 {
   string str;
   if (!clonep(this_object())) return;
@@ -39,7 +39,7 @@ Befehle: addg      <grname> <ownername>   : Gruppe erzeugen\n\
   SetProp(P_NODROP,1);
 }
 
-void init()
+public varargs void init(object origin)
 {
   add_action("addg","addg");
   add_action("removeg","removeg");

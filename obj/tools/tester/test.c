@@ -164,7 +164,7 @@ string x_long()
                scanerr[0],scanerr[1],END):""));
 }
 
-void create()
+protected void create()
 {
     if (!clonep(ME))
         return;
@@ -207,7 +207,7 @@ void create()
     AddCmd( "otdir","dirtesten" );
 }
 
-void init()
+public varargs void init(object origin)
 {
     ::init();
     if (PL->QueryProp(P_TESTPLAYER) || IS_LEARNER(PL))

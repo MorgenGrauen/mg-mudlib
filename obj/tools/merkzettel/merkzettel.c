@@ -27,7 +27,7 @@ int maxusedID;
 static string owner; //UID des Besitzers, wird in P_AUTOLOAD gespeichert
 //static int *cache; //nach Prioritaet sortiertes Array der IDs
 
-void create() {
+protected void create() {
   ::create();
   SetProp(P_NAME, "Merkzettel");
   SetProp(P_SHORT, "Ein Merkzettel");
@@ -1002,7 +1002,7 @@ static int *getUnresolvedDeps(int id) {
   return(liste-filter(liste,#'note_filter,NOTE_FINISHED));
 }
 
-void init() {
+public varargs void init(object origin) {
   ::init();
   //wenn kein Env, Env kein magier oder nicht der Eigentuemer ist: weg
   if (!objectp(environment()) || !IS_LEARNER(environment())

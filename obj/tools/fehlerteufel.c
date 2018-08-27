@@ -821,7 +821,7 @@ int CmdReassign(string str) {
 public string QueryOwner() {return owner;}
 public mixed QueryIssueList() {return issuelist;}
 
-void create() {
+protected void create() {
     if (!clonep(ME))
         return;
     ::create(); 
@@ -874,7 +874,7 @@ void create() {
     AddCmd(({"fehlereingabe", "feingabe"}), "CmdFehlerEingabe");
 }
 
-void init()
+public varargs void init(object origin)
 {
     if (find_call_out("remove") != -1) return;
 
