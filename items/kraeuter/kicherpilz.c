@@ -23,7 +23,7 @@ void create()
    +"an zuckt er und kichert albern. Daher hat er wohl auch seinen Namen.\n");
   SetProp(PLANT_ROOMDETAIL, 
     "Ein besonders praechtiges Exemplar eines Kicherpilzes winkt dir\n"
-   +"aufdringlich zu, also ob es scharf darauf waere, gepflueckt zu werden.\n");
+   +"aufdringlich zu, als ob es scharf darauf waere, gepflueckt zu werden.\n");
   SetProp(P_SHORT,    "Ein Kicherpilz");
   AddId(({ "pilz", "kicherpilz" }));
   

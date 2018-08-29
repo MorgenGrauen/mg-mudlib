@@ -235,12 +235,12 @@ void out_of_fuel()
       inv=(users() & all_inventory(environment(environment())))-({ environment() });
       for (i=sizeof(inv)-1; i>=0; i--) 
         if (inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
-          tell_object(inv[i], "Es wird dunkel als " + environment()->name(WESSEN) +
+          tell_object(inv[i], "Es wird dunkel, als " + environment()->name(WESSEN) +
             " " + QueryProp(P_NAME) + " erlischt.\n" ) ;
         else tell_object(inv[i], CAP( name( WER, 0 ) ) + " erlischt.\n" ) ;
       if (environment()->QueryProp(P_PLAYER_LIGHT)<=0)
         tell_object(environment(), 
-          CAP( name( WER, 1 ) ) + " erlischt und es wird dunkel.\n" ) ;
+          CAP( name( WER, 1 ) ) + " erlischt, und es wird dunkel.\n" ) ;
       else tell_object(environment(), CAP( name( WER, 1 ) ) + " erlischt.\n" ) ;    
     }
     else
@@ -248,7 +248,7 @@ void out_of_fuel()
       inv=(users() & all_inventory(environment()));
       for (i=sizeof(inv)-1; i>=0; i--) 
         if (inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
-          tell_object(inv[i], "Es wird dunkel als " + name(WER,1)
+          tell_object(inv[i], "Es wird dunkel, als " + name(WER,1)
           + " erlischt.\n" ) ;
         else tell_object(inv[i], CAP( name( WER, 0 ) ) + " erlischt.\n" ) ;
     }

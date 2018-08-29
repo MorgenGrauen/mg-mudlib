@@ -1177,7 +1177,7 @@ protected void heart_beat()
                 write( "Du fuehlst Dich beschissen. Alles tut weh, und Du "
                        "siehst nur noch unscharf.\n" );
                 say( capitalize(name(WER)) + " taumelt und stoehnt und "
-                     "kann gerade noch vermeiden, hinzufallen.\n" );
+                     "kann gerade noch vermeiden hinzufallen.\n" );
                 break;
                 
             case 0..10 :

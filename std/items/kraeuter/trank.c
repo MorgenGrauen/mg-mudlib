@@ -551,7 +551,7 @@ private int act_attr_dam_animals(int effekt)
         "gedaempft, denn Du spuerst, dass Artemis Dich im Kampf gegen "
         "ihre Schuetzlinge "
         + num2desc_fight(effekt)
-        + "schwaechen wuerde.",78));
+        + " schwaechen wuerde.",78));
     return 1;
   }
   return 0;
