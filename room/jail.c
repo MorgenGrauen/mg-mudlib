@@ -22,9 +22,9 @@ protected void create()
   SetProp(P_INDOORS,1);
 }
 
-void init()
+public varargs void init(object oldenv)
 {
-  ::init();
+  ::init(oldenv);
   if (!query_once_interactive(this_player()))
     return;
   if ( IS_DEPUTY(this_player()) ) // EM+ sind sowieso Deputies
@@ -42,7 +42,7 @@ void init()
 }
 
 // Move-Hook austragen.
-void exit(object liv) {
+varargs void exit(object liv, object dest) {
   if (objectp(liv) && !IS_DEPUTY(liv))
     liv->HUnregisterFromHook(H_HOOK_MOVE,this_object());
 }

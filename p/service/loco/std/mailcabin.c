@@ -71,7 +71,7 @@ public varargs int move(mixed dest, int method, string dir, string textout, stri
   return r;
 }
 
-void init() {
+public varargs void init(object origin) {
   (commands::init());
   if (environment(this_player())==environment(this_object())) {
     add_action("rein","betrete");

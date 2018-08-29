@@ -57,7 +57,7 @@ public void reset()
   return;
 }
 
-public void exit(object liv)
+public varargs void exit(object liv, object dest)
 {
   call_out("test_remove",2);
   return;
@@ -71,12 +71,12 @@ static void deep_destruct( object ob )
                       lambda( ({'x/*'*/}), ({#'destruct, 'x}) ) );
 }
 
-public void init()
+public varargs void init(object oldenv)
 {  
   string prayroom;
   int res;
 
-  ::init();
+  ::init(oldenv);
   if ( !query_once_interactive(this_player()) ){
       call_out( "deep_destruct", 0, this_player() );
       return;

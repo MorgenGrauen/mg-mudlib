@@ -39,11 +39,11 @@ void create() {
   }, F_QUERY_METHOD);
 }
 
-void init() {
+public varargs void init(object oldenv) {
   set_next_reset(300);
   if ( objectp(PL) )
     call_out("Sequenz", 0, 0);
-  return ::init();
+  return ::init(oldenv);
 }
 
 // Nix resetten, aber Raum entsorgen, wenn kein Spieler drin.

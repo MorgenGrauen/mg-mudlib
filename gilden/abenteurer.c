@@ -361,11 +361,11 @@ string karte() {
   return GetDetail("karten");
 }
 
-void init() {
+public varargs void init(object origin) {
   int res;
   object ob;
 
-  ::init();
+  ::init(origin);
 
   // Von Ark, an alle Rassenstartpunkte
   if (ob=present("\nentdecker_obj",this_player()))

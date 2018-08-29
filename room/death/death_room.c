@@ -31,7 +31,8 @@ static int filter_ldfied( string str );
 public int SmartLog( string creat, string myname, string str, string date );
 public mixed hier_geblieben( mixed dest, int methods, string direction,
                              string textout, string textin );
-public void init()
+
+public varargs void init(object oldenv)
 {
   this_player()->move("/room/death/virtual/death_room_"+getuid(this_player()),
 	     M_NOCHECK|M_SILENT|M_NO_SHOW);

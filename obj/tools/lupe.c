@@ -155,11 +155,11 @@ void _load_profile()
 	printf("Error when loading profile: %O\n",pfile);
 }
 
-void init()
+varargs void init(object origin)
 {
   int i,ch;
   
-  ::init();
+  ::init(origin);
   if (environment()!=this_player()) return;
 //  if (!IS_LEARNER(this_player())) return;
   if (!IS_LEARNER(this_player())) return destruct(this_object());
