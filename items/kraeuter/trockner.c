@@ -89,10 +89,19 @@ private mixed my_mat() {
 
 private int|string my_noget() {
   object inv = first_inventory(ME);
-  if ( objectp(inv) )
-    return inv->Name(WER,1)+" wird gerade getrocknet, Du solltest "+
-      inv->QueryPronoun(WEN)+" liegenlassen, bis "+
-      inv->QueryPronoun(WER)+" fertig ist.";
+  if ( objectp(inv) ) {
+    if ( find_call_out(#'destroy_herb) > -1 ) {
+      return inv->Name(WER,1)+" wurde zu lange getrocknet und ist inzwischen "
+        "so heiss, dass Du "+inv->QueryPronoun(WEN)+" nicht mehr an Dich "
+        "nehmen kannst. Verzweifelt tippelst Du vor dem Kraut hin und her, "
+        "siehst aber keinen Weg, es noch zu retten.";
+    }
+    else {
+      return inv->Name(WER,1)+" wird gerade getrocknet, Du solltest "+
+        inv->QueryPronoun(WEN)+" liegenlassen, bis "+
+        inv->QueryPronoun(WER)+" fertig ist.";
+    }
+  }
   return 1;
 }
 
