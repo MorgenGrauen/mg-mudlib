@@ -439,22 +439,29 @@ static int cmd_trocknen(string str, mixed *param) {
 
 // Kraut wird getrocknet, sofern der Spieler noch im Raum ist, ...
 private void dry_plant(object kraut, string *msgs) {
-  if ( objectp(PL) && environment(PL) == environment(ME) ) {
-    tell_object(PL, BS(msgs[0]));
-    tell_room(environment(ME), BS(msgs[1]), ({PL}));
-    kraut->move(PL, M_GET);
-    kraut->DryPlant(drying_quality);
+  if ( objectp(PL) && environment(PL) == environment(ME) )
+  {
+    if (kraut->move(PL, M_GET) == MOVE_OK )
+    {
+      tell_object(PL, BS(msgs[0]));
+      tell_room(environment(ME), BS(msgs[1]), ({PL}));
+      kraut->DryPlant(drying_quality);
+      return;
+    }
+    else
+    {
+      tell_object(PL, BS("Du kannst " + kraut->name(WEN,1) + " nicht mehr "
+                         "tragen."));
+    }
   }
   // ... ansonsten laeuft die Trocknung weiter, und das Kraut verbrennt.
-  else {
-    tell_room(environment(ME), BS(kraut->Name(WER,1)+" wird extrem dunkel, "
-      "bald wird "+kraut->QueryPronoun(WER)+" zu nichts mehr zu gebrauchen "
-      "sein!"));
-    // Das Delay fuer diesen zweiten Callout ist immer fix. Kommt hoffentlich
-    // selten genug vor und braucht daher eher nicht extra aus dem Master
-    // geholt zu werden.
-    call_out(#'destroy_herb, 20, kraut);
-  }
+  tell_room(environment(ME), BS(kraut->Name(WER,1)+" wird extrem dunkel, "
+    "bald wird "+kraut->QueryPronoun(WER)+" zu nichts mehr zu gebrauchen "
+    "sein!"));
+  // Das Delay fuer diesen zweiten Callout ist immer fix. Kommt hoffentlich
+  // selten genug vor und braucht daher eher nicht extra aus dem Master
+  // geholt zu werden.
+  call_out(#'destroy_herb, 20, kraut);
 }
 
 // Zerstoerung des Krautes. Da die Krautobjekte selbst eine Meldung 
