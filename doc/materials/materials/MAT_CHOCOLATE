@@ -11,11 +11,11 @@ Beschreibung:
 kakaohaltige Suessspeise mit Extra-Milch
 
 Erkennbarkeit:
-MAT_SHIT:-50
-MAT_MISC_FOOD:-25
+MAT_SHIT:-40
+MAT_WAX: -20
+MAT_MISC_FOOD:5
 MAT_CHOCOLATE
 
 Gruppenzugehoerigkeit:
 MATGROUP_EATABLE:100
-MATGROUP_BIO:100
 MATGROUP_SOLID:100

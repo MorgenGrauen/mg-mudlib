@@ -108,7 +108,7 @@ BEISPIELE
    AddInfo("muenzen",
        "fluestert: Du willst Geld?",
        0,
-       "fluestert @WEM etwas zu.");
+       "fluestert @WEM1 etwas zu.");
 
    // "frage monster nach geld": alle im Raum hoeren
    //  Das Monster sagt: Ich habe zwar kein Geld, aber [...]
@@ -185,7 +185,7 @@ BEISPIELE
    protected string question_gold() {
      // wieviel Kohle hat der Spieler
      int money = this_player()->QueryMoney();
-     string *y = map(deep_inventory(this_player()),
+     string* y = map(deep_inventory(this_player()),
                    function string(object o) {
                      if(o->QueryMaterial(MAT_GOLD)>0 &&
                         strstr(object_name(o),"/items/money")<0 &&
@@ -232,9 +232,9 @@ BEISPIELE
    //   Das Monster murmelt: Muenzen. Ausserdem ist/sind noch <object1>
    //   Das Monster murmelt: und <object2> aus Gold."
    // - die Umstehenden hoeren:
-   //   "Das Monster murmelt @WEM etwas zu."
+   //   "Das Monster murmelt @WEM1 etwas zu."
    //   oder
-   //   "Das Monster murmelt @WEM etwas zu und glotzt ihn/sie gierig an."
+   //   "Das Monster murmelt @WEM1 etwas zu und glotzt ihn/sie gierig an."
 
 
 SIEHE AUCH

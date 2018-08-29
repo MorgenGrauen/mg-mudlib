@@ -12,27 +12,36 @@ FUNKTION
 DEFINIERT IN
 ============
 
-   /std/thing/moving.c
-   /std/living/moving.c
-   /std/room/moving.c
+   /std/thing/moving.c /std/living/moving.c /std/room/moving.c
+   /std/unit.c
 
 
 ARGUMENTE
 =========
 
-   silent
-        Falls ungleich 0, so werden beim Zerstoeren keine Meldungen
-        ausgegeben.
+   * silent: Falls ungleich 0, so werden beim Zerstoeren keine
+     Meldungen ausgegeben.
 
 
 BESCHREIBUNG
 ============
 
-   Beim Aufruf dieser Funktion entfernt sich das Objekt selbst. Durch
-   Ueberladen dieser Funktion kann man diesen Vorgang noch durch die
-   Ausgabe von Meldungen kommentieren, oder irgendwelche Daten
-   abspeichern, oder das Zerstoeren ganz verhindern (auf diesem Weg... Mit
-   destruct() kann das Objekt immer noch direkt zerstoert werden!)
+   Die meisten Objekte zerstoeren sich durch den Aufruf von remove()
+   selbst.
+
+   Unitobjekte reduzieren P_AMOUNT um U_REQ Einheiten. Will man ein
+   Unit- Objekt vollstaendig zerstoeren, ist vor dem Aufruf von
+   remove() U_REQ auf P_AMOUNT zu setzen. Wird durch remove() P_AMOUNT
+   0, wird das Objekt natuerlich zerstoert.
+
+   Durch Ueberladen dieser Funktion kann man diesen Vorgang noch durch
+   die Ausgabe von Meldungen kommentieren, oder irgendwelche Daten
+   abspeichern, oder das Zerstoeren ganz verhindern (auf diesem Weg...
+   Mit destruct() kann das Objekt immer noch direkt zerstoert werden!)
+
+   ACHTUNG: Wenn ein Objekt durch remove() nicht zerstoert wird,
+   koennte das einen Grund haben. Bitte nicht einfach destruct()
+   verwenden, das ist nur fuer Notfaelle wie ein buggendes remove().
 
 
 RUeCKGABEWERT
@@ -44,13 +53,13 @@ RUeCKGABEWERT
 BEMERKUNGEN
 ===========
 
-   Nach einem erfolgreichen ::remove() gelten die selben Einschraenkungen
-   wie nach einem destruct()!
+   Nach einem erfolgreichen ::remove() gelten die selben
+   Einschraenkungen wie nach einem destruct()!
 
 
 SIEHE AUCH
 ==========
 
-   destruct()
+   "../efun/destruct", *U_REQ*, *P_AMOUNT*
 
-Last modified: Wed May 8 10:23:40 1996 by Wargon
+Letzte Aenderung: 24.07.2018, Bugfix
