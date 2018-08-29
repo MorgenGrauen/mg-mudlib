@@ -38,7 +38,7 @@ protected void create() {
   SetProp(P_NAME, "Schnecke");
   SetProp(P_GENDER, FEMALE);
   SetProp(P_ARTICLE, 1);
-  SetProp(P_SHORT, "Ein Seeschnecke");
+  SetProp(P_SHORT, "Eine Seeschnecke");
   SetProp(P_LONG, desc[0][snailtype]);
   SetProp(P_MATERIAL, MAT_MISC_LIVING);
   SetProp(P_FISH, snailtype*random(10));
