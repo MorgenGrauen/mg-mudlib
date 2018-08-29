@@ -120,7 +120,7 @@ static int cmd_trocknen(string str, mixed *param) {
       "solltest "+kraut->QueryPronoun(WEN)+" besser liegenlassen."));
   }
   // Es muss sich auch um ein Kraut handeln und nicht irgendwas anderes.
-  else if ( load_name(kraut) != PLANTITEM ) {
+  else if ( !IS_PLANT(kraut) ) {
     return 0;
   }
   // Spieler muss das Kraut im Inventar haben.
