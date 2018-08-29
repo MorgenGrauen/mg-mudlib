@@ -83,7 +83,7 @@ void Load()
   restore_object(HAUSSAVEPATH+owner);
 }
 
-void init()
+public varargs void init(object origin)
 {
   // statt im Haus landet man im Hauptraum Raum 0, sollte ansich nicht passieren
   // da man nomalerweise nicht ins Haus sondern direkt in den Hauptraum gemoved wird

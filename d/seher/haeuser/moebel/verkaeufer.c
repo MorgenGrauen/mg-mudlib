@@ -138,7 +138,7 @@ void begruessung(object pl, string txt)
     tell_room(ETO, "\n"+txt);
 }
 
-void init()
+public varargs void init(object origin)
 {
   ::init();
   if (!interactive(TP) || TP->QueryProp(P_INVIS))

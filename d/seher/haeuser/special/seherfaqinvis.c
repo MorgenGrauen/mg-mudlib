@@ -31,7 +31,7 @@ void create()
   seite = get_dir(FAQ("*"))-({".","..","faq.o"});
 }
 
-void init()
+public varargs void init(object origin)
 {
   thing::init();
   if (this_player() && IS_USER(this_player()))

@@ -63,7 +63,7 @@ void notifyRep(int r)
   printf("Seit Deinem letzten Besuch gab es %s Rueckmeldung%s von anderen Spielern\nin Deinem Haus.\n", (r==1) ? "eine" : to_string(r), (r==1) ? "" : "en");
 }
 
-void init()
+public varargs void init(object origin)
 {
   int r;
 

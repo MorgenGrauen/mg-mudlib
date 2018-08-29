@@ -208,7 +208,7 @@ protected void create()
   AddCmd( ({"meldung", "meldungen"}), "report");
 }
 
-void init()
+public varargs void init(object origin)
 {
 	object haus;
   

@@ -64,8 +64,7 @@ _set_owner(string ow)
   return owner=ow;
 }
 
-string
-short()
+public varargs string short()
 {
   int open;
   string sh, *stat;
@@ -81,7 +80,7 @@ short()
   return sprintf(sh, stat[offen])+".\n";
 }
 
-oeffne(string str)
+int oeffne(string str)
 {
   object env;
 
