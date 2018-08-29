@@ -18,6 +18,14 @@ protected void create(){
   SetProp(P_SHORT, "Ein kleiner Wurm");
   SetProp(P_LONG, "Ein kleiner Regenwurm.\n");
   SetProp(P_MATERIAL, MAT_MISC_LIVING);
+  Set(P_INFO, function string() { 
+      string msg = Query(P_INFO, F_VALUE);
+      if ( stringp(msg) && sizeof(msg) )
+        return msg;
+      else
+        return break_string(Name(WER,1)+" laesst sich bestimmt als Koeder "
+          "zum Angeln verwenden.",78);
+    }, F_QUERY_METHOD);
   SetProp(P_VALUE, 1);
   SetProp(P_WEIGHT, 5);
 }
