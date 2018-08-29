@@ -447,8 +447,9 @@ private void dry_plant(object kraut, string *msgs) {
   }
   // ... ansonsten laeuft die Trocknung weiter, und das Kraut verbrennt.
   else {
-    tell_room(ME, BS(kraut->Name(WER,1)+" wird extrem dunkel, bald wird "+
-      kraut->QueryPronoun(WER)+" zu nichts mehr zu gebrauchen sein!"));
+    tell_room(environment(ME), BS(kraut->Name(WER,1)+" wird extrem dunkel, "
+      "bald wird "+kraut->QueryPronoun(WER)+" zu nichts mehr zu gebrauchen "
+      "sein!"));
     // Das Delay fuer diesen zweiten Callout ist immer fix. Kommt hoffentlich
     // selten genug vor und braucht daher eher nicht extra aus dem Master
     // geholt zu werden.
