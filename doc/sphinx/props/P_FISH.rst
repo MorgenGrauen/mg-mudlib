@@ -34,10 +34,11 @@ BESCHREIBUNG
         haengt. Ist er zu schwer fuer die Angel und reisst ab, bleibt der
         Koeder erhalten.
       F_REPLACE
-        Fisch soll sich beim Entfernen von der Angel verwandeln. Hierzu ist
-        die Funktion ReplaceFish() im Fisch zu definieren, die sich um die
-        Verwandlung kuemmert (z.B. Monster clonen und Fisch zerstoeren; ein
-        Beispiel findet sich in /d/ebene/fraggle/angel2/obj/saegefisch.c).
+        Fisch soll sich beim Einholen der Angel verwandeln, technisch:
+        wenn er geclont und in die Angel bewegt wurde. Hierzu ist die 
+        Funktion ReplaceFish() im Fisch zu definieren, die sich um die
+        Verwandlung kuemmert (z.B. Monster clonen und Fisch zerstoeren,
+        Beispiel siehe unten).
       F_NOHEAL
         Fisch heilt nicht bei Verzehr
 
@@ -81,6 +82,32 @@ BESCHREIBUNG
     von -100 gesetzt hat und der Koeder +100, entspricht die Fischdichte im 
     Gewaesser wieder dem Normalwert.
 
+
+BEISPIEL
+--------
+::
+
+    protected void create() {
+      [...]
+      SetProp(P_FISH, F_REPLACE);
+      [...]
+    }
+ 
+    // ReplaceFish() wird per call_out() mit Funktionsnamen (d.h. als String)
+    // gerufen, daher muss die Sichtbarkeit public oder static sein.
+    static void ReplaceFish() {
+      tell_object(this_player(), break_string("Der Katzenhai glitscht Dir 
+        "aus der Hand und streift seine Haut ab. Vor Dir steht eine "
+        "niedliche, schwarze Katze!", 78));
+      tell_room(environment(this_player()), break_string(
+        this_player()->Name(WEM)+" glitscht ein Katzenhai aus der Hand "
+        "und streift seine Haut ab. Ueberraschend steht eine niedliche, "
+        "schwarze Katze vor Dir!", 78));
+      object monster = clone_object("/d/irgendwo/irgendwer/mon/haikatze");
+      monster->move(environment(TP), M_GO|M_SILENT);
+      remove();
+    }
+
 SIEHE AUCH
 ----------
 ::
@@ -89,5 +116,5 @@ SIEHE AUCH
     Methoden:   GetAquarium(L)
 
 
-Zuletzt geaendert: 2014-Aug-21, Arathorn
+Zuletzt geaendert: 2018-Jul-18, Arathorn
 
