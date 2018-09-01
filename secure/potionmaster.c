@@ -87,6 +87,7 @@ int *QueryInactivePotions() {
 private void RebuildCache() {
   // Cache invalidieren; vor-initialisiert zur Beschleunigung des Rebuilds.
   lists = ([0:({}),1:({}),2:({}),3:({}),4:({}),5:({}),6:({}),7:({})]);
+  reverse_table = ([]);
   foreach (int num, string room, int list : potions) {
     reverse_table += ([room:num]);
     lists[list] += ({num});
