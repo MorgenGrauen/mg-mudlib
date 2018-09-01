@@ -89,7 +89,7 @@ private void RebuildCache() {
   lists = ([0:({}),1:({}),2:({}),3:({}),4:({}),5:({}),6:({}),7:({})]);
   reverse_table = ([]);
   foreach (int num, string room, int list : potions) {
-    reverse_table += ([room:num]);
+    m_add(reverse_table, room, num);
     lists[list] += ({num});
   }
   return;
@@ -159,7 +159,7 @@ int AddPotionRoom(string room, int list) {
     return POT_NO_SUCH_ROOM;
 
   // Jetzt kann's endlich losgehen, Raum eintragen, nextroom hochzaehlen
-  potions += ([nextroom : room; list]);
+  m_add(potions, nextroom, room, list);
   MODLOG("ADD_POTION", nextroom, room);
   // Neu eingetragene ZTs werden auch gleich aktiviert; ActivateRoom()
   // baut den Cache selbst neu auf, daher kann das hier entfallen.
