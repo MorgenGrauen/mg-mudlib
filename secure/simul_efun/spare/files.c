@@ -66,6 +66,14 @@ varargs int log_file(string file, string txt, int size_to_break)
                 "valid_write",file,geteuid(PO),"log_file",PO))
       return 0;
 
+    // pruefen, ob das Verzeichnis existiert - sonst anlegen
+    string dir=file[..strrstr(file,"/")-1];
+    if (file_size(dir) != -2) // FSIZE_DIR
+    {
+      if (!mkdirp(dir))
+        return 0;
+    }
+
     // Wenn zu gross, rotieren.
     if ( size_to_break >= 0 & (
         sizeof(st = get_dir(file,2) ) && st[0] >= (size_to_break|MAX_LOG_SIZE)))

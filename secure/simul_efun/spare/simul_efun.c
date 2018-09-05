@@ -14,6 +14,8 @@
 #define SNOOPLOGFILE "SNOOP"
 #define ASNOOPLOGFILE "ARCH/SNOOP"
 
+public int mkdirp(string dir);
+
 #include "/secure/config.h"
 #include "/secure/wizlevels.h"
 #include "/sys/snooping.h"
