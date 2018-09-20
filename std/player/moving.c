@@ -158,7 +158,7 @@ protected void NotifyMove(object dest, object oldenv, int method) {
                         query_verb() + " " + (_unparsed_args(2) || ""),
                         method, dest->QueryProp(P_PARA) }) });
 
-      if ( sizeof(connections) > 50
+      if ( sizeof(connections) > 30
            && find_call_out("flush_connections") == -1 )
             call_out( "flush_connections", 0, connections );
   }
