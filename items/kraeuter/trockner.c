@@ -486,7 +486,7 @@ private void destroy_herb(object kraut) {
 // muss vielleicht noch weiter abgesichert werden, oder der verursachende
 // Magier ausgeschimpft. ;-) 
 varargs int PreventInsert(object ob) {
-  if (load_name(ob) == PLANTITEM && clonep(ob)) 
+  if (clonep(ob) && IS_PLANT(ob))
     return ::PreventInsert(ob);
   return 1;
 }
