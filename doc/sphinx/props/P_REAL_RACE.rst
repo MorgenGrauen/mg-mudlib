@@ -14,8 +14,10 @@ DEFINIERT IN
 BESCHREIBUNG
 ------------
   
-  Diese Property enthaelt die Rasse des Livings. Sie darf nicht durch 
-	Shadows ueberschrieben werden.	
+  Diese Property enthaelt die Rasse des Livings und sollte wie P_RACE aus
+  traditionellen Gruenden gross geschrieben werden.
+
+  Diese Property darf nicht durch Shadows ueberschrieben werden.	
 
 	Wirklich interessant ist sie, wenn ein Spieler sich tarnt. Dort kann
 	man mit dieser Property trotz Tarnung feststellen, welche Rasse der
