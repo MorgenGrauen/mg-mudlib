@@ -3,19 +3,16 @@ P_RACE
 
 NAME
 ----
-::
 
 	P_RACE				"race"
 
 DEFINIERT IN
 ------------
-::
 
 	/sys/living/description.h
 
 BESCHREIBUNG
 ------------
-::
 
 	Die Rasse eines Lebewesens kann ueber diese Property ermittelt bzw.
 	gesetzt werden. Es empfiehlt sich hierbei, Rassen nur in Form von
@@ -29,7 +26,8 @@ BESCHREIBUNG
 
 BEISPIEL
 --------
-::
+
+.. code-block:: pike
 
 	void create()
 	{ ::create();
@@ -40,10 +38,9 @@ BEISPIEL
 
 SIEHE AUCH
 ----------
-::
 
+  :doc:`P_REAL_RACE`
 	/std/npc.c, /std/pub.c
 
 
-Last modified: Mon Sep 15 21:15:49 2003 by Vanion
-
+Last modified: 15.10.2018 Zesstra
