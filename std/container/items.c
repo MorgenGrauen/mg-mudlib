@@ -177,7 +177,7 @@ private void ri_rem_ob(object ob)
   }
 }
 
-private int ri_filter(<int|<string|string*>|object>* ritem, 
+private int ri_filter(<int|<string|string*>|object|mapping>* ritem, 
   string|string* file)
 {
   object ob;
