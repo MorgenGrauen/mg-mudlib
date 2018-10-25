@@ -123,10 +123,7 @@ BEISPIEL:
               pointer)
               idle_usr = filter(users(), #'check_if_idle );
 
-     #3: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
-         idle_usr = filter(users(), lambda(({'u}), ({#'query_idle, 'u})));
-
-     #4: erreicht dasselbe wie #3 mit besser lesbarer Inline-Closure
+     #3: Nutzt eine Inline-Closure
          idle_usr = filter(users(), function int (object user) {
                       return query_idle(user);
                     } );
@@ -151,13 +148,7 @@ BEISPIEL:
               pointer)
               idle_usr = filter(users(), #'check_if_idle, 20);
 
-     #3: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
-         idle_usr = filter(users(), 
-                      lambda(({'u, 'l}), ({#'>,({#'query_idle, 'u}),'l})), 
-                      20);
-
-     #4: erreicht dasselbe wie #3 mit einer deutlich besser lesbaren
-         Inline-Closure (gegenueber Lambdas zu empfehlende Variante):
+     #3: Nutzt eine Inline-Closure
          idle_usr = filter(users(), function int (object user, int length) {
                       return (query_idle(user) > length); 
                       }, 20);

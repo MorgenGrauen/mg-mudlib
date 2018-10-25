@@ -78,10 +78,7 @@ BEISPIELE:
          #2b: nutzt die Lfun is_greater() als Lfun-Closure (Funktionspointer)
               sort_array(arr, #'is_greater)
 
-     #3: nutzt eine Lambda-Closure (langsamer, nicht fuer alle leserlich)
-         sort_array(arr, lambda(({'a, 'b}), ({#'>, 'a, 'b})))
-
-     #4: analog zu 3, mit Inline-Closure
+     #3: Nutzt eine Inline-Closure
          sort_array(arr, function int (int a, int b) {
            return a > b; } );
 
