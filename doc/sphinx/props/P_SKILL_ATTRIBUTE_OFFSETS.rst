@@ -22,11 +22,21 @@ BESHREIBUNG
 
   Die Werte duerfen zwischen 10 und 1000 liegen.
 
-BEMERKUNG
----------
+BEMERKUNGEN
+-----------
 
   Diese Property sollte AUF GAR KEINEN FALL in einem Spieler gesetzt
   werden, ohne Ruecksprachen mit allerhoechsten Stellen!
+
+  Nur via SetProp() setzen, Query-Methoden werden nicht ausgewertet.
+
+BEISPIEL
+--------
+
+.. code-block:: pike
+
+  // Zwei Angriffe pro Kampfrunde
+  SetProp(P_SKILL_ATTRIBUTE_OFFSETS,([SA_SPEED:200]));
 
 SIEHE AUCH
 ----------
@@ -36,8 +46,8 @@ SIEHE AUCH
   Abfragen:     :doc:`../lfun/QuerySkill`, :doc:`../lfun/QuerySkillAbility`
   Modifikation: :doc:`../lfun/ModifySkillAttribute`, :doc:`../lfun/QuerySkillAttribute`,
   :doc:`../lfun/QuerySkillAttributeModifier`, :doc:`../lfun/RemoveSkillAttributeModifier`
-  Properties: :doc:`P_SKILL_ATTRIBUTES`, :doc:`P_SKILL_ATTRIBUTE_OFFSETS`
+  Properties: :doc:`P_SKILL_ATTRIBUTES`
   sonstig:      spruchermuedung, :doc:`skill_info_liste`
   Properties:   :doc:`P_NEWSKILLS`
 
-31.12.2013, Zesstra
+Letzte Aenderung: 27.10.2018, Bugfix
