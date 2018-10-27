@@ -5,7 +5,6 @@ FUNKTION
 --------
 
   protected void create();
-  void create();
 
 DEFINIERT IN
 ------------
@@ -41,9 +40,12 @@ BEMERKUNGEN
   Erbt man von anderen Objekten, so besteht die erste Aktion innerhalb
   von create() normalerweise darin, in diesen Objekten create()
   aufzurufen.
-  Die Funktion kann protected oder static sein (aber nicht private). Es
-  duerfte fuer die meisten Objekte sinnvoll sein, create() protected zu
-  deklarieren.
+
+  In altem Code wird create() haeufig ohne Sichtbarkeitsmodifikator
+  verwendet, es sollte aber immer protected gewaehlt werden, es gibt keinen
+  guten Grund create() mehr als einmal zu rufen, im Gegenteil, wird das
+  geerbte create() mehrfach gerufen kann das zu schwer zu findenden Bugs
+  fuehren.
 
   Um Speicher zu sparen, kann man bei Blueprints von der Konfigurierung
   absehen (siehe Beispiel). Dies sollte man allerdings nicht bei Objekten
@@ -60,16 +62,17 @@ BEISPIELE
 
 .. code-block:: pike
 
-  inherit "std/thing";
+  inherit "/std/thing";
 
   #include <properties.h>
 
-  create()
+  protected void create()
   {
     // Wenn wir die Blueprint sind: NICHT konfigurieren!
-    // Bei normalen Raeumen oder Transportern sind diese beiden
+    // Bei normalen Raeumen oder Transportern sind diese 
     // Zeilen wegzulassen!!!
-    if (!clonep(this_object())) {
+    if (!clonep(this_object()))
+    {
       set_next_reset(-1);    // wichtig, damit die BP nicht resettet.
       return;
     }
@@ -90,9 +93,7 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-  :doc:`create`, :doc:`reset`
-  hook(C), create(H), create_ob(H), create_super(H, reset(H)
-  create(A), reset(A)
+  :doc:`create`, :doc:`reset`, :doc:`create_super`
+  set_next_reset()
 
-22.10.2007, Zesstra
-
+Letzte Aenderung: 27.10.2018, Bugfix
