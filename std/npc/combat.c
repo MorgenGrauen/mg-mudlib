@@ -375,9 +375,8 @@ protected void heart_beat() {
   akt_spell_mess=spells[i][SPELL_TEXT_FOR_OTHERS];
   if(pointerp(akt_spell_mess))
   {
-    akt_spell_mess[0]=replace_personal(akt_spell_mess[0], ({enemy}), 1);
     send_room(environment(),
-      akt_spell_mess[0],
+      replace_personal(akt_spell_mess[0], ({enemy}), 1),
       akt_spell_mess[1],
       MA_SPELL,
       0,
