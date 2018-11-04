@@ -112,15 +112,11 @@ public varargs mixed Set( string name, mixed Value, int Type, int extern )
       }
       // Kein break!
     case F_QUERY_METHOD:
-      // Ungebundene Lambda_Closure? Binden!
-      if (closurep(Value)&&!query_closure_object(Value))
+      // Ungebundene Lambda_Closure? Heutzutage ein Fehler.
+      if (closurep(Value) && !query_closure_object(Value))
       {
-        if (extern_call() &&
-             (getuid(previous_object()) != getuid()||
-              geteuid(previous_object()) != geteuid()))
-          return prop[Type][name];
-        
-        Value = bind_lambda( Value,this_object());
+        raise_error("Ungebundene Lambdas sind als Querymethoden "
+                    "nicht mehr unterstuetzt.\n");
       }
       // Kein break!
     default:
