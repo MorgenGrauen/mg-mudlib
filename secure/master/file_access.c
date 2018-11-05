@@ -34,22 +34,32 @@ string *full_path_array(string path, string user) {
 
   switch(path[0]) {
     case '/':
-      if(!path[1]) return ({"",""}); //additional "" to yield "/" later
+      if(sizeof(path)==1)
+        return ({"",""}); //additional "" to yield "/" later
       strs=PATH_ARRAY(path);
       if (!sizeof(strs))
           strs = ({"",""});
       break;
     case '+':
-      if(!path[1]) return ({"","d"});
+      if(sizeof(path)==1)
+        return ({"","d"});
       strs=({"","d"})+PATH_ARRAY(path[1..<1]);
       break;
     case '~':
-      if(user && !path[1])
-        return ({"","players",user});
-      if(user && path[1]=='/')
-        strs=({"","players",user})+PATH_ARRAY(path[2..<1]);
+      if (sizeof(path)==1)
+      {
+        if(user)
+          return ({"","players",user});
+        else
+          return ({"","players"});
+      }
       else
-        strs=({"","players"})+PATH_ARRAY(path[1..<1]);
+      {
+        if(user && path[1]=='/')
+          strs=({"","players",user})+PATH_ARRAY(path[2..<1]);
+        else
+          strs=({"","players"})+PATH_ARRAY(path[1..<1]);
+      }
       break;
     default:
       if(user && TP && getuid(TP) == user
@@ -58,12 +68,14 @@ string *full_path_array(string path, string user) {
       else
         strs=PATH_ARRAY(path);
   }
-  // /../ behandeln. Einschraenkungen der RegExp:
+
+  // /../ und .. irgendwo im Pfad behandeln, i.e. rausschneiden.
+  // Einschraenkungen der RegExp:
   // /a/b/../../d wuerde nur durch Wiederholung aufgeloest.
   // /../d wird nicht richtig aufgeloest.
   //regreplace("/d/inseln/toeter/room/hoehle/../wald/bla.c","(.*)\/[^/]+/\.\.
   //    /(.*)", "\\1\/\\2", RE_GLOBAL)
-  
+
   // dies sieht schlimmer aus als es ist (member ist O(n)), solange das Array
   // nicht gross wird.
   int p;
