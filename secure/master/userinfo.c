@@ -718,7 +718,7 @@ string query_fptips(string user) {
 }
 
 // Aendert die Shells eines Users.
-int set_player_object( string user, string objectname )
+int set_player_object( string user, string shellpath )
 {
     string prev;
 
@@ -728,13 +728,13 @@ int set_player_object( string user, string objectname )
         return -1;
     }
 
-    if ( objectname == "" )
-        objectname = 0;
+    if ( shellpath == "" )
+        shellpath = 0;
 
     if ( !stringp(user) || user == "" )
         return -6;
 
-    if ( !stringp(objectname) ){
+    if ( !stringp(shellpath) ){
         if ( !find_userinfo(user) )
             return -4;
 
@@ -743,19 +743,19 @@ int set_player_object( string user, string objectname )
         return 1;
     }
 
-    if ( catch(load_object(objectname);publish) ) {
-        write( "Fehler in " + objectname + "!\n" );
+    if ( catch(load_object(shellpath);publish) ) {
+        write( "Fehler in " + shellpath + "!\n" );
         return -2;
     }
 
-    if (strstr(object_name, "/std/shells/") != 0)
+    if (strstr(shellpath, "/std/shells/") != 0)
         return -3;
 
     if ( !find_userinfo(user) )
         return -4;
 
     prev = userlist[user, USER_OBJECT];
-    userlist[user, USER_OBJECT] = objectname;
+    userlist[user, USER_OBJECT] = shellpath;
     save_userinfo(user);
 
     // Loggen, falls die Aenderung nicht von Login beim Anlegen des Chars
@@ -766,7 +766,7 @@ int set_player_object( string user, string objectname )
       call_sefun("log_file", "ARCH/SHELL_AENDERUNGEN",
         sprintf( "%s: %O aendert die Shell von %s von %s auf %s (PO: %O)\n",
           strftime("%Y%m%d-%H%M%S"), 
-          this_interactive(), capitalize(user), prev, objectname,
+          this_interactive(), capitalize(user), prev, shellpath,
           previous_object()) );
     }
 
