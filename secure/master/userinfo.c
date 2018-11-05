@@ -720,7 +720,6 @@ string query_fptips(string user) {
 // Aendert die Shells eines Users.
 int set_player_object( string user, string objectname )
 {
-    mixed *path;
     string prev;
 
     // nur EM und ROOT duerfen die Shell eines Charakters aendern
@@ -749,10 +748,7 @@ int set_player_object( string user, string objectname )
         return -2;
     }
 
-    objectname = _get_path( objectname, 0 );
-    path = (efun::explode( objectname, "/" ) - ({ "", 0 }));
-
-    if ( sizeof(path) < 3 || path[0] != "std" || path[1] != "shells" )
+    if (strstr(object_name, "/std/shells/") != 0)
         return -3;
 
     if ( !find_userinfo(user) )
