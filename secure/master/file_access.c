@@ -145,6 +145,7 @@ int access_rights(string *p_arr, string euid)
   return 0;
 }
 
+// Diese Funktion wird vom Driver nur fuer den Editor ed gerufen.
 string make_path_absolute(string str) {
   return _get_path(str, getuid(TP));
 }
