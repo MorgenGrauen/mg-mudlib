@@ -21,78 +21,105 @@ void LoadDeputyFileList()
   return;
 }
 
-#define PATH_ARRAY(x) (explode(x, "/")-({"."}))
-string *full_path_array(string path, string user) {
-  string *strs;
-  string cwd;
+// Normalisiert den Pfad und liefert ein Array mit Pfadelementen.
+// expand bestimmt, ob im Pfad +, ~ oder P_CURRENTDIR expandiert werden oder
+// nicht.
+string *path_array(string path, string user, int expand) {
+    string cwd;
 
-  if(!path)
+  if (!sizeof(path))
     return ({"",""}); // additional "" to yield "/" later.
 
-  // remove multiple '/'
-  path = regreplace(path, "/+", "/", 1);
-
-  switch(path[0]) {
-    case '/':
-      if(sizeof(path)==1)
-        return ({"",""}); //additional "" to yield "/" later
-      strs=PATH_ARRAY(path);
-      if (!sizeof(strs))
-          strs = ({"",""});
-      break;
-    case '+':
-      if(sizeof(path)==1)
-        return ({"","d"});
-      strs=({"","d"})+PATH_ARRAY(path[1..<1]);
-      break;
-    case '~':
-      if (sizeof(path)==1)
-      {
-        if(user)
-          return ({"","players",user});
+  // expand gibt es nur wenn angefordert
+  if (expand)
+  {
+    switch(path[0])
+    {
+      // expand nur fuer nicht-absolute Pfade
+      case '/':
+        break;
+      case '+':
+        if(sizeof(path)==1)
+          return ({"",DOMAINDIR});
+        path="/"DOMAINDIR"/" + path[1..];
+        break;
+      case '~':
+        if (sizeof(path)==1)
+        {
+          if(user)
+            return ({"",WIZARDDIR,user});
+          else
+            return ({"",WIZARDDIR});
+        }
         else
-          return ({"","players"});
-      }
-      else
-      {
-        if(user && path[1]=='/')
-          strs=({"","players",user})+PATH_ARRAY(path[2..<1]);
-        else
-          strs=({"","players"})+PATH_ARRAY(path[1..<1]);
-      }
-      break;
-    default:
-      if(user && TP && getuid(TP) == user
-          && (cwd=(string)TP->QueryProp(P_CURRENTDIR)))
-        strs=PATH_ARRAY(cwd + "/" + path);
-      else
-        strs=PATH_ARRAY(path);
+        {
+          if(user && sizeof(path)>1 && path[1]=='/') // "~/"
+            path="/"WIZARDDIR"/" + user + "/" + path[2..];
+          else
+            path="/"WIZARDDIR"/" + path[1..];
+        }
+        break;
+      default:
+        if(user && TP && getuid(TP) == user
+            && (cwd=(string)TP->QueryProp(P_CURRENTDIR)))
+          path=cwd + "/" + path;
+    }
   }
 
-  // /../ und .. irgendwo im Pfad behandeln, i.e. rausschneiden.
+  // remove multiple '/'erstn gv
+  path = regreplace(path, "/+", "/", 1);
+
+  // /../ irgendwo im Pfad behandeln, das und vorheriges Element
+  // rausschneiden.
   // Einschraenkungen der RegExp:
   // /a/b/../../d wuerde nur durch Wiederholung aufgeloest.
   // /../d wird nicht richtig aufgeloest.
   //regreplace("/d/inseln/toeter/room/hoehle/../wald/bla.c","(.*)\/[^/]+/\.\.
   //    /(.*)", "\\1\/\\2", RE_GLOBAL)
 
+  string *p_arr = explode(path, "/") - ({"."});
+
+  // /../ irgendwo im Pfad behandeln, das und vorheriges Element
+  // rausschneiden.
   // dies sieht schlimmer aus als es ist (member ist O(n)), solange das Array
   // nicht gross wird.
   int p;
-  while((p=member(strs, "..")) != -1)
-      strs = strs[0..p-2]+strs[p+1..];
+  while((p=member(p_arr, "..")) != -1)
+      p_arr = p_arr[0..p-2]+p_arr[p+1..];
 
-  return strs;
-}
-#undef PATH_ARRAY
-
-string _get_path(string path, string user) {
-  string *p_arr = full_path_array(path, user);
-  // make path absolute
-  if (p_arr[0] != "")
+  // Pfade absolutieren
+  // leeres Pfadarray fuehrt zur Rueckgabe von einem Array, was hinterher "/"
+  // ergibt, Arrays mit nur einem Element bekommen in jedem Fall ein Element
+  // "" an den Anfang, laengere Arrays kriegen falls noetig ein "".
+  switch(sizeof(p_arr))
+  {
+    case 0:
+      return ({"",""});
+    case 1:
       p_arr = ({""}) + p_arr;
+      break;
+    default:
+      if (p_arr[0] != "")
+        p_arr = ({""}) + p_arr;
+  }
 
-  return implode(p_arr,"/");
+  return p_arr;
+}
+
+// Pfadnormalisierung mit Ersetzungen von +, ~ und P_CURRENTDIR und Rueckgabe
+// als Pfadarray
+string *full_path_array(string path, string user) {
+    return path_array(path, user, 1);
+}
+
+// Pfadnormalisierung mit Ersetzungen von +, ~ und P_CURRENTDIR
+string _get_path(string path, string user) {
+  return implode(path_array(path, user, 1),"/");
+}
+
+// Diese Funktion wird vom Driver nur fuer den Editor ed gerufen.
+string make_path_absolute(string str) {
+  return _get_path(str, getuid(TP));
 }
 
 static int project_access(string user, string project)
@@ -155,11 +182,6 @@ int access_rights(string *p_arr, string euid)
       return i;
 
   return 0;
-}
-
-// Diese Funktion wird vom Driver nur fuer den Editor ed gerufen.
-string make_path_absolute(string str) {
-  return _get_path(str, getuid(TP));
 }
 
 // Hngl. Inkludieren aus /sys ist hier doof.
