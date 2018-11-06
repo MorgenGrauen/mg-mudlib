@@ -216,22 +216,23 @@ mixed valid_write(string path, string euid, string fun, object obj)
 
   switch(fun) {
     case "log_file":
-      strs=full_path_array("/"+path, 0);
+      strs=path_array("/"+path, 0, 0);
       path = implode(strs, "/");
       strs -= ({""}); // remove trailing and leading "/".
       if (sizeof(strs)>1 && strs[0]=="log") return path;
       return 0;
     case "save_object":
-      if (!path) return 0;
-      strs=full_path_array("/"+path, 0);
+      if (!sizeof(path)) return 0;
+      strs=path_array("/"+path, 0, 0);
       break;
     case "ed_start":
-      if (path && path[0])
-        strs=full_path_array(path, euid);
-      else strs=({"players",euid,".err"});
+      if (sizeof(path))
+        strs=path_array(path, euid, 1);
+      else
+        strs=({"players",euid,".err"});
       break;
     default:
-      strs=full_path_array(path, euid);
+      strs=path_array(path, euid, 1);
   }
 
   if (!euid || euid=="NOBODY" || euid=="ftp" || euid=="anonymous") return 0;
@@ -432,12 +433,9 @@ mixed valid_read(string path, string euid, string fun, object obj)
 
   if (!euid) euid="-";
 
-  strs=full_path_array(path, euid);
-  // Pfad soll ab jetzt auf jeden Fall absolut sein.
-  if (strs[0] != "")
-      path = "/" + implode(strs, "/");
-  else
-      path=implode(strs, "/");
+  strs=path_array(path, euid, 1);
+  // Pfade sind ab jetzt auf jeden Fall absolut.
+  path=implode(strs, "/");
 
   // fuer die Rechtebestimmung "/" an Anfang und Ende entfernen
   strs -= ({""});
