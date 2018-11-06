@@ -1,9 +1,7 @@
 // $Id: parsing.c 9142 2015-02-04 22:17:29Z Zesstra $
-#pragma strict_types
-#pragma save_types
-//#pragma range_check
+#pragma strict_types, rtt_checks
+#pragma range_check, pedantic
 #pragma no_clone
-#pragma pedantic
 
 #include <files.h>
 #include <wizlevels.h>
@@ -135,25 +133,26 @@ private int *_vc_map(object ob,mixed *list)
 // Rueckgabe:  Alist mit den Dateiinformationen
 //
 
-private varargs mixed *_get_files(string dirname,string mask,int mode,string dest)
+private varargs mixed *_get_files(string dirname,string mask,int mode,
+                                  string dest)
 {
-  mixed *files,*tmp,*data;
-  string fullname,base;
-
   //DEBUG("_GF: DIRNAME " + dirname);
-  data=get_dir(dirname+"*",7);
+  mixed *data=get_dir(dirname+"*",GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES);
   if(!sizeof(data)) return ({});
-  files=({});
- 
+  mixed *files=({});
+
   while(sizeof(data))
   {
-    tmp=({});
-    base=data[BASENAME];
-    fullname=dirname+base;
-    if (base!="."&&base!=".."&&(!(mode==MODE_GREP&&base=="RCS"))&&
-        ((data[FILESIZE]==-2&&
-       sizeof(tmp=_get_files(fullname+"/",mask,mode,
-      dest+base+"/"))&&mode!=MODE_RM)||!mask||sizeof(regexp(({ base }),mask, RE_TRADITIONAL))))
+    mixed *tmp=({});
+    string base=data[BASENAME];
+    string fullname=dirname+base;
+    if (base!="." && base!=".."
+        && (!(mode==MODE_GREP && base=="RCS"))
+        && ((data[FILESIZE]==FSIZE_DIR
+             && sizeof(tmp=_get_files(fullname+"/",mask,mode,dest+base+"/"))
+             && mode!=MODE_RM)
+            || !mask
+            || sizeof(regexp(({ base }),mask, RE_TRADITIONAL))) )
     {
       //DEBUG("_GF: ADDING FILE " + fullname);
       files+= ({ data[0..2]+({ fullname,dirname,dest+base,
@@ -189,43 +188,47 @@ private varargs mixed *_get_files(string dirname,string mask,int mode,string des
 private mixed *_get_matching(string *pathmask, int depth, string path, 
                     int mode, int recursive, string dest,string filemask)
 {
-  mixed *data,*tmp,*files;
-  string base,full;
-
   //DEBUG("_GM: PM: " + pathmask[depth]);
   //DEBUG("_GM: FM: " + filemask);
-  data=get_dir(path+pathmask[depth++],GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES)||({});
-  if (!sizeof(data)) return ({});
-  files=({});
+  mixed *data=get_dir(path+pathmask[depth++],GETDIR_NAMES|GETDIR_SIZES|
+                      GETDIR_DATES)||({});
+  if (!sizeof(data))
+    return ({});
+
+  mixed *files=({});
   while(sizeof(data))
   {
-    if ((base=data[BASENAME])=="."||base=="..")
+    string base=data[BASENAME];
+    if (base=="." || base=="..")
     {
       data=data[3..];
       continue;
     }
-    full=path+base;
+    string full=path+base;
     //DEBUG("_GM: FULL: " + full);
-    if ((data[FILESIZE]==-2)&&(sizeof(pathmask)>depth)&&
-        (!(mode==MODE_GREP&&base=="RCS")))
+    mixed *tmp;
+    if ((data[FILESIZE]==FSIZE_DIR) && (sizeof(pathmask)>depth)
+        && (!(mode==MODE_GREP && base=="RCS")))
     {
       //DEBUG("DESCEND INTO " + full);
       tmp=_get_matching(pathmask,depth,full+"/",mode,recursive,
-                        (recursive?dest+base+"/":dest),filemask);
+                        (recursive ? dest+base+"/" : dest),filemask);
     }
     else tmp=({});
+
     //DEBUG("DEPTH: " + depth + " : " + sizeof(pathmask));
-    if((!filemask&&(depth==sizeof(pathmask)))||
-        (filemask&&(depth+2>sizeof(pathmask))&&
-        sizeof(regexp(({ base }),filemask,RE_TRADITIONAL)))||
-       ((mode==MODE_CP||mode==MODE_MV||(filemask&&
-        (mode==MODE_RM)&&sizeof(regexp(({ base}),filemask,RE_TRADITIONAL))))&&
-        sizeof(tmp)))
+    if((!filemask && (depth==sizeof(pathmask)))
+        || (filemask && (depth+2 > sizeof(pathmask))
+            && sizeof(regexp(({ base }),filemask,RE_TRADITIONAL)))
+        || ((mode==MODE_CP || mode==MODE_MV
+             || (filemask && (mode==MODE_RM)
+                 && sizeof(regexp(({ base}),filemask,RE_TRADITIONAL))))
+             && sizeof(tmp)) )
     {
       //DEBUG("ADDING: " + base+ " : "+ full );
       files+=({ data[0..2]+({ full, path, dest+base,sizeof(tmp)}) });
     }
-    if (sizeof(files)+sizeof(tmp)>MAX_ARRAY_SIZE)
+    if (sizeof(files) + sizeof(tmp) > MAX_ARRAY_SIZE)
        raise_error("Zu viele Files (>3000)!! Abgebrochen!\n");
     files+=tmp;
     data=data[3..];
@@ -248,12 +251,9 @@ private mixed *_get_matching(string *pathmask, int depth, string path,
 // Rueckgabe: Alist mit den Dateiinformationen
 //
 
-static varargs mixed *get_files(string filename, int mode, int recursive, string dest, string filemask)
-{ 
-  string full,path,base,*patharray,*vrooms,dest2;
-  object vcompiler;
-  mixed *files,*data;
-
+static varargs mixed *get_files(string filename, int mode, int recursive,
+                                string dest, string filemask)
+{
   // DEBUG("GF: " + filename);
   // DEBUG("REC: " + recursive + " MODE: " + mode);
   // if (dest[<1..<1]!="/") DEBUG("DEST: " + dest);
@@ -266,38 +266,50 @@ static varargs mixed *get_files(string filename, int mode, int recursive, string
                  break;
       }
     }
-  patharray=explode(filename,"/");
-  if(!sizeof(data=get_dir(filename,7)||({}))&&
-     (mode==MODE_UPD||mode==MODE_MORE||mode==MODE_ED))
-    data=get_dir(filename+".c",7)||({});
-  if ((mode==MODE_LSA||mode==MODE_LSB)&&
-      (vcompiler = find_object(implode(patharray[0..<2],"/")+"/virtual_compiler")) &&
-      pointerp(vrooms=(mixed *)vcompiler->QueryObjects()))
+  string *patharray=explode(filename,"/");
+
+  mixed *data=get_dir(filename,GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES)||({});
+  if(!sizeof(data)
+     && (mode==MODE_UPD || mode==MODE_MORE || mode==MODE_ED))
+    data=get_dir(filename+".c",GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES) || ({});
+
+  if ((mode==MODE_LSA||mode==MODE_LSB))
+  {
+    string *vrooms;
+    object vcompiler =
+      find_object(implode(patharray[0..<2],"/")+"/virtual_compiler");
+    if (vcompiler && pointerp(vrooms=(mixed *)vcompiler->QueryObjects()))
     map(vrooms,#'_vc_map,&data);
-  files=({});
+  }
+  mixed *files=({});
   if (sizeof(data)) // passende files
   {
     mixed *subfiles;
     subfiles=({});
-    path=implode(patharray[0..<2],"/")+"/";
+    string path=implode(patharray[0..<2],"/")+"/";
     while (sizeof(data))
     {
       subfiles=({});
-      base=data[BASENAME];
+      string base=data[BASENAME];
       if (mode==MODE_LSB||(base!="."&&base!=".."))
       {
         //DEBUG("PATH: " + path+" BASE: " + base + " MODE: " + mode);
-        full=path+base;
-        dest2=((dest=="/"||file_size(dest[0..<2])==-2)?
-               (dest+base):(dest=="/"?"/":dest[0..<2]));
+        string full=path+base;
+        string dest2;
+        if (dest=="/" || file_size(dest[0..<2])==FSIZE_DIR)
+          dest2 = dest+base;
+        else
+          dest2 = dest[0..<2];
+
         //DEBUG("DEST: " + dest);
-        if (recursive&&data[FILESIZE]==-2) // Verzeichnis, Rekursiv
+        if (recursive && data[FILESIZE]==FSIZE_DIR) // Verzeichnis, Rekursiv
           subfiles=_get_files(full+"/",filemask,mode,dest2+"/");
-        if (!(filemask&&!sizeof(subfiles)&&!sizeof(regexp(({ base }),filemask,RE_TRADITIONAL))))
+        if (!(filemask && !sizeof(subfiles)
+              && !sizeof(regexp(({ base }),filemask,RE_TRADITIONAL))))
         {
-          if (!filemask||mode!=MODE_RM)
+          if (!filemask || mode!=MODE_RM)
             files+=({ data[0..2]+({ full, path, dest2,sizeof(subfiles)}) });
-          if (sizeof(files)+sizeof(subfiles)>MAX_ARRAY_SIZE)
+          if (sizeof(files)+sizeof(subfiles) > MAX_ARRAY_SIZE)
             raise_error("Zu viele Files (>3000)!! Abgebrochen!\n");
           files+=subfiles;
         }
@@ -333,27 +345,26 @@ static varargs mixed *get_files(string filename, int mode, int recursive, string
 // Rueckgabe: Liste der betroffenen Files
 //
 
-static varargs mixed *file_list(string *files, int mode, int recursive, string dest, string mask)
+static varargs mixed *file_list(string *files, int mode, int recursive,
+                                string dest, string mask)
 {
-  string *list,err,*result;
-  int i,j;
-  list=({});
+  string *list=({});
   if (mask) mask=glob2regexp(mask);
-  j=sizeof(files);
-  for(i=0;i<j;i++)
+  foreach(string file: files)
   {
     // Abschliessenden / von Pfadnamen abschneiden, weil in diesem Fall 
     // die Inhalte der ersten Unterverzeichnisebene mit ausgegeben
     // wurden. Ursache hierfuer ist ein Fix an full_path_array() im 
     // Masterobjekt, der dazu fuehrte, dass get_dir() den abschliessenden /
     // des uebergebenen Pfades jetzt korrekt behandelt. \o/
-    if ( sizeof(files[i]) > 1 && files[i][<1] == '/' )
+    if ( sizeof(file) > 1 && file[<1] == '/' )
     {
-      files[i] = files[i][0..<2];
-      if ( !sizeof(files[i]) )
+      file = file[0..<2];
+      if ( !sizeof(file) )
         continue;
     }
-    if (err=catch(list+=get_files(files[i],mode,recursive,dest,mask)))
+    string err=catch(list += get_files(file,mode,recursive,dest,mask));
+    if (err)
     {
       printf("Fehler aufgetreten: %s\n",err);
       log_file(SHELLLOG("FILE_LIST"),
