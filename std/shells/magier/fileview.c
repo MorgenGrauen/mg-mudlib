@@ -3,11 +3,9 @@
 // fileview.c
 //
 // $Id: fileview.c 9142 2015-02-04 22:17:29Z Zesstra $
-#pragma strict_types
-#pragma save_types
-//#pragma range_check
+#pragma strict_types, rtt_checks
+#pragma range_check, pedantic
 #pragma no_clone
-#pragma pedantic
 
 #include <ansi.h>
 #include <player/base.h>
@@ -15,6 +13,8 @@
 #include <shells.h>
 #include <daemon/mand.h>
 #include <udp.h>
+#include <files.h>
+
 #define NEED_PROTOTYPES
 #include <magier.h>
 #include <thing/properties.h>
@@ -113,9 +113,9 @@ private string _ls_output_short(mixed filedata,
   maxlen-=sizeof(tmp);
   switch(filedata[FILESIZE])
   {
-    case -2: tmp=sprintf(colorstrings[DIR],tmp);
+    case FSIZE_DIR: tmp=sprintf(colorstrings[DIR],tmp);
              maxlen-=colorstrings[DIR,1]; break;
-    case -1: tmp=sprintf(colorstrings[VC],tmp);
+    case FSIZE_NOFILE: tmp=sprintf(colorstrings[VC],tmp);
              maxlen-=colorstrings[VC,1]; break;
     default: if (find_object(filedata[FULLNAME]))
              {
@@ -125,7 +125,7 @@ private string _ls_output_short(mixed filedata,
   }
   if (!maxcount) return tmp+"\n";
   return sprintf("%-*s%s",(maxlen+sizeof(tmp)),tmp,
-	((counter++)==maxcount?(counter=0,"\n"):"  "));
+                 ((counter++)==maxcount?(counter=0,"\n"):"  "));
 }
 
 private int _ls_maxlen(mixed filedata,int flags,int maxlen)
@@ -134,44 +134,46 @@ private int _ls_maxlen(mixed filedata,int flags,int maxlen)
   int size;
   base=filedata[BASENAME];
   if (!(flags&LS_A)&&(base[0]=='.')) return 0;
-#if __VERSION__ < "3.2.9"
-  if (sizeof(base)>maxlen) maxlen=sizeof(base);
-#else
   maxlen=max(maxlen,sizeof(base));
-#endif
   return 1;
 }
 
 private string _ls_output_long(mixed filedata, int flags,closure valid_read,
                                closure valid_write,closure creator_file)
 {
-  string *tmp,full,base,path,date,creator,group;
-  int size,dir,ftime;
-  object ob;
-  
-  base=filedata[BASENAME];
-  if (!(sizeof(base))||((!(flags&LS_A))&&(base[0]=='.')))
+  string base=filedata[BASENAME];
+  if (!(sizeof(base)) || ( (!(flags&LS_A)) && (base[0]=='.')) )
     return 0;
-  size=filedata[FILESIZE];
-  path=filedata[PATHNAME];
-  tmp=(string *)call_other(master(),"full_path_array",
-                 filedata[FULLNAME],getuid());
-  full=sprintf("/%s",implode(tmp,"/"));
-  dir=(size==-2);
-  ob=find_object(full);
-  ftime=filedata[FILEDATE];
-  date=dtime(ftime);
-  date=sprintf("%s %s %s",date[9..11],date[5..6],
-               ((time()-ftime)<31536000?date[19..23]:(" "+date[13..16])));
-  creator="";
-  group="";
+  int size=filedata[FILESIZE];
+  string path=filedata[PATHNAME];
+  string *tmp=(string *)call_other(master(),"path_array",
+                                   filedata[FULLNAME],getuid(), 0);
+  string full=implode(tmp,"/");
+  int dir=(size==FSIZE_DIR);
+  object ob=find_object(full);
+  int ftime=filedata[FILEDATE];
+  string date;
+  if ((time()-ftime)<31536000) // ein Jahr
+    date=strftime("%b %e %Y", ftime);
+  else
+    date=strftime("%b %e %H:%M", ftime);
+
+  string creator="";
+  string group="";
   if (flags&LS_U)
   {
-    creator=(string)call_other(master(),"creator_file",full);
+    creator=(string)call_other(master(),"creator_file", full);
     switch(creator)
     {
       case ROOTID: creator="root"; break;
-      case BACKBONEID: creator="daemon"; break;
+      case BACKBONEID: creator="std"; break;
+      case MAILID: creator="mail"; break;
+      case NEWSID: creator="news"; break;
+      case NOBODY: creator="nobody"; break;
+      case POLIZEIID: creator="polizei"; break;
+      case DOCID: creator="doc"; break;
+      case GUILDID: creator="gilde"; break;
+      case ITEMID: creator="items"; break;
       default: if(!creator) creator="none"; break;
     }
   }
@@ -182,10 +184,10 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
       switch(tmp[0])
       {
       case WIZARDDIR: group="magier"; break;
-      case "news": group="news"; break;
-      case "mail": group="mail"; break;
-      case "open": group="public"; break;
-      case "p": group="project"; break;
+      case NEWSDIR: group="news"; break;
+      case MAILDIR: group="mail"; break;
+      case FTPDIR: group="public"; break;
+      case PROJECTDIR: group="project"; break;
       case DOMAINDIR: if (sizeof(tmp)>1) { group=tmp[1]; break; }
       default: group="mud"; break;
       }
@@ -197,23 +199,24 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
   {
     if (ob)
     {
-      if (size==-1)
+      if (size==FSIZE_NOFILE)
         base=sprintf(colorstrings[VC],base);
       else
         base=sprintf(colorstrings[OBJ],base);
     }
   }
-  return sprintf(("%c%c%c%c %3d"+((flags&LS_U)?" %-24.24s":"%-0.1s")+
-                 ((flags&LS_G)?" %-8.8s":"%0.1s")+" %8s %s %s\n"),
-                 (dir?'d':'-'),
+  return sprintf(("%c%c%c%c %3d" + ((flags&LS_U) ? " %-24.24s" : "%-0.1s")
+                 +((flags&LS_G) ? " %-8.8s" : "%0.1s") + " %8s %s %s\n"),
+                 (dir ? 'd' : '-'),
                  (!funcall(valid_read,full,getuid(),
-                           "read_file",this_object())?'-':'r'),
+                           "read_file",this_object()) ? '-' : 'r'),
                  (!funcall(valid_write,full,getuid(),
-                           "write_file",this_object())?'-':'w'),
-                 (ob?'x':'-'),
-                 (dir?(sizeof((get_dir(full+"/*")||({}))-({".",".."}))):0),
-                 creator,group,(dir?"-":size==-1?"<vc>":to_string(size)),
-                                    date,base);
+                           "write_file",this_object()) ? '-' : 'w'),
+                 (ob ? 'x' : '-'),
+                 (dir ? (sizeof((get_dir(full+"/*")||({}))-({".",".."}))) : 0),
+                 creator, group,
+                 (dir ? "-" : size==FSIZE_NOFILE ? "<vc>" : to_string(size)),
+                 date, base);
 }
 
 
@@ -270,7 +273,7 @@ static int _ls(string cmdline)
   {
     tmp=({});
     size=args[i][FILESIZE];
-    if (size==-2)
+    if (size==FSIZE_DIR)
     {
       tmp=file_list(({args[i][FULLNAME]+"/*"}),MODE_LSB,0,"/");
       tmp=sort_array(tmp,sort_fun);
@@ -325,7 +328,7 @@ private mixed _size_filter(mixed *arg)
     printf("%s: %s: Leere Datei.\n",query_verb()||"more",arg[FULLNAME]);
     return 0;
   }
-  if (arg[FILESIZE]==-2)
+  if (arg[FILESIZE]==FSIZE_DIR)
     printf("%s: %s ist ein Verzeichnis.\n",query_verb()||"more",arg[FULLNAME]);
   else
     printf("%s: %s: Datei existiert nicht.\n", query_verb()||"more",
@@ -460,8 +463,8 @@ static int _man(string cmdline)
       while(i)
       {
         tmp2[(i-1)]=sprintf("%d: ",i)+tmp[(i<<1)-2];
-	oldman_result[i,0]=tmp[(i<<1)-2];
-	oldman_result[i,1]=tmp[(i<<1)-1];
+        oldman_result[i,0]=tmp[(i<<1)-2];
+        oldman_result[i,1]=tmp[(i<<1)-1];
         i--;
       }
       printf("Es wurden folgende potentiell passenden Seiten gefunden:\n"
@@ -519,7 +522,7 @@ static int _showprops(string str)
         printf("showprops: %s: Es gibt kein Objekt diesen Namens.\n",str[0..<3]);
         return 1;
       }
-      if (catch(call_other(str[0..<3], "???")))
+      if (catch(load_object(str)))
       {
         printf("showprops: %s: Datei konnte nicht geladen werden.\n",str);
         return 1;
@@ -531,29 +534,16 @@ static int _showprops(string str)
       return 0;
    }
    list=inherit_list(find_object(str));
-#if __VERSION__ < "3.2.9"
-   list=map(list,lambda(({'x}),({#'extract,'x,4,-2})));
-   list+=map(list,lambda(({'x}),({#'[<,({#'old_explode,'x,"/"}),1})));
-   list=map(m_indices(mkmapping(list)),lambda(({'x}),({#'+,({#'+,"/sys/",'x}),"h"})));
-   list=filter(list,lambda(({'x}),({#'>,({#'file_size,'x}),0})) );
-#else
    list=map(list,(: return $1[5..<2]+"h"; :));
    list+=map(list,(: return explode($1,"/")[<1]; :));
    list=map(m_indices(mkmapping(list)),(: return "/sys/"+$1; :));
    list=filter(list,(: return file_size($1)>0; :));
-#endif
    list=sort_array(list, #'<);
    ausgabe="";
    for (i=sizeof(list);i--;)
    {
-#if __VERSION__ < "3.2.9"
-     str=implode(filter(old_explode(read_file(list[i]), "\n"),
-        lambda( ({ 'x }), ({#'==, ({#'extract, 'x, 0, 9}), "#define P_"}) ))
-                 , "\n");
-#else
      str=implode(filter(explode(read_file(list[i]),"\n"),
                               (: return $1[0..9]=="#define P_";:)),"\n");
-#endif
      if (str!="") ausgabe+=sprintf("%s\n%s\n\n", list[i], str);
    }
    if (ausgabe!="")
@@ -567,16 +557,6 @@ static int _showprops(string str)
 //############################### GREP ###################################
 //                              ########
 
-#if __VERSION__ < "3.2.9"
-
-private int _grep_filter(string filename)
-{
-  return (call_other("valid_write",filename,getuid(this_object()),
-                      "write_file",this_object())!=0);
-}
-
-#endif
-
 //
 // grep_file: Datei greppen
 // rexpr: Regular Expression
@@ -589,19 +569,20 @@ private int grep_file(mixed filedata, string rexpr, int flags)
   int ptr,count,i,nol,match,index;
   fullname=filedata[FULLNAME];
   if ((flags&GREP_F)&&fullname=="/players/"+getuid()+"/grep.out")
-  {	 
-	write_file("/players/"+getuid()+"/grep.out",
-                   "Uebergehe grep.out ...\n");
-	return RET_FAIL;
+  {
+    write_file("/players/"+getuid()+"/grep.out",
+               "Uebergehe grep.out ...\n");
+    return RET_FAIL;
   }
   switch(filedata[FILESIZE])
   {
-    case -2: return RET_FAIL;
-    case -1: return ERROR(DOESNT_EXIST,fullname,RET_FAIL);
+    case FSIZE_DIR: return RET_FAIL;
+    case FSIZE_NOFILE: return ERROR(DOESNT_EXIST,fullname,RET_FAIL);
     case 0:  return RET_FAIL;
     default: break;
   }
-  if (!MAY_READ(fullname)) return ERROR(NO_READ,fullname,RET_FAIL);
+  if (!MAY_READ(fullname))
+    return ERROR(NO_READ,fullname,RET_FAIL);
   carry=""; result=({});
   if (flags&GREP_I)
     rexpr=lower_case(rexpr);
@@ -701,24 +682,16 @@ static int _grep(string cmdline)
       return USAGE("grep [-" GREP_OPTS
           "] <regexp> <datei/verz> [<datei2> ... ] [<maske>]");
   args=map(args,#'to_filename)-({0});
-  /*
-#if __VERSION__ < "3.2.9"
-  args=filter(args,#'_grep_filter);
-#else
-  args=filter(args,(: return (valid_write($1,
-            getuid(this_object()),"write_file",this_object())!=0):));
-#endif
-  */
   args=file_list(args,MODE_GREP,(flags&GREP_R?1:0),"/",mask);
   if (!sizeof(args))
     return printf("Keine passenden Dateien gefunden.\n"),1;
   if (flags&GREP_I) rexpr=lower_case(rexpr);
   if (flags&GREP_F)
   {
-    if (file_size("/players/"+getuid()+"/grep.out")==-2||
-	  !MAY_WRITE("/players/"+getuid()+"/grep.out"))
+    if (file_size("/players/"+getuid()+"/grep.out")==FSIZE_DIR
+        || !MAY_WRITE("/players/"+getuid()+"/grep.out"))
       return printf("grep: Datei /players/%s/grep.out kann nicht "
-		      "geschrieben werden.\n",getuid()),1;
+                    "geschrieben werden.\n",getuid()),1;
     else
       write_file("/players/"+getuid()+"/grep.out",
                  "Ausgabe von \"grep " + _unparsed_args() + "\":\n"); 
