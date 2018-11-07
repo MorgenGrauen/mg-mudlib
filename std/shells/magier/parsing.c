@@ -239,7 +239,10 @@ private mixed *_get_matching(string *pathmask, int depth, string path,
     if (sizeof(files) + sizeof(tmp) > MAX_ARRAY_SIZE)
        raise_error("Zu viele Files (>3000)!! Abgebrochen!\n");
     files+=tmp;
-    data=data[3..];
+    if(sizeof(data)>3)
+      data=data[3..];
+    else
+      break;
   }
   if(sizeof(files)>300&&!IS_ARCH(this_object()))
     // Tod allen Laggern!
