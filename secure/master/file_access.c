@@ -25,7 +25,7 @@ void LoadDeputyFileList()
 // expand bestimmt, ob im Pfad +, ~ oder P_CURRENTDIR expandiert werden oder
 // nicht.
 string *path_array(string path, string user, int expand) {
-    string cwd;
+  string cwd;
 
   if (!sizeof(path))
     return ({"",""}); // additional "" to yield "/" later.
@@ -118,11 +118,20 @@ string _get_path(string path, string user) {
   return implode(path_array(path, user, 0),"/");
 }
 
+// Besser benamste Version von _get_path().
+// Normalisiert den Pfad, expandiert Platzhalter auf Wunsch, benutzt ggf. TI
+// oder TP als User, wenn nicht angegeben.
+varargs string normalize_path(string path, string user, int expand) {
+  if (!user && (TI || TP))
+    user = getuid(TI || TP);
+  return implode(path_array(path, user, expand), "/");
+}
+
 // Diese Funktion wird vom Driver nur fuer den Editor ed gerufen, aber der
 // Rest vom MG ruft es teilweise auch. Hier erfolgt eine Expansion von
 // Platzhaltern im Pfad.
-string make_path_absolute(string str) {
-  return implode(path_array(path, getuid(TP), 1),"/");
+string make_path_absolute(string path) {
+  return normalize_path(path, getuid(TI || TP), 1);
 }
 
 static int project_access(string user, string project)
