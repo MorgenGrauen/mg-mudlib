@@ -112,14 +112,17 @@ string *full_path_array(string path, string user) {
     return path_array(path, user, 1);
 }
 
-// Pfadnormalisierung mit Ersetzungen von +, ~ und P_CURRENTDIR
+// Pfadnormalisierung OHNE Ersetzungen von +, ~ und P_CURRENTDIR (war mal mit)
+// Eigentlich hier ziemlich unnuetz, aber nen Haufen Objekte im Mud ruft das.
 string _get_path(string path, string user) {
-  return implode(path_array(path, user, 1),"/");
+  return implode(path_array(path, user, 0),"/");
 }
 
-// Diese Funktion wird vom Driver nur fuer den Editor ed gerufen.
+// Diese Funktion wird vom Driver nur fuer den Editor ed gerufen, aber der
+// Rest vom MG ruft es teilweise auch. Hier erfolgt eine Expansion von
+// Platzhaltern im Pfad.
 string make_path_absolute(string str) {
-  return _get_path(str, getuid(TP));
+  return implode(path_array(path, getuid(TP), 1),"/");
 }
 
 static int project_access(string user, string project)
