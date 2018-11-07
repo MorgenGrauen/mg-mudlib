@@ -106,12 +106,6 @@ string *path_array(string path, string user, int expand) {
   return p_arr;
 }
 
-// Pfadnormalisierung mit Ersetzungen von +, ~ und P_CURRENTDIR und Rueckgabe
-// als Pfadarray
-string *full_path_array(string path, string user) {
-    return path_array(path, user, 1);
-}
-
 // Pfadnormalisierung OHNE Ersetzungen von +, ~ und P_CURRENTDIR (war mal mit)
 // Eigentlich hier ziemlich unnuetz, aber nen Haufen Objekte im Mud ruft das.
 string _get_path(string path, string user) {
