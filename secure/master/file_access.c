@@ -24,47 +24,10 @@ void LoadDeputyFileList()
 // Normalisiert den Pfad und liefert ein Array mit Pfadelementen.
 // expand bestimmt, ob im Pfad +, ~ oder P_CURRENTDIR expandiert werden oder
 // nicht.
-string *path_array(string path, string user, int expand) {
-  string cwd;
+string *path_array(string path) {
 
   if (!sizeof(path))
     return ({"",""}); // additional "" to yield "/" later.
-
-  // expand gibt es nur wenn angefordert
-  if (expand)
-  {
-    switch(path[0])
-    {
-      // expand nur fuer nicht-absolute Pfade
-      case '/':
-        break;
-      case '+':
-        if(sizeof(path)==1)
-          return ({"",DOMAINDIR});
-        path="/"DOMAINDIR"/" + path[1..];
-        break;
-      case '~':
-        if (sizeof(path)==1)
-        {
-          if(user)
-            return ({"",WIZARDDIR,user});
-          else
-            return ({"",WIZARDDIR});
-        }
-        else
-        {
-          if(user && sizeof(path)>1 && path[1]=='/') // "~/"
-            path="/"WIZARDDIR"/" + user + "/" + path[2..];
-          else
-            path="/"WIZARDDIR"/" + path[1..];
-        }
-        break;
-      default:
-        if(user && TP && getuid(TP) == user
-            && (cwd=(string)TP->QueryProp(P_CURRENTDIR)))
-          path=cwd + "/" + path;
-    }
-  }
 
   // remove multiple '/'erstn gv
   path = regreplace(path, "/+", "/", 1);
@@ -109,23 +72,13 @@ string *path_array(string path, string user, int expand) {
 // Pfadnormalisierung OHNE Ersetzungen von +, ~ und P_CURRENTDIR (war mal mit)
 // Eigentlich hier ziemlich unnuetz, aber nen Haufen Objekte im Mud ruft das.
 string _get_path(string path, string user) {
-  return implode(path_array(path, user, 0),"/");
-}
-
-// Besser benamste Version von _get_path().
-// Normalisiert den Pfad, expandiert Platzhalter auf Wunsch, benutzt ggf. TI
-// oder TP als User, wenn nicht angegeben.
-varargs string normalize_path(string path, string user, int expand) {
-  if (!user && (TI || TP))
-    user = getuid(TI || TP);
-  return implode(path_array(path, user, expand), "/");
+  return implode(path_array(path),"/");
 }
 
 // Diese Funktion wird vom Driver nur fuer den Editor ed gerufen, aber der
-// Rest vom MG ruft es teilweise auch. Hier erfolgt eine Expansion von
-// Platzhaltern im Pfad.
+// Rest vom MG ruft es teilweise auch.
 string make_path_absolute(string path) {
-  return normalize_path(path, getuid(TI || TP), 1);
+  return implode(path_array(path),"/");
 }
 
 static int project_access(string user, string project)
@@ -222,23 +175,23 @@ mixed valid_write(string path, string euid, string fun, object obj)
 
   switch(fun) {
     case "log_file":
-      strs=path_array("/"+path, 0, 0);
+      strs=path_array("/"+path);
       path = implode(strs, "/");
       strs -= ({""}); // remove trailing and leading "/".
       if (sizeof(strs)>1 && strs[0]=="log") return path;
       return 0;
     case "save_object":
       if (!sizeof(path)) return 0;
-      strs=path_array("/"+path, 0, 0);
+      strs=path_array("/"+path);
       break;
     case "ed_start":
       if (sizeof(path))
-        strs=path_array(path, euid, 1);
+        strs=path_array(path);
       else
         strs=({"players",euid,".err"});
       break;
     default:
-      strs=path_array(path, euid, 0);
+      strs=path_array(path);
   }
 
   if (!euid || euid=="NOBODY" || euid=="ftp" || euid=="anonymous") return 0;
@@ -439,7 +392,7 @@ mixed valid_read(string path, string euid, string fun, object obj)
 
   if (!euid) euid="-";
 
-  strs=path_array(path, euid, 0);
+  strs=path_array(path);
   // Pfade sind ab jetzt auf jeden Fall absolut.
   path=implode(strs, "/");
 

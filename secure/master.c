@@ -431,9 +431,9 @@ string creator_file(mixed str) {
   // path_array nach strs
   // TODO: was ist mit clones?
   if(objectp(str))
-    strs=path_array(object_name(str), 0, 0);
+    strs=path_array(object_name(str));
   else if(stringp(str))
-    strs=path_array(str, 0, 0);
+    strs=path_array(str);
   else return NOBODY;
 
   // absolute Pfade interessieren hier gerade nicht.

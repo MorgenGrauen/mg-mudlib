@@ -26,7 +26,6 @@
 #include "/secure/config.h"
 
 #include "/sys/userinfo.h"
-#include "/sys/shells.h"
 #include "/sys/player/base.h"
 #include "/sys/moving.h"
 #include "/sys/defines.h"
