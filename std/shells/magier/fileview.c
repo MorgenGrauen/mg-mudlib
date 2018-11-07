@@ -146,9 +146,7 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
     return 0;
   int size=filedata[FILESIZE];
   string path=filedata[PATHNAME];
-  string *tmp=(string *)call_other(master(),"path_array",
-                                   filedata[FULLNAME],getuid(), 0);
-  string full=implode(tmp,"/");
+  string full=filedata[FULLNAME];
   int dir=(size==FSIZE_DIR);
   object ob=find_object(full);
   int ftime=filedata[FILEDATE];
@@ -179,6 +177,7 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
   }
   if (flags&LS_G)
   {
+    string *tmp=explode(path, "/") - ({""});
     if (sizeof(tmp))
     {
       switch(tmp[0])

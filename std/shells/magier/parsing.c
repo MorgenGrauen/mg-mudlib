@@ -7,6 +7,7 @@
 #include <wizlevels.h>
 #include <logging.h>
 #include <regexp.h>
+#include <defines.h>
 #define NEED_PROTOTYPES
 #include <magier.h>
 #include <thing/properties.h>
@@ -163,7 +164,7 @@ private varargs mixed *_get_files(string dirname,string mask,int mode,
     files+=tmp;
     data=data[3..];
   }
-  
+
   if(sizeof(files)>300&&!IS_ARCH(this_object()))
     // Tod allen Laggern :o)
     raise_error("Zu viele Files (>300)!! Abgebrochen!\n");
@@ -190,10 +191,17 @@ private mixed *_get_matching(string *pathmask, int depth, string path,
 {
   //DEBUG("_GM: PM: " + pathmask[depth]);
   //DEBUG("_GM: FM: " + filemask);
-  mixed *data=get_dir(path+pathmask[depth++],GETDIR_NAMES|GETDIR_SIZES|
-                      GETDIR_DATES)||({});
+
+  // Pfad normalisieren (ggf. Platzhalter expandieren)
+  string p=master()->normalize_path(path+pathmask[depth++],
+                                    getuid(RPL||PL), 1);
+  mixed *data=get_dir(p, GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES)||({});
   if (!sizeof(data))
     return ({});
+
+  // Bemerkung: path beginnt als "/" und wird nach und nach mit base
+  // verlaengert, daher muss das nicht explizit normalisiert werden. dest
+  // wurde bereits vom Aufrufer normalisiert und wird hier nur durchgereicht.
 
   mixed *files=({});
   while(sizeof(data))
@@ -254,19 +262,25 @@ private mixed *_get_matching(string *pathmask, int depth, string path,
 static varargs mixed *get_files(string filename, int mode, int recursive,
                                 string dest, string filemask)
 {
+  // Bemerkung. dest wurde bereits vom Aufrufer normalisiert.
+
   // DEBUG("GF: " + filename);
   // DEBUG("REC: " + recursive + " MODE: " + mode);
   // if (dest[<1..<1]!="/") DEBUG("DEST: " + dest);
   if (filename=="/")
-    {
+  {
       switch (mode)
       {
         case MODE_LSA: return ({({ "", -2, 0,"","","",0 })});
         default: if (!recursive) return ({});
                  break;
       }
-    }
-  string *patharray=explode(filename,"/");
+  }
+
+  // Normalisiertes Pfadarray besorgen
+  string *patharray=master()->path_array(filename, getuid(RPL||PL), 1);
+  // und daraus auch filename neu erzeugen
+  filename=implode(patharray, "/");
 
   mixed *data=get_dir(filename,GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES)||({});
   if(!sizeof(data)
@@ -350,6 +364,10 @@ static varargs mixed *file_list(string *files, int mode, int recursive,
 {
   string *list=({});
   if (mask) mask=glob2regexp(mask);
+  // dest muss einmal normalisiert werden, dann muss es das in den gerufenen
+  // (rekursiven) Funktionen nicht immer nochmal gemacht werden.
+  dest=master()->normalize_path(dest, getuid(RPL||PL), 1);
+
   foreach(string file: files)
   {
     // Abschliessenden / von Pfadnamen abschneiden, weil in diesem Fall 
