@@ -244,7 +244,7 @@ mixed valid_write(string path, string euid, string fun, object obj)
         strs=({"players",euid,".err"});
       break;
     default:
-      strs=path_array(path, euid, 1);
+      strs=path_array(path, euid, 0);
   }
 
   if (!euid || euid=="NOBODY" || euid=="ftp" || euid=="anonymous") return 0;
@@ -445,7 +445,7 @@ mixed valid_read(string path, string euid, string fun, object obj)
 
   if (!euid) euid="-";
 
-  strs=path_array(path, euid, 1);
+  strs=path_array(path, euid, 0);
   // Pfade sind ab jetzt auf jeden Fall absolut.
   path=implode(strs, "/");
 
