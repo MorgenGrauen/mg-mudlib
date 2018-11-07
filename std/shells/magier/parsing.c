@@ -328,7 +328,10 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
           files+=subfiles;
         }
       }
-      data=data[3..];
+      if (sizeof(data)>3)
+        data=data[3..];
+      else
+        break;
     }
     return files;
   }
