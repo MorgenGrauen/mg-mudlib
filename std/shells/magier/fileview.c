@@ -314,7 +314,8 @@ private void _more_file(string *arg)
 {
   if (!sizeof(arg)) return;
   printf("more: Naechste Datei: %s\n",arg[0]);
-  More(arg[0],1,#'_more_file,({ arg[1..]}));
+  More(arg[0],1,#'_more_file,
+       (sizeof(arg)>1 ? ({ arg[1..]}) : ({})) );
   return;
 }
 
@@ -388,7 +389,10 @@ static int _cat(string cmdline)
         break;
       case "tail": tail(args[0]); break;
     }
-    args=args[1..];
+    if (sizeof(args) > 1)
+      args=args[1..];
+    else
+      break;
   }
   return 1;
 }
