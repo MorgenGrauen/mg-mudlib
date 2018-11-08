@@ -51,15 +51,6 @@ private void _ed_file()
   return;
 }
 
-#if __VERSION__ < "3.2.9"
-private mixed _ed_size_filter(mixed *arg)
-{
-  if (arg[FILESIZE]>=-1) return arg[FULLNAME];
-  printf("%s ist ein Verzeichnis.\n",arg[FULLNAME]);
-  return 0;
-}
-#endif
-
 //
 // _more: Dateien anzeigen
 // cmdline: Kommandozeile
@@ -82,14 +73,10 @@ static int _ed(string cmdline)
               call_other(master(),"_get_path",args[arg_size],
                   getuid())});
   }
-#if __VERSION__ < "3.2.9"
-  args=map(args,#'_ed_size_filter)-({0});
-#else
   args=map(args,(:
-          if ($1[FILESIZE]>=-1) return $1[FULLNAME];
+          if ($1[FILESIZE]>=FSIZE_NOFILE) return $1[FULLNAME];
           printf("%s ist ein Verzeichnis.\n",$1[FULLNAME]);
           return 0; :))-({0});
-#endif
   if (flags==-1||!sizeof(args)) return USAGE("ed <datei> [<datei2>..]");
   _ed_cache=args;
   _ed_file();
@@ -118,7 +105,7 @@ static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
   {
     switch(file_size(dest))
     {
-      case -1:
+      case FSIZE_NOFILE:
         if (move)
         {
           if (rename(source,dest)) return ERROR(NO_CREATE_DIR,dest,RET_JUMP);
@@ -127,7 +114,7 @@ static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
         }
         if (!mkdir(dest)) return ERROR(NO_CREATE_DIR,dest,RET_JUMP);
         if (flags&CP_V) printf(DIR_CREATED,dest);
-      case -2:
+      case FSIZE_DIR:
         if (!move) return RET_OK;
         if (filedata[SUBDIRSIZE]>0) return RET_DELETE;
         if (!rmdir(source)) return ERROR(NO_DELETE,source,RET_FAIL);
@@ -139,7 +126,7 @@ static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
   }
   switch(file_size(dest))
   {
-    case -2: return ERROR(DEST_IS_DIR,dest,RET_FAIL);
+    case FSIZE_DIR: return ERROR(DEST_IS_DIR,dest,RET_FAIL);
     default:
       if (flags&CP_F)
       {
@@ -151,7 +138,7 @@ static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
         if (move) return #'_mv_ask_overwrite;
         else return #'_cp_ask_overwrite;
       }
-    case -1:
+    case FSIZE_NOFILE:
       if (move)
       {
         if (rename(source,dest)) return ERROR(NO_MOVE,source,RET_FAIL);
@@ -335,19 +322,19 @@ static void _cp_ask_copy(mixed *filedata,int move, int flags)
         jump=0;
         break;
       }
-      if (filedata[0][FILESIZE]==-1)
+      if (filedata[0][FILESIZE]==FSIZE_NOFILE)
       {
         printf(DOESNT_EXIST,source);
         break;
       }
-      if (filedata[0][FILESIZE]==-2) // Quelle ist Verzeichnis
+      if (filedata[0][FILESIZE]==FSIZE_DIR) // Quelle ist Verzeichnis
       {
-        if (file_size(dest)>-1)
+        if (file_size(dest)>FSIZE_NOFILE)
         {
           printf(NO_DIRS,dest);
           break;
         }
-        if (file_size(dest)==-2)
+        if (file_size(dest)==FSIZE_DIR)
         {
           jump=0;
           break;
@@ -358,7 +345,7 @@ static void _cp_ask_copy(mixed *filedata,int move, int flags)
             filedata,2,flags,move);
         return;
       }
-      if (file_size(dest)==-2)
+      if (file_size(dest)==FSIZE_DIR)
       {
         printf(DEST_IS_DIR,dest);
         break;
@@ -392,10 +379,10 @@ static int _cp(string cmdline)
   if (!dest=to_filename(args[<1]))
      return USAGE(query_verb()+" [-" CP_OPTS
           "] <datei/verz> [<datei2/verz2> ... ] <ziel> [<maske>]");
-  if (file_size(dest)==-1)
+  if (file_size(dest)==FSIZE_NOFILE)
   {
     dest2=explode(dest,"/");
-    if (file_size(implode(dest2[0..<2],"/"))==-2)
+    if (file_size(implode(dest2[0..<2],"/"))==FSIZE_DIR)
     {
       if (dest2[<1]=="*")
         dest=implode(dest2[0..<2],"/");
@@ -411,7 +398,7 @@ static int _cp(string cmdline)
                 query_verb())),0;
   }
   args=args[0..<2];
-  if (file_size(dest)!=-2&&sizeof(args)>1)
+  if (file_size(dest)!=FSIZE_DIR && sizeof(args)>1)
     return notify_fail(
         sprintf("%s: Bei mehreren Quellen muss das Ziel ein Verzeichnis "
                 "sein.\n",query_verb())),0;
@@ -424,11 +411,11 @@ static int _cp(string cmdline)
     return notify_fail(sprintf("%s: Keine passenden Dateien gefunden.\n",
                                query_verb())),0;
 
-  if (sizeof(args)>1&&(args[0][FILESIZE]>=0)&&file_size(dest)!=-2)
+  if (sizeof(args)>1&&(args[0][FILESIZE]>=0)&&file_size(dest)!=FSIZE_DIR)
       return notify_fail(
         sprintf("%s: Bei mehreren Quellen muss das Ziel ein Verzeichnis "
                 "sein.\n",query_verb())),0;
-  if (sizeof(args)==1&&file_size(dest)!=-2)
+  if (sizeof(args)==1&&file_size(dest)!=FSIZE_DIR)
     args[0][DESTNAME]=dest;
   if (!(flags&CP_I))
   {
@@ -452,16 +439,6 @@ static int _cp(string cmdline)
 // cmdline: Kommandozeilenargumente
 //
 
-
-#if __VERSION__ < "3.2.9"
-
-private int _dir_filter(mixed arg)
-{
-  return (arg[FILESIZE]==-2);
-}
-
-#endif
-
 static int _rmdir(string cmdline)
 {
   string dest,tmp;
@@ -480,11 +457,7 @@ static int _rmdir(string cmdline)
   if (dest!="/")
   {
     args=file_list(({dest}),MODE_RMDIR,0,"/");
-#if __VERSION__ < "3.2.9"
-    args=filter(args,#'_dir_filter);
-#else
-    args=filter(args,(: ($1[FILESIZE]==-2) :));
-#endif
+    args=filter(args,(: ($1[FILESIZE]==FSIZE_DIR) :));
     if (!sizeof(args))
       return notify_fail(
         sprintf("rmdir: %s: Kein solches Verzeichnis gefunden.\n",dest)),0;
@@ -575,7 +548,7 @@ static void _rm_ask_delete2(string input,mixed *filedata,int flags)
       return;
     case 'y':
     case 'j':
-      if (filedata[0][FILESIZE]==-2)
+      if (filedata[0][FILESIZE]==FSIZE_DIR)
       {
         if (i=filedata[0][SUBDIRSIZE]) // Dir-Eintrag nach hinten schieben
         {
@@ -622,11 +595,11 @@ private void _rm_ask_delete(mixed *filedata, int flags)
   }
   switch(filedata[0][FILESIZE])
   {
-    case -1:
+    case FSIZE_NOFILE:
       if (flags&RM_V) printf(DOESNT_EXIST,filedata[0][FULLNAME]);
       _rm_ask_delete(filedata[1..],flags);
       return;
-    case -2:
+    case FSIZE_DIR:
       if (i=filedata[0][SUBDIRSIZE])
         printf("Ins Verzeichnis '%s' hinabsteigen?\n",
           filedata[0][FULLNAME]);
@@ -657,10 +630,10 @@ private void rm_file(mixed filedata, mixed notused, int flags)
   }
   switch(filedata[FILESIZE])
   {
-    case -1:
+    case FSIZE_NOFILE:
       if (flags&RM_V) printf(DOESNT_EXIST,dest);
       return;
-    case -2:
+    case FSIZE_DIR:
       if (!rmdir(dest)) printf(DEST_NO_DELETE,dest);
       else
       {
