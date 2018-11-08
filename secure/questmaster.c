@@ -201,7 +201,7 @@ int AddQuest(string name, int questpoints, int experience,
   for (i=sizeof(allowedobj)-1;i>=0;i--)
     {
       if (!stringp(allowedobj[i]) || allowedobj[i]=="") return -4;
-      allowedobj[i]=(string)"/secure/master"->_get_path(allowedobj[i],0);
+      allowedobj[i]=(string)master()->make_path_absolute(allowedobj[i]);
     }
   if (!stringp(hint) || hint=="") return -5;
   if (difficulty<-1 || difficulty>100) return -6;
@@ -664,7 +664,7 @@ public int AddMiniQuest(int mquestpoints, string allowedobj, string descr,
   if (allowedobj[<2..] == ".c")
     allowedobj = allowedobj[0..<3];
   allowedobj = explode(allowedobj, "#")[0];
-  allowedobj = (string)MASTER->_get_path(allowedobj,0);
+  allowedobj = (string)master()->make_path_absolute(allowedobj);
   if (file_size(allowedobj+".c") <=0)
     return -3;
 
@@ -1017,7 +1017,7 @@ int MoveMiniQuest(string old_mqob, string new_mqob) {
   if (new_mqob[<2..] == ".c")
     new_mqob = new_mqob[0..<3];
   new_mqob = explode(new_mqob, "#")[0];
-  new_mqob = (string)"/secure/master"->_get_path(new_mqob,0);
+  new_mqob = (string)master()->make_path_absolute(new_mqob);
   if (file_size(new_mqob+".c") <= 0)
     return -3;
   // Wenn das neue Objekt schon eine MQ vergibt, kann es keine weitere

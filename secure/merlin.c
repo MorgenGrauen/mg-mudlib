@@ -1272,7 +1272,7 @@ int goto(mixed dest)
     move(object_name(ob),0);
     return 1;
   }
-  path=(mixed)"secure/master"->_get_path(dest,getuid(this_player()));
+  path=(mixed)master()->make_path_absolute(dest);
   ret=catch(load_object(path);publish);
   if (ret && file_size(path)<0)
   {

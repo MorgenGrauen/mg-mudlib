@@ -1377,7 +1377,7 @@ void __set_environment(object ob, mixed target)
     efun::set_environment(ob,target);
     return;
   }
-  path=(string)MASTER->_get_path(target,this_interactive());
+  path=(string)master()->make_path_absolute(target);
   if (stringp(path) && file_size(path+".c")>=0 &&
       !catch(load_object(path);publish) )
   {
