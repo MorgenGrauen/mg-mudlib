@@ -129,7 +129,6 @@ static int _destruct(string cmdline)
       return 0;
     }
   }
-  else destruct(ob);
   if (!ob)
   {
     if (!QueryProp(P_INVIS))
