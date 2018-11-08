@@ -4,7 +4,7 @@
 //
 //
  
-inherit "std/thing";
+inherit "/std/secure_thing";
  
 #include <properties.h>
 #include <defines.h>

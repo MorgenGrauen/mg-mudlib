@@ -2,7 +2,7 @@
 //
 // Some changes/extensions by Jof@MorgenGrauen
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 protected functions virtual inherit "/std/util/path";
 
 #include <language.h>

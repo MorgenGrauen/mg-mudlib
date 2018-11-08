@@ -4,7 +4,7 @@
 #include <properties.h>
 #include <language.h>
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 
 create()
 {

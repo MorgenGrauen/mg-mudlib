@@ -108,7 +108,7 @@
 
 #pragma strong_types
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 
 // Allgemein benoetigte globale Variablen
 

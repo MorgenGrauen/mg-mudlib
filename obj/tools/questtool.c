@@ -14,8 +14,8 @@
  *		erweitert.
  */
 
-inherit "std/thing";
-inherit "std/more";
+inherit "/std/secure_thing";
+inherit "/std/more";
 
 #include <defines.h>
 #include <properties.h>
