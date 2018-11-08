@@ -78,7 +78,7 @@ void create()
   string str;
 
   if(IS_BLUE(ME)) return;
-  thing::create();
+  secure_thing::create();
   SetProp(P_GENDER,NEUTER);
   owner = PL;
   AddId("questtool");
@@ -131,14 +131,14 @@ void create()
 
 int _query_autoloadobj() { return 1; }
 
-void init()
+public varargs void init(object oldenv)
 {
   object tp;
 
   if(!(tp = PL) || tp != environment())
     return;
 
-  thing::init();
+  secure_thing::init(oldenv);
 
   if ( !IS_WIZARD(tp) || tp != owner )
     return call_out("do_remove",1);
