@@ -3,6 +3,8 @@
 #pragma range_check, pedantic
 #pragma no_clone
 
+protected functions virtual inherit "/std/util/path";
+
 #include <files.h>
 #include <wizlevels.h>
 #include <logging.h>
@@ -42,7 +44,7 @@ static mixed to_filename(string str)
       && m_contains(&p,QueryProp(P_VARIABLES),tmp[0][1..]))
     tmp[0]=p;
 // Pfad absolut machen (Hat danach noch Wildcards drinnen) oder auch nicht
-  return master()->make_path_absolute(implode(tmp,"/"));
+  return normalize_path(implode(tmp,"/"), getuid(), 1);
 }
 
 
@@ -193,8 +195,7 @@ private mixed *_get_matching(string *pathmask, int depth, string path,
   //DEBUG("_GM: FM: " + filemask);
 
   // Pfad normalisieren (ggf. Platzhalter expandieren)
-  string p=master()->normalize_path(path+pathmask[depth++],
-                                    getuid(RPL||PL), 1);
+  string p=normalize_path(path+pathmask[depth++], getuid(), 1);
   mixed *data=get_dir(p, GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES)||({});
   if (!sizeof(data))
     return ({});
@@ -281,7 +282,7 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
   }
 
   // Normalisiertes Pfadarray besorgen
-  string *patharray=master()->path_array(filename, getuid(RPL||PL), 1);
+  string *patharray=master()->path_array(filename);
   // und daraus auch filename neu erzeugen
   filename=implode(patharray, "/");
 
@@ -372,7 +373,7 @@ static varargs mixed *file_list(string *files, int mode, int recursive,
   if (mask) mask=glob2regexp(mask);
   // dest muss einmal normalisiert werden, dann muss es das in den gerufenen
   // (rekursiven) Funktionen nicht immer nochmal gemacht werden.
-  dest=master()->normalize_path(dest, getuid(RPL||PL), 1);
+  dest=normalize_path(dest, getuid(), 1);
 
   foreach(string file: files)
   {
