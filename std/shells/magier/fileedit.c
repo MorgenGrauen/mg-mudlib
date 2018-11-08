@@ -9,6 +9,8 @@
 #pragma no_clone
 #pragma pedantic
 
+protected functions virtual inherit "/std/util/path";
+
 #include <wizlevels.h>
 #include <input_to.h>
 
@@ -69,9 +71,8 @@ static int _ed(string cmdline)
     if (sizeof(args2=file_list(args[arg_size..arg_size],MODE_ED,0,"/")))
       args[arg_size..arg_size]=args2;
     else
-      args[arg_size]=({ "" , -1, 0 , (string)
-              call_other(master(),"_get_path",args[arg_size],
-                  getuid())});
+      args[arg_size]=({ "" , -1, 0 ,
+                       normalize_path(args[arg_size], getuid(), 1) });
   }
   args=map(args,(:
           if ($1[FILESIZE]>=FSIZE_NOFILE) return $1[FULLNAME];

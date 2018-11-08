@@ -9,6 +9,8 @@
 #pragma no_clone
 #pragma pedantic
 
+protected functions virtual inherit "/std/util/path";
+
 #define NEED_PROTOTYPES
 #include <magier.h>
 #include <thing/properties.h>
@@ -74,7 +76,7 @@ static int _in_room(string str)
       sscanf(str, "%s %s", room, cmd) != 2)
     return USAGE("in <raum> <befehl>\n");
   old_room = environment();
-  room=(string)call_other(master(),"_get_path",room,getuid());
+  room=normalize_path(room, getuid(), 1);
   if (err=catch(move_object(room)))
   {
     if (catch(size=file_size(room+".c"))||size < 0)
@@ -134,7 +136,7 @@ static int _goto(string dest){
     return USAGE("goto [lebewesen|filename]\n");
   if (!((target=find_living_nr(dest)) && (target=environment(target))))
   {
-     target2=target=(mixed)call_other(master(),"_get_path",dest,getuid());
+     target2=target=normalize_path(dest, getuid(), 1);
      if (!find_object(target))
      {
        // ggf. .c dranhaengen

@@ -5,6 +5,8 @@
 #pragma no_clone
 #pragma pedantic
 
+protected functions virtual inherit "/std/util/path";
+
 #include <wizlevels.h>
 #include <logging.h>
 #include <magier.h>
@@ -259,14 +261,14 @@ static int _exec(string filename)
   if (this_player()!=this_interactive()) return 0;
   if (this_player()!=this_object()) return 0;
   if (!(filename=_unparsed_args())) return USAGE("exec <objektname>");
-  filename=(string)"secure/master"->_get_path(filename,getuid());
+  filename=normalize_path(filename, getuid(), 1);
   if (file_size(filename)<0&&(!to_filename(filename+".c"))||
       file_size(to_filename(filename+".c"))<0)
   {
     printf("exec: %s: Datei nicht vorhanden oder ein Verzeichnis.\n",filename);
     return 1;
   }
-  if (catch(call_other(filename,"????"))) 
+  if (catch(load_object(filename)))
   {
     printf("exec: Fehler beim Laden von %s.\n",filename);
     return 1;
