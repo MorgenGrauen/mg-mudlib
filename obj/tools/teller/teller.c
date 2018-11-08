@@ -107,10 +107,10 @@ void create()
 	tAddCmd( "ping" );
 }
 
-void init()
+varargs void init( object orig )
 {
 	//logaccess( "init" );
-	::init();
+	::init( orig );
 	if ( !IS_WIZARD(PL) || environment()!=PL )
 		return;
 	add_action( "parse", ",", 1 );
