@@ -56,7 +56,7 @@ string short_path(string file)
 
 string long_path(string file)
 {
-  return (string)MASTER->make_path_absolute(file);
+  return normalize_path(file, getuid(this_interactive() || PL), 1);
 }
 
 string *long_get_dir(string pat, int all)

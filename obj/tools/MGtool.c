@@ -10,9 +10,11 @@
 
 #pragma strict_types
 
+protected functions virtual inherit "/std/util/path";
 inherit "/std/thing/properties";
 
 #include <properties.h>
+
 #if !defined(QUERYCACHED)
 #define QUERYCACHED 4096
 #endif
