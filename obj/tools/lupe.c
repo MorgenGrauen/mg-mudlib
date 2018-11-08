@@ -2,7 +2,8 @@
 //
 // Some changes/extensions by Jof@MorgenGrauen
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
+protected functions virtual inherit "/std/util/path";
 
 #include <language.h>
 #include <properties.h>
@@ -11,6 +12,7 @@ inherit "/std/thing";
 #include <defines.h>
 #include <questmaster.h>
 #include <userinfo.h>
+#include <strings.h>
 
 #define add(s) commands+=({s});functions+=({s});ncmds++
 #define add2(s,f) commands+=({s});functions+=({f});ncmds++
@@ -33,12 +35,15 @@ void clean(object ob);
 void cleanof(string str,object ob);
 
 
-void create()
+protected void create()
 {
   object owner;
   string str;
-  
-  if (!clonep(ME)) return;
+
+  if (!clonep(ME)) {
+      set_next_reset(-1);
+      return;
+  }
   ::create();
   owner=environment()||this_player();
   if (owner)
@@ -182,7 +187,8 @@ int cmdline(string str)
   for (i=0;i<maxverb;i++)
     if (commands[i]==verb[0..sizeof(commands[i])-1])
       if (ret=evalcmd(str))
-	return ret;
+          return ret;
+
   return(0); // non-void function, Zesstra
 }
 
@@ -236,10 +242,7 @@ int set_user(string str)
 
 string strip(string str)
 {
-  string temp;
-  if(!str) return "";
-  while (sscanf(str," %s",temp)==1) str=temp;
-  return str;
+  return trim(str,TRIM_BOTH);
 }
 
 int arglen;
@@ -470,7 +473,8 @@ string me(string arg)
 
 string make_path(string path)
 {
-  return "secure/master"->_get_path( path, geteuid( this_player() ) );
+  // Pfadexpansion fuer Nutzer des Tools
+  return normalize_path(path, getuid( RPL || PL ), 1);
 }
 
 string new(string arg)

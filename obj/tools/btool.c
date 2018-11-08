@@ -3,7 +3,7 @@
 #pragma pedantic,range_check,warn_deprecated
 #pragma warn_empty_casts,warn_missing_return,warn_function_inconsistent
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 
 #include <properties.h>
 #include <defines.h>

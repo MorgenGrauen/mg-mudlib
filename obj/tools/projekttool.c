@@ -6,7 +6,7 @@
 #include "/secure/wizlevels.h"
 #include <moving.h>
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 string hilfe;
 static int changetime;
 static int suppressinfos;

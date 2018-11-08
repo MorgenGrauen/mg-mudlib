@@ -2,11 +2,15 @@
 // Tellerstapel, ein Stackorientiertes magiertool.
 // Rumata 15.09.93
 // ----------------------------------------------------------------------
+
 #include "teller.h"
-inherit "std/secure_thing";
+
+inherit "/std/secure_thing";
+protected functions virtual inherit "/std/util/path";
+
 inherit T_CMDS;
 inherit T_EFUN;
-inherit "std/more";
+inherit "/std/more";
 
 #include "/secure/wizlevels.h"
 
@@ -515,7 +519,7 @@ static int do_cmd( string str )
 		push( i );
 	else
 	{
-		filename = MASTER->_get_path(str,getuid());
+		filename = normalize_path(str, getuid(), 1);
 		if( filename[<1] == '.' )
 			filename = filename[0..<2];
 		if( file_size( filename+".c" ) != -1 )

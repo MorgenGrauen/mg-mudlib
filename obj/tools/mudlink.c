@@ -13,7 +13,7 @@
 #include <config.h>
 #include <properties.h>
 
-inherit "/std/thing";
+inherit "/std/secure_thing";
 
 create() {
   string name, foo;

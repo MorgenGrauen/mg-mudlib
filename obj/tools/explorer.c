@@ -5,14 +5,18 @@
 // $Id: explorer.c 8357 2013-02-09 11:16:14Z Zesstra $
 
 inherit "/std/secure_thing";
+protected functions virtual inherit "/std/util/path";
 
 #include <properties.h>
 #include <exploration.h>
 #include <wizlevels.h>
 
-create()
+protected void create()
 {
-  if (!clonep(this_object())) return;
+  if (!clonep(this_object())) {
+      set_next_reset(-1);
+      return;
+  }
   ::create();
   SetProp(P_SHORT, "Der Erforscher");
   SetProp(P_NAME, "Erforscher");
@@ -114,8 +118,9 @@ static object getOb(string str)
     ob = present(str, this_player());
 
   if (!ob) {
-    str = "/secure/master"->_get_path(str, getuid(this_player()));
-    catch(call_other(str, "???"));
+    // Pfadexpansion fuer die UID vom aktuellen Benutzer.
+    str = normalize_path(str, getuid(this_interactive()||this_player()), 1);
+    catch(load_object(str));
     ob = find_object(str);
   }
   return ob;

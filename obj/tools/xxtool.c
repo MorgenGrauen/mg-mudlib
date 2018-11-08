@@ -1,15 +1,15 @@
 #include <properties.h>
 #include <language.h>
 
-inherit "obj/tools/MGtool";
-inherit "std/thing";
+inherit "/obj/tools/MGtool";
+inherit "/std/secure_thing";
 
-void create()
+protected void create()
 {
   if(!clonep(this_object()))
     return;
   thing::create();
-  ::create();
+  MGtool::create();
   SetProp(P_NAME,"Ankh");
   SetProp(P_GENDER,NEUTER);
   SetProp(P_IDS,({"ankh","xxtool"}));
