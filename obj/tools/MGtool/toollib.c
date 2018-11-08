@@ -11,33 +11,8 @@
 #include "toollib.h"
 #include <lpctypes.h>
 #include <properties.h>
-/*
-string *old_explode(string str, string del)
-{
-  int s, t;
-  string *strs;
-  
-  if(del == "")
-    return ({str});
-  strs=explode(str, del);
-  s=0;
-  t=sizeof(strs)-1;
-  while(s<=t && strs[s++] == "")
-    ;
-  s--;
-  while(t>=0 && strs[t--] == "")
-    ;
-  t++;
-  if(s<=t)
-    return strs[s..t];
-  return 0;
-}
+#include <strings.h>
 
-string *explode(string str, string del)
-{
-  return explode(str, del);
-}
-*/
 string *strip_explode(string str, string del)
 {
   return explode(str, del)-({""});
@@ -45,7 +20,7 @@ string *strip_explode(string str, string del)
 
 string strip_string(string str)
 {
-  return implode(strip_explode(str," ")," ");
+  return trim(str, TRIM_BOTH);
 }
 
 int string_compare(string a, string b)
@@ -70,8 +45,7 @@ string short_path(string file)
     if(file[0.. 8]=="/players/")
     {
       s=sizeof(getuid(PL))+8;
-      return "~"+(file[9.. s]==getuid(PL) ?
-		  file[s+1.. <1] : file[9.. <1]);
+      return "~"+(file[9.. s]==getuid(PL) ? file[s+1.. <1] : file[9.. <1]);
     }
   }
   if(file[0.. 2]=="/d/")
