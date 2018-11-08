@@ -325,21 +325,23 @@ int _normalfunction()
 
 static string _MakePath( string str )
 {
-  string *comp;
+   string *comp = explode( object_name(this_object()), "/" ) - ({""});
 
-  comp = explode( object_name(this_object()), "/" ) - ({""});
-  
-   switch( str[0] ){
+   switch( str[0] )
+   {
    case '.':
        str = "/" + implode( comp[0..<2], "/" ) + "/" + str;
        break;
-       
+
+   // Konstruiert einen Pfad relativ zu /players/REAL_UID bzw.
+   // /d/<region>/REAL_UID/.
    case '~':
        str = "/" + comp[0] + "/" + (comp[0] == "d" ? comp[1] + "/" : "")
            +REAL_UID(this_object()) + str[1..];
        break;
    }
-   
-   return MASTER->_get_path( str, getuid(this_object()) );
+   // macht den Pfad absolut und halbwegs "sane", loest .. im Pfad auf.
+   // Beruecksichtigt KEINE weiteren Platzhalter.
+   return master()->make_path_absolute(str);
 }
 

@@ -101,14 +101,14 @@ public varargs object AddItem(mixed filename, int refresh, mixed props)
   {
     for(i=sizeof(filename);i--;)
     {
-      filename[i] = (string)master()->_get_path( filename[i], "?" );
+      filename[i] = (string)master()->make_path_absolute( filename[i] );
     }
       
     file=filename[random(sizeof(filename))];
   }
   else 
   {
-    file=filename=(string)master()->_get_path(filename,"?");
+    file=filename=(string)master()->make_path_absolute(filename);
   }
   
   if(props==1)
@@ -213,12 +213,12 @@ public void RemoveItem(string|string* filename)
   {
     foreach(string fn: &filename)
     {
-      fn=master()->_get_path(fn,"?");
+      fn=master()->make_path_absolute(fn);
     }
   }
   else
   {
-    filename=master()->_get_path( filename,"?");
+    filename=master()->make_path_absolute( filename );
   }
   
   SetProp(P_ITEMS,filter(items, #'ri_filter/*'*/,filename));

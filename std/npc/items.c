@@ -214,15 +214,15 @@ public varargs object AddItem(mixed filename, int refresh, mixed props)
   // Aus Array ein Element auswaehlen
   if (pointerp(filename)) 
     filename = filename[random(sizeof(filename))];
- 
+
   // Kein String? -> Fehler
   if (!stringp(filename)){
     raise_error("AddItem: filename or array of filenames expected.\n"); 
   } else {
     // Pfad normieren und eventuell vorhandenes ".c" entfernen
-    filename = MASTER->_get_path(
+    filename = master()->make_path_absolute(
                   filename[<2..]==".c"?filename=filename[0..<3]
-                                        : filename,"?"); 
+                                        : filename);
     // Property setzen
     SetProp(P_ITEMS, (QueryProp(P_ITEMS)||({}))+
                      ({ ({ 0, filename, refresh, props }) }));
