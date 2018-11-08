@@ -77,7 +77,7 @@ static int _in_room(string str)
   room=(string)call_other(master(),"_get_path",room,getuid());
   if (err=catch(move_object(room)))
   {
-    if (catch(size=file_size(room+".c"))||size<1)
+    if (catch(size=file_size(room+".c"))||size < 0)
       printf("%s: %s.c: Datei nicht vorhanden.\n",query_verb(),room);
     else
       printf("%s: Bewegung nach %s hat nicht funktioniert: %s\n",
@@ -137,12 +137,12 @@ static int _goto(string dest){
      target2=target=(mixed)call_other(master(),"_get_path",dest,getuid());
      if (!find_object(target))
      {
-       if (target2[<1]=='.') target2+="c";
+       // ggf. .c dranhaengen
        if (target2[<2..<1]!=".c") target2+=".c";
        notify_fail(sprintf("goto: Datei %O nicht vorhanden.\n",target));
        if (!(file_size(target2)>-1||
            file_size(implode(explode(target,"/")[0..<2],"/")+
-               "/virtual_compiler.c")>-1)||(err=catch(call_other(target,"?"))))
+               "/virtual_compiler.c")>-1)||(err=catch(load_object(target))))
        {
          if (err)
               notify_fail(sprintf("goto: Fehler beim Teleport nach %O:\n%s\n",
@@ -169,13 +169,13 @@ static int _home()
   string dest;
   if (verfolger()) _verfolge("");
   dest="/players/" + getuid() + "/workroom";
-  if (file_size(dest+".c")<1||catch(call_other(dest,"???")))
+  if (file_size(dest+".c")<0||catch(load_object(dest)))
   {
     printf("Fehler beim Laden Deines Workrooms.\n"
            "Gehe zum Magiertreff.\n");
     dest="/secure/merlin";
   }
-  
+
   if (move(dest,M_TPORT|M_NOCHECK)<0)
     printf("Bewegung fehlgeschlagen!\n");
   return 1;
@@ -206,12 +206,12 @@ static int _go_wiz_home(string str)
            capitalize(str));
     return 1;
   }
-  if (file_size("/players/"+str+"/workroom.c")<1)
+  if (file_size("/players/"+str+"/workroom.c")<0)
   {
     printf("%s hat keinen Workroom.\n",capitalize(str));
     return 1;
   }
-  if (catch(call_other("/players/"+str+"/workroom","???")))
+  if (catch(load_object("/players/"+str+"/workroom")))
   {
     printf("Der Workroom von %s hat Fehler.\n",capitalize(str));
     return 1;
