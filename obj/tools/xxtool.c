@@ -8,7 +8,7 @@ protected void create()
 {
   if(!clonep(this_object()))
     return;
-  thing::create();
+  secure_thing::create();
   MGtool::create();
   SetProp(P_NAME,"Ankh");
   SetProp(P_GENDER,NEUTER);
@@ -31,7 +31,7 @@ string _query_long()
 
 string name( int d1, int d2 )
 {
-  return thing::name(d1,d2);
+  return ::name(d1,d2);
 }
 
 int id( string str )
@@ -39,3 +39,4 @@ int id( string str )
   ::id(str);
   return member( ({"ankh","xxtool"}),str ) != -1;
 }
+
