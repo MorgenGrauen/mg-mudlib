@@ -31,6 +31,7 @@ inherit "/std/thing/language";
 inherit "/std/npc/info";
 inherit "/std/npc/put_and_get";
 inherit "/std/npc/items";
+inherit "/std/container/vitems";
 inherit "/std/thing/envchk";
 inherit "/std/living/helpers";
 
@@ -109,6 +110,7 @@ protected void create_super() {
 
 void reset(){
   items::reset();
+  vitems::reset();
   combat::reset();
   envchk::reset();
 }

@@ -18,6 +18,7 @@ inherit "/std/container/light";
 inherit "/std/container/restrictions";
 inherit "/std/container/inventory";
 inherit "/std/container/items";
+inherit "/std/container/vitems";
 inherit "/std/clothing/moving";
 inherit "/std/clothing/wear";
 inherit "/std/clothing/container_description";
@@ -48,6 +49,7 @@ protected void create_super() {
 
 void reset()  {
   items::reset();
+  vitems::reset();
   envchk::reset();
 }
 

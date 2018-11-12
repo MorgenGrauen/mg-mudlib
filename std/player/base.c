@@ -21,6 +21,7 @@
 
 inherit "/std/hook_provider";
 inherit "/std/player/restrictions";
+inherit "/std/player/vitems";
 inherit "/std/living/attributes";
 inherit "/std/living/put_and_get";
 inherit "/std/living/clothing";

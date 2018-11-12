@@ -23,6 +23,8 @@ inherit "/std/thing/commands";
 inherit "/std/thing/language";
 inherit "/std/container/light";
 inherit "/std/container/restrictions";
+inherit "/std/container/vitems";
+inherit "/std/container/items";
 inherit "/std/tray/description";
 inherit "/std/thing/envchk";
 inherit "/std/container/items";
@@ -52,5 +54,6 @@ protected void create_super() {
 void reset()
 {
   items::reset();
+  vitems::reset();
   envchk::reset();
 }

@@ -20,6 +20,7 @@ inherit "/std/room/description";
 inherit "/std/room/exits";
 inherit "/std/room/commands";
 inherit "/std/room/items";
+inherit "/std/container/vitems";
 inherit "/std/room/doors";
 
 #include <thing/properties.h>
@@ -37,6 +38,7 @@ inherit "/std/room/doors";
 void reset()
 {
   items::reset();
+  vitems::reset();
   exits::reset();
   doors::reset();
 }
