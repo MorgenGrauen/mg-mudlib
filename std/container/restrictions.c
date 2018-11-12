@@ -33,6 +33,7 @@
 #include <properties.h>
 #include <defines.h>
 #include <thing/description.h>
+#include <container/vitems.h>
 
 // local properties prototypes
 static int _query_total_weight();
@@ -255,28 +256,32 @@ public object *present_objects( string complex_desc )
            complex_desc = complex_desc[6..];
        }
 
-       obs=({});
+       obs = ({});
+       // all_inventory() und VItems (virtuell anwesende Items)
+       // zusammensammeln:
+       object *my_inventory = all_inventory() + GetVItemClones();
+
        // nun nach Main-Ids (Gruppen) suchen...
        if ( meth & POS_LETZTES )
        { // geht es nur um den letzten Gegenstand?
            switch( complex_desc ){
            case "waffe":
-               obs = filter_objects( all_inventory(), "QueryProp",
+               obs = filter_objects( my_inventory, "QueryProp",
                                      P_WEAPON_TYPE );
                break;
                
            case "ruestung":
-               obs = filter_objects( all_inventory(), "QueryProp",
+               obs = filter_objects( my_inventory, "QueryProp",
                                      P_ARMOUR_TYPE );
                break;
           
            case "kleidung":
-               obs = filter_objects( all_inventory(), "IsClothing");
+               obs = filter_objects( my_inventory, "IsClothing");
                break;
                
            case "verschiedenem":
            case "verschiedenes":
-               obs = all_inventory();
+               obs = my_inventory;
                obs -= filter_objects( obs, "QueryProp", P_WEAPON_TYPE );
                obs -= filter_objects( obs, "QueryProp", P_ARMOUR_TYPE );
                obs -= filter_objects( obs, "IsClothing");
@@ -292,7 +297,7 @@ public object *present_objects( string complex_desc )
                // kein break;, Fall-through!
            case "behaltenem":
            case "behaltenes":
-               obs += filter( all_inventory(), "_behalten", ME,
+               obs += filter( my_inventory, "_behalten", ME,
                                    getuid(this_player() || previous_object()) );
 
                obs += (QueryProp(P_ARMOURS) || ({}))
@@ -300,12 +305,12 @@ public object *present_objects( string complex_desc )
                    break;
                    
            case "gegenstand":
-               obs = all_inventory() -
-                   filter( all_inventory(), #'living/*'*/ );
+               obs = my_inventory -
+                   filter( my_inventory, #'living/*'*/ );
                break;
                
            default:
-               obs = filter_objects( all_inventory(), "id", complex_desc );
+               obs = filter_objects( my_inventory, "id", complex_desc );
            }
 
            // unsichtbare objekte entfernen
@@ -328,8 +333,8 @@ public object *present_objects( string complex_desc )
                if ( meth & POS_INVERS )
                    continue; // alles nicht = nichts :)
                
-               obs = all_inventory() -
-                   filter( all_inventory(), #'living/*'*/ );
+               obs = my_inventory -
+                   filter( my_inventory, #'living/*'*/ );
                break;
                
            case "waffen":
@@ -337,7 +342,7 @@ public object *present_objects( string complex_desc )
            case "jeder waffe":
            case "alle waffen":
            case "allen waffen":
-               obs = filter_objects( all_inventory(), "QueryProp",
+               obs = filter_objects( my_inventory, "QueryProp",
                                      P_WEAPON_TYPE );
                break;
                
@@ -346,7 +351,7 @@ public object *present_objects( string complex_desc )
            case "jeder ruestung":
            case "alle ruestungen":
            case "allen ruestungen":
-               obs = filter_objects( all_inventory(), "QueryProp",
+               obs = filter_objects( my_inventory, "QueryProp",
                                      P_ARMOUR_TYPE );
                break;
  
@@ -355,19 +360,19 @@ public object *present_objects( string complex_desc )
            case "jeder kleidung":
            case "alle kleidung":
            case "allen kleidung":
-               obs = filter_objects( all_inventory(), "IsClothing");
+               obs = filter_objects( my_inventory, "IsClothing");
                break;
               
            case "gegenstand":
-               obs = filter_objects( all_inventory() -
-                                     filter( all_inventory(),
+               obs = filter_objects( my_inventory -
+                                     filter( my_inventory,
                                                    #'living/*'*/ ),
                                      "short" )[0..0];
                break;
                
            case "verschiedenem":
            case "verschiedenes":
-               obs = all_inventory();
+               obs = my_inventory;
                obs -= filter_objects( obs, "QueryProp", P_WEAPON_TYPE );
                obs -= filter_objects( obs, "QueryProp", P_ARMOUR_TYPE );
                obs -= filter_objects( obs, "IsClothing");
@@ -388,7 +393,7 @@ public object *present_objects( string complex_desc )
            case "behaltenen":
            case "behaltenes":
            case "alles behaltene":
-               obs += filter( all_inventory(), "_behalten", ME,
+               obs += filter( my_inventory, "_behalten", ME,
                                    getuid(this_player() || previous_object()) );
 
                obs += (QueryProp(P_ARMOURS) || ({}))
@@ -401,7 +406,7 @@ public object *present_objects( string complex_desc )
                {
                    if ( complex_desc[4..4] == " " )
                    {
-                       obs = filter_objects( all_inventory(), "id",
+                       obs = filter_objects( my_inventory, "id",
                                              complex_desc[5..] );
                        break;
                    }
@@ -413,7 +418,7 @@ public object *present_objects( string complex_desc )
                        case "r ":
                        case "n ":
                        case "s ":
-                           obs = filter_objects( all_inventory(), "id",
+                           obs = filter_objects( my_inventory, "id",
                                                  complex_desc[6..] );
                            break;
                            
@@ -427,6 +432,8 @@ public object *present_objects( string complex_desc )
 
                // Der Normalfall: einzelne ID...
                ob = present( complex_desc, ME );
+               if (!ob)
+                   ob = present_vitem(complex_desc);
                // Achtung: dieser Teil setzt das for() fort (continue) und
                // umgeht dabei die Pruefung auf Sichtbarkeit nach dem Ende vom
                // switch(). Aus diesem Grunde muss hier selber geprueft
@@ -434,11 +441,15 @@ public object *present_objects( string complex_desc )
                if ( meth & POS_INVERS )
                {
                    if ( ob && ob != ME )
-                       erg += (filter_objects( all_inventory(), "short" )
+                       erg += (filter_objects( my_inventory, "short" )
                                - ({ ob }) );
                    else
-                       erg += filter_objects( all_inventory(), "short" );
+                       erg += filter_objects( my_inventory, "short" );
                }
+               // Grund fuer P_INVIS statt short==0: Bei Angabe einer ganz
+               // bestimmten ID (im Gegensatz zu "alles", "jede waffe" etc.)
+               // soll ein Item gefunden werden, auch wenn die Short 0 ist
+               // (unsichtbar, aber interagierbar).
                else if ( ob && ob != ME && !ob->QueryProp(P_INVIS) )
                    erg += ({ ob });   //Normalfall: einzelne ID
 
@@ -450,7 +461,7 @@ public object *present_objects( string complex_desc )
        } // else
 
        if ( meth & POS_INVERS )
-           erg += ( filter_objects( all_inventory(), "short" ) - obs );
+           erg += ( filter_objects( my_inventory, "short" ) - obs );
        else
            erg += obs;
    } // for
