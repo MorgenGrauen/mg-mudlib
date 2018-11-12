@@ -672,20 +672,18 @@ varargs int drop_objects(string str, mixed msg)
     if (!sizeof(obs = find_objects(str, this_object(), 1)))
         return 0;
 
+    last_moved_objects=({});
+    last_moved_where = 0;
     foreach (object o: obs) {
         if (objectp(o))
-            drop(o, msg);
+            if (drop(o, msg) == 1)
+                last_moved_objects+=({o});
 
         if (get_eval_cost() < 100000) {
             TME("Den Rest behaeltst Du erst mal.");
-            last_moved_objects = obs[..member(obs, o)];
-            last_moved_where = 0;
             return 1;
         }
     }
-
-    last_moved_objects = obs;
-    last_moved_where = 0;
     return 1;
 }
 
@@ -759,20 +757,20 @@ varargs int put_objects(string str, int casus, string verb, mixed msg)
                 return 0;
         }
 
+        last_moved_objects = ({});
+        last_moved_where = dest;
+
         foreach (object o: obs) {
             if (objectp(o))
-                put(o, dest, msg);
+                if (put(o, dest, msg) == 1)
+                    last_moved_objects += ({o});
 
             if (get_eval_cost() < 100000) {
                 TME("Den Rest laesst Du erst mal, wo er ist.");
-                last_moved_objects = obs[..member(obs, o)];
-                last_moved_where = dest;
                 return 1;
             }
         }
 
-        last_moved_objects = obs;
-        last_moved_where = dest;
         return 1;
     }
     
@@ -789,30 +787,29 @@ varargs int pick_objects(string str, int flag, mixed msg)
     }
 
     if (!sizeof(obs = find_objects(str, 0, 1) - all_inventory()
-	  - (flag ? all_inventory(environment()) : ({}))))
+                - (flag ? all_inventory(environment()) : ({}))))
         return 0;
 
+    last_moved_objects = ({});
+    last_moved_where = this_object();
     foreach (object o: obs) {
         if (objectp(o))
-            pick(o, msg);
+            if (pick(o, msg) == 1)
+                last_moved_objects += ({o});
 
         if (get_eval_cost() < 100000) {
             TME("Den Rest laesst Du erst mal liegen.");
-            last_moved_objects = obs[..member(obs, o)];
-            last_moved_where = 0;
             return 1;
         }
     }
 
-    last_moved_objects = obs;
-    last_moved_where = 0;
     return 1;
 }
 
 varargs int give_objects(string str, mixed msg)
 {
     object *obs, dest;
-    
+
     if (!stringp(str) || !sizeof(str)) return 0;
 
     string *tokens = explode(str, " ");
@@ -852,27 +849,25 @@ varargs int give_objects(string str, mixed msg)
     if (!dest || !living(dest) || !sizeof(obs))
         return 0;
 
+    last_moved_objects = ({});
+    last_moved_where = dest;
     foreach (object o: obs) {
         if (objectp(o))
-            give(o, dest, msg);
+            if (give(o, dest, msg) == 1)
+                last_moved_objects += ({o});
 
         if (get_eval_cost() < 100000) {
             TME("Den Rest behaeltst Du erst mal.");
-            last_moved_objects = obs[..member(obs, o)];
-            last_moved_where = dest;
             return 1;
         }
     }
-
-    last_moved_objects = obs;
-    last_moved_where = dest;
     return 1;
 }
 
 varargs int show_objects(string str, mixed msg)
 {
     object *obs, whom;
-    
+
     if (!stringp(str) || !sizeof(str))
       return 0;
 
@@ -908,20 +903,19 @@ varargs int show_objects(string str, mixed msg)
             continue;
         }
 
+        last_moved_objects = ({});
+        last_moved_where = whom;
         foreach (object o: obs) {
             if (objectp(o))
-                show(o, whom, msg);
+                if (show(o, whom, msg) == 1)
+                    last_moved_objects += ({o});
 
             if (get_eval_cost() < 100000) {
                 TME("Das reicht erst mal.");
-                last_moved_objects = obs[..member(obs, o)];
-                last_moved_where = whom;
                 return 1;
             }
         }
 
-        last_moved_objects = obs;
-        last_moved_where = whom;
         return 1;
     }
 
