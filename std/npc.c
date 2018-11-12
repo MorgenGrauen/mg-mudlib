@@ -110,6 +110,7 @@ protected void create_super() {
 void reset(){
   items::reset();
   combat::reset();
+  envchk::reset();
 }
 
 static int _set_level(int arg)

@@ -48,6 +48,7 @@ protected void create_super() {
 
 void reset()  {
   items::reset();
+  envchk::reset();
 }
 
 int IsClothing() {return 1;}

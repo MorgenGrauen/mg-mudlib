@@ -48,6 +48,8 @@ protected void create_super() {
 
 // Zum Ueberschreiben, damit es nicht buggt, wenn die Leute in ihren Objekten (wie
 // gewuenscht) ::reset() rufen.
-void reset() {
+void reset()
+{
+  envchk::reset();
 }
 

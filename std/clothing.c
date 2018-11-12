@@ -48,6 +48,7 @@ protected void create_super() {
 // zum Ueberschreiben, damit es nicht buggt, wenn Leute (wie gewuenscht) in 
 // ihren Objekten ::reset() aufrufen.
 void reset() {
+  envchk::reset();
 }
 
 int IsClothing() {return 1;}

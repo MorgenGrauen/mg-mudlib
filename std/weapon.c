@@ -42,5 +42,7 @@ void create()
 }
 
 void reset()  // Man kann in ALLEN Standardobjekten ::reset aufrufen!
-{ }
+{
+  envchk::reset();
+}
 

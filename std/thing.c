@@ -41,5 +41,7 @@ protected void create_super() {
 }
 
 // Damit man in ALLEN Standardobjekten ::reset aufrufen kann.
-void reset() {}
-
+void reset()
+{
+  envchk::reset();
+}
