@@ -675,11 +675,12 @@ static int _grep(string cmdline)
   rexpr=args[0];
   if (catch(regexp(({""}),rexpr))||!regexp(({""}),rexpr))
     return printf("grep: Ungueltiger Suchausdruck: %s\n",rexpr) ,1;
-  args=args[1..];
+  args=(sizeof(args)>1 ? args[1..] : ({}) );
   if (flags&GREP_M)
   {
     mask=args[<1];
-    args=args[0..<2];
+    if (sizeof(args) > 2)
+    args = (sizeof(args) > 1 ? args[0..<2] : ({}) );
   }
   if (!sizeof(args))
       return USAGE("grep [-" GREP_OPTS

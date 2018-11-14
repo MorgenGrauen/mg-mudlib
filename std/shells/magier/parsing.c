@@ -144,7 +144,7 @@ private varargs mixed *_get_files(string dirname,string mask,int mode,
   if(!sizeof(data)) return ({});
   mixed *files=({});
 
-  while(sizeof(data))
+  while(1)
   {
     mixed *tmp=({});
     string base=data[BASENAME];
@@ -164,7 +164,10 @@ private varargs mixed *_get_files(string dirname,string mask,int mode,
     if (sizeof(files)+sizeof(tmp)>MAX_ARRAY_SIZE)
        raise_error("Zu viele Files (>3000)!! Abgebrochen!\n");
     files+=tmp;
-    data=data[3..];
+    if (sizeof(data) > 3)
+      data=data[3..];
+    else
+      break;
   }
 
   if(sizeof(files)>300&&!IS_ARCH(this_object()))
