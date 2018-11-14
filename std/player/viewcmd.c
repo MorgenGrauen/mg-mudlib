@@ -327,27 +327,38 @@ private object get_ref_object(string str, string what)
         // Das Referenzobjekt darf nicht unsichtbar sein.
         else if (!ref_object->short())
           ref_object = 0;
-        // Nur wenn unser environment() 
-        else if(member(deep_inventory(environment()), ref_object) != -1)
+        // Nur wenn das Ref-Objekt irgendwie in unserer Umgebung ist (direkt,
+        // in uns, in einem Container etc.) kommt es in Frage. Es wird daher
+        // geprueft, ob all_environments() des Ref-Objekts auch unser
+        // environment enthaelt.
+        else
         {
-          foreach(object env : all_environment(ref_object)) {
-            // Ist eine Umgebung Living oder intransparenter Container oder
-            // unsichtbar?
-            if (living(env) || !env->QueryProp(P_TRANSPARENT)
-                || !env->short())
-            {
-              // in dem Fall ist ende, aber wenn das gefundene Env nicht
-              // dieses Living selber oder sein Env ist, wird das
-              // Referenzobjekt zusaetzlich genullt.
-              if (env != this_object() && env != environment())
-                ref_object = 0;
-              break;
+          object *all_envs=all_environment(ref_object);
+          int i=member(all_envs, environment());
+          if (i >= 0)
+          {
+            // dann von dem Environment an entlanglaufen und alle
+            // intermediaeren Objekt pruefen, ob sie einsehbar und sichtbar
+            // sind.
+            foreach(object env : all_envs[..i]) {
+              // Ist eine Umgebung Living oder intransparenter Container oder
+              // unsichtbar?
+              if (living(env) || !env->QueryProp(P_TRANSPARENT)
+                  || !env->short())
+              {
+                // Kette zum Ref-Objekt unterbrochen. Wenn das unterbrechende
+                // Env nicht dieses Living selber oder sein Env ist, wird das
+                // Referenzobjekt zusaetzlich genullt.
+                if (env != this_object() && env != environment())
+                  ref_object = 0;
+                break;
+              }
             }
           }
+          else
+            ref_object = 0; // nicht im Raum oder Inventory
         }
-        else
-          ref_object = 0; // nicht im Raum oder Inventory
-      }
+      } // ref_object exists
   }
   return ref_object;
 }
