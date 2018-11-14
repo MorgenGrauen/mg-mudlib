@@ -10,13 +10,7 @@
 #pragma no_clone
 #pragma pedantic
 
-#define NEED_PROTOTYPES
-#include "/sys/thing/properties.h"
-#include "/sys/living/put_and_get.h"
-#include "/sys/living/description.h"
-
-#include <container.h>
-#include <player.h>
+//#include <player.h>
 #include <properties.h>
 #include <rooms.h>
 #include <wizlevels.h>
@@ -24,8 +18,16 @@
 #include <moving.h>
 #include <new_skills.h>
 #include <ansi.h>
-
+#include <notify_fail.h>
 #include <sys_debug.h>
+
+#define NEED_PROTOTYPES
+#include <container.h>
+#include <thing/properties.h>
+#include <living/put_and_get.h>
+#include <living/description.h>
+#include <living/put_and_get.h>
+#include <player/command.h>
 
 varargs mixed More(string str, int fflag, string returnto);
 
@@ -230,195 +232,9 @@ int _inventory(string str)
   return 1;
 }
 
-private nosave int exa_cnt;
-private nosave int exa_time;
-private nosave string *exa;
-
-varargs int _examine(string str, int mode)
+private int select_sense(string str)
 {
-  object base, *objs, env;
-  string what, detail, parent, out, error;
-  int i, size, done;
-
-  if(CannotSee()) return 1;
-
-  _notify_fail("Was willst Du denn untersuchen?\n");
-  if (!str) return 0;
-
-  if (member(({"boden","decke","wand","waende"}),old_explode(str," ")[0]) == -1) {
-    exa_cnt -= (time() - exa_time)/2;
-    exa_time = time();
-    exa_cnt++;
-    if (!exa)
-      exa = ({ str });
-    else
-      exa += ({ str });
-    if (exa_cnt > 10) {
-      log_file("ARCH/LOOK", 
-          sprintf("%s: %s in %s\n%@O\n",dtime(time()),getuid(this_object()), 
-            environment() ? object_name(environment()) : "???",exa), 150000);
-      exa_cnt = 0;
-      exa = ({});
-    }
-    else if (exa_cnt < 0) {
-      exa_cnt = 0;
-      exa = ({});
-    }
-  }
-  // do we look at an object in our environment ?
-  if (sscanf(str,"%s in raum", what) || sscanf(str,"%s im raum", what))
-      base = environment();
-  // is the object inside of me (inventory)
-  else if (sscanf(str,"%s in mir", what) || sscanf(str,"%s in dir", what))
-      base = this_object();
-  else {
-      what = str;
-      // get the last object we looked at
-      base = QueryProp(P_REFERENCE_OBJECT);
-      
-      // if a reference object exists, test for its existance in the room
-      // or in our inventory
-      if (objectp(base))
-      {
-       if (base == environment() || base==this_object())
-        {
-          // Umgebung oder Spieler selber sind als Bezugsobjekt immer in
-          // Ordnung, nichts machen.
-        }
-        // Das Referenzobjekt darf nicht unsichtbar sein.
-        else if (!base->short())
-          base = 0;
-        else if(member(deep_inventory(environment()), base) != -1)
-        {
-          foreach(env : all_environment(base)) {
-            // Ist eine Umgebung Living oder intransparenter Container oder
-            // unsichtbar?
-            if (living(env) || !env->QueryProp(P_TRANSPARENT)
-                || !env->short())
-            {
-              // in dem Fall ist ende, aber wenn das gefundene Env nicht
-              // dieses Living selber oder sein Env ist, wird das
-              // Referenzobjekt zusaetzlich genullt.
-              if (env != this_object() && env != environment())
-                base = 0;
-              break;
-            }
-          }
-        }
-        else
-          base = 0; // nicht im Raum oder Inventory
-      }
-  }
-
-  // scan input if we want a specific object to look at
-  if(sscanf(what, "%s an %s", detail, parent) == 2 ||
-     sscanf(what, "%s am %s", detail, parent) == 2 ||
-     sscanf(what, "%s in %s", detail, parent) == 2 ||
-     sscanf(what, "%s im %s", detail, parent) == 2)
-  {
-    // if an ref object exists get its inventory. (Oben wurde sichergestellt,
-    // dass das Referenzobjekt einsehbar ist)
-    if(base)
-      objs = base->locate_objects(parent, 1) || ({});
-    else {
-      // else get our inv and env
-      objs = environment()->locate_objects(parent, 1)
-           + locate_objects(parent, 1);
-    }
-    objs = filter_objects(objs, "short"); // nur sichtbare...
-    if(sizeof(objs) > 1)
-      return (notify_fail("Es gibt mehr als eine(n) "+capitalize(parent)+".\n"), 0);
-    else
-    {
-      if (sizeof(objs))
-        base = objs[0];
-      else
-        return (notify_fail("Hier ist kein(e) "+capitalize(parent)+".\n"), 0);
-    }
-    objs = 0;
-  }
-  else detail = what;
-
-  int base_was_env = 1;
-  do {
-    // if a base exists get its inventory, else get our inv and env
-    if (base)
-    {
-      if  (base == this_object() || base == environment() ||
-          (base->QueryProp(P_TRANSPARENT) && !living(base)))
-      {
-        // ich kann in base reingucken...
-        objs = base->locate_objects(detail, 1) || ({});
-      }
-      else
-      {
-        // Referenzobjekt da, aber nicht reinguckbar. base aber nicht nullen,
-        // denn es ist ja noch gueltig fuer Detailsuchen an base...
-        objs = ({});
-      }
-    }
-    else
-    {
-      objs = environment()->locate_objects(detail, 1)
-           + locate_objects(detail, 1);
-      base = environment();
-    }
-    objs = filter_objects(objs, "short"); // nur sichtbare...
-
-    if(!sizeof(objs))
-    {
-      // wenn keine Objekte gefunden wurden, wird nach Details gesucht...
-      if((out = base->GetDetail(detail, QueryProp(P_REAL_RACE),SENSE_VIEW)) ||
-         (out = base->GetDoorDesc(detail)))
-      {
-        SetProp(P_REFERENCE_OBJECT, base);
-        return (write(out), 1);
-      }
-      else
-      {
-        // wenn auch keine Details gefunden, dann schauen, ob Ende ist
-        // (base==env) oder wir evtl. noch im env suchen koennen.
-        if (base == environment())
-        {
-          if (base_was_env) {
-            // in diesem Fall war das Env das Bezugsobjekt - daher wegwerfen.
-            SetProp(P_REFERENCE_OBJECT, 0);
-            _notify_fail("Sowas siehst Du da nicht!\n");
-          }
-          else {
-            _notify_fail("Sowas siehst Du auch da nicht!\n");
-            // in diesem Fall war nicht das Env das Bezugsobjekt - es soll
-            // behalten und nicht geloescht werden.
-          }
-          return 0;
-        }
-        else {
-          base_was_env=0;
-          write(break_string("Du findest an "+base->name(WEM)
-                +" kein \"" + capitalize(detail) + "\"."
-                 " Dein Blick wendet sich der Umgebung zu.",78));
-          base = 0;
-        }
-      }
-    }
-    else  // Objekte gefunden!
-      done = 1;
-  } while(!done);
-
-  // Es muss min. ein (sichtbares) Objekt geben, sonst waere man hier nicht
-  // hingekommen.
-  object ob = objs[0];
-  SetProp(P_REFERENCE_OBJECT, ob);
-  tell_object(ME, ob->long(mode));
-  return 1;
-}
-
-varargs int _sense_exa(string str)
-{
-  object base, *objs, env;
-  string what, detail, parent, out, error;
-  int sense;
-
+  int sense = -1;
   if(member(({"riech","rieche","schnupper","schnuppere"}),query_verb())!=-1)
   {
     _notify_fail("Du kannst nichts Besonderes riechen.\n");
@@ -427,8 +243,10 @@ varargs int _sense_exa(string str)
   else if(member(({"lausche","lausch","hoer","hoere"}),query_verb())!=-1)
   {
     if(QueryProp(P_DEAF))
-      return notify_fail("Du bist taub!\n"), 0;
-
+    {
+      notify_fail("Du bist taub!\n");
+      return -1;
+    }
     _notify_fail("Du kannst nichts Besonderes hoeren.\n");
     sense = SENSE_SOUND;
   }
@@ -450,50 +268,69 @@ varargs int _sense_exa(string str)
   {
     _notify_fail("Was willst Du lesen?\n");
     if ( !str ) // Kein SENSE_DEFAULT zulassen.
-      return 0;
-    if (this_object()->CannotSee()) {
-      notify_fail("Du kannst nichts sehen!\n");
-      return 0;
+      return -1;
+    if (CannotSee(1)) {
+      notify_fail("Du kannst nichts sehen!\n", NF_NL_MAX);
+      return -1;
     }
     sense = SENSE_READ;
   }
-
-  if (!str) {
-    if(!detail =
-        environment()->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),sense))
-      return 0;
-    write(detail);
-    return 1;
+  // else ist normales Sehen/untersuchen
+  else
+  {
+    if (CannotSee(1)) {
+      notify_fail("Du kannst nichts sehen!\n", NF_NL_MAX);
+      return -1;
+    }
+    _notify_fail("Was willst Du denn untersuchen?\n");
+    if (!str) return -1;
+    sense = SENSE_VIEW;
   }
-  else if(sscanf(str,"an %s",what)==1)
-    str=what;
+  // "rieche an ..." etc.: das an rausschneiden, wird nicht gebraucht.
+  if (sizeof(str))
+  {
+    if (sense!=SENSE_VIEW)
+    {
+      string what;
+      if (sscanf(str,"an %s",what)==1) str=what;
+    }
+  }
 
+  return sense;
+}
+
+private object get_ref_object(string str, string what)
+{
+  object ref_object;
   // do we look at an object in our environment ?
   if (sscanf(str,"%s in raum", what) || sscanf(str,"%s im raum", what))
-      base = environment();
+      ref_object = environment();
   // is the object inside of me (inventory)
   else if (sscanf(str,"%s in mir", what) || sscanf(str,"%s in dir", what))
-      base = this_object();
-  else {
+      ref_object = this_object();
+  else
+  {
+      // ansonsten ist das argument komplett der suchstring und wir nehmen das
+      // Referenzobjekt (so existent).
       what = str;
       // get the last object we looked at
-      base = QueryProp(P_REFERENCE_OBJECT);
-      
+      ref_object = QueryProp(P_REFERENCE_OBJECT);
       // if a reference object exists, test for its existance in the room
       // or in our inventory
-      if (objectp(base))
+      if (objectp(ref_object))
       {
-        if (base == environment() || base==this_object())
+       if (ref_object == environment() || ref_object==this_object())
         {
           // Umgebung oder Spieler selber sind als Bezugsobjekt immer in
           // Ordnung, nichts machen.
         }
         // Das Referenzobjekt darf nicht unsichtbar sein.
-        else if (!base->short())
-          base = 0;
-        else if(member(deep_inventory(environment()), base) != -1)
+        else if (!ref_object->short())
+          ref_object = 0;
+        // Nur wenn unser environment() 
+        else if(member(deep_inventory(environment()), ref_object) != -1)
         {
-          foreach(env : all_environment(base)) {
+          foreach(object env : all_environment(ref_object)) {
             // Ist eine Umgebung Living oder intransparenter Container oder
             // unsichtbar?
             if (living(env) || !env->QueryProp(P_TRANSPARENT)
@@ -503,54 +340,139 @@ varargs int _sense_exa(string str)
               // dieses Living selber oder sein Env ist, wird das
               // Referenzobjekt zusaetzlich genullt.
               if (env != this_object() && env != environment())
-                base = 0;
+                ref_object = 0;
               break;
             }
           }
         }
         else
-          base = 0; // nicht im Raum oder Inventory
+          ref_object = 0; // nicht im Raum oder Inventory
       }
   }
+  return ref_object;
+}
 
-  // scan input if we want a specific object to look at
+private object find_base(object ref_object, string what, string detail,
+                         string parent)
+{
+  object base;
+  // Suchen wir an/im/in/etc. einem bestimmten Objekt?
   if(sscanf(what, "%s an %s", detail, parent) == 2 ||
      sscanf(what, "%s am %s", detail, parent) == 2 ||
      sscanf(what, "%s in %s", detail, parent) == 2 ||
      sscanf(what, "%s im %s", detail, parent) == 2)
   {
-    // if an ref object exists get its inventory. (Oben wurde sichergestellt,
-    // dass das Referenzobjekt einsehbar ist)
-
-    if(base)
-      objs = base->locate_objects(parent, 1) || ({});
-    else
-    {
-      // else get our inv and env
+    object *objs;
+    // Wenn es ein Referenzobjekt gibt, wird das parent-Objekt in diesem
+    // gesucht. (Oben wurde sichergestellt, dass das Referenzobjekt einsehbar
+    // ist)
+    if(ref_object)
+      objs = ref_object->locate_objects(parent, 1) || ({});
+    // sonst im Environment oder in uns.
+    else {
       objs = environment()->locate_objects(parent, 1)
            + locate_objects(parent, 1);
     }
     objs = filter_objects(objs, "short"); // nur sichtbare...
-    if(sizeof(objs) > 1)
-      return (notify_fail("Es gibt mehr als eine(n) "+capitalize(parent)+".\n"), 0);
-    else
+    switch(sizeof(objs))
     {
-      if(sizeof(objs))
-          base = objs[0];
-      else
-          return (notify_fail("Hier ist kein(e) "+capitalize(parent)+".\n"), 0);
+      case 0:
+        notify_fail("Hier ist kein(e) "+capitalize(parent)+".\n");
+        return 0;
+      case 1:
+        // Basisobjekt gefunden.
+        base = objs[0];
+        break;
+      default:
+        notify_fail("Es gibt mehr als eine(n) "+capitalize(parent)+".\n");
+        return 0;
     }
-    objs = 0;
   }
-  else detail = what;
+  // im anderen fall ist das komplette what das gesuchte detail, was wir am
+  // Referenzobjekt suchen (sofern vorhanden).
+  else
+  {
+    base = ref_object;
+    detail = what;
+  }
+  return base;
+}
 
-  // wie auch immer haben wir jetzt ein Bezugsobjekt.
-  int maxtries=3;
+private nosave int exa_cnt;
+private nosave int exa_time;
+private nosave string *exa;
+private void unt_script_dings(string str)
+{
+  // unt-script-sucher
+  if (!sizeof(str)) return;
+  if (member(({"boden","decke","wand","waende"}),old_explode(str," ")[0]) == -1) {
+    exa_cnt -= (time() - exa_time)/2;
+    exa_time = time();
+    exa_cnt++;
+    if (!exa)
+      exa = ({ str });
+    else
+      exa += ({ str });
+    if (exa_cnt > 10) {
+      log_file("ARCH/LOOK", 
+          sprintf("%s: %s in %s\n%@O\n",dtime(time()),getuid(this_object()), 
+            environment() ? object_name(environment()) : "???",exa), 150000);
+      exa_cnt = 0;
+      exa = ({});
+    }
+    else if (exa_cnt < 0) {
+      exa_cnt = 0;
+      exa = ({});
+    }
+  }
+}
+
+varargs int _examine(string str, int mode)
+{
+  // Sinn auswaehlen, der benutzt wird. Wenn -1, abbrechen (kein Sinn bzw.
+  // Sinn erlaubt ggf. kein leeren <str> fuer Defaulmeldung). Je nach Sinn
+  // wird auch <str>modifiziert.
+  int sense=select_sense(&str);
+  if (sense<0) return 0;
+
+  unt_script_dings(str);
+
+  // Wenn kein str, dann SENSE_DEFAULT vom Environment ausgeben. Bei
+  // SENSE_VIEW wurde das bereits bei den Aufrufern dieser Funktion gemacht.
+  if (sense!=SENSE_VIEW)
+  {
+    if (!str)
+    {
+      string detail = environment()->GetDetail(SENSE_DEFAULT,
+                                               QueryProp(P_REAL_RACE),sense);
+      if(!detail)
+        return 0;
+      write(detail);
+      return 1;
+    }
+  }
+
+  // Das Ref-Objekt finden, das kann dann auch in <what> angeben sein. In dem
+  // Fall wird <what> um die Angabe des Ref-Objekts gekuerzt.
+  string what;
+  object ref_object = get_ref_object(str, &what);
+
+  // Sodann ein Basisobjekt finden. Das Basisobjekt ist das, was bei einem
+  // "detail an parent" durch parent gekennzeichnet wird oder notfalls das
+  // Ref-Objekt von oben.
+  string detail, parent; // detail an parent
+  object base; // das fuer parent gefundene objekt
+  base = find_base(ref_object, what, &detail, &parent);
+
+  // Jetzt wird versucht, ein Objekt mit der ID "detail" in base (parent) oder
+  // ein Detail an base zu finden. Die Schleife laeuft ggf. zweimal. Wenn im
+  // ersten Durchlauf nichts gefunden wird, wird ggf. noch die Umgebung in
+  // einem zweiten Durchlauf anguckt.
+  int first_base_was_env = (!base || base==environment() ? 1 : 0);
   do {
-    int base_was_env=1;
-    // als ersten werden in Frage kommende Objekte gesucht. Wenn base
-    // existiert (idR nur im ersten Durchlauf), wird dort gesucht, sonst in
-    // Env und Inv.
+    object *objs;
+    // Wenn base existiert und wir reingucken koennen, ermitteln wir alle zu
+    // detail in Frage kommenanden Objekte in seinem Inventar
     if (base)
     {
       if  (base == this_object() || base == environment() ||
@@ -561,19 +483,25 @@ varargs int _sense_exa(string str)
       }
       else
       {
-        // Referenzobjekt da, aber nicht reinguckbar. base aber nicht nullen,
-        // denn es ist ja noch gueltig fuer Detailsuchen an base...
+        // Basisobjekt da, aber nicht reinguckbar, also keine Objekte
+        // gefunden. base aber nicht nullen, denn es ist ja noch gueltig fuer
+        // Detailsuchen an base...
         objs = ({});
       }
     }
+    // Wenn nicht, werden alle fuer detail in Frage kommenden Objekt in
+    // unserer Umgebung und in uns selber ermittelt.
     else
     {
+      base = environment();
       objs = environment()->locate_objects(detail, 1)
            + locate_objects(detail, 1);
-      base = environment();
     }
+    // Und in jedem Fall werden alle Objekt raussortiert, die unsichtbar sind.
+    // ;-)
     objs = filter_objects(objs, "short"); // nur sichtbare...
 
+    // Wenn es sichtbare gibt, werden die ggf. angeguckt.
     if (sizeof(objs))
     {
       // Objekte gefunden, mal schauen, ob die taugen (d.h. fuer den jew. Sinn
@@ -581,7 +509,12 @@ varargs int _sense_exa(string str)
       // Aber erstmal die Objekte durchlaufen.
       foreach(object ob: objs)
       {
-        if (sense == SENSE_READ)
+        string out;
+        if (sense == SENSE_VIEW)
+        {
+          out = ob->long(mode);
+        }
+        else if (sense == SENSE_READ)
         {
           // Extrawurst: P_READ_MSG auch noch abfragen.
           out = ob->QueryProp(P_READ_MSG);
@@ -590,6 +523,7 @@ varargs int _sense_exa(string str)
         }
         else 
           out=ob->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),sense);
+        // Wenn was gefunden wurde, sind wir fertig.
         if (stringp(out))
         {
           SetProp(P_REFERENCE_OBJECT, ob);
@@ -598,47 +532,70 @@ varargs int _sense_exa(string str)
         }
       }
     }
-
-    // Keine Objekte gefunden, die in Frage kommen. Nach Details suchen.
-    if(out = base->GetDetail(detail, QueryProp(P_REAL_RACE),sense))
+    // offenbar keine Objekte gefunden oder die hatten nix fuer unseren Sinn
+    // dabei. Also nach ordinaeren Details an base/parent suchen.
+    string out = base->GetDetail(detail, QueryProp(P_REAL_RACE), sense);
+    if (!out && sense==SENSE_VIEW)
+      out = base->GetDoorDesc(detail);
+    if (out)
     {
+      // Detail gefunden, base darf neues Referenzobjekt werden und nach
+      // Ausgabe sind wir fertig.
       SetProp(P_REFERENCE_OBJECT, base);
-      return (write(out), 1);
+      write(out);
+      return 1;
     }
     else
     {
-      // Auch keine Details gefunden... Wenn wir uns noch das Env angucken
-      // koennen (weil base != env), dann machen wir das, ansonsten ist
-      // jetzt hier leider Ende...
-      if(base == environment())
+      // wenn auch keine Details gefunden, dann schauen, unser Env evtl.
+      // noch nen passendes Detail oder Objekt hat. Das ist aber natuerlich
+      // nur der Fall, wenn base nicht eh schon das Environment ist.
+      if (base != environment())
       {
-        if (base_was_env)
-          SetProp(P_REFERENCE_OBJECT, 0);
-        return 0;
+        // Wir schauen uns das Env noch an. Bei den anderen Sinnen kein neues
+        // notify_fail, weil sonst staendig Meldungen kommen, dass x nicht da
+        // ist, nur weil es keine Beschreibung fuer den Sinn hat.
+        if (sense==SENSE_VIEW)
+          write(break_string("Du findest an "+base->name(WEM)
+                +" kein \"" + capitalize(detail) + "\"."
+                 " Dein Blick wendet sich der Umgebung zu.",78));
+        // in diesem Fall nullen wir base und lassen die Schleife noch
+        // einmal durchlaufen.
+        base = 0;
+        continue;
       }
+      // Leider ist nix mehr uebrig zum angucken und in jedem Fall Ende.
       else
       {
-        // nochmal im naechsten Schleifendurchlauf ohne base probieren.
-        base = 0;
-        base_was_env = 0; 
+        // Wenn schon das erste angeguckte base das Environment war (dann
+        // ist diese Schleife uebrigens nur einmal gelaufen), gibt es eine
+        // leicht andere Meldung und das Bezugsobjekt muss weg.
+        // neue notify_fail gibt es nur fuer SENSE_VIEW (s.o.)
+        if (first_base_was_env) {
+          SetProp(P_REFERENCE_OBJECT, 0);
+          if (sense==SENSE_VIEW)
+            _notify_fail("Sowas siehst Du da nicht!\n");
+        }
+        else if (sense==SENSE_VIEW) {
+          _notify_fail("Sowas siehst Du auch da nicht!\n");
+        }
+        return 0;
       }
     }
-  } while(--maxtries);
-
-  // nach dieser Schleife sollte man nie ankommen...
-  raise_error(sprintf("_sense_exa(): zuviele Versuche, etwas zu finden."));
-
+  } while(1);
+  // Nie erreicht.
   return 0;
 }
 
+// Funktion fuer "schau in ..."
 varargs int look_into(string str,int mode)
 {
   object *found_obs;
 
   if( CannotSee() ) return 1;
-  _notify_fail("Wo willst Du denn reinschauen ?\n");
-  found_obs=find_obs(str,PUT_GET_NONE);
-  if (!found_obs)
+  _notify_fail("Wo willst Du denn reinschauen?\n");
+  found_obs=find_objects(str, 0, 0);
+  if (!sizeof(found_obs))
   {
     if (environment() &&
         (environment()->GetDetail(str,QueryProp(P_REAL_RACE))||
@@ -646,6 +603,7 @@ varargs int look_into(string str,int mode)
       _notify_fail("Da kannst Du so nicht reinsehen.\n");
     return 0;
   }
+  
   return _examine(str, mode);
 }
 
@@ -671,6 +629,8 @@ varargs string env_descr(int allow_short,int flags, int force_short )
   return env->int_short(ME,ME);
 }
 
+// Kommandofunktion fuer schau.
+// Verzweigt ggf. in _examine() fuers normale Untersuchen.
 int _look(string str)
 {
   string s;
@@ -678,6 +638,8 @@ int _look(string str)
 
   if(CannotSee()) return 1;
 
+  // nur schau mit ggf. Flags entsorgt das Ref-Objekt und schaut die
+  // Raumbeschreibung an.
   if(!str)
   {
     SetProp(P_REFERENCE_OBJECT, 0);
@@ -696,6 +658,9 @@ int _look(string str)
     write( env_descr(1,2,1) );
     return 1;
   }
+  // Ansonsten wird in _examine() weitergemacht, wobei Flags vorher
+  // rausgeschnitten werden. _examine() benutzt die Flags, falls es eine
+  // Langbeschreibung eines Objektes ausgeben wird.
   if(str[0..2]=="-f "){
     flag=2;
     str=str[3..];
@@ -705,9 +670,12 @@ int _look(string str)
     str=str[6..];
   }
   else flag = 0;
+
   if (sscanf(str,"%s an",s)) str=s;
+  // "in mir", "in dir" soll in _examine rein, aber "in ..." in look_into().
   if (sscanf(str,"%s in mir",s)||sscanf(str,"%s in dir",s)) return _examine(str,flag);
   if (sscanf(str,"in %s",s)) return look_into(s,flag);
+  // Alles andere weiter an _examine().
   return _examine(str,flag);
 }
 
@@ -733,20 +701,20 @@ static mixed _query_localcmds()
       ({"untersuche","_examine",0,0}),
       ({"betrachte","_examine",0,0}),
       ({"betr","_examine",0,0}),
-      ({"lausche","_sense_exa",0,0}),
-      ({"lausch","_sense_exa",0,0}),
-      ({"hoer","_sense_exa",0,0}),
-      ({"hoere","_sense_exa",0,0}),
-      ({"lies","_sense_exa",0,0}),
-      ({"lese","_sense_exa",0,0}),
-      ({"les","_sense_exa",0,0}),
-      ({"schnupper","_sense_exa",0,0}),
-      ({"schnuppere","_sense_exa",0,0}),
-      ({"riech","_sense_exa",0,0}),
-      ({"rieche","_sense_exa",0,0}),
-      ({"taste","_sense_exa",0,0}),
-      ({"beruehre","_sense_exa",0,0}),
-      ({"beruehr","_sense_exa",0,0}),
+      ({"lausche","_examine",0,0}),
+      ({"lausch","_examine",0,0}),
+      ({"hoer","_examine",0,0}),
+      ({"hoere","_examine",0,0}),
+      ({"lies","_examine",0,0}),
+      ({"lese","_examine",0,0}),
+      ({"les","_examine",0,0}),
+      ({"schnupper","_examine",0,0}),
+      ({"schnuppere","_examine",0,0}),
+      ({"riech","_examine",0,0}),
+      ({"rieche","_examine",0,0}),
+      ({"taste","_examine",0,0}),
+      ({"beruehre","_examine",0,0}),
+      ({"beruehr","_examine",0,0}),
       ({"kurz","_toggle_brief",0,0}),
       ({"lang","_toggle_brief",0,0}),
       ({"ultrakurz","_toggle_brief",0,0}) 

@@ -27,6 +27,7 @@
 #ifndef __LIVING_PUT_AND_GET_H_PROTO__
 #define __LIVING_PUT_AND_GET_H_PROTO__
 
+object *find_objects(string what, object env, int is_source);
 object *find_obs(string str, int meth);
 
 void add_put_and_get_commands();
