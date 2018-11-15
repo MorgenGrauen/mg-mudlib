@@ -84,13 +84,10 @@ int check(string ch, object pl, string cmd)
 
 private int CountUser(mapping l)
 {
-  mapping n;
-  n = ([]);
-  walk_mapping(l, lambda(({'i/*'*/, 'a/*'*/, 'n/*'*/}),
-                         ({#'+=/*'*/, 'n/*'*/,
-                              ({#'mkmapping/*'*/,
-                                   ({#'[/*'*/, 'a/*'*/, 0})})})),
-               &n);
+  mapping n = ([]);
+  walk_mapping(l, function void (string chan_name, mixed* chan_data) {
+        n += mkmapping(chan_data[I_MEMBER]);
+      });
   return sizeof(n);
 }
 
@@ -611,13 +608,11 @@ mixed remove(string ch, object pl)
         filter_objects(channels[lower_case(ch)][I_MEMBER],
                        "QueryProp", P_CHANNELS);
     map(channels[lower_case(ch)][I_MEMBER],
-        lambda(({'u/*'*/}), ({#'call_other/*'*/, 'u, /*'*/
-                                   "SetProp", P_CHANNELS,
-                                   ({#'-/*'*/,
-                                          ({#'call_other/*'*/, 'u, /*'*/
-                                                 "QueryProp", P_CHANNELS}),
-                                          '({ lower_case(ch) })/*'*/,})
-                                   })));
+          function mixed (object listener) {
+            string* chans = listener->QueryProp(P_CHANNELS)
+            chans -= ({lower_case(ch)});
+            listener->SetProp(P_CHANNELS, chans);
+          });
     channels = m_copy_delete(channels, lower_case(ch));
 
     // Wird ein Channel entfernt, wird auch seine History geloescht
