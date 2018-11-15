@@ -45,7 +45,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Morgengrauen-Mudlib'
-copyright = '1992-2017, die Morgengrauen-Magier'
+copyright = '1992-2018, die Morgengrauen-Magier'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -86,7 +86,7 @@ add_function_parentheses = True
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+#pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
@@ -95,7 +95,7 @@ pygments_style = 'sphinx'
 #keep_warnings = False
 
 # The default language to highlight source code in.
-highlight_language = 'pike'
+#highlight_language = 'pike'
 # A dictionary of options that modify how the lexer specified by
 # highlight_language generates highlighted source code.
 highlight_options = {'tabsize':4 }
