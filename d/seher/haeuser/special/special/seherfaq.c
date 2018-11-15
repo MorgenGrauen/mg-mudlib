@@ -15,7 +15,7 @@ static string f,*s;
 
 mapping synonym = ([]);
 
-create()
+protected void create()
 {
   ::create();
   SetProp(P_NAME,"SeherFAQ");
@@ -31,9 +31,9 @@ create()
   seite = get_dir(FAQ("*"))-({".","..","faq.o"});
 }
 
-init()
+public varargs void init(object oldenv)
 {
-  thing::init();
+  thing::init(oldenv);
   if (this_player() && IS_USER(this_player()))
     nedit::init_rescue();
 }
