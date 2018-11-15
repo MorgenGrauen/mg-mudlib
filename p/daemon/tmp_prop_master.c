@@ -234,7 +234,6 @@ varargs public void SetTmpProp( object ob, string prop, mixed newval,
     string index;
     mixed oldval, tmp;
     int max, pos, l, r;
-    closure a, b;
 
     if ( !objectp(ob) || !stringp(prop) || !sizeof(prop) || tm <= 0 )
         return;
@@ -290,9 +289,10 @@ varargs public void SetTmpProp( object ob, string prop, mixed newval,
         // F_SET_METHOD, damit die temporaere Property keinen zwischenzeitlich
         // gesetzten anderen Wert wieder "restauriert".
 
-        a=symbol_function("RemoveTmpProp",this_object());
-        b=symbol_function("SetProp",ob);
-        tmp=ob->Set(prop,lambda(({'set_value,'prop_name}),({#',,({a,'prop_name}),({#'return,({b,'prop_name,'set_value})})})),F_SET_METHOD);
+        tmp = ob->Set(prop, function mixed (mixed value, string propname) {
+                RemoveTmpProp(propname);
+                return ob->SetProp(propname, value);
+              }, F_SET_METHOD);
     }
     else{
         // Fuer Spezialfaelle (P_LIGHT z.B.) wird die Property direkt mit
