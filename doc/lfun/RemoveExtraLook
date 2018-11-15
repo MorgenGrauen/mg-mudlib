@@ -81,12 +81,12 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      *AddExtraLook()*, *P_INTERNAL_EXTRA_LOOK*
+      AddExtraLook(), P_INTERNAL_EXTRA_LOOK
 
    Sonstiges:
-      *replace_personal()*, *break_string()*
+      replace_personal(), break_string()
 
    Fuer Spielerobjekte:
-      *P_EXTRA_LOOK*
+      P_EXTRA_LOOK
 
 15. Jun 2017 Gloinson

@@ -84,8 +84,8 @@ HISTORIE
 SIEHE AUCH
 ==========
 
-   Properties:     *P_NO_TRAVELING*, *P_TRAVEL_INFO* Funktionen:
-   *AddRoute()* Spielerbefehle: reise weitere Doku:
+   Properties:     P_NO_TRAVELING, P_TRAVEL_INFO Funktionen:
+   AddRoute() Spielerbefehle: reise weitere Doku:
    /d/inseln/schiffe/HowTo
 
 

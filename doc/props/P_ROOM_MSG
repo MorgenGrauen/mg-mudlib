@@ -33,12 +33,12 @@ SIEHE AUCH
 ==========
 
    LFuns:
-      *AddRoomMessage()*
+      AddRoomMessage()
 
    Verwandt:
-      tell_room(), *send_room()*, *ReceiveMsg()*
+      tell_room(), send_room(), ReceiveMsg()
 
    Props:
-      *P_MSG_PROB*, *P_FUNC_MSG*
+      P_MSG_PROB, P_FUNC_MSG
 
 2.Feb 2016 Gloinson

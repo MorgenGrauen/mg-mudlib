@@ -23,7 +23,7 @@ BESCHREIBUNG
    diesem Lebewesen registriert haben. Die Daten werden als Mapping
    der folgenden Form zurueckgeliefert: ([ Objekt : Rueckgabewert von
    dessen Callback-Methode ]) Eine Erlaeuterung dazu findet sich in
-   der Dokumentation zu *RegisterHelperObject()*.
+   der Dokumentation zu RegisterHelperObject().
 
 
 BEMERKUNGEN
@@ -58,7 +58,7 @@ BEISPIEL
 SIEHE AUCH
 ==========
 
-   Methoden:    *RegisterHelperObject()*, *UnregisterHelperObject()*
-   Properties:  *P_HELPER_OBJECTS*, *P_AERIAL_HELPERS*
+   Methoden:    RegisterHelperObject(), UnregisterHelperObject()
+   Properties:  P_HELPER_OBJECTS, P_AERIAL_HELPERS
 
 04.02.2018, Arathorn

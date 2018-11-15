@@ -13,7 +13,7 @@ passwort
  BESCHREIBUNG:
     Aendert das Passwort. Zur Sicherheit muss zuerst das alte Passwort
     eingegeben werden. Daraufhin wird das neue Passwort zweimal erfragt. Das
-    Passwort wird nur dann geaendert, wenn die beiden Eingaben des neues
+    Passwort wird nur dann geaendert, wenn die beiden Eingaben des neuen
     Passwortes uebereinstimmen.
 
  LETZTE AeNDERUNG:

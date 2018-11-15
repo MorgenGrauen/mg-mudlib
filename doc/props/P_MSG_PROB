@@ -71,10 +71,10 @@ SIEHE AUCH
 ==========
 
    LFuns:
-      *AddRoomMessage()*
+      AddRoomMessage()
 
    Props:
-      *P_ROOM_MSG*, *P_FUNC_MSG*
+      P_ROOM_MSG, P_FUNC_MSG
 
    Verwandt:
       call_out()

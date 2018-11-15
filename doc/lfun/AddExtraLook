@@ -172,12 +172,12 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      *RemoveExtraLook()*, *P_INTERNAL_EXTRA_LOOK*
+      RemoveExtraLook(), P_INTERNAL_EXTRA_LOOK
 
    Sonstiges:
-      *replace_personal()*, *break_string()*
+      replace_personal(), break_string()
 
    Fuer Spielerobjekte:
-      *P_EXTRA_LOOK*
+      P_EXTRA_LOOK
 
 5. Juni 2017 Gloinson

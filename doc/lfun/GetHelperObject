@@ -39,9 +39,8 @@ BESCHREIBUNG
    welches die Anforderungen erfuellt.
 
    Ist <strength> ein int, muss die Staerke/Guete des Helfers
-   (Rueckgabewert der Callback-Methode, siehe
-   *RegisterHelperObject()*) mindestens so gross sein wie der als
-   <strength> uebergebene Wert.
+   (Rueckgabewert der Callback-Methode, siehe RegisterHelperObject())
+   mindestens so gross sein wie der als <strength> uebergebene Wert.
 
    Ist <strength> eine Closure, wird diese fuer jeden Helfer
    ausgewertet und entscheidet, ob der Helfer akzeptiert wird. Die
@@ -87,7 +86,7 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   *RegisterHelperObject()*, *UnregisterHelperObject()*,
-   *P_AERIAL_HELPERS*, *P_AQUATIC_HELPERS*, *P_HELPER_OBJECTS*
+   RegisterHelperObject(), UnregisterHelperObject(), P_AERIAL_HELPERS,
+   P_AQUATIC_HELPERS, P_HELPER_OBJECTS
 
 Letzte Aenderung: 9.3.2018, Zesstra

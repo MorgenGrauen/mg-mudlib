@@ -91,7 +91,7 @@ Implementation
      * "mixed Set(<name>, <wert>, <interpretation>)" wird genutzt,
        um eines der folgenden zu setzen:
 
-          * den normalen Wert (aber fast immer besser: *SetProp()*
+          * den normalen Wert (aber fast immer besser: SetProp()
             verwenden!)
 
           * eine Query- oder Setmethode
@@ -101,7 +101,7 @@ Implementation
      * "mixed Query(<name>, <interpretation>)" fragt fuer <name>
        einen <wert> ab
 
-       * den normalen Wert (aber fast immer besser: *QueryProp()*
+       * den normalen Wert (aber fast immer besser: QueryProp()
          verwenden!)
 
        * die Closure der Query- oder Setmethode
@@ -142,9 +142,9 @@ Besonderheiten/Eingebaute Properties
 SIEHE AUCH:
 ===========
 
-* *SetProp()*, *QueryProp()*, *Set()*, *Query()*,
+* SetProp(), QueryProp(), Set(), Query(),
 
-* *SetProperties()*, *QueryProperties()*
+* SetProperties(), QueryProperties()
 
 * objekte, effizienz, closures
 

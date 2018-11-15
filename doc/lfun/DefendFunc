@@ -103,4 +103,4 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   *P_DEFEND_FUNC*, "QueryDefendd" /std/armour/combat.c
+   P_DEFEND_FUNC, *QueryDefendd* /std/armour/combat.c

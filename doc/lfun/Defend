@@ -178,20 +178,20 @@ BEISPIELE (SIEHE AUCH Defend_bsp)
 SIEHE AUCH
 ==========
 
-   Angriff: *Attack()*, *P_NO_ATTACK*, *InsertEnemy()*
+   Angriff: Attack(), P_NO_ATTACK, InsertEnemy()
 
-   Schaden:   *P_ENABLE_IN_ATTACK_OUT*, *P_LAST_MOVE*, *do_damage()*,
-   *reduce_hit_points()*
+   Schaden:   P_ENABLE_IN_ATTACK_OUT, P_LAST_MOVE, do_damage(),
+   reduce_hit_points()
 
-   Schutz:    *P_DEFENDERS*, *InformDefend()*, *DefendOther()*,
-   *P_ARMOURS*, *P_AC*, *P_DEFEND_FUNC*, *QueryDefend()*, *P_BODY*
+   Schutz:    P_DEFENDERS, InformDefend(), DefendOther(), P_ARMOURS,
+   P_AC, P_DEFEND_FUNC, QueryDefend(), P_BODY
 
-   Daten:     *P_LAST_COMBAT_TIME*, *P_LAST_DAMTYPES*,
-   *P_LAST_DAMTIME*, *P_LAST_DAMAGE*, *P_DAMAGE_MSG*
+   Daten:     P_LAST_COMBAT_TIME, P_LAST_DAMTYPES, P_LAST_DAMTIME,
+   P_LAST_DAMAGE, P_DAMAGE_MSG
 
-   Resistenz: *P_RESISTANCE_STRENGTHS*, *CheckResistance()*
+   Resistenz: P_RESISTANCE_STRENGTHS, CheckResistance()
 
-   Sonstiges: *CheckSensitiveAttack()*, *InternalModifyDefend()*,
-   *UseSkill()*, *DefendInfo()*
+   Sonstiges: CheckSensitiveAttack(), InternalModifyDefend(),
+   UseSkill(), DefendInfo()
 
 Letzte Aenderung: 29.12.2017, Bugfix

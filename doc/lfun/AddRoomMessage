@@ -152,9 +152,9 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      tell_room(), *send_room()*, *ReceiveMsg()*
+      tell_room(), send_room(), ReceiveMsg()
 
    Props:
-      *P_MSG_PROB*, *P_FUNC_MSG*, *P_ROOM_MSG*
+      P_MSG_PROB, P_FUNC_MSG, P_ROOM_MSG
 
 28. Mar 2016 Gloinson

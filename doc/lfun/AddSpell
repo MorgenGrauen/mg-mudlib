@@ -192,10 +192,9 @@ code-block:
 SIEHE AUCH
 ==========
 
-   Sonstiges: *SpellAttack()*, *SpellDefend()*, *Defend()*,
-   *QueryDefend()*, *SelectEnemy()*, *ReceiveMsg()*,
-   *replace_personal()*
+   Sonstiges: SpellAttack(), SpellDefend(), Defend(), QueryDefend(),
+   SelectEnemy(), ReceiveMsg(), replace_personal()
 
-   Properties: *P_DISABLE_ATTACK*, *P_SPELLRATE*, *P_AGGRESSIVE*
+   Properties: P_DISABLE_ATTACK, P_SPELLRATE, P_AGGRESSIVE
 
 Letzte Aenderung: 15.02.2018, Bugfix

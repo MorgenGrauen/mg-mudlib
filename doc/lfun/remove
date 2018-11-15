@@ -60,6 +60,6 @@ BEMERKUNGEN
 SIEHE AUCH
 ==========
 
-   "../efun/destruct", *U_REQ*, *P_AMOUNT*
+   *../efun/destruct*, U_REQ, P_AMOUNT
 
 Letzte Aenderung: 24.07.2018, Bugfix

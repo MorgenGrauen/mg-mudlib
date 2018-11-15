@@ -44,7 +44,7 @@ BEMERKUNGEN
 SIEHE AUCH
 ==========
 
-   *P_TOTAL_WEIGHT* *P_EMPTY_PROPS*, *P_WEIGHT_PERCENT*,
-   *P_WEIGHT_PER_UNIT*, zu Speisen: wiz/food
+   P_TOTAL_WEIGHT P_EMPTY_PROPS, P_WEIGHT_PERCENT, P_WEIGHT_PER_UNIT,
+   zu Speisen: wiz/food
 
 Last modified: 25.07.2018 by Zesstra

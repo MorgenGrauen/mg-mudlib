@@ -107,7 +107,7 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   *exit()*, *AddCmd()*, *NotifyInsert()*
+   exit(), AddCmd(), NotifyInsert()
 
    add_action(E)
 

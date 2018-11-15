@@ -33,7 +33,7 @@ BESCHREIBUNG
    verwendet werden, sollte man das Umbrechen der Mudlib ueberlassen.
 
    **Nur** dann benutzen, wenn ihr auch unabhaengig vom Extralook ein
-   Objekt im Spieler benoetigt, ansonsten **immer** *AddExtraLook()*
+   Objekt im Spieler benoetigt, ansonsten **immer** AddExtraLook()
    verwenden.
 
    Bemerkung: Der Extralook taucht an einem Lebewesen nur auf, wenn
@@ -55,10 +55,10 @@ BEISPIEL
 SIEHE AUCH
 ==========
 
-   * *long()*
+   * long()
 
-   * *AddExtraLook()*, *RemoveExtraLook()*
+   * AddExtraLook(), RemoveExtraLook()
 
    * /std/living/description.c, /std/player/base.c
 
-   * *replace_personal()*
+   * replace_personal()

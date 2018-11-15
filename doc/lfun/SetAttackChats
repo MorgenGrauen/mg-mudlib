@@ -114,12 +114,12 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      *SetChats()*, *AddSpell()*
+      SetChats(), AddSpell()
 
    Props:
-      *P_CHAT_CHANCE*
+      P_CHAT_CHANCE
 
    Sonstiges:
-      *send_room()*, *process_string()*
+      send_room(), process_string()
 
 3. April 2017 Gloinson

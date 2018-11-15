@@ -69,9 +69,9 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      *AddExtraLook()*, *RemoveExtraLook()* *long()*
+      AddExtraLook(), RemoveExtraLook() long()
 
    Fuer Spielerobjekte:
-      *P_EXTRA_LOOK*
+      P_EXTRA_LOOK
 
 15. Juni 2017 Gloinson

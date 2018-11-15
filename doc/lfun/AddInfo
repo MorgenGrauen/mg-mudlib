@@ -241,18 +241,18 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      *AddSpecialInfo()*, *RemoveInfo()*
+      AddSpecialInfo(), RemoveInfo()
 
    Props:
-      *P_PRE_INFO*
+      P_PRE_INFO
 
    Files:
       /std/npc/info.c
 
    Loggen:
-      *P_LOG_INFO*
+      P_LOG_INFO
 
    Interna:
-      *GetInfoArr()* , *do_frage()*
+      GetInfoArr() , do_frage()
 
 7. Mar 2017 Gloinson
