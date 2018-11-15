@@ -27,7 +27,6 @@ static int draengeln(string str);
 static void enqueue(object ob);
 private void leaveQueue(object ob, int silent);
 
-private object *queuedPeople();
 private int queueScan();
 private object adjust(int thresh);
 
@@ -35,7 +34,7 @@ private object adjust(int thresh);
 void BecomesNetDead(object player);
 void PlayerQuit(object player);
 
-create()
+protected void create()
 {
   if (IS_BLUE(this_object())) return;
 
@@ -78,8 +77,8 @@ create()
 
 int clean_up(int i) { return 0; }
 
-int
-remove()
+public varargs int
+remove(int silent)
 {
   string *wer;
   mixed raus;
@@ -100,30 +99,19 @@ remove()
     peopleInQueue[wer[i],1]->move(raus, M_GO | M_SILENT | M_NO_SHOW);
     }
   }
-  return ::remove();
+  return ::remove(silent);
 }
 
 string
 _query_long()
 {
-  string ret, add;
-  mixed *people, ob;
-  closure n;
-
-  people = filter(all_inventory(this_object()), #'interactive/*'*/);
-
-  ret = Query(P_LONG);
-  add = "In der Schlange stehen " + QueryProp(Q_LENGTH) + " Leute.";
+  <string|object>* people = filter(all_inventory(ME), #'interactive);
+  string ret = Query(P_LONG);
+  string add = "In der Schlange stehen " + QueryProp(Q_LENGTH) + " Leute.";
   if (sizeof(people)) {
-    n = lambda( ({ 'ob }), ({#'call_other, 'ob, "Name", WER}) );
-    people = map(people, n);
-    add += " Unter anderem steh";
-    if (sizeof(people) == 1)
-      add += ( "t dort " + people[0] + "." );
-    else {
-      add += ( "en dort " + implode(people[0..<2], ", ") +
-         " und " + people[<1] + "." );
-    }
+    people = people->Name(WER);
+    add += sprintf(" Unter anderem steh? dort %s.", 
+                   sizeof(people)==1?"t":"en", CountUp(people));
   }
   return ret + break_string(add, 76);
 }
@@ -333,7 +321,7 @@ adjust(int thresh)
   return ret;
 }
 
-rotate()
+void rotate()
 {
   object ich;
   string oth, *msgs;
@@ -381,7 +369,7 @@ rotate()
   call_out("rotate", QueryProp(Q_CYCLE_TIME));
 }
 
-funny()
+void funny()
 {
   string m;
 

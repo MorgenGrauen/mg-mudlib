@@ -7,7 +7,7 @@
 
 inherit "/std/room";
 
-create()
+protected void create()
 {
     object q;
     

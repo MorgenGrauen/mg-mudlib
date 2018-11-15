@@ -42,23 +42,23 @@ protected void create()
   SetProp(P_ARTICLE,1);
   SetProp(P_WEIGHT, 0);
   SetProp(P_GENDER,1);
+  
   AddId( ({"bausparvertrag", "vertrag", "sehe\rvertrag"}) );
+
   AddCmd("lies","lesen");
-  AddCmd( ({ "unterschreibe", "unterschreib" }), lambda( ({}),
-    ({#',, ({#'notify_fail, "Hier kannst Du den Vertrag nicht unterschreiben!\n" }),
-	   ({#'return, 0})
-    }) ) );
-  AddCmd( ({ "zerreiss", "zerreisse" }), lambda( ({ 'str }),
-    ({#',, ({#'notify_fail, "Was willst Du zerreissen?\n"}),
-	   ({#'?!, ({#'id, 'str}), ({#'return, 0}) }),
-	   ({#'=, 'blk, ({#'present, "\n block", ({#'this_player}) }) }),
-	   ({#'write, "Du zerreisst Deinen Vertrag.\n"}),
-	   ({#'write_file, PATH+"log/BANK.LOG", ({#'sprintf, "%s - Vertrag: %s zerriss ihn.\n",
-	       ({#'dtime, ({#'time}) }), ({#'getuid, ({#'this_player})})})}),
-	   ({#'?, 'blk, ({#'call_other, 'blk, "remove", 1}) }),
-	   ({#'remove, 1}),
-	   ({#'return, 1})
-    }) ) );
+  AddCmd("unterschreibe|unterschreib&\nimp", 0,
+      "Hier kannst Du den Vertrag nicht unterschreiben!\n");
+  AddCmd("zerreiss|zerreisse&@ID", function int (string str) {
+      object blk = present_clone(HAEUSERPFAD+"block", this_player());
+      write("Du zerreisst Deinen Vertrag.\n");
+      write_file(HAEUSERPFAD+"log/BANK.LOG", sprintf(
+          "%s - Vertrag: %s zerriss ihn.\n", 
+          dtime(time()), getuid(this_player())));
+      if (objectp(blk)) 
+        blk->remove(1);
+      remove(1);
+      return 1;
+    }, "Was willst Du zerreissen?");
 }
 
 string _query_long()
@@ -112,7 +112,7 @@ void Sign(int flag)
   Set(P_AUTOLOADOBJ, ({ Query(P_AUTOLOADOBJ)[0], flag }) );
 }
 
-public int move(mixed dest, int meth)
+varargs public int move(object|string dest, int meth)
 {
   object penv;
   int ret;
