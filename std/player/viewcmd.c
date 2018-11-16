@@ -232,7 +232,7 @@ int _inventory(string str)
   return 1;
 }
 
-private int select_sense(string str)
+private int select_sense(string str, closure transparent_check)
 {
   int sense = -1;
   if(member(({"riech","rieche","schnupper","schnuppere"}),query_verb())!=-1)
@@ -296,117 +296,193 @@ private int select_sense(string str)
     }
   }
 
+  switch(sense)
+  {
+    // Fuer diese Sinne muss der Container offen sein.
+    case SENSE_SMELL:
+    case SENSE_TOUCH:
+    case SENSE_SOUND:
+      transparent_check = function int (object o)
+         { return o->QueryProp(P_CNT_STATUS) == CNT_STATUS_OPEN;};
+      break;
+    // Fuer alle anderen reicht, wenn er transparent ist.
+    default:
+      transparent_check = function int (object o)
+         { return o->QueryProp(P_TRANSPARENT);};
+  }
+
   return sense;
 }
 
-private object get_ref_object(string str, string what)
+private object get_ref_object(string *tokens, closure transparent_check,
+                              int ref_given)
 {
   object ref_object;
-  // do we look at an object in our environment ?
-  if (sscanf(str,"%s in raum", what) || sscanf(str,"%s im raum", what))
+
+  // im Kommando speziell beschrieben ist, wo die Suche losgehen soll, spielt
+  // das Referenzobjekt keine Rolle.
+  if (sizeof(tokens) > 1 && tokens[<1] == "hier") {
+      tokens = tokens[..<2];
       ref_object = environment();
-  // is the object inside of me (inventory)
-  else if (sscanf(str,"%s in mir", what) || sscanf(str,"%s in dir", what))
-      ref_object = this_object();
+      ref_given=1;
+  }
+  else if (sizeof(tokens) > 2 && tokens[<2] == "in")
+  {
+      if (tokens[<1] == "mir" ||
+          tokens[<1] == "dir")
+      {
+          tokens = tokens[..<3];
+          ref_object = this_object();
+          ref_given=1;
+      }
+      else if (tokens[<1] == "raum")
+      {
+          tokens = tokens[..<3];
+          ref_object = environment();
+          ref_given=1;
+      }
+  }
   else
   {
-      // ansonsten ist das argument komplett der suchstring und wir nehmen das
-      // Referenzobjekt (so existent).
-      what = str;
-      // get the last object we looked at
-      ref_object = QueryProp(P_REFERENCE_OBJECT);
-      // if a reference object exists, test for its existance in the room
-      // or in our inventory
-      if (objectp(ref_object))
+    // ansonsten bleibt tokens unmodifiziert und wir nehmen das
+    // Referenzobjekt (so existent).
+    ref_object = QueryProp(P_REFERENCE_OBJECT);
+    if (objectp(ref_object))
+    {
+      // Dieses muss aber "irgendwo" in unserem Umfeld sein.
+      if (ref_object == environment() || ref_object==this_object())
       {
-       if (ref_object == environment() || ref_object==this_object())
+        // Umgebung oder Spieler selber sind als Bezugsobjekt immer in
+        // Ordnung, nichts machen.
+      }
+      // Wenn es nicht wir oder environment ist, darf das Referenzobjekt
+      // nicht unsichtbar sein.
+      else if (!ref_object->short())
+        ref_object = 0;
+      // Und nur wenn das Ref-Objekt irgendwie in unserer Umgebung ist
+      // (direkt, in uns, in einem Container etc.) kommt es in Frage. Es
+      // wird daher geprueft, ob all_environments() des Ref-Objekts auch
+      // unser environment enthaelt.
+      else
+      {
+        object *all_envs=all_environment(ref_object);
+        int i=member(all_envs, environment());
+        if (i >= 0)
         {
-          // Umgebung oder Spieler selber sind als Bezugsobjekt immer in
-          // Ordnung, nichts machen.
-        }
-        // Das Referenzobjekt darf nicht unsichtbar sein.
-        else if (!ref_object->short())
-          ref_object = 0;
-        // Nur wenn das Ref-Objekt irgendwie in unserer Umgebung ist (direkt,
-        // in uns, in einem Container etc.) kommt es in Frage. Es wird daher
-        // geprueft, ob all_environments() des Ref-Objekts auch unser
-        // environment enthaelt.
-        else
-        {
-          object *all_envs=all_environment(ref_object);
-          int i=member(all_envs, environment());
-          if (i >= 0)
-          {
-            // dann von dem Environment an entlanglaufen und alle
-            // intermediaeren Objekt pruefen, ob sie einsehbar und sichtbar
-            // sind.
-            foreach(object env : all_envs[..i]) {
-              // Ist eine Umgebung Living oder intransparenter Container oder
-              // unsichtbar?
-              if (living(env) || !env->QueryProp(P_TRANSPARENT)
-                  || !env->short())
-              {
-                // Kette zum Ref-Objekt unterbrochen. Wenn das unterbrechende
-                // Env nicht dieses Living selber oder sein Env ist, wird das
-                // Referenzobjekt zusaetzlich genullt.
-                if (env != this_object() && env != environment())
-                  ref_object = 0;
-                break;
-              }
+          // dann von dem Environment an entlanglaufen und alle
+          // intermediaeren Objekt pruefen, ob sie einsehbar und sichtbar
+          // sind.
+          foreach(object env : all_envs[..i]) {
+            // Ist eine Umgebung Living oder intransparenter Container oder
+            // unsichtbar?
+            if (living(env) || !funcall(transparent_check, env)
+                || !env->short())
+            {
+              // Kette zum Ref-Objekt unterbrochen. Wenn das unterbrechende
+              // Env nicht dieses Living selber oder sein Env ist, wird das
+              // Referenzobjekt zusaetzlich genullt.
+              if (env != this_object() && env != environment())
+                ref_object = 0;
+              break;
             }
           }
-          else
-            ref_object = 0; // nicht im Raum oder Inventory
         }
-      } // ref_object exists
+        else
+          ref_object = 0; // nicht im Raum oder Inventory
+      }
+    } // ref_object exists
   }
   return ref_object;
 }
 
-private object find_base(object ref_object, string what, string detail,
-                         string parent)
+// Versucht ein Basisobjekt (ggf. in env) finden, was durch <tokens>
+// beschrieben wird.
+// Das Basisobjekt ist das, was bei einem "detail an parent" durch parent
+// gekennzeichnet wird oder notfalls das Ref-Objekt selber. Zu beachten ist,
+// dass find_base() ggf. rekursiv arbeitet, um sowas wie "riss an kerze in
+// kerzenstaender auf tisch" zu finden. detail ist dann der letzte Teil der
+// tokens (der Anfang!), was keinen Container mehr bezeichnet, das gefundene
+// Objekt ist der letzte Container/Item auf dem Weg zu detail.
+// detail muss als Referenz uebergeben werden.
+// transparent_check ist die Closure, die prueft, ob man in einen
+// Container reinforschen (sehen, lesen, riechen, tasten etc.) kann. Sie
+// bekommt den Container uebergeben.
+private object find_base(object env, string *tokens, string detail,
+                         closure transparent_check)
 {
-  object base;
-  // Suchen wir an/im/in/etc. einem bestimmten Objekt?
-  if(sscanf(what, "%s an %s", detail, parent) == 2 ||
-     sscanf(what, "%s am %s", detail, parent) == 2 ||
-     sscanf(what, "%s in %s", detail, parent) == 2 ||
-     sscanf(what, "%s im %s", detail, parent) == 2)
+  // zuerst pruefen, ob man in env reinsehen/reinforschen kann (in
+  // this_object() und environment() kann man immer reinsehen).
+  if  (env && env != this_object() && env != environment())
   {
-    object *objs;
-    // Wenn es ein Referenzobjekt gibt, wird das parent-Objekt in diesem
-    // gesucht. (Oben wurde sichergestellt, dass das Referenzobjekt einsehbar
-    // ist)
-    if(ref_object)
-      objs = ref_object->locate_objects(parent, 1) || ({});
-    // sonst im Environment oder in uns.
-    else {
-      objs = environment()->locate_objects(parent, 1)
-           + locate_objects(parent, 1);
-    }
-    objs = filter_objects(objs, "short"); // nur sichtbare...
-    switch(sizeof(objs))
+    // Nicht in Lebewesen reingucken und nicht in intransparente/geschlossene
+    // Container
+    if (living(env) || !funcall(transparent_check, env))
     {
-      case 0:
-        notify_fail("Hier ist kein(e) "+capitalize(parent)+".\n");
-        return 0;
-      case 1:
-        // Basisobjekt gefunden.
-        base = objs[0];
-        break;
-      default:
-        notify_fail("Es gibt mehr als eine(n) "+capitalize(parent)+".\n");
-        return 0;
+      if (living(env))
+        notify_fail("Aber " + env->name(WER, 1) + " lebt doch!");
+      else
+        notify_fail("Aber " + env->name(WER, 1)
+                    + " ist doch nicht einsehbar!");
+      // suche nach Objekten in env ist jetzt zuende, weil nicht in env
+      // reinsehbar.
+      // Aber tokens koennte noch ein detail beschreiben, was der Aufrufer an
+      // env findet. Also tokens nach detail und env zurueckgeben.
+      detail = implode(tokens, " ");
+      return env;
     }
   }
-  // im anderen fall ist das komplette what das gesuchte detail, was wir am
-  // Referenzobjekt suchen (sofern vorhanden).
-  else
+  // ansonsten schauen, ob in tokens noch ein (weiterer) Container beschrieben
+  // wird.
+  for (int i = sizeof(tokens)-1; i > 1; i--)
   {
-    base = ref_object;
-    detail = what;
+    object ob;
+    // In env oder mir oder umgebung gucken, ob ein passendes Objekt da ist.
+    // Hierfuer werden mit jedem Schleifendurchlauf von hinten mehr worte aus
+    // tokens benutzt. (Beispiel "muenze in boerse 2")
+    if (env)
+        ob = present(implode(tokens[i..], " "), env);
+    else
+        ob = present(implode(tokens[i..], " "), environment()) ||
+             present(implode(tokens[i..], " "), this_object());
+    // Naechster durchlauf, mit einem Wort mehr aus tokens
+    if (!ob)
+        continue;
+
+    // an dieser Stelle wird (noch) nicht geprueft, ob man in das gefundene
+    // Objekt hineinforschen kann.
+
+    // Wenn passende Praeposition davor (z.B. "in" (beutel), "auf" (tisch)),
+    // rekursiv weitersuchen, ob der restliche Teil von tokens evtl. nochmal
+    // nen container in dem gefundenen Objekt bezeichnet.
+    if (tokens[i-1] == ob->QueryProp(P_PREPOSITION))
+        return find_base(ob, tokens[..i-2], &detail, transparent_check);
+
+    // Wenn tokens[i-1] "an" oder "am" ist, wird zwar nicht weiter verzweigt,
+    // aber vermutlich wird ein Detail an diesem Objekt gesucht, d.h. das
+    // Objekt wird env, tokens entsprechend gekuerzt und die Schleife beendet.
+    // Bemerkung: haette ob tatsaechlich eine Praeposition an|am gehabt,
+    // waeren wir vorher in find_base() verzweigt zum Suchen in dem Container.
+    if (tokens[i-1] == "an" || tokens[i-1] == "am") {
+      env = ob;
+      tokens=tokens[..i-2];
+      break;
+    }
+    notify_fail("Du kannst nichts " + tokens[i-1] + " "
+                + ob->name(WEM, 1) + " finden.");
   }
-  return base;
+  // an diesem Punkt sind in tokens nur noch worte drin, die keinen Container
+  // mehr beschreiben. Die Resttokens kommen nach <detail>, sie beschreiben
+  // dann entweder ein Objekt oder ein Detail.
+  detail = implode(tokens, " ");
+
+  // Wenn es ein env gibt, beschreibt detail nun ein Objekt in env oder ein
+  // Detail an env, was der Aufrufer prueft.
+  // Wenn es aber kein env gibt (das passiert, wenn der Aufrufer dieser
+  // Funktion schon kein env (->Referenzobjekt) hereingegeben hat, wurde auch
+  // kein Container gefunden, der durch die tokens beschrieben wurde. Dann
+  // kann der Aufrufer noch an/in this_object() oder environment() gucken, ob
+  // was zu finden ist.
+  return env;
 }
 
 private nosave int exa_cnt;
@@ -438,18 +514,157 @@ private void unt_script_dings(string str)
   }
 }
 
+private int _examine_rec(object ref_object, string *tokens, closure
+                         transparent_check, int sense, int mode,
+                         int ref_given)
+{
+  // Sodann ein Basisobjekt finden. Das Basisobjekt ist das, was bei einem
+  // "detail an parent" durch parent gekennzeichnet wird oder notfalls das
+  // Ref-Objekt von oben. Zu beachten ist, dass find_base() ggf. rekursiv
+  // arbeitet, um sowas wie "riss an kerze in kerzenstaender auf tisch" zu
+  // finden. detail ist dann das letzte Teil der tokens, der keinen Container
+  // mehr bezeichnet, das gefundene Objekt ist der letzte Container/Item auf
+  // dem Weg zu detail. (detail==riss, base==kerze)
+  string detail; // detail an parent
+  // das fuer parent gefundene objekt
+  object base = find_base(ref_object, tokens, &detail, transparent_check);
+
+  // Jetzt wird versucht, ein Objekt mit der ID "detail" in base oder
+  // ein Detail an base zu finden.  Wenn nichts gefunden wird, wird ggf. noch
+  // die Umgebung als ref_object benutzt und das alles hier nochmal gemacht.
+  object *objs;
+  // Wenn base existiert und wir reingucken koennen, ermitteln wir alle zu
+  // detail in Frage kommenanden Objekte in seinem Inventar
+  if (base)
+  {
+    if  (base == this_object() || base == environment() ||
+        (funcall(transparent_check, base) && !living(base)))
+    {
+      // ich kann in base reingucken...
+      objs = base->locate_objects(detail, 1) || ({});
+    }
+    else
+    {
+      // Basisobjekt da, aber nicht reinguckbar, also keine Objekte
+      // gefunden. base aber nicht nullen, denn es ist ja noch gueltig fuer
+      // Detailsuchen an base...
+      objs = ({});
+    }
+  }
+  // Wenn kein base, werden alle fuer detail in Frage kommenden Objekte in
+  // unserer Umgebung und in uns selber ermittelt.
+  else
+  {
+    base = environment();
+    objs = environment()->locate_objects(detail, 1)
+         + locate_objects(detail, 1);
+  }
+  // Und in jedem Fall werden alle Objekt raussortiert, die unsichtbar sind.
+  // ;-)
+  objs = filter_objects(objs, "short"); // nur sichtbare...
+
+  // Wenn es sichtbare gibt, werden die ggf. angeguckt.
+  if (sizeof(objs))
+  {
+    // Objekte gefunden, mal schauen, ob die taugen (d.h. fuer den jew. Sinn
+    // Infos haben. Wenn nicht, muessen wir weitersuchen.
+    // Aber erstmal die Objekte durchlaufen.
+    foreach(object ob: objs)
+    {
+      string out;
+      if (sense == SENSE_VIEW)
+      {
+        out = ob->long(mode);
+      }
+      else if (sense == SENSE_READ)
+      {
+        // Extrawurst: P_READ_MSG auch noch abfragen.
+        out = ob->QueryProp(P_READ_MSG);
+        if (!stringp(out))
+          out = ob->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),SENSE_READ);
+      }
+      else 
+        out=ob->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),sense);
+      // Wenn was gefunden wurde, sind wir fertig.
+      if (stringp(out))
+      {
+        SetProp(P_REFERENCE_OBJECT, ob);
+        tell_object(ME, out);
+        return 1;
+      }
+    }
+  }
+  // keine Objekte gefunden oder die hatten nix fuer unseren Sinn
+  // dabei. Also nach ordinaeren Details an base/parent suchen.
+  string out = base->GetDetail(detail, QueryProp(P_REAL_RACE), sense);
+  // Achja, Tueren gibt es ja auch noch. :-o (TODO: die solten vItems werden)
+  if (!out && sense==SENSE_VIEW)
+    out = base->GetDoorDesc(detail);
+  if (out)
+  {
+    // Detail gefunden, base darf neues Referenzobjekt werden und nach
+    // Ausgabe sind wir fertig.
+    SetProp(P_REFERENCE_OBJECT, base);
+    write(out);
+    return 1;
+  }
+  else
+  {
+    // wenn auch keine Details gefunden, dann schauen, unser Env evtl.
+    // noch nen passendes Detail oder Objekt hat. Das ist aber natuerlich
+    // nur der Fall, wenn ref_object nicht eh schon das Environment war.
+    // Ausserdem nicht machen, wenn der Nutzer ein spezifisches Referenzobjekt
+    // angegeben hat (z.B. "in raum").
+    if (ref_object != environment() && !ref_given)
+    {
+      // Wir schauen uns das Env ueber Rekursion noch an. Bei den anderen
+      // Sinnen kein neues notify_fail, weil sonst staendig Meldungen kommen,
+      // dass x nicht da ist, nur weil es keine Beschreibung fuer den Sinn hat.
+      if (sense==SENSE_VIEW)
+        write(break_string("Du findest an "+base->name(WEM)
+              +" kein \"" + capitalize(detail) + "\"."
+               " Dein Blick wendet sich der Umgebung zu.",78));
+
+      return _examine_rec(environment(), tokens, transparent_check, sense,
+                         mode, 0);
+    }
+    // Leider ist nix mehr uebrig zum angucken und in jedem Fall Ende.
+    else
+    {
+      // Wenn spezifisches ref_object vom Nutzer angegeben (ref_given!=0),
+      // gibt es eine leicht andere Meldung und das Bezugsobjekt muss weg.
+      // neue notify_fail gibt es nur fuer SENSE_VIEW (s.o.)
+      if (ref_given) {
+        SetProp(P_REFERENCE_OBJECT, 0);
+        if (sense==SENSE_VIEW)
+          _notify_fail("Sowas siehst Du da nicht!\n");
+      }
+      else if (sense==SENSE_VIEW) {
+        _notify_fail("Sowas siehst Du auch da nicht!\n");
+      }
+      return 0;
+    }
+  }
+  // Nie erreicht.
+  return 0;
+}
+
 varargs int _examine(string str, int mode)
 {
   // Sinn auswaehlen, der benutzt wird. Wenn -1, abbrechen (kein Sinn bzw.
   // Sinn erlaubt ggf. kein leeren <str> fuer Defaulmeldung). Je nach Sinn
-  // wird auch <str>modifiziert.
-  int sense=select_sense(&str);
+  // wird auch <str> modifiziert.
+  // transparent_check enthaelt spaeter die Closure, die entscheidet,
+  // ob man mit dem Sinn in einen Container reinforschen kann.
+  closure transparent_check;
+  int sense=select_sense(&str, &transparent_check);
   if (sense<0) return 0;
 
   unt_script_dings(str);
 
   // Wenn kein str, dann SENSE_DEFAULT vom Environment ausgeben. Bei
-  // SENSE_VIEW wurde das bereits bei den Aufrufern dieser Funktion gemacht.
+  // SENSE_VIEW wird das bereits bei den Aufrufern dieser Funktion gemacht und
+  // die Beschreibung der Umgebung ausgegeben.
   if (sense!=SENSE_VIEW)
   {
     if (!str)
@@ -463,139 +678,17 @@ varargs int _examine(string str, int mode)
     }
   }
 
-  // Das Ref-Objekt finden, das kann dann auch in <what> angeben sein. In dem
-  // Fall wird <what> um die Angabe des Ref-Objekts gekuerzt.
-  string what;
-  object ref_object = get_ref_object(str, &what);
+  string *tokens = explode(str, " ");
+  int ref_given;
+  // Das Ref-Objekt finden, das kann dann auch in tokens angegeben sein. In dem
+  // Fall wird die Liste an tokens um die Angabe des Ref-Objekts gekuerzt und
+  // ref_given gesetzt.
+  object ref_object = get_ref_object(&tokens, transparent_check, &ref_given);
+  // Bemerkung: Das Referenzobjekt ist garantiert sichtbar, aber nicht
+  // unbedingt einsehbar. Wird weiter unten geprueft.
 
-  // Sodann ein Basisobjekt finden. Das Basisobjekt ist das, was bei einem
-  // "detail an parent" durch parent gekennzeichnet wird oder notfalls das
-  // Ref-Objekt von oben.
-  string detail, parent; // detail an parent
-  object base; // das fuer parent gefundene objekt
-  base = find_base(ref_object, what, &detail, &parent);
-
-  // Jetzt wird versucht, ein Objekt mit der ID "detail" in base (parent) oder
-  // ein Detail an base zu finden. Die Schleife laeuft ggf. zweimal. Wenn im
-  // ersten Durchlauf nichts gefunden wird, wird ggf. noch die Umgebung in
-  // einem zweiten Durchlauf anguckt.
-  int first_base_was_env = (!base || base==environment() ? 1 : 0);
-  do {
-    object *objs;
-    // Wenn base existiert und wir reingucken koennen, ermitteln wir alle zu
-    // detail in Frage kommenanden Objekte in seinem Inventar
-    if (base)
-    {
-      if  (base == this_object() || base == environment() ||
-          (base->QueryProp(P_TRANSPARENT) && !living(base)))
-      {
-        // ich kann in base reingucken...
-        objs = base->locate_objects(detail, 1) || ({});
-      }
-      else
-      {
-        // Basisobjekt da, aber nicht reinguckbar, also keine Objekte
-        // gefunden. base aber nicht nullen, denn es ist ja noch gueltig fuer
-        // Detailsuchen an base...
-        objs = ({});
-      }
-    }
-    // Wenn nicht, werden alle fuer detail in Frage kommenden Objekt in
-    // unserer Umgebung und in uns selber ermittelt.
-    else
-    {
-      base = environment();
-      objs = environment()->locate_objects(detail, 1)
-           + locate_objects(detail, 1);
-    }
-    // Und in jedem Fall werden alle Objekt raussortiert, die unsichtbar sind.
-    // ;-)
-    objs = filter_objects(objs, "short"); // nur sichtbare...
-
-    // Wenn es sichtbare gibt, werden die ggf. angeguckt.
-    if (sizeof(objs))
-    {
-      // Objekte gefunden, mal schauen, ob die taugen (d.h. fuer den jew. Sinn
-      // Infos haben. Wenn nicht, muessen wir weitersuchen.
-      // Aber erstmal die Objekte durchlaufen.
-      foreach(object ob: objs)
-      {
-        string out;
-        if (sense == SENSE_VIEW)
-        {
-          out = ob->long(mode);
-        }
-        else if (sense == SENSE_READ)
-        {
-          // Extrawurst: P_READ_MSG auch noch abfragen.
-          out = ob->QueryProp(P_READ_MSG);
-          if (!stringp(out))
-            out = ob->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),SENSE_READ);
-        }
-        else 
-          out=ob->GetDetail(SENSE_DEFAULT,QueryProp(P_REAL_RACE),sense);
-        // Wenn was gefunden wurde, sind wir fertig.
-        if (stringp(out))
-        {
-          SetProp(P_REFERENCE_OBJECT, ob);
-          tell_object(ME, out);
-          return 1;
-        }
-      }
-    }
-    // offenbar keine Objekte gefunden oder die hatten nix fuer unseren Sinn
-    // dabei. Also nach ordinaeren Details an base/parent suchen.
-    string out = base->GetDetail(detail, QueryProp(P_REAL_RACE), sense);
-    if (!out && sense==SENSE_VIEW)
-      out = base->GetDoorDesc(detail);
-    if (out)
-    {
-      // Detail gefunden, base darf neues Referenzobjekt werden und nach
-      // Ausgabe sind wir fertig.
-      SetProp(P_REFERENCE_OBJECT, base);
-      write(out);
-      return 1;
-    }
-    else
-    {
-      // wenn auch keine Details gefunden, dann schauen, unser Env evtl.
-      // noch nen passendes Detail oder Objekt hat. Das ist aber natuerlich
-      // nur der Fall, wenn base nicht eh schon das Environment ist.
-      if (base != environment())
-      {
-        // Wir schauen uns das Env noch an. Bei den anderen Sinnen kein neues
-        // notify_fail, weil sonst staendig Meldungen kommen, dass x nicht da
-        // ist, nur weil es keine Beschreibung fuer den Sinn hat.
-        if (sense==SENSE_VIEW)
-          write(break_string("Du findest an "+base->name(WEM)
-                +" kein \"" + capitalize(detail) + "\"."
-                 " Dein Blick wendet sich der Umgebung zu.",78));
-        // in diesem Fall nullen wir base und lassen die Schleife noch
-        // einmal durchlaufen.
-        base = 0;
-        continue;
-      }
-      // Leider ist nix mehr uebrig zum angucken und in jedem Fall Ende.
-      else
-      {
-        // Wenn schon das erste angeguckte base das Environment war (dann
-        // ist diese Schleife uebrigens nur einmal gelaufen), gibt es eine
-        // leicht andere Meldung und das Bezugsobjekt muss weg.
-        // neue notify_fail gibt es nur fuer SENSE_VIEW (s.o.)
-        if (first_base_was_env) {
-          SetProp(P_REFERENCE_OBJECT, 0);
-          if (sense==SENSE_VIEW)
-            _notify_fail("Sowas siehst Du da nicht!\n");
-        }
-        else if (sense==SENSE_VIEW) {
-          _notify_fail("Sowas siehst Du auch da nicht!\n");
-        }
-        return 0;
-      }
-    }
-  } while(1);
-  // Nie erreicht.
-  return 0;
+  return _examine_rec(ref_object, tokens, transparent_check, sense, mode,
+                     ref_given);
 }
 
 // Funktion fuer "schau in ..."
