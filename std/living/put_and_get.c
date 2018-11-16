@@ -580,6 +580,9 @@ private object *__find_objects(string *tokens, object env, int is_source)
     //              1: Objekt soll bewegt werden ("topf von herd")
     //              2: intern
 
+    // ganz am Ende von den tokens steht ggf. der vom User gewuenschte Anfang
+    // der Suche nache dem Objekt (z.B. "fackel aus truhe hier" oder "seil aus
+    // paket in mir".
     if (!env && sizeof(tokens) > 1 && tokens[<1] == "hier") {
         tokens = tokens[..<2];
         env = environment();
@@ -598,6 +601,9 @@ private object *__find_objects(string *tokens, object env, int is_source)
     }
 
     for (int i = sizeof(tokens)-1; i > 1; i--) {
+        // wird fangen am Ende der Tokens an und arbeiten uns wortweise nach
+        // vorne, um ein Objekt zu finden. (z.B. "... in paket 12" wuerde 2
+        // Durchlaeufe brauchen)
         if (env)
             ob = present(implode(tokens[i..], " "), env);
         else
@@ -607,20 +613,32 @@ private object *__find_objects(string *tokens, object env, int is_source)
         if (!ob)
             continue;
 
+        // aus Lebewesen darf man nix rausnehmen oder reingucken
         if (living(ob)) {
             NF("Aber " + ob->name(WER, 1) + " lebt doch!");
             continue;
         }
 
+        // und aus geschlossenen Containern auch nicht.
         if (ob->QueryProp(P_CNT_STATUS)) {
             NF("Aber " + ob->name(WER, 1) + " ist doch geschlossen!");
             continue;
         }
-
+        // Wenn was rausgenommen werden soll und jetzt vor dem gefundenen
+        // Container die passende Praeposition steht (z.B. "aus"), wird
+        // angenommen, dass der vordere Teil der Tokens zu aus diesem
+        // Container zu nehmende Objekt bezeichnet und in present_objects
+        // dieses Containers verzweigt.
         if (is_source != 0 &&
             tokens[i-1] == ob->QueryProp(P_SOURCE_PREPOSITION))
             return ob->present_objects(implode(tokens[..i-2], " "));
 
+        // Wenn vor dem gefundenen Objekt dessen normale Praeposition steht
+        // (z.B. "in", "auf"), wird rekursiv geschaut, ob der vordere Teil der
+        // Tokens erneut einen Container bezeichnet. is_source==2 wird
+        // uebergebeb, damit in der Rekursion nur Objekte vor der
+        // P_SOURCE_PREPOSITION geliefert werden, aber keine aus
+        // Environment/this_object() (s.u. nach der Schleife).
         if (tokens[i-1] == ob->QueryProp(P_PREPOSITION))
             return __find_objects(tokens[..i-2], ob, is_source ? 2 : 0);
 
@@ -630,14 +648,19 @@ private object *__find_objects(string *tokens, object env, int is_source)
 
     if (is_source == 2)
         return ({});
-
+    // wenn das for keine Container gefunden hat (auch:  wenn tokens zu kurz
+    // fuers for), wird im uebergebenen env geguckt, ob der vorderste Rest von
+    // tokens nen Objekt bezeichnet.
+    // geguckt, ob nen pass
     if (env)
         return env->present_objects(implode(tokens, " "));
 
+    // Und wenn kein env uebergeben und gefunden wurde, wird geguckt, ob unser
+    // Environment nen passendes Objekt fuer tokens hat...
     if (environment() &&
         sizeof(obs = environment()->present_objects(implode(tokens, " "))))
         return obs;
-
+    // oder eben wir selbst.
     return present_objects(implode(tokens, " "));
 }
 
