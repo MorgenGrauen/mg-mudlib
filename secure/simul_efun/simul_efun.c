@@ -807,6 +807,7 @@ public int mkdirp(string dir) {
   // ist, dann koennen wir jetzt mit mkdir das tiefste Verzeichnis anlegen
   if (mkdirp(dir[0..strrstr(dir,"/")-1]) == 1)
     return funcall(bind_lambda(#'efun::mkdir, previous_object()), dir);
+  return 0;
 }
 
 
