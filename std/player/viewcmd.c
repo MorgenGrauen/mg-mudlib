@@ -440,10 +440,10 @@ private object find_base(object env, string *tokens, string detail,
     // Hierfuer werden mit jedem Schleifendurchlauf von hinten mehr worte aus
     // tokens benutzt. (Beispiel "muenze in boerse 2")
     if (env)
-        ob = present(implode(tokens[i..], " "), env);
+        ob = env->present_objects(implode(tokens[i..], " "));
     else
-        ob = present(implode(tokens[i..], " "), environment()) ||
-             present(implode(tokens[i..], " "), this_object());
+        ob = environment()->present_objects(implode(tokens[i..], " ")) ||
+             this_object()->present_objects(implode(tokens[i..], " "));
     // Naechster durchlauf, mit einem Wort mehr aus tokens
     if (!ob)
         continue;
