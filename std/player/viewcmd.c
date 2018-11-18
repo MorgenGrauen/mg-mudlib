@@ -435,18 +435,34 @@ private object find_base(object env, string *tokens, string detail,
   // wird.
   for (int i = sizeof(tokens)-1; i > 1; i--)
   {
-    object ob;
+    object ob, *objs;
     // In env oder mir oder umgebung gucken, ob ein passendes Objekt da ist.
     // Hierfuer werden mit jedem Schleifendurchlauf von hinten mehr worte aus
     // tokens benutzt. (Beispiel "muenze in boerse 2")
+    // present waere schneller und die Komplexitaet von present_objects waere
+    // hier nicht noetig. Allerdings beruecksichtigt es die Sichtbarkeit und
+    // ggf. virtuell anwesende Objekte, was present nicht tut.
+    string suchid=implode(tokens[i..], " ");
     if (env)
-        ob = env->present_objects(implode(tokens[i..], " "));
+        objs = env->present_objects(suchid) || ({});
     else
-        ob = environment()->present_objects(implode(tokens[i..], " ")) ||
-             this_object()->present_objects(implode(tokens[i..], " "));
-    // Naechster durchlauf, mit einem Wort mehr aus tokens
-    if (!ob)
+        objs = environment()->present_objects(suchid) ||
+               this_object()->present_objects(suchid);
+    // wenn nicht genau ein Objekt gefunden wird, wird weitergesucht, im
+    // naechsten Durchlauf mit einem Wort mehr aus tokens
+    switch(sizeof(objs))
+    {
+      case 0:
+        notify_fail("Hier ist kein(e) "+capitalize(suchid)+".\n");
         continue;
+      case 1:
+        // Objekt gefunden.
+        ob = objs[0];
+        break;
+      default:
+        notify_fail("Es gibt mehr als eine(n) "+capitalize(suchid)+".\n");
+        continue;
+    }
 
     // an dieser Stelle wird (noch) nicht geprueft, ob man in das gefundene
     // Objekt hineinforschen kann.
