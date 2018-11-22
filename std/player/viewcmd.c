@@ -631,15 +631,14 @@ private int _examine_rec(object ref_object, string *tokens, closure
     // nur der Fall, wenn ref_object nicht eh schon das Environment war.
     // Ausserdem nicht machen, wenn der Nutzer ein spezifisches Referenzobjekt
     // angegeben hat (z.B. "in raum").
-    if (ref_object != environment() && !ref_given)
+    if (ref_object && ref_object != environment() && !ref_given)
     {
       // Wir schauen uns das Env ueber Rekursion noch an. Bei den anderen
       // Sinnen kein neues notify_fail, weil sonst staendig Meldungen kommen,
       // dass x nicht da ist, nur weil es keine Beschreibung fuer den Sinn hat.
       if (sense==SENSE_VIEW)
-        write(break_string("Du findest an "+base->name(WEM)
-              +" kein \"" + capitalize(detail) + "\"."
-               " Dein Blick wendet sich der Umgebung zu.",78));
+        write(break_string("Sowas findest Du an "+ref_object->name(WEM)
+              +" nicht. Dein Blick wendet sich der Umgebung zu.",78));
 
       return _examine_rec(environment(), tokens, transparent_check, sense,
                          mode, 0);
