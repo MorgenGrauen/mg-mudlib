@@ -903,13 +903,12 @@ nomask varargs int ShowPlayerEPs(string pl,string pattern)
   if (!pattern || pattern=="")
     teststring="%s";
   else teststring="%s"+pattern+"%s";
-  walk_mapping( obs, lambda( ({ 'key, 'v1, 'v2, 'v3 }),
-                          // v1 -- details, v2 -- Nummer, v3 -- art
-                          // key -- Filename
-                          ({ #'if, ({ #'test_bit, ep, 'v2 }),
-                          ({#'if,({#'sscanf,'key,teststring,'v4,'v5}),
-                          ({ #'printep, 'v2, 'key, 'v3, 'v1 })
-                          }) }) ));
+  walk_mapping( obs, function void (string fn, string* v1, int v2, int v3)
+      {
+        string unused;
+        if ( test_bit(ep, v2) && sscanf(fn, teststring, unused, unused) )
+          printep(v2, fn, v3, v1);
+      });
   this_interactive()->More(output);
   return 1;
 }
