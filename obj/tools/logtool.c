@@ -16,10 +16,12 @@ mapping logs;
 
 static void check_logs()
 {
-  filter(sort_array(m_indices(logs), #'>), lambda( ({ 'x }), ({#'?, 
-    ({#'!=, ({#'[, logs, 'x, 2}), ({#'file_time, ({#'[, logs, 'x, 0}) }) }),
-       ({#'tell_object, ({#'environment }), ({#'sprintf,
-       "Neue Eintraege in <%s>.\n", 'x }) }), 0})));
+  filter(sort_array(m_indices(logs), #'>), function int (string x) {
+        if ( logs[x,2] != file_time(logs[x,0]) )
+          tell_object(environment(),
+            sprintf("Neue Eintraege in <%s>.\n",x));
+        return 1;
+      });
 }
 
 void create()
@@ -63,13 +65,17 @@ varargs int move(mixed dest, int method)
   return 1;
 }
 
-varargs string long() 
+varargs string long(int mode)
 {
    return "Folgende Logfiles werden derzeit von Deinem Logtool verwaltet:\n\n"
-         +implode(map(sort_array(m_indices(logs), #'>),
-          lambda( ({ 'x }), ({#'sprintf, " %1s %-14s - %s", ({#'?, ({#'!=,
-          ({#'[,logs,'x, 2}), ({#'file_time,({#'[,logs,'x, 0})})}),"*",""}),
-          ({#'sprintf, "<%s>", 'x}), ({#'[, logs, 'x, 0})}) ) ), "\n")
+          +implode(map(sort_array(m_indices(logs), #'>),
+            function string (string x) {
+              string tag = "";
+              if ( logs[x,2] != file_time(logs[x,0]) )
+                tag = "*";
+              return sprintf(" %1s %-14s - %s",
+                        tag, sprintf("<%s>", x), logs[x,0]);
+            }), "\n")
          +"\n\nMit <mark> koennen alle Eintraege als gelesen markiert und "
          +"mit Add- und\nDelLog Logfiles in die Liste aufgenommen bzw. aus "
          +"der Liste entfernt werden.\n";
@@ -86,9 +92,11 @@ static int aktualisieren(string str)
     logs[str, 1]=file_size(logs[str, 0]);
     logs[str, 2]=file_time(logs[str, 0]);
   }
-  else filter(m_indices(logs), lambda( ({ 'x }),({#', ,
-   ({#'=, ({#'[, logs, 'x, 1}), ({#'file_size, ({#'[, logs, 'x, 0}) }) }),
-   ({#'=, ({#'[, logs, 'x, 2}), ({#'file_time, ({#'[, logs, 'x, 0}) })})})));
+  else filter(m_indices(logs), function int (string x) {
+          logs[x,1] = file_size(logs[x,0]);
+          logs[x,2] = file_time(logs[x,0]);
+          return 1;
+        });
   write("Done!\n");
   save_object(SAVEFILE);
   return 1;
