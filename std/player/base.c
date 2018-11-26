@@ -855,8 +855,9 @@ static int set_homepage(string str)
   if (str=="keine") 
     SetProp(P_HOMEPAGE, 0);
   else {
-    tmp = filter(regexplode(str, "[<][^>]*[>]"),
-                       lambda(({'e}), ({#'!=, ({#'[, 'e, 0}), '<'})));
+    tmp = filter(regexplode(str, "[<][^>]*[>]"), function int (string e) {
+              return (e[0] != '<');
+            });
     write("Sie lautet jetzt: "+(str = implode(tmp, ""))+"\n");
     SetProp(P_HOMEPAGE, str);
   }

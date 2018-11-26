@@ -233,8 +233,9 @@ static int reise(string str)
            +"reisen.\n");
  
 
-      dstr = filter( filter_objects(ship,"short"), lambda( ({'x}),
-             ({ #'==, ({#'environment, 'x}), environment() }) ) );
+      dstr = filter(ship, function int (object x) {
+                return (environment(x) == environment() && x->short());
+              });
 
       if (sizeof(dstr))
       {
@@ -365,8 +366,9 @@ static int reise(string str)
       write(break_string("Dahin kannst Du mit "
            +_traveller(map_objects(ship, "name", WEM))+" gelangen.",78));
 
-      dstr = filter(filter_objects(ship,"short"),lambda( ({'x}),
-            ({ #'==, ({#'environment, 'x}), environment() }) ) );
+      dstr = filter(ship, function int (object x) {
+                return (environment(x) == environment() && x->short());
+              });
 
       if (sizeof(dstr))
       {
@@ -462,8 +464,9 @@ static int reise(string str)
       write("'"+capitalize(mit)+"' koennte "
                +_traveller(map_objects(ship,"name",WER))+" sein.\n");
 
-      dstr = filter(filter_objects(ship,"short"),lambda( ({'x}),
-            ({ #'==, ({#'environment, 'x}), environment() }) ) );
+      dstr = filter(ship, function int (object x) {
+                return (environment(x) == environment() && x->short());
+              });
 
       if (sizeof(dstr))
       {

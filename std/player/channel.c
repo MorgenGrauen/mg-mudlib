@@ -544,11 +544,9 @@ int ChannelAdmin(string args)
       SetProp(P_CHANNEL_SHORT, DEFAULT_SHORTCUTS
               + (IS_LEARNER(this_object()) ? WIZARD_SHORTCUTS : ([])));
     }
-    walk_mapping(QueryProp(P_CHANNEL_SHORT),
-                 lambda(({'i/*'*/, 'c, 'r}),
-                        ({#'+=, 'r/*'*/,
-                          ({#'sprintf/*'*/, "%5.5s = %s\n", 'i, 'c})})),
-                 &txt);
+    foreach(string abk, string ch_name : QueryProp(P_CHANNEL_SHORT)) {
+      txt += sprintf("%5.5s = %s\n", abk, ch_name);
+    }
     txt = sprintf("Folgende Abkuerzungen sind definiert:\n%-78#s\n",
                   implode(sort_array(old_explode(txt, "\n"), #'>/*'*/), "\n"));
     More(txt);

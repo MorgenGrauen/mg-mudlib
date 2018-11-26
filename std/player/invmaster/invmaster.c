@@ -119,20 +119,14 @@ void create()
   // it just checks every word of the name, if it does not begin
   // with a capital letter, it is abbreviated
   // this happens only if the name length exceeds 20 chars...
-  abbreviate=lambda(({'x}), 
-      ({#'?, ({#'>, ({#'member, quote(({"der", "des"})), 'x}), 0}),
-        "d.",
-        ({#'?, ({#'>, ({#'sizeof, 'x}), 3}), 
-          ({#'?, ({#',, ({#'=, 'a, ({#'allocate, 1}) }),
-                        ({#'=, ({#'[, 'a, 0}), 'x }), 
-                        ({#'sizeof, ({#'regexp, 'a, "^[a-z].*"}) }) 
-                 }), 
-            ({#'+, ({#'[..], 'x, 0, 1}), "."}),
-            'x
-          }), 
-          'x
-        })
-      }));
+  abbreviate = function string (string x) {
+      if ( member(({"der","des"}), x) > 0 )
+        return "d.";
+      else if ( sizeof(x) > 3)
+        return regreplace(x, "^[a-z].+", x[0..0]+".", 0x1);
+      else
+        return x;
+    };
 }
 
 // function that tries to guess a good item name and use abbrevations
