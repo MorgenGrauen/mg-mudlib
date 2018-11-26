@@ -240,9 +240,15 @@ static int _ls(string cmdline)
   if (flags&LS_T) cmp=FILEDATE;
   else if (flags&LS_S) cmp=FILESIZE;
   else cmp=BASENAME; // =0 :-)
-  sort_fun=lambda(({ 'a,'b }),({
-    ((!cmp&&!(flags&LS_R))||(cmp&&(flags&LS_R))?#'>:#'<),
-    ({#'[,'a,cmp}),({#'[,'b,cmp})}));
+
+  if ( !cmp && !(flags&LS_R) || cmp && (flags&LS_R) )
+    sort_fun = function int (mixed* a, mixed* b) {
+                 return (a[cmp] > b[cmp]);
+               };
+  else
+    sort_fun = function int (mixed* a, mixed* b) {
+                 return (a[cmp] < b[cmp]);
+               };
   args=sort_array(args,sort_fun);
 // Ausgabeformat bestimmen
   if (flags&LS_L)
