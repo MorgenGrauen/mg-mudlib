@@ -53,18 +53,18 @@
 
 // prototypes
 // from: container/description.c
-varargs mixed make_invlist(object viewer, mixed inv, int array);
+visible varargs mixed make_invlist(object viewer, mixed inv, int array);
 
 // from: container/restrictions.c
 int query_weight_contents();
 static int _query_last_content_change();
 
-int MayAddWeight(int w);
-int MayAddObject(object ob);
+public int MayAddWeight(int w);
+public int MayAddObject(object ob);
 public int PreventInsert(object ob);
 public int PreventLeave(object ob, mixed dest);
-object *present_objects(string complex_desc);
-object *locate_objects(string complex_desc,int info);
+public object *present_objects(string complex_desc);
+public object *locate_objects(string complex_desc,int info);
 
 // container/items.c
 public varargs object     AddItem( mixed filename, int refresh, mixed props);
