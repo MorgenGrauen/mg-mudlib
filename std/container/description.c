@@ -27,7 +27,7 @@ void create()
   AddId("Container");
 }
 
-varargs string long(int mode) {
+public varargs string long(int mode) {
   string descr, inv_descr;
 
   descr = process_string(QueryProp(P_LONG));
