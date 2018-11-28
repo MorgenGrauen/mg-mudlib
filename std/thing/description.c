@@ -120,7 +120,7 @@ static void GiveEP( int type, string key )
 
 // Manche Objekte koennen mit rename_object einen neuen Filenamen bekommen.
 // Danach sollte der EPMASTER neu nach den Details befragt werden.
-void __reload_explore()
+visible void __reload_explore()
 {
   explore = (mixed *)EPMASTER->QueryExplore();
   return;
@@ -138,7 +138,7 @@ public string description_id() {
 
 /* Ids muessen uebergeben werden, da unit machmal mit plural-Ids, */
 /* also anderen als den normalen arbeiten muss. */
-int match_item( string str, string *ids )
+visible int match_item( string str, string *ids )
 {
   string *obj,*ads;
   int len, i;
@@ -169,7 +169,7 @@ int match_item( string str, string *ids )
 // Wird vom Gamedriver aufgerufen (present)
 // Hat dieser Gegenstand die ID str?
 // lvl wird ignoriert
-varargs int id( string str, int lvl ) 
+public varargs int id( string str, int lvl )
 { 
   string str2, tmp;
   int count;	
@@ -199,7 +199,7 @@ varargs int id( string str, int lvl )
 }
 
 // Gleich eine ganze Liste von ids testen
-int match_ids(string *list)
+public int match_ids(string *list)
 {
   string *ids;
 
@@ -214,7 +214,7 @@ int match_ids(string *list)
 }
 
 // ID hinzufuegen
-void AddId( string|string* str )
+public void AddId( string|string* str )
 {
   if (stringp(str)) str = ({ str });
   if (pointerp(str))
@@ -224,7 +224,7 @@ void AddId( string|string* str )
 }
 
 // ID entfernen
-void RemoveId(string|string* str)
+public void RemoveId(string|string* str)
 {
   if (stringp(str)) str = ({ str });
   if (pointerp(str))
@@ -241,7 +241,7 @@ static string* _set_ids( string* ids )
 }
 
 // Adjektiv hinzufuegen
-void AddAdjective(string|string* str)
+public void AddAdjective(string|string* str)
 {
   if (stringp(str)) str = ({ str });
   if (pointerp(str))
@@ -251,7 +251,7 @@ void AddAdjective(string|string* str)
 }
 
 // Adjektiv entfernen
-void RemoveAdjective(string|string* str)
+public void RemoveAdjective(string|string* str)
 {
   if (stringp(str)) str = ({ str });
   if (pointerp(str))
@@ -290,7 +290,7 @@ private string depointer_adj( <string|string*>* adj, int casus, int demon ) {
 }
 
 // Wie lautet der Name des Objekts?
-varargs string name(int casus,int demon)
+public varargs string name(int casus,int demon)
 {
   mixed sh, adj;
   int art, plural;
@@ -419,7 +419,7 @@ varargs string name(int casus,int demon)
 }
 
 // Grossgeschriebenen Namen zurueckgeben
-varargs string Name( int casus, int demon )
+public varargs string Name( int casus, int demon )
 {
     return capitalize(name( casus, demon )||"");
 }
@@ -497,7 +497,7 @@ private void _remove_details(string|string* keys, mapping details )
 }
 
 // Detail(s) hinzufuegen
-void AddDetail(string|string* keys, string|string*|mapping|closure descr)
+public void AddDetail(string|string* keys, string|string*|mapping|closure descr)
 {
     int i;
     mapping details;
@@ -509,7 +509,7 @@ void AddDetail(string|string* keys, string|string*|mapping|closure descr)
 }
 
 // Detail(s) entfernen
-varargs void RemoveDetail(string|string* keys )
+public varargs void RemoveDetail(string|string* keys )
 {
   // Alle loeschen geht direkt ...
   if (!keys )
@@ -520,7 +520,7 @@ varargs void RemoveDetail(string|string* keys )
 }
 
 // SpecialDetail hinzufuegen
-void AddSpecialDetail(string|string* keys, string functionname )
+visible void AddSpecialDetail(string|string* keys, string functionname )
 {
     closure cl;
 
@@ -542,7 +542,7 @@ void AddSpecialDetail(string|string* keys, string functionname )
 }
 
 // SpecialDetail(s) entfernen
-void RemoveSpecialDetail(string|string* keys )
+visible void RemoveSpecialDetail(string|string* keys )
 {
   // RemoveSpecialDetail(0) wuerde sonst ALLE Details (auch die
   // 'normalen') loeschen
@@ -552,7 +552,7 @@ void RemoveSpecialDetail(string|string* keys )
 }
 
 // Lesbares Detail einfuegen
-void AddReadDetail(string|string* keys,
+public void AddReadDetail(string|string* keys,
                    string|string*|mapping|closure descr )
 {
   // _add_details() aendern das Mapping direkt, Set etc. nicht noetig.
@@ -560,7 +560,7 @@ void AddReadDetail(string|string* keys,
 }
 
 // Lesbare(s) Detail(s) entfernen
-varargs void RemoveReadDetail(string|string* keys )
+public varargs void RemoveReadDetail(string|string* keys )
 {
   // Alle loeschen geht direkt ...
   if (!keys )
@@ -571,7 +571,7 @@ varargs void RemoveReadDetail(string|string* keys )
 }
 
 // Geraeusch(e) dazufuegen
-void AddSounds(string|string* keys,
+public void AddSounds(string|string* keys,
                string|string*|mapping|closure descr )
 {
   // _add_details() aendern das Mapping direkt, Set etc. nicht noetig.
@@ -579,7 +579,7 @@ void AddSounds(string|string* keys,
 }
 
 // Geraeusch(e) entfernen
-varargs void RemoveSounds(string|string* keys )
+public varargs void RemoveSounds(string|string* keys )
 {
   // Alle loeschen geht direkt ...
   if (!keys )
@@ -590,7 +590,7 @@ varargs void RemoveSounds(string|string* keys )
 }
 
 // Geru(e)ch(e) hinzufuegen
-void AddSmells(string|string* keys,
+public void AddSmells(string|string* keys,
                string|string*|mapping|closure descr )
 {
   // _add_details() aendern das Mapping direkt, Set etc. nicht noetig.
@@ -598,7 +598,7 @@ void AddSmells(string|string* keys,
 }
 
 // Geru(e)ch(e) entfernen
-varargs void RemoveSmells(string|string* keys )
+public varargs void RemoveSmells(string|string* keys )
 {
   // Alle loeschen geht direkt ...
   if (!keys )
@@ -609,7 +609,7 @@ varargs void RemoveSmells(string|string* keys )
 }
 
 // Tastbare(s) Detail(s) hinzufuegen
-void AddTouchDetail(string|string* keys,
+public void AddTouchDetail(string|string* keys,
                     string|string*|mapping|closure descr )
 {
   // _add_details() aendern das Mapping direkt, Set etc. nicht noetig.
@@ -617,7 +617,7 @@ void AddTouchDetail(string|string* keys,
 }
 
 // Tastbare(s) Detail(s) entfernen
-varargs void RemoveTouchDetails(string|string* keys )
+public varargs void RemoveTouchDetails(string|string* keys )
 {
   // Alle loeschen geht direkt ...
   if (!keys )
@@ -629,7 +629,7 @@ varargs void RemoveTouchDetails(string|string* keys )
 
 // Detailinfos fuer Detail key, Spieler hat die Rasse race
 // und benutzt seinen Sinn sense
-varargs string GetDetail(string key, string race, int sense)
+public varargs string GetDetail(string key, string race, int sense)
 {
   string|string*|mapping|closure detail;
   
@@ -732,7 +732,7 @@ public void AddClass(string|string* str)
 }
 
 // Klasse entfernen
-void RemoveClass(string|string* str)
+public void RemoveClass(string|string* str)
 {
  if (stringp(str)) 
       str = ({ str });
@@ -748,7 +748,7 @@ void RemoveClass(string|string* str)
 }
 
 // Ist das Objekt Mitglied der Klasse str?
-int is_class_member(string|string* str)
+public int is_class_member(string|string* str)
 {
   // Keine Klasse, keine Mitgliedschaft ...
   if (!str || str=="") 
@@ -821,7 +821,7 @@ static mapping _query_material()
 }
 
 // Anteil von mat am Objekt?
-int QueryMaterial( string mat )
+public int QueryMaterial( string mat )
 {
   mapping mats;
   
@@ -832,14 +832,14 @@ int QueryMaterial( string mat )
 }
 
 // Anteil der Gruppe am Objekt
-int QueryMaterialGroup( string matgroup )
+public int QueryMaterialGroup( string matgroup )
 {
   return (int)call_other( MATERIALDB, "MaterialGroup",
                           QueryProp(P_MATERIAL), matgroup );
 }
 
 
-string MaterialList( int casus, mixed idinf )
+public string MaterialList( int casus, mixed idinf )
 {
   return (string)call_other( MATERIALDB, "ConvMaterialList",
                              QueryProp(P_MATERIAL), casus, idinf );

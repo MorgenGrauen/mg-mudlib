@@ -74,29 +74,29 @@
 
 // prototypes
 // check if the objects can by identified by str
-varargs int id(string str, int lvl);
+public varargs int id(string str, int lvl);
 
 // check IDs vs. string*
-int match_ids(string *list);
+visible int match_ids(string *list);
 
 // add an id to the current object
-void AddId(string|string* str);
+public void AddId(string|string* str);
 
 // remove an id from the object
-void RemoveId(string|string* str);
+public void RemoveId(string|string* str);
 
 // add an adjective to describe the object
-void AddAdjective(string|string* str);
+public void AddAdjective(string|string* str);
 
 // remove an adjective from the object
-void RemoveAdjective(string|string* str);
+public void RemoveAdjective(string|string* str);
 
 // get the name with casus and demonstrative
-varargs string name(int casus, int demon);
-varargs string Name(int casus, int demon);
+public varargs string name(int casus, int demon);
+public varargs string Name(int casus, int demon);
 
 // check if object is member of a class
-int is_class_member(string|string* str);
+public int is_class_member(string|string* str);
 
 // add object to a class
 void AddToClass(string str);
@@ -116,10 +116,10 @@ public varargs void RemoveReadDetail( string|string* keys );
 public varargs void RemoveTouchDetail( string|string* keys );
 
 // add a special detail to object
-void AddSpecialDetail(string|string* keys, string functionname );
+visible void AddSpecialDetail(string|string* keys, string functionname );
 
 // remove a special detail to object
-void RemoveSpecialDetail( string|string* keys );
+visible void RemoveSpecialDetail( string|string* keys );
 
 static void GiveEP(int type, string key);
 
