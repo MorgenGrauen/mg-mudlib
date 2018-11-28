@@ -20,7 +20,7 @@ inherit "/std/thing/description";
 #include <wizlevels.h>
 
 
-void create()
+protected void create()
 {
   ::create();
   SetProp(P_TRANSPARENT, 1);
@@ -86,7 +86,7 @@ private string collect(mixed obj)
 
 // flags: 1 - return array, 2 - don't collect equal objects '
 // flags: 4 - don't append infos for wizards
-varargs mixed make_invlist(object viewer, mixed inv, int flags)
+visible varargs mixed make_invlist(object viewer, mixed inv, int flags)
 {
   int iswiz;
   mixed objs, info;

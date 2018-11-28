@@ -42,7 +42,7 @@ private nosave int LastWeightCalc, contents, LastObjectCount, objcount;
 private nosave int last_content_change;
 
 
-void create()
+protected void create()
 {
     Set( P_WEIGHT_PERCENT, 50 );
     Set( P_TOTAL_WEIGHT, NOSETMETHOD, F_SET_METHOD );
@@ -108,7 +108,7 @@ static int _query_total_objects()
 
 
 // diese Funktion sollte von Raeumen natuerlich ueberschrieben werden...
-int MayAddObject( object ob )
+public int MayAddObject( object ob )
 {
     if (ob) {
         if ( !ob->short() )
@@ -125,7 +125,7 @@ int MayAddObject( object ob )
 #define ENV environment
 #define PO previous_object()
 
-int MayAddWeight( int w )
+public int MayAddWeight( int w )
 {
     int nw, aw;
 
@@ -205,7 +205,7 @@ static int _behalten( object ob, string uid )
 #define POS_INVERS   0x01  /* nur zur funktionsinternen Verwendung */
 #define POS_LETZTES  0x02  /* nur zur funktionsinternen Verwendung */
 
-object *present_objects( string complex_desc )
+public object *present_objects( string complex_desc )
 {
     int i;          // Zaehlervariable
     int meth;       // 0x01 = invers?,  0x02 = letztes?
@@ -464,7 +464,7 @@ object *present_objects( string complex_desc )
  * Funktion wird nicht mehr von put_and_get aufgerufen, stattdessen wird
  * direkt present_objects benutzt!
  */ 
-object *locate_objects( string complex_desc, int info ) {
+public object *locate_objects( string complex_desc, int info ) {
     string was, wo;
 
     if ( sscanf( complex_desc, "%s in %s", was, wo ) == 2 ){

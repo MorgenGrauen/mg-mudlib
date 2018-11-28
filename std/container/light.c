@@ -38,7 +38,7 @@ static mixed _query_light_transparency()
    return 999;
 }
 
-public int add_light_sources(int * sources) {
+protected int add_light_sources(int * sources) {
   float light = 0.0;
   //printf("als(%O): %O\n",this_object(),sources);
   // Alle Lichtlevel werden als Exponent von e aufgefasst und die Summe dieser
