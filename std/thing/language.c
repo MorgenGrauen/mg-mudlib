@@ -69,7 +69,7 @@ protected varargs int SuggestArticle(string id)
 }
 
 // Artikel bestimmen
-varargs string QueryArticle(int casus, int dem, int force)
+public varargs string QueryArticle(int casus, int dem, int force)
 {
   // Kein Artikel
   if (!force &&!(QueryProp(P_ARTICLE))) return "";
@@ -93,7 +93,7 @@ varargs string QueryOwn(int casus)
 }
 
 // Possessivpronomen bestimmen
-varargs string QueryPossPronoun(mixed what, int casus, int number)
+public varargs string QueryPossPronoun(mixed what, int casus, int number)
 {
   int gen2;
 
@@ -108,7 +108,7 @@ varargs string QueryPossPronoun(mixed what, int casus, int number)
 }
 
 // Pronomen bestimmen nach KNG
-varargs string QueryPronoun(int casus)
+public varargs string QueryPronoun(int casus)
 {
   int gender;
 
@@ -138,7 +138,7 @@ varargs string QueryPronoun(int casus)
 }
 
 // Anrede fuer Spieler bestimmen
-varargs string QueryDu(int casus,int gender,int zahl)
+public varargs string QueryDu(int casus,int gender,int zahl)
 {
   return
     ({ ({({    "du",   "ihr"}),({    "du",   "ihr"}),({    "du",   "ihr"})}),
@@ -149,7 +149,7 @@ varargs string QueryDu(int casus,int gender,int zahl)
 }
 
 // Welches Geschlecht hat das Objekt als String?
-string QueryGenderString()
+public string QueryGenderString()
 {
   switch( (int)QueryProp( P_GENDER ))
   {
@@ -161,7 +161,7 @@ string QueryGenderString()
 
 // Artikel durchdeklinieren nach Kasus, Numerus, Genus und Art
 // des Artikels (demon==bestimmt)
-varargs string DeclAdj(string|string* adj, int casus, int demon)
+public varargs string DeclAdj(string|string* adj, int casus, int demon)
 {
 	// Unregelmaessige Adjektive
 	if( pointerp(adj) ) return adj[casus]+" ";

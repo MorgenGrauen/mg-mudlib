@@ -76,7 +76,7 @@
 // thing->CheckLightType(LT_SUN|LT_MOON) 
 //       gibt true, wenn einer der beiden Himmelskoerper leuchtet.
 
-varargs int CheckLightType(int lighttype, int mode);
+public varargs int CheckLightType(int lighttype, int mode);
 
 #endif // __THING_LIGHTTYPES_H_PROTO__
 

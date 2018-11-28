@@ -66,7 +66,7 @@ static int _set_light( int light )
 //                       ##############
 
 // Lichttypen pruefen
-varargs int CheckLightType(int lighttype, int mode)
+public varargs int CheckLightType(int lighttype, int mode)
 {
   int my_light_type = QueryProp(P_LIGHT_TYPE);
 
