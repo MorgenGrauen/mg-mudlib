@@ -49,7 +49,7 @@ private varargs string query_g_suffix(int gen, int casus, int anzahl)
 }
 
 // Artikel vorschlagen: gibt es noch mehr Objekte im inv?
-varargs int SuggestArticle(string id)
+protected varargs int SuggestArticle(string id)
 {
   object ob,*obs;
 

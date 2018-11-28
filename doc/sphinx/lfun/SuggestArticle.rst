@@ -5,7 +5,7 @@ FUNKTION
 --------
 ::
 
-     varargs int SuggestArticle(string name);
+     protected varargs int SuggestArticle(string name);
 
 DEFINIERT IN
 ------------

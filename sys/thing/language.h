@@ -43,7 +43,7 @@ public varargs string QueryArticle(int casus, int dem, int force);
 // Empfehle einen Artikel fuer das Objekt, getestet wird, ob ausser
 // diesem Objekt sich ein anderes Objekt mit der id im selben
 // Raum befindet.
-public varargs int SuggestArticle(string id);
+protected varargs int SuggestArticle(string id);
 
 // Gib ein Pronomen zurueck, welches ausdrueckt, das ein Objekt diesem
 // Objekt gehoert. Dabei ist what das Geschlecht des Objektes.
