@@ -422,7 +422,7 @@ private object find_base(object env, string *tokens, string detail,
         notify_fail("Aber " + env->name(WER, 1) + " lebt doch!");
       else
         notify_fail("Aber " + env->name(WER, 1)
-                    + " ist doch nicht einsehbar!");
+                    + " ist doch nicht einsehbar!\n");
       // suche nach Objekten in env ist jetzt zuende, weil nicht in env
       // reinsehbar.
       // Aber tokens koennte noch ein detail beschreiben, was der Aufrufer an
@@ -530,10 +530,12 @@ private void unt_script_dings(string str)
   }
 }
 
-private int _examine_rec(object ref_object, string *tokens, closure
+private int _examine_rec(object *ref_objects, string *tokens, closure
                          transparent_check, int sense, int mode,
                          int ref_given)
 {
+  // ref_objects sind alle in Frage kommenden Kandidaten, an denen wir suchen.
+
   // Sodann ein Basisobjekt finden. Das Basisobjekt ist das, was bei einem
   // "detail an parent" durch parent gekennzeichnet wird oder notfalls das
   // Ref-Objekt von oben. Zu beachten ist, dass find_base() ggf. rekursiv
@@ -543,37 +545,26 @@ private int _examine_rec(object ref_object, string *tokens, closure
   // dem Weg zu detail. (detail==riss, base==kerze)
   string detail; // detail an parent
   // das fuer parent gefundene objekt
-  object base = find_base(ref_object, tokens, &detail, transparent_check);
-
+  object base = find_base(ref_objects[0], tokens, &detail, transparent_check);
+  // BTW: find_base liefert immer was zurueck - wenn nix gefunden wird, das
+  // ref_object, was als Start der Suche uebergeben wurde.
   // Jetzt wird versucht, ein Objekt mit der ID "detail" in base oder
-  // ein Detail an base zu finden.  Wenn nichts gefunden wird, wird ggf. noch
-  // die Umgebung als ref_object benutzt und das alles hier nochmal gemacht.
+  // ein Detail an base zu finden.
+
   object *objs;
-  // Wenn base existiert und wir reingucken koennen, ermitteln wir alle zu
+  // Wenn wir in base reingucken koennen, ermitteln wir alle zu
   // detail in Frage kommenanden Objekte in seinem Inventar
-  if (base)
+  if  (base == this_object() || base == environment() ||
+      (funcall(transparent_check, base) && !living(base)))
   {
-    if  (base == this_object() || base == environment() ||
-        (funcall(transparent_check, base) && !living(base)))
-    {
-      // ich kann in base reingucken...
-      objs = base->locate_objects(detail, 1) || ({});
-    }
-    else
-    {
-      // Basisobjekt da, aber nicht reinguckbar, also keine Objekte
-      // gefunden. base aber nicht nullen, denn es ist ja noch gueltig fuer
-      // Detailsuchen an base...
-      objs = ({});
-    }
+    objs = base->locate_objects(detail, 1) || ({});
   }
-  // Wenn kein base, werden alle fuer detail in Frage kommenden Objekte in
-  // unserer Umgebung und in uns selber ermittelt.
   else
   {
-    base = environment();
-    objs = environment()->locate_objects(detail, 1)
-         + locate_objects(detail, 1);
+    // Basisobjekt da, aber nicht reinguckbar, also keine Objekte
+    // gefunden. base aber nicht nullen, denn es ist ja noch gueltig fuer
+    // Detailsuchen an base...
+    objs = ({});
   }
   // Und in jedem Fall werden alle Objekt raussortiert, die unsichtbar sind.
   // ;-)
@@ -631,17 +622,31 @@ private int _examine_rec(object ref_object, string *tokens, closure
     // nur der Fall, wenn ref_object nicht eh schon das Environment war.
     // Ausserdem nicht machen, wenn der Nutzer ein spezifisches Referenzobjekt
     // angegeben hat (z.B. "in raum").
-    if (ref_object && ref_object != environment() && !ref_given)
+    if (sizeof(ref_objects) > 1)
     {
-      // Wir schauen uns das Env ueber Rekursion noch an. Bei den anderen
+      // Wir schauen uns ggf. weitere Kandidaten an. Bei den anderen
       // Sinnen kein neues notify_fail, weil sonst staendig Meldungen kommen,
       // dass x nicht da ist, nur weil es keine Beschreibung fuer den Sinn hat.
       if (sense==SENSE_VIEW)
-        write(break_string("Sowas findest Du an "+ref_object->name(WEM)
-              +" nicht. Dein Blick wendet sich der Umgebung zu.",78));
-
-      return _examine_rec(environment(), tokens, transparent_check, sense,
-                         mode, 0);
+      {
+        string rnam = ref_objects[0]->name(WEM);
+        if (!rnam)
+        {
+          if (ref_objects[0] == this_object())
+            rnam="Dir selbst";
+          else if (ref_objects[0] == environment())
+            rnam="Deiner Umgebung";
+          else
+            rnam="etwas Unbenanntem";
+        }
+        write(break_string("Sowas findest Du in/an " + rnam
+              +" nicht. Dein Blick wendet sich "
+              + (ref_objects[1] == this_object() ? "Dir selbst"
+                                                 : "der Umgebung")
+              + " zu.",78));
+      }
+      return _examine_rec(ref_objects[1..], tokens, transparent_check,
+                          sense, mode, 0);
     }
     // Leider ist nix mehr uebrig zum angucken und in jedem Fall Ende.
     else
@@ -698,12 +703,27 @@ varargs int _examine(string str, int mode)
   // Das Ref-Objekt finden, das kann dann auch in tokens angegeben sein. In dem
   // Fall wird die Liste an tokens um die Angabe des Ref-Objekts gekuerzt und
   // ref_given gesetzt.
-  object ref_object = get_ref_object(&tokens, transparent_check, &ref_given);
+  object ref_ob = get_ref_object(&tokens, transparent_check, &ref_given);
   // Bemerkung: Das Referenzobjekt ist garantiert sichtbar, aber nicht
   // unbedingt einsehbar. Wird weiter unten geprueft.
 
-  return _examine_rec(ref_object, tokens, transparent_check, sense, mode,
-                     ref_given);
+  // Falls nicht explizit ein Objekt als Ref-Objekt angegeben wurde, werden
+  // max. 3 Objekte angeguckt: das eigentliche Referenzobjekt, das
+  // Environment und das eigene Objekt. Da ref_object auch eines der letzten
+  // beiden sein kann, muss die Dublette ggf. raus.
+  object *ref_objects;
+  if (ref_ob)
+  {
+    ref_objects=({ref_ob});
+    if (!ref_given)
+      ref_objects += ({environment(), this_object()}) - ref_objects;
+
+  }
+  else
+    ref_objects = ({environment(), this_object()});
+
+  return _examine_rec(ref_objects, tokens, transparent_check, sense, mode,
+                      ref_given);
 }
 
 // Funktion fuer "schau in ..."
