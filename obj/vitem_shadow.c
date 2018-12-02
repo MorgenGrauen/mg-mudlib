@@ -19,9 +19,11 @@ protected functions nosave private variables inherit "/std/container";
 // Zielobjekt beschattet.
 mapping props;
 
+object cloner;
 
 protected void create()
 {
+  cloner=previous_object();
   set_next_reset(7200);
 }
 
@@ -341,4 +343,16 @@ public object *locate_objects( string complex_desc, int info )
   return ::locate_objects(complex_desc, info);
 }
 
+public object *AllVirtualEnvironments()
+{
+  if (cloner)
+  {
+    object *cloner_envs = all_environment(cloner)
+                          || cloner->AllVirtualEnvironments();
+    if (cloner_envs)
+      return ({cloner}) + cloner_envs;
+    return ({cloner});
+  }
+  return 0;
+}
 

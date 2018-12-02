@@ -3,8 +3,11 @@
 inherit "/std/container";
 #include <moving.h>
 
+object cloner;
+
 protected void create()
 {
+  cloner=previous_object();
   ::create();
   // Das Objekt raeumt sich selber im reset auf. (D.h. kein Env-Check)
   SetAutoObject(1);
@@ -34,3 +37,15 @@ protected int PreventMove(object dest, object oldenv, int method)
   return ME_NOT_ALLOWED;
 }
 
+public object *AllVirtualEnvironments()
+{
+  if (cloner)
+  {
+    object *cloner_envs = all_environment(cloner)
+                          || cloner->AllVirtualEnvironments();
+    if (cloner_envs)
+      return ({cloner}) + cloner_envs;
+    return ({cloner});
+  }
+  return 0;
+}
