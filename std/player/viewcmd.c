@@ -418,11 +418,6 @@ private object find_base(object env, string *tokens, string detail,
     // Container
     if (living(env) || !funcall(transparent_check, env))
     {
-      if (living(env))
-        notify_fail("Aber " + env->name(WER, 1) + " lebt doch!");
-      else
-        notify_fail("Aber " + env->name(WER, 1)
-                    + " ist doch nicht einsehbar!\n");
       // suche nach Objekten in env ist jetzt zuende, weil nicht in env
       // reinsehbar.
       // Aber tokens koennte noch ein detail beschreiben, was der Aufrufer an
@@ -452,13 +447,11 @@ private object find_base(object env, string *tokens, string detail,
     // naechsten Durchlauf mit einem Wort mehr aus tokens
     if (!sizeof(objs))
     {
-      notify_fail("Hier ist kein(e) "+capitalize(suchid)+".\n");
       continue;
     }
+    // falls mehr als ein Objekt gefunden wurden: das erste nehmen, wie
+    // ueberall sonst auch.
     ob = objs[0];
-    // wenn mehr als ein Objekt gefunden: das erste nehmen, wie ueberall sonst
-    // auch.
-    }
 
     // an dieser Stelle wird (noch) nicht geprueft, ob man in das gefundene
     // Objekt hineinforschen kann.
@@ -479,8 +472,6 @@ private object find_base(object env, string *tokens, string detail,
       tokens=tokens[..i-2];
       break;
     }
-    notify_fail("Du kannst nichts " + tokens[i-1] + " "
-                + ob->name(WEM, 1) + " finden.");
   }
   // an diesem Punkt sind in tokens nur noch worte drin, die keinen Container
   // mehr beschreiben. Die Resttokens kommen nach <detail>, sie beschreiben
