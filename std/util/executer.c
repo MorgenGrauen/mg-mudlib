@@ -17,13 +17,12 @@ protected mixed execute_anything(mixed fun, varargs mixed args)
   if (stringp(fun))
     return call_other(this_object(), fun, args...);
 
-  if ( pointerp(fun) && sizeof(fun)==2 )
+  if ( pointerp(fun))
   {
-    object ob;
-    if (sizeof(fun)>2)
-      raise_error(sprintf("execute_anything(): first argument may only "
+    if (sizeof(fun) != 2)
+      raise_error(sprintf("execute_anything(): <fun> argument must "
                          "have 2 elements if array.\n"));
-
+    object ob;
     if ( stringp(fun[0]) )
       ob=find_object(fun[0]);
     else
