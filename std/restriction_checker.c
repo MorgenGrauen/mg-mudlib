@@ -187,6 +187,12 @@ check_restrictions(object pl, mapping restr) {
           return ("Mit Deiner Gildenzugehoerigkeit kannst Du das nicht.\n");
         break;
      case SR_FUN:
+        // In aller Regel sollte die Funktion dann nicht in diesem Objekt
+        // gerufen werden, sondern in dem, was uns ruft.
+        if(stringp(condition) && extern_call())
+        {
+          condition=({previous_object(),condition});
+        }
         string res=execute_anything(condition, pl);
         if (stringp(res))
           return res;
