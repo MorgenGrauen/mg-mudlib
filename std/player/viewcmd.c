@@ -649,14 +649,20 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
     {
       // Wenn spezifisches ref_object vom Nutzer angegeben (ref_given!=0),
       // gibt es eine leicht andere Meldung und das Bezugsobjekt muss weg.
-      // neue notify_fail gibt es nur fuer SENSE_VIEW (s.o.)
       if (ref_given) {
         SetProp(P_REFERENCE_OBJECT, 0);
-        if (sense==SENSE_VIEW)
-          _notify_fail("Sowas siehst Du da nicht!\n");
+        notify_fail("\'" + capitalize(detail) + "\'"
+                    + (sense==SENSE_VIEW ? " siehst " : " findest ")
+                    + "Du da nicht!\n");
       }
+      // Ansonsten gibt es nur nen passendes notify_fail und Ende.
       else if (sense==SENSE_VIEW) {
-        _notify_fail("Sowas siehst Du auch da nicht!\n");
+        notify_fail("\'" + capitalize(detail) + "\'"
+                    + " siehst Du auch da nicht!\n");
+      }
+      else {
+        notify_fail("\'" + capitalize(detail) + "\'"
+                    + " findest Du da nicht!\n");
       }
       return 0;
     }
