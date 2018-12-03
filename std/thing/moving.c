@@ -70,7 +70,7 @@ protected int PreventMove(object dest, object oldenv, int method) {
 protected void NotifyMove(object dest, object oldenv, int method) {
 }
 
-varargs int move( object|string dest, int method )
+public varargs int move( object|string dest, int method )
 {
   object oldenv;
   int tmp;
@@ -172,8 +172,8 @@ varargs int move( object|string dest, int method )
 }
 
 // Das Objekt zerstoeren
-varargs int remove(int silent)
-{ 
+public varargs int remove(int silent)
+{
     if (environment() ) {
         if(QueryProp(P_SENSITIVE))
                 environment()->RemoveSensitiveObject(this_object());
