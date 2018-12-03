@@ -365,7 +365,7 @@ private object get_ref_object(string *tokens, closure transparent_check,
       // unser environment enthaelt.
       else
       {
-        object *all_envs=all_environment(ref_object);
+        object *all_envs=all_environment(ref_object) || ({});
         int i=member(all_envs, environment());
         if (i >= 0)
         {
