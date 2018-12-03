@@ -450,18 +450,14 @@ private object find_base(object env, string *tokens, string detail,
                this_object()->present_objects(suchid);
     // wenn nicht genau ein Objekt gefunden wird, wird weitergesucht, im
     // naechsten Durchlauf mit einem Wort mehr aus tokens
-    switch(sizeof(objs))
+    if (!sizeof(objs))
     {
-      case 0:
-        notify_fail("Hier ist kein(e) "+capitalize(suchid)+".\n");
-        continue;
-      case 1:
-        // Objekt gefunden.
-        ob = objs[0];
-        break;
-      default:
-        notify_fail("Es gibt mehr als eine(n) "+capitalize(suchid)+".\n");
-        continue;
+      notify_fail("Hier ist kein(e) "+capitalize(suchid)+".\n");
+      continue;
+    }
+    ob = objs[0];
+    // wenn mehr als ein Objekt gefunden: das erste nehmen, wie ueberall sonst
+    // auch.
     }
 
     // an dieser Stelle wird (noch) nicht geprueft, ob man in das gefundene
