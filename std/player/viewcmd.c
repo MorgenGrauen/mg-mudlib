@@ -517,6 +517,23 @@ private void unt_script_dings(string str)
   }
 }
 
+private string nf_verb(int sense)
+{
+  switch(sense)
+  {
+    case SENSE_SMELL:
+      return "riechst";
+    case SENSE_SOUND:
+      return "hoerst";
+    case SENSE_TOUCH:
+      return "ertastest";
+//    case SENSE_READ:
+//    default:
+//      return "siehst";
+  }
+  return "siehst";
+}
+
 private int _examine_rec(object *ref_objects, string *tokens, closure
                          transparent_check, int sense, int mode,
                          int ref_given)
@@ -641,9 +658,8 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
       // gibt es eine leicht andere Meldung und das Bezugsobjekt muss weg.
       if (ref_given) {
         SetProp(P_REFERENCE_OBJECT, 0);
-        notify_fail("\'" + capitalize(detail) + "\'"
-                    + (sense==SENSE_VIEW ? " siehst " : " findest ")
-                    + "Du da nicht!\n");
+        notify_fail(sprintf("\'%s\' %s Du da nicht!\n",
+                            capitalize(detail), nf_verb(sense)));
       }
       // Ansonsten gibt es nur nen passendes notify_fail und Ende.
       else if (sense==SENSE_VIEW) {
@@ -651,8 +667,8 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
                     + " siehst Du auch da nicht!\n");
       }
       else {
-        notify_fail("\'" + capitalize(detail) + "\'"
-                    + " findest Du da nicht!\n");
+        notify_fail(sprintf("\'%s\' %s Du da nicht!\n",
+                            capitalize(detail), nf_verb(sense)));
       }
       return 0;
     }
