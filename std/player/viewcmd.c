@@ -616,21 +616,20 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
       // dass x nicht da ist, nur weil es keine Beschreibung fuer den Sinn hat.
       if (sense==SENSE_VIEW)
       {
-        string rnam = ref_objects[0]->name(WEM);
-        if (!rnam)
-        {
-          if (ref_objects[0] == this_object())
-            rnam="Dir selbst";
-          else if (ref_objects[0] == environment())
-            rnam="Deiner Umgebung";
-          else
-            rnam="etwas Unbenanntem";
-        }
-        write(break_string("Sowas findest Du in/an " + rnam
-              +" nicht. Dein Blick wendet sich "
-              + (ref_objects[1] == this_object() ? "Dir selbst"
-                                                 : "der Umgebung")
-              + " zu.",78));
+        // Ausgabe, was gerade angeguckt hat.
+        if (ref_objects[0] == environment())
+          out="Sowas siehst Du hier nicht. ";
+        else if (ref_objects[0] == this_object())
+          out="Sowas siehst Du an Dir nicht. ";
+        else
+          out="Sowas siehst Du an/in "+ref_objects[0]->name(WEM) +" nicht. ";
+        // Ausgabe, was man als naechstes anguckt.
+        if (ref_objects[1] == environment())
+          out+="Du schaust Dich um.";
+        else
+          out+="Du schaust Dich an.";
+
+        write(break_string(out,78));
       }
       return _examine_rec(ref_objects[1..], tokens, transparent_check,
                           sense, mode, 0);
