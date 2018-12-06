@@ -517,21 +517,21 @@ private void unt_script_dings(string str)
   }
 }
 
-private string nf_verb(int sense)
+private string nf_meldung(string detail, int sense)
 {
   switch(sense)
   {
     case SENSE_SMELL:
-      return "riechst";
+      return "Du riechst nichts Besonderes.\n";
     case SENSE_SOUND:
-      return "hoerst";
+      return "Du hoerst nichts Besonderes.\n";
     case SENSE_TOUCH:
-      return "ertastest";
+      return "Du fuehlst nichts Besonderes.\n";
 //    case SENSE_READ:
 //    default:
 //      return "siehst";
   }
-  return "siehst";
+  return sprintf("\'%s\' siehst Du da nicht!\n",capitalize(detail));
 }
 
 private int _examine_rec(object *ref_objects, string *tokens, closure
@@ -658,17 +658,15 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
       // gibt es eine leicht andere Meldung und das Bezugsobjekt muss weg.
       if (ref_given) {
         SetProp(P_REFERENCE_OBJECT, 0);
-        notify_fail(sprintf("\'%s\' %s Du da nicht!\n",
-                            capitalize(detail), nf_verb(sense)));
+        notify_fail(break_string(nf_meldung(detail, sense),78));
       }
       // Ansonsten gibt es nur nen passendes notify_fail und Ende.
       else if (sense==SENSE_VIEW) {
-        notify_fail("\'" + capitalize(detail) + "\'"
-                    + " siehst Du auch da nicht!\n");
+        notify_fail(break_string("\'" + capitalize(detail) + "\'"
+                    + " siehst Du auch da nicht!\n"),78);
       }
       else {
-        notify_fail(sprintf("\'%s\' %s Du da nicht!\n",
-                            capitalize(detail), nf_verb(sense)));
+        notify_fail(break_string(nf_meldung(detail, sense),78));
       }
       return 0;
     }
