@@ -12,12 +12,18 @@ Zweitspieler
      Jeder Spieler im MUD ist verpflichtet, seine Zweities zu markieren, um
      damit Verantwortlichkeiten besser zuordnen zu koennen.
 
-     Diese Markierung kann man zum Beispiel beim Schmied in der Zwergenstadt
-     oder beim Dorfschreiber im Elfendorf erhalten.  Diese Markierung kann
-     man auch vor anderen Spielern verbergen.
+     Diese Markierung laesst sich an verschiedenen Orten im Morgengrauen
+     durchfuehren, naemlich bei:
+       - dem Schmied in der Zwergenstadt
+       - dem Dorfschreiber im Elfendorf
+       - Hragznor im verlorenen Land
+       - Draineck in Zzerenzzen
+
+     Mit dem Befehl 'zweitiemarkierung' laesst sich diese Markierung auch vor
+     anderen Spielern verbergen.
 
  SIEHE AUCH:
      zweitiemarkierung, regeln
 
  LETZTE AeNDERUNG:
-     5. Mai 2004 Gloinson
+     7. Dezember 2018, durch Deaddy
