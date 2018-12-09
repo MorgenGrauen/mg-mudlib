@@ -15,6 +15,7 @@ Inhalt:
    sefun.index
    props.index
    lfun.index
+   wiz.index
 
 
 Indices and tables
