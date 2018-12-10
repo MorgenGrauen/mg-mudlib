@@ -29,6 +29,11 @@ ARGUMENTE
 BESCHREIBUNG
 ------------
 ::
+     
+     Vorweg: Da es keine (risikolose) Moeglichkeit gibt, ein so definiertes
+     Kommando auch wieder zu entfernen, wird von der Verwendung eher
+     abgeraten. Es sei denn, ihr wisst, dass euer Kommando nicht wieder (ohne
+     ende/reboot) entfernt werden soll.
 
      Dem Spieler wird ein neues Kommando definiert. Dieses kann eine Methode
      in ihm sein, so wie bei allen Spielerkommandos ueblich, kann aber auch
