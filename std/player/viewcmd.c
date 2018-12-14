@@ -631,7 +631,7 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
       // Wir schauen uns ggf. weitere Kandidaten an. Bei den anderen
       // Sinnen kein neues notify_fail, weil sonst staendig Meldungen kommen,
       // dass x nicht da ist, nur weil es keine Beschreibung fuer den Sinn hat.
-      if (sense==SENSE_VIEW)
+      if (sense==SENSE_VIEW || sense==SENSE_READ)
       {
         // Ausgabe, was gerade angeguckt hat.
         if (ref_objects[0] == environment())
