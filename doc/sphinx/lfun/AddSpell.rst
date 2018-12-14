@@ -41,7 +41,10 @@ ARGUMENTE
                   (Optional, bekommt als Argumente object enemy, 
                   int real_damage, string* dam_type)
 
-  spellarg      - Spell-Argument fuer Defend(), Default ist "1"
+  sinfo         - Skillinfomapping, muss SI_SPELL mit den SP_* fuer
+                  den Aufruf von Defend() enthalten
+                  Default ist ([SI_SPELL: ([SP_PHYSICAL_ATTACK: 0]),
+                                SI_MAGIC_TYPE: ({ MT_ANGRIFF }) ])
 
 BESCHREIBUNG
 ------------
@@ -87,13 +90,29 @@ BEMERKUNGEN
   muss im selben Objekt definiert sein, sofern der Funktionsname und
   keine Closure uebergeben wird.
 
-  Will man einen physischen Angriff ausloesen, MUSS <spellarg> ein Mapping
-  mit ([SP_PHYSICAL_ATTACK: 1]) sein. Bei Uebergeben einer 0 oder Weglassen
-  des Werts wird an Defend das Default '1' (da es Spells sind) uebergeben.
+  Das Mapping <sinfo> beschreibt den Spell fuer das im Gegner aufgerufene
+  SpellDefend() und Defend(). Es muss ein SI_SPELL fuer das Defend() im
+  Gegner enthalten. Etwaige SI_SKILLDAMAGE, SI_SKILLDAMAGE_TYPE, und
+  SI_CLOSURE werden im Mapping durch die Argumente <damage>, <dam_type> und
+  <func> ueberschrieben.
+  Es wird empfohlen, SI_MAGIC_TYPE zu nutzen, denn dann werden etwaige
+  magische Resistenzen des Ziels beruecksichtigt.
 
-  Wenn damage<=0 oder rate<0 oder keine Meldungen uebergeben werden, wird
-  der Spell NICHT eingetragen, sondern die Funktion bricht mit Rueckgabe
-  von 0 ab.
+  Frueher war das Argument <sinfo> nur das Mapping, was an Defend() uebergeben
+  wird unter in Skillinfomapping unter dem Key SI_SPELL liegt. Wenn <sinfo>
+  kein SI_SPELL enthaelt, wird aus Gruenden der Kompatibilitaet ein
+  Skillinfomapping konstruiert, welches das hier uebergebene <sinfo> unterhalb
+  des Schluessels SI_SPELL enthaelt: ([ SI_SPELL: sinfo])
+
+  Will man einen physischen Angriff ausloesen, MUSS in sinfo ein Mapping sein
+  und unter SI_SPELL ein Mapping mit dem Key SP_PHYSICAL_ATTACK (Wert != 0)
+  sein.
+  Bei Uebergeben einer 0 oder Weglassen von <sinfo> wird an Defend der Default
+  ([SP_PHYSICAL_ATTACK: 0]) (da es Spells sind) uebergeben.
+
+  Wenn damage < 0 oder rate <= 0, wird der Spell NICHT eingetragen, sondern
+  die Funktion bricht mit Rueckgabe von 0 ab. Ist damage==0, muss eine <func>
+  angegeben werden.
 
 BEISPIELE
 ---------
@@ -113,7 +132,7 @@ code-block::
            "Der Hexer piekst Dir in die Augen!",
            "Der Hexer piekst @WEM in die Augen!", ({DT_PIERCE}),
            "augen_stechen");
-  AddSpell(2, 5, (string)0, (string)0, (string*)0, "salto_mortalis");
+  AddSpell(2, 5, 0, 0, 0, "salto_mortalis");
 
   (Kleiner Feuerball mit 80% Wahrscheinlichkeit, riesiger mit 10%,
   "augen_stechen" mit 8%, "salto_mortalis" mit 2%)
@@ -151,8 +170,8 @@ code-block::
   AddSpell(100, 200+random(200),
     "Die kleine Ratte beisst Dich!\n",
     "@WER wird von einer kleinen Ratte gebissen!\n",
-    ({DT_PIERCE, DT_POISON}), (string)0,
-    ([SP_PHYSICAL_ATTACK:1]));
+    ({DT_PIERCE, DT_POISON}), 0,
+    ([ SI_SPELL: ([SP_PHYSICAL_ATTACK:1]) ]) );
 
   // #3 Selektive physische Angriffe (siehe auch man Defend_bsp):
   //    Will man erreichen, dass einige Ruestungen wirken, andere aber
@@ -167,9 +186,10 @@ code-block::
   AddSpell(20,200+random(200),
     "Die kleine Ratte beisst Dir blitzschnell in die Wade!\n",
     "@WER wird von einer kleinen Ratte in die Wade gebissen!\n",
-    ({DT_PIERCE, DT_POISON}), (string)0,
-    ([SP_PHYSICAL_ATTACK:1, SP_NO_ACTIVE_DEFENSE:1,
-    SP_REDUCE_ARMOUR: armours]));
+    ({DT_PIERCE, DT_POISON}), 0,
+    ([ SI_SPELL: ([SP_PHYSICAL_ATTACK:1, SP_NO_ACTIVE_DEFENSE:1,
+                   SP_REDUCE_ARMOUR: armours])
+     ]) );
 
   // SP_NO_ACTIVE_DEFENSE = 1 schaltet aktive Abwehr (Karate/Klerus) ab
   // SP_REDUCE_ARMOUR enthaelt eine Liste von Ruestungstypen mit ihren

@@ -125,16 +125,13 @@ static int _query_hb()
 
 
 #define SPELL_TOTALRATE 0
-#define SPELL_DAMAGE 1
+#define SPELL_SINFO 1
 #define SPELL_TEXT_FOR_ENEMY 2
 #define SPELL_TEXT_FOR_OTHERS 3
-#define SPELL_DAMTYPE 4
-#define SPELL_FUNC 5
-#define SPELL_ARG 6
 
 varargs int AddSpell(int rate, int damage,
   string|<int|string>* TextForEnemy, string|<int|string>* TextForOthers,
-  string|string* dam_type, string|closure func, int|mapping spellarg)
+  string|string* dam_type, string|closure func, int|mapping sinfo)
 {
   mixed *spells;
   int total_rates;
@@ -146,19 +143,29 @@ varargs int AddSpell(int rate, int damage,
   // int ist, weil wenn spellarg==0 ist der Default nicht-physischer Angriff
   // und bei spellarg!=0 auch. Nur mit einem mapping kann man einen phys.
   // Angriff erzeugen.
-  if (intp(spellarg))
-    spellarg = ([SP_PHYSICAL_ATTACK: 0]);
+  if (intp(sinfo))
+    sinfo = ([ SI_SPELL: ([SP_PHYSICAL_ATTACK: 0]) ]);
+  else
+  {
+    // wenn das sinfo-Mapping nicht den Key SI_SPELL enthaelt, gehen wir davon
+    // aus, dass es ein alter Aufrufer von AddSpell ist, welcher noch davon
+    // ausgeht, dass si_spell an AddSpell() uebergeben werden soll. In diesem
+    // Fall bauen wir ein sinfo und nehmen das uebergebene sinfo als SI_SPELL.
+    if (!member(sinfo,SI_SPELL))
+      sinfo = ([ SI_SPELL: sinfo ]);
+  }
+
+  sinfo[SI_SKILLDAMAGE] = damage;
 
   if(stringp(dam_type))
     dam_type=({dam_type});
   else if(!pointerp(dam_type))
   {
-    if(spellarg[SP_PHYSICAL_ATTACK])
+    if(sinfo[SI_SPELL][SP_PHYSICAL_ATTACK])
       dam_type=({DT_BLUDGEON});
     else
       dam_type=({DT_MAGIC});
   }
-
   foreach(string s : dam_type)
   {
     if(!VALID_DAMAGE_TYPE(s))
@@ -168,31 +175,31 @@ varargs int AddSpell(int rate, int damage,
         publish);
     }
   }
+  sinfo[SI_SKILLDAMAGE_TYPE] = dam_type;
+
+  if(!member(sinfo, SI_MAGIC_TYPE))
+    sinfo[SI_MAGIC_TYPE] = ({ MT_ANGRIFF });
 
   // Falls func ein String ist eine Closure erstellen und diese speichern.
-  if(stringp(func) && sizeof(func))
+  if(stringp(func))
   {
-    cl=symbol_function(func,this_object());
-    if(!closurep(cl))
+    if (sizeof(func))
     {
-      catch(raise_error(
-        "AddSpell(): Es konnte keine Closure fuer "+func+" erstellt werden.");
-        publish);
+      cl=symbol_function(func,this_object());
+      if(!closurep(cl))
+      {
+        catch(raise_error(
+          "AddSpell(): Es konnte keine Closure fuer "+func+" erstellt werden.");
+          publish);
+      }
     }
   }
   else
   {
-    // Leerstrings durch 0 ersetzen.
-    if(stringp(func))
-    {
-      cl=0;
-    }
-    else
-    {
-      cl=func;
-    }
+    cl=func;
   }
-  
+  sinfo[SI_CLOSURE] = cl;
+
   if(damage==0 && !closurep(cl))
   {
     catch(raise_error(
@@ -216,8 +223,8 @@ varargs int AddSpell(int rate, int damage,
     raise_error(
       "AddSpell(): Falsche Datentypen fuer TextForEnemy");
   }
-  
-  if(!sizeof(TextForOthers) || 
+
+  if(!sizeof(TextForOthers) ||
     (pointerp(TextForOthers) && !sizeof(TextForOthers[0])))
   {
     TextForOthers=0;
@@ -232,7 +239,6 @@ varargs int AddSpell(int rate, int damage,
     raise_error(
       "AddSpell(): Falsche Datentypen fuer TextForOthers");
   }
-  
 
   // Falls vorhanden, alte Syntax auf die von replace_personal() anpassen,
   // die im heart_beat() beim Ausgeben der Meldung verwendet wird.
@@ -247,14 +253,14 @@ varargs int AddSpell(int rate, int damage,
     TextForOthers[0] = regreplace(TextForOthers[0], "@WEM([^1-9QU])", "@WEM1\\1", 1);
     TextForOthers[0] = regreplace(TextForOthers[0], "@WEN([^1-9QU])", "@WEN1\\1", 1);
   }
-  total_rates=Query("npc:total_rates")+rate;
+
+  total_rates=Query("npc:total_rates", F_VALUE)+rate;
   spells=Query(P_SPELLS);
   if (!pointerp(spells))
     spells=({});
-  spells+=({({total_rates, damage, TextForEnemy, TextForOthers,
-              dam_type, cl, spellarg})});
+  spells+=({({total_rates, sinfo, TextForEnemy, TextForOthers})});
   Set(P_SPELLS,spells);
-  Set("npc:total_rates",total_rates);
+  Set("npc:total_rates",total_rates, F_VALUE);
   return 1;
 }
 
@@ -359,9 +365,12 @@ protected void heart_beat() {
       || (QueryProp(P_DISABLE_ATTACK)>0)
       || random(100)>Query(P_SPELLRATE))
     return;
-  r=random(Query("npc:total_rates"));
-  for (i=sizeof(spells)-1;(i>0 && spells[i-1][SPELL_TOTALRATE]>r);i--)
+  // Spell aussuchen, von oben runterlaufen, bis zum ersten Spell, dessen
+  // SPELL_TOTALRATE grosser ist als r.
+  r=random(Query("npc:total_rates", F_VALUE));
+  for (i=sizeof(spells)-1 ; (i>0 && spells[i-1][SPELL_TOTALRATE] > r); i--)
     ;
+
   <int|string>* akt_spell_mess=spells[i][SPELL_TEXT_FOR_ENEMY];
   // Nur, wenn ueberhaupt eine Meldung gesetzt wurde, muss diese verarbeitet
   // werden.
@@ -383,14 +392,17 @@ protected void heart_beat() {
       ({enemy,this_object()}),
       this_object());
   }
-  sinfo = deep_copy(spells[i][SPELL_ARG]);
-  if(!mappingp(sinfo))
-    sinfo=([ SI_MAGIC_TYPE :({ MT_ANGRIFF }) ]);
-  else if(!sinfo[SI_MAGIC_TYPE])
-    sinfo[ SI_MAGIC_TYPE]=({ MT_ANGRIFF });
+
+  // Tiefe Kopie, damit wir nach Herzenslust fuer diese Ausfuehrung
+  // manipulieren koennen und alle gerufenen Defend und Ruestung etc. nix
+  // dauerhaft in SI_SPELL kaputt machen koennen.
+  sinfo = deep_copy(spells[i][SPELL_SINFO]);
+  sinfo[SI_ENEMY] = enemy;
+
   if(!sinfo[SP_PHYSICAL_ATTACK] &&
      (enemy->SpellDefend(this_object(),sinfo) >
-      random(MAX_ABILITY+QueryProp(P_LEVEL)*50))){
+      random(MAX_ABILITY+QueryProp(P_LEVEL)*50)))
+  {
     enemy->ReceiveMsg(
       "Du wehrst den Spruch ab.",
       MT_NOTIFICATION,
@@ -403,25 +415,24 @@ protected void heart_beat() {
       ({ enemy, this_object()}));
     return ;
   }
-  int damage;
-  // Bei 0 sparen wir uns das Defend() und rufen nur die Funktion auf.
-  if(spells[i][SPELL_DAMAGE])
+  // Bei 0 sparen wir uns das Defend() und rufen nur weiter unter SI_CLOSURE auf.
+  if(sinfo[SI_SKILLDAMAGE])
   {
-    damage=random(spells[i][SPELL_DAMAGE])+1;
-    enemy->Defend(damage, spells[i][SPELL_DAMTYPE],
-      spells[i][SPELL_ARG],
-      this_object());
+    sinfo[SI_SKILLDAMAGE] = random(sinfo[SI_SKILLDAMAGE]) + 1;
+    enemy->Defend(sinfo[SI_SKILLDAMAGE], sinfo[SI_SKILLDAMAGE_TYPE],
+                  sinfo[SI_SPELL], this_object());
   }
 
   // Falls der Gegner (oder wir) im Defend stirbt, hier abbrechen
-  if ( !objectp(ME) || !objectp(enemy) 
+  if ( !objectp(ME) || !objectp(enemy)
       || enemy->QueryProp(P_GHOST) ) return;
-  
-  closure cl = spells[i][SPELL_FUNC];
+
+  closure cl = sinfo[SI_CLOSURE];
   if (cl)
   {
     if (closurep(cl))
-      catch(funcall(cl, enemy, damage, spells[i][SPELL_DAMTYPE]);publish);
+      catch(funcall(cl, enemy, sinfo[SI_SKILLDAMAGE],
+                    sinfo[SI_SKILLDAMAGE_TYPE]);publish);
     else
       raise_error(sprintf("P_SPELL defekt: SPELL_FUNC in Spell %i ist keine "
                           "Closure.\n", i));
