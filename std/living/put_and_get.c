@@ -578,7 +578,8 @@ private object *__find_objects(string *tokens, object env, int is_source)
 
     // is_source == 0: Objekt soll nicht bewegt werden ("topf auf herd")
     //              1: Objekt soll bewegt werden ("topf von herd")
-    //              2: intern
+    //              2: Kennzeichnet rekursiven Aufruf, falls Objekt bewegt
+    //                 werden soll.
 
     // ganz am Ende von den tokens steht ggf. der vom User gewuenschte Anfang
     // der Suche nache dem Objekt (z.B. "fackel aus truhe hier" oder "seil aus
