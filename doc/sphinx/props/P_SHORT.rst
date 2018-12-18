@@ -32,7 +32,7 @@ BESCHREIBUNG
      man dies nicht, sollte man das Objekt mit P_INVIS unsichtbar machen.
 
      Diese Property bestimmt die Ansicht des Objektes von aussen. Fuer die
-     Innen(kurz)ansicht von Raeumen muss man P_INT_LONG benutzen.
+     Innen(kurz)ansicht von Raeumen muss man P_INT_SHORT benutzen.
 
 BEMERKUNGEN
 -----------
