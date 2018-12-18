@@ -445,7 +445,7 @@ protected int _do_wear(string str, int silent, int all) {
 
   // Standard-Notfiy-Fail setzen.
   if (all)
-    notify_fail("Alles angezogen, was ging.\n");
+    notify_fail("Alles angezogen was ging.\n");
 
   // Ist diese Ruestung ueberhaupt gemeint? Bei "trage alles" ist dies
   // natuerlich immer der Fall
