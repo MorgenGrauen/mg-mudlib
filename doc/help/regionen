@@ -20,8 +20,8 @@ Hier also alle Regionen des Morgengrauens mit ihren Regionsmagiern:
    Seher         Zook
    Unterwelt     Rhovan, Zesstra (vertretungsweise in Abwesenheit eines RM)
    VLand         Bugfix, Esme, nur noch spiritus rector: Morgoth
-   Wald          Notstrom 
-   Wueste        Notstrom
+   Wald          NN 
+   Wueste        NN
 
 Wenn Du den Regionsmagiern einer Region eine Mail schreiben moechtest,
 so verwende am besten die Mail-Aliase "rm_<regionname>".
@@ -34,4 +34,4 @@ SIEHE AUCH:
   Gildenmagier
 
 ----------------------------------------------------------------------------
-Last modified: 2018-10-26 von Zook.
+Last modified: 2018-12-19 von Zook.
