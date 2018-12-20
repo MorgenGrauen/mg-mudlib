@@ -25,6 +25,7 @@ inherit "/std/container/light";
 inherit "/std/container/restrictions";
 inherit "/std/tray/description";
 inherit "/std/thing/envchk";
+inherit "/std/container/items";
 
 #include <properties.h>
 #include <wizlevels.h>
