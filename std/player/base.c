@@ -987,9 +987,9 @@ static int set_email(string str)
 static int self_delete()
 {
   string msg = sprintf("%s\n"
-    "Wenn Du Dich selbstloeschen willst, ist Dein Charakter UNWIDERRUFLICH"
-    "verloren. Es gibt KEINE Moeglichkeit, ihn wiederzuerschaffen. Solltest"
-    "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte"
+    "Wenn Du Dich selbstloeschen willst, ist Dein Charakter UNWIDERRUFLICH "
+    "verloren. Es gibt KEINE Moeglichkeit, ihn wiederzuerschaffen. Solltest "
+    "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte "
     "den Befehl 'spielpause'.\n"+
     "Fallst Du %s immer noch selbstloeschen willst, gib Dein Password "
     "ein.\n\n",
