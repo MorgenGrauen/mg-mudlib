@@ -190,7 +190,10 @@ string ChannelMessage(mixed* msg, int nonint)
     return channel_message;
 
   // Wenn GMCP sich um Uebertragung der Nachricht kuemmert, wird ReceiveMsg()
-  // nicht mehr aufgerufen.
+  // nicht mehr aufgerufen. getName leider nochmal aufrufen, weil GMCP den
+  // Namen im Nominativ braucht.
+  if (msg_type == MSG_GEMOTE)
+    sender_name = getName(sender, WER);
   if (GMCP_Channel(channel_message, channel, sender_name) != 1)
   {
     // Der Ebenenname muss in Kleinbuchstaben uebergeben werden, damit die
