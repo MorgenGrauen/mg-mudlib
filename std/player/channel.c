@@ -84,7 +84,7 @@ mixed RegisterChannels()
   c_status = 0;
   shortcut = QueryProp(P_CHANNEL_SHORT);
   SetProp(P_CHANNELS, map(QueryProp(P_CHANNELS) || ({}),
-	#'lower_case));
+    #'lower_case));
   err = filter(QueryProp(P_CHANNELS),
          symbol_function("join", CHMASTER),
          this_object());
@@ -135,15 +135,15 @@ varargs private string getName(mixed x, int fall) {
       // unsichtbare Objekte...
       int p = strstr(o, "$");
       if (p != -1) {
-	// Magier im Magiermodus kriegen den Realnamen, andere nicht.
-	if (IS_LEARNING(this_object()))
-	  return o[1..p-1];
-	else
-	  return o[p+1..];
+    // Magier im Magiermodus kriegen den Realnamen, andere nicht.
+    if (IS_LEARNING(this_object()))
+      return o[1..p-1];
+    else
+      return o[p+1..];
       }
       else
-	// doch nicht unsichtbar
-	return (fall == WESSEN ? o+"s" : o);
+    // doch nicht unsichtbar
+    return (fall == WESSEN ? o+"s" : o);
     }
     else
       // nicht unsichtbar
@@ -233,7 +233,7 @@ private mixed getChannel(string ch)
 #ifndef DEBUG
 #define DEBUG(x)        if (funcall(symbol_function('find_player),"zesstra"))\
           tell_object(funcall(symbol_function('find_player),"zesstra"),\
-	              "MDBG: "+x+"\n")
+                  "MDBG: "+x+"\n")
 #endif
 int ChannelParser(string args)
 {
@@ -259,15 +259,19 @@ int ChannelParser(string args)
     else
       tmp = cmd[1];
     if(cmd[1] != "?" && cmd[1] != "!")
-      if(pointerp(ch = getChannel(tmp)))
+    {
+      ch = getChannel(tmp);
+      if(pointerp(ch))
       {
         notify_fail("Diese Angabe war nicht eindeutig! "
                     "Folgende Ebenen passen:\n"
                     +implode(ch, ", ")+"\n");
         return 0;
       }
-      else if(!ch) return (notify_fail("Die Ebene '"+tmp
-                                       +"' gibt es nicht!\n"), 0);
+      else if(!ch)
+        return (notify_fail("Die Ebene '"+tmp
+                            + "' gibt es nicht!\n"), 0);
+    }
     //DEBUG(sprintf("ChanCmd: %O\n",cmd));
     if (sizeof(cmd[1])) {
       switch(cmd[1][<1]) {
@@ -307,6 +311,7 @@ int ChannelParser(string args)
     {
       mapping l;
       if(mappingp(l = CHMASTER->list(this_object())))
+      {
         if(stringp(ch) && sizeof(ch) && pointerp(l[ch = lower_case(ch)]))
         {
           int c; object o; string n; string *m;
@@ -336,13 +341,15 @@ int ChannelParser(string args)
               + implode(list, "");
           More(txt);
         }
+      }
       return 1;
+
     }
     case '*':
     {
       mixed hist; int amount;
       if(!pointerp(hist = CHMASTER->history(ch, this_object())) 
-		      || !sizeof(hist))
+              || !sizeof(hist))
       {
         write("Es ist keine Geschichte fuer '"+ch+"' verfuegbar.\n");
         return 1;
@@ -431,7 +438,7 @@ int ChannelAdmin(string args)
     "           ebene beschreibung <Name> <Beschreibung>\n" : "")
         +(IS_ARCH(this_object()) ?
           "           ebene kill <Name>\n"
-	  "           ebene clear <Name>\n": ""));
+      "           ebene clear <Name>\n": ""));
   if(!args || !sizeof(args)) return 0;
   if(sscanf(args, "kill %s", n) && IS_ARCH(this_object()))
   {
