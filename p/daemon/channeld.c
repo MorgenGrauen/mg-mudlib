@@ -609,7 +609,7 @@ mixed remove(string ch, object pl)
                        "QueryProp", P_CHANNELS);
     map(channels[lower_case(ch)][I_MEMBER],
           function mixed (object listener) {
-            string* chans = listener->QueryProp(P_CHANNELS)
+            string* chans = listener->QueryProp(P_CHANNELS);
             chans -= ({lower_case(ch)});
             listener->SetProp(P_CHANNELS, chans);
           });
