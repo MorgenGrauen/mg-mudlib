@@ -66,9 +66,8 @@ public varargs void exit(object liv, object dest)
 
 static void deep_destruct( object ob )
 {
-    if ( objectp(ob) && environment(ob) == this_object() )
-        filter( deep_inventory(ob) + ({ ob }),
-                      lambda( ({'x/*'*/}), ({#'destruct, 'x}) ) );
+  if ( objectp(ob) && environment(ob) == this_object() )
+    filter(deep_inventory(ob) + ({ ob }), #'destruct);
 }
 
 public varargs void init(object oldenv)
