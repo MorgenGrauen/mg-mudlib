@@ -17,15 +17,17 @@
 #include <wizlevels.h>
 #include <player/base.h>
 #include <userinfo.h>
+#include <config.h>
 
-#define HOME(x) (__PATH__(0)+x)
+#define DBPATH  "/"LIBDATADIR"/"SECUREDIR"/ARCH/second.sqlite"
+
 #define ZDEBUG(x) tell_room("/players/zesstra/workroom",\
                     sprintf("second: %O\n",x));
 
 protected void create()
 {
   seteuid(getuid());
-  if (sl_open(HOME("ARCH/second.sqlite")) != 1)
+  if (sl_open(DBPATH) != 1)
   {
     raise_error("Datenbank konnte nicht geoeffnet werden.\n");
   }
@@ -63,7 +65,7 @@ public void listen(string eid, object trigob, mixed data)
   if (stringp(testie)
       && strstr(testie,"Gilde")==-1)
   {
-    mixed plinfo = master()->get_userinfo(testie);
+    mixed plinfo = master()->get_userinfo(lower_case(testie));
     if (pointerp(plinfo))
     {
       sl_exec("INSERT OR REPLACE INTO testies(name, magier, lastlogin) "
@@ -77,7 +79,7 @@ public void listen(string eid, object trigob, mixed data)
   mixed erstie=trigob->QueryProp(P_SECOND);
   if (stringp(erstie))
   {
-    mixed plinfo = master()->get_userinfo(erstie);
+    mixed plinfo = master()->get_userinfo(lower_case(erstie));
     if (pointerp(plinfo))
     {
       sl_exec("INSERT OR REPLACE INTO zweities(uuid, name, erstieuuid, erstie) "
