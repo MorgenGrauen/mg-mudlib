@@ -43,7 +43,7 @@ in den Befehl setmout eingebaut:
 Nunmehr ist es moeglich, den Text 'nach (Richtung)' nicht mehr nur am Ende,
 sondern irgendwo im Text erscheinen zu lassen: dann muss im Text der
 out-message ein # erscheinen, die dann durch 'nach (Richtung)' ersetzt wird.
-Unterdruecken kannst Du die Richtungsangabe allerdings nicht, wenn Du das #r
+Unterdruecken kannst Du die Richtungsangabe allerdings nicht, wenn Du das #
 weglaesst, wird diese Angabe einfach hinten angehaengt..
 
 Hilfe dazu liefern aber natuerlich auch wiederum die Seherhilfeseiten unter
