@@ -65,7 +65,8 @@ public void listen(string eid, object trigob, mixed data)
   if (stringp(testie)
       && strstr(testie,"Gilde")==-1)
   {
-    mixed plinfo = master()->get_userinfo(lower_case(testie));
+    testie=lower_case(testie);
+    mixed plinfo = master()->get_userinfo(testie);
     if (pointerp(plinfo))
     {
       sl_exec("INSERT OR REPLACE INTO testies(name, magier, lastlogin) "
@@ -79,7 +80,8 @@ public void listen(string eid, object trigob, mixed data)
   mixed erstie=trigob->QueryProp(P_SECOND);
   if (stringp(erstie))
   {
-    mixed plinfo = master()->get_userinfo(lower_case(erstie));
+    erstie=lower_case(erstie);
+    mixed plinfo = master()->get_userinfo(erstie);
     if (pointerp(plinfo))
     {
       sl_exec("INSERT OR REPLACE INTO zweities(uuid, name, erstieuuid, erstie) "
