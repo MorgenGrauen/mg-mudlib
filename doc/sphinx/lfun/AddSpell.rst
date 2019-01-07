@@ -44,7 +44,7 @@ ARGUMENTE
   sinfo         - Skillinfomapping, muss SI_SPELL mit den SP_* fuer
                   den Aufruf von Defend() enthalten
                   Default ist ([SI_SPELL: ([SP_PHYSICAL_ATTACK: 0]),
-                                SI_MAGIC_TYPE: ({ MT_ANGRIFF }) ])
+                  SI_MAGIC_TYPE: ({ MT_ANGRIFF }) ])
 
 BESCHREIBUNG
 ------------
