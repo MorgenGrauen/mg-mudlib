@@ -18,7 +18,7 @@ BESCHREIBUNG
 ------------
 ::
 
-    Enthaelt ein mapping mit den zu pruefenden Einschraenkungen.
+    Enthaelt ein Mapping mit den zu pruefenden Einschraenkungen.
 
     In dieser Property lassen sich Restriktionen setzen, die vor dem
     Zuecken einer Waffe / Anziehen einer Ruestung oder Kleidung geprueft
@@ -26,104 +26,24 @@ BESCHREIBUNG
     vorhandene WieldFunc / WearFunc zuzugreifen.
 
     Die Auswertung erfolgt ueber den Aufruf von check_restrictions()
-    in /std/restriction_checker.c
+    in /std/restriction_checker.c per call_other().
 
-    Folgende Keys werden in dem Mapping ausgewertet:
-
-    P_LEVEL
-      Mindeststufe, die das Lebewesen besitzen muss, um die Aktion
-      auszufuehren.
-    P_GUILD_LEVEL
-      Gildenlevel, das das Lebewesen mindestens erreicht haben muss, um die
-      Aktion auszufuehren.
-    SR_SEER
-      Ist gesetzt, wenn das Lebewesen Seher sein muss.
-      Auswertung nur fuer Interactives, NSC ignorieren das Flag.
-    P_XP
-      Mindestmenge an Erfahrungspunkten, die ein Lebewesen besitzen muss,
-      um die Aktion auszufuehren.
-    P_QP
-      Mindestmenge an Abenteuerpunkten, die das Lebewesen haben muss.
-    P_ALCOHOL
-      Menge an Alkohol, unter der der Alkoholspiegel des Lebewesen liegen
-      muss, um die Aktion noch ausfuehren zu koennen.
-    P_DRINK
-      Menge an Fluessigkeit, unter der der Fluessigkeitsspiegel des
-      Lebewesen liegen muss, um die Aktion noch ausfuehren zu koennen.
-    P_FOOD
-      Beinhaltet die Menge an Nahrung, unter der der Nahrungsspiegel des
-      Spielers liegen muss, um die Aktion noch ausfuehren zu koennen.
-    P_DEAF
-      Ist gesetzt, falls der Spieler nicht taub sein darf.
-    P_FROG
-      Ist gesetzt, falls der Spieler kein Frosch sein darf.
-    P_BLIND
-      Ist gesetzt, falls der Spieler nicht blind sein darf.
-      Achtung: das ist nicht gleichbedeutend mit dem Umstand, dass er evtl.
-      nichts mehr sehen kann. Auch andere Gruende (zum Beispiel Dunkelheit)
-      koennen bewirken, dass ein Spieler nichts mehr sieht.
-    A_INT, A_DEX, A_CON, A_STR
-      Jeweilige Mindesthoehe eines Attribut, um eine Aktion ausfuehren zu
-      koennen.
-    SR_BAD, SR_GOOD
-      Gibt an, wie [minimal] boese bzw. wie [maximal] gut ein Charakter sein
-      darf, um eine Aktion ausfuehren zu koennen.
-    SR_MIN_SIZE, SR_MAX_SIZE
-      Gibt die minimale, bzw. die maximale Groesse an, die ein Charakter
-      maximal haben darf, um eine Aktion ausfuehren zu koennen.
-    SR_FREE_HANDS
-      Gibt an, wieviele freie Haende ein Charakter fuer diese Aktion
-      besitzen muss.
-    SR_EXCLUDE_RACE
-      Mitglieder aller in dieser Liste aufgefuehrten Rassen koennen
-      diese Aktion nicht ausfuehren.
-    SR_INCLUDE_RACE
-      Mitglieder aller NICHT in dieser Liste aufgefuehrten Rassen koennen
-      diese Aktion nicht ausfuehren.
-    SM_RACE
-      Hier kann pro Rasse ein Mapping mit besonderen (nur) fuer diese Rasse
-      geltenden Einschraenkungen vorgenommen werden. Als Keys sind die
-      in dieser Manpage beschriebenen Keys erlaubt, wobei SM_RACE nicht
-      rekursiv ausgewertet wird.
-      Der Rassenname ist gross geschrieben und "*" steht fuer alle Rassen.
-    SR_EXCLUDE_GUILD
-    SR_INCLUDE_GUILD
-      Diese beiden Keys verhalten sich wie SR_*_RACE, nur dass hier Gilden
-      genannt werden.
-    SR_FUN
-      Hier kann eine Funktion in verschiedenen Formen zum Pruefen der
-      Restriktionen angegeben werden, siehe execute_anything().
-      Das kann nuetzlich sein, um andere Restriktionen zu pruefen,
-      wie das Bestehen von Miniquests oder andere Faehigkeiten/Flags.
-      Ist der Test nicht bestanden, gibt die Funktion einen String zurueck.
-    SR_PROP
-      Hier kann ein Mapping mit Properties und zugehoerigen Werten angegeben
-      werden, die jeweils auf Identitaet geprueft werden. Zusaetzlich sollte
-      eine Meldung angegeben werden, die als Fehlermeldung ausgegeben wird,
-      wenn der Spieler die Bedingung nicht erfuellt. Es sollte immer eine
-      passende Meldung fuer den Spieler eingebaut werden. Beispiel:
-      ([ SR_PROP: ([P_AUSGANG_ENTDECKT: 1; "Dein Schwert fluestert "
-          "veraergert: Ich werde Dir erst dann zu Diensten sein, wenn Du "
-          "Dich als wuerdig erwiesen hast!"]) ])
-      Aufgrund der Meldung wird empfohlen, SR_PROP nicht in Restriktionen 
-      einzusetzen, die massenweise in Savefiles landen (z.B. 
-      Spielersavefiles).
-    SR_QUEST
-      Hier kann ein String-Array mit den Namen (Keys) der Quest(s) angegeben
-      werden, die der Spieler bestanden haben muss, um die Aktion ausfuehren
-      zu koennen.
-    SR_MINIQUEST
-      Hier kann entweder ein String-Array mit den Ladenamen der vergebenden
-      Objekte oder ein Int-Array mit den Index-Nummern (IDs) der
-      Miniquest(s) (empfohlen!) angegeben werden, die der Spieler bestanden
-      haben muss, um die Aktion ausfuehren zu koennen.
+    Die im Mapping verwendbaren Eintraege finden sich in der Manpage
+    zu check_restrictions().
+    
+    Die Funktionalitaet ist identisch mit Ausnahme von SR_FUN. Bei
+    Verwendung von SR_FUN im Mapping wird die Funktion, wenn sie als
+    Funktionsname angegeben wird, immer am aufrufenden Objekt gerufen.
+    Soll die Funktion an einem anderen Objekt gerufen werden, ist eine
+    der beiden alternativen Formen (Closure oder Array) zu verwenden,
+    um den Funktionsnamen anzugeben.
 
 BEMERKUNGEN
 -----------
 ::
 
     Diese Property eignet sich hervorragend dafuer, einige Grundbedingungen
-    fuer das Nutzen der Waffe / Ruestung / Kleidung zu stellen ohne gleich
+    fuer das Nutzen der Waffe / Ruestung / Kleidung zu stellen, ohne gleich
     eine Wield- oder WearFunc setzen und auswerten zu muessen.
 
     Denkbar waere der Einsatz bei hochwertigen Waffen / Ruestungen / Kleidung,
@@ -146,11 +66,12 @@ BEISPIEL
     SetProp(P_RESTRICTIONS, ([ P_LEVEL: 10, P_DEAF: 1, P_FOOD: 45,
       SR_PROP: ([P_AUSGANG_GEFUNDEN:1]), SR_QUEST:({"Diamond Club"}) ]));
 
+
 SIEHE AUCH
 ----------
 ::
 
-    check_restrictions(L)
+    check_restrictions(L), execute_anything(L)
     WieldFunc(L), WearFunc(L), RemoveFunc(L), UnwieldFunc(L),
     P_WIELD_FUNC, P_WEAR_FUNC, P_REMOVE_FUNC, P_UNWIELD_FUNC
     /std/armour/wear.c, /std/weapon/combat.c, clothing, armours, weapon
@@ -159,5 +80,5 @@ LETZTE AeNDERUNG
 ----------------
 ::
 
-03. Januar 2014, Arathorn
+    03. Januar 2014, Arathorn
 

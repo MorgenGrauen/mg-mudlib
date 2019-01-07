@@ -44,7 +44,8 @@ BEMERKUNGEN
     NIEMALS solchen Code einfach KOPIEREN. Spaeter muss nur irgendwer
     eurem alten Code hinterherraeumen.
 
-Aktuelle Liste der pruefbaren Parameter:
+    Aktuelle Liste der pruefbaren Parameter:
+
     P_LEVEL
       Mindeststufe, die das Lebewesen besitzen muss, um die Aktion
       auszufuehren.
@@ -106,11 +107,28 @@ Aktuelle Liste der pruefbaren Parameter:
       Diese beiden Keys verhalten sich wie SR_*_RACE, nur dass hier Gilden
       genannt werden.
     SR_FUN
-      Hier kann eine Funktion in verschiedenen Formen zum Pruefen der
-      Restriktionen angegeben werden, siehe execute_anything().
-      Das kann nuetzlich sein, um andere Restriktionen zu pruefen,
-      wie das Bestehen von Miniquests oder andere Faehigkeiten/Flags.
-      Ist der Test nicht bestanden, gibt die Funktion einen String zurueck.
+      Hier kann eine Funktion angegeben werden, die aufgerufen wird, um sie
+      die Restriktionen zu pruefen zu lassen. Folgende Formen sind moeglich:
+      - Funktionsname als String; Funktion wird an dem Objekt gerufen, das
+        die Restriktion prueft, d.h. an der Ruestung/Waffe/Kleidung. Soll
+        die Funktion an einem anderen Objekt gerufen werden, ist eine
+        der beiden alternativen Formen zu verwenden.
+      - eine Closure, wird per funcall() gerufen
+      - ein Array mit dem folgenden Aufbau:
+        ({ Objekt/Objektname, Funktionsname, arg_1, arg_2, ... , arg_n })
+     
+      Der aufgerufenen Funktion wird das Spielerobjekt immer als erstes
+      Argument uebergeben, d.h. bei der Array-Form ggf. vor dem ersten
+      Extra-Argument arg_1 eingeschoben.
+      SR_FUN kann nuetzlich sein, um Restriktionen zu pruefen, die sich mit
+      den anderen Optionen nicht abbilden lassen.
+      Ist der Test nicht bestanden, muss die Funktion einen String zurueck-
+      geben, ansonsten 0.
+      Eine Besonderheit besteht beim Aufruf per call_other(), d.h. wenn
+      restriction_checker.c nicht geerbt wurde und nur ein Funktionsname
+      uebergeben wird. In diesem Fall, der auch bei Verwendung von
+      P_RESTRICTIONS zum Tragen kommt, wird die Funktion immer am
+      aufrufenden Objekt, d.h. previous_object(), gerufen.
     SR_PROP
       Hier kann ein Mapping mit Properties und zugehoerigen Werten angegeben
       werden, die jeweils auf Identitaet geprueft werden. Zusaetzlich sollte
