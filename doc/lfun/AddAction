@@ -3,10 +3,6 @@ AddAction()
 ***********
 
 
-AddAction(L)
-============
-
-
 FUNKTION
 ========
 
@@ -22,24 +18,36 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   fun        zu rufende Methode im Spieler oder eine Closure
-   cmd        ausloesendes Kommandoverb
-   flag       unscharf ausfuehren
-   lvl        ab welchem (Magierlevel) funktioniert das Kommando
+   fun
+      zu rufende Methode im Spieler oder eine Closure
+
+   cmd
+      ausloesendes Kommandoverb
+
+   flag
+      unscharf ausfuehren
+
+   lvl
+      ab welchem (Magierlevel) funktioniert das Kommando
 
 
 BESCHREIBUNG
 ============
 
-   Dem Spieler wird ein neues Kommando definiert. Dieses kann eine Methode
-   in ihm sein, so wie bei allen Spielerkommandos ueblich, kann aber auch
-   eine Closure (Lfun-Closure oder Lambda) enthalten.
+   Vorweg: Da es keine (risikolose) Moeglichkeit gibt, ein so
+   definiertes Kommando auch wieder zu entfernen, wird von der
+   Verwendung eher abgeraten. Es sei denn, ihr wisst, dass euer
+   Kommando nicht wieder (ohne ende/reboot) entfernt werden soll.
 
-   Mittels "flag" kann man die Kommandoerkennung unscharf halten, d.h. wie
-   bei AddCmd(L) und add_action(E) wird ein 'cmd' bei 'flag = 1' auch
-   schon von Praefix-Strings (hier ohne Leerzeichen) getriggert:
-   AddAction([...], "muh", 1, 0) wird zB auch von 'muhtens' oder 'muh4'
-   ausgeloest.
+   Dem Spieler wird ein neues Kommando definiert. Dieses kann eine
+   Methode in ihm sein, so wie bei allen Spielerkommandos ueblich,
+   kann aber auch eine Closure (Lfun-Closure oder Lambda) enthalten.
+
+   Mittels "flag" kann man die Kommandoerkennung unscharf halten, d.h.
+   wie bei AddCmd(L) und add_action(E) wird ein 'cmd' bei 'flag = 1'
+   auch schon von Praefix-Strings (hier ohne Leerzeichen) getriggert:
+   AddAction([...], "muh", 1, 0) wird zB auch von 'muhtens' oder
+   'muh4' ausgeloest.
 
    Mit "lvl" begrenzt man die Ausfuehrbarkeit. Spieler haben ein
    Magierlevel von 0, Seher von 1.
@@ -52,11 +60,13 @@ BESCHREIBUNG
 BEMERKUNGEN
 ===========
 
-   - es gibt _noch_ kein RemoveAction! Per Hand in P_LOCALCMDS editieren
-     kann zu ernsten Fehlern fuehren.
-   - echte Spielerkommandos kann man damit _nicht_ ueberschreiben,
+   * es gibt _noch_ kein RemoveAction! Per Hand in P_LOCALCMDS
+     editieren kann zu ernsten Fehlern fuehren.
+
+   * echte Spielerkommandos kann man damit _nicht_ ueberschreiben,
      ein AddAction(...,"sag",1,0); funktioniert nicht
-   - ein generelles AddAction(...,"",1,0); geht nicht
+
+   * ein generelles AddAction(...,"",1,0); geht nicht
 
 
 BEISPIELE
@@ -69,7 +79,6 @@ BEISPIELE
    write(break_string("Wann immer du jetzt das Kommando \"knorfula\" "
                       "eingibst, werden dir Mysterien enthuellt!",78));
    ...
-
    // im Objekt "knorfula" ...
    int zeige_mysterium(string str) {
      string myst;
@@ -95,10 +104,19 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-                      P_LOCALCMDS
-   Fehlermeldungen:   notify_fail(E), _notify_fail(E)
-   Argumentstring:    query_verb(E), _unparsed_args(L)
-   Sonstiges:         replace_personal(E), enable_commands(E)
-   Alternativen:      AddCmd(L), add_action(E)
+   Properties:
+      P_LOCALCMDS
+
+   Fehlermeldungen:
+      *../efun/notify_fail*, _notify_fail()
+
+   Argumentstring:
+      *../efun/query_verb*, _unparsed_args()
+
+   Sonstiges:
+      replace_personal(), *../efun/enable_commands*
+
+   Alternativen:
+      AddCmd(), *../efun/add_action*
 
 24. Maerz 2004 Gloinson

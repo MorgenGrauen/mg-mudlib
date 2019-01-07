@@ -15,12 +15,15 @@ make text
 
 cd $MTEXTDIR
 SOURCES=`find . -type f -name \*.txt`
+umask o+rx
 for FILE in $SOURCES
 do
 #  echo "Processing $FILE..."
   DIR=`dirname ${FILE}`
   BASE=`basename ${FILE} .txt`
   mkdir -p ${MMANDIR}/${DIR}
+#chmod o+rx ${MMANDIR}/${DIR}
   cp -a $FILE ${MMANDIR}/${DIR}/${BASE}
+#  chmod o+r ${MMANDIR}/${DIR}/${BASE}
 done
 

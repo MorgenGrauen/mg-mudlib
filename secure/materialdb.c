@@ -679,10 +679,11 @@ private mapping convMatId(string s) {
   }
   return m;
 }
+
 private string* convMatNames(string s) {
-  string* names;
-  names = filter(explode(s, "\""),
-                       lambda( ({'x}), ({#'>, ({#'sizeof, 'x}), 1}) ));
+  string* names = filter(explode(s, "\""), function int (string x) { 
+                            return sizeof(x)>1;
+                          });
   if (sizeof(names)<1)
     names=0;
   else {
@@ -695,6 +696,7 @@ private string* convMatNames(string s) {
   }
   return names;
 }
+
 private int convMatGender(string s) {
   int gender;
   s = lowerstring(s);
