@@ -234,7 +234,8 @@ static int reise(string str)
  
 
       dstr = filter(ship, function int (object x) {
-                return (environment(x) == environment() && x->short());
+                return (environment(x) == environment() &&
+                        stringp(x->short()));
               });
 
       if (sizeof(dstr))
@@ -367,7 +368,8 @@ static int reise(string str)
            +_traveller(map_objects(ship, "name", WEM))+" gelangen.",78));
 
       dstr = filter(ship, function int (object x) {
-                return (environment(x) == environment() && x->short());
+                return (environment(x) == environment() &&
+                        stringp(x->short()));
               });
 
       if (sizeof(dstr))
@@ -465,7 +467,8 @@ static int reise(string str)
                +_traveller(map_objects(ship,"name",WER))+" sein.\n");
 
       dstr = filter(ship, function int (object x) {
-                return (environment(x) == environment() && x->short());
+                return (environment(x) == environment() &&
+                        stringp(x->short()));
               });
 
       if (sizeof(dstr))
