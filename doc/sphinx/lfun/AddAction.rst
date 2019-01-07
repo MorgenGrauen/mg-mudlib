@@ -1,34 +1,30 @@
 AddAction()
 ===========
 
-AddAction(L)
-------------
-::
-
 FUNKTION
 --------
-::
 
      varargs void AddAction(mixed fun, mixed cmd, int flag, int lvl);
 
 DEFINIERT IN
 ------------
-::
 
      /std/player/command.c
 
 ARGUMENTE
 ---------
-::
 
-     fun	zu rufende Methode im Spieler oder eine Closure
-     cmd	ausloesendes Kommandoverb
-     flag	unscharf ausfuehren
-     lvl	ab welchem (Magierlevel) funktioniert das Kommando
+     fun
+       zu rufende Methode im Spieler oder eine Closure
+     cmd
+       ausloesendes Kommandoverb
+     flag
+       unscharf ausfuehren
+     lvl
+       ab welchem (Magierlevel) funktioniert das Kommando
 
 BESCHREIBUNG
 ------------
-::
      
      Vorweg: Da es keine (risikolose) Moeglichkeit gibt, ein so definiertes
      Kommando auch wieder zu entfernen, wird von der Verwendung eher
@@ -54,7 +50,6 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
-::
 
      - es gibt _noch_ kein RemoveAction! Per Hand in P_LOCALCMDS editieren
        kann zu ernsten Fehlern fuehren.
@@ -64,7 +59,8 @@ BEMERKUNGEN
 
 BEISPIELE
 ---------
-::
+
+.. code-block:: pike
 
      ...
      this_player()->AddAction(symbol_function("zeige_mysterium",
@@ -73,7 +69,6 @@ BEISPIELE
      write(break_string("Wann immer du jetzt das Kommando \"knorfula\" "
 			"eingibst, werden dir Mysterien enthuellt!",78));
      ...
-
      // im Objekt "knorfula" ...
      int zeige_mysterium(string str) {
        string myst;
@@ -95,15 +90,20 @@ BEISPIELE
        return 1;
      }
 
+
 SIEHE AUCH
 ----------
-::
 
-			P_LOCALCMDS
-     Fehlermeldungen:	notify_fail(E), _notify_fail(E)
-     Argumentstring:	query_verb(E), _unparsed_args(L)
-     Sonstiges:		replace_personal(E), enable_commands(E)
-     Alternativen:	AddCmd(L), add_action(E)
+    Properties:
+      :doc:`../props/P_LOCALCMDS`
+    Fehlermeldungen:
+      :doc:`../efun/notify_fail`, :doc:`../sefun/_notify_fail`
+    Argumentstring:
+      :doc:`../efun/query_verb`, :doc:`_unparsed_args`
+    Sonstiges:
+      :doc:`../sefun/replace_personal`, :doc:`../efun/enable_commands`
+    Alternativen:
+      :doc:`AddCmd`, :doc:`../efun/add_action`
 
 24. Maerz 2004 Gloinson
 
