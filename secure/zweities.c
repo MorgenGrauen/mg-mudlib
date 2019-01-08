@@ -153,6 +153,8 @@ public varargs string* QueryZweities(object erstie)
 
 public varargs string QueryFamilie(object pl)
 {
+  if (!pl || !query_once_interactive(pl))
+    return 0;
   string erstie = get_erstie_data("erstieuuid",
                                   pl || previous_object());
   // Wenn !erstie, dann ist pl kein Zweitie, also ist er selber erstie
