@@ -166,3 +166,43 @@ public varargs string QueryFamilie(object pl)
   return erstie;
 }
 
+public string SetFamilie(object|string pl, string familie)
+{
+  if (!ARCH_SECURITY)
+    return 0;
+
+  // Wenn Spielerobjekt, UUID ermitteln
+  if (objectp(pl) && query_once_interactive(pl))
+    pl = getuuid(pl);
+
+  sl_exec("INSERT OR REPLACE INTO familien(erstieuuid, familie) "
+          "VALUES(?1, ?2);", pl, familie);
+
+  mixed tmp = sl_exec("SELECT familie FROM familien WHERE "
+                      "erstieuuid=?1", pl);
+  if (sizeof(tmp))
+    return tmp[0][0];
+
+  return 0;
+}
+
+public int DeleteFamilie(object|string pl)
+{
+  if (!ARCH_SECURITY)
+    return 0;
+
+  // Wenn Spielerobjekt, UUID ermitteln
+  if (objectp(pl) && query_once_interactive(pl))
+    pl = getuuid(pl);
+
+  sl_exec("DELETE FROM familien WHERE erstieuuid=?1;",
+          pl);
+
+  mixed tmp = sl_exec("SELECT familie FROM familien WHERE "
+                      "erstieuuid=?1", pl);
+  if (sizeof(tmp))
+    return -1;
+
+  return 1;
+}
+
