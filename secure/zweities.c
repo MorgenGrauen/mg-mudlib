@@ -206,3 +206,41 @@ public int DeleteFamilie(object|string pl)
   return 1;
 }
 
+public int DeleteZweitie(object|string pl)
+{
+  if (!ARCH_SECURITY)
+    return 0;
+
+  // Wenn Spielerobjekt, UUID ermitteln
+  if (objectp(pl) && query_once_interactive(pl))
+    pl = getuuid(pl);
+
+  sl_exec("DELETE FROM zweities WHERE uuid=?1;", pl);
+
+  mixed tmp = sl_exec("SELECT name FROM zweities WHERE "
+                      "uuid=?1", pl);
+  if (sizeof(tmp))
+    return -1;
+
+  return 1;
+}
+
+public int DeleteTestie(object|string pl)
+{
+  if (!ARCH_SECURITY)
+    return 0;
+
+  // Wenn Spielerobjekt, UID ermitteln
+  if (objectp(pl) && query_once_interactive(pl))
+    pl = getuid(pl);
+
+  sl_exec("DELETE FROM testies WHERE name=?1;", pl);
+
+  mixed tmp = sl_exec("SELECT magier FROM testies WHERE "
+                      "name=?1", pl);
+  if (sizeof(tmp))
+    return -1;
+
+  return 1;
+}
+

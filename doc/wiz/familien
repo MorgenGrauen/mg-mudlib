@@ -1,6 +1,9 @@
 FAMILIEN
 ========
 
+BESCHREIBUNG
+------------
+
 Eine Familie umfasst den Erstie und alle Zweities, sprich alle diese haben den
 gleichen "Familiennamen". Dieser Name ist in der Regel die UUID des Ersties
 dieser Familie. Falls aber der Erstie sich aendern sollte (z.B. Magierwerdung
@@ -25,6 +28,9 @@ den Spieler, aber nicht fuer den Char individuell sein sollen. Sprich:
 personalisiert man irgendwas ueber die Familie, koennen alle Chars dieser
 Familie das irgendwas nutzen.
 
+VERWALTUNG
+----------
+
 Wenn sich der Erstie aendert, aber die Familie aller Zweities erhalten bleiben
 soll (z.B. weil sich der Erstie innerhalb der Familie wegen Magierwerdung
 aendert), muss dies in der Familienverwaltung hinterlegt werden, indem fuer
@@ -36,6 +42,10 @@ alice_654321. Die Familie soll aber weiterhin bert_123456 sein:
 # xcall /secure/zweities->SetFamilie("alice_654321, "bert_123456")
 Ein solcher expliziter Familieneintrag kann wieder geloescht werden:
 # xcall /secure/zweities->DeleteFamilie("alice_654321")
+
+EM+ koennen Zweities wieder aus der Datenbank loeschen (UUID angeben!):
+# xcall /secure/zweities->DeleteZweitie("bert_12345")
+
 
 LETZTE AeNDERUNG:
   8.1.2019, Zesstra
