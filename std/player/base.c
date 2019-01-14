@@ -4263,6 +4263,14 @@ int telnet_cmd(string str) {
       return set_keep_alive(newargs);
     case "rttime":
       return print_telnet_rttime();
+    case "tls":
+      if (tls_query_connection_info(ME) != 0)
+        tell_object(ME,
+            "Deine Verbindung zum Morgengrauen ist TLS-verschluesselt.\n");
+      else
+        tell_object(ME,
+            "Deine Verbindung zum Morgengrauen ist nicht verschluesselt.\n");
+      return 1;
   }
   return 0;
 }
