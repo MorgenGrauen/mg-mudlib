@@ -140,7 +140,7 @@ static int uses_ssl(object ob)
   if(!this_interactive() || !IS_LEARNER(this_interactive()))
     return 0;
 #if __EFUN_DEFINED__(tls_query_connection_info)
-  return tls_query_connection_info(ob) != 0;
+  return tls_query_connection_state(ob) > 0;
 #else
   return 0;
 #endif
