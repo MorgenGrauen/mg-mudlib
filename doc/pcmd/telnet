@@ -26,9 +26,12 @@ telnet
     * rttime
       Ausgabe der letzten gemessenen "round-trip time" vom MG zum Client
       in Mikrosekunden (1s == 1000000 Mikrosekunden)
+    * tls
+      Zeigt an, ob die Verbindung zwischen Client und MG mit TLS
+      verschluesselt ist, so dass auf dem Weg niemand mitlesen kann.
 
  SIEHE AUCH:
     telnegs, telnet keepalive, telnet gmcp
 
  LETZTE AeNDERUNG:
-    03.02.2013, Zesstra
+    15.01.2018, Zesstra
