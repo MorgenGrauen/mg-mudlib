@@ -294,6 +294,7 @@ object *filter_users( string str )
       break;
 
     case "ssl":
+    case "tls":
     case "stunnel":
       zwi = filter(orig,"uses_ssl");
       break;
