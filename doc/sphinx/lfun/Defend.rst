@@ -4,7 +4,7 @@ Defend()
 FUNKTION
 --------
 
-  public int Defend(int dam, string|string* dam_type, int|mapping spell, 
+  public int Defend(int dam, string|string* dam_types, int|mapping si_spell, 
     object enemy)
 
 DEFINIERT IN
@@ -17,11 +17,11 @@ ARGUMENTE
 
   int dam
     Initiale Staerke des Angriffs (10 dam ~ 1 HP)
-  string* dam_type
+  string* dam_types
     Art des Schadens, der angerichtet werden soll
     Muss ein Array von Schadenstypen sein, alte Objekte uebergeben hier
     manchmal strings.
-  mapping spell
+  mapping si_spell
     Mapping mit zusaetzlichen Informationen zum Angriff(Siehe unten)
     Alte Objekte uebergeben manchmal einen Integer (0 fuer Physikalischen
     Angriff, 1 fuer Zauber.
