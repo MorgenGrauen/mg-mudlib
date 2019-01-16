@@ -1,0 +1,82 @@
+normalize_defend_args()
+=======================
+
+FUNKTION
+--------
+
+   protected nomask void normalize_defend_args(int dam,
+       string|string* dam_types, int|mapping si_spell, object enemy)
+
+
+DEFINIERT IN
+------------
+
+   /std/living/combat.c
+
+ARGUMENTE
+---------
+
+  Die Argumente sind die Argumente, welche Defend() uebergeben bekommt (siehe
+  dort!)
+
+BESCHREIBUNG
+------------
+
+  Defend bekommt aus historischem Code haeufig Argumente uebergeben, die nicht
+  der aktuellen Konvention entsprechen (z.B. si_spell als 0 oder 1 statt eines
+  Mappings). Damit nun nicht jedes Objekt seine eigene Anpassung vornehmen
+  muss und dabei evtl. noch etwas vergessen wird, kann man mit dieser Funktion
+  die Argumente genauso "normieren", wie es in der Standardlib in Defend()
+  auch gemacht wuerde.
+
+  Dieses wird ganz dringend empfohlen statt diese Normierung selber
+  vorzunehmen. Und sollte es hier Aenderungen geben, bekommt man diese
+  automatisch mit.
+
+  Nach dem Aufruf dieser Funktion (Argumente als Referenz uebergeben!) liegen
+  die Argumente dann wie folgt vor:
+
+  dam
+    ein Integer (unveraendert)
+  dam_types
+    ein Array von Schadenstypen
+  si_spell
+    ein Mapping - wenn es neu angelegt wurde, enthaelt es die Eintraege
+    SP_PHYSICAL_ATTACK, SP_SHOW_DAMAGE, SP_REDUCE_ARMOUR und EINFO_DEFEND.
+    SP_PHYSICAL_ATTACK und SP_SHOW_DAMAGE sind 1, wenn si_spell 0 wahr, sonst
+    1.
+  enemy
+    ist das Objekt des Gegners oder this_player()
+
+  Alternativ zum Ueberschreiben von Defend() und Nutzung dieser Funktion ist
+  haeufig auch InternalModifyDefend() gut geeignet. Dort muss *keine* eigene
+  Normierung der uebergebenen Argumente mehr vorgenommen werden!
+
+
+BEISPIELE
+---------
+
+.. code-block:: pike
+
+   // Ein eigenes Defend soll Dinge tun, bevor das geerbte Defend() gerufen
+   // wird. Um den Code zu vereinfachen, sollen die Typen der Argumente aber
+   // schon sicher in einem "normierten Zustand" sein.
+   public int Defend(int dam, string|string* dam_types, int|mapping spell,
+                     object enemy)
+   {
+     // Uebergabe per Referenz noetig!
+     normalize_defend_args(&dam, &dam_type, &spell, &enemy);
+     if (member(dam_types, DT_FIRE) > -1
+         && si_spell[SP_NAME] == "Drachenfeuer")
+       dam *= 2; // Schaden verdoppeln
+     return ::Defend(dam, dam_types, si_spell, enemy);
+   }
+
+
+SIEHE AUCH
+----------
+
+  Verwandt:
+    :doc:`InternalModifyDefend`, :doc:`Defend`, :doc:`DefendInfo`
+
+16.01.2019 Zesstra

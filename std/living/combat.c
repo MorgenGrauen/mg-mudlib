@@ -959,6 +959,43 @@ protected void InternalModifyDefend(int dam, string* dt, mapping spell, object e
   return;
 }
 
+protected nomask void normalize_defend_args(int dam, string|string* dam_type,
+                                            int|mapping spell, object enemy)
+{
+  // this_player(), wenn kein enemy bekannt...
+  enemy ||= this_player();
+
+  // Schadenstyp ueberpruefen
+  if ( !pointerp(dam_type) )
+    dam_type = ({ dam_type });
+
+  // Und das Spellmapping pruefen, erzeugen, ergaenzen etc.
+  if ( intp(spell) )
+    spell = ([ SP_PHYSICAL_ATTACK : !spell,
+               SP_SHOW_DAMAGE     : !spell,
+               SP_REDUCE_ARMOUR   : ([ ]),
+               EINFO_DEFEND       : ([ORIGINAL_DAM:dam,
+                                      ORIGINAL_DAMTYPE:dam_type ])
+             ]);
+  else if ( mappingp(spell) )
+  {
+    // testen ob eine erweiterte defendinfo vorhanden ist
+    if(!member(spell,EINFO_DEFEND))
+    {
+      // wenn nicht, koennen wir an den fehlenden Infos wenig machen, aber
+      // zumindest ergaenzen wir es und schreiben die (hier) initialen dam und
+      // dam_type rein.
+      spell[EINFO_DEFEND] = ([ORIGINAL_DAM:dam,
+                              ORIGINAL_DAMTYPE:dam_type]);
+    }
+    if ( !mappingp(spell[SP_REDUCE_ARMOUR]) )
+      spell[SP_REDUCE_ARMOUR] = ([]);
+  }
+  else // Illegaler spell-Parameter
+    raise_error(sprintf("Ungueltiger Typ des spell-Arguments: %d\n",
+                        get_type_info(spell,0)));
+}
+
 public int Defend(int dam, string|string* dam_type, int|mapping spell, object enemy)
 {
   int     i,k;
@@ -966,41 +1003,16 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
   object  *armours,tmp;
   mixed hookData;
   mixed hookRes;
-  
+
   //  string  what, how;
   string enname, myname;
 
-  // this_player(), wenn kein enemy bekannt...
-  enemy ||= this_player();
+  normalize_defend_args(&dam, &dam_type, &spell, &enemy);
+
   // Testen, ob dieses Lebewesen ueberhaupt angegriffen werden darf
   if ( !this_object() || !enemy || QueryProp(P_NO_ATTACK)
       || ( query_once_interactive(enemy) && ! interactive(enemy) ) )
     return 0;
-
-  if ( intp(spell) )
-    spell = ([ SP_PHYSICAL_ATTACK : !spell,
-               SP_SHOW_DAMAGE     : !spell,
-               SP_REDUCE_ARMOUR   : ([ ])  ]);
-  else if ( !mappingp(spell) ) // Illegaler spell-Parameter
-    return 0;
-
-  // testen ob eine erweiterte defendinfo vorhanden ist
-  if(!member(spell,EINFO_DEFEND))
-  {
-          //spell+=([EINFO_DEFEND:([])]); // ggf hinzufuegen
-        // use a temporary mapping to avoid recursive
-        // val[x][y] = deep_copy(val);
-        mapping tmpdefend = ([
-                ORIGINAL_AINFO:deep_copy(spell),
-                ORIGINAL_DAM:dam,
-                  ORIGINAL_DAMTYPE:dam_type,
-        ]);
-          spell[EINFO_DEFEND]=tmpdefend;
-  }
-
-  // Schadenstyp ueberpruefen
-  if ( !pointerp(dam_type) )
-    dam_type = ({ dam_type });
 
   spell[EINFO_DEFEND][CURRENT_DAMTYPE]=dam_type;
   spell[EINFO_DEFEND][CURRENT_DAM]=dam;
@@ -1178,9 +1190,6 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
         }
     }
   } // Ende Hook-Behandlung
-
-  if ( !member(spell,SP_REDUCE_ARMOUR) || !mappingp(spell[SP_REDUCE_ARMOUR]) )
-        spell[SP_REDUCE_ARMOUR] = ([]);
 
   // Es gibt auch Parierwaffen,
   if ( objectp(tmp=QueryProp(P_PARRY_WEAPON)) )
