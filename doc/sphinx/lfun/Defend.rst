@@ -50,64 +50,68 @@ Der Parameter 'spell'
     diverse Flags, die das Ergebnis manipulieren (in new_skills.h
     enthalten). Nichtangabe eines Flags gilt als 0.
 
-    - SP_PHYSICAL_ATTACK ---------- 0/1
-      1, wenn Ruestungen wirken sollen, 0 sonst
-      -> entspricht !spell, wenn dieses Int ist
-    - SP_NO_ENEMY ----------------- 0/1
-      1, falls der Angriff nicht toedlich ist, es also keinen echten Gegner
-      gibt
-      -> es wird dann reduce_hit_points() gerufen statt do_damage()
-    - SP_NO_ACTIVE_DEFENSE -------- 0/1
-      1, falls aktive Abwehren (wie zurueckschlagende Amulette,
-      Karateabwehren oder Ausweichmanoever) unterbleiben sollen
-      -> zB bei Kratzen durch Dornen oder Fall aus grosser Hoehe
-      ist aktive Abwehr oder Ausweichen unlogisch
-    - SP_RECURSIVE ---------------- 0/1
-      1, falls der Spell aus einem Defend gerufen wurde (oder einer DefendFunc)
-      -> verhindert Rekursionsprobleme
-    - SP_NAME --------------------- string
-      Name des Spells
-    - SP_GLOBAL_ATTACK ------------ 0/1
-      1 bei Flaechenspells
-    - SP_REDUCE_ARMOUR ------------ Mapping: keys AT_X/P_BODY, values int>=0
-      Die Schutzwirkung durch P_AC/Magie einer Ruestung wird typabhaengig 
-      reduziert. Aufbau eines Mappings im Beispiel::
+    - SP_PHYSICAL_ATTACK (int)
+        1, wenn es ein physischer Angriff ist, d.h. Ruestungen wirken sollen,
+        0 sonst. Dies entspricht dem alten !spell (wenn Spell kein Mapping
+        ist).
+    - SP_NO_ENEMY (int)
+        1, falls der Angriff nicht toedlich ist, es also keinen echten Gegner
+        gibt. Es wird dann reduce_hit_points() gerufen statt do_damage()
+    - SP_NO_ACTIVE_DEFENSE (int)
+        1, falls aktive Abwehren (wie zurueckschlagende Amulette,
+        Karateabwehren oder Ausweichmanoever) unterbleiben sollen, zB bei
+        Kratzen durch Dornen oder Fall aus grosser Hoehe ist aktive Abwehr
+        oder Ausweichen unlogisch
+    - SP_RECURSIVE (int)
+        1, falls der Spell aus einem Defend gerufen wurde (oder einer
+        DefendFunc). Dies ist sehr wichtig, um unendliche Rekursionen zu
+        vermeiden, wenn zwei zurueckschlagende Verteidigungen zusammentreffen.
+    - SP_NAME (string)
+        Name des Spells
+    - SP_GLOBAL_ATTACK (int)
+        1 bei Flaechenspells (die mehrere Ziele treffen koennen)
+    - SP_REDUCE_ARMOUR (mapping) ------------ Mapping: keys AT_X/P_BODY, values int>=0
+        Die Schutzwirkung durch P_AC/Magie einer Ruestung wird typabhaengig
+        reduziert. Als Keys sind P_BODY und die AT_* erlaubt, die Werte
+        muessen ints > 0 sein.
+        Aufbau eines Mappings im Beispiel::
 
-        ([AT_BOOTS: 0,  // Stiefel schuetzen gar nicht
-          P_BODY:  50,  // Koerper zu 50%
-          AT_BELT: 600  // Guertel zu 600%
-        ])
-        -> alle 'fehlenden' Eintraege wirken normal
+          ([AT_BOOTS: 0,  // Stiefel schuetzen gar nicht
+            P_BODY:  50,  // Koerper zu 50%
+            AT_BELT: 600  // Guertel zu 600%
+          ])
+          -> alle 'fehlenden' Eintraege wirken normal
 
-    - SP_SHOW_DAMAGE -------------- 0/1 oder Array von Arrays
-      0, fuer keine Treffermeldung, 1 sonst
-      In einem Array koennen Ersatz-Treffermeldungen definiert werden. Format
-      ist::
+    - SP_SHOW_DAMAGE (int or Array von Array)
+        0 fuer keine Treffermeldung, 1 fuer Standardtreffermeldungen. Falls
+        individuelle Treffermeldungen geschwuenscht sind, koennen aber auch in
+        einem Array Ersatz-Treffermeldungen definiert werden. Das Format
+        ist::
 
-        ({
-        ({ int lphit1, string mess_me, string mess_en, string mess_room }),
-        ({ lphit2, mess_me, mess_en, mess_room }),
-        ...
-        ({ lphitn, mess_me, mess_en, mess_room }),
-        })
-        wobei lphit1<lphit2<...<lphitn sein muss, d.h. das Array-Array
-        aufsteigend sortiert.
+          ({
+          ({ int lphit1, string mess_me, string mess_en, string mess_room }),
+          ({ lphit2, mess_me, mess_en, mess_room }),
+          ...
+          ({ lphitn, mess_me, mess_en, mess_room }),
+          })
+          wobei lphit1<lphit2<...<lphitn sein muss, d.h. das Array-Array
+          aufsteigend sortiert.
 
-      Ist ein Treffer x LP hart, werden die Meldungen des lphit-Arrays
-      ausgegeben, dessen Wert am naehesten unter dem Schaden liegt.
+        Ist ein Treffer x LP hart, werden die Meldungen des lphit-Arrays
+        ausgegeben, dessen Wert am naehesten unter dem Schaden liegt.
 
-      In den Meldungen mess_me (an den Getroffenen), mess_en (an den Feind),
-      mess_room (an die restlichen Umstehenden) koennen Ersatzstrings wie
-      folgt verwendet werden::
+        In den Meldungen mess_me (an den Getroffenen), mess_en (an den Feind),
+        mess_room (an die restlichen Umstehenden) koennen Ersatzstrings wie
+        folgt verwendet werden::
 
-        @WER1/@WESSEN1/@WEM1/@WEN1 - name(casus) des Getroffenen (TO)
-        @WER2/@WESSEN2/@WEM2/@WEN2 - name(casus) des Feindes (enemy)
+          @WER1/@WESSEN1/@WEM1/@WEN1 - name(casus) des Getroffenen (TO)
+          @WER2/@WESSEN2/@WEM2/@WEN2 - name(casus) des Feindes (enemy)
 
-    - EINFO_DEFEND ------------ Mapping
-      Dieses Mapping liefert erweiterte Informationen zu dem
-      bisherigen Ablauf des aktiven Attacks.
-      Die verfuegbaren Informationen sind in der Manpage zu
-      DefendInfo festgehalten.
+    - EINFO_DEFEND (mapping)
+        Dieses Mapping liefert erweiterte Informationen zu dem
+        bisherigen Ablauf des aktiven Attacks.
+        Die verfuegbaren Informationen sind in der Manpage zu
+        DefendInfo festgehalten.
 
 Reihenfolgen in Defend
 ++++++++++++++++++++++
