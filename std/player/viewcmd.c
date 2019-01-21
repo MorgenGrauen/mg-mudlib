@@ -308,7 +308,7 @@ private int select_sense(string str, closure transparent_check)
     // Fuer alle anderen reicht, wenn er transparent ist.
     default:
       transparent_check = function int (object o)
-         { return o->QueryProp(P_TRANSPARENT);};
+         { return (o->QueryProp(P_TRANSPARENT) != 0); };
   }
 
   return sense;
