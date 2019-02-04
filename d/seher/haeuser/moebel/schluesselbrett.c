@@ -358,7 +358,7 @@ varargs int skommandos(string str) {
     CAP(QueryPronoun(WER))+" verfuegt ueber folgende Kommandos:")+
     "----------------------------------------------------------------------"
     "-------\n"
-    "serlaube [schluessel]brett [spielername|\"hausfreunde\"|\"zweities\"]\n"
+    "serlaube [schluessel]brett [spielername|\"hausfreunde\"|\"familie\"]\n"
     "  Erlaubt Personen, "+name(WEN,1)+" mitzubenutzen.\n"
     "  serlaube ohne Angabe eines Arguments listet alle Personen mit Zugriff "
       "auf\n  "+name(WEN,1)+" auf.\n\n"
@@ -420,17 +420,18 @@ static int erlaubnis_liste()
     "-------------------------------------------------------------------"
     "----------\n";
 
-  if( zweitieerlaubnis!="" ) {
-    if( zweitieerlaubnis==geteuid(TP) )
-      str += BS("Alle Deine Zweities duerfen "+name(WEN,1)+" mitbenutzen.");
-    else
-      str += BS("Alle Zweities von "+CAP(zweitieerlaubnis)+" duerfen "
-        +name(WEN,1)+" mitbenutzen.");
-    str +=
-      "-------------------------------------------------------------------"
-      "----------\n";
+  if(familie)
+  {
+  if( "/secure/zweities"->QueryFamilie(TP) == familie)
+    str+=BS("Alle Deine Familienmitglieder duerfen "
+             +name(WEN,1)+" oeffnen/schliessen.");
+  else
+    str+=BS( "Alle Familienmitglieder von "+CAP(explode(familie,"_")[0])
+             +" duerfen " + name(WEN,1) + " oeffnen/schliessen.");
+  str+="-------------------------------------------------------------------"
+        "----------\n";
   }
-  
+
   strs=QueryProp("cnt_erlaubnis");
 
   if(sizeof(strs)) {
@@ -445,7 +446,9 @@ static int erlaubnis_liste()
   str +=
     "==================================================================="
     "==========\n";
-  
+
+  write(str);
+
   return 1;
 }
 

@@ -34,11 +34,11 @@ inherit "/std/container";
 
 #include "schrankladen.h"
 
-#define VERSION_STD "9"
+#define VERSION_STD "10"
 
 nosave int hauserlaubnis;
-nosave string zweitieerlaubnis;
-nosave string *erlaubnis;
+nosave string familie;
+nosave string *erlaubnis = ({});
 
 int erlaubt();
 
@@ -50,14 +50,9 @@ protected void create()
   SetProp(P_CNT_STATUS,CNT_STATUS_CLOSED);
   SetProp(P_TRANSPARENT, 0);
   SetProp(P_LOG_FILE,"seleven/schraenker"); // Seleven 06.04.2006
-  SetProp("cnt_hausfreunde", ({}) );
-  SetProp("cnt_erlaubnis", ({}) );
-  SetProp("cnt_zweitieerlaubnis", "" );
+  //TODO: Die ganzen cnt_* Props sollten besser eindeutige Praefixe sein,
+  //nicht das generische cnt_, was auch die Mudlib verwendet. :-( (Zesstra)
   SetProp("cnt_version_std", VERSION_STD);
-
-  hauserlaubnis=0;
-  zweitieerlaubnis="";
-  erlaubnis=({});
 
   set_next_reset(3600); // 1 x pro Std. Reset!
 
@@ -67,7 +62,6 @@ protected void create()
   AddCmd(({"skommandos"}), "skommandos");
   AddCmd(({"verschieb", "verschiebe"}), "verschieben");
   AddCmd(({"zertruemmer", "zertruemmere"}), "zertruemmern");
-  //Seleven 07.12.2005:
   AddCmd(({"sverstecke","sversteck"}),"verstecken");
   AddCmd(({"shole","shol"}),"zeigen");
 }
@@ -80,11 +74,40 @@ static string QueryHausbesitzer()
   return CAP(to_string(ETO->QueryOwner()));    // z.B.: Swift
 }
 
-
-
 static string QueryTP()
 {
   return CAP(geteuid(TP));  // z.B.: Swift
+}
+
+// Query- und Setmethoden fuer die internen Variablen
+static string _query_cnt_familie()
+{
+  return familie;
+}
+static string _set_cnt_familie(string f)
+{
+  familie = f;
+  return familie;
+}
+
+static string *_query_cnt_erlaubnis()
+{
+  return erlaubnis;
+}
+static string *_set_cnt_erlaubnis(string *val)
+{
+  erlaubnis = val;
+  return erlaubnis;
+}
+
+static int _query_cnt_hausfreunde()
+{
+  return hauserlaubnis;
+}
+static int _set_cnt_hausfreunde(int val)
+{
+  hauserlaubnis = val;
+  return hauserlaubnis;
 }
 
 int oeffnen(string str)
@@ -156,9 +179,9 @@ int erlaubt()
         QueryTP()) != -1 )                // Hausfreunde
       return 1;
   }
-  if(zweitieerlaubnis!="")                // Zweities
+  if(familie)                // Zweities
   {
-    if( TP->QueryProp(P_SECOND) == zweitieerlaubnis )
+    if( "/secure/zweities"->QueryFamilie(TP) == familie )
       return 1;
   }
   if( sizeof(erlaubnis) )
@@ -208,15 +231,18 @@ int erlaubnis_liste()
   else
     write(BS("Die Freunde Deines Hauses duerfen "+name(WEN,1)
       +" nicht oeffnen/schliessen."));
-  write("-----------------------------------------------------------------------------\n");
-  if(zweitieerlaubnis!="")
+  write("-------------------------------------------------------------------"
+        "----------\n");
+  if(familie)
   {
-  if( zweitieerlaubnis==geteuid(TP) )
-    write(BS( "Alle Deine Zweities duerfen "+name(WEN,1)+" oeffnen/schliessen."));
+  if( "/secure/zweities"->QueryFamilie(TP) == familie)
+    write(BS("Alle Deine Familienmitglieder duerfen "
+             +name(WEN,1)+" oeffnen/schliessen."));
   else
-    write(BS( "Alle Zweities von "+CAP(zweitieerlaubnis)+" duerfen "+name(WEN,1)
-      +" oeffnen/schliessen."));
-  write("-----------------------------------------------------------------------------\n");
+    write(BS( "Alle Familienmitglieder von "+CAP(explode(familie,"_")[0])
+             +" duerfen " + name(WEN,1) + " oeffnen/schliessen."));
+  write("-------------------------------------------------------------------"
+        "----------\n");
   }
   strs=QueryProp("cnt_erlaubnis");
   if(sizeof(strs))
@@ -242,7 +268,7 @@ int erlaubnis_liste()
 int erlaubnis(string str)
 {
   string *strs,wen,nf_str;
-  nf_str="Syntax: serlaube [Objekt-Id] [Spielername|\"hausfreunde\"|\"zweities\"]\n"
+  nf_str="Syntax: serlaube [Objekt-Id] [Spielername|\"hausfreunde\"|\"familie\"]\n"
         +"Bsp.:   serlaube "+QueryProp(P_IDS)[1]+" hausfreunde\n"
         +"        serlaube "+QueryProp(P_IDS)[1]+" zweities\n"
         +"        serlaube "+QueryProp(P_IDS)[1]+" geordi\n"
@@ -291,32 +317,32 @@ int erlaubnis(string str)
     if(hauserlaubnis)
     {
       hauserlaubnis=0;
-      SetProp("cnt_hausfreunde", ({}) );
+      write( BS("Die Freunde Deines Seherhauses duerfen "+name(WEN,1)
+                +" jetzt nicht mehr oeffnen/schliessen."));
     }
     else
     {
       hauserlaubnis=1;
-      SetProp("cnt_hausfreunde", SHVERWALTER->HausProp(LOWER(QueryHausbesitzer()), 2) );
+      write( BS("Die Freunde Deines Seherhauses duerfen "+name(WEN,1)
+                +" jetzt oeffnen/schliessen."));
     }
-    write( BS("Die Freunde Deines Seherhauses duerfen "+name(WEN,1)+" jetzt "
-      +(!hauserlaubnis?"nicht mehr ":"")+"oeffnen/schliessen."));
     return 1;
   }
-  if(wen=="zweities")
+  if(wen=="familie")
   {
-    if(zweitieerlaubnis!="")                        // Zweities erlaubt?
-      zweitieerlaubnis="";                          //   dann verbieten!
-    else                                            // ansonsten:
+    if(familie)                        // Zweities erlaubt?
     {
-      if( TP->QueryProp(P_SECOND) )                 // Selbst ein Zweitie?
-        zweitieerlaubnis=LOWER(TP->QueryProp(P_SECOND)); // Die Zweities vom Erstie erlauben!
-      else                                          // sonst:
-        zweitieerlaubnis=geteuid(TP);               //   Eigene Ersties erlauben!
+      familie = 0;                     //   dann verbieten!
+      write("Die Familienerlaubnis wurde geloescht.\n");
     }
-    SetProp("cnt_zweitieerlaubnis", zweitieerlaubnis );
-    if(zweitieerlaubnis!="")
-      write( BS(CAP(zweitieerlaubnis)+"'s Zweities duerfen "+name(WEN,1)+" jetzt "
-        +(zweitieerlaubnis==""?"nicht mehr ":"")+"oeffnen/schliessen."));
+    else                               // ansonsten neu erlauben
+    {
+      familie = "/secure/zweities"->QueryFamilie(TP);
+      write(BS("Alle Mitglieder der Familie "
+               +CAP(explode(familie,"_")[0])
+               +" duerfen "+name(WEN,1)+" jetzt oeffnen/schliessen."));
+
+    }
     return 1;
   }
   if( master()->find_userinfo(wen)) // Spieler gibt es auch!
@@ -357,18 +383,16 @@ varargs int skommandos(string str)
     +"  oeffnet "+name(WEN,1)+"\n\n"
     +"schliesse [Objekt-Id]\n"
     +"  schliesst "+name(WEN,1)+"\n\n"
-    +"serlaube [Objekt-Id] [Spielername|\"hausfreunde\"|\"zweities\"]\n"
+    +"serlaube [Objekt-Id] [Spielername|\"hausfreunde\"|\"familie\"]\n"
     +"  Erlaubt Personen, "+name(WEN,1)+" mitzubenutzen.\n"
     +"  serlaube + Objekt-Id (ohne Spielername/hausfreunde)\n"
     +"  listet alle Personen mit Zugriff auf "+name(WEN,1)+"\n\n"
     +"verschiebe [Objekt-Id] nach [Ausgang]\n"
     +"  Damit kannst Du "+name(WEN,1)+" innerhalb Deines Seherhauses verschieben.\n\n"
-  //Seleven 07.12.2005
     +"sverstecke [Objekt-Id]\n"
     +"  Damit machst Du "+name(WEN,1)+" unsichtbar.\n"
     +"shole [Objekt-Id] hervor\n"
     +"  Damit machst Du "+name(WEN,1)+" wieder sichtbar.\n"
-  // Bis hier
     +"zertruemmer [Objekt-Id]\n"
     +"  Damit zerstoerst Du "+name(WEN,1)+".\n\n");
 
@@ -452,21 +476,6 @@ int zertruemmern(string str)
   return 1;
 }
 
-int props2vars()  // Fuer die Update-Funktion des Schrankmasters
-{
-  zweitieerlaubnis=QueryProp("cnt_zweitieerlaubnis")||"";
-  erlaubnis=QueryProp("cnt_erlaubnis")||({});
-  if( sizeof(QueryProp("cnt_hausfreunde")) )
-    hauserlaubnis=1;
-  else
-    hauserlaubnis=0;
-  if( QueryProp(P_CNT_STATUS) == CNT_STATUS_OPEN)
-    SetProp(P_TRANSPARENT, 1);
-  else
-    SetProp(P_TRANSPARENT, 0);
-  return 1;
-}
-
 void reset()
 {
   set_next_reset(3600); // 1 x pro Std. Reset!
@@ -491,11 +500,11 @@ public int UpdateMe()
     return 0;
   object cnt_neu=clone_object(load_name(ME));  // Neuen Schrank clonen
   cnt_neu->move( environment(), M_NOCHECK );  // In selben Raum wie alten schieben...
-  cnt_neu->SetProp("cnt_status", QueryProp("cnt_status") );
+  cnt_neu->SetProp(P_CNT_STATUS, QueryProp(P_CNT_STATUS) );
+  cnt_neu->SetProp(P_TRANSPARENT, QueryProp(P_TRANSPARENT) );
   cnt_neu->SetProp("cnt_hausfreunde", QueryProp("cnt_hausfreunde") );
   cnt_neu->SetProp("cnt_erlaubnis", QueryProp("cnt_erlaubnis") );
-  cnt_neu->SetProp("cnt_zweitieerlaubnis", QueryProp("cnt_zweitieerlaubnis") );
-  cnt_neu->props2vars();  // Schrank liest gesetzte Props aus in eigene Vars
+  cnt_neu->SetProp("cnt_familie", QueryProp("cnt_familie") );
   // Inventar bewegen
   foreach(object inv: all_inventory(this_object()))
   {
