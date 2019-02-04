@@ -10,8 +10,8 @@ InternalModifyDefend(L)
 FUNKTION
 ========
 
-   protected void InternalModifyDefend(int dam, string* dt, mapping
-   spell, object enemy)
+   protected void InternalModifyDefend(int dam, string* dam_types,
+      mapping si_spell, object enemy)
 
 
 DEFINIERT IN
@@ -26,10 +26,10 @@ ARGUMENTE
    int dam
       Staerke des abzuwehrenden Angriffs (in HP/10)
 
-   string* dt
+   string* dam_types
       Art(en) des Schadens, der angerichtet werden soll
 
-   mapping spell
+   mapping si_spell
       Mapping mit zusaetzlichen Informationen ueber den Angriff
 
    object enemy

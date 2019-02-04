@@ -820,6 +820,8 @@ Verzeichnis der dokumentierten lfuns
 
 * name()
 
+* normalize_defend_args()
+
 * notify_player_change()
 
 * pick()
