@@ -1013,7 +1013,7 @@ int self_delete2(string str)
   ret=(int)"secure/master"->delete_player(str, getuid(PL));
   if (!ret)
   {
-    write("Das hat nicht hingehauen (Gott sei Dank ....)\n");
+    write("Das hat nicht hingehauen (Jof sei Dank ....)\n");
     return 1;
   }
   if (QueryProp(P_GUILD)&&file_size(GUILD_DIR+QueryProp(P_GUILD)+".c")>-1)
