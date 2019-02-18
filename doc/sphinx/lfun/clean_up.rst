@@ -61,10 +61,10 @@ BESCHREIBUNG
    sich nicht im clean_up() auf.
 
    Soll ein Raum sich niemals per clean_up() selber aufraeumen, kann die
-   Property :doc:`P_NEVER_CLEAN` gesetzt werden. Aber bitte seid hiermit
-   *sehr sparsam* und benutzt das nur in Raeumen, die es wirklich benoetigen.
-   Fast alle Raeume kommen super klar, wenn sie bei Bedarf neu erzeugt
-   werden.
+   Property :doc:`../props/P_NEVER_CLEAN` gesetzt werden. Aber bitte seid
+   hiermit *sehr sparsam* und benutzt das nur in Raeumen, die es wirklich
+   benoetigen. Fast alle Raeume kommen super klar, wenn sie bei Bedarf neu
+   erzeugt werden.
 
 RUeCKGABEWERT
 -------------
