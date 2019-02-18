@@ -90,7 +90,5 @@ SIEHE AUCH
      :doc:`reset`
    Properties:
      :doc:`../props/P_NEVER_CLEAN`
-   Konzepte:
-     memory
 
 18.02.2019, Zesstra
