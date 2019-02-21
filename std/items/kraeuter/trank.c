@@ -42,7 +42,13 @@ private nosave int prot_disease;
 private nosave string* sorted_effects;
 
 mixed _query_data() {return data;}
-int _set_data(mixed d) {data=d; expiry = __INT_MAX__; return data!=0;}
+int _set_data(mixed d) {
+    sorted_effects=0;
+    data=d;
+    expiry = __INT_MAX__;
+    return data!=0;
+}
+
 private string effect2colour();
 
 protected void create()
