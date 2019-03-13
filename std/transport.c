@@ -549,7 +549,13 @@ public varargs void init(object origin)
   // if we have player contact (even if the player is just in the same
   // environment), we update the time.
   if (this_player() && query_once_interactive(this_player()))
-      meet_last_player = time();
+  {
+    meet_last_player = time();
+    // Wenn jemand in uns ist, auch falls noetig die Route fortsetzen,
+    // denn wir haben natuerlich nicht H_HOOK_INIT in uns selbst abonniert.
+    if(environment(PL)==ME)
+      Continue();
+  }
 }
 
 // we try to continue our route once some living triggers init.
