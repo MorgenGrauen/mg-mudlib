@@ -30,14 +30,18 @@ BESCHREIBUNG
     Rueckgabewert ist im Erfolgsfall die Hoehe der EvalCost in Ticks. 
 
     command_me() leitet den Befehl an command()(E) weiter und erlaubt
-    dadurch auch den Aufruf von sonst durch "static", "protected" oder
-    "private" vor externem Aufruf geschuetzten Kommando-Funktionen.
-
+    dadurch auch den Aufruf von sonst durch "static" vor externem Aufruf
+    geschuetzten Kommando-Funktionen.
+    
     Kommandos mit oeffentlichen Kommandofunktionen (also damit alle mit
     AddCmd definierten Kommandos) koennen auch durch command()(E)
     von aussen ausgeloest werden.
 
-BEMERKUNGEN:    
+
+BEMERKUNGEN
+-----------
+::
+
     - beruecksichtigt Aliase, d.h. wenn man Aliase eines Spielers
       ignorieren will, muss man ein \\ (fuer ein \ im Eingabestring)
       vor den Befehl stellen
