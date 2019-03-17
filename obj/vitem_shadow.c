@@ -190,7 +190,8 @@ public varargs int move( object|string dest, int method )
     res=ziel->move(dest, method);
     if (res == MOVE_OK)
     {
-      // TODO: environment bescheidsagen, dass das Objekt bewegt wurde.
+      // virtuellem environment bescheidsagen, dass das Objekt bewegt wurde.
+      cloner->VItemMoved(ziel);
       // und nach Bewegung des vitems ist das kein vitem mehr und der Schatten
       // muss weg.
       remove(1);
