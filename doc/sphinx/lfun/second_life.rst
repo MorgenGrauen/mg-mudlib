@@ -39,8 +39,8 @@ BEMERKUNG
 ---------
 ::
 
-        Bei NPCs sollte man direkt die() ueberschreiben, wenn man nicht
-        moechte, dass sie sterben.
+        Bei NPCs kann man hier z.B. Objekt erzeugen oder entsorgen und muss
+        dafuer nicht das die() ueberschreiben (was fehleranfaelliger ist).
 
 SIEHE AUCH
 ----------
