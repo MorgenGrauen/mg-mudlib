@@ -17,7 +17,7 @@ ARGUMENTE
   poisondeath
     Dieses Flag sollte bei einem Gifttod (P_POISON) gesetzt sein.
   extern
-    Intern.
+    Ex- oder interner Aufruf.
 
 BESCHREIBUNG
 ------------
@@ -31,7 +31,7 @@ BESCHREIBUNG
   Todesmeldungen (siehe auch P_DIE_MSG) erzeugt, und fuer Spieler werden
   Killstupse vergeben, sofern notwendig.
 
-  Ueber den Hook P_TMP_DIE_HOOK kann man jedoch auf den Automatismus
+  Ueber den Hook H_HOOK_DIE kann man jedoch auf den Automatismus
   Einfluss nehmen, z.B. koennte ein temporaerer Todesbann-Zauber das
   Sterben fuer kurze Zeit verhindern.
 
@@ -47,16 +47,40 @@ BEMERKUNGEN
   uebliche Weg ueber Defend() -> do_damage() -> die() die logisch bessere
   und balancetechnisch guenstigere Loesung.
 
+  Diese Funktion sollte nur ueberschrieben werden,  wenn tatsaechlich einfluss
+  auf das Sterben genommen werden soll. Wird nur ein Item hinzugefuegt, ist
+  es sinnvoller :doc:`second_life` zu verwenden.
+
+  Wird die() ueberschrieben, sollte man nicht nur das Argument extern
+  uebergeben, sondern mit extern_call() verodern (siehe Beispiel), weil das
+  geerbte die() den externen Aufruf nicht mehr erkennen kann.
+
+BEISPIEL
+--------
+
+.. code-block:: pike
+
+  public varargs void die(int poisondeath, int extern)
+  {
+    // Dieser NPC soll nicht an Gift sterben.
+    if(poisondeath) return;
+    
+    // Das geerbte die() aufrufen, dabei die Argumente uebergeben und ggf.
+    // extern setzen.
+    ::die(poisondeath, extern||extern_call());
+  }
+
 SIEHE AUCH
 ----------
 
-  :doc:`Defend`, :doc:`do_damage`, :doc:`../props/P_POISON`,
-  :doc:`../props/P_TMP_DIE_HOOK`, :doc:`../props/P_DEADS`,
+  :doc:`Defend`, :doc:`do_damage`, :doc:`second_life`, :doc:`../props/P_POISON`,
+  :doc:`../props/P_DEADS`,
   :doc:`../props/P_KILL_NAME`, :doc:`../props/P_KILL_MSG`, 
   :doc:`../props/P_MURDER_MSG`, :doc:`../props/P_DIE_MSG`,
   :doc:`../props/P_ZAP_MSG`, :doc:`../props/P_ENEMY_DEATH_SEQUENCE`,
-  :doc:`../props/P_CORPSE`, :doc:`../props/P_NOCORPSE`, /std/corpse.c
+  :doc:`../props/P_CORPSE`, :doc:`../props/P_NOCORPSE`, 
+  extern_call,
+  /std/corpse, /std/hooks
 
 
-Last modified: Mon May 14 16:20:34 2001 by Patryn
-
+Letzte Aenderung: 17.03.2019, Bugfix
