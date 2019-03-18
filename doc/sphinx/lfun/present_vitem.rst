@@ -1,0 +1,38 @@
+present_vitem()
+===============
+
+FUNKTION
+--------
+
+  public object present_vitem(string complex_desc)
+
+DEFINIERT IN
+------------
+
+  /std/container/vitems.c
+
+BESCHREIBUNG
+------------
+
+  Es wird ein von <complex_desc> angesprochendes vItem (als Objekt)
+  zurueckgeliefert. Dies wird mittels id() geprueft.
+
+RUeckGABEWERT
+-------------
+
+  Das Objekt des vItems oder 0.
+
+BEMERKUNGEN
+-----------
+
+  Nummerierungen (z.B. present_vitem("fackel 5") funktionieren in diesem Fall
+  *nicht*.
+
+SIEHE AUCH
+----------
+
+  :doc:`AddVItem`, :doc:`RemoveVItem`, :doc:`AddItem`, :doc:`RemoveItem`
+  :doc:`../std/vitems`
+
+Last modified: 19.03.2019, Zesstra
+
