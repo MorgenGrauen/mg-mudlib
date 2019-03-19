@@ -7,11 +7,11 @@
 #pragma strong_types,save_types,rtt_checks
 #pragma pedantic, range_check
 
-inherit "std/room";
+inherit "/std/room";
 
 #include <properties.h>
 
-void create()
+protected void create()
 {
   string WIZNAME;
 
