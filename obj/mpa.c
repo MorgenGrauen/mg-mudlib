@@ -175,7 +175,7 @@ Aktuelle Rubrik: "+GROUP+"\n\
 }
 
 
-void init()
+public varargs void init(object origin)
 {
   ::init();
 
