@@ -19,7 +19,6 @@
 #include <new_skills.h>
 #include <ansi.h>
 #include <notify_fail.h>
-#include <sys_debug.h>
 
 #define NEED_PROTOTYPES
 #include <container.h>
@@ -28,6 +27,9 @@
 #include <living/description.h>
 #include <living/put_and_get.h>
 #include <player/command.h>
+
+//#define DEBUG(x, y, z) send_debug(x, y, z)
+#define DEBUG(x, y, z)
 
 varargs mixed More(string str, int fflag, string returnto);
 
@@ -392,6 +394,7 @@ private object get_ref_object(string *tokens, closure transparent_check,
       }
     } // ref_object exists
   }
+  DEBUG(PL, sprintf("%O\n",ref_object), "get_ref_object:");
   return ref_object;
 }
 
@@ -423,6 +426,8 @@ private object find_base(object env, string *tokens, string detail,
       // Aber tokens koennte noch ein detail beschreiben, was der Aufrufer an
       // env findet. Also tokens nach detail und env zurueckgeben.
       detail = implode(tokens, " ");
+      DEBUG(PL, sprintf("Env: %O, Detail: %s\n",env, detail),
+                "find_base 1");
       return env;
     }
   }
@@ -485,6 +490,8 @@ private object find_base(object env, string *tokens, string detail,
   // kein Container gefunden, der durch die tokens beschrieben wurde. Dann
   // kann der Aufrufer noch an/in this_object() oder environment() gucken, ob
   // was zu finden ist.
+  DEBUG(PL, sprintf("Env: %O, Detail: %s\n",env, detail),
+        "find_base 2:");
   return env;
 }
 
@@ -539,6 +546,8 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
                          int ref_given)
 {
   // ref_objects sind alle in Frage kommenden Kandidaten, an denen wir suchen.
+  DEBUG(PL, sprintf("Refobjekt-Kandidaten: %O\n",ref_objects),
+        "_examine_rec 1:");
 
   // Sodann ein Basisobjekt finden. Das Basisobjekt ist das, was bei einem
   // "detail an parent" durch parent gekennzeichnet wird oder notfalls das
