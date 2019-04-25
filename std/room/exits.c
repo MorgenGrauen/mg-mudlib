@@ -258,7 +258,7 @@ int _normalfunction()
     return 0;
 
   string verb = query_verb();
-  string destroom = exits[query_verb(),0];
+  string|closure destroom = exits[query_verb(),0];
   string message = exits[query_verb(),1];
 
   mixed hres = HookFlow(H_HOOK_EXIT_USE, ({verb, destroom, message}));
