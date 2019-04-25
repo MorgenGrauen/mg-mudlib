@@ -262,15 +262,19 @@ _starts_with(string str, string start)
 
 static int alias(string str)
 {
-  string command;
+  string commandverb;
   string *tmp,um,*hits;
   int num, l, pos, cont;
   int display_as_aliascommand;
 
-  if (unmodified&&unmodified!="")
+  // unbearbeitetes Kommando ohne Verb ermitteln (auch ohne Trim an Anfang und
+  // Ende)
+  if (unmodified && unmodified!="")
     um=implode(old_explode(unmodified," ")[1..]," ");
+
   if (um=="") um=0;
-  if(!(str=um||_unparsed_args()) || str=="*") return query_aliases(0);
+  if( !(str = um||_unparsed_args()) || str=="*")
+    return query_aliases(0);
 
     if (str=="-a" || strstr(str, "-a ")==0 )  {
     str=str[2..];
@@ -279,41 +283,44 @@ static int alias(string str)
     display_as_aliascommand=1;
   }
 
-  if ((pos=member(str,' '))<0) // 1 Arg only
+  pos=member(str,' ');
+  if (pos < 0) // Nur 1 Arg, Alias abfragen
   {
-    if ((tmp=aliases[str]))
+    if ((tmp=aliases[str])) // genau eins angegebenen
       printf(ALIFORMAT+"\n",str,present_alias(tmp));
-    else
-      if (str[<1]=='*')
+    else if (str[<1]=='*')  // * am Ende, alle ausgeben, die passend anfangen
+    {
+      str=str[0..<2];
+      hits=filter(m_indices(aliases), #'_starts_with, str);
+      if (!sizeof(hits))
       {
-        str=str[0..<2];
-        hits=filter(m_indices(aliases), #'_starts_with, str);
-        if (!sizeof(hits))
-        {
-          printf("Du hast kein Alias, das mit \"%s\" anfaengt.\n", str);
-          return 1;
-        }
-        hits=sort_array(hits, #'>);
-        for (l=sizeof(hits); l--;)
-          hits[l]=sprintf(ALIFORMAT, hits[l], present_alias(aliases[hits[l]]));
-        More("Folgende Aliase beginnen mit \""+str+"\":\n"+implode(hits,"\n"));
+        printf("Du hast kein Alias, das mit \"%s\" anfaengt.\n", str);
+        return 1;
       }
-    else
+      hits=sort_array(hits, #'>);
+      for (l=sizeof(hits); l--;)
+        hits[l]=sprintf(ALIFORMAT, hits[l], present_alias(aliases[hits[l]]));
+      More("Folgende Aliase beginnen mit \""+str+"\":\n"+implode(hits,"\n"));
+    }
+    else  // Nix gefunden
       printf("Du hast kein Alias \"%s\" definiert.\n",str);
     return 1;
   }
+
   if (!pos)
   {
-    write("Fehler: Blanc am Alias-Anfang\n");
+    write("Fehler: Leerzeichen am Alias-Anfang\n");
     return 1;
   }
-  if ((command=str[0..pos-1])=="unalias")
+  // Kommandoverb alles bis zum ersten " ".
+  commandverb=str[0..pos-1];
+  if (commandverb=="unalias")
   {
     write
       ("Es nicht moeglich, den Befehl unalias zu ueberladen (waer dumm :))\n");
     return 1;
   }
-  if ((command=str[0..pos-1])=="*")
+  if (commandverb=="*")
   {
     write
       ("Es nicht moeglich, den Befehl \"*\" zu ueberladen.\n");
@@ -364,33 +371,37 @@ static int alias(string str)
       }
     }
   }
-  if ((!aliases[command]) && (sizeof(aliases)>2000))
+  if ((!aliases[commandverb]) && (sizeof(aliases)>2000))
     printf("Du hast schon genuegend Aliase definiert!\n");
   else
   {
-    aliases[command]=tmp;
-    printf("Neues Alias: %s\t= %s\n",command,present_alias(tmp));
+    aliases[commandverb]=tmp;
+    printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
   }
   return 1;
 }
 
 static int unalias(string str) {
-  int i;
+  int i, familymode;
   string *als,um;
 
   if (unmodified&&unmodified!="")
     um=implode(old_explode(unmodified," ")[1..]," ");
   if (um=="") um=0;
-  if ( !(str=um || _unparsed_args())) return 0;
+  if ( !(str=um || _unparsed_args()))
+    return 0;
+
   if (str == "*.*" || str == "*") {
     write(break_string(
       "Versuchs mal mit 'unalias .*', wenn Du wirklich alle Alias entfernen "
       "willst.",78));
     return 1;
   }
-  if (!member(aliases,str)) {
+  if (!member(aliases,str))
+  {
     als=regexp(m_indices(aliases),("^"+str+"$"));
-    if (!(i=sizeof(als))) {
+    if (!(i=sizeof(als)))
+    {
       write("So ein Alias hast Du nicht definiert.\n");
       return 1;
     }
