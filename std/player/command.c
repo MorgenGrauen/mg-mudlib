@@ -265,7 +265,7 @@ static int alias(string str)
   string commandverb;
   string *tmp,um,*hits;
   int num, l, pos, cont;
-  int display_as_aliascommand;
+  int display_as_aliascommand, familymode;
 
   // unbearbeitetes Kommando ohne Verb ermitteln (auch ohne Trim an Anfang und
   // Ende)
@@ -276,12 +276,19 @@ static int alias(string str)
   if( !(str = um||_unparsed_args()) || str=="*")
     return query_aliases(0);
 
-    if (str=="-a" || strstr(str, "-a ")==0 )  {
-    str=str[2..];
-    if (str && str!="" && str[0]==' ') str=str[1..];
-    if (!str || str=="" || str=="*") return query_aliases(1);
-    display_as_aliascommand=1;
+  while(sizeof(str) >= 2 && str[0] == '-')
+  {
+    if (str[1] == 'a')
+      display_as_aliascommand = 1;
+    else if (str[1] == 'f')
+      familymode = 1;
+    else
+      break;
+    // "-? " abschneiden
+    str = trim(str[2..], TRIM_LEFT);
   }
+  if (!sizeof(str) || str=="*")
+    return query_aliases(display_as_aliascommand);
 
   pos=member(str,' ');
   if (pos < 0) // Nur 1 Arg, Alias abfragen
@@ -390,6 +397,16 @@ static int unalias(string str) {
   if (um=="") um=0;
   if ( !(str=um || _unparsed_args()))
     return 0;
+
+  while(sizeof(str) >= 2 && str[0] == '-')
+  {
+    if (str[1] == 'f')
+      familymode = 1;
+    else
+      break;
+    // "-f " abschneiden
+    str = trim(str[2..], TRIM_LEFT);
+  }
 
   if (str == "*.*" || str == "*") {
     write(break_string(
