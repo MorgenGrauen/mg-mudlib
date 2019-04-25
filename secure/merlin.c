@@ -50,7 +50,7 @@ static void give_help(mixed who);
 int goto(mixed dest);
 
 nosave string *whitespaces=({",",".","?",";",":","-","!","\n","\t"});
-nosave object prev_room;
+nosave string prev_room;
 nosave int delay,maxusers,busy;
 nosave string flag;
 
@@ -1021,12 +1021,6 @@ public int remove(int silent) {
 
 void wandern()
 {
-  mapping ex,rooms;
-  mixed ziel;
-  object *raeume,*laeden,env,ob;
-  string *ind,fn;
-  int i;
-
   while (remove_call_out("wandern")>=0);
   call_out("wandern",45+random(100));
   if (busy) return;
@@ -1035,40 +1029,42 @@ void wandern()
     delay=0;
     return;
   }
-  if (!(env=environment()))
+  if (!environment())
   {
     move("/gilden/abenteurer",0);
-        env=environment();
   }
   //ueber Inv iterieren, ob da ein nicht-idelnder Spieler mit genug XP
-  //rumhaengt.
-  raeume=all_inventory(env);
-  for(i=sizeof(raeume); i-- ; ) {
-    if (interactive(raeume[i]) && query_idle(raeume[i])<180 &&
-        raeume[i]->QueryProp(P_XP)>999999)
+  //rumhaengt. In diesem Raum bleiben, wenn ja.
+  foreach(object ob: all_inventory(environment()))
+  {
+    if (interactive(ob) && query_idle(ob)<180
+        && ob->QueryProp(P_XP)>999999)
       return;
   }
-  ex=(mapping)env->QueryProp(P_EXITS);
+  // Ausgaenge durchsuchen
+  mapping ex=(mapping)environment()->QueryProp(P_EXITS);
   if (!mappingp(ex))
     return;
-  ind=m_indices(ex);rooms=([]);laeden=({});
-  for (i=sizeof(ind)-1;i>=0;i--)
+  mapping rooms = m_allocate(sizeof(ex));
+  foreach(string cmd, string|closure dest, string msg : ex)
   {
-    if (!stringp(ziel=ex[ind[i]]))
+    object ob;
+    // nur normale Ausgaenge benutzen
+    if (!stringp(dest)
+        || dest = object_name(environment()))
       continue;
-    if (!ob=find_object(ziel))
-      continue;
-    rooms+=([ob]);
+    rooms += ([dest]);
   }
-  rooms-=([env]);
+  if (!sizeof(rooms))
+    return;
+
+  // Und nicht zuruecklatschen, wenn moeglich.
   if (prev_room && sizeof(m_indices(rooms))>1)
     rooms-=([prev_room]);
-  prev_room=env;
-  raeume=m_indices(rooms);
-  if (!i=sizeof(raeume))
-    return;
-  ob=raeume[random(i)];
-  move(ob,0);
+  prev_room=object_name(environment());
+
+  string *raeume=m_indices(rooms);
+  move(raeume[sizeof(raeume)],0);
 }
 
 string int_short()
@@ -1187,19 +1183,13 @@ void show_exits()
 
 int gehen(string str)
 {
-  string verb;
-  int i;
-  mapping exits;
-  string *ex;
-
   if (busy) {
     write("Merlin mault: Ich bin beschaeftigt.\n");
     return 0;
   }
 
-  verb=query_verb();
   str=(string)this_interactive()->_unparsed_args();
-  switch (verb)
+  switch (query_verb())
   {
     case "gilde":
       this_player()->move("/gilden/abenteurer",M_GO,"in die Gilde");
@@ -1210,13 +1200,12 @@ int gehen(string str)
   }
   if (!IS_WIZARD(this_interactive()))
     return 0;
-  if (verb!="merlin")
+  if (query_verb()!="merlin")
     return 0;
   delay=1;
-  exits=(mapping)environment()->QueryProp(P_EXITS);
+  mapping exits=(mapping)environment()->QueryProp(P_EXITS);
   if (!str||str=="")
   {
-    ex=m_indices(exits);
     printf(environment()->int_short(ME,ME));
     show_exits();
     return 1;
