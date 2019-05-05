@@ -132,10 +132,10 @@ public void skipbits(int count)
 }
 
 
-public void dumpstream(string file, int bytes)
+public void dumpstream(string file, int bytecount)
 {
-  int *stream = allocate(bytes);
-  foreach(int i: bytes)
+  int *stream = allocate(bytecount);
+  foreach(int i: bytecount)
   {
     stream[i] = nextbits(8);
   }
