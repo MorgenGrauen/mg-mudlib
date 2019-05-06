@@ -3,10 +3,6 @@
 * Kurzbeschreibung.
 * Langbeschreibung...
 * \author <Autor>
-* \date <date>
-* \version $Id$
-*/
-/* Changelog:
 */
 #pragma strong_types,save_types,rtt_checks
 #pragma no_clone,no_inherit,no_shadow
@@ -31,6 +27,7 @@ protected void create()
   {
     raise_error("Datenbank konnte nicht geoeffnet werden.\n");
   }
+  sl_exec("PRAGMA foreign_keys = ON; PRAGMA temp_store = 2; ");
   // Tabellen und Indices anlegen, falls die nicht existieren.
   sl_exec("CREATE TABLE IF NOT EXISTS zweities(uuid TEXT PRIMARY KEY ASC, "
           "name TEXT NOT NULL, erstieuuid TEXT NOT NULL, "
@@ -40,10 +37,16 @@ protected void create()
           "lastlogin DATETIME DEFAULT current_timestamp);");
   sl_exec("CREATE TABLE IF NOT EXISTS familien("
           "erstieuuid TEXT PRIMARY KEY ASC, familie TEXT NOT NULL);");
+  sl_exec("CREATE TABLE IF NOT EXISTS aliases("
+          "familie TEXT NOT NULL, "
+          "verb TEXT NOT NULL, alias TEXT NOT NULL,"
+          "UNIQUE(familie,verb));");
   sl_exec("CREATE INDEX IF NOT EXISTS idx_erstie ON zweities(erstie);");
   sl_exec("CREATE INDEX IF NOT EXISTS idx_name ON zweities(name);");
   sl_exec("CREATE INDEX IF NOT EXISTS idx_magiername ON testies(magier);");
   sl_exec("CREATE INDEX IF NOT EXISTS idx_familie ON familien(familie);");
+  sl_exec("CREATE INDEX IF NOT EXISTS idx_aliasverb ON aliases(verb);");
+  sl_exec("CREATE INDEX IF NOT EXISTS idx_aliasfamilie ON aliases(familie);");
 
   // Login-Event abonnieren
   if (EVENTD->RegisterEvent(EVT_LIB_LOGIN,
@@ -243,6 +246,99 @@ public int DeleteTestie(object|string pl)
   if (sizeof(tmp))
     return -1;
 
+  return 1;
+}
+
+// *************** Aliase *******************************
+
+// Nur die eigene Familie darf abgefragt/geaendert werden.
+private int alias_access(string familie)
+{
+  if (ARCH_SECURITY)
+    return 1;
+  if (QueryFamilie(previous_object()) == familie)
+    return 1;
+  return 0;
+}
+
+// Familie ermitteln und ggf. Zugriffsrecht pruefen.
+private string get_family(string familie)
+{
+  // Wenn Familie angegeben, darf das nur jemand abfragen, der dieser Familie
+  // angehoert (oder EM+).
+  if (familie)
+  {
+    if (!alias_access(familie))
+      return 0;
+    return familie;
+  }
+  else
+    return QueryFamilie(previous_object());
+  return 0;
+}
+
+// Die Familienaliase abfragen. Entweder ein bestimmtes oder alle. Eine
+// Filterung ist hier (vorlaeufig) nicht eingebaut, das macht ggf. das
+// Spielerobjekt.
+public varargs mapping QueryFamilyAlias(string verb, string familie)
+{
+  // Familie ermitteln und Zugriffsrecht pruefen.
+  familie = get_family(familie);
+  if (!familie || !sizeof(familie))
+    return 0;
+
+  mixed tmp;
+  if (verb)
+    tmp = sl_exec("SELECT verb, alias FROM aliases WHERE "
+                  "familie=?1 AND verb=?2", familie, verb);
+  else
+    tmp = sl_exec("SELECT verb,alias FROM aliases WHERE "
+                  "familie=?1",familie);
+
+  if (sizeof(tmp))
+  {
+    // Das Alias muss noch in das Aliasarray gesplittet werden.
+    mapping res = m_allocate(sizeof(tmp));
+    foreach(string* row : tmp)
+    {
+      m_add(res, row[0], restore_value(row[1]));
+    }
+    return res;
+  }
+  return ([]);
+}
+
+public varargs int AddOrReplaceFamilyAlias(string verb, <string|int>* alias,
+                                           string familie)
+{
+  // Familie ermitteln und Zugriffsrecht pruefen.
+  familie = get_family(familie);
+  if (!familie || !sizeof(familie))
+    return -1;
+
+  // max. 100 Familienaliase fuer den Moment.
+  mixed* tmp = sl_exec("SELECT COUNT(*) FROM aliases WHERE "
+                       "familie=?1",familie);
+  if (tmp[0][0] > 100)
+    return -2;
+
+  sl_exec("INSERT OR REPLACE INTO aliases(familie, verb, alias) "
+          "VALUES(?1, ?2, ?3);", familie, verb, save_value(alias));
+  return 1;
+}
+
+public varargs int DeleteFamilyAlias(string verb, string familie)
+{
+  // Familie ermitteln und Zugriffsrecht pruefen.
+  familie = get_family(familie);
+  if (!familie || !sizeof(familie))
+    return -1;
+
+  if (verb)
+    sl_exec("DELETE FROM aliases WHERE familie=?1 AND verb=?2;",
+            familie, verb);
+  else // alle loeschen
+    sl_exec("DELETE FROM aliases WHERE familie=?1;", familie);
   return 1;
 }
 
