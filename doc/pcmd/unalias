@@ -3,11 +3,13 @@ unalias
 -------
 
  KOMMANDO:
-    unalias <alias>
-    unalias <muster>
+    unalias [ -f ] <alias>
+    unalias [ -f ] <muster>
 
  ARGUMENTE:
 
+     -f
+        Schaltet in den Familienmodus
      <alias>
         Das zu entfernende Alias
      <muster>
@@ -17,7 +19,10 @@ unalias
  BESCHREIBUNG:
     (Statt `unalias' kann man auch `unali' verwenden!)
 
-    Es werden ein oder mehrere Aliase geloescht.
+    Es werden ein oder mehrere Aliase geloescht. Ohne -f werden Aliase des
+    Charakters geloescht, mit -f werden Familienaliase geloescht. Geloeschte
+    Familienaliase bleiben in anderen Charakteren noch bis zu deren naechstem
+    Login bestehen.
 
     *Achtung!* Es erfolgt keine Sicherheitsabfrage!
 
@@ -38,9 +43,13 @@ unalias
 
     > unalias .*
 
+    Alle Familienaliase loeschen:
+
+    > unalias -f .*
+
  SIEHE AUCH:
     alias
 
  LETZTE AeNDERUNG:
-   02.10.2012, Zesstra
+   06.05.2019, Zesstra
 

@@ -4,7 +4,7 @@ alias
 
  KOMMANDO:
     alias <alias> <befehl>
-    alias [ -a ] [ <alias> | <abk>* ]
+    alias [ -f ] [ -a ] [ <alias> | <abk>* ]
 
  ARGUMENTE:
 
@@ -16,6 +16,8 @@ alias
         Die Abkuerzung eines Alias
      -a
         Option, um Aliase so auszugeben, wie man sie definiert
+     -f
+        Familienaliase bearbeiten/anzeigen
 
  BESCHREIBUNG:
     (Statt `alias' kann man auch `ali' verwenden!)
@@ -44,6 +46,13 @@ alias
     faehig ist, d.h. man kann den Text so als Befehl eingeben, wie er aus-
     gegeben wird (z.B. um einem Zweitcharakter aliases des Erstcharakters zu
     geben).
+
+    Nimmt man die Option -f hinzu, werden die Familienaliase angezeigt oder
+    bearbeitet. Die Familienaliase sind die Aliase, die zwischen allen
+    Zweities und dem Erstie geteilt werden. Hat ein Charakter ein Alias, was
+    es (auch) als Familienalias gibt, wird das Alias des Charakters benutzt.
+    Und aendert ein Charakter die Familienaliase, werden alle anderen Chars
+    dies erst nach dem naechsten Login mitbekommen.
 
     Soll das Zeichen "$" oder das Zeichen "&" im Alias vorkommen ("&" ist aus
     historischen Gruenden genau wie "$" benutzbar), so muss es mit einem \
@@ -92,6 +101,10 @@ alias
 
     Das letzte Beispiel zeigt, wie man an einen Befehl kommt, der von einem
     Alias "ueberladen" wurde.
+
+    > alias -f nal nimm alles aus leiche
+    Nun bekommen alle Chars in der Familie das Familienalias "nal".
+
 
  SIEHE AUCH:
     unalias, ersetzungsanzeige

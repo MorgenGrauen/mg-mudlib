@@ -27,11 +27,17 @@
 #include <strings.h>
 
 #define CBLOG(x)    log_file(SHELLLOG("DISABLECOMMANDS"),x,200000)
+#define FALIASDB "/secure/zweities"
 
 #define HIST_SIZE 40
 #define EPMASTER "/secure/explorationmaster"
 
+// Im Char gespeicherte Aliase
 private mapping aliases;
+// Vereinigte Liste aktiver Aliase aus im Char gespeicherten und
+// Familienaliases. Wird nicht gespeichert, sondern bei Login erzeugt!
+private nosave mapping active_aliases = ([]);
+
 private string *commands;
 private int hist_size, show_processing, histmin;
 private string default_notify_fail;
@@ -48,7 +54,6 @@ nomask void __set_bb(int flag);
 static varargs int __auswerten(string str, string intern);
 varargs int SoulComm(string str, string _verb);
 varargs mixed More(string str, int fflag, string returnto);
-static int _starts_with(string str, string start);
 static void reallocate_histbuf();
 
 private void AddHistory(string str)
@@ -130,16 +135,25 @@ static int histlen(string str)
   return 1;
 }
 
+private void merge_family_aliases()
+{
+  // Char- und Familienaliase addieren.
+  // Die Aliase des Char haben Prioritaet und ueberdecken die der Familie.
+  active_aliases = FALIASDB->QueryFamilyAlias() + aliases;
+}
+
 static void initialize()
 {
-  if (!pointerp(history)||sizeof(history)!=hist_size)
-    reallocate_histbuf();
-  add_action("__auswerten","",1);
+    if (!pointerp(history)||sizeof(history)!=hist_size)
+        reallocate_histbuf();
+    add_action("__auswerten","",1);
     max_commands = EPMASTER->QueryCommands();
     cmd_types = EPMASTER->QueryCmdTypes() || ({});
 
     if ( !mappingp(aliases) )
         aliases = ([]);
+
+    merge_family_aliases();
 
     if ( !pointerp(commands) )
         commands = ({});
@@ -191,7 +205,10 @@ static int set_errormessage(string s)
 
 void reconnect()
 {
-  if (!mappingp(aliases)) aliases=([]);
+  if (!mappingp(aliases))
+    aliases=([]);
+
+  merge_family_aliases();
 
     if ( !pointerp(commands) )
         commands = ({});
@@ -214,17 +231,18 @@ static int show_hist()
   return 1;
 }
 
-static string present_alias(mixed *ali)
+static string present_alias(<string|int>* ali)
 {
-  int j,k;
+  int j;
+  <string|int> k;
   string s,s2;
 
   for (s="",j=sizeof(ali)-1;j>=0;j--)
     if (intp(ali[j]))
       if ((k=ali[j])<0)
-  s="$"+(k==-1?"":(string)-k)+"*"+s;
+        s="$"+(k==-1?"":(string)-k)+"*"+s;
       else
-  s="$"+(string)k+s;
+        s="$"+(string)k+s;
     else
       {
          s2=implode(explode(ali[j],"\\"),"\\\\");
@@ -234,48 +252,51 @@ static string present_alias(mixed *ali)
 }
 
 #define ALIFORMAT ({" %s\t= %s", "alias %s %s"})[display_as_aliascommand]
+#define FALIFORMAT ({" %s\t= %s", "alias -f %s %s"})[display_as_aliascommand]
 // Ich weiss, den Variablennamen im define zu haben ist unfein, aber das
 // macht es im Code dann angenehm uebersichtlich.  -HrT
 
-static int query_aliases(int display_as_aliascommand)
+static int query_aliases(int display_as_aliascommand, int familymode)
 {
-  int i;
-  string *a,*ali;
+  mapping selected_aliases;
 
-  if(i=sizeof(ali=sort_array(m_indices(aliases),#'<))) //')))
+  if (familymode)
+    selected_aliases=FALIASDB->QueryFamilyAlias();
+  else
+    selected_aliases = aliases;
+
+  string *alis = sort_array(m_indices(selected_aliases),#'<);
+
+  if(sizeof(alis))
   {
-    for(a=({}),i--; i>=0; i--)
-        a+=({sprintf(ALIFORMAT, ali[i], present_alias( aliases[ali[i]] ) ) });
-    More("Du hast folgende Aliase definiert:\n"+implode(a,"\n"));
+    foreach(string a : &alis)
+      a = sprintf( (familymode ? FALIFORMAT : ALIFORMAT),
+                  a, present_alias(selected_aliases[a]) );
+    More("Du hast folgende "
+         + (familymode ? "Familien-" : "")
+         + "Aliase definiert:\n" + CountUp(alis, "\n"));
   }
   else
-    write("Du hast keine Aliase definiert.\n");
+    write("Du hast keine "
+          +(familymode ? "Familien-" : "") + "Aliase definiert.\n");
   return 1;
-}
-
-static int
-_starts_with(string str, string start)
-{
-  return (sizeof(start)>sizeof(str) ? 0
-    : str[0..sizeof(start)-1]==start);
 }
 
 static int alias(string str)
 {
-  string commandverb;
-  string *tmp,um,*hits;
-  int num, l, pos, cont;
-  int display_as_aliascommand, familymode;
-
   // unbearbeitetes Kommando ohne Verb ermitteln (auch ohne Trim an Anfang und
   // Ende)
+  string um;
   if (unmodified && unmodified!="")
     um=implode(old_explode(unmodified," ")[1..]," ");
 
   if (um=="") um=0;
   if( !(str = um||_unparsed_args()) || str=="*")
-    return query_aliases(0);
+    return query_aliases(0, 0);
 
+  // optionen auswerten bis keine mehr kommen, dabei vorne den String
+  // verkuerzen
+  int display_as_aliascommand, familymode;
   while(sizeof(str) >= 2 && str[0] == '-')
   {
     if (str[1] == 'a')
@@ -288,25 +309,41 @@ static int alias(string str)
     str = trim(str[2..], TRIM_LEFT);
   }
   if (!sizeof(str) || str=="*")
-    return query_aliases(display_as_aliascommand);
+    return query_aliases(display_as_aliascommand, familymode);
 
-  pos=member(str,' ');
+  int pos=member(str,' ');
   if (pos < 0) // Nur 1 Arg, Alias abfragen
   {
-    if ((tmp=aliases[str])) // genau eins angegebenen
-      printf(ALIFORMAT+"\n",str,present_alias(tmp));
+    <string|int>* tmp;
+    if (familymode)
+      tmp=FALIASDB->QueryFamilyAlias(str);
+    else
+      tmp=aliases[str];
+
+    if (tmp) // genau eins angegebenen
+      printf((familymode ? FALIFORMAT : ALIFORMAT)
+             +"\n",str,present_alias(tmp));
     else if (str[<1]=='*')  // * am Ende, alle ausgeben, die passend anfangen
     {
       str=str[0..<2];
-      hits=filter(m_indices(aliases), #'_starts_with, str);
+      mapping selected_aliases;
+      if (familymode)
+        selected_aliases=FALIASDB->QueryFamilyAlias();
+      else
+        selected_aliases = aliases;
+      string *hits=filter(m_indices(selected_aliases),
+                  function int (string alname, string start)
+                  { return strstr(alname, start) == 0; },
+                  str);
       if (!sizeof(hits))
       {
         printf("Du hast kein Alias, das mit \"%s\" anfaengt.\n", str);
         return 1;
       }
       hits=sort_array(hits, #'>);
-      for (l=sizeof(hits); l--;)
-        hits[l]=sprintf(ALIFORMAT, hits[l], present_alias(aliases[hits[l]]));
+      foreach(string hit: &hits)
+        hit = sprintf((familymode ? FALIFORMAT : ALIFORMAT),
+                      hit, present_alias(selected_aliases[hit]));
       More("Folgende Aliase beginnen mit \""+str+"\":\n"+implode(hits,"\n"));
     }
     else  // Nix gefunden
@@ -320,7 +357,7 @@ static int alias(string str)
     return 1;
   }
   // Kommandoverb alles bis zum ersten " ".
-  commandverb=str[0..pos-1];
+  string commandverb=str[0..pos-1];
   if (commandverb=="unalias")
   {
     write
@@ -334,70 +371,125 @@ static int alias(string str)
     return 1;
   }
 
-  str=str[pos+1..],tmp=({});
+  // ab hier wird der Expansionstext in ein Array von Strings geparst. Alle
+  // Alias-Argument ($n, $* oder $n*) stehen an der jeweiligen Stelle als
+  // laufender Index im Array.  Negative Zahlen stehen fuer $n*, d.h. alle
+  // Argument nach dem genannten.
+  // Bsp: ({"stecke ", 1, " in ", -2 })
+  //TODO: regexplode("teile $1 mit $2* Ich bin jetzt weg, \$ verdienen!","[$][0-9][*]{0,1}",RE_PCRE)
+  str=str[pos+1..];
+  <string|int>* tmp=({}); // Alias-Array
+  int l, num;
   while (l=sizeof(str)) {
-    pos=0,cont=1;
-    while (cont) {
-      if (pos<l) {
-        if(str[pos]=='\\') {
+    pos=0; // Positionszaehler in str
+    int cont=1; // Statusflag fuer inneres while
+    while (cont)
+    {
+      // innere Schleife: scannt ein Argument und haengt es als Element in
+      // tmp an. Laeuft ueber den String bis Stringende oder & oder $
+      // erreicht wird, dann ist ein Argument vollstaendig und das naechste
+      // faengt an.
+      if (pos<l)
+      {
+        if(str[pos]=='\\') // escapte '\' werden zu einzelnen '\'.
+        {
           str=str[0..pos-1]+str[pos+1..];
           l--;
-        } else {
-          if (str[pos]=='&' || str[pos]=='$') {
+        }
+        else
+        {
+          if (str[pos]=='$' || str[pos]=='&') // & ist historisch...
+          { // Argument-Platzhalter gefunden
             cont=0;
-            if (pos>0) {
+            if (pos>0) { // vorhergehender Textblock vollstaendig, anhaengen
               tmp+=({str[0..pos-1]});
             }
             if (pos==l-1) {
               printf("Fehler: %c am Zeilenende\n",str[pos]);
               return 1;
             }
-            if ((num=str[++pos])=='*') {
+            // $* oder $n ? Im Falle von $n landet in num der ASCII-Wert des
+            // Zeichens, von welchem der Wert von '0' abgezogen wird -> num
+            // enthaelt danach 0..9, wenn eine Ziffer angegeben wurde.
+            num=str[++pos]; // naechstes Zeichen holen
+            if (num=='*') {
+              // Argument 1 und pos muss wieder eins zurueck.
               num=1;
               pos--;
             } else {
               num-='0';
             }
             if (num<0 || num>9) {
-              printf("Fehler: Nach %c muss Ziffer oder * folgen\n",
+              printf("Fehler: Nach %c muss eine Ziffer oder * folgen\n",
                str[pos-1]);
               return 1;
             }
-            if ((str=str[pos+1..])!=""&&str[0]=='*') {
-              str=str[1..];
-              num=-num;
+            // str nach Argumentkennung weiter verarbeiten.
+            str=str[pos+1..];
+            // Aber fuer den Fall $n* das naechste Zeichen auch untersuchen
+            if (sizeof(str) && str[0]=='*') {
+              str=str[1..]; // auch ueberspringen
+              num = negate(num); // Im Array negiert kodieren
             }
             tmp+=({num});
           }
         }
-        pos++;
-      } else {
-        cont=0;
-        if (str!="") tmp+=({str});
-        str="";
+        ++pos; // naechstes Zeichen im naechste inner while angucken
       }
+      // Ende des gesamten Strings erreicht.
+      else
+      {
+        cont=0; // ende inner while
+        // letzten Argumentblock anhaengen
+        if (str!="") tmp+=({str});
+        str=""; // beendet outer while
+      }
+    } // inner while
+  } // outer while
+
+  if (familymode)
+  {
+    int err=FALIASDB->AddOrReplaceFamilyAlias(commandverb, tmp);
+    if (err < 1)
+    {
+      printf("Neues Familienalias konnte nicht definiert werden.\n");
+      if (err==-2)
+        printf("Du hast schon genuegend Aliase definiert!\n");
+    }
+    else
+    {
+      printf("Neues Familienalias: %s\t= %s\n",
+             commandverb, present_alias(tmp));
+      // Alias direkt aktivieren, aber nur falls es keins in diesem Char gibt
+      // (was dann eh schon aktiv ist).
+      if (!member(aliases, commandverb))
+        active_aliases[commandverb] = tmp;
     }
   }
-  if ((!aliases[commandverb]) && (sizeof(aliases)>2000))
-    printf("Du hast schon genuegend Aliase definiert!\n");
   else
   {
-    aliases[commandverb]=tmp;
-    printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
+    if ((!aliases[commandverb]) && (sizeof(aliases)>2000))
+      printf("Du hast schon genuegend Aliase definiert!\n");
+    else
+    {
+      aliases[commandverb]=tmp;
+      active_aliases[commandverb] = tmp;
+      printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
+    }
   }
   return 1;
 }
 
 static int unalias(string str) {
-  int i, familymode;
-  string *als,um;
 
+  string um;
   if (unmodified&&unmodified!="")
     um=implode(old_explode(unmodified," ")[1..]," ");
   if (um=="") um=0;
   if ( !(str=um || _unparsed_args()))
     return 0;
 
+  int familymode;
   while(sizeof(str) >= 2 && str[0] == '-')
   {
     if (str[1] == 'f')
@@ -414,22 +506,40 @@ static int unalias(string str) {
       "willst.",78));
     return 1;
   }
-  if (!member(aliases,str))
+
+  mapping selected_aliases;
+  if (familymode)
+    selected_aliases=FALIASDB->QueryFamilyAlias();
+  else
+    selected_aliases = aliases;
+
+  string *to_delete;
+  // Genau ein Alias gegeben?
+  if (member(selected_aliases,str))
+    to_delete = ({str});
+  else // sonst als RegExp interpretieren
+    to_delete=regexp(m_indices(selected_aliases),("^"+str+"$"));
+
+  if (sizeof(to_delete))
   {
-    als=regexp(m_indices(aliases),("^"+str+"$"));
-    if (!(i=sizeof(als)))
+    foreach(string key : to_delete)
     {
-      write("So ein Alias hast Du nicht definiert.\n");
-      return 1;
+      if (familymode)
+        FALIASDB->DeleteFamilyAlias(key);
+      else
+        m_delete(aliases, key);
+      // auf jeden Fall noch deaktivieren
+      m_delete(active_aliases, key);
     }
-    for (--i;i>=0;i--)
-      m_delete(aliases,als[i]);
-    write(break_string(("Du entfernst folgende Aliase: "+
-      implode(als," ")+".\n"),75));
-    return 1;
+    if (sizeof(to_delete) == 1)
+      write("Du entfernst das Alias \""+ to_delete[0] +"\".\n");
+    else
+      write(break_string(("Du entfernst folgende Aliase: "
+                          +CountUp(to_delete) + ".\n"),75));
   }
-  m_delete(aliases,str);
-  write("Du entfernst das Alias \""+str+"\".\n");
+  else
+    write("So ein Alias hast Du nicht definiert.\n");
+
   return 1;
 }
 
@@ -637,9 +747,15 @@ private string parsecommand(string str)
   string output = "";
   string* input = explode(str," ");
   int input_size = sizeof(input);
-  mixed alias = aliases[input[0]];
+  mixed alias = active_aliases[input[0]];
   if (!alias)
     return str;
+  // Das Alias ist in ein Array von Strings gespeichert. Alle
+  // Alias-Argument ($n, $* oder $n*) stehen an der jeweiligen Stelle als
+  // laufender Index im Array. An der Stelle werden die Argumente vom Alias
+  // eingefuegt, alle anderen Elemente werden in den output kopiert. Negative
+  // Zahlen stehen fuer $n*, d.h. alle Argument nach dem genannten.
+  // Bsp: ({"stecke ", 1, " in ", -2 })
   foreach (mixed a:alias)
   {
     if (!intp(a))
@@ -648,11 +764,14 @@ private string parsecommand(string str)
     {
       if (a >= 0)
       {
+        // Einzelnes Argument ($n). Argument anstelle von a einfuegen, falls
+        // genug angegeben wurden
         if (input_size > a)
           output += input[a];
       }
       else
       {
+        // Argumente ab n ($n*). Alle von a bis Ende einfuegen.
         a = -a;
         if (input_size > a)
           output += implode(input[a..]," ");
@@ -814,7 +933,11 @@ static int do_list(string str)
 
 int unalias_all()
 {
-  if (IS_ELDER(this_interactive())) aliases=([]);
+  if (IS_ELDER(this_interactive()))
+  {
+    aliases=([]);
+    merge_family_aliases();
+  }
   return 1;
 }
 
