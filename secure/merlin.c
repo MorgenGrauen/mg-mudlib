@@ -45,7 +45,7 @@ string query_g_suffix(int gen, int casus, int anzahl);
 string make_invlist(object viewer,object *inv);
 static int determine_action(string mess, string name);
 static int create_wizard(mixed who, mixed promoter);
-static int create_seer(mixed who);
+static int create_seer(object who);
 static void give_help(mixed who);
 int goto(mixed dest);
 
@@ -873,7 +873,7 @@ void do_say(string str)
 
 
 
-void seer_sequenz3(mixed player, string plname)
+void seer_sequenz3(object player, string plname)
 {
   string playername; 
   object faq;
@@ -927,7 +927,7 @@ void seer_sequenz3(mixed player, string plname)
  busy=0;
 }
 
-void seer_sequenz2(mixed player, string plname)
+void seer_sequenz2(object player, string plname)
 {
   if (!objectp(player)) {
     tell_room(environment(), sprintf(
@@ -954,7 +954,7 @@ void seer_sequenz2(mixed player, string plname)
   call_out("seer_sequenz3", 7, player, plname);
 }
 
-void seer_sequenz1(mixed player, string plname)
+void seer_sequenz1(object player, string plname)
 {
   if (!objectp(player))
     return;
@@ -972,7 +972,7 @@ void seer_sequenz1(mixed player, string plname)
 }
 
   
-static int create_seer(mixed player)
+static int create_seer(object player)
 {
   if (!objectp(player))
     return 0;
