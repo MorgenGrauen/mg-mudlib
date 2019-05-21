@@ -879,7 +879,7 @@ void seer_sequenz3(object player, string plname)
   object faq;
   string text;
 
-  if (!objectp(player)) {
+  if (!objectp(player) || !interactive(player)) {
     tell_room(environment(), sprintf("Merlin sagt: Na, wo ist denn %s "
                                      "hin?\n", plname));
     busy = 0;
@@ -929,7 +929,7 @@ void seer_sequenz3(object player, string plname)
 
 void seer_sequenz2(object player, string plname)
 {
-  if (!objectp(player)) {
+  if (!objectp(player) || !interactive(player)) {
     tell_room(environment(), sprintf(
                                      "Merlin sagt: Na, wo ist denn %s hin?\n", 
                                      plname));
@@ -956,7 +956,7 @@ void seer_sequenz2(object player, string plname)
 
 void seer_sequenz1(object player, string plname)
 {
-  if (!objectp(player))
+  if (!objectp(player) || !interactive(player))
     return;
 
   move(environment(player), M_TPORT);
@@ -974,7 +974,7 @@ void seer_sequenz1(object player, string plname)
   
 static int create_seer(object player)
 {
-  if (!objectp(player))
+  if (!objectp(player) || !interactive(player))
     return 0;
   if (IS_SEER(player))
   {
