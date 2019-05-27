@@ -80,17 +80,19 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   }
   // Fuer aeltere Files schalten wir einige Warnungen explizit aus. :-(
   // (1407179680 == "Mon,  4. Aug 2014, 21:14:40")
+  // Auf anderen Rechnern als dem Mudrechner werden die Warnungen nur
+  // eingeschaltet, wenn die Files seit dem Mudstart geaendert wurden.
+  // Hintergrund: bei kopierten Mudlibs werden oft die mtimes geaendert und
+  // dann scrollt auf einmal alles. Aber wenn man nach dem Mudstart was
+  // aendert, ist es vermutlich ne einzelne, gezielte Aenderung an einem File.
 #if MUDHOST == __HOST_NAME__
-  if (call_sefun("file_time", base_file) < 1407179680) {
+  if (call_sefun("file_time", base_file) < 1407179680)
+#else
+  if (call_sefun("file_time", base_file) < __BOOT_TIME__)
+#endif
+  {
       res += PRAGMA("no_warn_missing_return");
   }
-#else
-  // Auf anderen Rechnern als dem Mudrechner werden die Warnungen unabhaengig
-  // vom Zeitpunt der letztes Aenderung abgeschaltet, weil bei kopierten
-  // Mudlibs oft die mtimes geaendert werden und dann auf einmal alles scrollt.
-  res += PRAGMA("no_warn_missing_return");
-
-#endif
   //DEBUG(res);
   return res;
 }
