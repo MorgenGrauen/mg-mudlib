@@ -50,6 +50,8 @@ private mapping feingabe;         // gerade eingegebener Fehler
 // ************** private functions  **************
 private varargs int get_issuelist(int lmodus);
 private void get_uids();
+private struct fullissue_s get_issue(string arg);
+private struct fullissue_s|struct fullissue_s* get_issues(string arg);
 
 // irgendeinen Fehler oder Warnung anzeigen.
 private int show_entry(struct fullissue_s issue)
@@ -158,57 +160,19 @@ public int CmdFehlerEingabe(string arg) {
 
 public int CmdFehlerZeigen(string arg)
 {
-  int issueid;
-
-  if (stringp(arg) && sizeof(arg))
-  {
-      arg = trim(arg, TRIM_BOTH);
-      issueid = to_int(arg);
-  }
-  else
-  {
-      issueid = lfehler;
-      arg = to_string(issueid);
-  }
+  struct fullissue_s|struct fullissue_s* issues=get_issues(arg);
   notify_fail("Einen Eintrag mit dieser ID gibt es nicht!\n");
 
-  // Mit einem / am Anfang ist arg wohl ein Filename, wenn to_string(issueid)
-  // == arg wird die Issueid von oben genommen.
-  struct fullissue_s issue;
-  struct fullissue_s *issues;
-  if (arg[0] == '/')
+  if (structp(issues))
   {
-    issues=({});
-    foreach(int m: ALL_ERR_TYPES)
-    {
-      if (!(m & modus))
-        continue;
-      struct fullissue_s *tmp = 
-                       (struct fullissue_s *)ERRORD->QueryIssuesByFile(arg, m);
-      if (tmp)
-        issues+=tmp;
-    }
-    if (!sizeof(issues))
-      issues=0;
-  }
-  else if (to_string(issueid) == arg)
-    issue = (struct fullissue_s)ERRORD->QueryIssueByID(issueid);
-  else
-    issue = (struct fullissue_s)ERRORD->QueryIssueByHash(arg);
-
-  if (structp(issue))
-  {
-    show_entry(issue);
+    show_entry(issues);
     // letzten Fehler merken.
-    lfehler = issueid;
+    lfehler = issues->id;
     return 1;
   }
-  // Wenn das nicht erfolgreich ist, ist das Argument evtl. ein Objekt-,
-  // Programm- oder Ladename. In dem Fall alle von denen anzeigen, die passen
-  // hierbei wird der Typ NICHT beruecksichtigt.
   else if (pointerp(issues))
   {
-    foreach(issue : issues)
+    foreach(struct fullissue_s issue : issues)
     {
       show_entry(issue);
     }
@@ -1005,6 +969,57 @@ private varargs int get_issuelist(int lmodus)
         }
       }
     }
+
     return count;
 }
 
+private struct fullissue_s get_issue(string arg)
+{
+  int issueid;
+  struct fullissue_s issue;
+
+  if (stringp(arg) && sizeof(arg))
+  {
+    arg = trim(arg, TRIM_BOTH);
+    issueid = to_int(arg);
+  }
+  else
+  {
+    issueid = lfehler;
+    arg = to_string(issueid);
+  }
+
+  // Wurde ein Hash uebergeben, ist issueid 0 und arg der Hash.
+  // Wurde eine ID oder nichts uebergeben, ist issueid die ID als int und 
+  // arg die ID als string.
+  if (to_string(issueid) == arg)
+    issue = (struct fullissue_s)ERRORD->QueryIssueByID(issueid);
+  else
+    issue = (struct fullissue_s)ERRORD->QueryIssueByHash(arg);
+  return issue;
+}
+
+private struct fullissue_s|struct fullissue_s* get_issues(string arg)
+{
+  struct fullissue_s|struct fullissue_s* issues;
+  // Mit einem / am Anfang ist arg wohl ein Filename.
+  if (sizeof(arg) && arg[0] == '/')
+  {
+    issues=({});
+    foreach(int m: ALL_ERR_TYPES)
+    {
+      if (!(m & modus))
+        continue;
+      struct fullissue_s *tmp = 
+                       (struct fullissue_s *)ERRORD->QueryIssuesByFile(arg, m);
+      if (tmp)
+        issues+=tmp;
+    }
+    if (!sizeof(issues))
+      issues=0;
+  }
+  else
+    issues=get_issue(arg);
+
+  return issues;
+}
