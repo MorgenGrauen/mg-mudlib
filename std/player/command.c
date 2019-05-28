@@ -274,7 +274,7 @@ static int query_aliases(int display_as_aliascommand, int familymode)
                   a, present_alias(selected_aliases[a]) );
     More("Du hast folgende "
          + (familymode ? "Familien-" : "")
-         + "Aliase definiert:\n" + CountUp(alis, "\n"));
+         + "Aliase definiert:\n" + CountUp(alis, "\n", "\n"));
   }
   else
     write("Du hast keine "
