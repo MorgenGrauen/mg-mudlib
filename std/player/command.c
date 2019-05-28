@@ -472,7 +472,10 @@ static int alias(string str)
       printf("Du hast schon genuegend Aliase definiert!\n");
     else
     {
-      aliases[commandverb]=tmp;
+      if (member(active_aliases, commandverb)
+          && !member(aliases, commandverb))
+        printf("Hinweis: das neue Alias ueberschattet ein Familienalias.\n");
+      aliases[commandverb] = tmp;
       active_aliases[commandverb] = tmp;
       printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
     }
