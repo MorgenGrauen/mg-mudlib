@@ -265,7 +265,7 @@ static int query_aliases(int display_as_aliascommand, int familymode)
   else
     selected_aliases = aliases;
 
-  string *alis = sort_array(m_indices(selected_aliases),#'<);
+  string *alis = sort_array(m_indices(selected_aliases),#'>);
 
   if(sizeof(alis))
   {
