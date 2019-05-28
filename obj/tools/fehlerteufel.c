@@ -781,6 +781,36 @@ int CmdReassign(string str) {
   return 1;
 }
 
+int CmdFehlerDirectory(string arg)
+{
+  struct fullissue_s issue=get_issue(arg);
+  if(!structp(issue))
+  {
+    PL->ReceiveMsg(
+      "Kein Eintrag mit dieser ID gefunden.",
+      MT_NOTIFICATION);
+  }
+  else
+  {
+    string path=issue->loadname||issue->obj;
+    if(!stringp(path) || !sizeof(path))
+    {
+      PL->ReceiveMsg(
+        "Kein Pfad zu dieser ID verfuegbar.",
+        MT_NOTIFICATION);
+    }
+    else
+    {
+      path=implode(explode(path,"/")[..<2],"/");
+      PL->SetProp(P_CURRENTDIR,path);
+      PL->ReceiveMsg(
+        "Aktuelles Verzeichnis ist jetzt: "+path,
+        MT_NOTIFICATION);
+    }
+  }
+  return 1;
+  }
+
 // ************** public 'internal' functions **************
 public string QueryOwner() {return owner;}
 public mixed QueryIssueList() {return issuelist;}
@@ -808,6 +838,8 @@ protected void create() {
     "funlock <id> <note> - Fehler zum autom. Loeschen freigeben\n"
     "ffix <id> <note>    - Fehler als gefixt kennzeichnen\n"
     "funfix <id> <note>  - gefixten Fehler als nicht-gefixt markieren\n"
+    "fdir <id>           - in das Verzeichnis des fehlerhaften Objekts "
+    "wechseln\n"
     "fuebertrage <id> <newuid> <note>\n"
     "                    - Fehler an die UID uebertragen\n"
     );
@@ -836,6 +868,7 @@ protected void create() {
         "CmdFix");
     AddCmd(({"fehleruebertrage","fuebertrage"}),"CmdReassign");
     AddCmd(({"fehlereingabe", "feingabe"}), "CmdFehlerEingabe");
+    AddCmd(({"fehlerdir","fdir"}),"CmdFehlerDirectory");
 }
 
 public varargs void init(object origin)

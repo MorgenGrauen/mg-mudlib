@@ -129,6 +129,9 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
   Anmerkung: Es gibt (absichtlich) keine Moeglichkeit, Notizen wieder zu
   loeschen.
 
+- fdir <id>
+  Setzt euer P_CURRENTDIR auf das Verzeichnis des fehlerhaften Objekts.
+
 - fuebertrage <id> <newuid> <bemerkung>
   Wenn ihr einen Fehler habt, fuer den ihr nicht zustaendig seid, weil der
   Ursprung des Fehlers nicht in einem eurer Files liegt, koennt ihr diesen
