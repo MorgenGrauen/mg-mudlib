@@ -316,7 +316,7 @@ static int alias(string str)
   {
     <string|int>* tmp;
     if (familymode)
-      tmp=FALIASDB->QueryFamilyAlias(str);
+      tmp=FALIASDB->QueryFamilyAlias(str)[str];
     else
       tmp=aliases[str];
 
