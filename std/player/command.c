@@ -135,11 +135,39 @@ static int histlen(string str)
   return 1;
 }
 
-private void merge_family_aliases()
+// Wenn keine bestimmten Aliasnamen angegeben sind, werden alle
+// Familienaliase geholt und mit den Charaliasen vereinigt.
+// Sonst werden nur bestimmte ermittelt und der Liste der aktiven
+// Aliase ersetzt/ergaenzt.
+// Wenn <verbose>, dann wird eine Meldung ausgegeben.
+private void merge_family_aliases(string *to_update, int verbose)
 {
-  // Char- und Familienaliase addieren.
-  // Die Aliase des Char haben Prioritaet und ueberdecken die der Familie.
-  active_aliases = FALIASDB->QueryFamilyAlias() + aliases;
+  mapping family;
+  if (!to_update)
+  {
+    // Char- und Familienaliase addieren und als neues aktives Set
+    // speichern.
+    // Die Aliase des Char haben Prioritaet und ueberdecken die der Familie.
+    family = FALIASDB->QueryFamilyAlias();
+    active_aliases = family + aliases;
+  }
+  else
+  {
+    // Die uebergebene Liste neuholen (alle davon vorhandenen) und
+    // im aktiven Set aktualisieren/eintragen.
+    family = m_allocate(sizeof(to_update));
+    foreach(string key: &to_update)
+    {
+      family += FALIASDB->QueryFamilyAlias(key);
+    }
+    active_aliases = active_aliases + family;
+  }
+  if (verbose && sizeof(family))
+  {
+    write(break_string((
+      "Es wurden folgende Familienaliase aktiviert: "
+      +CountUp(m_indices(family)) + ".\n"),75));
+  }
 }
 
 static void initialize()
@@ -153,7 +181,7 @@ static void initialize()
     if ( !mappingp(aliases) )
         aliases = ([]);
 
-    merge_family_aliases();
+    merge_family_aliases(0,0);
 
     if ( !pointerp(commands) )
         commands = ({});
@@ -208,7 +236,7 @@ void reconnect()
   if (!mappingp(aliases))
     aliases=([]);
 
-  merge_family_aliases();
+  merge_family_aliases(0,0);
 
     if ( !pointerp(commands) )
         commands = ({});
@@ -539,6 +567,13 @@ static int unalias(string str) {
     else
       write(break_string(("Du entfernst folgende Aliase: "
                           +CountUp(to_delete) + ".\n"),75));
+    // Wenn nicht im Familienmodus (d.h. Char-Aliase wurden geloescht), wird
+    // versucht, gleichnamige Familienaliase (sofern vorhanden) zu
+    // aktivieren.
+    if (!familymode)
+    {
+      merge_family_aliases(to_delete, 1);
+    }
   }
   else
     write("So ein Alias hast Du nicht definiert.\n");
@@ -939,7 +974,7 @@ int unalias_all()
   if (IS_ELDER(this_interactive()))
   {
     aliases=([]);
-    merge_family_aliases();
+    merge_family_aliases(0,0);
   }
   return 1;
 }
