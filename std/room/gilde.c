@@ -56,7 +56,7 @@
   ([0:                "Also die Haelfte hast Du schon ungefaehr geschafft. Aber ruh Dich jetzt ja nicht darauf aus. Sieh mal zu, dass Du die zweite Haelfte zur naechsten Stufe auch noch schaffst. Auf einem Bein kann man schliesslich nicht lange stehn!",\
     "zauberer":       "Teile Llystrathe mit Hilfe. Och schade scheint nicht zu funktionieren, dann musst Du eben selber noch ne Menge Stufenpunkte sammeln!",\
     "kaempfer":       "Kaempfer schnell an die Waffen! Die Haelfte hast Du ungefaehr geschafft, aber es gibt noch viel zu tun!",\
-    "klerus":         "Beile Dich! Das Boese sitzt Dir im Nacken und Du hast noch ungefaehr die Haelfte vor Dir!",\
+    "klerus":         "Beeile Dich! Das Boese sitzt Dir im Nacken und Du hast noch ungefaehr die Haelfte vor Dir!",\
     "chaos":          "Schnapp Dir Deinen Daemon und teil Dir die zweite Haelfte der Arbeit mit ihm!",\
     "karate":         "Du scheinst eingesehen zu haben, dass hirnloses Draufhauen nix nutzt. Die Haelfte haste ungefaehr schon geschafft!",\
     "katzenkrieger":  "So ungefaehr bis zur Haelfte hast Du Dich schon an die neue Stufe herangeschlichen!",\
