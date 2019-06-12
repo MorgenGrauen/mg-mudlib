@@ -68,7 +68,7 @@ Waffen sind die Argumente CLONE_WIELD und CLONE_WEAR in der Funktion
 AddItem vorteilhaft, bei anderen Objekten koennte man in deren Reset
 nachsehen, ob sie laengere Zeit in einem Raum des Gebiets oder im Gebiet
 selbst "herumgammeln". Es bleibt zwar zu hoffen, dass sie irgendwann
-dem Ausswappen des Raumes anheimfallen, aber es sieht im allgemeinen
+dem Cleanup des Raumes anheimfallen, aber es sieht im allgemeinen
 nicht schoen aus, wenn Objekte oder gar quest-/miniquestrelevante Teile
 sich in einem oder mehreren Raeumen stapeln.
 
