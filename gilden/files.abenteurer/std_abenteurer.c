@@ -19,7 +19,7 @@ string* defend_kommandos;
 mapping row_kommandos;
 
 
-create()
+protected void create()
 {
 	::create();
 
@@ -32,17 +32,17 @@ create()
 
 /* Mal als simpel-Methode eingebaut, vielleicht kann das ja irgend ein NPC
    auch noch so brauchen.*/
-AddAttackCommand(string str)
+void AddAttackCommand(string str)
 {
 	attack_kommandos+=({str});
 }
 
-AddDefendCommand(string str)
+void AddDefendCommand(string str)
 {
 	defend_kommandos+=({str});
 }
 
-AddRowCommand(int row, string str)
+void AddRowCommand(int row, string str)
 {
 	string * com;
 	if (!pointerp(row_kommandos[row]))
@@ -58,7 +58,7 @@ AddRowCommand(int row, string str)
 }
 
 /* Sehr simpel gemacht, gebe ich gerne zu.*/
-AddPreferedRow(int row)
+void AddPreferedRow(int row)
 {
 	AddDefendCommand(sprintf("team reihe %d",row));
 }
@@ -69,7 +69,7 @@ AddPreferedRow(int row)
 
    Kampfspells: Saeurestrahl, Feuerball, Schnell, Ausweichen, Kampfschrei.
    */
-BuildSkills(int level)
+void BuildSkills(int level)
 {
 	int val;
 	if (level>=11)
@@ -133,7 +133,7 @@ BuildSkills(int level)
 
 //Nachbau...geklaut aus /std/player/skills.c
 
-StdSkill_Fight(object me, string sname, mapping sinfo)
+void StdSkill_Fight(object me, string sname, mapping sinfo)
 {
   int val, w;
   object enemy;
@@ -178,10 +178,10 @@ int Defend(int dam, mixed dam_type, mixed spell, object enemy)
 {
 	if (sizeof(defend_kommandos)>0)
 		command(defend_kommandos[random(sizeof(defend_kommandos))]);
-	::Defend(dam,dam_type,spell,enemy);
+	return ::Defend(dam,dam_type,spell,enemy);
 }
 
-BuildUp(int spielerlevel)
+void BuildUp(int spielerlevel)
 {
 	// Sehr simpel, zugegeben.
 	create_default_npc(spielerlevel);
