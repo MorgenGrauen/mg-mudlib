@@ -1329,11 +1329,15 @@ static varargs int ReportError2(string player_input, string error_type)
       // werden, um ein Objekt anzusprechen, wir haben aber die Eingabe
       // per _unparsed_args(0) geholt, d.h. ggf. mit Grossbuchstaben.
       string obnam = lower_case(input_segments[0]);
-
-      // Und das Objekt suchen, dabei zuerst im env() schauen. Nur present()
-      // ginge auch, wuerde aber zuerst im Inv suchen, was aber nicht
-      // gewuenscht ist.
-      obj = present(obnam, environment(this_object())) || present(obnam);
+      if (obnam == "hier" || obnam == "raum")
+        obj = environment(this_player());
+      else
+      {
+        // Und das Objekt suchen, dabei zuerst im env() schauen. Nur present()
+        // ginge auch, wuerde aber zuerst im Inv suchen, was aber nicht
+        // gewuenscht ist.
+        obj = present(obnam, environment(this_object())) || present(obnam);
+      }
 
       // Wenn das Objekt gefunden wird, wird nur der Teil hinter dem ersten
       // : rekonstruiert und als Fehlermeldung abgesetzt.

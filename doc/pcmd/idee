@@ -10,7 +10,8 @@ ARGUMENTE:
     <text>
         Eine Mitteilung
     <objekt>
-        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+        Ein Objekt, das neben Dir liegt oder in Deinem Inventar ist.
+        Dein aktueller Raum kann mit "hier" oder "raum" angegeben werden.
 
 BESCHREIBUNG:
     Speichert eine Mitteilung ueber eine Idee, wie man das Spiel verbessern
@@ -41,4 +42,4 @@ BEMERKUNG:
 SIEHE AUCH:
     bug, syntaxhinweis, typo, detail, bezugsobjekt
 
-Letzte Aenderung: 16.06.2017, Bugfix
+Letzte Aenderung: 12.06.2019, Zesstra

@@ -1,4 +1,3 @@
-
 bug
 ---
 
@@ -11,7 +10,8 @@ ARGUMENTE:
     <text>
         Eine Mitteilung
     <objekt>
-        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+        Ein Objekt, das neben Dir liegt oder in Deinem Inventar ist.
+        Dein aktueller Raum kann mit "hier" oder "raum" angegeben werden.
 
 BESCHREIBUNG:
     Nobody's perfect. Dies gilt besonders fuer unsere Magier :)
@@ -57,4 +57,4 @@ BEMERKUNG:
 SIEHE AUCH:
     typo, idee, syntaxhinweis, detail, regeln, bezugsobjekt
 
-Letzte Aenderung: 16.06.2017, Bugfix
+Letzte Aenderung: 12.06.2019, Zesstra

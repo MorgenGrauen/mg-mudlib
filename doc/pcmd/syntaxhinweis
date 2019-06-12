@@ -10,13 +10,14 @@ ARGUMENTE:
     <text>
         Eine Mitteilung
     <objekt>
-        Ein Referenzobjekt, das neben Dir liegt oder in Deinem Inventar ist
+        Ein Objekt, das neben Dir liegt oder in Deinem Inventar ist.
+        Dein aktueller Raum kann mit "hier" oder "raum" angegeben werden.
 
 BESCHREIBUNG:
     Trotz gruendlichen Tests kommt es immer mal wieder dazu, dass eine
     Syntax Probleme verursacht. Solche Stellen koennen mit diesem Kommando
     gemeldet werden.
-    
+
     Fuer den Magier ist es sehr hilfreich, wenn Du bei in Meldung angibst,
     wo genau das Problem zu finden ist (also z.B, bei welchem Kommandoverb
     du auf welchen Teil der Syntax nicht kommst.
@@ -36,4 +37,4 @@ BEMERKUNG:
 SIEHE AUCH:
     bug, idee, typo, detail, bezugsobjekt
 
-Letzte Aenderung: 16.06.2017, Bugfix
+Letzte Aenderung: 12.06.2019, Zesstra
