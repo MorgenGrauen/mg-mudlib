@@ -37,6 +37,8 @@ static int num_walker; // anzahl der walker im array
 //static mixed *walker;  // ({ ..., ({ ..., ({ wert, closure }), ...}), ...})
 nosave < < <int|closure>* >* >* walker;
 
+int Registration();
+
 protected void create()
 {
   if (clonep(this_object())) {
@@ -65,8 +67,8 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
     ERROR("Too long delaytime from %s to RegisterWalker().\n");
 
   if (Registration())
-    raise_error("Mehrfachanmeldung nicht erlaubt. Objekt: %O\n",
-        previous_object());
+    raise_error(sprintf("Mehrfachanmeldung nicht erlaubt. Objekt: %O\n",
+        previous_object()));
 
   wert=WERT(time, rand);
   if (!wert && !rand) wert=DEFAULT_WALK_DELAY;
