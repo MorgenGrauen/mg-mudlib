@@ -26,7 +26,7 @@ Anleitung fuer ein Homemud, unter Linux
 
     2. Lade die aktuelle Mudlib von
        https://mg.mud.de/gerrit/gitweb?p=mudlib-public.git herunter, entweder
-       durch einen Klick auf "snapchot" oder mittels git clonen. Dabei kann
+       durch einen Klick auf "snapshot" oder mittels git clonen. Dabei kann
        sich git an unserem selbsterstellten SSL-Zertifikat stoeren, wenn Du
        Dich darum nicht kuemmern willst, nutze die Option
        :code:`-c http.sslVerify=false`.
@@ -54,7 +54,7 @@ Anleitung fuer ein Homemud, unter Linux
     Optional kannst Du noch den Namen des Mudgottes von Jof auf etwas anderes
     aendern, das geht wie folgt:
 
-    code-block::
+.. code-block::
 
       mv save/j/jof.o save/t/thomas.o
       mv secure/save/j/jof.o secure/save/t/thomas.o
@@ -66,7 +66,7 @@ Anleitung fuer ein Homemud, unter Linux
 
     Nachdem Login muss man nun noch den Workroom anpassen:
 
-    code-block::
+.. code-block::
 
       clone /obj/tools/MGtool
       xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
@@ -76,11 +76,11 @@ Anleitung fuer ein Homemud, unter Linux
 Beispielinstallation
 --------------------
 
-    code-block::
+.. code-block::
 
        cd <mudhome>
        git clone https://github.com/ldmud/ldmud.git
-       cd ldmud-3.5/src
+       cd ldmud.git/src
        ./autogen.sh
        settings/morgengrauen
        make all && make install-all
@@ -89,7 +89,8 @@ Beispielinstallation
        # Binary
        mv bin.install/ldmud bin/ldmud
        tar xvzf <mudlib-snapshot.tgz>
-       git clone https://mg.mud.de/gerrit/mudlib-public
+       # Alternative
+       git clone https://mg.mud.de/gerrit/mudlib-public mudlib
        cd <mudhome>
        cd <mudlib>
        mv save/j/jof.o save/t/thomas.o
@@ -103,9 +104,9 @@ Beispielinstallation
        # oder
        bin/ldmud -m <alternative path to mudlib> <alternative port>
 
-    Nachdem Login muss man nun noch den Workroom anpassen:
+Nachdem Login muss man nun noch den Workroom anpassen:
 
-    code-block::
+.. code-block::
 
       clone /obj/tools/MGtool
       xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");

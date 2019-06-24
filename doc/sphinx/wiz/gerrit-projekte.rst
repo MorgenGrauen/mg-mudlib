@@ -1,5 +1,5 @@
 Erstellung neuer Repositories in Gerrit
--------------------------------------------
+=======================================
 
 Neue Repositories werden wie bisher aus dem Mud erstellt. Dies darf jeder, der
 Schreibrechte in dem Verzeichnis m Mud besitzt.
