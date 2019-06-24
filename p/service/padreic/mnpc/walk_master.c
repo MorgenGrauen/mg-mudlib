@@ -28,6 +28,10 @@
 #define RANDOM(r)     ((r & 0xff00) >> 8)             /* 8 Bit = 256 */
 #define WERT(t, r)    ((t & 0x00ff)+((r << 8) & 0xff00))   /* 16 Bit */
 
+// Indizes fuer walker
+#define WALK_DELAY   0
+#define WALK_CLOSURE 1
+
 static int counter;    // zur Orientierung im walker-array
 static int num_walker; // anzahl der walker im array
 //static mixed *walker;  // ({ ..., ({ ..., ({ wert, closure }), ...}), ...})
@@ -94,7 +98,7 @@ void RemoveWalker()
   for (i=MAX_DELAYTIME; i>=0; i--) {
     for (j=sizeof(walker[i])-1; j>=0; j--)
     {
-      if (get_type_info(walker[i][j][1], 2)==previous_object())
+      if (get_type_info(walker[i][j][WALK_CLOSURE], 2)==previous_object())
       {
         if (i==counter) // koennte gerade im heart_beat stecken...
           walker[i][j]=({ 0, #'dummy_walk });
@@ -120,7 +124,7 @@ int Registration()
   for (i=MAX_DELAYTIME; i>=0; i--)
   {
     for (j=sizeof(walker[i])-1; j>=0; j--)
-      if (get_type_info(walker[i][j][1], 2)==previous_object())
+      if (get_type_info(walker[i][j][WALK_CLOSURE], 2)==previous_object())
         reg++;
   }
   return reg;
@@ -141,9 +145,11 @@ void heart_beat()
        }
        else {
          if (walker[counter][i][1] &&
-             !catch(tmp=(int)funcall(walker[counter][i][1])) && tmp) {
-           tmp=counter+(TIME(walker[counter][i][0])
-              +random(RANDOM(walker[counter][i][0])))/2;
+             !catch(tmp=(int)funcall(walker[counter][i][WALK_CLOSURE]))
+             && tmp)
+         {
+           tmp=counter+(TIME(walker[counter][i][WALK_DELAY])
+              +random(RANDOM(walker[counter][i][WALK_DELAY])))/2;
            if (tmp>MAX_DELAYTIME) tmp-=MAX_DELAYTIME;
            walker[tmp]+=({ walker[counter][i] });
            num_walker++;
