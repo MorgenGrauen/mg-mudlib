@@ -64,6 +64,10 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
   if ((time+rand) > (2*MAX_DELAYTIME)) 
     ERROR("Too long delaytime from %s to RegisterWalker().\n");
 
+  if (Registration())
+    raise_error("Mehrfachanmeldung nicht erlaubt. Objekt: %O\n",
+        previous_object());
+
   wert=WERT(time, rand);
   if (!wert && !rand) wert=DEFAULT_WALK_DELAY;
   if (walk_closure)
