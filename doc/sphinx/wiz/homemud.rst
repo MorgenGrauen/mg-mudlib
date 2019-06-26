@@ -54,7 +54,7 @@ Anleitung fuer ein Homemud, unter Linux
     Optional kannst Du noch den Namen des Mudgottes von Jof auf etwas anderes
     aendern, das geht wie folgt:
 
-.. code-block::
+.. code-block:: shell
 
       mv save/j/jof.o save/t/thomas.o
       mv secure/save/j/jof.o secure/save/t/thomas.o
@@ -66,7 +66,7 @@ Anleitung fuer ein Homemud, unter Linux
 
     Nachdem Login muss man nun noch den Workroom anpassen:
 
-.. code-block::
+.. code-block:: shell
 
       clone /obj/tools/MGtool
       xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
@@ -76,7 +76,7 @@ Anleitung fuer ein Homemud, unter Linux
 Beispielinstallation
 --------------------
 
-.. code-block::
+.. code-block:: shell
 
        cd <mudhome>
        git clone https://github.com/ldmud/ldmud.git
@@ -106,7 +106,7 @@ Beispielinstallation
 
 Nachdem Login muss man nun noch den Workroom anpassen:
 
-.. code-block::
+.. code-block:: shell
 
       clone /obj/tools/MGtool
       xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
