@@ -38,13 +38,14 @@ BESCHREIBUNG
    AddCmd definierten Kommandos) koennen auch durch command()(E)
    von aussen ausgeloest werden.
 
-BEMERKUNGEN:
-   * beruecksichtigt Aliase, d.h. wenn man Aliase eines Spielers
-     ignorieren will, muss man ein \ (fuer ein im Eingabestring) vor
-     den Befehl stellen
 
-   * fuer objektinterne Kommandos funktioniert also auch
-     command()(E)
+BEMERKUNGEN
+===========
+
+   - beruecksichtigt Aliase, d.h. wenn man Aliase eines Spielers
+     ignorieren will, muss man ein \\ (fuer ein \ im Eingabestring)
+     vor den Befehl stellen
+   - fuer objektinterne Kommandos funktioniert also auch command()(E)
 
 
 BEISPIEL

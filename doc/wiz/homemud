@@ -30,7 +30,7 @@ Anleitung fuer ein Homemud, unter Linux
 
    2. Lade die aktuelle Mudlib von
       https://mg.mud.de/gerrit/gitweb?p =mudlib-public.git herunter,
-      entweder durch einen Klick auf "snapchot" oder mittels git
+      entweder durch einen Klick auf "snapshot" oder mittels git
       clonen. Dabei kann sich git an unserem selbsterstellten SSL-
       Zertifikat stoeren, wenn Du Dich darum nicht kuemmern willst,
       nutze die Option "-c http.sslVerify=false".
@@ -59,62 +59,55 @@ Anleitung fuer ein Homemud, unter Linux
    Optional kannst Du noch den Namen des Mudgottes von Jof auf etwas
    anderes aendern, das geht wie folgt:
 
-   code-block:
-
-      mv save/j/jof.o save/t/thomas.o
-      mv secure/save/j/jof.o secure/save/t/thomas.o
-      # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
-      # Deines Namens. )
-      sed -i 's/jof/thomas/' secure/save/t/thomas.o
-      mkdir -p players/thomas
-      mv players/jof/workroom.c players/thomas/workroom.c
+     mv save/j/jof.o save/t/thomas.o
+     mv secure/save/j/jof.o secure/save/t/thomas.o
+     # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
+     # Deines Namens. )
+     sed -i 's/jof/thomas/' secure/save/t/thomas.o
+     mkdir -p players/thomas
+     mv players/jof/workroom.c players/thomas/workroom.c
 
    Nachdem Login muss man nun noch den Workroom anpassen:
 
-   code-block:
-
-      clone /obj/tools/MGtool
-      xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
-      save
+   clone /obj/tools/MGtool
+   xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
+   save
 
 
 Beispielinstallation
 ====================
 
-   code-block:
+   cd <mudhome>
+   git clone https://github.com/ldmud/ldmud.git
+   cd ldmud.git/src
+   ./autogen.sh
+   settings/morgengrauen
+   make all && make install-all
+   cd <mudhome>
+   # hier wurde der bin/ Ordner nicht angepasst, wir verschieben noch die
+   # Binary
+   mv bin.install/ldmud bin/ldmud
+   tar xvzf <mudlib-snapshot.tgz>
+   # Alternative
+   git clone https://mg.mud.de/gerrit/mudlib-public mudlib
+   cd <mudhome>
+   cd <mudlib>
+   mv save/j/jof.o save/t/thomas.o
+   mv secure/save/j/jof.o secure/save/t/thomas.o
+   # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
+   # Deines Namens. )
+   sed -i 's/jof/thomas/' secure/save/t/thomas.o
+   mkdir -p players/thomas
+   mv players/jof/workroom.c players/thomas/workroom.c
+   bin/ldmud
+   # oder
+   bin/ldmud -m <alternative path to mudlib> <alternative port>
 
-      cd <mudhome>
-      git clone https://github.com/ldmud/ldmud.git
-      cd ldmud-3.5/src
-      ./autogen.sh
-      settings/morgengrauen
-      make all && make install-all
-      cd <mudhome>
-      # hier wurde der bin/ Ordner nicht angepasst, wir verschieben noch die
-      # Binary
-      mv bin.install/ldmud bin/ldmud
-      tar xvzf <mudlib-snapshot.tgz>
-      git clone https://mg.mud.de/gerrit/mudlib-public
-      cd <mudhome>
-      cd <mudlib>
-      mv save/j/jof.o save/t/thomas.o
-      mv secure/save/j/jof.o secure/save/t/thomas.o
-      # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
-      # Deines Namens. )
-      sed -i 's/jof/thomas/' secure/save/t/thomas.o
-      mkdir -p players/thomas
-      mv players/jof/workroom.c players/thomas/workroom.c
-      bin/ldmud
-      # oder
-      bin/ldmud -m <alternative path to mudlib> <alternative port>
+Nachdem Login muss man nun noch den Workroom anpassen:
 
-   Nachdem Login muss man nun noch den Workroom anpassen:
-
-   code-block:
-
-      clone /obj/tools/MGtool
-      xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
-      save
+   clone /obj/tools/MGtool
+   xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
+   save
 
 Letzte Aenderung: 2018-12-09 von Deaddy (auf Basis von Zesstras engl.
 Anleitung)

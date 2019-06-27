@@ -5,7 +5,8 @@ FUNKTION
 --------
 ::
 
-	mixed DefendOther(int dam,mixed dam_type,mixed spell,object enemy);
+  public <int|string*|mapping>* DefendOther(int dam, string|string* dam_type,
+                                            int|mapping spell, object enemy)
 
 DEFINIERT IN
 ------------

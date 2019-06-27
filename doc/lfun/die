@@ -18,25 +18,26 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   int poisondeath
-        Dieses Flag sollte bei einem Gifttod (P_POISON) gesetzt sein.
-   int extern
-        Intern.
+   poisondeath
+      Dieses Flag sollte bei einem Gifttod (P_POISON) gesetzt sein.
+
+   extern
+      Ex- oder interner Aufruf.
 
 
 BESCHREIBUNG
 ============
 
-   Das Lebewesen stirbt, meist automatisch von do_damage() ausgeloest, wenn
-   0 HP unterschritten werden. In diesem Fall wird der Kampf beendet, Gift,
-   Alkohol, Trink- und Esswerte, Blindheit, Taubheit u.s.w. auf Null
-   gesetzt oder geloescht.
+   Das Lebewesen stirbt, meist automatisch von do_damage() ausgeloest,
+   wenn 0 HP unterschritten werden. In diesem Fall wird der Kampf
+   beendet, Gift, Alkohol, Trink- und Esswerte, Blindheit, Taubheit
+   u.s.w. auf Null gesetzt oder geloescht.
 
-   Es wird automatisch eine Leiche (siehe auch P_CORPSE, P_NOCORPSE) nebst
-   Todesmeldungen (siehe auch P_DIE_MSG) erzeugt, und fuer Spieler werden
-   Killstupse vergeben, sofern notwendig.
+   Es wird automatisch eine Leiche (siehe auch P_CORPSE, P_NOCORPSE)
+   nebst Todesmeldungen (siehe auch P_DIE_MSG) erzeugt, und fuer
+   Spieler werden Killstupse vergeben, sofern notwendig.
 
-   Ueber den Hook P_TMP_DIE_HOOK kann man jedoch auf den Automatismus
+   Ueber den Hook H_HOOK_DIE kann man jedoch auf den Automatismus
    Einfluss nehmen, z.B. koennte ein temporaerer Todesbann-Zauber das
    Sterben fuer kurze Zeit verhindern.
 
@@ -50,18 +51,40 @@ RUeCKGABEWERT
 BEMERKUNGEN
 ===========
 
-   Diese Funktion sollte nur selten direkt verwendet werden. Meist ist der
-   uebliche Weg ueber Defend() -> do_damage() -> die() die logisch bessere
-   und balancetechnisch guenstigere Loesung.
+   Diese Funktion sollte nur selten direkt verwendet werden. Meist ist
+   der uebliche Weg ueber Defend() -> do_damage() -> die() die logisch
+   bessere und balancetechnisch guenstigere Loesung.
+
+   Diese Funktion sollte nur ueberschrieben werden,  wenn tatsaechlich
+   einfluss auf das Sterben genommen werden soll. Wird nur ein Item
+   hinzugefuegt, ist es sinnvoller second_life() zu verwenden.
+
+   Wird die() ueberschrieben, sollte man nicht nur das Argument extern
+   uebergeben, sondern mit extern_call() verodern (siehe Beispiel),
+   weil das geerbte die() den externen Aufruf nicht mehr erkennen
+   kann.
+
+
+BEISPIEL
+========
+
+   public varargs void die(int poisondeath, int extern)
+   {
+     // Dieser NPC soll nicht an Gift sterben.
+     if(poisondeath) return;
+
+     // Das geerbte die() aufrufen, dabei die Argumente uebergeben und ggf.
+     // extern setzen.
+     ::die(poisondeath, extern||extern_call());
+   }
 
 
 SIEHE AUCH
 ==========
 
-   Todesursachen:     Defend(L), do_damage(L), P_POISON
-   Verwandt:          P_TMP_DIE_HOOK, P_DEADS
-   Todesmeldungen:    P_KILL_NAME, P_KILL_MSG, P_MURDER_MSG, P_DIE_MSG
-                      P_ZAP_MSG, P_ENEMY_DEATH_SEQUENCE
-   Sonstiges:         P_CORPSE, P_NOCORPSE, /std/corpse.c
+   Defend(), do_damage(), second_life(), P_POISON, P_DEADS,
+   P_KILL_NAME, P_KILL_MSG, P_MURDER_MSG, P_DIE_MSG, P_ZAP_MSG,
+   P_ENEMY_DEATH_SEQUENCE, P_CORPSE, P_NOCORPSE, extern_call,
+   /std/corpse, /std/hooks
 
-Last modified: Mon May 14 16:20:34 2001 by Patryn
+Letzte Aenderung: 17.03.2019, Bugfix
