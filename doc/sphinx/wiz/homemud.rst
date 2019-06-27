@@ -56,11 +56,11 @@ Anleitung fuer ein Homemud, unter Linux
 
 .. code-block:: shell
 
-      mv save/j/jof.o save/t/thomas.o
-      mv secure/save/j/jof.o secure/save/t/thomas.o
+      mv data/save/j/jof.o data/save/t/thomas.o
+      mv data/secure/save/j/jof.o data/secure/save/t/thomas.o
       # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
       # Deines Namens. )
-      sed -i 's/jof/thomas/' secure/save/t/thomas.o
+      sed -i 's/jof/thomas/' data/secure/save/t/thomas.o
       mkdir -p players/thomas
       mv players/jof/workroom.c players/thomas/workroom.c
 
@@ -93,8 +93,8 @@ Beispielinstallation
        git clone https://mg.mud.de/gerrit/mudlib-public mudlib
        cd <mudhome>
        cd <mudlib>
-       mv save/j/jof.o save/t/thomas.o
-       mv secure/save/j/jof.o secure/save/t/thomas.o
+       mv data/save/j/jof.o data/save/t/thomas.o
+       mv data/secure/save/j/jof.o data/secure/save/t/thomas.o
        # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
        # Deines Namens. )
        sed -i 's/jof/thomas/' secure/save/t/thomas.o
