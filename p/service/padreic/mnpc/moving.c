@@ -15,7 +15,7 @@ inherit "/std/living/moving";
 #define PO     previous_object()
 
 // Letzter Spielerkontakt. -1, wenn der MNPC inaktiv zuhause rumsteht
-static int meet_last_player;
+nosave int meet_last_player;
 
 static void mnpc_create()
 {
@@ -39,14 +39,20 @@ static void mnpc_create()
 protected void RegisterWalk()
 {
   if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))<=MAX_MASTER_TIME)
-    WALK_MASTER->RegisterWalker(QueryProp(MNPC_DELAY),
-                                QueryProp(MNPC_RANDOM));
+  {
+    if (!WALK_MASTER->Registration())
+      WALK_MASTER->RegisterWalker(QueryProp(MNPC_DELAY),
+                                  QueryProp(MNPC_RANDOM));
+  }
   else
-    call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
+  {
+    if (find_call_out("Walk") == -1)
+      call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
+  }
 }
 
 // Can be used to manually restart the MNPC from a different object even if
-// the MNPC had not player contact.
+// the MNPC had no player contact.
 public int RestartWalk()
 {
   int flags = QueryProp(MNPC_FLAGS);
@@ -91,12 +97,7 @@ static int _set_mnpc_flags(int flags)
   {
     if (!QueryProp(MNPC_HOME))
       raise_error("unknown MNPC_HOME\n");
-    //wenn die Flags neu gesetzt werden, wird der MNPC das zweite Mal im
-    //Master angemeldet -> vorher abmelden (Zesstra)
-    if (QueryProp(MNPC_FLAGS) & MNPC_WALK)
-    {
-      Stop(0);
-    }
+    // RegisterWalk prueft, ob der MNPC schon angemeldet ist.
     RegisterWalk();
   }
   // else nicht von Bedeutung, da in Walk() das flag getestet wird
@@ -166,6 +167,7 @@ static void mnpc_init()
 {
   if (interactive(PL))
   {
+    // Wenn noetig, Wandern wieder aufnehmen.
     if (meet_last_player<=0)
     {
       RegisterWalk();
@@ -382,7 +384,7 @@ int Walk()
     }
     else
     {
-       // Hngl. Nach Hause...
+       // Hngl. Nach Hause... Aber nicht anhalten.
        direct_move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK, 0);
      }
   }
@@ -395,7 +397,7 @@ int Walk()
     }
     else
     {
-      // Hngl. Nach Hause...
+      // Hngl. Nach Hause... Aber nicht anhalten.
       move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
    }
   }
@@ -409,7 +411,7 @@ int Walk()
     }
     else
     {
-      // Hngl. Gar keine Ausgaenge. Nach Hause...
+      // Hngl. Gar keine Ausgaenge. Nach Hause... aber nicht anhalten.
       move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
     }
   }
