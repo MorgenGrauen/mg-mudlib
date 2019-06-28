@@ -384,7 +384,6 @@ int Walk()
     {
        // Hngl. Nach Hause...
        direct_move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK, 0);
-       meet_last_player=-1;
      }
   }
   else if (flags & MNPC_ONLY_EXITS)
@@ -398,7 +397,6 @@ int Walk()
     {
       // Hngl. Nach Hause...
       move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
-      meet_last_player=-1;
    }
   }
   else
@@ -413,7 +411,6 @@ int Walk()
     {
       // Hngl. Gar keine Ausgaenge. Nach Hause...
       move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
-      meet_last_player=-1;
     }
   }
 
