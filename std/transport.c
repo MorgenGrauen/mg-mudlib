@@ -615,13 +615,22 @@ private int maybe_pause()
   // for 2 round-trips, we try to pause.
   if (meet_last_player < time() - (2*route_time) )
   {
-    // we don't stop if players currently are in the transporter or in the same
-    // environment (e.g. idling).
-    object *pls = filter(all_inventory(this_object()) 
-                         + all_inventory(environment(this_object())),
-                         #'interactive);
-    if (!sizeof(pls))
-      return Pause();
+    // we don't stop if players are currently at one of our stops
+    foreach(mixed* arr : route)
+    {
+      if (arr[0] == HP_ROOM)
+      {
+        object room = find_object(arr[1]);
+        if(room &&
+           sizeof(filter(all_inventory(room), #'interactive)))
+          return 0; // no pause
+      }
+    }
+    // and we don't stop if players currently are in the transporter.
+    if (sizeof(filter(all_inventory(this_object()), #'interactive)))
+      return 0;
+    // ok, pause machen
+    return Pause();
   }
   return 0;
 }
