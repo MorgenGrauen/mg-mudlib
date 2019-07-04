@@ -568,11 +568,11 @@ private mixed InitHookCallback(object source, int hookid, mixed hookdata)
 }
 
 // subscribes to H_HOOK_INIT in all rooms along the route
-// == 1 for success, < 0 for the number of errors
+// == 1 for success, < -1 if not (at least one hook failed, all registration
+// were already subscribed).
 private int subscribe_init()
 {
   // subscribe to the H_HOOK_INIT of all rooms in the route...
-  int no_hook;
   foreach(mixed* arr : route)
   {
     if (arr[0] == HP_ROOM)
@@ -580,10 +580,14 @@ private int subscribe_init()
       if (arr[1]->HRegisterToHook(H_HOOK_INIT, #'InitHookCallback,
                                   H_HOOK_LIBPRIO(1), H_LISTENER,
                                   0) <= 0)
-          --no_hook; // Count non-success while subscribing
+      {
+        // von allen H_HOOK_INIT wieder abmelden...
+        unsubscribe_init();
+        return -1;
+      }
     }
   }
-  return no_hook < 0 ? no_hook : 1;
+  return 1;
 }
 
 // unsubscribes from all the H_HOOK_INIT.
