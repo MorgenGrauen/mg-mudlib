@@ -55,6 +55,8 @@ nosave string roomCode; /* Code des aktuellen Raumes (oder 0). */
 // Mechanismus zum Fortsetzen der Route nach einer Pause nicht ordentlich,
 // daher wird es auf 1 initialisiert.
 nosave int meet_last_player = 1;
+// Dauer der Route
+nosave int route_time;
 
 private void unsubscribe_init();
 private int subscribe_init();
@@ -259,14 +261,20 @@ public varargs void AddRoute(string room, int stay, int next,
   }
   route += ({ ({ HP_ROOM, room, stay, next, harbour_desc, dest_ids, 
                  deststr }) });
+  route_time += stay + next;
 }
 
-varargs void AddMsg(string msg, int next) 
+varargs void AddMsg(string msg, int next)
 {
-  route += ({ ({ HP_MSG, msg, next }) }); 
+  route += ({ ({ HP_MSG, msg, next }) });
+  route_time += next;
 }
 
-void AddFun(string fun, int next) { route += ({ ({ HP_FUN, fun, next }) }); }
+void AddFun(string fun, int next)
+{
+  route += ({ ({ HP_FUN, fun, next }) });
+  route_time += next;
+}
 
 string QueryArrived() { return roomCode; }
 
@@ -319,6 +327,7 @@ void RemoveRoute()
   Halt();
   route = ({ });
   rpos  =   0;
+  route_time = 0;
   TRAVELD->RemoveTransporter(this_object());
 }
 
@@ -602,9 +611,9 @@ private void unsubscribe_init()
 
 private int maybe_pause()
 {
-  // we check for time of last player contact. If too long ago, we pause our
-  // service.
-  if (meet_last_player < time() - 600)
+  // we check for time of last player contact. If we did not meet any players
+  // for 2 round-trips, we try to pause.
+  if (meet_last_player < time() - (2*route_time) )
   {
     // we don't stop if players currently are in the transporter or in the same
     // environment (e.g. idling).
