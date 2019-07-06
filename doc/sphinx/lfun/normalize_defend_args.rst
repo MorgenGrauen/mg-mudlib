@@ -43,7 +43,7 @@ BESCHREIBUNG
   si_spell
     ein Mapping - wenn es neu angelegt wurde, enthaelt es die Eintraege
     SP_PHYSICAL_ATTACK, SP_SHOW_DAMAGE, SP_REDUCE_ARMOUR und EINFO_DEFEND.
-    SP_PHYSICAL_ATTACK und SP_SHOW_DAMAGE sind 1, wenn si_spell 0 wahr, sonst
+    SP_PHYSICAL_ATTACK und SP_SHOW_DAMAGE sind 1, wenn si_spell 0 war, sonst
     1.
   enemy
     ist das Objekt des Gegners oder this_player()
