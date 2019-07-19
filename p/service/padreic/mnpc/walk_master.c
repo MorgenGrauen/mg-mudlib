@@ -35,7 +35,6 @@
 #define WALK_DELAY   0
 #define WALK_CLOSURE 1
 
-static int num_walker; // anzahl der walker im array
 nosave int counter;    // Markiert aktuellen Zeitslot im Array walker
 nosave < < <int|closure>* >* >* walker;
 // Mapping mit allen registrierten MNPC (als Objekte) als Key und deren
@@ -47,7 +46,6 @@ public int Registration();
 protected void create()
 {
   walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
-  num_walker=0;
   enable_commands(); // ohne das, kein heart_beat()
 }
 
@@ -81,7 +79,7 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
     if (!func)
       raise_error("RegisterWalker() call from Object without Walk() function.\n");
   }
-  if (!num_walker) {
+  if (!sizeof(clients)) {
     set_heart_beat(1);
   }
   int next=counter;
@@ -89,7 +87,6 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
   walker[next]+=({ ({ wert, func }) });
   clients += ([ get_type_info(func, 2): wert; func ]);
-  num_walker++;
 }
 
 int dummy_walk()  // liefert immer 0 fuer abbrechen...
@@ -112,7 +109,6 @@ public void RemoveWalker()
           walker[i][j]=({ 0, #'dummy_walk });
         else
           walker[i][j]=0;
-        num_walker--;
       }
     }
     if (i!=counter) // koennte gerade im heart_beat stecken...
@@ -128,18 +124,20 @@ public int Registration()
 
 void heart_beat()
 {
-   int i;
-   if (num_walker && i=sizeof(walker[counter])) {
+   int i = sizeof(walker[counter]);
+   if (i)
+   {
      int tmp;
-     num_walker-=i;
-     for (i--;i>=0;i--) {
-       if (get_eval_cost() < MAX_JOB_COST) {
+     for (i--;i>=0;i--)
+     {
+       if (get_eval_cost() < MAX_JOB_COST)
+       {
          // nicht abgefertigte NPCs im naechsten heart_beat ausfuehren
          walker[counter]=walker[counter][0..i];
-         num_walker+=i+1;
          return;
        }
-       else {
+       else
+       {
          if (walker[counter][i][1] &&
              !catch(tmp=(int)funcall(walker[counter][i][WALK_CLOSURE]))
              && tmp)
@@ -148,7 +146,6 @@ void heart_beat()
               +random(RANDOM(walker[counter][i][WALK_DELAY])))/2;
            if (tmp>MAX_DELAYTIME) tmp-=MAX_DELAYTIME;
            walker[tmp]+=({ walker[counter][i] });
-           num_walker++;
          }
        }
      }
@@ -157,7 +154,7 @@ void heart_beat()
    if (counter == MAX_DELAYTIME)
      counter=0;
    else counter++;
-   if (!num_walker) {
+   if (!sizeof(clients)) {
      set_heart_beat(0);
    }
 }
@@ -166,23 +163,21 @@ void reset()
 // kostet maximal einen unnoetigen heart_beat() pro reset -> vertretbar
 // dient zu einem wieder anwerfen im Falle eines Fehlers im heart_beat()
 {
-  if (set_heart_beat(0)<=0) {
-    int i;
-    num_walker=0; // neu berechnen...
-    if (!sizeof(walker)) return;
-    for (i=MAX_DELAYTIME; i>=0; i--)
-      num_walker+=sizeof(walker[i]);
-    if (num_walker>0) {
+  if (set_heart_beat(0)<=0)
+  {
+    if (sizeof(clients) > 0)
+    {
        write_file(object_name()+".err", sprintf(
          "%s: Fehler im heart_beat(). %d aktive Prozesse.\n",
-          dtime(time()), num_walker));
+          dtime(time()), sizeof(clients)));
        enable_commands();
        set_heart_beat(1);
     }
   }
-  else set_heart_beat(1);
+  else
+    set_heart_beat(1);
 }
 
 // Bemerkung: damit kann jeder die Closures ermitteln und dann selber rufen.
 mixed *WalkerList() // nur fuer Debugzwecke
-{  return ({ num_walker, walker, counter });  }
+{  return ({ clients, walker, counter });  }
