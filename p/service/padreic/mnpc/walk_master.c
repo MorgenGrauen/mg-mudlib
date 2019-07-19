@@ -18,6 +18,9 @@
  *          ansonsten kann dieser Master nicht verwendet werden.
  */
 
+#pragma strong_types,rtt_checks
+#pragma no_clone,no_inherit
+
 #define MAX_DELAYTIME       90   /* max. delay ist 2*MAX_DELAYTIME */
 #define DEFAULT_WALK_DELAY 180   /* ist der billigste Wert :) */
 #define MAX_JOB_COST    200000   /* Wieviel Zeit darf ein NPC max. nutzen */
@@ -28,23 +31,23 @@
 #define RANDOM(r)     ((r & 0xff00) >> 8)             /* 8 Bit = 256 */
 #define WERT(t, r)    ((t & 0x00ff)+((r << 8) & 0xff00))   /* 16 Bit */
 
-// Indizes fuer walker
+// Indizes fuer walker und clients
 #define WALK_DELAY   0
 #define WALK_CLOSURE 1
 
-static int counter;    // zur Orientierung im walker-array
 static int num_walker; // anzahl der walker im array
-//static mixed *walker;  // ({ ..., ({ ..., ({ wert, closure }), ...}), ...})
+nosave int counter;    // Markiert aktuellen Zeitslot im Array walker
 nosave < < <int|closure>* >* >* walker;
 // Mapping mit allen registrierten MNPC (als Objekte) als Key und deren
 // Zeitdaten (1. wert) und deren walk_closure (2. Wert).
 nosave mapping clients = m_allocate(0,2);
 
-int Registration();
+public int Registration();
 
 protected void create()
 {
   walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
+  num_walker=0;
   enable_commands(); // ohne das, kein heart_beat()
 }
 
@@ -53,11 +56,11 @@ protected void create()
 // Man muss selbst darauf aufpassen, das sich ein NPC immer nur einmal
 // anmeldet, da sonst auch mehrere Paralelle Walk-Ketten laufen!!!
 // Am besten nie direkt sondern nur ueber einen Standardnpc benutzen.
-varargs void RegisterWalker(int time, int rand, closure walk_closure)
+// Bemerkung: man kann hiermit andere Objekt registrieren. Aber nur das Objekt
+// selber kann spaeter seine Registrierung pruefen oder sich abmelden...
+// (Fraglich, ob das so gewollt ist.)
+public varargs void RegisterWalker(int time, int rand, closure walk_closure)
 {
-  int wert, next;
-  closure func;
-  
   // pruefen ob die Paramter zulaessig sind...
   if (time<0) ERROR("negative time to RegisterWalker() from %O.\n");
   if (rand<0) ERROR("negative random to RegisterWalker() from %O.\n");
@@ -68,11 +71,12 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
     raise_error(sprintf("Mehrfachanmeldung nicht erlaubt. Objekt: %O\n",
         previous_object()));
 
-  wert=WERT(time, rand);
+  int wert=WERT(time, rand);
   if (!wert && !rand) wert=DEFAULT_WALK_DELAY;
-  if (walk_closure)
-    func=walk_closure;
-  else {
+
+  closure func = walk_closure;
+  if (!closurep(func))
+  {
     func=symbol_function("Walk", previous_object());
     if (!func)
       raise_error("RegisterWalker() call from Object without Walk() function.\n");
@@ -80,7 +84,7 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
   if (!num_walker) {
     set_heart_beat(1);
   }
-  next=counter;
+  int next=counter;
   next+=(time+random(rand))/2;
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
   walker[next]+=({ ({ wert, func }) });
@@ -94,7 +98,7 @@ int dummy_walk()  // liefert immer 0 fuer abbrechen...
 // Aufruf nach Moeglichkeit bitte vermeiden, da recht aufwendig. Meist ist
 // es leicht im NPC "sauber Buch zu fuehren" und dann ggf. aus Walk() 
 // 0 zu returnen.
-void RemoveWalker()
+public void RemoveWalker()
 {
   if (!member(clients, previous_object()))
     return;
@@ -117,7 +121,7 @@ void RemoveWalker()
   m_delete(clients, previous_object());
 }
 
-int Registration()
+public int Registration()
 {
   return member(clients, previous_object());
 }
@@ -179,5 +183,6 @@ void reset()
   else set_heart_beat(1);
 }
 
+// Bemerkung: damit kann jeder die Closures ermitteln und dann selber rufen.
 mixed *WalkerList() // nur fuer Debugzwecke
 {  return ({ num_walker, walker, counter });  }
