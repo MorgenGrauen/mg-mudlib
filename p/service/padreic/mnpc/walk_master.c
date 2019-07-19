@@ -36,6 +36,9 @@ static int counter;    // zur Orientierung im walker-array
 static int num_walker; // anzahl der walker im array
 //static mixed *walker;  // ({ ..., ({ ..., ({ wert, closure }), ...}), ...})
 nosave < < <int|closure>* >* >* walker;
+// Mapping mit allen registrierten MNPC (als Objekte) als Key und deren
+// Zeitdaten (1. wert) und deren walk_closure (2. Wert).
+nosave mapping clients = m_allocate(0,2);
 
 int Registration();
 
@@ -88,6 +91,7 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
   next+=(time+random(rand))/2;
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
   walker[next]+=({ ({ wert, func }) });
+  clients += ([ get_type_info(func, 2): wert; func ]);
   num_walker++;
 }
 
@@ -99,10 +103,11 @@ int dummy_walk()  // liefert immer 0 fuer abbrechen...
 // 0 zu returnen.
 void RemoveWalker()
 {
-  int i, j;
-  if (!num_walker) return;
-  for (i=MAX_DELAYTIME; i>=0; i--) {
-    for (j=sizeof(walker[i])-1; j>=0; j--)
+  if (!member(clients, previous_object()))
+    return;
+
+  for (int i=MAX_DELAYTIME; i>=0; i--) {
+    for (int j=sizeof(walker[i])-1; j>=0; j--)
     {
       if (get_type_info(walker[i][j][WALK_CLOSURE], 2)==previous_object())
       {
@@ -116,24 +121,12 @@ void RemoveWalker()
     if (i!=counter) // koennte gerade im heart_beat stecken...
       walker[i]-=({ 0 });
   }
+  m_delete(clients, previous_object());
 }
 
-// Aufruf nach Moeglichkeit bitte vermeiden, da recht aufwendig. Meist ist
-// es leichter im NPC "sauber Buch zu fuehren" und sich zu merken, ob er
-// bereits angemeldet ist. Liefert zurueck, wie oft ein NPC als Walker
-// angemeldet ist (normalfall nie mehr als 1).
 int Registration()
 {
-  int i, j, reg;
-  if (!num_walker) return 0;
-  reg=0;
-  for (i=MAX_DELAYTIME; i>=0; i--)
-  {
-    for (j=sizeof(walker[i])-1; j>=0; j--)
-      if (get_type_info(walker[i][j][WALK_CLOSURE], 2)==previous_object())
-        reg++;
-  }
-  return reg;
+  return member(clients, previous_object());
 }
 
 void heart_beat()
