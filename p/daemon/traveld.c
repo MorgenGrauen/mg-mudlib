@@ -70,6 +70,9 @@ public mapping QueryStopsByTransporter(string transporter)
 
 #define MEMORY "/secure/memory"
 
+// Propertyname zum Speichern der Reloadversuchszaehler
+#define RELOAD_TRIES "p_lib_reload_try_counter"
+
 // Key: string Schiff.
 // Value0: string* Haefen, die von <Schiff> angefahren werden.
 mapping transporters = ([]);
@@ -103,12 +106,72 @@ protected void create()
     if (MEMORY->Save("transporters",transporters) != 1)
       raise_error("Could not save memory to /secure/memory.");
   }
-  set_next_reset(10800);
+  set_next_reset(86400);
+}
+
+protected void reload_transporters(object *ships)
+{
+  if (!sizeof(ships))
+    return;
+  else if (sizeof(ships) > 1)
+    call_out(#'reload_transporters, 45, ships[1..]);
+
+  object s = ships[0];
+  if (s)
+  {
+    object *inv = all_inventory(s);
+    if (sizeof(inv))
+    {
+      // Wenn Spieler drin sind, muss auf jeden Fall gewartet werden.
+      // Bei sonstigem Krempel nur dann, wenn wir das noch nicht oft genug
+      // erfolglos versucht haben.
+      // Bemerkung: eigentlich muesste man hier pruefen, was davon per
+      // AddItem() erzeugt wurde. Das ist mir gerade aber zu aufwendig.
+      if (sizeof(filter(inv, #'query_once_interactive))
+          || s->QueryProp(RELOAD_TRIES) < 3)
+      {
+        s->SetProp(RELOAD_TRIES, s->QueryProp(RELOAD_TRIES) + 1);
+        // naechsten reset vorziehen
+        set_next_reset(10800);
+        return;
+      }
+      // ansonsten ist uns das Inventar jetzt egal und bald Schrott...
+    }
+    string sname = object_name(s);
+    s->remove(1);
+    load_object(sname);
+    // Und hoffentlich starten Transporter selber. Wenn nicht, muss hier evtl.
+    // noch nen Continue hin.
+  }
 }
 
 public void reset()
 {
+  set_next_reset(86400);
+  // Zeit des Programms vom Standardtransporter herausfinden. Wenn der nicht
+  // geladen ist, muss nix gemacht werden.
+  object std_transport = find_object("/std/transport");
+  if (!std_transport)
+    return;
+  int std_time = program_time(std_transport);
 
+  // ueber alle Transporter laufen. Wenn der Transport aelter ist als
+  // /std/transport, wird er neu gelauden.
+  // Das kann Nebenwirkungen haben. Aber in diesem Fall sollte man besser
+  // den Transporter so bauen, dass es OK ist.
+  // Aber speziell bei VC-Transportern ist fraglich, wie gut das
+  // funktioniert...
+  // Und es funktioniert nur fuer Blueprints.
+  object *old_ships = map(transporters, function object (string sname)
+      {
+        object ship = find_object(sname);
+        if (ship && !clonep(ship) && program_time(ship) < std_time)
+          return ship;
+        return 0;
+      } );
+  old_ships -= ({0});
+  if (sizeof(old_ships))
+    reload_transporters(old_ships);
 }
 
 varargs int remove(int s)
