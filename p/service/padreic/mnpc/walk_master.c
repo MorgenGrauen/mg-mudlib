@@ -44,12 +44,7 @@ int Registration();
 
 protected void create()
 {
-  if (clonep(this_object())) {
-    destruct(this_object());
-    raise_error("walk_master can't be clonend.\n");
-  }
-  walker=({});
-  num_walker=0;
+  walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
   enable_commands(); // ohne das, kein heart_beat()
 }
 
@@ -84,8 +79,6 @@ varargs void RegisterWalker(int time, int rand, closure walk_closure)
   }
   if (!num_walker) {
     set_heart_beat(1);
-    if (!pointerp(walker) || !sizeof(walker))
-      walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
   }
   next=counter;
   next+=(time+random(rand))/2;
@@ -162,7 +155,6 @@ void heart_beat()
    else counter++;
    if (!num_walker) {
      set_heart_beat(0);
-     walker=({}); // Speicher freigeben...
    }
 }
 
