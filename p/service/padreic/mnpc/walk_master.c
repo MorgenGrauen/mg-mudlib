@@ -33,14 +33,16 @@
 #define WERT(t, r)    ((t & 0x00ff)+((r << 8) & 0xff00))   /* 16 Bit */
 
 // Indizes fuer clients
-#define WALK_DELAY   1
-#define WALK_CLOSURE 0
+#define WALK_CLOSURE  0
+#define WALK_DELAY    1
+#define WALK_TIMESLOT 2
 
 nosave int counter;    // Markiert aktuellen Zeitslot im Array walker
 nosave < < closure >* >* walker;
 // Mapping mit allen registrierten MNPC (als Objekte) als Key und deren
-// Zeitdaten (2. wert) und deren walk_closure (1. Wert).
-nosave mapping clients = m_allocate(0,2);
+// walk_closure (1. Wert), Zeitdaten (2. wert) und dem aktuellen
+// Zeitslot in <walker> (3. Wert).
+nosave mapping clients = m_allocate(0,3);
 
 public int Registration();
 
@@ -87,7 +89,7 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   next+=(time+random(rand))/2;
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
   walker[next]+=({ func });
-  clients += ([ get_type_info(func, 2): func; wert ]);
+  clients += ([ get_type_info(func, 2): func; wert; next ]);
 }
 
 // Aufruf nach Moeglichkeit bitte vermeiden, da recht aufwendig. Meist ist
@@ -97,23 +99,23 @@ public void RemoveWalker()
 {
   if (!member(clients, previous_object()))
     return;
+  // Naechster Zeitslot und index in dem Slotarrays ermitteln
+  int next = clients[previous_object(), WALK_TIMESLOT];
+  closure func = clients[previous_object(), WALK_CLOSURE];
+  int idx = member(walker[next], func);
+  // Durch 0 ersetzen. Aber wir koennten gerade im heart_beat stecken... In
+  // dem Fall den Eintrag ersetzen durch was, was beim Abarbeiten ausgetragen
+  // wird.
+  if (next==counter)
+    walker[next][idx]=function () {return 0;};
+  else
+    walker[next][idx]=0;
 
-  for (int i=MAX_DELAYTIME; i>=0; i--) {
-    for (int j=sizeof(walker[i])-1; j>=0; j--)
-    {
-      if (get_type_info(walker[i][j], 2)==previous_object())
-      {
-        // koennte gerade im heart_beat stecken... Eintrag ersetzen durch was,
-        // was beim Abarbeiten ausgetragen wird.
-        if (i==counter)
-          walker[i][j]=function () {return 0;};
-        else
-          walker[i][j]=0;
-      }
-    }
-    if (i!=counter) // koennte gerade im heart_beat stecken...
-      walker[i]-=({ 0 });
-  }
+  // 0-Eintraege entfernen, aber nur, wenn wir gerade nicht evtl. in dem HB
+  // stecken und den Slot abarbeiten.
+  if (next!=counter)
+    walker[next]-=({ 0 });
+  // und noch die Stammdaten entfernen
   m_delete(clients, previous_object());
 }
 
@@ -152,6 +154,7 @@ void heart_beat()
              if (next > MAX_DELAYTIME)
                next -= MAX_DELAYTIME;
              walker[next] += ({ func });
+             clients[mnpc, WALK_TIMESLOT] = next;
            }
            else // Fehler oder Objekt will abschalten
              m_delete(clients, mnpc);
