@@ -23,7 +23,8 @@
 
 #define MAX_DELAYTIME       90   /* max. delay ist 2*MAX_DELAYTIME */
 #define DEFAULT_WALK_DELAY 180   /* ist der billigste Wert :) */
-#define MAX_JOB_COST    200000   /* Wieviel Zeit darf ein NPC max. nutzen */
+/* Ab welcher Rest-Tickmenge wird die Verarbeitung von Walkers unterbrochen */
+#define MAX_JOB_COST    200000
 
 // Funktionen zum vereinfachten Zugriff auf die Komprimierten Daten
 // im Walkerarray
@@ -31,14 +32,14 @@
 #define RANDOM(r)     ((r & 0xff00) >> 8)             /* 8 Bit = 256 */
 #define WERT(t, r)    ((t & 0x00ff)+((r << 8) & 0xff00))   /* 16 Bit */
 
-// Indizes fuer walker und clients
-#define WALK_DELAY   0
-#define WALK_CLOSURE 1
+// Indizes fuer clients
+#define WALK_DELAY   1
+#define WALK_CLOSURE 0
 
 nosave int counter;    // Markiert aktuellen Zeitslot im Array walker
-nosave < < <int|closure>* >* >* walker;
+nosave < < closure >* >* walker;
 // Mapping mit allen registrierten MNPC (als Objekte) als Key und deren
-// Zeitdaten (1. wert) und deren walk_closure (2. Wert).
+// Zeitdaten (2. wert) und deren walk_closure (1. Wert).
 nosave mapping clients = m_allocate(0,2);
 
 public int Registration();
@@ -85,12 +86,9 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   int next=counter;
   next+=(time+random(rand))/2;
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
-  walker[next]+=({ ({ wert, func }) });
-  clients += ([ get_type_info(func, 2): wert; func ]);
+  walker[next]+=({ func });
+  clients += ([ get_type_info(func, 2): func; wert ]);
 }
-
-int dummy_walk()  // liefert immer 0 fuer abbrechen...
-{   return 0;  }
 
 // Aufruf nach Moeglichkeit bitte vermeiden, da recht aufwendig. Meist ist
 // es leicht im NPC "sauber Buch zu fuehren" und dann ggf. aus Walk() 
@@ -103,10 +101,12 @@ public void RemoveWalker()
   for (int i=MAX_DELAYTIME; i>=0; i--) {
     for (int j=sizeof(walker[i])-1; j>=0; j--)
     {
-      if (get_type_info(walker[i][j][WALK_CLOSURE], 2)==previous_object())
+      if (get_type_info(walker[i][j], 2)==previous_object())
       {
-        if (i==counter) // koennte gerade im heart_beat stecken...
-          walker[i][j]=({ 0, #'dummy_walk });
+        // koennte gerade im heart_beat stecken... Eintrag ersetzen durch was,
+        // was beim Abarbeiten ausgetragen wird.
+        if (i==counter)
+          walker[i][j]=function () {return 0;};
         else
           walker[i][j]=0;
       }
@@ -127,7 +127,6 @@ void heart_beat()
    int i = sizeof(walker[counter]);
    if (i)
    {
-     int tmp;
      for (i--;i>=0;i--)
      {
        if (get_eval_cost() < MAX_JOB_COST)
@@ -138,22 +137,41 @@ void heart_beat()
        }
        else
        {
-         if (walker[counter][i][1] &&
-             !catch(tmp=(int)funcall(walker[counter][i][WALK_CLOSURE]))
-             && tmp)
+         closure func = walker[counter][i];
+         if (func)
          {
-           tmp=counter+(TIME(walker[counter][i][WALK_DELAY])
-              +random(RANDOM(walker[counter][i][WALK_DELAY])))/2;
-           if (tmp>MAX_DELAYTIME) tmp-=MAX_DELAYTIME;
-           walker[tmp]+=({ walker[counter][i] });
+           object mnpc = get_type_info(func, 2);
+           mixed res;
+           if (!catch(res=funcall(func);publish)
+               && intp(res) && res)
+           {
+             // Es gab keinen Fehler und das Objekt will weiterlaufen.
+             // Naechsten Zeitslot bestimmen und dort die closure eintragen.
+             int delay = clients[mnpc, WALK_DELAY];
+             int next = counter + (TIME(delay) + random(RANDOM(delay)))/2;
+             if (next > MAX_DELAYTIME)
+               next -= MAX_DELAYTIME;
+             walker[next] += ({ func });
+           }
+           else // Fehler oder Objekt will abschalten
+             m_delete(clients, mnpc);
          }
+         // else: Falls die closure nicht mehr existiert, existiert das Objekt
+         // nicht mehr, dann ist es ohnehin auch schon aus clients raus und es
+         // muss nix gemacht werden.
        }
      }
-     walker[counter]=({}); // komplett leeren
+     walker[counter]=({}); // fertiger Zeitslot, komplett leeren
    }
+   // Wrap-around am Ende des Arrays.
    if (counter == MAX_DELAYTIME)
      counter=0;
-   else counter++;
+   else
+     counter++;
+
+   // wenn keine Clients mehr uebrig, kann pausiert werden. Es kann sein, dass
+   // noch Dummy-Eintraege in walker enthalten sind, die stoeren nicht, bis
+   // wir das naechste Mal drueber laufen.
    if (!sizeof(clients)) {
      set_heart_beat(0);
    }
