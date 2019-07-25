@@ -73,6 +73,7 @@ inherit "/std/living/helpers";
 #include "/secure/questmaster.h"
 #include "/secure/lepmaster.h"
 #include <events.h>
+#include <player/telnetneg.h>
 
 #undef NAME /* DEFINED BY UDP.H; BAD NAME CLASH :( */
 #define NAME(who) capitalize(getuid(who))
@@ -742,7 +743,7 @@ void NetDead()
   * @return 1, falls der Spieler Keep-Alive Paket wuenscht, sonst 0. 
   * @see heart_beat()
 */
-protected int CheckTelnetKeepAlive() {
+protected int CheckTelnetKeepAlive(int delay) {
   if (telnet_tm_counter > 0) {
     // Spieler hat offenbar ein Keep-Alive konfiguriert ...
     if (!(--telnet_tm_counter)) {
@@ -753,7 +754,7 @@ protected int CheckTelnetKeepAlive() {
       // alle 120 HBs (240s, 4min).
       // sollte eigentlich 240 / __HEART_BEAT_INTERVAL__ sein. Aber spart
       // eine Operation im HB. ;-)
-      telnet_tm_counter = 120;
+      telnet_tm_counter = delay || 120;
     }
     return 1; // Keep-Alive ist eingeschaltet
   }
@@ -809,7 +810,7 @@ protected void heart_beat() {
   if (CheckDailyPlaytime())
     return;
 
-  CheckTelnetKeepAlive();
+  CheckTelnetKeepAlive(QueryProp(P_TELNET_KEEPALIVE_DELAY));
 
   life::heart_beat();
   combat::heart_beat();
@@ -4213,11 +4214,16 @@ int show_telnegs(string arg)
 
 private int set_keep_alive(string str) {
   if (str == "ein") {
-    telnet_tm_counter = 240 / __HEART_BEAT_INTERVAL__;
-    tell_object(this_object(), break_string(
-        "An Deinen Client werden jetzt alle 4 Minuten unsichtbare Daten "
+    telnet_tm_counter = QueryProp(P_TELNET_KEEPALIVE_DELAY) || (240 / __HEART_BEAT_INTERVAL__);
+    tell_object(this_object(), break_string( sprintf(
+        "An Deinen Client werden jetzt alle %i Sekunden unsichtbare Daten "
         "geschickt, um zu verhindern, dass Deine Verbindung zum "MUDNAME
-        " beendet wird.", 78));
+        " beendet wird.",
+        telnet_tm_counter*__HEART_BEAT_INTERVAL__), 78));
+    // Bei Magiern ist der HB evtl. ausgeschaltet und muss eingeschaltet
+    // werden.
+    if (!object_info(this_object(), OC_HEART_BEAT))
+      configure_object(this_object(), OC_HEART_BEAT, 1);
   }
   else if (str == "aus") {
     telnet_tm_counter = 0;

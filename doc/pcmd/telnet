@@ -32,6 +32,7 @@ telnet
 
  SIEHE AUCH:
     telnegs, telnet keepalive, telnet gmcp
+    P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
-    15.01.2018, Zesstra
+    26.07.2019, Zesstra

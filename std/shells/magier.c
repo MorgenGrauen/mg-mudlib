@@ -40,6 +40,7 @@ inherit "/std/shells/magier/magier_ext";
 #include <properties.h>
 #include <new_skills.h>
 #include <config.h>
+#include <player/telnetneg.h>
 
 protected void create()
 {
@@ -76,7 +77,8 @@ protected void heart_beat()
 
   if (!QueryProp(P_WANTS_TO_LEARN)||((en=QueryEnemies())&&sizeof(en[0])))
     base::heart_beat();
-  else if (!CheckTelnetKeepAlive()) {
+  else if (!CheckTelnetKeepAlive(QueryProp(P_TELNET_KEEPALIVE_DELAY)))
+  {
     // Wenn der Magier kein Telnet Keep-Alive wuenscht, kann der HB ganz
     // abgeschaltet werden. Sonst muss er aber weiterlaufen, damit
     // CheckTelnetKeepAlive() regelmaessig gerufen wird.
