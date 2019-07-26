@@ -85,9 +85,6 @@ private nosave mapping autoload_rest;
 private nosave string  *autoload_error;
 private nosave string realip; 
 
-private nosave string passw;        /* temporarily for password change */
-private nosave string passwold;     /* temporarily for password change */
-
 // HB-Zaehler. Wenn 0 erreicht wird, wird  ein Telnet TM Paket als Keep-Alive
 // an den Client gesendet und der Counter wieder auf hochgesetzt. 
 // Wenn == 0, ist das Keep-Alive abgeschaltet.
@@ -1204,9 +1201,8 @@ static int change_password2(string str) {
     write("Falsches Passwort!\n");
     return 1;
   }
-  passwold = str;
   input_to("change_password3",INPUT_NOECHO|INPUT_PROMPT,
-      "Bitte das NEUE Passwort eingeben: ");
+      "Bitte das NEUE Passwort eingeben: ", str);
   return 1;
 }
 
@@ -1217,32 +1213,32 @@ static int change_password2(string str) {
   * \return 1 bei Erfolg, 0 sonst.
   * \sa change_password(), change_password2(), change_password4()
   */
-static int change_password3( string str )
+static int change_password3( string str, string passwold )
 {
     write( "\n" );
 
     if ( !str || str == "" ){
         write( "Abgebrochen !\n" );
-        passwold = passw = 0;
         return 1;
     }
 
     if ( passwold == str ){
         write( "Das war Dein altes Passwort.\n" );
         input_to( "change_password3", INPUT_NOECHO|INPUT_PROMPT,
-            "Bitte das NEUE Passwort eingeben (zum Abbruch Return druecken): ");
+            "Bitte das NEUE Passwort eingeben (zum Abbruch Return "
+            "druecken): ", passwold);
         return 1;
     }
 
     if ( !MASTER->good_password( str, getuid(ME) ) ){
         input_to( "change_password3", INPUT_NOECHO|INPUT_PROMPT,
-            "Bitte das NEUE Passwort eingeben: ");
+            "Bitte das NEUE Passwort eingeben: ", passwold);
         return 1;
     }
 
     passw = str;
     input_to( "change_password4", INPUT_NOECHO|INPUT_PROMPT,
-        "Bitte nochmal: ");
+        "Bitte nochmal: ", passwold, str);
     return 1;
 }
 
@@ -1252,22 +1248,20 @@ static int change_password3( string str )
   * \return 1 bei Erfolg, 0 sonst.
   * \sa change_password(), change_password2(), change_password3()
   */
-static int change_password4( string str )
+static int change_password4( string str, string passwold, string passwnew )
 {
     write( "\n" );
 
-    if ( !str || str != passw ){
+    if ( !str || str != passwnew ){
         write( "Das war verschieden! Passwort NICHT geaendert.\n" );
-        passwold = passw = 0;
         return 1;
     }
 
-    if ( MASTER->update_password( passwold, passw ) )
+    if ( MASTER->update_password( passwold, passwnew ) )
         write( "Passwort geaendert.\n" );
     else
         write( "Hat nicht geklappt!\n" );
 
-    passwold = passw = 0;
     return 1;
 }
 
