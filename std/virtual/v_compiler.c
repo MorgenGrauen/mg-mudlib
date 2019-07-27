@@ -60,6 +60,7 @@ void create()
 // obsolet. 
 int NoParaObjects() { return 0; }
 
+// Standardmaessig nur .c abschneiden und den EPMASTER anstossen.
 string Validate(string file)
 {
   if(!file) return 0;
@@ -108,13 +109,21 @@ public int QueryValidObject(string oname) {
 mixed CustomizeObject()
 {
   string file;
-
+  // Wenn !clonep ist es schon ein per VC umbenanntes File und wir koennen den
+  // BLUE_NAME von PO nehmen.
   if(!clonep(previous_object()))
     return Validate(explode(BLUE_NAME(previous_object()), "/")[<1]);
-  if(stringp(last_loaded_file)) file = last_loaded_file;
-  else file = Validate(explode(BLUE_NAME(previous_object()), "/")[<1]);
+  // Sonst muessen wir gucken, welche File wir zuletzt erzeugt haben - der
+  // Clone dafuer ist erzeugt (der ruft uns gerade), aber es ist noch nicht
+  // vom Driver umbenannt in den endgueltigen Namen. Wenn wir kein
+  // last_loaded_file haben, naja...
+  if(stringp(last_loaded_file))
+    file = last_loaded_file;
+  else
+    file = Validate(explode(BLUE_NAME(previous_object()), "/")[<1]);
   if(!file) return 0;
   last_loaded_file = 0;
+  // Das sollte nun das File sein, was wir gerade erzeugen.
   return file;
 }
 
