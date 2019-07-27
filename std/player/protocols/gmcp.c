@@ -289,7 +289,7 @@ protected void GMCPmod_Core_v1_send(mapping data)
   // sobald GMCP aktiviert wird.
   // *grrrrr*
   if (!data)
-    GMCP_send("Client.GUI 1","http://mg.mud.de/download/testgui.mpackage");
+    GMCP_send("Client.GUI","1\nhttp://mg.mud.de/download/testgui.mpackage");
 
   // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
 }
