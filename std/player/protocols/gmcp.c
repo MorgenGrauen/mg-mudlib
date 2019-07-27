@@ -280,7 +280,18 @@ protected void GMCPmod_Core_v1_recv(string cmd, mixed args)
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_Core_v1_send(mapping data)
 {
-  // Zur Zeit nix, spaeter mal Core.Goodbye.
+  // Wenn Core registriert wird, wird diese Funktion gerufen und <data> als 0
+  // uebergeben. Wir nutzen das zur Erkennung, dass GMCP aktiviert wurde und
+  // senden die URI fuer das Client-UI-Package.
+  // Bemerkung: ja...  Warum zur Hoelle macht Mudlet das so? Es sollte ein
+  // Modul UI definiert werden, was vom Client angefordert wird, anstatt dass
+  // wir auf Verdacht da etwas aus einem nicht-angeforderten Modul rauspusten,
+  // sobald GMCP aktiviert wird.
+  // *grrrrr*
+  if (!data)
+    GMCP_send("Client.GUI 1","http://mg.mud.de/download/testgui.mpackage");
+
+  // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
 }
 
 
