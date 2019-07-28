@@ -287,9 +287,15 @@ protected void GMCPmod_Core_v1_send(mapping data)
   // Modul UI definiert werden, was vom Client angefordert wird, anstatt dass
   // wir auf Verdacht da etwas aus einem nicht-angeforderten Modul rauspusten,
   // sobald GMCP aktiviert wird.
+  // Ausserdem: Mudlet erwartet da kein Key-Value-Paar, sondern Key und Value
+  // zusammen in einem String im Key und dafuer keine Daten... Das wird
+  // hoffentlich bald in Mudlet gefixt... Bis dahin machen wir das testweise
+  // mal, so furchtbar es auch ist.
+  // TODO: Mudlet pruefen und aendern!
   // *grrrrr*
   if (!data)
-    GMCP_send("Client.GUI","1\nhttp://mg.mud.de/download/testgui.mpackage");
+    send_telnet_neg_str(sprintf("%c%c%s", SB, TELOPT_GMCP,
+             "Client.GUI 1\nhttp://mg.mud.de/download/testgui.mpackage"), 1);
 
   // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
 }
