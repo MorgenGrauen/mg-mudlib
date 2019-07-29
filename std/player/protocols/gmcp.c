@@ -491,9 +491,9 @@ protected void GMCPmod_MG_room_v1_send(mapping data)
   string sh=process_string(environment()->QueryProp(P_INT_SHORT)||"");
   switch(sh[<1])
   {
-    case ".":
-    case "!":
-    case "?":
+    case '.':
+    case '!':
+    case '?':
       break;
     default:
       sh+=".";
