@@ -78,6 +78,16 @@ MAGIER
         durch die zustaendigen Erzmagier von Dir noch keine Objekte
         unter eigenem Namen angeschlossen werden koennen/duerfen.
 
+        Um eine zuegige Abnahme Deines Gesellenstuecks sicherzustellen,
+        spricht zu Beginn der Abnahmen mit dem fuer die Gesellenstuecke
+        zustaendigen Erzmagier Deinen Weg durch die Abnahme-Buerokratie
+        durch. Es ist durchaus moeglich, gewisse Abnahmen (Quests, 
+        Zaubertraenke, Forscherpunkte, Erstkill-Stufenpunkte) zu
+        parallelisieren. Bist Du unsicher oder kommt es zu Rueckfragen,
+        Verzoegerungen, Schwierigkeiten, ist der fuer die Gesellenstuecke
+        zustaendige Erzmagier Dein Begleiter und hilft Dir bei der
+        Bewaeltigung der aufgetretenen Themen.
+
         Sofern Du die Regeln fuer Gesellenstuecke erfuellt hast, wird Dich
         der zustaendige Erzmagier zu einem Vollmagier machen. Erst dann
         kannst Du auch in anderen Teilen der MudLib einen Blick in den
@@ -126,5 +136,5 @@ Magierwerdung mit einem nicht-Seher
     stufen, magierstufen, abenteuer, konzept, gesellenstueck
     seher, regionen, gildenmagier, erzmagier, goetter
 
- LETZTE AeNDERUNG: 2015-05-30 von Zook
+ LETZTE AeNDERUNG: 2019-07-29 von Zook
 
