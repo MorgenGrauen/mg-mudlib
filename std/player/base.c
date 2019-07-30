@@ -1236,7 +1236,6 @@ static int change_password3( string str, string passwold )
         return 1;
     }
 
-    passw = str;
     input_to( "change_password4", INPUT_NOECHO|INPUT_PROMPT,
         "Bitte nochmal: ", passwold, str);
     return 1;
