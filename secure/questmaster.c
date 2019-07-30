@@ -599,7 +599,13 @@ mixed QueryUsersMQCache() {
  * 8. Spalte ist ein Mapping, dessen Eintraege analog zu P_RESTRICTIONS
  *     gesetzt werden koennen, um anzugeben, welche Voraussetzungen erfuellt
  *     sein muessen, bevor ein Spieler diese Quest beginnen kann.
- * 9. Spalte ist die Zuordnung der MQ zu den Regionen
+ * 9. Spalte ist die Zuordnung der MQ zu den Regionen; dies wird von der
+ *    Bibliothek in der Fraternitas (/d/ebene/miril/fraternitas/room/bibliothek) 
+ *    ausgewertet. Diese kennt (Stand 2019-07-30) folgende Regionen: 
+ *    #define REGIONEN ({"wald","ebene","polar","wueste","inseln",\
+ *                  "unterwelt","fernwest","dschungel","gebirge"})
+ *    D.h. MiniQuests im Verlorenen Land sollten als "inseln" geschluesselt
+ *    werden. 
  *10. Spalte ist ein Array aus Strings, das die Objekte enthaelt, die
  *    die Daten dieser Quest abfragen duerfen, um sie an Spieler auszugeben.
  */
