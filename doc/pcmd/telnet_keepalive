@@ -19,11 +19,11 @@ telnet keepalive
     Verbindung terminiert wird. Daher besitzen die Spielershells ein
     einschaltbares 'Telnet-Keep-Alive'.
 
-    Diese Funktion schickt alle 4 min Daten an eure Clients, die diese
-    nicht anzeigen, aber ihrerseits beantworten/bestaetigen (sofern der Client
-    dies unterstuetzt). So gibt es in der Verbindung zum Mud min. alle 4 min
-    Datenverkehr. Das sollte Verbindungsabbruechen durch Inaktivitaet
-    vorbeugen.
+    Diese Funktion schickt regelmaessig (Standardeinstellung: alle 4 min)
+    Daten an eure Clients, die diese nicht anzeigen, aber ihrerseits
+    beantworten/bestaetigen (sofern der Client dies unterstuetzt). So gibt
+    es in der Verbindung zum Mud regelmaessig Datenverkehr. Das sollte
+    Verbindungsabbruechen durch Inaktivitaet vorbeugen.
 
     Bitte schaltet diese Funktion aber nur ein, wenn ihr sie braucht, d.h.
     ohne sie Probleme mit Verbindungsabbruechen beim Ideln habt.
@@ -32,11 +32,9 @@ telnet keepalive
 
     Ohne Argumente wird der aktuelle Zustand angezeigt.
 
-    Hinweis fuer Magier: Magier im Magiermodus (mschau ein) kommen leider
-    nicht in den Genuss dieses Features, weil sie keinen Heartbeat haben.
-
  SIEHE AUCH:
-    telnegs, telnet gmcp
+    telnegs, telnet gmcp,
+    P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
-    08.12.2015, Zesstra
+    26.07.2019, Zesstra

@@ -73,6 +73,7 @@ inherit "/std/living/helpers";
 #include "/secure/questmaster.h"
 #include "/secure/lepmaster.h"
 #include <events.h>
+#include <player/telnetneg.h>
 
 #undef NAME /* DEFINED BY UDP.H; BAD NAME CLASH :( */
 #define NAME(who) capitalize(getuid(who))
@@ -83,9 +84,6 @@ int hc_play;
 private nosave mapping autoload_rest;
 private nosave string  *autoload_error;
 private nosave string realip; 
-
-private nosave string passw;        /* temporarily for password change */
-private nosave string passwold;     /* temporarily for password change */
 
 // HB-Zaehler. Wenn 0 erreicht wird, wird  ein Telnet TM Paket als Keep-Alive
 // an den Client gesendet und der Counter wieder auf hochgesetzt. 
@@ -742,7 +740,7 @@ void NetDead()
   * @return 1, falls der Spieler Keep-Alive Paket wuenscht, sonst 0. 
   * @see heart_beat()
 */
-protected int CheckTelnetKeepAlive() {
+protected int CheckTelnetKeepAlive(int delay) {
   if (telnet_tm_counter > 0) {
     // Spieler hat offenbar ein Keep-Alive konfiguriert ...
     if (!(--telnet_tm_counter)) {
@@ -753,7 +751,7 @@ protected int CheckTelnetKeepAlive() {
       // alle 120 HBs (240s, 4min).
       // sollte eigentlich 240 / __HEART_BEAT_INTERVAL__ sein. Aber spart
       // eine Operation im HB. ;-)
-      telnet_tm_counter = 120;
+      telnet_tm_counter = delay || 120;
     }
     return 1; // Keep-Alive ist eingeschaltet
   }
@@ -809,7 +807,7 @@ protected void heart_beat() {
   if (CheckDailyPlaytime())
     return;
 
-  CheckTelnetKeepAlive();
+  CheckTelnetKeepAlive(QueryProp(P_TELNET_KEEPALIVE_DELAY));
 
   life::heart_beat();
   combat::heart_beat();
@@ -1203,9 +1201,8 @@ static int change_password2(string str) {
     write("Falsches Passwort!\n");
     return 1;
   }
-  passwold = str;
   input_to("change_password3",INPUT_NOECHO|INPUT_PROMPT,
-      "Bitte das NEUE Passwort eingeben: ");
+      "Bitte das NEUE Passwort eingeben: ", str);
   return 1;
 }
 
@@ -1216,32 +1213,32 @@ static int change_password2(string str) {
   * \return 1 bei Erfolg, 0 sonst.
   * \sa change_password(), change_password2(), change_password4()
   */
-static int change_password3( string str )
+static int change_password3( string str, string passwold )
 {
     write( "\n" );
 
     if ( !str || str == "" ){
         write( "Abgebrochen !\n" );
-        passwold = passw = 0;
         return 1;
     }
 
     if ( passwold == str ){
         write( "Das war Dein altes Passwort.\n" );
         input_to( "change_password3", INPUT_NOECHO|INPUT_PROMPT,
-            "Bitte das NEUE Passwort eingeben (zum Abbruch Return druecken): ");
+            "Bitte das NEUE Passwort eingeben (zum Abbruch Return "
+            "druecken): ", passwold);
         return 1;
     }
 
     if ( !MASTER->good_password( str, getuid(ME) ) ){
         input_to( "change_password3", INPUT_NOECHO|INPUT_PROMPT,
-            "Bitte das NEUE Passwort eingeben: ");
+            "Bitte das NEUE Passwort eingeben: ", passwold);
         return 1;
     }
 
     passw = str;
     input_to( "change_password4", INPUT_NOECHO|INPUT_PROMPT,
-        "Bitte nochmal: ");
+        "Bitte nochmal: ", passwold, str);
     return 1;
 }
 
@@ -1251,22 +1248,20 @@ static int change_password3( string str )
   * \return 1 bei Erfolg, 0 sonst.
   * \sa change_password(), change_password2(), change_password3()
   */
-static int change_password4( string str )
+static int change_password4( string str, string passwold, string passwnew )
 {
     write( "\n" );
 
-    if ( !str || str != passw ){
+    if ( !str || str != passwnew ){
         write( "Das war verschieden! Passwort NICHT geaendert.\n" );
-        passwold = passw = 0;
         return 1;
     }
 
-    if ( MASTER->update_password( passwold, passw ) )
+    if ( MASTER->update_password( passwold, passwnew ) )
         write( "Passwort geaendert.\n" );
     else
         write( "Hat nicht geklappt!\n" );
 
-    passwold = passw = 0;
     return 1;
 }
 
@@ -4213,11 +4208,16 @@ int show_telnegs(string arg)
 
 private int set_keep_alive(string str) {
   if (str == "ein") {
-    telnet_tm_counter = 240 / __HEART_BEAT_INTERVAL__;
-    tell_object(this_object(), break_string(
-        "An Deinen Client werden jetzt alle 4 Minuten unsichtbare Daten "
+    telnet_tm_counter = QueryProp(P_TELNET_KEEPALIVE_DELAY) || (240 / __HEART_BEAT_INTERVAL__);
+    tell_object(this_object(), break_string( sprintf(
+        "An Deinen Client werden jetzt alle %i Sekunden unsichtbare Daten "
         "geschickt, um zu verhindern, dass Deine Verbindung zum "MUDNAME
-        " beendet wird.", 78));
+        " beendet wird.",
+        telnet_tm_counter*__HEART_BEAT_INTERVAL__), 78));
+    // Bei Magiern ist der HB evtl. ausgeschaltet und muss eingeschaltet
+    // werden.
+    if (!object_info(this_object(), OC_HEART_BEAT))
+      configure_object(this_object(), OC_HEART_BEAT, 1);
   }
   else if (str == "aus") {
     telnet_tm_counter = 0;
