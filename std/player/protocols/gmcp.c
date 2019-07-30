@@ -294,8 +294,14 @@ protected void GMCPmod_Core_v1_send(mapping data)
   // TODO: Mudlet pruefen und aendern!
   // *grrrrr*
   if (!data)
-    send_telnet_neg_str(sprintf("%c%c%s", SB, TELOPT_GMCP,
-             "Client.GUI 1\nhttp://mg.mud.de/download/testgui.mpackage"), 1);
+  {
+    <int|string>* version = (__DIR__"mudlet_gui")->current_version();
+    if (version)
+    {
+      send_telnet_neg_str(sprintf("%c%c%s", SB, TELOPT_GMCP,
+             sprintf("Client.GUI %d\n%s",version[1],version[0])), 1);
+    }
+  }
 
   // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
 }
