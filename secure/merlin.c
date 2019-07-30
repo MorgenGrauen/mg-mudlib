@@ -333,9 +333,13 @@ private void AnnounceNewPlayer(object pl) {
   if (!pl || !interactive(pl))
     return;
 
-  // verzoegern, bis der Spieler wirklich fertig ist.
-  if (pl->QueryProp(P_LEVEL) < 0) {
-    call_out(#'AnnounceNewPlayer,10,pl);
+  // verzoegern, bis der Spieler wirklich fertig und in /d/ angekommen ist,
+  // weil dann der initiale Scroll abgeklungen ist und der Spieler die
+  // Willkommensmeldungen von Merlin und Spielern hoffentlich auch wahrnimmt.
+  if (!environment(pl)
+      || strstr(object_name(environment(pl)), "/"DOMAINDIR"/") != 0)
+  {
+    call_out(#'AnnounceNewPlayer,20,pl);
     return;
   }
 
