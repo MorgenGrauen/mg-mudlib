@@ -9,7 +9,8 @@ Abhaengigkeiten
     abweichen):
 
     libjson0/json-c, libssl, libsqlite3, libpcre3, libxml2, libgcrypt,
-    libpcre3, libiconv
+    libpcre3, libiconv (diese ist bei neueren Distributionen in libc6-dev
+    enthalten).
 
     Beachte, dass man auf debianbasierten System auch die entsprechenden
     Entwicklerpackete (`*-dev`) mitinstallieren muss, weil sie die notwendigen
@@ -19,7 +20,7 @@ Anleitung fuer ein Homemud, unter Linux
 ---------------------------------------
 
     Mit den folgenden Schritten installiert man die gegenwaertige mudlib und
-    einen Driver der Version LDMUD-3.5.x.
+    einen Driver der Version LDMUD-3.5.x (x < 99).
 
     1. Lade den aktuellen Driver unter https://github.com/ldmud/ldmud herunter.
        Du kannst auch das Repo via git clonen.
@@ -51,8 +52,18 @@ Anleitung fuer ein Homemud, unter Linux
        :code:`ldmud <port>` kannst Du auch den Port bestimmten, auf welchem
        das Homemud laeuft.
 
-    Optional kannst Du noch den Namen des Mudgottes von Jof auf etwas anderes
-    aendern, das geht wie folgt:
+    9. Einloggen als "jof".
+
+    Optional kannst Du *anschliessend* den Namen des Mudgottes von Jof auf
+    etwas anderes aendern, das geht wie folgt:
+
+.. code-block:: shell
+
+      clone /obj/tools/MGtool
+      xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
+      ende
+
+    Auf der Shell:
 
 .. code-block:: shell
 
@@ -64,14 +75,11 @@ Anleitung fuer ein Homemud, unter Linux
       mkdir -p players/thomas
       mv players/jof/workroom.c players/thomas/workroom.c
 
-    Nachdem Login muss man nun noch den Workroom anpassen:
-
-.. code-block:: shell
-
-      clone /obj/tools/MGtool
-      xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
-      save
-
+    Beachte hierbei allerdings, dass in Homemuds immer automatisch
+    sichergestellt wird, dass "Jof" existiert. Falls noetig, wird diesr Char
+    ohne Passwort angelegt. Ist Dein Homemud erreichbar, gibt "jof" bitte ein
+    Passwort und lasse den Char bestehen. (Alternativ muss Du das File
+    /secure/testmud.c anpassen.)
 
 Beispielinstallation
 --------------------
@@ -92,25 +100,10 @@ Beispielinstallation
        # Alternative
        git clone https://mg.mud.de/gerrit/mudlib-public mudlib
        cd <mudhome>
-       cd <mudlib>
-       mv data/save/j/jof.o data/save/t/thomas.o
-       mv data/secure/save/j/jof.o data/secure/save/t/thomas.o
-       # (beachte den Namen des Unterverzeichnisses, es ist der erste Buchstabe
-       # Deines Namens. )
-       sed -i 's/jof/thomas/' secure/save/t/thomas.o
-       mkdir -p players/thomas
-       mv players/jof/workroom.c players/thomas/workroom.c
        bin/ldmud
        # oder
        bin/ldmud -m <alternative path to mudlib> <alternative port>
+       # Einloggen als Jof.
 
-Nachdem Login muss man nun noch den Workroom anpassen:
+Letzte Aenderung: 2019-07-31 Zesstra
 
-.. code-block:: shell
-
-      clone /obj/tools/MGtool
-      xcall $me->SetProp(P_START_HOME, "/players/thomas/workroom");
-      save
-
-
-Letzte Aenderung: 2018-12-09 von Deaddy (auf Basis von Zesstras engl. Anleitung)
