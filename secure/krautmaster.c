@@ -1045,8 +1045,10 @@ mapping calculate_potion(int* plantids, int* qualities, string familie)
       }
     }
   }
-  // Logeintrag erstellen.
-  sl_exec("INSERT INTO rohdaten(uid, rnd, receipe, quality, car, da, dm, du, "
+  // Logeintrag erstellen, wenn nicht direkt von aussen (durch EM) gerufen.
+  if (!extern_call())
+  {
+    sl_exec("INSERT INTO rohdaten(uid, rnd, receipe, quality, car, da, dm, du, "
           "dn, flt, fro, hI, hP, hK, hL, pa, pm, pu, ss, sp, sd) "
           "VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11, ?12, ?13, ?14, "
           "?15, ?16, ?17, ?18, ?19, ?20, ?21);",
@@ -1063,6 +1065,7 @@ mapping calculate_potion(int* plantids, int* qualities, string familie)
           attrib[T_PROTECTION_MAGIC], attrib[T_PROTECTION_UNDEAD],
           attrib[T_SA_SPEED], attrib[T_SA_SPELL_PENETRATION],
           attrib[T_SA_DURATION]);
+  }
 
   // Maximal zwei positive Effekte.
   int cteff=0;
@@ -1105,8 +1108,10 @@ mapping calculate_potion(int* plantids, int* qualities, string familie)
   }
   debug(sprintf(" TRANKERGEBNIS: %O",attrib));
   // Logeintrag erstellen.
-  sl_exec("INSERT INTO traenke(uid, rnd, receipe, quality, car, da, dm, du, "
-          "dn, flt, fro, hI, hP, hK, hL, pa, pm, pu, ss, sp, sd) "
+  if (!extern_call())
+  {
+    sl_exec("INSERT INTO traenke(uid, rnd, receipe, quality, car, da, dm, "
+          "du, dn, flt, fro, hI, hP, hK, hL, pa, pm, pu, ss, sp, sd) "
           "VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11, ?12, ?13, ?14, "
           "?15, ?16, ?17, ?18, ?19, ?20, ?21);",
           this_player() ? getuid(this_player()) : "<unknown>",
@@ -1122,7 +1127,7 @@ mapping calculate_potion(int* plantids, int* qualities, string familie)
           attrib[T_PROTECTION_MAGIC], attrib[T_PROTECTION_UNDEAD],
           attrib[T_SA_SPEED], attrib[T_SA_SPELL_PENETRATION],
           attrib[T_SA_DURATION]);
-
+  }
   return attrib;
 }
 
