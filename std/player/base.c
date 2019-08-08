@@ -3503,8 +3503,8 @@ static int stty(string str)
               }
               printf("\n");
           }
-          printf("Sollte dieser Text hier nicht richtig lesbar\nsein,"+
-                 "benutze das Kommando stty reset!\n");
+          printf("Sollte dieser Text hier nicht richtig lesbar\nsein, "+
+                 "benutze das Kommando 'stty reset'.\n");
       }
 
   }
