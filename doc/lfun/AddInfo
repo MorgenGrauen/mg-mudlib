@@ -23,8 +23,8 @@ ARGUMENTE
       Schluesseltext(e) auf die Informationen gegeben werden sollen.
 
    string/closure meldung
-      Information, die gegeben werden soll/Closure Bekommt nichts
-      uebergeben.
+      Information, die gegeben werden soll; wenn 'meldung' eine
+      Closure ist, wird der gerufenen Funktion nichts uebergeben.
 
    string indent
       Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
@@ -62,7 +62,9 @@ BESCHREIBUNG
    Silent:
       Bei 'silent'==1 erfolgt keine Textausgabe der Antwortmeldung im
       Raum, ist 'silent' ein String, so wird jener an alle anderen
-      Spieler ausser dem Fragesteller im Raum ausgegeben.
+      Spieler ausser dem Fragesteller im Raum ausgegeben. Dem
+      ausgegebenen Text wird der Name des NPCs als Indent
+      vorangestellt.
 
    Casebased:
       Die als Closure angegebene Methode entscheidet, ob oder wie der
@@ -106,9 +108,9 @@ BEISPIELE
        "Ich habe zwar kein Geld, aber [...] blablabla [...]",
        "sagt: ");
    AddInfo("muenzen",
-       "fluestert: Du willst Geld?",
+       "fluestert: Du willst Geld?\n",
        0,
-       "fluestert @WEM1 etwas zu.");
+       "fluestert @WEM1 etwas zu.\n");
 
    // "frage monster nach geld": alle im Raum hoeren
    //  Das Monster sagt: Ich habe zwar kein Geld, aber [...]
@@ -148,7 +150,7 @@ BEISPIELE
 
    AddInfo(({"keks","kekse"}),
        #'query_kekse,"        // ein Verweis auf die Funktion
-       sagt: ",
+       "sagt: ",
        0,                     // nicht silent :)
        #'case_fighting);      // noch ein Funktionsverweis
 
@@ -185,50 +187,58 @@ BEISPIELE
    protected string question_gold() {
      // wieviel Kohle hat der Spieler
      int money = this_player()->QueryMoney();
-     string* y = map(deep_inventory(this_player()),
-                   function string(object o) {
-                     if(o->QueryMaterial(MAT_GOLD)>0 &&
-                        strstr(object_name(o),"/items/money")<0 &&
-                        o->QueryProp(P_NAME))
-                       return o->name(WER,1);
-                   })-({0});
+     string* valuables = ({});
+
+     // Wertgegenstaende suchen, d.h. Material kein Gold,
+     // Objekt kein Geld, und auch nicht unsichtbar
+     foreach(object o : deep_inventory(this_player()))
+     {
+       if ( o->QueryMaterial(MAT_GOLD)>0 &&
+            load_name(o) != "/items/money" &&
+            o->QueryProp(P_SHORT) &&
+            !o->QueryProp(P_INVIS) )
+       {
+         valuables += ({o->Name(WER,1)});
+       }
+     }
 
      // das geht an alle anderen im Raum, silent bietet sich hier
      // nicht an, weil es mehrere Moeglichkeiten gibt
      send_room(environment(),
-       (Name(WER,1)+" murmelt "+
-        this_player()->name(WEM,1)+
-        " etwas zu"+
-        ((money || sizeof(y))?
-          " und glotzt "+this_player()->QueryPronoun(WEN)+" gierig an.":
-          ".")),
+       sprintf("%s murmelt %s etwas zu%s.",
+               Name(WER,1),
+               this_player()->name(WEM,1),
+               (money || sizeof(valuables))?
+                 " und glotzt "+this_player()->QueryPronoun(WEN)+
+                 " gierig an" : ""),
        MT_LOOK|MT_LISTEN,
        MA_EMOTE, 0, ({this_player()}));
 
-     // und hier die Antwort an den Spieler selbst, mit vielen
-     // Verzweigungen fuer dessen Besitztum
-     return("Ich hab kein Gold bei mir."+
-       ((money || sizeof(y))?
-         " Aber du "+
-         (money?
-           "hast ja jede Menge Kohle bei dir, so etwa "+money+
-           " Muenzen."+
-           (sizeof(y)?
-             " Ausserdem "+
-             ((sizeof(y)==1)?"ist":"sind")+
-             " auch noch "+CountUp(y)+" aus Gold.":
-             ""):
-           (sizeof(y)?"hast ja ein paar Wertsachen dabei: "+
-           CountUp(y)+
-           (sizeof(y)==1?" ist":" sind")+
-           " aus Gold.":"")):
-         ""));
+     // Und hier die Antwort an den Spieler selbst, mit diversen
+     // Verzweigungen fuer dessen Besitztum.
+     string reply = "Ich hab kein Gold bei mir.";
+     string verb = sizeof(valuables) ? "ist" : "sind";
+     if ( money )
+     {
+       reply += " Aber Du hast ja jede Menge Kohle bei dir, so etwa "+
+                money+" Muenzen.";
+       if ( sizeof(valuables) )
+         reply += sprintf(" Ausserdem %s auch noch %s aus Gold.",
+                    verb, CountUp(valuables));
+     }
+     else if ( sizeof(valuables) )
+     {
+         reply += sprintf(
+           " Aber Du hast ja ein paar Wertsachen dabei: %s %s aus Gold.",
+           CountUp(valuables), verb);
+     }
+     return reply;
    }
 
    // "frage monster nach gold"
    // - der Fragesteller hoert zB:
-   //   Das Monster murmelt: Ich hab kein Gold bei mir. Aber du hast ja
-   //   Das Monster murmelt: jede Menge Kohle bei dir, so etwas <number>
+   //   Das Monster murmelt: Ich hab kein Gold bei mir. Aber Du hast ja
+   //   Das Monster murmelt: jede Menge Kohle bei Dir, so etwa <number>
    //   Das Monster murmelt: Muenzen. Ausserdem ist/sind noch <object1>
    //   Das Monster murmelt: und <object2> aus Gold."
    // - die Umstehenden hoeren:
