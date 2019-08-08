@@ -40,7 +40,7 @@ Art.-Nr.   Name             Beschreibung                                Preis
 
  5         Waffenschrank    Ein massiver Holzschrank mit Faechern fuer  5.899
                             Waffen aller Art. Jede Waffengattung hat
-                            ihren einenen Platz, es gibt ein Kommando
+                            ihren eigenen Platz, es gibt ein Kommando
                             zur Auflistung von Waffentypen.
 
  6         Waffentruhe      Eine Stahltruhe mit verschiedenen Faechern  5.399
