@@ -4,8 +4,7 @@ P_SYNTAX_HELP
 NAME
 ----
 
-  P_SYNTAX_HELP
-    "lib_p_syntax_help"
+  P_SYNTAX_HELP                        "lib_p_syntax_help"
 
 DEFINIERT IN
 ------------
@@ -21,7 +20,8 @@ BESCHREIBUNG
   Spieler das Kommando "syntaxhilfe <objekt>" eingibt.
   Die Property kann verschiedene Datenstrukturen enthalten:
 
-  1) ein String
+  1) ein String:
+  
   Der String wird angezeigt, hierbei ggf. umgebrochen, vorhandene
   Zeilenumbrueche werden beibehalten.
 
