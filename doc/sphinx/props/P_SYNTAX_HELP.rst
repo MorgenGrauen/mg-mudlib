@@ -28,6 +28,7 @@ BESCHREIBUNG
   2) ein Array: ({hilfetext, bedingungen})
 
   <hilfetext>:
+
     * ein string:
       Der String wird angezeigt, hierbei ggf. umgebrochen, vorhandene
       Zeilenumbrueche werden beibehalten.
@@ -39,6 +40,7 @@ BESCHREIBUNG
 
   <bedingungen>, welche erfuellt sein muessen, damit dem Spieler die Hilfe
   angezeigt wird. Die Bedingungen sind entweder:
+
     * ein Mapping fuer check_restriction()
     * eine lfun-closure
       Diese erhaelt beim Aufruf das betreffende Objekt als Argument und darf
@@ -47,7 +49,6 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
-::
 
   Hat ein Objekt keine Syntaxhilfe, wird das Kommando "syntaxhilfe" aus dem
   Objekt wieder entfernt (d.h. die Property muss gesetzt sein, bevor der
