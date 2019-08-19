@@ -3,19 +3,16 @@ P_POISON_DELAY
 
 NAME
 ----
-::
 
     P_POISON_DELAY                     "poison_delay"                     
 
 DEFINIERT IN
 ------------
-::
 
     /sys/living/life.h
 
 BESCHREIBUNG
 ------------
-::
 
      Anzahl der heart_beats nach denen sich die Giftwirkung erneut 
      zeigt. Je kleiner der Wert, desto empfindlicher ist das Lebewesen
@@ -24,4 +21,9 @@ BESCHREIBUNG
      des EMs fuer Balance.
 
      
+SIEHE AUCH
+----------
+
+     :doc:`P_MAX_POISON`, :doc:`P_POISON_DELAY`
+     gift
 
