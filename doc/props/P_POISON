@@ -18,4 +18,15 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Wie stark wir vergiftet sind (0-11)
+   Wie stark wir vergiftet sind (0 bis P_MAX_POISON)
+
+   Bei Lebewesen wird beim Setzen mittels SetProp die maximale
+   Vergiftung seitens der Mudlib auf P_MAX_POISON begrenzt, wenn ein
+   groesserer Wert gesetzt wird. Ein separater Check darauf ist daher
+   nicht erforderlich.
+
+
+SIEHE AUCH
+==========
+
+   P_MAX_POISON, P_POISON_DELAY gift

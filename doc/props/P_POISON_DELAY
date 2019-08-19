@@ -20,6 +20,11 @@ BESCHREIBUNG
 
    Anzahl der heart_beats nach denen sich die Giftwirkung erneut
    zeigt. Je kleiner der Wert, desto empfindlicher ist das Lebewesen
-   gegen Gift.
-   Aenderungen dieser Property in Spielern beduerfen der Genehmigung
-   des EMs fuer Balance.
+   gegen Gift. Aenderungen dieser Property in Spielern beduerfen der
+   Genehmigung des EMs fuer Balance.
+
+
+SIEHE AUCH
+==========
+
+   P_MAX_POISON, P_POISON_DELAY gift

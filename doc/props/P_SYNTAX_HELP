@@ -31,6 +31,7 @@ BESCHREIBUNG
    2. ein Array: ({hilfetext, bedingungen})
 
    <hilfetext>:
+
       * ein string: Der String wird angezeigt, hierbei ggf.
         umgebrochen, vorhandene Zeilenumbrueche werden beibehalten.
 
@@ -54,9 +55,9 @@ BESCHREIBUNG
 BEMERKUNGEN
 ===========
 
-   Hat ein Objekt keine Syntaxhilfe, wird das Kommando "syntaxhilfe" aus dem
-   Objekt wieder entfernt (d.h. die Property muss gesetzt sein, bevor der
-   erste Spieler das Kommando eingibt).
+   Hat ein Objekt keine Syntaxhilfe, wird das Kommando "syntaxhilfe"
+   aus dem Objekt wieder entfernt (d.h. die Property muss gesetzt
+   sein, bevor der erste Spieler das Kommando eingibt).
 
 
 SIEHE AUCH
