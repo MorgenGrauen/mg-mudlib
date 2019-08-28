@@ -188,6 +188,14 @@ public int RemoveExtraLook(string key) {
   return XL_OK;
 }
 
+// Ist ein bestimmter, nicht bereits abgelaufener Eintrag in den
+// Extralooks vorhanden?
+public int HasExtraLook(string key) {
+  // abgelaufene Extralooks austragen
+  QueryProp(P_INTERNAL_EXTRA_LOOK);
+  return member(Query(P_INTERNAL_EXTRA_LOOK) || ([]), key);
+}
+
 void create()
 { 
   ::create();
