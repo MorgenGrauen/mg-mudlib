@@ -52,6 +52,6 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-  :doc:`../lfun/Kill`
+  :doc:`../lfun/Kill`, :doc:`../lfun/AutoAttack`
 
 Letzte Aenderung: 28.08.2019, Bugfix

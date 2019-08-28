@@ -1,0 +1,74 @@
+AutoAttack()
+============
+
+FUNKTION
+--------
+
+  int AutoAttack(object ob)
+
+DEFINIERT IN
+------------
+
+  /std/npc/combat
+
+ARGUMENTE
+---------
+
+  object ob
+    Das ggf. annzugreifende Object. (Achtung, nicht nur Livings)
+
+BESCHREIBUNG
+------------
+
+  Diese Funktion wird aus heart_beat() heraus aufgerufen. Sie bestimmt,
+  ob ein Living automatisch angegriffen werden soll oder nicht.
+
+RUeCKGABEWERT
+-------------
+
+  1 fuer Angriff, sonst 0.
+
+BEMERKUNGEN
+-----------
+
+  Da diese Funktion aus heart_beat() heraus aufgerufen wird, und zwar
+  einmal pro anwesendem Objekt (nicht nur fuer Livings), sollte man hier
+  moeglichst wenig Dinge tun. Verzichtet am besten ganz auf die Nutzung,
+  falls irgendwie moeglich.
+
+  Da auch NPCs uebergeben werden, kann man hier auch diese automatisch
+  angreifen lassen, was normalerweise nicht der Fall ist. Dies funktioniert
+  jedoch nur, wenn der heart_beat() eingeschaltet ist, also normalerweise
+  nicht in Abwesenheit von Spielern.
+
+BEISPIELE
+---------
+
+.. code-block::
+
+  inherit "/std/npc";
+  
+  #include <npc.h>
+  
+  protected void create()
+  {
+    ...
+    SetProp(P_AGGRESSIVE,1);
+    ...
+  }
+  
+  // Keine Leute angreifen, die auf der Freundesliste stehen.
+  // Bei dieser Variante wir das P_AGGRESSIVE in ob nicht ausgewertet, falls
+  // ob als Freund erkannt wird.
+  int AutoAttack(object ob)
+  {
+    if(member(freunde,ob)!=-1) return 0;
+    else return ::AutoAttack(ob);
+  }
+
+SIEHE AUCH
+----------
+
+  :doc:`heart_beat`, :doc:`../props/P_AGGRESSIVE`
+
+Letzte Aenderung: 28.08.2019, Bugfix
