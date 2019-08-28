@@ -9,7 +9,7 @@ NAME
 DEFINIERT IN
 ------------
 
-  /sys/properties.h
+  /sys/npc.h
 
 BESCHREIBUNG
 ------------
