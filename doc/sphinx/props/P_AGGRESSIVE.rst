@@ -3,19 +3,16 @@ P_AGGRESSIVE
 
 NAME
 ----
-::
 
-    P_AGGRESSIVE                  "aggressive"                  
+  P_AGGRESSIVE                  "aggressive"                  
 
 DEFINIERT IN
 ------------
-::
 
-    /sys/properties.h
+  /sys/properties.h
 
 BESCHREIBUNG
 ------------
-::
 
 	Gesetzt, wenn das Wesen von sich aus Angriffe startet.
 
@@ -40,7 +37,6 @@ BESCHREIBUNG
 
 BEISPIELE
 ---------
-::
 
 	SetProp(P_AGGRESSIVE,([P_RACE:(["Zwerg":1, "Elf":0.0, 0:0.5])]))
 	Zwerge werden immer automatisch angegriffen, Elfen nie und
@@ -53,3 +49,9 @@ BEISPIELE
 	Zwerge werden mit 30% Wahrscheinlichkeit angegriffen,
 	Chaoten mit 70% und Zwerg-Chaoten mit 50%.
 
+SIEHE AUCH
+----------
+
+  :doc:`../lfun/Kill`
+
+Letzte Aenderung: 28.08.2019, Bugfix
