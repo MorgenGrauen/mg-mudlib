@@ -934,7 +934,7 @@ string QueryForschung()
   int absolute = my/QueryMaxEP();
   int relative = my/QueryAverage();
 
-  ret = "Verglichen mit Deinen Mitspielern, kennst Du Dich im "MUDNAME" ";
+  ret = "Verglichen mit Deinen Mitspielern kennst Du Dich im "MUDNAME" ";
   switch(relative) {
   case 0..10:
     ret += "kaum";
