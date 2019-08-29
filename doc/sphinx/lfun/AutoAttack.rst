@@ -44,7 +44,7 @@ BEMERKUNGEN
 BEISPIELE
 ---------
 
-.. code-block::
+.. code-block:: pike
 
   inherit "/std/npc";
   
