@@ -1168,7 +1168,10 @@ public nomask int Fill(object *plants)
   return -3;
 }
 
+// Gerade wirkende Traenke werden zerstoert. Ein Trank ist gerade aktiv,
+// wenn <duration> einen Wert ungleich Null enthaelt.
 void NotifyPlayerDeath(object vic, object killer, int exp)
 {
-  call_out("remove",1);
+  if (duration)
+    call_out("remove", 1);
 }
