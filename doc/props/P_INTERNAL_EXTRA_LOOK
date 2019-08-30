@@ -19,12 +19,14 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Diese Property enthaelt ein Mapping, in dem alle einzelnen Extra-
-   Look-Eintraege des Livings enthalten sind. Dabei weden die Daten
-   von AddExtraLook() und RemoveExtraLook() verwaltet. Fragt man diese
-   Prop mit QueryProp() ab, erhaelt man die Ausgabe der gueltigen
-   Extralooks des Livings. Bei Abfrage per Query() erhaelt man ein
-   Mapping mit allen Eintraegen und deren Daten.
+   Abfrage mittels QueryProp(): Es wird der finale Extralook als
+   String zurueckgegeben, der auch in der Ausgabe der Spieler-
+   Langbeschreibung verwendet wird.
+
+   Abfrage mittels Query(): Es wird ein Mapping mit allen Eintraegen
+   und deren Daten zurueckgegeben. Die Verwaltung dieser Daten erfolgt
+   mittels AddExtraLook() und RemoveExtraLook(). Die Struktur des
+   Mappings ist folgende:
 
    Der Key ist jeweils die ID des Extralooks, der Value ist erneut ein
    Mapping, welches folgende Keys enthalten kann:
