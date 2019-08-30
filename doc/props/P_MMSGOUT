@@ -18,5 +18,11 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   String mit der Meldung, die beim Betreten eines Raumes mit M_TPORT
+   String mit der Meldung, die beim Verlassen eines Raumes mit M_TPORT
    an die uebrigen Anwesenden ausgegeben wird.
+
+
+SIEHE AUCH
+==========
+
+   P_MSGIN, P_MSGOUT, P_MMSGIN, move()

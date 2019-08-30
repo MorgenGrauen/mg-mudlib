@@ -17,6 +17,10 @@ BESCHREIBUNG
 ------------
 ::
 
-     String mit der Meldung, die beim Betreten eines Raumes mit M_TPORT
+     String mit der Meldung, die beim Verlassen eines Raumes mit M_TPORT
      an die uebrigen Anwesenden ausgegeben wird.
 
+SIEHE AUCH
+----------
+
+     :doc:`../props/P_MSGIN`, :doc:`../props/P_MSGOUT`, :doc:`../props/P_MMSGIN`, :doc:`../lfun/move`

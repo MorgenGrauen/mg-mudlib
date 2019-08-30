@@ -232,11 +232,17 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   move_object(), remove(), setmin, setmmin, setmout, setmmout, review,
-   PreventInsert(), PreventLeave(), PreventInsertLiving(),
-   PreventLeaveLiving(), PreventMove(), NotifyInsert(), NotifyLeave(),
-   NotifyMove(), NotifyRemove(), init(), exit(),
-   P_NO_PLAYERS, P_PARA, /std/thing/moving.c, /std/living/moving.c
-   -----------------------------------------------------------------------
+   Seherkommandos
+       setmin, setmmin, setmout, setmmout, review
+   Verwandt:
+       move_object(), remove(), PreventInsert(), PreventLeave(),
+       PreventInsertLiving(), PreventLeaveLiving(), PreventMove(),
+       NotifyInsert(), NotifyLeave(), NotifyMove(), NotifyRemove(),
+       init(), exit()
+   Properties:
+       P_MSGIN, P_MSGOUT, P_MMSGIN, P_MMSGOUT, P_NO_PLAYERS, P_PARA,
+       P_NO_TPORT
+   Objekte:
+       /std/thing/moving.c, /std/living/moving.c
 
-2015-Jan-19, Arathorn
+2019-Aug-20, Arathorn

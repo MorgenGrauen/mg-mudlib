@@ -20,3 +20,9 @@ BESCHREIBUNG
 
    String mit der Meldung, die beim Betreten eines Raumes mit M_GO
    an die uebrigen Anwesenden ausgegeben wird.
+
+
+SIEHE AUCH
+==========
+
+   P_MSGOUT, P_MMSGIN, P_MMSGOUT, move()
