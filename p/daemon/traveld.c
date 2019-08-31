@@ -162,7 +162,8 @@ public void reset()
   // Aber speziell bei VC-Transportern ist fraglich, wie gut das
   // funktioniert...
   // Und es funktioniert nur fuer Blueprints.
-  object *old_ships = map(transporters, function object (string sname)
+  object *old_ships = map(m_indices(transporters),
+      function object (string sname)
       {
         object ship = find_object(sname);
         if (ship && !clonep(ship) && program_time(ship) < std_time)
