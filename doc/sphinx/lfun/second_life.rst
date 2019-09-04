@@ -4,18 +4,18 @@ second_life()
 FUNKTION
 --------
 
-	varargs int second_life(object obj);
+  protected varargs int second_life(object corpse);
 
 DEFINIERT IN
 ------------
 
-	/std/player/life.c
+  /std/player/life.c
 
 ARGUMENTE
 ---------
 
-	obj
-	  Leiche des Lebewesens (sofern es eine hat)
+  corpse
+    Leiche des Lebewesens (sofern es eine hat)
 
 BESCHREIBUNG
 ------------
@@ -45,4 +45,3 @@ SIEHE AUCH
   die()
 
 Last modified: 17.03.2019, Zesstra
-
