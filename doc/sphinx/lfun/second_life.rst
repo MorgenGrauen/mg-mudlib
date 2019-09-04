@@ -48,6 +48,22 @@ BEMERKUNGEN
   man diese direkt in die Leiche bewegen, *nicht* in das gestorbene
   Lebewesen.
 
+BEISPIEL
+--------
+
+.. code-block:: pike
+
+  protected varargs int second_life(object corpse)
+  {
+    // Wenn man sich wirklich sicher ist, dass das Lebewesen eine Leiche
+    // hat (weil es der eigene NPC ist), ist es verfuehrerisch, die Pruefung
+    // auf die Existenz der Leiche wegzulassen. Aber auch dann koennte es ja
+    // passieren, dass diese vom Raum bereits zerstoert wurde.
+    if (corpse)
+        corpse->AddItem("tolle_trophaehe",REFRESH_NONE);
+    return 0;
+  }
+
 SIEHE AUCH
 ----------
 
