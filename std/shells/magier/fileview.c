@@ -151,7 +151,7 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
   object ob=find_object(full);
   int ftime=filedata[FILEDATE];
   string date;
-  if ((time()-ftime)<31536000) // ein Jahr
+  if ((time()-ftime)>31536000) // ein Jahr
     date=strftime("%b %e %Y", ftime);
   else
     date=strftime("%b %e %H:%M", ftime);
