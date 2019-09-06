@@ -38,10 +38,20 @@ RUeCKGABEWERT
   1
     wenn das Objekt im Tod nicht zerstoert wird (Spieler)
 
+BEMERKUNGEN
+-----------
+
+  Das Inventar des Livings wurde bei Aufruf von second_live() normalerweise
+  schon in die Leiche bewegt, sofern diese existiert. War das Inventar sehr
+  gross, koennen allerdings noch vereinzelte Objekte im Living sein, die
+  erst spaeter bewegt werden. Will man noch Gegenstaende hinzufuegen, muss
+  man diese direkt in die Leiche bewegen, *nicht* in das gestorbene
+  Lebewesen.
 
 SIEHE AUCH
 ----------
 
   die()
 
-Last modified: 17.03.2019, Zesstra
+Letzte Aenderung: 04.09.2019, Bugfix
+
