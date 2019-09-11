@@ -90,6 +90,8 @@ Verzeichnis der dokumentierten lfuns
 
 * Attack()
 
+* AutoAttack()
+
 * BecomesNetAlive()
 
 * BecomesNetDead()
@@ -257,6 +259,8 @@ Verzeichnis der dokumentierten lfuns
 * GuildName()
 
 * Halt()
+
+* HasExtraLook()
 
 * HasMiniQuest()
 

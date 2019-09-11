@@ -6,7 +6,7 @@ second_life()
 FUNKTION
 ========
 
-   varargs int second_life(object obj);
+   protected varargs int second_life(object corpse);
 
 
 DEFINIERT IN
@@ -18,7 +18,7 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   obj
+   corpse
       Leiche des Lebewesens (sofern es eine hat)
 
 
@@ -46,9 +46,35 @@ RUeCKGABEWERT
       wenn das Objekt im Tod nicht zerstoert wird (Spieler)
 
 
+BEMERKUNGEN
+===========
+
+   Das Inventar des Livings wurde bei Aufruf von second_live()
+   normalerweise schon in die Leiche bewegt, sofern diese existiert.
+   War das Inventar sehr gross, koennen allerdings noch vereinzelte
+   Objekte im Living sein, die erst spaeter bewegt werden. Will man
+   noch Gegenstaende hinzufuegen, muss man diese direkt in die Leiche
+   bewegen, *nicht* in das gestorbene Lebewesen.
+
+
+BEISPIEL
+========
+
+   protected varargs int second_life(object corpse)
+   {
+     // Wenn man sich wirklich sicher ist, dass das Lebewesen eine Leiche
+     // hat (weil es der eigene NPC ist), ist es verfuehrerisch, die Pruefung
+     // auf die Existenz der Leiche wegzulassen. Aber auch dann koennte es ja
+     // passieren, dass diese vom Raum bereits zerstoert wurde.
+     if (corpse)
+         corpse->AddItem("tolle_trophaehe",REFRESH_NONE);
+     return 0;
+   }
+
+
 SIEHE AUCH
 ==========
 
    die()
 
-Last modified: 17.03.2019, Zesstra
+Letzte Aenderung: 04.09.2019, Bugfix

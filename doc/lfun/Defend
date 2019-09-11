@@ -6,9 +6,8 @@ Defend()
 FUNKTION
 ========
 
-   public int Defend(int dam, string|string* dam_types, int|mapping
-   si_spell,
-      object enemy)
+   public int Defend(int dam, string|string* dam_types,
+      int|mapping si_spell, object enemy)
 
 
 DEFINIERT IN
@@ -53,13 +52,13 @@ Generell
    aber nicht unter 0.
 
 
-Der Parameter 'spell'
----------------------
+Der Parameter 'si_spell'
+------------------------
 
-   Ist 'spell' 0, dann gilt der Angriff als normale physische Attacke
-   Uebergibt man als 'spell'-Parameter ein Mapping, so gibt es dafuer
-   diverse Flags, die das Ergebnis manipulieren (in new_skills.h
-   enthalten). Nichtangabe eines Flags gilt als 0.
+   Ist 'si_spell' 0, dann gilt der Angriff als normale physische
+   Attacke Uebergibt man als 'si_spell'-Parameter ein Mapping, so gibt
+   es dafuer diverse Flags, die das Ergebnis manipulieren (in
+   new_skills.h enthalten). Nichtangabe eines Flags gilt als 0.
 
    * SP_PHYSICAL_ATTACK (int)
 
@@ -95,13 +94,12 @@ Der Parameter 'spell'
 
         1 bei Flaechenspells (die mehrere Ziele treffen koennen)
 
-   * SP_REDUCE_ARMOUR (mapping) ------------ Mapping: keys
-     AT_X/P_BODY, values int>=0
+   * SP_REDUCE_ARMOUR (mapping) ------------
 
-        Die Schutzwirkung durch P_AC/Magie einer Ruestung wird
-        typabhaengig reduziert. Als Keys sind P_BODY und die AT_*
-        erlaubt, die Werte muessen ints > 0 sein. Aufbau eines
-        Mappings im Beispiel:
+        Mapping: keys AT_X/P_BODY, values int>=0 Die Schutzwirkung
+        durch P_AC/Magie einer Ruestung wird typabhaengig reduziert.
+        Als Keys sind P_BODY und die AT_* erlaubt, die Werte muessen
+        ints > 0 sein. Aufbau eines Mappings im Beispiel:
 
            ([AT_BOOTS: 0,  // Stiefel schuetzen gar nicht
              P_BODY:  50,  // Koerper zu 50%
@@ -196,30 +194,37 @@ BEISPIELE (SIEHE AUCH Defend_bsp)
    enem->Defend(100, ({DT_BLUDGEON}), ([SP_PHYSICAL_ATTACK:1]), this_object());
 
    // ein magischer Angriff (ohne Treffermeldung):
-   enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_PHYSICAL_ATTACK:0]), this_object());
+   enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_PHYSICAL_ATTACK:0]),
+                this_object());
 
    // ein magischer Angriff mit Treffermeldung:
    enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_SHOW_DAMAGE:1]),
-     this_object());
+                this_object());
 
 
 SIEHE AUCH
 ==========
 
-   Angriff: Attack(), P_NO_ATTACK, InsertEnemy()
+   Angriff:
+      Attack(), P_NO_ATTACK, InsertEnemy()
 
-   Schaden:   P_ENABLE_IN_ATTACK_OUT, P_LAST_MOVE, do_damage(),
-   reduce_hit_points()
+   Schaden:
+      P_ENABLE_IN_ATTACK_OUT, P_LAST_MOVE, do_damage(),
+      reduce_hit_points()
 
-   Schutz:    P_DEFENDERS, InformDefend(), DefendOther(), P_ARMOURS,
-   P_AC, P_DEFEND_FUNC, QueryDefend(), P_BODY
+   Schutz:
+      P_DEFENDERS, InformDefend(), DefendOther(), P_ARMOURS, P_AC,
+      P_DEFEND_FUNC, QueryDefend(), P_BODY
 
-   Daten:     P_LAST_COMBAT_TIME, P_LAST_DAMTYPES, P_LAST_DAMTIME,
-   P_LAST_DAMAGE, P_DAMAGE_MSG
+   Daten:
+      P_LAST_COMBAT_TIME, P_LAST_DAMTYPES, P_LAST_DAMTIME,
+      P_LAST_DAMAGE, P_DAMAGE_MSG
 
-   Resistenz: P_RESISTANCE_STRENGTHS, CheckResistance()
+   Resistenz:
+      P_RESISTANCE_STRENGTHS, CheckResistance()
 
-   Sonstiges: CheckSensitiveAttack(), InternalModifyDefend(),
-   normalize_defend_args() UseSkill(), DefendInfo()
+   Sonstiges:
+      CheckSensitiveAttack(), InternalModifyDefend(),
+      normalize_defend_args(), UseSkill(), DefendInfo()
 
 Letzte Aenderung: 20.01.2019, Zesstra

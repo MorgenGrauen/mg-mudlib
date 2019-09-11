@@ -20,24 +20,18 @@ BESCHREIBUNG
 
    Gibt an, was fuer ein Licht in einem Objekt vorherrscht.
 
-
-
-   Es sind verschiedene 'atomare' Lichttypen, vordefiniert:
+   Es sind verschiedene 'atomare' Lichttypen vordefiniert:
    LT_MISC         Unbestimmt, keine Angaben.
 
    LT_SUN          Sonnenlicht.
    LT_MOON         Mondlicht
    LT_STARS        Sternenlicht.
 
-
-
    LT_DIFFUSE      Indirektes Tageslicht. (z.B. im Wald)
 
    LT_CANDLE       Kerzenlicht.
    LT_TORCH        Fackelschein.
    LT_OPEN_FIRE    Sonstiges offenes Feuer. (Lagerfeuer etc.)
-
-
 
    LT_MAGIC        Irgendeine magische Lichtquelle.
 
@@ -55,7 +49,7 @@ BESCHREIBUNG
 
    Es gibt zudem noch Lichttypen, die zusammengesetzt sind:
 
-   LT_DAYLIGHT    Tageslicht (Sonne/Diffuse)
+   LT_DAYLIGHT    Tageslicht (Sonne/Diffus)
    LT_NATURAL     Natuerliches Licht (Daylight/Sterne/Mond)
    LT_ARTIFICIAL  Kuenstliches Licht (Magie/Feuer/Gluehen)
    LT_FIRE        Feuer (Kerzen/Fackeln/offenes Feuer)
@@ -66,15 +60,11 @@ BEISPIELE
 
    Ein Objekt soll ein geheimnisvolles Gluehen von sich geben:
 
-
-
    objekt->SetProp( P_LIGHT_TYPE, LT_GLOWING )
 
    Soll ein Raum beschrieben werden, der durch Sternenlicht erhellt ist,
    in dem aber zusaetzlich noch ein Lagerfeuer brennt, sieht die Syntax
    folgendermassen aus:
-
-
 
    raum->SetProp( P_LIGHT_TYPE, LT_STARS|LT_OPEN_FIRE );
 
@@ -96,11 +86,11 @@ ANMERKUNG
 
    Die Empfindlichkeit der Dunkelelfen gegen Sonnenlicht wird ueber diese
    Property gesteuert. Soll ein Raum mit (P_INDOORS==0) so dunkel sein, dass
-   sie nicht in Gefahr sind, sollten nicht LT_MISC oder LT_SUN gesetzt
+   sie nicht in Gefahr sind, sollten weder LT_MISC, noch LT_SUN gesetzt
    sein.
 
 
 SIEHE AUCH
 ==========
 
-   CheckLightType, /std/thing/description.h, operators
+   CheckLightType(), /std/thing/description.h, operators

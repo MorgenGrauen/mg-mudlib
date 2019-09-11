@@ -31,7 +31,7 @@ telnet
       verschluesselt ist, so dass auf dem Weg niemand mitlesen kann.
 
  SIEHE AUCH:
-    telnegs, telnet keepalive, telnet gmcp
+    telnegs, telnet_keepalive, telnet gmcp
     P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
