@@ -4,8 +4,8 @@ Defend()
 FUNKTION
 --------
 
-  public int Defend(int dam, string|string* dam_types, int|mapping si_spell, 
-    object enemy)
+  public int Defend(int dam, string|string* dam_types, 
+      int|mapping si_spell, object enemy)
 
 DEFINIERT IN
 ------------
@@ -42,11 +42,11 @@ Generell
     (dam-Summe(Ruestungsstaerken)-random(P_BODY+A_DEX))*CheckResistance/10
     aber nicht unter 0.
 
-Der Parameter 'spell'
-+++++++++++++++++++++
+Der Parameter 'si_spell'
+++++++++++++++++++++++++
 
-    Ist 'spell' 0, dann gilt der Angriff als normale physische Attacke
-    Uebergibt man als 'spell'-Parameter ein Mapping, so gibt es dafuer
+    Ist 'si_spell' 0, dann gilt der Angriff als normale physische Attacke
+    Uebergibt man als 'si_spell'-Parameter ein Mapping, so gibt es dafuer
     diverse Flags, die das Ergebnis manipulieren (in new_skills.h
     enthalten). Nichtangabe eines Flags gilt als 0.
 
@@ -70,7 +70,8 @@ Der Parameter 'spell'
         Name des Spells
     - SP_GLOBAL_ATTACK (int)
         1 bei Flaechenspells (die mehrere Ziele treffen koennen)
-    - SP_REDUCE_ARMOUR (mapping) ------------ Mapping: keys AT_X/P_BODY, values int>=0
+    - SP_REDUCE_ARMOUR (mapping) ------------ 
+        Mapping: keys AT_X/P_BODY, values int>=0
         Die Schutzwirkung durch P_AC/Magie einer Ruestung wird typabhaengig
         reduziert. Als Keys sind P_BODY und die AT_* erlaubt, die Werte
         muessen ints > 0 sein.
@@ -157,37 +158,31 @@ BEISPIELE (SIEHE AUCH Defend_bsp)
   enem->Defend(100, ({DT_BLUDGEON}), ([SP_PHYSICAL_ATTACK:1]), this_object());
 
   // ein magischer Angriff (ohne Treffermeldung):
-  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_PHYSICAL_ATTACK:0]), this_object());
+  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_PHYSICAL_ATTACK:0]), 
+               this_object());
 
   // ein magischer Angriff mit Treffermeldung:
   enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_SHOW_DAMAGE:1]),
-    this_object());
+               this_object());
 
 SIEHE AUCH
 ----------
 
-  Angriff: :doc:`Attack`, :doc:`../props/P_NO_ATTACK`, :doc:`InsertEnemy`
+  Angriff:
+    :doc:`Attack`, :doc:`../props/P_NO_ATTACK`, :doc:`InsertEnemy`
 
-  Schaden:   :doc:`../props/P_ENABLE_IN_ATTACK_OUT`, 
-  :doc:`../props/P_LAST_MOVE`, :doc:`do_damage`,
-  :doc:`reduce_hit_points`
+  Schaden:
+    :doc:`../props/P_ENABLE_IN_ATTACK_OUT`, :doc:`../props/P_LAST_MOVE`, :doc:`do_damage`, :doc:`reduce_hit_points`
 
-  Schutz:    :doc:`../props/P_DEFENDERS`, :doc:`InformDefend`,
-  :doc:`DefendOther`, :doc:`../props/P_ARMOURS`,
-  :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`,
-  :doc:`QueryDefend`, :doc:`../props/P_BODY`
+  Schutz:
+    :doc:`../props/P_DEFENDERS`, :doc:`InformDefend`, :doc:`DefendOther`, :doc:`../props/P_ARMOURS`, :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`, :doc:`QueryDefend`, :doc:`../props/P_BODY`
 
-  Daten:     :doc:`../props/P_LAST_COMBAT_TIME`,
-  :doc:`../props/P_LAST_DAMTYPES`,
-  :doc:`../props/P_LAST_DAMTIME`, :doc:`../props/P_LAST_DAMAGE`,
-  :doc:`../props/P_DAMAGE_MSG`
+  Daten:
+    :doc:`../props/P_LAST_COMBAT_TIME`, :doc:`../props/P_LAST_DAMTYPES`, :doc:`../props/P_LAST_DAMTIME`, :doc:`../props/P_LAST_DAMAGE`, :doc:`../props/P_DAMAGE_MSG`
+  Resistenz:
+    :doc:`../props/P_RESISTANCE_STRENGTHS`, :doc:`CheckResistance`
 
-  Resistenz: :doc:`../props/P_RESISTANCE_STRENGTHS`,
-  :doc:`CheckResistance`
-
-  Sonstiges: :doc:`CheckSensitiveAttack`,
-  :doc:`InternalModifyDefend`, :doc:`normalize_defend_args`
-  :doc:`UseSkill`,
-  :doc:`DefendInfo`
+  Sonstiges:
+    :doc:`CheckSensitiveAttack`, :doc:`InternalModifyDefend`, :doc:`normalize_defend_args`, :doc:`UseSkill`, :doc:`DefendInfo`
 
 Letzte Aenderung: 20.01.2019, Zesstra
