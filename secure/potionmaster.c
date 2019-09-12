@@ -95,14 +95,24 @@ private void RebuildCache() {
   return;
 }
 
-int QueryActive(mixed potion) {
+int QueryActive(int|string potion) {
   if ( extern_call() && !secure() )
     return POT_ACCESS_DENIED;
   int ret;
   // Wenn nach dem Pfad des ZTs gefragt wird, diesen zuerst in die Nummer
   // umwandeln durch Lookup im reverse_table Cache
   if ( stringp(potion) ) {
-    potion = reverse_table[potion];
+    // Erst nachschauen, ob der ZT in der Liste ist. Wenn man stattdessen
+    // direkt den Eintrag aus dem Mapping ausliest, wird 0 zurueckgegeben,
+    // wenn der Eintrag nicht darin enthalten ist. 0 ist aber ein gueltiger
+    // ZT, d.h. falls ein Raum einen ZT vergibt, dieser aber nicht im
+    // Master enthalten ist, wird der ZT 0 stattdessen gutgeschrieben.
+    if ( member(reverse_table, potion) )
+      potion = reverse_table[potion];
+    // Falls der ZT nicht bekannt ist, geben wir einen Fehlercode
+    // zurueck.
+    else
+      return POT_INVALID_POTION;
   }
   // Ein ZT ist aktiv, wenn er in der Liste potions steht und nicht in der
   // Liste der inaktiven ZTs (inactive) steht. Dann dessen Nummer
@@ -195,8 +205,9 @@ int ChangeRoomPath(string old, string new) {
   if (catch(load_object(new);publish))
     return POT_NO_SUCH_ROOM;
 
-  // Aktuelle ZT-Nummer des alten Pfades ermitteln
+  // Aktuelle ZT-Nummer des alten Pfades ermitteln.
   int num = reverse_table[old];
+
   // Pfad aendern, Cache neubauen und Savefile speichern
   potions[num,POT_ROOMNAME] = new;
   RebuildCache();
@@ -296,10 +307,19 @@ mixed *InitialList() {
 
 // Aufrufe aus den Spielershells und dem Potiontool sind erlaubt
 int HasPotion(object room) {
-  if ( !query_once_interactive(previous_object()) && 
+  if ( !query_once_interactive(previous_object()) &&
        load_name(previous_object()) != POTIONTOOL )
     return POT_ACCESS_DENIED;
-  return objectp(room) ? reverse_table[object_name(room)] : POT_NO_SUCH_ROOM;
+
+  // Erst nachschauen, ob der ZT in der Liste ist. Wenn man stattdessen
+  // direkt den Eintrag aus dem Mapping ausliest, wird 0 zurueckgegeben,
+  // wenn der Eintrag nicht darin enthalten ist. 0 ist aber ein gueltiger
+  // ZT, und der darf nur rauskommen, wenn er tatsaechlich gemeint ist,
+  // nicht als Default bei allen unbekannten Raeumen.
+  if ( objectp(room) && member(reverse_table, object_name(room)) )
+    return reverse_table[object_name(room)];
+  else
+    return POT_NO_SUCH_ROOM;
 }
 
 // Listennummer ermitteln, in der der ZT num enthalten ist.
@@ -370,7 +390,16 @@ void RemoveList(object room, int* potionrooms, int* known_potionrooms) {
   // ZT ist aktiv, das wurde bereits in InList() geprueft, das vor dem
   // Aufruf von RemoveList() aus dem Spielerobjekt gerufen wird. Daher reicht
   // es aus, die ZT-Nummer aus dem reverse_table Lookup zu holen.
-  int num = reverse_table[object_name(room)];
+  // Wenn der Pfad allerdings nicht gelistet ist, muss abgebrochen werden.
+  // Direktes Auslesen ist unguenstig, denn wenn <old> nicht enthalten ist,
+  // kommt als Default 0 zurueck, aber die Nummer 0 ist ein gueltiger ZT,
+  // die darf aber nur rauskommen, wenn wirklich der ZT 0 gemeint ist.
+  int num;
+  if ( member(reverse_table, object_name(room)) )
+    num = reverse_table[object_name(room)];
+  else
+    return;
+
   int tmp = member(potionrooms, num);
   potionrooms[tmp] = -1;
   tmp = member(known_potionrooms, num);
