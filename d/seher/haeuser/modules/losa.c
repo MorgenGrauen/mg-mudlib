@@ -353,11 +353,11 @@ static void load_furniture()
         // Abbruchbedingung ist, dass nichts mehr zu laden ist.
         if (sizeof(furniture)==0) return; 
         
-        // Anstoßen des naechsten Durchlaufs, falls die Ticks nicht reichen.
+        // Anstossen des naechsten Durchlaufs, falls die Ticks nicht reichen.
         while (remove_call_out(#'load_furniture) != -1);
         call_out(#'load_furniture, 1);
         
-        // Laden aller Moebel anstoßen
+        // Laden aller Moebel anstossen
     furniture=filter(furniture, #'load_furniture_object);
 }
 
