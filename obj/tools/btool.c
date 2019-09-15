@@ -141,15 +141,17 @@ private varargs void print_map(mapping tmp,int cutoff)
 		this_interactive()->ReceiveMsg("Keine Daten vorhanden.\n");
 		return;
 	}
+
   string ret="";
+  int cols = (PL->QueryProp(P_TTY_COLS) || 77);
   foreach(int i : sort_array(m_indices(tmp),#'>))
   {
     string str=sprintf(
-      " %4d:  %s {%s} (%s)", i,
-      tmp[i,B_SUBJECT], tmp[i,B_UID], strftime("%d.%m.%y", tmp[i,B_TIME]));
+      " %4d:  %s {%s} (%s)",
+      i, tmp[i,B_SUBJECT], tmp[i,B_UID], strftime("%d.%m.%y", tmp[i,B_TIME]));
     if(cutoff)
     {
-      ret+=BS(str[0..77]);
+      ret+=BS(str[0..min(sizeof(str)-1, cols)]);
     }
     else
     {
