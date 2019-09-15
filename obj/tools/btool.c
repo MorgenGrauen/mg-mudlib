@@ -13,7 +13,7 @@ inherit "/std/secure_thing";
 #define BS(x) break_string(x,78,0,BS_LEAVE_MY_LFS)
 #define BSI(x) break_string(x, 78, y, BS_LEAVE_MY_LFS|BS_INDENT_ONCE)
 
-private varargs void print_map(mapping tmp,int short);
+private varargs void print_map(mapping tmp,int cutoff);
 
 protected void create()
 {
@@ -60,12 +60,12 @@ protected void create()
           BS("Syntax: bsuch <str>"));
         return 0;
       }
-      int short;
+      int cutoff;
       string* arr=old_explode(str," ");
       
       if(arr[0]=="-s")
       {
-        short=1;
+        cutoff=1;
         str=implode(arr[1..]," ");
       }
       mapping tmp=BARCHIV->SearchIndex(str);
@@ -77,14 +77,14 @@ protected void create()
       }
       else
       {
-        print_map(tmp,short);
+        print_map(tmp,cutoff);
       }
       return 1;
     });
   AddCmd("binhalt",
     function int(string str)
     {
-      int short;
+      int cutoff;
       string check;
       
       mapping tmp=BARCHIV->GetIndexForWizards();
@@ -94,7 +94,7 @@ protected void create()
       
         if(arr[0]=="-s")
         {
-          short=1;
+          cutoff=1;
           if(sizeof(arr)>=2)
           {
             check=arr[1];
@@ -114,13 +114,13 @@ protected void create()
             });
         }
       }
-    
-      print_map(tmp,short);
+
+      print_map(tmp,cutoff);
       return 1;
     });
 }
 
-private varargs void print_map(mapping tmp,int short)
+private varargs void print_map(mapping tmp,int cutoff)
 {
 	if (!mappingp(tmp))
 	{
@@ -133,7 +133,7 @@ private varargs void print_map(mapping tmp,int short)
   {
     string str=sprintf(" %4d:  %s {%s} (%s)",i,tmp[i,0],tmp[i,2],
       strftime("%d.%m.%y",tmp[i,1]));
-    if(short)
+    if(cutoff)
     {
       ret+=BS(str[0..77]);
     }
