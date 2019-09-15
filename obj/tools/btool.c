@@ -122,7 +122,7 @@ protected void create()
 
 private varargs void print_map(mapping tmp,int cutoff)
 {
-	if (!mappingp(tmp))
+	if (!mappingp(tmp) || !sizeof(tmp))
 	{
 		this_interactive()->ReceiveMsg("Keine Daten vorhanden.\n");
 		return;
