@@ -57,16 +57,26 @@ protected void create()
       if(!str || !sizeof(str))
       {
         notify_fail(
-          BS("Syntax: bsuch <str>"));
+          BS("Syntax: bsuch [-s] <str>"));
         return 0;
       }
       int cutoff;
       string* arr=old_explode(str," ");
-      
+
       if(arr[0]=="-s")
       {
         cutoff=1;
-        str=implode(arr[1..]," ");
+        if (sizeof(arr)>=2)
+        {
+          str=implode(arr[1..]," ");
+        }
+        else
+        {
+          this_interactive()->ReceiveMsg(
+            "Kein Suchmuster angegeben.",
+            MT_NOTIFICATION);
+          return 1;
+        }
       }
       mapping tmp=BARCHIV->SearchIndex(str);
       if(!sizeof(tmp))
