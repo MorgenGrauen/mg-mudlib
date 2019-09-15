@@ -11,6 +11,7 @@ inherit "/std/secure_thing";
 #define BARCHIV "/d/erzmagier/boing/balance/barchives"
 
 #define BS(x) break_string(x,78,0,BS_LEAVE_MY_LFS)
+#define BSI(x) break_string(x, 78, y, BS_LEAVE_MY_LFS|BS_INDENT_ONCE)
 
 private varargs void print_map(mapping tmp,int short);
 
@@ -24,14 +25,14 @@ protected void create()
   AddId(({"btool","balancetool","balance-tool"}));
   SetProp(P_SHORT,"Ein Balance-Tool light");
   SetProp(P_LONG,
-    BS("Dies ist das Balance-Tool light. Es versteht folgende Befehle:\n"
-    "- btop <n>: Zeigt den letzten genehmigten Antrag zu Top n.\n"
-    "- bsuch [-s] <str>: Sucht case-sensitiv nach str, -s bricht jeden "
-    "Eintrag nach 78 Zeichen ab.\n"
-    "- binhalt [-s] [uid]: Zeigt den gesamten Inhalt des Balancearchives, -s "
-    "bricht jeden Eintrag nach 78 Zeichen ab, uid filtert auf "
-    "_vollstaendige_ uids.\n\n"
-    "Es kann vorkommen, dass Eintraege der falschen UID zugeordnet sind, "
+    BS("Dies ist das Balance-Tool light. Es versteht folgende Befehle:")+
+    BSI("btop <n>:\nZeigt den letzten genehmigten Antrag zu Top n.","- ")+
+    BSI("bsuch [-s] <str>:\nSucht case-sensitiv nach str, -s bricht jeden "
+    "Eintrag nach 78 Zeichen ab. str darf eine RegExp sein.", "- ")+
+    BSI("binhalt [-s] [uid]:\nZeigt den gesamten Inhalt des Balancearchives, "
+    "-s bricht jeden Eintrag nach 78 Zeichen ab, uid filtert auf "
+    "_vollstaendige_ uids.", "- ")+"\n"+
+    BS("Es kann vorkommen, dass Eintraege der falschen UID zugeordnet sind, "
     "oder dass die Genehmigung nicht sehr aussagekraeftig ist, in diesem "
     "Fall bitte eine Mail an das Balanceteam schreiben."));
   AddCmd("btop",
