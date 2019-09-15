@@ -130,6 +130,10 @@ protected void create()
     });
 }
 
+#define B_SUBJECT 0
+#define B_TIME 1
+#define B_UID 2
+
 private varargs void print_map(mapping tmp,int cutoff)
 {
 	if (!mappingp(tmp) || !sizeof(tmp))
@@ -137,12 +141,12 @@ private varargs void print_map(mapping tmp,int cutoff)
 		this_interactive()->ReceiveMsg("Keine Daten vorhanden.\n");
 		return;
 	}
-  int* sort=sort_array(m_indices(tmp),#'>);
   string ret="";
-  foreach(int i : sort)
+  foreach(int i : sort_array(m_indices(tmp),#'>))
   {
-    string str=sprintf(" %4d:  %s {%s} (%s)",i,tmp[i,0],tmp[i,2],
-      strftime("%d.%m.%y",tmp[i,1]));
+    string str=sprintf(
+      " %4d:  %s {%s} (%s)", i,
+      tmp[i,B_SUBJECT], tmp[i,B_UID], strftime("%d.%m.%y", tmp[i,B_TIME]));
     if(cutoff)
     {
       ret+=BS(str[0..77]);
