@@ -1034,10 +1034,20 @@ private struct fullissue_s get_issue(string arg)
 
 private struct fullissue_s|struct fullissue_s* get_issues(string arg)
 {
+  arg=PL->_unparsed_args();
   struct fullissue_s|struct fullissue_s* issues;
-  // Mit einem / am Anfang ist arg wohl ein Filename.
-  if (sizeof(arg) && arg[0] == '/')
+
+  // Erstmal schauen, ob arg eine ID ist.
+  issues=get_issue(arg);
+  // Wenn nicht, dann ist es wohl ein Pfad.
+  if(!structp(issues))
   {
+    // Mit einem / am Anfang ist der Pfad vermutlich komplett, ansonsten
+    // wird im aktuellen Verzeichnis gesucht.
+    if(sizeof(arg) && arg[0] != '/')
+    {
+      arg=PL->QueryProp(P_CURRENTDIR)+"/"+arg;
+    }
     issues=({});
     foreach(int m: ALL_ERR_TYPES)
     {
@@ -1051,8 +1061,6 @@ private struct fullissue_s|struct fullissue_s* get_issues(string arg)
     if (!sizeof(issues))
       issues=0;
   }
-  else
-    issues=get_issue(arg);
 
   return issues;
 }

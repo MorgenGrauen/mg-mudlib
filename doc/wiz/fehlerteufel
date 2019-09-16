@@ -39,7 +39,10 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
   Es kann auch der Ladename eines Objekts angegeben werden, dann werden alle
   zu diesem Objekt gehoerenden Eintraege auf einmal angezeigt, z.B.
     fehlerabfrage /d/unterwelt/raeume/wald3
-  Der Ladename muss mit einem / beginnen.
+  Gebt ihr den vollstaendigen Pfad an, muss dieser mit einem / beginnen,
+  andernfalls wird in eurem P_CURRENTDIR gesucht, es funktioniert also auch:
+    cd /d/unterwelt/raeume
+    fehlerabfrage wald3
 
 - fehlerloeschen <id>
   Fehler mit der ID <id> zum Loeschen markieren (z.B. wenn gefixt). Die 
