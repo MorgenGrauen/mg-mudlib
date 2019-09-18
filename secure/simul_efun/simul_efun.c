@@ -1749,15 +1749,6 @@ nomask int set_light(int i)
     return (int)ob->QueryProp(P_INT_LIGHT);
 }
 
-
-public string iso2ascii( string str )
-{
-    if ( !sizeof(str) )
-       return "";
-    return convert_charset(str, "ISO-8859-15", "ASCII//TRANSLIT");
-}
-
-
 public varargs string CountUp( string *s, string sep, string lastsep )
 {
     string ret;
