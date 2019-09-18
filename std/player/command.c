@@ -696,10 +696,6 @@ static mixed bb;
 #endif
 
 /** Interpretiert Aliase und History-Kommandos
-  Eigentlich muesste hier noch die Umwandlung der Sonderzeichen
-  verschiedener Zeichensaetze mit convert_charset gemacht werden,
-  aber noch gibt es keine Moeglichkeit, den vom Spieler genutzten
-  Zeichensatz zu identifizieren.
   \param[in] str string - Kommando des Spielers
   \return interpretiertes Alias bzw. korrektes Kommando aus der History
 */
