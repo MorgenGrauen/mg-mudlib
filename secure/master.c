@@ -130,7 +130,6 @@ protected void inaugurate_master(int arg) {
 
   // Was machen bei telnet_neg
   set_driver_hook(H_TELNET_NEG,"telnet_neg");
-  //  set_driver_hook(H_TELNET_NEG,0);
 
   // Promptbehandlung: Defaultprompt setzen und dafuer sorgen, dass alle
   // Promptausgaben durch print_prompt im Interactive laufen, damit das EOR
@@ -1225,13 +1224,6 @@ protected void save_wiz_file()
      map(wizlist_info(),#'_save_wiz_file_loop),""));
 }
 
-// TODO: macht der telnet_neg-hook ueberhaupt was?
-void telnet_neg(mixed cmd,mixed opt,mixed args)
-{
-  if (opt==34 && cmd==251)
-        binary_message(({255,250,34,1,1,255,240}));
-}
-  
 // EUID und UID werden von give_uid_to_object() vergeben, diese sind in
 // inaugurate_master() als driver hooks angemeldet.
 
