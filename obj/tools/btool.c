@@ -11,7 +11,7 @@ inherit "/std/secure_thing";
 #define BARCHIV "/d/erzmagier/boing/balance/barchives"
 
 #define BS(x) break_string(x,78,0,BS_LEAVE_MY_LFS)
-#define BSI(x) break_string(x, 78, y, BS_LEAVE_MY_LFS|BS_INDENT_ONCE)
+#define BSI(x, y) break_string(x, 78, y, BS_LEAVE_MY_LFS|BS_INDENT_ONCE)
 
 private varargs void print_map(mapping tmp,int cutoff);
 
