@@ -134,7 +134,7 @@ protected void create()
 #define B_TIME 1
 #define B_UID 2
 
-private varargs void print_map(mapping tmp,int cutoff)
+private varargs void print_map(mapping tmp, int cutoff)
 {
 	if (!mappingp(tmp) || !sizeof(tmp))
 	{
@@ -142,21 +142,32 @@ private varargs void print_map(mapping tmp,int cutoff)
 		return;
 	}
 
-  string ret="";
-  int cols = (PL->QueryProp(P_TTY_COLS) || 77);
+  string ret = "";
+  string topic;
+
+  // Kein automatisch ausgehandelter Wert vorhanden? Dann Default setzen.
+  int cols = (PL->QueryProp(P_TTY_COLS) || 78);
+  // War ein Wert gesetzt, aber < 35 (was der Mindestwert bei Auto-
+  // Negotiation ist), dann auf 35 begrenzen.
+  cols = max(cols, 35);
+
+  // Auf die fuers Subject verfuegbare Breite kuerzen: 7 Zeichen fuer die
+  // BTOP-Nummer abziehen und ein bisschen was als Puffer am rechten Rand
+  // des Terminals. Erfahrungsgemaess melden Clients oft mehr Zeichen als
+  // Terminbreite als sie darstellen, so dass wir das hier kompensieren
+  // muessen.
+  cols -= 10;
+
   foreach(int i : sort_array(m_indices(tmp),#'>))
   {
-    string str=sprintf(
-      " %4d:  %s {%s} (%s)",
-      i, tmp[i,B_SUBJECT], tmp[i,B_UID], strftime("%d.%m.%y", tmp[i,B_TIME]));
-    if(cutoff)
-    {
-      ret+=BS(str[0..min(sizeof(str)-1, cols)]);
-    }
+    topic = sprintf("%s {%s} (%s)",
+      regreplace(tmp[i,B_SUBJECT], " \\[angenommen\\]", "", 1),
+      tmp[i,B_UID],
+      strftime("%d.%m.%Y", tmp[i,B_TIME]));
+    if (cutoff)
+      ret += sprintf(" %4d: %-.*s\n", i, cols, topic);
     else
-    {
-      ret+=BS(str);
-    }
+      ret += sprintf(" %4d: %=-*s\n", i, cols, topic);
   }
   this_interactive()->More(ret);
 }
