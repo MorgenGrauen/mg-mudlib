@@ -835,15 +835,6 @@ private void _call_old_SendTelOpts(object po) {
 mapping
 query_telnet_neg()
 {
-   if (interactive(previous_object())
-      && program_time(previous_object()) < 1359926079
-      && load_name(this_object()) == "/secure/login" )
-    {
-      call_out(#'_call_old_SendTelOpts, 0, previous_object());
-      // alte Datenstruktur zurueckgeben... Leider leer...
-      return (["sent": m_allocate(3,3), "received": m_allocate(3,3) ]);
-    }
-
     return TN;
 }
 
