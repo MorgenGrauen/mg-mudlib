@@ -740,40 +740,6 @@ mixed __query_variable(object ob, string var)
   return 0;
 }
 
-void RestartBeats()
-{
-  int i,size,counter;
-  object ob;
-  mixed *list;
-  string file,obname,fun;
-
-  "/secure/simul_efun"->StopCallOut(0);
-  write("CALL_OUT-Restart in progress !\n");
-  filter(users(),#'tell_object,"CALL_OUT-Restart in progress !\n");
-  size=file_size("log/call_out_stop");
-  if (size<=0)
-    return;
-  file="";
-  counter=0;
-  while (counter<size)
-  {
-    file+=read_bytes("log/call_out_stop",counter,
-                     (size-(counter+=40000)>0?counter:size));
-  }
-  list=explode(file,"__(CUT HERE)__\n");
-  list=list[<1..];
-  list=explode(list[0],"\n")-({""});
-  for (i=sizeof(list)-1;i>=0;i--)
-    if (sscanf(list[i],"%s \"%s\"",obname,fun)==2 && ob=find_object(obname))
-    {
-      write(sprintf("%O -> %s\n",ob,fun));
-      catch(ob->__restart(fun);publish);
-    }
-  write("CALL_OUT-Restart completed !\n");
-  filter(users(),#'tell_object,"CALL_OUT-Restart completed !\n");
-  rename("log/call_out_stop","log/call_out_stop.old");
-}
-
 protected void CreateDataDirectories()
 {
   if(file_size("/"LIBDATADIR)==FSIZE_NOFILE)
