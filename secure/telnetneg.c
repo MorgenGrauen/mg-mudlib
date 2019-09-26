@@ -812,24 +812,6 @@ private void eval_naws(int *optargs) {
   }
 }
 
-private void _call_old_SendTelOpts(object po) {
-  if (!objectp(po) || !interactive(po)) return;
-/*
-  closure cl=unbound_lambda( ({}),
-               ({ #'funcall, ({#'symbol_function, "SendTelopts"}) }) );
-
-  funcall(bind_lambda(cl, po));
-*/  
-  // Bloody temporary Hack until next reboot...
-
-  funcall( bind_lambda( #'efun::binary_message, po ),
-           ({ IAC, WILL, TELOPT_EOR,
-              IAC, DO, TELOPT_TTYPE,
-              IAC, DO, TELOPT_NAWS,
-              IAC, DO, TELOPT_LINEMODE,
-           }), 0x1 );
-}
-
 // Query-/Set-Methoden
 // Und wenn hier einer von aussen dran rumpfuscht, werde ich sauer.
 mapping
