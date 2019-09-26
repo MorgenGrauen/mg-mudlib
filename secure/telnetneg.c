@@ -134,7 +134,7 @@ protected varargs int send_telnet_neg(int *arr, int bm_flags)
     return efun::binary_message(arr, bm_flags);
 }
 
-protected varargs int send_telnet_neg_str(string str, int bm_flags) {
+protected varargs int send_telnet_neg_str(bytes str, int bm_flags) {
 #ifdef __DEBUG__
     // Debugausgaben zur Zeit nur fuer arraybasierte Variante
     return send_telnet_neg(to_array(str), bm_flags);
@@ -148,16 +148,16 @@ protected varargs int send_telnet_neg_str(string str, int bm_flags) {
     case DO:
     case DONT:
         (opt->lo_wishes)->remoteside = str[0];
-        str=sprintf("%c%s",IAC,str);
+        str=to_bytes(sprintf("%c%s",IAC,str), "ASCII");
         break;
     case WILL:
     case WONT:
         (opt->lo_wishes)->localside = str[0];
-        str=sprintf("%c%s",IAC,str);
+        str=to_bytes(sprintf("%c%s",IAC,str), "ASCII");
         break;
     case SB:
-        (opt->lo_wishes)->sbdata = map(explode(str[0..],""),#'to_int);
-        str=sprintf("%c%s%c%c", IAC, str, IAC, SE);
+        (opt->lo_wishes)->sbdata = map(explode(str[0..],""), #'to_int);
+        str=to_bytes(sprintf("%c%s%c%c", IAC, str, IAC, SE), "ASCII");
         break;
     default:
         break;
@@ -244,8 +244,8 @@ private void _std_lo_handler_mssp(struct telopt_s opt, int action) {
     send_telnet_neg( ({WONT, TELOPT_MSSP }) );
   else
   {
-    send_telnet_neg_str(sprintf("%c%c%s",
-          SB, TELOPT_MSSP, mssp->get_telnegs_str()));
+    send_telnet_neg_str(to_bytes(sprintf("%c%c%s",
+          SB, TELOPT_MSSP, mssp->get_telnegs_str()), "ASCII"));
     // die Daten brauchen wir nicht mehr
     opt->lo_wishes->sbdata = 0;
   }

@@ -132,8 +132,9 @@ private void GMCP_debug(string pre, string msg, int prio) {
 private void GMCP_send(string cmd, mixed data)
 {
   GMCP_DEBUG("GMCP_send",sprintf("%s %O",cmd,data), 30);
-  send_telnet_neg_str(sprintf("%c%c%s %s", SB, TELOPT_GMCP,
-                              cmd, json_serialize(data)), 1);
+  send_telnet_neg_str(to_bytes(
+        sprintf("%c%c%s %s", SB, TELOPT_GMCP,
+                cmd, json_serialize(data)),"ASCII//TRANSLIT"), 1);
 }
 
 private void GMCP_unregister_module(string mod)
