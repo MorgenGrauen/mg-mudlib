@@ -37,7 +37,7 @@ protected int bind_telneg_handler(int option, closure re, closure lo,
                                   int initneg);
 protected int do_telnet_neg(int option, int action);
 protected varargs int send_telnet_neg(int *arr, int bm_flags);
-protected varargs int send_telnet_neg_str(string str, int bm_flags);
+protected varargs int send_telnet_neg_str(bytes str, int bm_flags);
 
 #endif // _SECURE_TELNETNEG_H_PROTOS_
 #endif // NEED_PROTOTYPES
