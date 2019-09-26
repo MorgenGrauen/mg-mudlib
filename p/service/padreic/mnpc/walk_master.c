@@ -54,12 +54,7 @@ protected void create()
 
 #define ERROR(x) raise_error(sprintf(x, previous_object()));
 
-// Man muss selbst darauf aufpassen, das sich ein NPC immer nur einmal
-// anmeldet, da sonst auch mehrere Paralelle Walk-Ketten laufen!!!
-// Am besten nie direkt sondern nur ueber einen Standardnpc benutzen.
-// Bemerkung: man kann hiermit andere Objekt registrieren. Aber nur das Objekt
-// selber kann spaeter seine Registrierung pruefen oder sich abmelden...
-// (Fraglich, ob das so gewollt ist.)
+// Am besten nicht direkt sondern nur ueber einen Standardnpc benutzen.
 public varargs void RegisterWalker(int time, int rand, closure walk_closure)
 {
   // pruefen ob die Paramter zulaessig sind...
@@ -81,6 +76,14 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
     func=symbol_function("Walk", previous_object());
     if (!func)
       raise_error("RegisterWalker() call from Object without Walk() function.\n");
+  }
+  else
+  {
+    // Closures auf fremde lfuns fuehren zu Inkonsistenzen/Fehlers und man
+    // kann sie auch nicht wieder abmelden. Daher abfangen.
+    if (get_type_info(func, 2) != previous_object())
+      raise_error(sprintf("Anmeldung von Closures auf fremde lfuns ist nicht "
+                  "erlaubt. Closure: %O\n",func));
   }
   if (!sizeof(clients)) {
     set_heart_beat(1);
