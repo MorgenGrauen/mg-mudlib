@@ -410,10 +410,6 @@ protected void reset()
   for (i=sizeof(wl); i--; )
     set_extra_wizinfo(wl[i][WL_NAME], wl[i][WL_EXTRA] * 99 / 100);
 
-  // Dann noch Mails bearbeiten
-  mails_last_hour=0;
-  mailread();
-
   return;
 }
 
