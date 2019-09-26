@@ -370,7 +370,7 @@ private string gen_material_h_materials()
   mats = AllMaterials();
   txt += sprintf("%@s", map(grps, #'gen_material_h_materials_grp,
                                   &mats));
-  // Übriggebliene Materialien ausgeben
+  // Uebriggebliene Materialien ausgeben
   txt += "// sonstige Materialien:\n";
   txt += sprintf("%@s", map(mats, #'gen_material_h_material));
   return txt;
@@ -426,7 +426,7 @@ private void dump_material(string fn)
   mats = AllMaterials();
   txt = sprintf("%@s", map(grps, #'gen_material_list_materials_grp,
                                  &mats));
-  // Übriggebliene Materialien ausgeben
+  // Uebriggebliene Materialien ausgeben
   txt += "sonstige Materialien:\n";
   txt += sprintf("%@s", map(mats, #'gen_material_list_material));
   write_file(fn, txt) ||

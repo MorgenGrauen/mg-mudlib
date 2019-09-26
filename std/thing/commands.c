@@ -336,19 +336,19 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
     while(j--) {
      int k;
      // DBG(rule[j]);
-    	// Regeln nicht löschen und Regel?
+    	// Regeln nicht loeschen und Regel?
      if(!(del_norule && pointerp(rule[j])) &&
-        // nur bestimmte ID löschen und ID passt nicht?
+        // nur bestimmte ID loeschen und ID passt nicht?
         !(onlyid && (!pointerp(ids) || sizeof(ids)<=j || ids[j]!=onlyid)) &&
-        // Löschregel existiert und passt nicht auf Regel?
+        // Loeschregel existiert und passt nicht auf Regel?
         !(delrule && (k=sizeof(rule[j]))!=sizeof(delrule))) {
-      // partielles Testen einer Löschregel ...
+      // partielles Testen einer Loeschregel ...
       if(delrule) {
        while(k--)
         if(!sizeof(rule[j][k]&delrule[k])) break;
        if(k>=0) continue;
       }
-      // alles korrekt: Löschen!
+      // alles korrekt: Loeschen!
       // (Arraybereich durch leeres Array loeschen)
       flag[j..j]    = allocate(0);
       fun[j..j]     = allocate(0);

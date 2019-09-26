@@ -8,7 +8,7 @@
 #define _NOTIFY_FAIL_H_
 
 // Prioritaeten / 'Nice levels' von notify_fail()s:
-// Wie 'nice' bin ich? Je groessere Zahl/Priorität, desto wenig lieb. ;-)
+// Wie 'nice' bin ich? Je groessere Zahl/Prioritaet, desto wenig lieb. ;-)
 #define NF_NL_NONE   -1   //max 'niceness', wird von allem ueberschrieben
 #define NF_NL_OWN    100  //eigenes Objekt (soul verben) ueberschreiben kaum was
 #define NF_NL_THING  100000

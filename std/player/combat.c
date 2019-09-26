@@ -204,7 +204,7 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
   return res;
 }
 
-// Spieler koennen als Geist nicht kämpfen
+// Spieler koennen als Geist nicht kaempfen
 // TODO: pruefen, ob das Setzen und Loeschen der Prop in set_ghost() nicht
 // auch ausreichen wuerde. In dem Fall muesste man aber P_NO_ATTACK auch
 // speichern, da P_GHOST gespeichert wird...

@@ -102,7 +102,7 @@
 #define LS_L            2            // Lange Ausgabe
 #define LS_R            4            // Rueckwaerts ausgeben
 #define LS_T            8            // Nach Zeit ordnen
-#define LS_S            16           // Nach Größe ordnen
+#define LS_S            16           // Nach Groesse ordnen
 #define LS_U            32           // UID anzeigen
 #define LS_G            64           // Gruppe anzeigen
 
