@@ -90,7 +90,7 @@ public nomask int copy_file(string source, string dest)
 {
 
     int ptr;
-    string bytes;
+    bytes byte_seq;
 
     set_this_object(previous_object());
     if (!sizeof(source)||!sizeof(dest)||source==dest||(file_size(source)==-1)||
@@ -116,11 +116,11 @@ public nomask int copy_file(string source, string dest)
     }
     do
     {
-      bytes = read_bytes(source, ptr, MAXLEN); ptr += MAXLEN;
-      if (!bytes) bytes="";
-      write_file(dest, bytes);
+      byte_seq = read_bytes(source, ptr, MAXLEN); ptr += MAXLEN;
+      if (!byte_seq) byte_seq="";
+      write_file(dest, byte_seq);
     }
-    while(sizeof(bytes) == MAXLEN);
+    while(sizeof(byte_seq) == MAXLEN);
     return 0;
 }
 #endif //!__EFUN_DEFINED__(copy_file)
