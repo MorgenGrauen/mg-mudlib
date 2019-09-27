@@ -68,7 +68,7 @@ static void udp_query( string query, string host, int port )
     int i, j;
 
     mess = explode( query, " " );
-    
+
     switch ( mess[1] ){
     case "wholist":
     case "who":
@@ -83,7 +83,7 @@ static void udp_query( string query, string host, int port )
         if ( sizeof(mess) < 3 )
             data = ({ "Error: Wen soll ich fingern ?" });
         else
-            data = explode( (string)"p/daemon/finger"->
+            data = explode( "/p/daemon/finger"->
                             finger_single( lower_case(mess[2]), 0 ), "\n" );
         break;
 
@@ -92,10 +92,14 @@ static void udp_query( string query, string host, int port )
     }
 
 
-    send_udp( host, port, sprintf( "%s 0 %d", mess[0], sizeof(data) ) );
+    send_udp( host, port,
+        to_bytes(sprintf( "%s 0 %d", mess[0], sizeof(data)),
+                 "ASCII//TRANSLIT"));
 
     for ( i = 0, j = sizeof(data); i < j; i++ )
-        send_udp( host, port, sprintf( "%s %d %s", mess[0], i+1, data[i] ) );
+        send_udp( host, port,
+            to_bytes(sprintf( "%s %d %s", mess[0], i+1, data[i]),
+                     "ASCII//TRANSLIT") );
 #endif
 }
 
