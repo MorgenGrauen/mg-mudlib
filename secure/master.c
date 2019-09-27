@@ -97,12 +97,17 @@ protected void inaugurate_master(int arg) {
   // Lagerkennung erst ne Minute spaeter, waehrend preload darfs momentan
   // ruhig laggen (Zeit: vorlaeufig 1min)
   call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 100000);
-  
+
   // Hooks setzen 
-  
+
+  // Standard-Encoding fuer Dateien
+  set_driver_hook(H_FILE_ENCODING, "UTF-8");
+  // Und Encoding fuer Dateinamen im Filesystem
+  configure_driver(DC_FILESYSTEM_ENCODING, "UTF-8");
+
   // Standardincludeverzeichnisse fuer #include <>
   set_driver_hook(H_INCLUDE_DIRS, ({"/secure/","/sys/"}) );
-  
+
   //Nach dem Laden/Clonen create() im Objekt rufen
   set_driver_hook(H_CREATE_CLONE,       "create");
   set_driver_hook(H_CREATE_OB,          "create");
@@ -110,7 +115,7 @@ protected void inaugurate_master(int arg) {
 
   // Bei Reset reset() im Objekt aufrufen
   set_driver_hook(H_RESET,              "reset");
-  
+
   // Zum Aufraeumen clean_up() im Objekt aufrufen  
   set_driver_hook(H_CLEAN_UP,           "clean_up");
 
