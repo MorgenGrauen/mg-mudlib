@@ -61,7 +61,9 @@ static string *explode_files(string file) {
     if (!stringp(exploded[i]) || exploded[i]=="" || exploded[i][0]=='#')
       exploded[i]=0;
   exploded-=({0});
-  printf("%-30s: %3d Objekt%s\n",file,i=sizeof(exploded),(i==1?"":"e"));
+  debug_message(
+      sprintf("%-30s: %3d Objekt%s\n",file,i=sizeof(exploded),(i==1?"":"e")),
+      DMSG_STAMP);
   return exploded;
 }
 
