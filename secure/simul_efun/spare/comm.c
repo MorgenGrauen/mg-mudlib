@@ -105,15 +105,19 @@ varargs int tail(string file)
     if (!stringp(file) || !this_player())
         return 0;
 
-    string txt = read_bytes(file, -(TAIL_MAX_BYTES + 80), (TAIL_MAX_BYTES + 80));
+    bytes bs = read_bytes(file, -(TAIL_MAX_BYTES + 80),
+                          (TAIL_MAX_BYTES + 80));
     // read_bytes() returns 0 if the start of the section given by
-    // parameter #2 lies beyond the beginning of the file.
+    // parameter #2 lies before the beginning of the file.
     // In this case we simply try and read the entire file.
-    if (!stringp(txt) && file_size(file) < TAIL_MAX_BYTES+80)
-      txt = read_file(file);
+    if (!bytesp(bs) && file_size(file) < TAIL_MAX_BYTES+80)
+      bs = read_bytes(file, 0, (TAIL_MAX_BYTES + 80));
     // Exit if still nothing could be read.
-    if (!stringp(txt))
+    if (!bytesp(bs))
       return 0;
+
+    // convert to string
+    string txt = to_text(bs, "UTF-8");
 
     // cut off first (incomplete) line
     int index = strstr(txt, "\n");
