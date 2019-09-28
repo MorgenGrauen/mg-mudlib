@@ -78,7 +78,7 @@ static void make_num(string mqob_name, int stupse, int index,
                      string taskdesc, int vis, int active, string title,
                      string donedesc, mapping restr, string domain, 
                      string *permitted_objs) {
-  by_num += ([ index : ({stupse, mqob_name})]);
+  m_add(by_num, index, ({stupse, mqob_name}));
   foreach ( string obj: permitted_objs ) {
     if ( member(mq_query_permitted, obj) )
       mq_query_permitted[obj] += ({mqob_name});
@@ -87,13 +87,19 @@ static void make_num(string mqob_name, int stupse, int index,
   }
 }
 
+private void RebuildMQCache() {
+  by_num = ([]);
+  mq_query_permitted = ([]);
+  walk_mapping(miniquests, #'make_num /*'*/ );
+}
+
 void create() {
   seteuid(getuid(ME));
   if (!restore_object(QUESTS)) {
     save_info();
   }
 
-  walk_mapping(miniquests, #'make_num /*'*/ );
+  RebuildMQCache();
   set_next_reset(43200); // Reset alle 12 Stunden.
   EVENTD->RegisterEvent(EVT_LIB_QUEST_SOLVED,"HandleQuestSolved",
       ME);
@@ -118,7 +124,7 @@ private int allowed_write_access() {
 void reset() {
   by_num = ([]);
   mq_query_permitted = ([]);
-  walk_mapping(miniquests, #'make_num /*'*/ );
+  RebuildMQCache();
   set_next_reset(43200);
 }
 
@@ -564,6 +570,7 @@ int ClearUsersMQCache() {
     return 0;
 
   users_mq = ([]);
+  RebuildMQCache();
 
   return 1;
 }
