@@ -106,33 +106,43 @@ static void udp_query( string query, string host, int port )
 #define UDP_DEBUG(x) 
 //#define UDP_DEBUG(x) (write_file("/log/ARCH/udp.log",(x)))
 
-void receive_udp(string host, string message, int port)
+void receive_udp(string host, bytes message, int port)
 {
-  mixed *tmp;
-  UDP_DEBUG(sprintf("%s %s:%d: %s\n",strftime(),host,port,message));
+  // Traditionell sind einkommende Nachrichten via UDP immer ASCII-pur
+  // gewesen. Davon geht auch aller hier gerufener Code aus. Daher wird jetzt
+  // hier zentral die Bytesequenz als ASCII interpretiert und in string
+  // gewandelt, der dann wie bislang auch verarbeitet wird.
+  string msg_text = to_text(message, "ASCII");
 
-  if (message[0..6]=="EXTREQ:"
-  	|| message[0..5]=="IPNAME"
-  	|| message[0..3]=="AUTH"
-  ) {	
+  UDP_DEBUG(sprintf("%s %s:%d: %s\n",strftime(),host,port,msg_text));
+
+  // Nicht mehr benutzt, zur Sicherheit abfangen vor dem inetd.
+  if (strstr(msg_text, "EXTREQ:") == 0
+      || strstr(msg_text, "IPNAME") == 0
+      || strstr(msg_text, "AUTH") == 0)
+  {
     return;
   }
 
-  if( message[0..8]=="IPLOOKUP\n" ) {
-    "/p/daemon/iplookup"->update( message );
+  // Die folgenden Services sind keine Intermud-Dienste
+  if(strstr(msg_text, "IPLOOKUP\n") == 0)
+  {
+    "/p/daemon/iplookup"->update( msg_text );
     return;
   }
 
-  if( message[0..9]=="DNSLOOKUP\n" ) {
-    "/p/daemon/dnslookup"->update( message );
+  if( strstr(msg_text, "DNSLOOKUP\n") == 0)
+  {
+    "/p/daemon/dnslookup"->update( msg_text );
     return;
   }
 
-  if (message[0..9]=="udp_query:") {
-    return udp_query(message[10..],host,port);
+  if (strstr(msg_text, "udp_query:") == 0)
+  {
+    return udp_query(msg_text[10..],host,port);
   }
-
-  "secure/inetd"->_receive_udp(host, message);
+  // Rest an inetd fuer Bearbeitung als Intermud-Nachricht.
+  "secure/inetd"->_receive_udp(host, msg_text);
 }
 
 
