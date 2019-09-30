@@ -596,11 +596,15 @@ string encode_packet(mapping data) {
         }
         header = encode(indices[i]);
         body = encode(data[indices[i]]);
+        // Eigentlich sollte encode auch die Wandlung in bytes uebernehmen und
+        // dabei nach ASCII wandeln und ggf. transliterieren. Aber sscanf
+        // braucht wieder strings, daher muss es spaeter passieren (direkt vor
+        // Senden).
         if (sscanf(header, "%s:%s", t1, t2) ||
             sscanf(header + body, "%s" + DELIMITER + "%s", t1, t2)
         )
             return 0;
-        
+
         ret += ({ header + ":" + body });
     }
     if (data_flag)
@@ -719,7 +723,7 @@ varargs string _send_udp(string mudname, mapping data, int expect_reply) {
             PACKET + ":" + lower_case(LOCAL_NAME) + ":" +
             ((expect_reply || data[REQUEST] != REPLY)&& data[ID] ?
             data[ID] : ++packet_id) + ":";
-        
+
         /* Allow 8 extra chars: 3 digits + "/" + 3 digits + DELIMITER */
         packet_arr = explode_packet(packet,
             MAX_PACKET_LEN - (sizeof(header) + 8));
@@ -728,12 +732,15 @@ varargs string _send_udp(string mudname, mapping data, int expect_reply) {
             packet_arr[i] =
             header + (i+1) + "/" + max + DELIMITER + packet_arr[i];
     }
-    
+
     for(i = sizeof(packet_arr); i--; )
     {
       ZDEBUG(sprintf("%O <- %.500O\n",host_data[HOST_IP], packet_arr[i]));
-      if (!send_udp(
-        host_data[HOST_IP], host_data[HOST_UDP_PORT], packet_arr[i]))
+      // Transliterationen koennten in : oder DELIMETER
+      // resultieren, weswegen das (hier) nicht geht. Daher bleibt nur
+      // uebrig, alles nicht-ASCII wegzuwerfen.
+      if (!send_udp(host_data[HOST_IP], host_data[HOST_UDP_PORT],
+                    to_bytes(packet_arr[i], "ASCII")))
             return "inetd: Error in sending packet.\n";
     }
     return 0;
