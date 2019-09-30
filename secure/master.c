@@ -31,6 +31,7 @@ inherit "/secure/master/players_deny";
 #include "/sys/rtlimits.h"
 #include "/sys/debug_info.h"
 #include "/sys/configuration.h"
+#include "/sys/driver_hook.h"
 #include "/sys/regexp.h"
 
 // Module des Master einfuegen. Per #include, damits geringfuegig schneller.
