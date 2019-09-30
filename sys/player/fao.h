@@ -6,9 +6,9 @@
 
 #define FAO_MASTER      "/d/ebene/miril/fraternitas/secure/faomaster" // die zentrale stelle des fao
 
-// die Liste der verfügbaren Portale fuer das erste portalgeschenk
+// die Liste der verfuegbaren Portale fuer das erste portalgeschenk
 #define FAO_PORTALS1_LIST ({2,3,4,5,6,7,8,9,10,13,14,15,16,19,20,21,25,29,33})
-// die Liste der verfügbaren Portale fuer das zweite portalgeschenk
+// die Liste der verfuegbaren Portale fuer das zweite portalgeschenk
 #define FAO_PORTALS2_LIST FAO_PORTALS1_LIST+({1,11,12,17,18,24,26,27,28,31,34,36,37,38})
 // die anzahl der zu waehlenden portale fuer das erste portalgeschenk
 #define FAO_PORTALS1_NUM  5

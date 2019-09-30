@@ -19,6 +19,8 @@
 #pragma no_shadow
 #pragma pedantic
 
+#include <debug_message.h>
+
 // Die Propertydefinition reinholen
 #include <language.h>
 #include <thing/description.h>
@@ -27,6 +29,7 @@
 #include <thing/material.h>
 #include <player/description.h>
 #include <rtlimits.h>
+#include <living/comm.h>
 
 // Basisverzeichnis der Materialien
 #define MAT_DIR "/doc/materials"
@@ -47,8 +50,12 @@
 #define P_MEMBERS "members"
 #define P_MG_FRACTIONS "mg_fractions"
 
-#define LOG_ERROR(x) if(find_player("raschaua")&&find_player("raschaua")->QueryProp("mdb-debug"))tell_object(find_player("raschaua"),"MDB-Error:"+x)
-#define LOG_WARN(x) if(find_player("raschaua")&&find_player("raschaua")->QueryProp("mdb-debug"))tell_object(find_player("raschaua"),"MDB-Warn:"+x)
+#define LOG_ERROR(x) if (this_player()) this_player()->ReceiveMsg(\
+    x, MT_DEBUG|MSG_DONT_IGNORE, MA_UNKNOWN, "MDB-Error: ",\
+    "MatDB")
+#define LOG_WARN(x) if (this_player()) this_player()->ReceiveMsg(\
+    x, MT_DEBUG|MSG_DONT_IGNORE, MA_UNKNOWN, "MDB-Warn: ",\
+    "MatDB")
 
 // Prototypes:
 // (Liefert den Anteil der Materialgruppe grp an mats)
@@ -370,7 +377,7 @@ private string gen_material_h_materials()
   mats = AllMaterials();
   txt += sprintf("%@s", map(grps, #'gen_material_h_materials_grp,
                                   &mats));
-  // Übriggebliene Materialien ausgeben
+  // Uebriggebliene Materialien ausgeben
   txt += "// sonstige Materialien:\n";
   txt += sprintf("%@s", map(mats, #'gen_material_h_material));
   return txt;
@@ -426,7 +433,7 @@ private void dump_material(string fn)
   mats = AllMaterials();
   txt = sprintf("%@s", map(grps, #'gen_material_list_materials_grp,
                                  &mats));
-  // Übriggebliene Materialien ausgeben
+  // Uebriggebliene Materialien ausgeben
   txt += "sonstige Materialien:\n";
   txt += sprintf("%@s", map(mats, #'gen_material_list_material));
   write_file(fn, txt) ||
@@ -467,15 +474,23 @@ varargs void GenMatList(string fn)
     if (!stringp(fn) || !sizeof(fn))
       fn = DOC_DIR("materialliste");
     if (file_size(fn) >= 0) {
-      printf("Datei %s existiert bereits, loesche sie\n", fn);
+      debug_message(
+          sprintf("Datei %s existiert bereits, loesche sie\n", fn),
+          DMSG_STAMP);
       rm(fn);
     }
-    if (write_file(fn, "Material Liste\n==============\n\n")) {
+    if (write_file(fn, "Material Liste\n==============\n\n"))
+    {
       dump_material(fn);
       write_file(fn, gen_doc_foot("materialgruppen"));
-      printf("Materialliste erfolgreich in Datei %s geschrieben\n", fn);
-    } else
-      printf("Konnte Liste nicht in Datei %s schreiben, Abbruch\n", fn);
+      debug_message(
+        sprintf("Materialliste erfolgreich in Datei %s geschrieben\n", fn),
+        DMSG_STAMP);
+    }
+    else
+      debug_message(
+          sprintf("Konnte Liste nicht in Datei %s schreiben, Abbruch\n", fn),
+          DMSG_STAMP);
   }
 }
 
@@ -490,15 +505,23 @@ varargs void GenMatGroupList(string fn)
     if (!stringp(fn) || !sizeof(fn))
       fn = DOC_DIR("materialgruppen");
     if (file_size(fn) >= 0) {
-      printf("Datei %s existiert bereits, loesche sie\n", fn);
+      debug_message(
+          sprintf("Datei %s existiert bereits, loesche sie\n", fn),
+          DMSG_STAMP);
       rm(fn);
     }
-    if (write_file(fn, "Materialgruppen\n===============\n")) {
+    if (write_file(fn, "Materialgruppen\n===============\n"))
+    {
       map(sort_array(m_indices(material_groups), #'>), #'dump_group, fn);
       write_file(fn, gen_doc_foot("materialliste"));
-      printf("Materialliste erfolgreich in Datei %s geschrieben\n", fn);
-    } else
-      printf("Konnte Liste nicht in Datei %s schreiben, Abbruch\n", fn);
+      debug_message(
+        sprintf("Materialliste erfolgreich in Datei %s geschrieben\n", fn),
+        DMSG_STAMP);
+    }
+    else
+      debug_message(
+          sprintf("Konnte Liste nicht in Datei %s schreiben, Abbruch\n", fn),
+          DMSG_STAMP);
   }
 }
 
@@ -513,14 +536,21 @@ varargs void GenHeaderFile(string fn)
     string txt;
     if (!stringp(fn) || !sizeof(fn))
       fn = HEADERFILE;
-    if (file_size(fn) >= 0) {
-      printf("Datei %s existiert bereits, loesche sie\n", fn);
+    if (file_size(fn) >= 0)
+    {
+      debug_message(
+          sprintf("Datei %s existiert bereits, loesche sie\n", fn),
+          DMSG_STAMP);
       rm(fn);
     }
     if (dump_material_h(fn))
-      printf("Headerdatei erfolgreich in %s geschrieben\n", fn);
+      debug_message(
+          sprintf("Headerdatei erfolgreich in %s geschrieben\n", fn),
+          DMSG_STAMP);
     else
-      printf("Konnte Headerdatei nicht in Datei %s schreiben, Abbruch\n", fn);
+      debug_message(
+        sprintf("Konnte Headerdatei nicht in Datei %s schreiben, Abbruch\n",
+                fn), DMSG_STAMP);
   }
 }
 

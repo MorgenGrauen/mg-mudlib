@@ -23,7 +23,11 @@
 #define P_DEFAULT_NOTIFY_FAIL "default_notify_fail"
 #endif
 
+#include "/sys/functionlist.h"
+#include "/sys/debug_message.h"
+
 #include "/secure/config.h"
+#include "/secure/wizlevels.h"
 
 #include "/sys/userinfo.h"
 #include "/sys/player/base.h"
@@ -32,10 +36,6 @@
 #include "/sys/wizlist.h"
 #include "/sys/daemon.h"
 #include "/sys/mail.h"
-#include "/sys/driver_hook.h"
-#include "/sys/functionlist.h"
-
-#include "/secure/wizlevels.h"
 
 //#define DEBUG(x)
 #ifndef DEBUG

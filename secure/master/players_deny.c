@@ -88,7 +88,7 @@ public void LoadPLDenylists() {
   if ( extern_call() && call_sefun("secure_level") < ARCH_LVL )
     return;
 
-  write("Loading PLDenylists\n");
+  debug_message("Loading PLDenylists\n", DMSG_STAMP);
 
   if (stringp(tmp=read_file(WHITELIST))) {
     // savefile exists

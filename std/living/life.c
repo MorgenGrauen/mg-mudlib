@@ -1288,7 +1288,7 @@ static int _set_alcohol(int n)
   if (QueryProp(P_GHOST))
     return Query(P_ALCOHOL, F_VALUE);
 
-  // nur Änderungen und Werte >=0 werden gesetzt...
+  // nur Aenderungen und Werte >=0 werden gesetzt...
   n = n < 0 ? 0 : n;
   int old = Query(P_ALCOHOL, F_VALUE);
   if ( old == n)
@@ -1324,7 +1324,7 @@ static int _set_drink(int n)
   if (QueryProp(P_GHOST))
     return Query(P_DRINK, F_VALUE);
 
-  // nur Änderungen und Werte >=0 werden gesetzt...
+  // nur Aenderungen und Werte >=0 werden gesetzt...
   n = n < 0 ? 0 : n;
   int old = Query(P_DRINK, F_VALUE);
   if ( old == n)
@@ -1360,7 +1360,7 @@ static int _set_food(int n)
   if (QueryProp(P_GHOST))
     return Query(P_FOOD, F_VALUE);
 
-  // nur Änderungen und Werte >=0 werden gesetzt...
+  // nur Aenderungen und Werte >=0 werden gesetzt...
   n = n < 0 ? 0 : n;
   int old = Query(P_FOOD, F_VALUE);
   if ( old == n)

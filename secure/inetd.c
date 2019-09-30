@@ -263,17 +263,13 @@ void remove_incoming(string id) {
  * Decode a string from a UDP packet.
  * Returns:   The actual value of the argument (either int or string)
  */
-mixed decode(string arg) {
-
+string|int decode(string arg)
+{
     if (sizeof(arg) && arg[0] == '$')
         return arg[1..];
-#ifdef RESTRICTED_CASTS
-    if (to_string(to_int(arg)) == arg)
+    else if ((arg & "0123456789") == arg)
         return to_int(arg);
-#else
-    if ((string)((int)arg) == arg)
-        return (int)arg;
-#endif
+
     return arg;
 }
 
@@ -569,17 +565,21 @@ string *expand_mud_name(string name) {
 #endif
 
 string encode(mixed arg) {
+    // Objektnamen mit nicht-ASCII hier ist in allen Faellen doof, wenn sie
+    // koennen auch mit Transliteration nicht mehr verlustfrei zurueck
+    // konvertiert werden...
     if (objectp(arg))
-        return object_name(arg);
-    if (stringp(arg) && sizeof(arg) &&
-        (arg[0] == '$' ||
-#ifdef RESTRICTED_CASTS
-    to_string(to_int(arg)) == (string)arg))
-#else
-    (string)to_int(arg) == (string)arg))
-#endif
-        return "$" + arg;
-    return to_string(arg);
+        arg = object_name(arg);
+    else if (!stringp(arg))
+        arg = to_string(arg);
+
+    // faengt es mit $ an oder ist es ne zahl (als string, d.h. enthaelt nur
+    // 0-9)? Dann muss nen $ davor.
+    // TODO: Mhmm. Oder vielleicht doch per RegExp?
+    if ( (arg[0] == '$') || ((arg & "0123456789") == arg))
+        arg = '$' + arg;
+
+    return arg;
 }
 
 string encode_packet(mapping data) {

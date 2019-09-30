@@ -116,8 +116,8 @@ private varargs int _update(string file, int dummy, int flags)
   {
     // Schreibrechte nur pruefen, wenn echt aktualisiert werden soll.
     if(!dummy && !MAY_WRITE(file))
-      return (printf("upd: %s: Keine Schreibrechte!\n",file), -1);
-    if(!MAY_READ(file)) 
+      return (printf("upd: %s: Keine Schreibrechte!\n",file), -1);
+    if(!MAY_READ(file))
       return (printf("upd: %s: Keine Leserechte!\n", file), -1);
   }
   if (dummy) return 1;

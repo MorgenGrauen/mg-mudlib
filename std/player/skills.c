@@ -236,8 +236,8 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
     log_file("WEAPON_SKILLS", sprintf("%s: Zu hoher Schaden von: "
     +"TO: %O, TI: %O, PO: %O, val: %d, A_DEX: %d, A_STR: %d, "
                                    +"P_WEAPON: %O, P_WC: %d\n", dtime(time()),
-                                   this_object(), this_interactive(), 
-                                   previous_object(), val, 
+                                   this_object(), this_interactive(),
+                                   previous_object(), val,
                                    QueryAttribute(A_DEX),
                                    QueryAttribute(A_STR), sinfo[P_WEAPON],
                                    sinfo[P_WEAPON]->QueryProp(P_WC)));
@@ -245,7 +245,7 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
   }
 
   /*
-    Der zusätzliche Schaden der allgemeinen Waffenskills berechnet
+    Der zusaetzliche Schaden der allgemeinen Waffenskills berechnet
     sich wie folgt: 
 
     sinfo[SI_SKILLABILITY)* (P_WC * ( X ) / 800) / MAX_ABILITY

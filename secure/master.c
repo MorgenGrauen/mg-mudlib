@@ -30,7 +30,6 @@ inherit "/secure/master/players_deny";
 //for limited, set_limit(), etc. Abs. Pfad noetig, da noch kein Include-Hook
 #include "/sys/rtlimits.h"
 #include "/sys/debug_info.h"
-#include "/sys/debug_message.h"
 #include "/sys/configuration.h"
 #include "/sys/regexp.h"
 
@@ -220,11 +219,13 @@ protected string *epilog(int eflag) {
   ReloadInsecureFile();
 
   if (eflag) {
-    write("-e angegeben -> Preloading unterdrueckt ...\n");
+    debug_message(
+        "epilog(): -e angegeben -> Preloading unterdrueckt ...\n",
+        DMSG_STAMP);
     return 0;
   }
 
-  printf("Preloading gestartet: %s\n\n",ctime(time()));
+  debug_message("Preloading gestartet.\n", DMSG_STAMP);
 
   //Files fuers Preloading und Regionen holen
   files=explode_files("/std/preload_file") + explode_files("/d/preload_file");
@@ -232,9 +233,7 @@ protected string *epilog(int eflag) {
 
   for (i=sizeof(domains);i--;)
     files+=explode_files("/d/"+domains[i]+"/preload_file");
-  
-  write("\n");
- 
+
   return files;
 }
 
@@ -250,12 +249,11 @@ protected void preload(string file) {
   // Kein Besitzer -> Meldung ausgeben, fertig
   if (!(name=creator_file(file)))
   {
-    printf("Kein Besitzer gefunden fuer Datei %s.\n",file);
+    debug_message(
+        sprintf("preload: Kein Besitzer gefunden fuer Datei %s.\n",file),
+        DMSG_STDOUT|DMSG_STDERR);
     return;
   }
-
-  // Datei und Besitzer ausgeben
-  printf("%-50s%-15s",file,name);
 
   efun::configure_object(this_object(), OC_EUID, name);
 
@@ -269,11 +267,14 @@ protected void preload(string file) {
   err = catch(limited(#'load_object,({5000000}),file));
 
   if (err != 0)
-    printf("\nFehler beim Laden von %s:\n%s\n",file,err);
+    debug_message(sprintf("\nFehler beim Laden von %s:\n%s\n",file,err),
+                  DMSG_STDOUT|DMSG_STDERR);
   else
   {
+    // Datei, Besitzer und Ladezeit ausgeben
     zeit=apply(#'+,rusage()[0..1])-zeit;
-    printf("(%2d.%:02d s)\n",zeit/1000,zeit%1000);
+    debug_message(sprintf("%-50s%-15s (%2d.%:02d s)\n",
+          file, name, zeit/1000,zeit%1000));
   }
 
   // Noch EUID zuruecksetzen
@@ -295,23 +296,21 @@ protected string *get_simul_efun() {
     --loading_simul_efuns;
     return ({SIMUL_EFUN_FILE});
   }
-  
-  write("Failed to load simul efun " + SIMUL_EFUN_FILE + "\n");
+
   debug_message("Failed to load simul efun " + SIMUL_EFUN_FILE +
-      " " + err, DMSG_STDOUT | DMSG_LOGFILE);
+      " " + err, DMSG_STDOUT | DMSG_LOGFILE | DMSG_STAMP);
 
   if (!(err=catch(SPARE_SIMUL_EFUN_FILE->start_simul_efun())) ) {
     --loading_simul_efuns;
     return ({SPARE_SIMUL_EFUN_FILE});
   }
-  
-  write("Failed to load spare simul efun" + SPARE_SIMUL_EFUN_FILE + "\n");
-  debug_message("Failed to load spare simul efun " + SPARE_SIMUL_EFUN_FILE +
-      " " + err, DMSG_STDOUT | DMSG_LOGFILE);
 
- 
+  debug_message("Failed to load spare simul efun " + SPARE_SIMUL_EFUN_FILE +
+      " " + err, DMSG_STDOUT | DMSG_LOGFILE | DMSG_STAMP);
+
+
   efun::shutdown();
-  
+
   return 0;
 }
 

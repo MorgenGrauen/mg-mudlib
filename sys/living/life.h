@@ -53,7 +53,7 @@
 
 // H_EFFECTS - Zu aendernde Properties fuer den Effekt
 #define H_EFFECTS "effects"
-// H_CONDITIONS - Zu pruefende Properties für den Effekt (Saettigung, ...)
+// H_CONDITIONS - Zu pruefende Properties fuer den Effekt (Saettigung, ...)
 #define H_CONDITIONS "conditions"
 // H_DISTRIBUTION - Wie die Aenderung an HP/SP austeilen, sofort, zeitlich
 // versetzt, ...
