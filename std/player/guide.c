@@ -11,6 +11,7 @@
 #pragma pedantic
 
 #include <config.h>
+#include <wizlevels.h>
 #define NEED_PROTOTYPES
 #include <player/user_filter.h> // fuer is_active_guide()
 #include <properties.h>
@@ -75,7 +76,7 @@ protected int NewbieStatusMsg() {
 
 int CiceroneCmd(string str)
 {
-	if (QueryProp(P_LEVEL)<20)
+	if (QueryProp(P_LEVEL)<20 && !IS_LEARNER(ME))
 	{
 		write(break_string("Du solltest erst noch ein wenig "
 					"Erfahrung sammeln, bevor Du Dich "
