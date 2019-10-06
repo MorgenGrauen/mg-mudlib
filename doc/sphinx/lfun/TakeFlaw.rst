@@ -6,7 +6,7 @@ FUNKTION
 ::
 
      varargs void TakeFlaw(object enemy); (Waffen)
-     varargs void TakeFlaw(mixed dam_types,mapping einfos) (Ruestungen)
+     varargs void TakeFlaw(string* dam_types,mapping einfos) (Ruestungen)
 
 DEFINIERT IN
 ------------
@@ -58,25 +58,21 @@ BEISPIELE
 
      Eine Waffe, deren Waffenklasse alle 20 Schlaege um 1 abnimmt:
 
-     inherit "std/weapon";
+     inherit "/std/weapon";
 
      #include <properties.h>
      #include <combat.h>
 
-     create()
-     {
+     protected void create() {
        /* Das Uebliche... */
      }
 
-     TakeFlaw()
-     {
-       int flaw;
-
-       /* erst mal den Zaehler erhoehen... */
-       ::TakeFlaw();
+     varargs void TakeFlaw(object enemy) {
+       /* erstmal den Zaehler erhoehen... */
+       ::TakeFlaw(enemy);
 
        /* jetzt den aktuellen Zaehlerstand abfragen */
-       flaw = QueryFlaw()[0];
+       int flaw = QueryFlaw()[0];
 
        /* Abzug nur jeden 20. Schlag */
        if (!(flaw % 20)) {
@@ -93,7 +89,7 @@ SIEHE AUCH
 ----------
 ::
 
-     QueryFlaw(), Damage(), DefendInfo, P_QUIALITY, /std/armour/combat.c,
+     QueryFlaw(), Damage(), DefendInfo, P_QUALITY, /std/armour/combat.c,
      /std/weapon/combat.c
 
 

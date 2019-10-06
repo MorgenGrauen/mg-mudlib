@@ -41,7 +41,7 @@ BESCHREIBUNG
 
    Das Herausfinden des passenden Artikels bei 'dem' = 2 bezieht sich auf
    Situationen, in denen mehrere gleichnamige Objekte im selben Environment
-   sind. Man 'nimmt' dann zB nicht "den Stamm" sondern "einen Stamm".
+   sind. Man 'nimmt' dann z.B. nicht "den Stamm" sondern "einen Stamm".
 
    Ist P_ARTICLE = 0, so wird ein Leerstring zurueckgegeben, es sei denn,
    man uebergibt in dem Argument 'force' einen Wert ungleich Null.
@@ -82,7 +82,7 @@ BEISPIELE
      capitalize(pl2->QueryArticle(WER, 1, 1))+"ist nicht beeindruckt.",
      MT_LOOK|MT_LISTEN, 0, 0, ({pl1, pl2}));
 
-   // "X gibt dir Y. [Er|Sie|Es] prueft [den|die|das] ..."
+   // "X gibt Dir Y. [Er|Sie|Es] prueft [den|die|das] ..."
    // Man will:
    // * auf jeden Fall einen Artikel, auch wenn kein P_ARTICLE gesetzt ist
    // * nur den bestimmten Artikel
@@ -99,7 +99,7 @@ BEISPIELE
    // * auf jeden Fall einen Artikel, auch wenn kein P_ARTICLE gesetzt ist
    // * bestimmte/unbestimmte Artikel, wenn bereits gleiche Gegenstaende
    //   (zB Kokosnuesse) auf dem Boden liegen ...
-   ob->move(environment(), M_NOCHECK); // vorher machen!
+   ob->move(environment(), M_PUT); // vorher machen!
    pl->ReceiveMsg(
      "Dir faellt "+ob->name(WER, 0)+" auf den Kopf. Du siehst "+
      ob->QueryArticle(WEN, 2, 1)+" auf dem Boden liegen. "+
