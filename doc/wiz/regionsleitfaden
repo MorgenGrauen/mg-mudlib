@@ -98,14 +98,16 @@ durchsieht und aufgetretene Fehler und Warnungen behebt. (Okt. 2007)
 
 2) Inhaltliche Anforderungen:
 
-o  Wenn Du ein komplett neues Gebiet schreiben moechtest, das in einer Region 
+o  Wenn Du ein komplett neues Gebiet schreiben moechtest, das in einer Region
    seinen Platz finden soll, sprich bitte die thematische Ausrichtung mit
-   dem RM ab, bevor Du anfaengst, Code zu schreiben. Falls von Deinen Ideen
-   irgendetwas nicht hierher passen sollte, laesst sich das mit wesentlich
-   weniger Frust im Vorfeld klaeren, als wenn hinterher das halbe Gebiet
-   umgebaut werden muesste. Sollte sich die konzeptionelle Ausrichtung 
-   oder der Umfang waehrend der Programmierung grundlegend aendern, besprich
-   dies bitte kurz mit dem RM.
+   dem RM ab, bevor Du anfaengst, Code zu schreiben. Dies gilt auch dann,
+   wenn du ein Gebiet anschliessen willst, das zu einer Gilde gehoert und
+   dessen Files rein technisch nicht im Regionsverzeichnis abgelegt sind.
+   Falls von Deinen Ideen irgendetwas nicht hierher passen sollte, laesst
+   sich das mit wesentlich weniger Frust im Vorfeld klaeren, als wenn
+   hinterher das halbe Gebiet umgebaut werden muesste. Sollte sich die
+   konzeptionelle Ausrichtung oder der Umfang waehrend der Programmierung
+   grundlegend aendern, besprich dies bitte auch kurz mit dem RM.
 
 o  Ob neue oder alte Rechtschreibung, ist im wesentlichen Dir selbst ueber-
    lassen, jedoch waere es schoen, wenn Du die Spieler-Anreden wie "frueher"
