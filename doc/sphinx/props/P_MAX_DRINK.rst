@@ -32,9 +32,15 @@ SIEHE AUCH
 ----------
 ::
 
-	P_DRINK, P_DRINK_DELAY, drink_soft,
-	P_MAX_FOOD, P_MAX_ALCOHOL
-
+  Properties:
+     P_FOOD, P_MAX_FOOD, P_FOOD_DELAY
+     P_DRINK, P_DRINK_DELAY
+     P_ALCOHOL, P_MAX_ALCOHOL, P_ALCOHOL_DELAY
+  Methoden:
+     consume(), eat_food(), drink_soft(), drink_alcohol(), defuel_food(),
+     defuel_drink()
+  Uebersicht Essensobjekte
+     wiz/food
 
 Last modified: Tue Dec 18 12:16:10 2001 by Patryn
 
