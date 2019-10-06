@@ -6,8 +6,7 @@ P_EXTRA_LOOK
 NAME
 ====
 
-   P_EXTRA_LOOK:
-      "extralook"
+   P_EXTRA_LOOK:                          "extralook"
 
 
 DEFINIERT IN
@@ -48,8 +47,7 @@ BEISPIEL
    Ein Spieler hat eine gefaehrliche Krankheit. In dem
    Krankheitsobjekt setzt man z.B. folgendes:
 
-      SetProp(P_EXTRA_LOOK,break_string(this_player()->Name(WER)
-              +" sieht leichenblass aus.",78);
+      SetProp(P_EXTRA_LOOK,"@WER1 sieht leichenblass aus.");
 
 
 SIEHE AUCH

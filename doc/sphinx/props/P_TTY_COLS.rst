@@ -17,24 +17,32 @@ BESCHREIBUNG
 ------------
 ::
 
-    In dieser Properties steht die Anzahl der Spalten, die das 
-    Terminalfenster des Spielers derzeit hat.
-
-    Voraussetzung hierfuer ist allerdings, dass das Telnet des Spielers
-    Telnetnegotiations unterstuetzt, ansonsten bleibt diese Property
-    leer.
+    In dieser Property steht die Anzahl der Spalten, die das
+    Terminalfenster des Spielers derzeit hat, sofern das Telnet des
+    Spielers Telnet-Negotiations unterstuetzt. 
+    
+    Wenn das nicht der Fall ist, ist sie leer, d.h. auf den Wert 0 gesetzt.
+    Ansonsten enthaelt die Property die Fensterbreite, mindestens aber
+    einen Wert von 35.
+    
     Das Setzen der Property aendert die Fenstergroesse des Spielers
     natuerlich nicht.
 
+HINWEIS
+-------
+::
+    
+    Die Property ist technisch nicht dagegen geschuetzt, auf unpraktisch
+    kleine, grosse oder auch negative Werte gesetzt zu werden. Das heisst 
+    insbesondere, dass man sich bei der Abfrage der Property nur dann auf
+    den Mindestwert von 35 verlassen kann, wenn sichergestellt ist, dass 
+    er nur im Rahmen der automatischen Aushandlung veraendert wurde.
+  
+
 SIEHE AUCH
 ----------
-::
 
-    P_TTY_ROWS, P_TTY_TYPE, P_TTY_SHOW
+    :doc:`P_TTY_ROWS`, :doc:`P_TTY_TYPE`, :doc:`P_TTY_SHOW`
 
-LETZTE AeNDERUNG
-----------------
-::
-
-    Sat, 06.02.1999, 14:00:00 von Paracelsus
+2019-Sep-25, Arathorn
 

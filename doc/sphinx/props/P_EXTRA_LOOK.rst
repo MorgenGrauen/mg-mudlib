@@ -3,9 +3,9 @@ P_EXTRA_LOOK
 
 NAME
 ----
+::
 
-  P_EXTRA_LOOK:
-    "extralook"
+  P_EXTRA_LOOK:                          "extralook"
 
 DEFINIERT IN
 ------------
@@ -48,8 +48,7 @@ BEISPIEL
 
   .. code-block:: pike
 
-    SetProp(P_EXTRA_LOOK,break_string(this_player()->Name(WER)
-            +" sieht leichenblass aus.",78);
+    SetProp(P_EXTRA_LOOK,"@WER1 sieht leichenblass aus.");
 
 SIEHE AUCH
 ----------
