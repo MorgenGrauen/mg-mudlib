@@ -40,7 +40,7 @@
 // welche Skill-Attribute gibt es?
 #define VALID_SKILL_ATTRIBUTES ({ SA_QUALITY, SA_DAMAGE, SA_SPEED,\
                                   SA_DURATION, SA_EXTENSION, SA_RANGE,\
-                                  SA_ENEMY_SAVE })
+                                  SA_ENEMY_SAVE, SA_SPELL_PENETRATION })
 
 // Indizes fuer die Verwaltung der Skill-Attribute
 #define SAM_CACHE              0
