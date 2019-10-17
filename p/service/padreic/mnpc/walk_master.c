@@ -49,7 +49,6 @@ public int Registration();
 protected void create()
 {
   walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
-  enable_commands(); // ohne das, kein heart_beat()
 }
 
 #define ERROR(x) raise_error(sprintf(x, previous_object()));
@@ -85,6 +84,7 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
       raise_error(sprintf("Anmeldung von Closures auf fremde lfuns ist nicht "
                   "erlaubt. Closure: %O\n",func));
   }
+  // Erster Client? -> HB einschalten.
   if (!sizeof(clients)) {
     set_heart_beat(1);
   }
@@ -183,10 +183,13 @@ void heart_beat()
    }
 }
 
-void reset()
-// kostet maximal einen unnoetigen heart_beat() pro reset -> vertretbar
+// im reset zur Sicherheit mal den heart_beat ggf. einschalten.
 // dient zu einem wieder anwerfen im Falle eines Fehlers im heart_beat()
+// wenn doch nix gemacht werden musss, schaltet sich der HB eh wieder aus.
+void reset()
 {
+  // set_heart_beat() wird als query_heart_beat() 'missbraucht' und daher muss
+  // im else der HB in jedem Fall auch wieder eingeschaltet werden.
   if (set_heart_beat(0)<=0)
   {
     if (sizeof(clients) > 0)
@@ -194,8 +197,7 @@ void reset()
        write_file(object_name()+".err", sprintf(
          "%s: Fehler im heart_beat(). %d aktive Prozesse.\n",
           dtime(time()), sizeof(clients)));
-       enable_commands();
-       set_heart_beat(1);
+      set_heart_beat(1);
     }
   }
   else
