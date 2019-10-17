@@ -1,40 +1,28 @@
 AddInsertHook()
 ===============
 
-********************* OBSOLETE LFUN ***********************************
-* Diese Efun bitte nicht mehr benutzen, sondern stattdessen die       *
-* Hooks (s. /doc/std/hooks).                                          *
-***********************************************************************
-AddInsertHook()
+OBSOLETE LFUN
+-------------
+
+    Diese Efun existiert nicht mehr. Bitte stattdessen den Hook
+    H_HOOK_INSERT benutzen. (s. /doc/std/hooks)
 
 FUNKTION
 --------
-::
 
      void AddInsertHook(object ob);
 
-DEFINIERT IN
-------------
-::
-
-     /std/player/restrictions.c
-
 ARGUMENTE
 ---------
-::
 
-     ob - Das Objekt, das informiert werden soll, wenn ein Objekt dem
+     ob
+          Das Objekt, das informiert werden soll, wenn ein Objekt dem
           Spielerinventar hinzugefuegt wurde.
 
 BESCHREIBUNG
 ------------
-::
 
-     (Diese Funktionalitaet wurde ersetzt durch den allgemeinen Hook
-      H_HOOK_INSERT und ist nur noch aus Gruenden der Kompatibilitaet
-      vorhanden.)
-
-     Diese Funktion wird im Spielerobjekt aufgerufen, um das Objekt ob als
+     Diese Funktion wurde im Spielerobjekt aufgerufen, um das Objekt ob als
      Hook-Listener anzumelden. Auf diese Weise eingetragene Listener
      werden informiert, wenn ein Objekt ins Spielerinventar bewegt wurde.
      Technisch wird die Bewegung ueber NotifyInsert() im Spielerobjekt
@@ -44,45 +32,20 @@ BESCHREIBUNG
 
 RUeCKGABEWERT
 -------------
-::
 
      keiner
 
 BEMERKUNGEN
 -----------
-::
 
      Das Listener-Objekt muss sich ebenfalls im Spielerinventar befinden,
      ansonsten wird der eingetragene Hook wieder geloescht.
 
-BEISPIEL
---------
-::
-
-     
-
-     a) Objekt "ob" wird im Spieler als Listener angemeldet:
-        this_player()->AddInsertHook(ob);
-
-     b) Objekt "new" wird ins Spielerinventar bewegt, das Spielerobjekt
-        informiert "ob" darueber:
-        ob->InsertNotify(new);
-
-     c) Das Listener-Objekt "ob" reagiert darauf, z.B. indem es die Fackel
-        loescht, sofern sie vorher brannte:
-        void InsertNotify(object new) {
-          if ( objectp(new) && new->id("\nfackel") && 
-               new->QueryProp(P_LIGHTED) )
-            new->unlight();
-          return;
-        }
 
 SIEHE AUCH
 ----------
-::
 
-    NotifyInsert(), RemoveInsertHook(), QueryInsertHooks()
+    NotifyInsert(), AddInsertHook(), QueryInsertHooks()
 
 
-Last modified: 14.04.2010, Arathorn
-
+Last modified: 18.10.2019 Zesstra

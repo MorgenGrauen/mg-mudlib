@@ -40,15 +40,11 @@ inherit "/std/container/restrictions";
 #include <defines.h>
 #include <new_skills.h>
 
-//Liste von Objekten, in denen InsertNotify() gerufen wird, wenn etwas in den
-//Spieler bewegt wurde.
-nosave object *InsertHooks=({});
-
 // local properties prototypes
 static int _query_max_weight();
 static mixed _set_frog(mixed arg);
 
-void create()
+protected void create()
 {
   ::create();
 
@@ -95,36 +91,13 @@ static mixed _set_frog(mixed arg) {
 public void NotifyInsert(object ob, object oldenv)
 {
   ::NotifyInsert(ob, oldenv);
-  // Alle Listener im neuen Hooksystem vom InsertHook informieren
+  // Alle Listener vom InsertHook informieren
   HookFlow(H_HOOK_INSERT, ob);
-  // Alle Listener im alten InsertHook informieren
-  if (sizeof(InsertHooks))
-  {
-    foreach(object h: &InsertHooks)
-    {
-      if (h && environment(h) == ME)
-        h->InsertNotify(ob);
-      else
-        h=0;
-    }
-    InsertHooks-=({0}); // genullte Elemente loeschen
-  }
 }
 
 void AddInsertHook(object ob)
 {
-  if (member(InsertHooks,ob)!=-1 || environment(ob)!=this_object())
-    return;
-  InsertHooks+=({ob});
-}
-
-void RemoveInsertHook(object ob)
-{
-  InsertHooks-=({ob});
-}
-
-object *QueryInsertHooks()
-{
-  return InsertHooks;
+  raise_error("Diese Funktion gibt es nicht mehr. Bitte das neue "
+      "Hooksystem nutzen!\n");
 }
 

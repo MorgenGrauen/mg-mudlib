@@ -1,53 +1,39 @@
 QueryInsertHooks()
 ==================
 
-********************* OBSOLETE LFUN ***********************************
-* Diese Efun bitte nicht mehr benutzen, sondern stattdessen die       *
-* Hooks (s. /doc/std/hooks).                                          *
-***********************************************************************
-QueryInsertHooks()
+OBSOLETE LFUN
+-------------
+
+    Diese Efun existiert nicht mehr. Bitte stattdessen den Hook
+    H_HOOK_INSERT benutzen. (s. /doc/std/hooks)
+
 
 FUNKTION
 --------
-::
 
      object *QueryInsertHooks();
 
-DEFINIERT IN
-------------
-::
-
-     /std/player/restrictions.c
-
 ARGUMENTE
 ---------
-::
 
      keine
 
 BESCHREIBUNG
 ------------
-::
-
-     (Diese Funktionalitaet wurde ersetzt durch den allgemeinen Hook
-      H_HOOK_INSERT und ist nur noch aus Gruenden der Kompatibilitaet
-      vorhanden.)
 
      Diese Funktion gibt die aktuell beim Spielerobjekt angemeldeten
      Listener-Objekte zurueck.
 
 RUeCKGABEWERT
 -------------
-::
 
      Array aus Objektpointern oder leeres Array
 
 SIEHE AUCH
 ----------
-::
 
     NotifyInsert(), AddInsertHook(), RemoveInsertHook()
 
 
-Last modified: 14.04.2010, Arathorn
+Last modified: 18.10.2019 Zesstra
 
