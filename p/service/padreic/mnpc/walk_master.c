@@ -89,7 +89,8 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
     set_heart_beat(1);
   }
   int next=counter;
-  next+=(time+random(rand))/2;
+  //min. 1 Heartbeat delay erzwingen
+  next += max(1, (time+random(rand))/2);
   if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
   walker[next]+=({ func });
   clients += ([ get_type_info(func, 2): func; wert; next ]);
