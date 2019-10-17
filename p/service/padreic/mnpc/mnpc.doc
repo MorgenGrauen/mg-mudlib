@@ -27,12 +27,17 @@ MNPC_HOME - der Startraum des NPCs in den er spaeter ggf. auch wieder
 MNPC_DELAY und. MNPC_RANDOM
   MNPC_DELAY + random(MNPC_RANDOM) ergibt den Abstand zwischen zwei
   Bewegungen des NPCs.
-  ACHTUNG: 
+  Die minimale Verzoegerung eines MNPC ist jedoch ein __HEART_BEAT_INTERVAL__
+  (aktuell 2s).
+
+  ACHTUNG:
     1. Diese Werte muessen gesetzt werden, _bevor_ MNPC_FLAGS 
     gesetzt werden, da die Set-Methode von MNPC_FLAGS die Anmeldung im
     walk_master durchfuehrt. Sonst werden die Default-Werte benutzt!
-    2. Wenn diese Werte geaendert werden, sollte man die MNPC_FLAGS neu
-    setzen, um so die Neuanmeldung im walk_master auszuloesen.
+    2. Wenn diese Werte geaendert werden, muss eine Neuanmeldung im
+    walk_master erfolgen. Hierzu muss entweder MNPC_WALK in MNPC_FLAGS
+    geloescht (und bis zum naechsten Walk gewartet werden) oder es muss
+    Stop(), gefolgt von RegisterWalker() gerufen werden.
 
 MNPC_WALK_TIME - Zeitangabe wie lange es dauert bis der NPC stehen bleibt
    falls er keinen Spieler mehr trifft. Dieser Wert sollte etwa 3-10 mal so

@@ -153,7 +153,11 @@ void heart_beat()
              // Es gab keinen Fehler und das Objekt will weiterlaufen.
              // Naechsten Zeitslot bestimmen und dort die closure eintragen.
              int delay = clients[mnpc, WALK_DELAY];
-             int next = counter + (TIME(delay) + random(RANDOM(delay)))/2;
+             // das delay muss min. 1 sein, sonst tragen wir den MNPC in
+             // diesen aktuellen zeitslot wieder ein (ja, Magier tun solche
+             // Dinge), der ja nach Abarbeiten des Slots genullt wird.
+             int next = counter
+                        + max(1, (TIME(delay) + random(RANDOM(delay)))/2);
              if (next > MAX_DELAYTIME)
                next -= MAX_DELAYTIME;
              walker[next] += ({ func });
