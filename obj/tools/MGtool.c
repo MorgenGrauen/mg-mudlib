@@ -8,7 +8,7 @@
 /* the original Xtool is copyrighted by Hyp */
 /*------------------------------------------*/
 
-#pragma strict_types
+#pragma strict_types,rtt_checks
 
 protected functions virtual inherit "/std/util/path";
 inherit "/std/thing/properties";
@@ -26,6 +26,7 @@ inherit "/std/thing/properties";
 #include "/secure/config.h"
 #include <userinfo.h>
 #include <defines.h>
+#include <hook.h>
 
 #include "MGtool/tool.h"
 
@@ -1295,7 +1296,7 @@ void create()
   }
   if(MODE(MODE_FIRST))
     call_out("move",0,cloner);
-  call_out("add_insert_hook",1,ME);
+  call_out("add_insert_hook",1);
 }
 
 void TK(string str)
@@ -1310,12 +1311,6 @@ int Xtk(string str)
   xtk=!xtk;
   WDLN("Xtool internal tracing "+(xtk?"enabled":"disabled"));
   return TRUE;
-}
-
-void add_insert_hook(object obj)
-{
-  if(objectp(obj))
-    cloner->AddInsertHook(obj);
 }
 
 void init()
@@ -1689,14 +1684,23 @@ void actions()
  *  the checking stuff
  */
 
-void InsertNotify(object obj)
+public <int|object>* insert_hook(object pl, int hookid, object ob)
 {
-  if(!cloner)
-    return;
-  if(MODE(MODE_FIRST) && find_call_out("move")==-1)
-    call_out("move",0,cloner);
-  if(MODE(MODE_INVCHECK))
-    write_newinvobj(obj);
+  if(cloner && cloner == pl && hookid == H_HOOK_INSERT)
+  {
+    if(MODE(MODE_FIRST) && find_call_out("move")==-1)
+      call_out("move",0,cloner);
+    if(MODE(MODE_INVCHECK))
+      write_newinvobj(ob);
+  }
+  return ({H_NO_MOD, ob});
+}
+
+void add_insert_hook()
+{
+  if(objectp(cloner))
+    cloner->HRegisterToHook(H_HOOK_INSERT, #'insert_hook,
+        H_HOOK_LIBPRIO(2), H_LISTENER, 0);
 }
 
 static void VarCheck(int show)
