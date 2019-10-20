@@ -11,7 +11,7 @@ OBSOLETE LFUN
 FUNKTION
 --------
 
-     object *QueryInsertHooks();
+     object \*QueryInsertHooks();
 
 ARGUMENTE
 ---------
