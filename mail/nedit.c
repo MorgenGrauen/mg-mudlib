@@ -45,7 +45,6 @@ static int flags;          // Overwritemodus
 
 static int get_edit_line(string str);
 static int ShowWritten(int f, int l, int num);
-static string killctrl( string str );
 static int ShowHelp();
 static int delLine(int l);
 static void delBlock();
@@ -102,7 +101,8 @@ static int get_edit_line(string str) {
   int sl;
 
   if (!str) str="";
-  str=killctrl(str); /* kleiner hack wegen CTRL-chars. */
+  // Kontrollzeichen rausfiltern
+  str = regreplace(str,"[[:cntrl:]]","",RE_PCRE|RE_GLOBAL);
   fflag = 0;
 
   sl = sizeof(str);
@@ -404,33 +404,6 @@ varargs static void moveBlock(int start, int end, int real)
     len += (blen+1);
     write("OK.\n");
   }
-}
-
-#define UMLAUT ([ \
-    'ä': "ae", \
-    'ö': "oe", \
-    'ü': "ue", \
-    'Ä': "Ae", \
-    'Ö': "Oe", \
-    'Ü': "Ue", \
-    'ß': "ss"  ])
-
-static string killctrl( string str )
-{
-    int i, j;
-    string tmp;
-
-    tmp = "";
-    
-    for ( j = sizeof(str), i = 0; i < j; i++ )
-        tmp += (UMLAUT[str[i]] || str[i..i]);
-
-    tmp = regreplace( tmp, "[^ -~\t]", "", 1 );
-    
-    if (sizeof(tmp) &&  tmp[0] < 32 )
-        return tmp[1..];
-  
-    return tmp;
 }
 
 mixed RescueText() {
