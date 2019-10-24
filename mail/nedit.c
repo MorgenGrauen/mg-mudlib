@@ -29,6 +29,7 @@
 #include <wizlevels.h>
 #include <defines.h>
 #include <input_to.h>
+#include <regexp.h>
 
 #define TP this_player()
 
