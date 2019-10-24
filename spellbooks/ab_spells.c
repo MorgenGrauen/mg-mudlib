@@ -79,7 +79,7 @@ void create() {
              // Damage Type: Magic
              SI_MAGIC_TYPE: ({ MT_ANGRIFF }),
              SI_SPELL: ([ SP_NAME: "pfeil" ]),
-             // Boni für hintere Kampfreihen
+             // Boni fÃ¼r hintere Kampfreihen
              SI_SKILLDAMAGE_BY_ROW: ([2:110,3:50,4:10]),
              OFFSET(SI_SKILLDAMAGE_BY_ROW): ([2:50,3:20,4:5])
              ]));

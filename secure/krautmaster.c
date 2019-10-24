@@ -414,7 +414,7 @@ nomask private int LoadIdList(string filename)
    return 1;
 }
 
-// Hilfsfunktion wird zum einparsen benötigt
+// Hilfsfunktion wird zum einparsen benÃ¶tigt
 // wandelt z.B. den string von "h 500" in ({ 3, 500 }) um
 private nomask <string|int>* buildAttrArr(string attr)
 {
@@ -1134,7 +1134,7 @@ mapping calculate_potion(int* plantids, int* qualities, string familie)
 mapping make_potion(object* plants)
 {
   // -> mappt nicht-Objekt zu 0, aber 0 ist auch ne gueltige PlantID. Daher
-  // müssen zerstoerten Objekte vorher raus.
+  // mÃ¼ssen zerstoerten Objekte vorher raus.
   // TODO: drauf verlassen, dass nur intakte Objekt enthalten sind?
   if (member(plants, 0) >= 0)
     raise_error(sprintf("make_potion() got invalid object in plant array "

@@ -97,7 +97,7 @@ spende( str )
 	// Hier wird der Master aufgerufen, der das Alignment der Spieler
 	// dann aendert.
 	if( OS_MASTER->addAlignment( PL, anz/3 ) > 0 ) {
-		// Eigentlich könnte man hier auch die Meldung ausgeben, aber
+		// Eigentlich kÃ¶nnte man hier auch die Meldung ausgeben, aber
 		// der Spieler soll den Unterschied zwischen Alignment geaendert
 		// unt Alignment nicht geaendert sehen koennen.
 	}

@@ -269,7 +269,7 @@ static int direct_move(mixed dest, int method, string direction)
          else if (file_size(vc=implode(explode(fn,"/")[0..<2],"/")
                   +"/virtual_compiler.c")>0)
          {
-            // wenn ein VC existiert, prüfen ob dieser ParaObjecte unterstuetzt
+            // wenn ein VC existiert, prÃ¼fen ob dieser ParaObjecte unterstuetzt
             // wenn ja, dann testen ob sich Raum laden laesst...
             if ((!catch(tmp=(int)call_other(vc,"NoParaObjects")) && (!tmp)) &&
                 (!catch(call_other( fn, "???" ))))
@@ -305,7 +305,7 @@ static int direct_move(mixed dest, int method, string direction)
                        (sizeof(mout) > 1 ? mout[1] : "") + ".\n" );
       }
 
-      // nun die Meldung für das "Betreten" des Raumes...
+      // nun die Meldung fÃ¼r das "Betreten" des Raumes...
 
       if ( method & M_TPORT )
         textin = (string) QueryProp(P_MMSGIN);

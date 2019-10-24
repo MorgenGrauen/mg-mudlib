@@ -356,7 +356,7 @@ public int change_pathmap( string pfad, mixed *verbindungen )
 }
 
 // Die Funktion gibt alle dem pathd bekannten Raeume als Mapping von Arrays
-// zurueck. Schlüssel des Mappings sind dabei Gebiete.
+// zurueck. SchlÃ¼ssel des Mappings sind dabei Gebiete.
 public mapping get_rooms()
 {
   string *submaps;
@@ -976,7 +976,7 @@ public varargs int remove( int silent )
 }
 
 
-// Zum Debuggen. Nur für Tiamak. Bzw. nun fuer Zook, Vanion, Rumata
+// Zum Debuggen. Nur fÃ¼r Tiamak. Bzw. nun fuer Zook, Vanion, Rumata
 #define ALLOWED ({"zook","vanion","rumata","zesstra","humni"})
 #define MATCH(x,y) (sizeof(regexp(x,y)))
 public mapping get_pathmap()

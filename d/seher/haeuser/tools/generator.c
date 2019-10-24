@@ -493,7 +493,7 @@ mProp(string file, string pName, mixed cmd, int pos, int signal)
   }
 
   // Falls wir die eval_cost ausgereizt haben, aber noch nicht
-  // alle Einträge bearbeitet wurden, wird jetzt die naechste
+  // alle EintrÃ¤ge bearbeitet wurden, wird jetzt die naechste
   // Runde gestartet
   if (i >= 0)
   {
@@ -540,7 +540,7 @@ cProp(string file, string pName, mixed cmd, int pos, int signal)
   }
 
   // Falls wir die eval_cost ausgereizt haben, aber noch nicht
-  // alle Einträge bearbeitet wurden, wird jetzt die naechste
+  // alle EintrÃ¤ge bearbeitet wurden, wird jetzt die naechste
   // Runde gestartet
   if (i >= 0)
   {

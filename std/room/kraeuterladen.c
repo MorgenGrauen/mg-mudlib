@@ -41,7 +41,7 @@ protected void create()
 
   SetProp(P_BUY_ONLY_PLANTS,1);
   /*
-  seteuid(getuid()); // wird zum speichern benötigt
+  seteuid(getuid()); // wird zum speichern benÃ¶tigt
   int si=sizeof(count);
   // fuer jede PlantID einen Eintrag anlegen, d.h. wenn in count noch
   // nicht genug vorhanden sind, werden fehlende Eintraege ergaenzt.
@@ -150,7 +150,7 @@ static int realValue(object ob, object player)
    return val-val%10; 
 }
 
-// gibt den Preis zurück, der zum Ankauf des Objektes verwendet werden soll
+// gibt den Preis zurÃ¼ck, der zum Ankauf des Objektes verwendet werden soll
 static varargs int QueryValue(object ob, int value, object player)
 {
    return ::QueryValue(ob, realValue(ob, player), player);

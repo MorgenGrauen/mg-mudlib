@@ -10,8 +10,8 @@
 //   Objekt erstellt: 14.08.01, Troy
 //
 //   Dieser shadow implementiert generische Verwandlungen. Im Gegensatz oder
-//   in Ergänzung zum Tarnhelm sind diese nicht auf die Beschreibung
-//   beschränkt, sondern schlagen sich auch in anderen Properties nieder.
+//   in ErgÃ¤nzung zum Tarnhelm sind diese nicht auf die Beschreibung
+//   beschrÃ¤nkt, sondern schlagen sich auch in anderen Properties nieder.
 //
 //--------------------------------------------------------------------------
 
@@ -42,13 +42,13 @@ private object pl; // der schattierte Spieler
 //   start_shadow( Spieler, Properties )
 //
 //   Startet das Shadowing von Spieler. Properties ist ein Mapping mit
-//   den zu ändernden Properties. Dort nicht vorhandene Properties werden
+//   den zu Ã¤ndernden Properties. Dort nicht vorhandene Properties werden
 //   zum Spieler durchgereicht. Es werden dort entweder einzelne Werte
-//   erwartet (Beispiel: ([ P_GENDER: MALE ])), die dann für alle Rassen
-//   gelten, oder closures, die dann ausgeführt werden unter Übergabe der
+//   erwartet (Beispiel: ([ P_GENDER: MALE ])), die dann fÃ¼r alle Rassen
+//   gelten, oder closures, die dann ausgefÃ¼hrt werden unter Ãœbergabe der
 //   Spielerrasse als Parameter oder aber Mappings mit den Rassennamen
 //   (Beispiel: ([ P_GENDER: ([ "Mensch": NEUTER, "Elf": FEMALE,
-//   "Zwerg": MALE, ... ]) ])). Ist eine Rasse in dem Rassenmapping nicht
+//   "Zwerg": MALE, ... ])Â ])). Ist eine Rasse in dem Rassenmapping nicht
 //   vorhanden, so wird das Property zum Spieler durchgereicht. Speziell
 //   behandelt werden P_IDS (siehe _query_ids()) und P_NAME (siehe
 //   _query_name()). 
@@ -70,7 +70,7 @@ int start_shadow( object _pl, mapping preset )
 //
 //   stop_shadow()
 //
-//   Beendet das Shadowing und zerstört dieses Objekt
+//   Beendet das Shadowing und zerstÃ¶rt dieses Objekt
 //
 //--------------------------------------------------------------------------
 int stop_shadow( /* void */ )
@@ -86,7 +86,7 @@ int stop_shadow( /* void */ )
 //   _query_property( Property )
 //
 //   Generische Property-Maskierung. liefert aus morph_properties den zur
-//   Rasse des Trägers passenden Eintrag.
+//   Rasse des TrÃ¤gers passenden Eintrag.
 //
 //--------------------------------------------------------------------------
 nomask static mixed _query_property( string prop )
@@ -119,7 +119,7 @@ nomask static mixed _query_property( string prop )
 //
 //   _query_article()
 //
-//   Property-Maskierung für P_ARTICLE
+//   Property-Maskierung fÃ¼r P_ARTICLE
 //
 //--------------------------------------------------------------------------
 int _query_article( /* void */ )
@@ -131,7 +131,7 @@ int _query_article( /* void */ )
 //
 //   _query_average_size()
 //
-//   Property-Maskierung für P_AVERAGE_SIZE
+//   Property-Maskierung fÃ¼r P_AVERAGE_SIZE
 //
 //--------------------------------------------------------------------------
 int _query_average_size( /* void */ )
@@ -143,7 +143,7 @@ int _query_average_size( /* void */ )
 //
 //   _query_average_weight()
 //
-//   Property-Maskierung für P_AVERAGE_WEIGHT
+//   Property-Maskierung fÃ¼r P_AVERAGE_WEIGHT
 //
 //--------------------------------------------------------------------------
 int _query_average_weight( /* void */ )
@@ -155,7 +155,7 @@ int _query_average_weight( /* void */ )
 //
 //   _query_body()
 //
-//   Property-Maskierung für P_BODY
+//   Property-Maskierung fÃ¼r P_BODY
 //
 //--------------------------------------------------------------------------
 int _query_body( /* void */ )
@@ -167,7 +167,7 @@ int _query_body( /* void */ )
 //
 //   _query_gender()
 //
-//   Property-Maskierung für P_GENDER
+//   Property-Maskierung fÃ¼r P_GENDER
 //
 //--------------------------------------------------------------------------
 int _query_gender( /* void */ )
@@ -179,7 +179,7 @@ int _query_gender( /* void */ )
 //
 //   _query_hands()
 //
-//   Property-Maskierung für P_HANDS
+//   Property-Maskierung fÃ¼r P_HANDS
 //
 //--------------------------------------------------------------------------
 mixed _query_hands( /* void */ )
@@ -191,44 +191,44 @@ mixed _query_hands( /* void */ )
 //
 //   _query_ids()
 //
-//   Property-Maskierung für P_IDS - Nicht-Standard, da je nach Ursprungs-
-//   geschlecht des Spielers zusätzliche ids fällig werden. Ablauf: Es gibt
+//   Property-Maskierung fÃ¼r P_IDS - Nicht-Standard, da je nach Ursprungs-
+//   geschlecht des Spielers zusÃ¤tzliche ids fÃ¤llig werden. Ablauf: Es gibt
 //   5 Schritte, bei deren jeweiligem Versagen die ids des Spielers durch-
 //   gereicht werden:
 //   1. P_IDS ist im property-mapping vorhanden
 //   2. a) es ist ein string oder ein array: es wird an die ids des Spielers
-//         angehängt und zurückgegeben.
-//      b) es ist eine closure. Diese wird ausgeführt unter Übergabe der
+//         angehÃ¤ngt und zurÃ¼ckgegeben.
+//      b) es ist eine closure. Diese wird ausgefÃ¼hrt unter Ãœbergabe der
 //         Spieler-ids, der Rasse des Spielers und der Geschlechter
 //         (dieses Objekts und des Spielers). Der Ergebniswert der closure
-//         wird direkt zurückgegeben.
-//      c) es ist ein mapping. Hier nehmen wir nun das übliche Rassennamen-
+//         wird direkt zurÃ¼ckgegeben.
+//      c) es ist ein mapping. Hier nehmen wir nun das Ã¼bliche Rassennamen-
 //         mapping an -> 3.)
-//   3. Für die Rasse des Spielers wird ein Eintrag gesucht
+//   3. FÃ¼r die Rasse des Spielers wird ein Eintrag gesucht
 //      a) er ist ein string oder ein array: er wird an die ids des Spielers
-//         angehängt und zurückgegeben.
-//      b) er ist eine closure. Diese wird ausgeführt unter Übergabe der
+//         angehÃ¤ngt und zurÃ¼ckgegeben.
+//      b) er ist eine closure. Diese wird ausgefÃ¼hrt unter Ãœbergabe der
 //         Spieler-ids, der Rasse des Spielers und der Geschlechter
 //         (dieses Objekts und des Spielers). Der Ergebniswert der closure
-//         wird direkt zurückgegeben.
+//         wird direkt zurÃ¼ckgegeben.
 //      c) er ist ein mapping. Es wird angenommen, dass je Geschlecht DIESES
 //         Objekts ein Eintrag vorhanden ist. -> 4.)
-//   4. Für das Geschlecht dieses Objekts wird ein Eintrag gesucht
+//   4. FÃ¼r das Geschlecht dieses Objekts wird ein Eintrag gesucht
 //      a) er ist ein string oder ein array: er wird an die ids des Spielers
-//         angehängt und zurückgegeben.
-//      b) er ist eine closure. Diese wird ausgeführt unter Übergabe der
+//         angehÃ¤ngt und zurÃ¼ckgegeben.
+//      b) er ist eine closure. Diese wird ausgefÃ¼hrt unter Ãœbergabe der
 //         Spieler-ids, der Rasse des Spielers und der Geschlechter
 //         (dieses Objekts und des Spielers). Der Ergebniswert der closure
-//         wird direkt zurückgegeben.
+//         wird direkt zurÃ¼ckgegeben.
 //      c) er ist ein mapping. Es wird angenommen, dass je Geschlecht DES
 //         Spielers ein Eintrag vorhanden ist. -> 5.)
-//   5. Für das Geschlecht des Spielers wird ein Eintrag gesucht
+//   5. FÃ¼r das Geschlecht des Spielers wird ein Eintrag gesucht
 //      a) er ist ein string oder ein array: er wird an die ids des Spielers
-//         angehängt und zurückgegeben.
-//      b) er ist eine closure. Diese wird ausgeführt unter Übergabe der
+//         angehÃ¤ngt und zurÃ¼ckgegeben.
+//      b) er ist eine closure. Diese wird ausgefÃ¼hrt unter Ãœbergabe der
 //         Spieler-ids, der Rasse des Spielers und der Geschlechter
 //         (dieses Objekts und des Spielers). Der Ergebniswert der closure
-//         wird direkt zurückgegeben.
+//         wird direkt zurÃ¼ckgegeben.
 //
 //--------------------------------------------------------------------------
 mixed _query_ids( /* void */ )
@@ -309,7 +309,7 @@ mixed _query_ids( /* void */ )
 //
 //   _query_is_morphed()
 //
-//   Property-Methode für "is_morphed"
+//   Property-Methode fÃ¼r "is_morphed"
 //
 //--------------------------------------------------------------------------
 int _query_is_morphed( /* void */ )
@@ -321,7 +321,7 @@ int _query_is_morphed( /* void */ )
 //
 //   _query_max_hands()
 //
-//   Property-Maskierung für P_MAX_HANDS
+//   Property-Maskierung fÃ¼r P_MAX_HANDS
 //
 //--------------------------------------------------------------------------
 int _query_max_hands( /* void */ )
@@ -333,7 +333,7 @@ int _query_max_hands( /* void */ )
 //
 //   _query_mmsgin()
 //
-//   Property-Maskierung für P_MMSGIN
+//   Property-Maskierung fÃ¼r P_MMSGIN
 //
 //--------------------------------------------------------------------------
 string _query_mmsgin( /* void */ )
@@ -345,7 +345,7 @@ string _query_mmsgin( /* void */ )
 //
 //   _query_mmsgout()
 //
-//   Property-Maskierung für P_MMSGOUT
+//   Property-Maskierung fÃ¼r P_MMSGOUT
 //
 //--------------------------------------------------------------------------
 string _query_mmsgout( /* void */ )
@@ -357,7 +357,7 @@ string _query_mmsgout( /* void */ )
 //
 //   _query_msgin()
 //
-//   Property-Maskierung für P_MSGIN
+//   Property-Maskierung fÃ¼r P_MSGIN
 //
 //--------------------------------------------------------------------------
 string _query_msgin( /* void */ )
@@ -369,7 +369,7 @@ string _query_msgin( /* void */ )
 //
 //   _query_msgout()
 //
-//   Property-Maskierung für P_MSGOUT
+//   Property-Maskierung fÃ¼r P_MSGOUT
 //
 //--------------------------------------------------------------------------
 string _query_msgout( /* void */ )
@@ -381,9 +381,9 @@ string _query_msgout( /* void */ )
 //
 //   _query_name()
 //
-//   Property-Methode für P_NAME. Leider ist die player-shell so grottig,
-//   dass überall angenommen wird, QueryProp(P_NAME) liefere einen String :-|
-//   Vollständiges Property daher unter _query_name_full().
+//   Property-Methode fÃ¼r P_NAME. Leider ist die player-shell so grottig,
+//   dass Ã¼berall angenommen wird, QueryProp(P_NAME) liefere einen String :-|
+//   VollstÃ¤ndiges Property daher unter _query_name_full().
 //
 //--------------------------------------------------------------------------
 string _query_name( /* void */ )
@@ -404,7 +404,7 @@ string _query_name( /* void */ )
 //
 //   _query_name_full()
 //
-//   Property-Methode für "name_full".
+//   Property-Methode fÃ¼r "name_full".
 //
 //--------------------------------------------------------------------------
 mixed _query_name_full( /* void */ )
@@ -425,7 +425,7 @@ mixed _query_name_full( /* void */ )
 //
 //   _query_presay()
 //
-//   Property-Maskierung für P_PRESAY
+//   Property-Maskierung fÃ¼r P_PRESAY
 //
 //--------------------------------------------------------------------------
 string _query_presay( /* void */ )
@@ -437,7 +437,7 @@ string _query_presay( /* void */ )
 //
 //   _query_race()
 //
-//   Property-Maskierung für P_RACE
+//   Property-Maskierung fÃ¼r P_RACE
 //
 //--------------------------------------------------------------------------
 string _query_race( /* void */ )
@@ -449,7 +449,7 @@ string _query_race( /* void */ )
 //
 //   _query_racestring()
 //
-//   Property-Maskierung für P_RACESTRING
+//   Property-Maskierung fÃ¼r P_RACESTRING
 //
 //--------------------------------------------------------------------------
 string* _query_racestring( /* void */ )
@@ -461,7 +461,7 @@ string* _query_racestring( /* void */ )
 //
 //   _query_size()
 //
-//   Property-Maskierung für P_SIZE
+//   Property-Maskierung fÃ¼r P_SIZE
 //
 //--------------------------------------------------------------------------
 int _query_size( /* void */ )
@@ -473,7 +473,7 @@ int _query_size( /* void */ )
 //
 //   _query_title()
 //
-//   Property-Maskierung für P_TITLE
+//   Property-Maskierung fÃ¼r P_TITLE
 //
 //--------------------------------------------------------------------------
 string _query_title( /* void */ )
@@ -485,7 +485,7 @@ string _query_title( /* void */ )
 //
 //   _query_weight()
 //
-//   Property-Maskierung für P_WEIGHT
+//   Property-Maskierung fÃ¼r P_WEIGHT
 //
 //--------------------------------------------------------------------------
 int _query_weight( /* void */ )
@@ -585,7 +585,7 @@ string short( /* void */ )
 //
 //   remove( Schnauze )
 //
-//   aufräumen
+//   aufrÃ¤umen
 //
 //--------------------------------------------------------------------------
 varargs int remove( int silent )

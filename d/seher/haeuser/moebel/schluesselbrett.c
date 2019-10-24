@@ -3,7 +3,7 @@
 // Letzte Aenderung:    02.06.2001
 // Original:            Swift
 // Neue Version:        Seleven
-// Übernommen:          23.01.2006
+// Ãœbernommen:          23.01.2006
 //---------------------------------------------------------------------------
 /* Changelog
    * 21.06.2007, Zesstra

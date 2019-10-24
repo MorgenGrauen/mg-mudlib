@@ -68,7 +68,7 @@ void purge() {
 }
 
 // Diese Funktion ist die eingetliche Funktion, die "gemastert" werden
-// soll, also für mehrere Opferstoecke gemeinsam benutzt wird.
+// soll, also fÃ¼r mehrere Opferstoecke gemeinsam benutzt wird.
 // Der Opferstock uebergibt das Spielerobjekt und die gewuenschte
 // Alignmentaenderung, als Ergebnis wird 1 geliefert, wenn eine Aenderung
 // vorgenommen wurde (0 sonst) und das Alignment des Spielers entsprechend

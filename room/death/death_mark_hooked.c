@@ -44,7 +44,7 @@ void start_death()
   environment()->move("/room/death/virtual/death_room_"+getuid(environment()),
 		     M_GO|M_SILENT|M_NO_SHOW|M_NOCHECK);
   // Der folgende Code verhindert, dass ein unbedachter Magier im init
-  // oder exit einen Spieler tötet, und ihn dirket danach movet.
+  // oder exit einen Spieler tÃ¶tet, und ihn dirket danach movet.
   environment()->SetProp(P_TMP_MOVE_HOOK,({time()+10,this_object(),"catch_die_move"}));  
 }
 

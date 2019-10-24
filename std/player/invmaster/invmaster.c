@@ -1,5 +1,5 @@
 // invmaster.c by Nachtwind@MG V1.1 (5.3.2001)
-// A small master that provides a graphical display of the player´s
+// A small master that provides a graphical display of the playerÂ´s
 // equipment. 
 #pragma strong_types
 #pragma save_types,rtt_checks
@@ -67,7 +67,7 @@ static void ConfigureColors(string text);
 
 void ShowInv(object player, string arg);
 
-// ok, let´s just read in the graphics...
+// ok, letÂ´s just read in the graphics...
 // really takes some time (~250 eval ticks) but is only done
 // once in an uptime
 void create()
