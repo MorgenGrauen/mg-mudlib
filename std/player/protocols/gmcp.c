@@ -489,7 +489,7 @@ protected void GMCPmod_MG_room_v1_send(mapping data)
   // sichtbare Ausgange und Objekte. Insofern: geht nicht.
   // Ist das letzte Zeichen kein Satzzeichen einen Punkt anhaengen, sonst nur
   // den \n.
-  string sh=process_string(environment()->QueryProp(P_INT_SHORT)||"");
+  string sh=process_string(environment()->QueryProp(P_INT_SHORT)||".");
   switch(sh[<1])
   {
     case '.':
