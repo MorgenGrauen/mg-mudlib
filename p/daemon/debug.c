@@ -58,17 +58,20 @@ int check( string ch, object pl, string cmd, string txt )
                     if( start >= end ) 
                         bt = "[" + ch + ":] Kein Backtrace verfuegbar!\n";
                     else {
-                        log = regreplace( read_bytes( __DEBUG_LOG__, start,
-                                                      (end-start>10000)?10000:
-						      end - start ) || "\nFehler beim Einlesen des Debuglogs: Kein Backtrace verfuegbar!\n",
-                                          "(Misplaced|current_object|"
-                                          "Connection|Host)[^\n]*\n",
-                                          "", 1 );
+                        log = regreplace(
+                                to_text(read_bytes( __DEBUG_LOG__, start,
+                                                    min(end-start, 10000)),
+                                                    "UTF-8")
+                                  || "\nFehler beim Einlesen des Debuglogs: "
+                                     "Kein Backtrace verfuegbar!\n",
+                                "(Misplaced|current_object|"
+                                "Connection|Host)[^\n]*\n",
+                                "", 1 );
                         bt = "[" + ch + ":] -- BACKTRACE BEGIN --\n"
                             + log
                             + "[" + ch + ":] -- BACKTRACE END --\n";
                     }
-                    
+
                     call_out( symbol_function( "Message", pl ), 0, bt );
                 }
                 break;
