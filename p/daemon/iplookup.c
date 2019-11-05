@@ -124,7 +124,7 @@ static	void expire_cache_large( string* keys ) {
  * Daten ueberschrieben.
  */
 static void make_request( string ipnum ) {
-	send_udp( IPLOOKUP_HOST, IPLOOKUP_PORT, ipnum );
+	send_udp( IPLOOKUP_HOST, IPLOOKUP_PORT, to_bytes(ipnum, "ASCII") );
 	ipmap += ([ ipnum : ipnum ; SEARCHING ;
 		time()+QUERY_TIME ; STATUS_QUERYING
 	]);

@@ -42,7 +42,8 @@ void reset()
 // eigentliche Anfrage an den externen Resolver senden.
 protected void make_request(string hostname)
 {
-  send_udp( IPLOOKUP_HOST, IPLOOKUP_PORT, hostname+"\n" );
+  send_udp( IPLOOKUP_HOST, IPLOOKUP_PORT,
+            to_bytes(hostname+"\n","ASCII") );
   if (sizeof(cache) > 1000)
     reset();
   cache[hostname]=0; // cached request, but unknown result (yet)
