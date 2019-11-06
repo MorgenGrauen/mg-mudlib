@@ -634,77 +634,6 @@ static void XMoreFile(string file, int flag)
     WDLN("Cannot read file");
 }
 
-/*
-static string read_buffer(string filename, int start, int number)
-{
-  mixed tmp;
-  string result;
-  int current;
-
-  if(!filename||filename=="")
-    return "";
-  if(number<=1)
-    number=1;
-  number--;
-  result="";
-  if(filename!=line_buffer_name)
-  {
-    // TK("read_buffer: initializing");
-    line_buffer=([]);
-    line_buffer_name=filename;
-    current=0;
-  }
-  else
-    current=start;
-
-  while(current<=start+number && stringp((tmp=load_buffer(current++))))
-    if(current>=start)
-      result+=tmp;
-  return result;
-}
-
-static string load_buffer(int line)
-{
-  int i, current, start, length, *idx;
-
-  if(intp(line_buffer[line]))
-  {
-    // TK("load_buffer: Notfound: "+line);
-    current=line;
-    while(current>0&&intp(line_buffer[--current]));
-    for(i=current;i<=line;i++)
-    {
-      // TK("load_buffer: trying: "+i);
-      if(i>0)
-	idx=line_buffer[i-1];
-      else
-	idx=({0,0});
-      length=read_line((start=idx[0]+idx[1]));
-      // TK("load_buffer: "+start+"/"+length);
-      line_buffer[i]=({start,length});
-    }
-  }
-  idx=line_buffer[line];
-  return
-    read_bytes(line_buffer_name,idx[0],idx[1]);
-}
-
-static int read_line(int offset)
-{
-  mixed loc_buf;
-  int length, pos;
-
-  // TK("read_line: "+offset);
-  length=0;
-  while(!intp((loc_buf=read_bytes(line_buffer_name,offset+length,1024))))
-  {
-    if((pos=member(loc_buf,'\n'))>=0)
-      return length+pos+1;
-    length+=1024;
-  }
-  return length;
-}
-*/
 
 static void MoreFile(string str)
 {
@@ -848,7 +777,6 @@ static int CatFile()
   
   end=moreoffset+morelines;
   while(moreoffset<end)
-//    if((l=read_file(morefile, moreoffset, 1))!="")
     if((l=sread_line(moreoffset))!="")
     {
       moreoffset++;
@@ -856,7 +784,7 @@ static int CatFile()
     }
     else
       return FALSE;
-//  if(read_file(morefile, moreoffset+1, 1)!="")
+
   if(sread_line(moreoffset+1)!="")
     return TRUE;
   else
