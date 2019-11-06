@@ -156,9 +156,9 @@ static varargs object XFindObj(string str, int silent)
     return NULL;
   TK("XFindObj: str: "+(str?str:"(NULL)"));
   env=ENV(cloner);
-  str=string_replace(str, "\\.","°01");
-  str=string_replace(str, "\\^", "°02");
-  str=string_replace(str, "\\$", "°03");
+  str=string_replace(str, "\\.","\u00B0" "01");
+  str=string_replace(str, "\\^", "\u00B0" "02");
+  str=string_replace(str, "\\$", "\u00B0" "03");
   str=string_replace(str, "\\\\", "\\");
   if (find_object(str)) return find_object(str);
   if (file_size(str)>1) {
@@ -187,15 +187,15 @@ static varargs object FindObj(string str, object env, int silent)
   
   if (!stringp(str) || !sizeof(str) || !objectp(env))
     return NULL;
-  str=string_replace(str, "°01", ".");
+  str=string_replace(str, "\u00B0" "01", ".");
   while(str[e++]=='^')
     ;
   str=str[--e..<1];
-  str=string_replace(str, "°02", "^");
+  str=string_replace(str, "\u00B0" "02", "^");
   if(obj=VarToObj(str))
     ;
   else if(str[0]=='')
-    str=string_replace(str, "°03", "$");
+    str=string_replace(str, "\u00B0" "03", "$");
   else if(sscanf(str, "%d", num)&&(inv=all_inventory(env)))
   {
     if(num>0&&num<=sizeof(inv))
@@ -1419,13 +1419,13 @@ static string QuoteLine(string str)
   string *tmp,*tmp2;
   int i, i2, len, len2, qd, qs;
 
-  str=string_replace(str,"\\\\","°BSHL");
-  str=string_replace(str,"\\\"","°DBLQ");
-  str=string_replace(str,"\\\'","°SGLQ");
-  str=string_replace(str,"\\|","°PIPE");
-  str=string_replace(str,"||","°OROR");
-  str=string_replace(str,"->","°LARR");
-  str=string_replace(str,"\\$","°DOLR");
+  str=string_replace(str,"\\\\","\u00B0""BSHL");
+  str=string_replace(str,"\\\"","\u00B0""DBLQ");
+  str=string_replace(str,"\\\'","\u00B0""SGLQ");
+  str=string_replace(str,"\\|","\u00B0""PIPE");
+  str=string_replace(str,"||","\u00B0""OROR");
+  str=string_replace(str,"->","\u00B0""LARR");
+  str=string_replace(str,"\\$","\u00B0""DOLR");
   tmp=regexplode(str,"(\"|')");
   len=sizeof(tmp);
   qd=qs=0;
@@ -1464,15 +1464,15 @@ static string QuoteLine(string str)
 
 static string UnquoteLine(string str)
 {
-  str=string_replace(str,"°BSHL","\\");
-  str=string_replace(str,"°DBLQ","\"");
-  str=string_replace(str,"°SGLQ","\'");
-  str=string_replace(str,"°DQUO","");
-  str=string_replace(str,"°SQUO","");
-  str=string_replace(str,"°PIPE","|");
-  str=string_replace(str,"°OROR","||");
-  str=string_replace(str,"°LARR","->");
-  str=string_replace(str,"°DOLR","$");
+  str=string_replace(str,"\u00B0""BSHL","\\");
+  str=string_replace(str,"\u00B0""DBLQ","\"");
+  str=string_replace(str,"\u00B0""SGLQ","\'");
+  str=string_replace(str,"\u00B0""DQUO","");
+  str=string_replace(str,"\u00B0""SQUO","");
+  str=string_replace(str,"\u00B0""PIPE","|");
+  str=string_replace(str,"\u00B0""OROR","||");
+  str=string_replace(str,"\u00B0""LARR","->");
+  str=string_replace(str,"\u00B0""DOLR","$");
   TK("UnquoteLine: str: "+str);
   return str;
 }
