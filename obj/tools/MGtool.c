@@ -13,6 +13,8 @@
 protected functions virtual inherit "/std/util/path";
 inherit "/std/thing/properties";
 
+#include <driver_info.h>
+#include <rtlimits.h>
 #include <properties.h>
 
 #if !defined(QUERYCACHED)
@@ -802,7 +804,13 @@ static void MoreFile(string str)
 // Schade eigentlich das ich es neuschreiben musste, aber es ist
 // schneller neu geschrieben als durch die undokumentieren alten Funktionen
 // durchzusteigen... *seufz*
-//					  Padreic
+//            Padreic
+
+// +++ Kommentarlos: Programmierer schreibt unverstaendlichen Code neu,
+//     indem er unverstaendlichen Code schreibt. +++
+// +++ Kommentarlos: Programmierer ersetzt unverstaendlichen Code durch
+//     unverstaendlichen Code. +++
+//   Arathorn (mit Zesstra im Sinn)
 
 static string last_file, *last_file_buffer;
 static int    last_file_date, last_file_size, last_file_complete;
@@ -857,42 +865,46 @@ static int CatFile()
 
 static int XGrepFile(string pat, string file, int mode)
 {
-  int i, j, f, s, fsize;
-  string tfile, *tmp, *ts, t;
-  
   SECURE2(FALSE);
   TK("XGrepFile: pat: "+pat+" file: "+file+" mode: "+mode);
   if(!(pat&&file))
     return FALSE;
-  tfile=TMP_FILE;
-  fsize=file_size(file);
-  for(i=0,f=0; i<fsize && t=read_bytes(file, i, 50000); i+=50000)
-    tmp=strip_explode(t,"\n");
-    if (t && t[<1]!='\n' && sizeof(t)==50000) {
-       i-=sizeof(tmp[<1]);
-       tmp=tmp[0..<2];
-    }
-    if(s=sizeof(tmp))
+
+  // max. Anzahl von Zeilen pro Portion (ueberschlag: 100 Bytes pro Zeile)
+  int maxlines = driver_info(DI_CURRENT_RUNTIME_LIMITS)[LIMIT_FILE] / 100;
+  int start;
+  string buf;
+  // File portionsweise einlesen und verarbeiten
+  while(buf = read_file(file, start, maxlines))
+  {
+    string *lines = strip_explode(buf,"\n");
+    int f; // Pro Treffer erhoeht, benutzt zur einmaligen Ausgabe des Files
+    // ueber alle Zeilen laufen und regexpen
+    foreach(string line : lines)
     {
-      for(j=0;j<s;j++)
+      string *ts=regexp(({(mode&XGREP_ICASE?lower_case(line):line)}),
+                        pat);
+      if(sizeof(ts))
       {
-	if(sizeof(ts=regexp(({(mode&XGREP_ICASE?lower_case(tmp[j]):tmp[j])}),pat)))
-	{
-	  if(!(mode&XGREP_REVERT))
-	   {
-	     if(!f++)
-	       write_file(tfile, "*** File: "+file+" ***\n");
-	     write_file(tfile, tmp[j]+"\n");
-	   }
-	}
-	else if(mode&XGREP_REVERT)
-	{
-	  if(!f++)
-	    write_file(tfile, "*** File: "+file+" ***\n");
-	  write_file(tfile, tmp[j]+"\n");
-	}
+        if(!(mode&XGREP_REVERT))
+        {
+          if(!f++)
+              write_file(TMP_FILE, "*** File: "+file+" ***\n");
+          write_file(TMP_FILE, line+"\n");
+        }
+      }
+      else if(mode&XGREP_REVERT)
+      {
+        if(!f++)
+            write_file(TMP_FILE, "*** File: "+file+" ***\n");
+        write_file(TMP_FILE, line+"\n");
       }
     }
+    if (sizeof(lines) < maxlines)
+      break;
+    else
+      start += sizeof(lines);
+  }
   return TRUE;
 }
 
