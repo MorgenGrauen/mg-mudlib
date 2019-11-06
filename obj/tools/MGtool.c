@@ -741,33 +741,58 @@ static void MoreFile(string str)
 //     unverstaendlichen Code. +++
 //   Arathorn (mit Zesstra im Sinn)
 
-static string last_file, *last_file_buffer;
-static int    last_file_date, last_file_size, last_file_complete;
+// Zustandsvariablen fuer den Cache von sread_line.
+static string last_file, *last_file_lines;
+static int    last_file_date, last_file_linecount, last_file_complete;
 
-static string sread_line(int num)
+// Liest die ersten x Bytes des Files ein und cached diese (aber nur
+// vollstaendige Zeilen). Liefert dann gewuenschte Zeilen aus dem Cache ohne
+// Plattenzugriff.
+protected string sread_line(int num)
 {
    if (!morefile) return "";
-   if (last_file!=morefile || last_file_date!=file_time(morefile)) {
-      if (!(last_file=read_bytes(morefile, 0, 50000))) return "";
-      last_file_date=file_time(morefile);
-      last_file_buffer=explode(last_file, "\n");
-      last_file_size=sizeof(last_file_buffer);
-      if (sizeof(last_file)==50000 && last_file[<1]!='\n') {
-	 last_file_size--; // letzte Zeile nicht vollstaendig gelesen
-	 last_file_complete=0;
+   // wenn sich das morefile geaendert hat, wird das neue File eingelesen.
+   if (last_file!=morefile || last_file_date!=file_time(morefile))
+   {
+      bytes byte_buf=read_bytes(morefile, 0,
+                       driver_info(DI_CURRENT_RUNTIME_LIMITS)[LIMIT_BYTE]);
+      if (!byte_buf) return "";
+      // letzte unvollstaendige Zeile abschneiden
+      int linebreak_index = strrstr(byte_buf, b"\n");
+      if (linebreak_index > -1
+          && linebreak_index < sizeof(byte_buf)-1 )
+      {
+          byte_buf = byte_buf[0..linebreak_index];
+          // dann ist das File auch unvollstaendig.
+          last_file_complete=0;
       }
-      else if (file_size(morefile)>50000)
-	last_file_complete=0;
-      else last_file_complete=1;
-      last_file=morefile;
+      // aber auch wenn byte_buf mit Zeilenumbruch endet, noch schauen, ob das
+      // File nicht laenger ist als byte_buf.
+      else if (sizeof(byte_buf) < file_size(morefile))
+          last_file_complete=0;
+      // ansonsten ist es vollstaendig.
+      else
+          last_file_complete=1;
+
+      // In string konvertieren und cache speichern.
+      last_file = to_text(byte_buf, "UTF-8");
+      last_file_lines = explode(last_file, "\n");
+      // und Daten vom gecachten File speichern
+      last_file_linecount=sizeof(last_file_lines);
+      last_file_date=file_time(morefile);
+      last_file = morefile; //speichert jetzt den Filenamen
    }
    if (num==0) num=1;
-   // bei zu grossen Files nicht mehr alles buffern...
-   if (num>last_file_size) {
+
+   // wenn die angefragte Zeile nicht da ist und das File nicht vollstaendig
+   // ist, wird direkt von der Platte gelesen.
+   if (num > last_file_linecount)
+   {
       if (last_file_complete) return "";
-      return (read_file(morefile, num, 1) || "");
+      return read_file(morefile, num, 1) || "";
    }
-   return last_file_buffer[num-1]+"\n";
+   // Sonst kommt die Zeile aus dem Cache.
+   return last_file_lines[num-1]+"\n";
 }
 
 static int CatFile()
