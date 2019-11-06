@@ -51,6 +51,7 @@ static int delLine(int l);
 static void delBlock();
 static int input_func();
 varargs static void moveBlock(int start, int end, int real);
+protected string killctrl(string str);
 
 void init_rescue() {
   add_action("RescueText","~r");
@@ -103,7 +104,8 @@ static int get_edit_line(string str) {
 
   if (!str) str="";
   // Kontrollzeichen rausfiltern
-  str = regreplace(str,"[[:cntrl:]]","",RE_PCRE|RE_GLOBAL);
+  str = killctrl(str);
+
   fflag = 0;
 
   sl = sizeof(str);
@@ -405,6 +407,12 @@ varargs static void moveBlock(int start, int end, int real)
     len += (blen+1);
     write("OK.\n");
   }
+}
+
+// Remove ASCII control characters.
+protected string killctrl(string str)
+{
+  return regreplace(str,"[[:cntrl:]]","",RE_PCRE|RE_GLOBAL);
 }
 
 mixed RescueText() {
