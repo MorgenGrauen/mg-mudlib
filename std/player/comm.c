@@ -1237,6 +1237,7 @@ static int _whisper(string str)
     _notify("Was willst Du wem zufluestern?",MA_SAY);
     return 1;
   }
+  who = lower_case(who);
   if (!(ob = present(who, environment(this_player()))) || !living(ob)) {
     _notify(capitalize(who)+" ist nicht in diesem Raum.",MA_SAY);
     return 1;
