@@ -1414,7 +1414,7 @@ static int ReportError(string player_input)
   * \param[in] myname Art der Spielermeldung (DETAILS, BUG, TYPO, MD)
   * @see md(string), idea(string), bug(string), typo(string)
   */
-void smart_log(string myname, string str, object obj)
+protected void smart_log(string myname, string str, object obj)
 {
   mapping err = ([ F_PROG: "unbekannt",
            F_LINE: 0,
@@ -1446,17 +1446,28 @@ void smart_log(string myname, string str, object obj)
       break;
   }
 
-  // Eintragung in die Fehler-DB
-  string hashkey = (string)ERRORD->LogReportedError(err);
-
-  // ggf. will das Objekte mit noch irgendwas anfangen.
-  obj->SmartLog(0, myname, str, strftime("%d. %b %Y"));
-
-  tell_object(this_object(), break_string( sprintf(
-    "Du hast an %s erfolgreich %s abgesetzt.\n"
-    "Die ID der abgesetzten Meldung lautet: %s\n",
-    (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc,
-    hashkey||"N/A"),78,BS_LEAVE_MY_LFS));
+  // ggf. will das Objekte selber loggen, dann wird nicht zentral geloggt.
+  if (obj->SmartLog(0, myname, str, strftime("%d. %b %Y")))
+  {
+    ReceiveMsg(sprintf(
+          "Du hast an %s erfolgreich %s abgesetzt.\n"
+          "Hinweis: Das Objekt selber hat die Meldung protokolliert.",
+          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc),
+        MT_NOTIFICATION | MSG_BS_LEAVE_LFS | MSG_DONT_BUFFER |
+        MSG_DONT_STORE | MSG_DONT_IGNORE, MA_UNKNOWN, 0, ME);
+  }
+  else
+  {
+    // Eintragung in die Fehler-DB
+    string hashkey = (string)ERRORD->LogReportedError(err);
+    ReceiveMsg(sprintf(
+          "Ein kleiner Fehlerteufel hat D%s an %s unter der ID %s "
+          "notiert.",
+          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc,
+          hashkey || "N/A"),
+        MT_NOTIFICATION | MSG_DONT_BUFFER | MSG_DONT_STORE | MSG_DONT_IGNORE,
+        MA_UNKNOWN, 0, ME);
+  }
 }
 
 /** Speichert den Spieler und loggt ihn aus (Spielerkommando 'ende').
