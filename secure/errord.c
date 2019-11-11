@@ -344,10 +344,11 @@ int db_insert_issue(struct fullissue_s issue)
 // T_REPORTED_MD, T_REPORTED_SYNTAX
 public string LogReportedError(mapping err)
 {
-    //darf nur von Spielershells oder Fehlerteufel gerufen werden.
+    //darf nur von Spielershells oder Objekt in /obj/ (z.B. Fehlerteufel oder
+    //vitem_proxy) gerufen werden.
     if (extern_call() && !previous_object()
         || (strstr(load_name(previous_object()),"/std/shells/") == -1
-           && load_name(previous_object()) != "/obj/tools/fehlerteufel"))
+            && strstr(load_name(previous_object()), "/"LIBOBJDIR"/") == -1))
         return 0;
 
     //DEBUG("LogReportedError\n");
