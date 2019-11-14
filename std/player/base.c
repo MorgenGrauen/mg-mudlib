@@ -3885,7 +3885,12 @@ static int erwarte(string str)
            write("Sorry, aber Du erwartest schon genuegend Leute!\n");
         else
         {
-           SetProp(P_WAITFOR_REASON, mlist+([s:implode(str1[2..80]," ")]));
+           // Meldung wieder zusammensetzen
+           string meldung = implode(str1[2..], " ");
+           // und Laenge auf 78 Zeichen abschneiden.
+           meldung = sprintf("%.78s", meldung);
+           m_add(mlist, s, meldung);
+           SetProp(P_WAITFOR_REASON, mlist);
            Show_WaitFor_Reason(s,0);
         }
      }
