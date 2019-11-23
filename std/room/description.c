@@ -61,12 +61,10 @@ varargs void AddRoomMessage(string *mesg, int prob, mixed func)
 
 static void WriteRoomMessage()
 {
-  int tim, msgid;
-  string *room_msg,func;
-  mixed *func_msg;
+  int msgid;
 
-  room_msg = (string *)QueryProp(P_ROOM_MSG);
-  func_msg = QueryProp(P_FUNC_MSG);
+  string *room_msg = QueryProp(P_ROOM_MSG);
+  <string|string*> func_msg = QueryProp(P_FUNC_MSG);
   if ((!room_msg || !sizeof(room_msg)) && !func_msg)
     return;
 
@@ -81,6 +79,7 @@ static void WriteRoomMessage()
 
   if (func_msg)
   {
+    string func;
     if (stringp(func_msg))
       func=(string)func_msg;
     else
@@ -90,10 +89,9 @@ static void WriteRoomMessage()
   }
 
   while (remove_call_out("WriteRoomMessage")!=-1);
-  tim=QueryProp(P_MSG_PROB);
   if(this_object() && sizeof(filter(
        deep_inventory(this_object()), #'interactive))) //')))
-    call_out("WriteRoomMessage", (tim<15 ? 15 : tim));
+    call_out("WriteRoomMessage", max(15, QueryProp(P_MSG_PROB)));
 }
 
 varargs string int_long(mixed viewer,mixed viewpoint,int flags)

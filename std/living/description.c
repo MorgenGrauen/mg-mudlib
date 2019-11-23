@@ -326,13 +326,15 @@ static string _query_real_race()
   return Query(P_REAL_RACE,F_VALUE)||QueryProp(P_RACE);
 }
 
-static mixed _set_name(mixed nm )
+static <string|string*> _set_name(<string|string*> nm )
 {
   string lvnam;
-  lvnam = nm;
-  if(pointerp(nm)) lvnam = nm[0];
+  if (pointerp(nm))
+    lvnam = nm[WER];
+  else
+    lvnam = nm;
   set_living_name(lower_case(lvnam));
-  return Set(P_NAME, nm);
+  return Set(P_NAME, nm, F_VALUE);
 }
 
 int _query_container()
@@ -340,7 +342,7 @@ int _query_container()
   return 0;
 }
 
-int is_class_member(mixed str) {
+int is_class_member(<string|string*> str) {
   // Keine Klasse, keine Mitgliedschaft ...
   if (!str || (!stringp(str) && !pointerp(str)) || str=="") 
       return 0;

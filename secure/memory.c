@@ -58,15 +58,17 @@ varargs void ShowData(string user, string key);
 /* Function definition */ 
 /*! Objekt initialisieren */
 void create() {
-  mapping info;
   seteuid(getuid(this_object()));
 
   // Wizinfo-Pointer holen
-  if(!pointerp(info=get_extra_wizinfo(0)))
-    raise_error("WIZINFO nicht lesbar. secure/simul_efun muss neu geladen werden.!\n");
+  mixed *info = get_extra_wizinfo(0);
+  if(!pointerp(info))
+    raise_error("WIZINFO nicht lesbar. secure/simul_efun muss neu "
+                "geladen werden.\n");
 
+  mapping memory = info[MEMORY_BUFF];
   // Mein Feld der Wizinfo bei Bedarf initialisieren
-  if(!mappingp(info[MEMORY_BUFF]))
+  if(!mappingp(memory))
     info[MEMORY_BUFF]=([]);
 
   RereadProgramLists(1);
@@ -128,11 +130,11 @@ varargs int RereadProgramLists(int silent)
 
 /*! Zeiger auf den Speicher holen */
 private mapping get_memory_pointer(){
-  mixed info;
+  mixed *info = get_extra_wizinfo(0);
 
   // Die Fehlermeldungen sind etwas ausfuehrlicher, um dem Debugger
   // einen Hinweis auf Reparaturmoeglichkeiten zu geben
-  if(!pointerp(info=get_extra_wizinfo(0)))
+  if(!pointerp(info))
     raise_error("Wizinfo nicht ladbar. Entweder ich hab keine Rechte "
                 "oder das Mud hat ein echtes Problem!\n");
 
@@ -143,7 +145,7 @@ private mapping get_memory_pointer(){
   // Da info[MEMORY_BUFF] immer ein Mapping ist (siehe Create), wird hier ein 
   // Pointer uebergeben. Dadurch werden Details zum Aufbau der extra_wizinfo
   // nur in dieser Funktion benoetigt.
-  return info[MEMORY_BUFF]; 
+  return info[MEMORY_BUFF];
 }
 
 /*!
