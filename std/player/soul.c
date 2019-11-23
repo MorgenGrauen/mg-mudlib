@@ -283,7 +283,7 @@ verben_liste()  {
 
 varargs private void
 ParseRest(string arg, mixed extra)  {
-  string wer,wie,*words,quotea;
+  string wie,*words,quotea;
   int num,bis;
   who = for_all = adverb = 0;
   if (!arg) return;
@@ -303,8 +303,12 @@ ParseRest(string arg, mixed extra)  {
 
   words=explode(implode(explode(arg, ","), " und"), " ");
   if (!sizeof(words)) return;
-  if (sizeof(words) && (words[0]=="alle" || words[0]=="allen"))
-    for_all=1,wer=words[0],words=words[1..];
+  <string|int> wer;
+  if (sizeof(words) && (words[0]=="alle" || words[0]=="allen")) {
+    for_all=1;
+    wer=words[0];
+    words=words[1..];
+  }
   if (!for_all)  {     /* noch kein Opfer */
     wer=match_living(lower_case(words[0]));
     if (stringp(wer)) who=present(wer, environment(ME));
