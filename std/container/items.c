@@ -78,8 +78,8 @@ protected varargs void remove_multiple(int limit, mixed fun)
   {
     fun="description_id";
   }
-  inh=unique_array(inh,fun,0);
-  foreach(mixed arr : inh)
+  object **sorted_inh=unique_array(inh,fun,0);
+  foreach(object *arr : sorted_inh)
   {
     if(sizeof(arr)<=limit)
     {
