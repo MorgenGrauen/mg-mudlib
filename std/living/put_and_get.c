@@ -133,7 +133,7 @@ private string put_or_get(object o, object dest)
 
 {
     int method, ret;
-    string str;
+    <string|int> str;
 
     //if (living(o))
     //    raise_error(sprintf("Lebendes Argument fuer put_or_get: %O\n", o));
