@@ -481,7 +481,7 @@ varargs int cmd_kobold(string arg)
 }
 
 public int TestIgnoreSimple(string *arg)
-{   string *ignore;
+{   mapping ignore;
 
     if (!pointerp(arg) || !mappingp(ignore=Query(P_IGNORE,F_VALUE)))
         return 0;
