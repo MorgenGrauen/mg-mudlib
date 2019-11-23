@@ -35,7 +35,7 @@ static int _query_player_light()
 
 varargs int CannotSee(int silent)
 {
-   string is_blind = QueryProp(P_BLIND);;
+   string|int is_blind = QueryProp(P_BLIND);
    if (is_blind &&
        (!IS_LEARNER(this_object()) || !Query(P_WANTS_TO_LEARN)))
    {
