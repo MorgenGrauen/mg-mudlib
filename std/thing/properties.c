@@ -139,9 +139,8 @@ public varargs mixed Query( string name, int Type )
 // Property setzen unter Verwendung evtl. vorhandener Zugriffsfunktionen
 public mixed SetProp( string name, mixed Value )
 {
-  closure func;
   mixed result;
-   
+
   // nur fuer heute
   if (!objectp(this_object()))
     return 0;
@@ -150,7 +149,10 @@ public mixed SetProp( string name, mixed Value )
   if (prop[F_MODE][name] & NOSETMETHOD ) return -1;
 
   // Set-Method abfragen, so vorhanden
-  if (func=prop[F_SET_METHOD][name])
+  // TODO: nachdem alle moeglichen Werte als Set-Methode illegal sind, auf
+  // closure aendern.
+  mixed func = prop[F_SET_METHOD][name];
+  if (func)
   {
     int flag;
 
@@ -192,15 +194,15 @@ public mixed SetProp( string name, mixed Value )
 // Property auslesen unter Verwendung evtl. vorhandener Zugriffsfunktionen
 public mixed QueryProp( string name )
 {
-  closure func;
   mixed result;
- 
+
   // nur fuer heute
   if (!objectp(this_object()))
     return;
 
   // Query-Methode vorhanden?
-  if ( func = prop[F_QUERY_METHOD][name] )
+  mixed func = prop[F_QUERY_METHOD][name];
+  if (func)
   {
     int flag;
 
