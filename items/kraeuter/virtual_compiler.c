@@ -111,7 +111,7 @@ varargs string CustomizeObject(string file)
    {
       // Welches Objekt clont das File?
       string cloner = get_cloner();
-      string rooms = arr[1];
+      mapping rooms = arr[1];
       mixed props = arr[0];
       // Wird das Kraut legal von einem eingetragenen Cloner erzeugt? Nur dann
       // bekommt es eine gueltige Plant-ID.

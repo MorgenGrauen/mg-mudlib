@@ -1503,7 +1503,6 @@ static int new_quit() {
   * @see short_score()
   */
 static int score(string arg) {
-  string tmp, gender;
   int i,sz,val;
   mixed ind;
   object *enem1, *enem2, *inv;
@@ -1514,12 +1513,13 @@ static int score(string arg) {
   }
 
   int plev = LEPMASTER->QueryLevel();
- 
-  switch(tmp = QueryProp(P_GENDER)) {
+  <string|int> tmp = QueryProp(P_GENDER);
+  string gender;
+  switch(tmp) {
   case MALE: gender = "maennlich"; break;
   case FEMALE: gender = "weiblich"; break;
   case NEUTER: gender = "neutral"; break;
-  default: gender = lower_case(tmp);
+  default: gender = "unbekannt";
   }
 
   ind = m_indices(QueryProp(P_ATTRIBUTES));

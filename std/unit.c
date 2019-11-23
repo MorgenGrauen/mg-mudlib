@@ -176,10 +176,9 @@ static string|string*  _set_name(mixed names)
 
 void AddSingularId(mixed str)
 {
-  string *ids;
+  string **ids=Query(U_IDS);
   if (!pointerp(str))
     str=({str});
-  ids=Query(U_IDS);
   Set(U_IDS,({ids[0]+str,ids[1]}));
 }
 
@@ -193,8 +192,7 @@ void RemoveSingularId(mixed str)
  
 void AddPluralId(mixed str)
 {
-  string *ids;
-  
+  string **ids;
   if (!pointerp(str))
     str=({str});
   ids=Query(U_IDS);
@@ -317,7 +315,7 @@ varargs string long()
 varargs int id(string str,int lvl)
 {
 
-  string s1,s2,*ids;
+  string s1,s2,**ids;
   int i;
 
   if (!str) return 0;
@@ -333,31 +331,28 @@ varargs int id(string str,int lvl)
     return 1;
   }
 
- ids=Query(U_IDS);
+  ids=Query(U_IDS);
   if (!ids)
     return 0;
- 
-  //die casts auf 'mixed' sind absicht. Sonst geht der Driver offenbar davon
-  //aus, dass ids[1] ein String ist. Es ist aber aber ein Array von Strings
-  //und genau das will auch match_item() haben. ;-) Zesstra
-  if (match_item(str,(mixed)ids[1] )) {
+
+  if (match_item(str, ids[1] )) {
     SetProp(U_REQ, amount);
     return 1;
   }
-  if (match_item(str,(mixed)ids[0] )) {
+  if (match_item(str, ids[0] )) {
     SetProp(U_REQ,1);
     return 1;
   }
   if (sscanf(str,"%s %s",s1,s2) && s1[0..3]=="alle" && 
-    match_item(s2,(mixed)ids[1] )) {
+    match_item(s2, ids[1] )) {
     SetProp(U_REQ, amount);
     return 1;
   }
-  if (sscanf(str,"%d %s",i,s1)==2 && i==1 && match_item(s1,(mixed)ids[0] )) {
+  if (sscanf(str,"%d %s",i,s1)==2 && i==1 && match_item(s1, ids[0] )) {
     SetProp(U_REQ,1);
     return 1;
   }
-  if (sscanf(str,"%d %s",i,s1)==2 && match_item(s1,(mixed)ids[1] ) && 
+  if (sscanf(str,"%d %s",i,s1)==2 && match_item(s1, ids[1] ) && 
       i<=amount && i>0) {
     SetProp(U_REQ,i);
     return 1;
