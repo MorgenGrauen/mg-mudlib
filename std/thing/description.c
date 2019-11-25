@@ -433,7 +433,7 @@ public varargs string long(int mode)
 // Kurzbeschreibung anzeigen, falls nicht unsichtbar
 public string short()
 {
-  string sh;
+  string|closure sh;
 
   // Unsichtbar? Dann gibts nichts zu sehen ...
   if (QueryProp(P_INVIS)||!(sh=QueryProp(P_SHORT)))
