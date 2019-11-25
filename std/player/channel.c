@@ -240,10 +240,10 @@ private mixed getChannel(string ch)
 #endif
 int ChannelParser(string args)
 {
-  mixed ch, cmd, tmp;
+  mixed ch;
   int pos, type, err;
-  string txt;
-  cmd = query_verb();
+  string txt, tmp;
+  string|string* cmd = query_verb();
   args = _unparsed_args();
   notify_fail("Benutzung: -<Ebene>[ ]['|:|;]<Text>\n"
               "           -<Ebene>[+|-|?|!|*]\n"
