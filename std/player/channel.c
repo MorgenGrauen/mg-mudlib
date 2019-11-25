@@ -153,13 +153,21 @@ varargs private string getName(mixed x, int fall) {
   return "<Unbekannt>";
 }
 
-// <nonint> unterdrueckt die AUsgabe an den Spieler und liefert den Text
+// <nonint> unterdrueckt die Ausgabe an den Spieler und liefert den Text
 // zurueck. Wird nur fuer die Ebenenhistory benutzt. 
-string ChannelMessage(mixed* msg, int nonint)
+string ChannelMessage(<string|object|int>* msg, int nonint)
 {
   string channel_message;
   string channel=msg[0];
-  object sender=msg[1];
+
+  // Wenn eine Ebenenmeldung ausgegeben werden soll, ist msg[1] ein Objekt,
+  // im Fall der History aber ein String. Daher wird <sender> als Union
+  // deklariert. Das ist unproblematisch, weil die beiden Datentypen
+  // komplett getrennte Wege nehmen: ein Objekt wird an ReceiveMsg()
+  // durchgereicht (Ebenenmeldung). Ein String wird direkt in die Meldung
+  // (History) eingebaut, diese an den ChannelParser() zurueckgegeben, der
+  // sie via More() ausgibt.
+  string|object sender=msg[1];
   string message=msg[2];
   int msg_type = msg[3];
 
