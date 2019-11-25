@@ -202,7 +202,7 @@ private int ri_filter(<int|<string|string*>|object|mapping>* ritem,
 
 public void RemoveItem(string|string* filename)
 {
-  < <int|<string|string*>|object>* >* items=QueryProp(P_ITEMS);
+  < <int|<string|string*>|object|mapping>* >* items=QueryProp(P_ITEMS);
 
   if(!pointerp(items) || !sizeof(items))
   {
