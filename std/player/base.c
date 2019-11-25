@@ -1902,8 +1902,7 @@ static int kill(string str) {
   }
   str=lower_case(str);
   if (str=="alle") {
-    object livs;
-    livs=filter(all_inventory(environment(PL)),
+    object* livs = filter(all_inventory(environment(PL)),
         function int (object ob) {
             if (living(ob) && !query_once_interactive(ob)
                   && !ob->QueryProp(P_INVIS)
