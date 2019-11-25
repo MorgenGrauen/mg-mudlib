@@ -14,6 +14,7 @@
 #include <daemon/mand.h>
 #include <udp.h>
 #include <files.h>
+#include <rtlimits.h>
 
 #define NEED_PROTOTYPES
 #include <magier.h>
@@ -575,9 +576,7 @@ static int _showprops(string str)
 
 private int grep_file(mixed filedata, string rexpr, int flags)
 {
-  string fullname,data,carry,*lines,*lines_orig,*tmp,*result;
-  int ptr,count,i,nol,match,index;
-  fullname=filedata[FULLNAME];
+  string fullname=filedata[FULLNAME];
   if ((flags&GREP_F)&&fullname=="/players/"+getuid()+"/grep.out")
   {
     write_file("/players/"+getuid()+"/grep.out",
@@ -593,79 +592,75 @@ private int grep_file(mixed filedata, string rexpr, int flags)
   }
   if (!MAY_READ(fullname))
     return ERROR(NO_READ,fullname,RET_FAIL);
-  carry=""; result=({});
+
+  // Bei case-insensitiver Suche das Pattern in Kleinschreibung wandeln
   if (flags&GREP_I)
     rexpr=lower_case(rexpr);
-  do
+
+  // Portionsweise das komplette File einlesen.
+  int maxlen = query_limits()[LIMIT_BYTE];
+  int ptr;
+  bytes read_buffer;
+  bytes data = b"";
+  while (sizeof(read_buffer = read_bytes(fullname, ptr, maxlen)))
   {
-    data=to_text(read_bytes(fullname,ptr,MAXLEN)||"", "UTF-8");
-    ptr+=MAXLEN;
-    lines=explode(carry+data,"\n");
-    switch(sizeof(lines))
-    {
-      case 0: continue;
-      case 1:
-        carry="";
-        break;
-      default:
-        carry=lines[<1];
-        lines=lines[0..<2];
-        break;
-    }
-    lines_orig=lines;
-    if (flags&GREP_I)
-      lines=map(lines,#'lower_case);
-    nol=sizeof(lines);
-    for (i=0;i<nol;i++)
-    {
-      match=sizeof(regexp(lines[i..i],rexpr));
-      if (flags&GREP_V) match=!match;
-      if (match)
-      {
-        if (!(flags&GREP_C))
-        {
-          if (flags&GREP_N)
-            result+=({ sprintf("%4d %s",index+i+1,lines_orig[i])});
-          else
-            result+=lines_orig[i..i];
-        }
-        count++;
-      }
-    }
-    index+=nol;
+    data += read_buffer;
+    ptr += sizeof(read_buffer);
+    // die Schleifenbedingung erkennt zwar auch, wenn das File vollstaendig
+    // ist, aber wir koennen den Speicherzugriff auch einsparen und schauen,
+    // ob wir schon alles haben.
+    if (ptr >= filedata[FILESIZE])
+      break;
   }
-  while(sizeof(data)==MAXLEN);
-  if (carry!="")
+  // In string konvertieren, wir gehen davon aus, das File ist UTF8-kodiert.
+  string text = to_text(data, "UTF-8");
+  string *lines = explode(text, "\n");
+  int count; // Anzahl Zeilen mit Treffern
+  <string|string*> result = ({}); // zutreffende Zeilen
+  int linecount = 1;
+  foreach(string line: lines)
   {
-    if (flags&GREP_I) carry=lower_case(carry);
-    match=sizeof(regexp(({ carry }),rexpr));
-    if (flags&GREP_V) match=!match;
+    string orig_line = line;
+    // Suche case-insensitive?
+    if (flags&GREP_I)
+      line = lower_case(line);
+    int match = regmatch(line, rexpr) != 0;
+    if (flags&GREP_V) match = !match; // Match ggf. invertieren
     if (match)
     {
-      if(!(flags&GREP_C))
+      // Ausgeben oder nicht?
+      if (!(flags&GREP_C))
       {
-        if(flags&GREP_N)
-           result+=({ sprintf("%4d %s",index+1,carry) });
+        // Mit Zeilennummer?
+        if (flags&GREP_N)
+          result+=({ sprintf("%4d %s", linecount, orig_line)});
         else
-           result+=({carry});
+          result+=({orig_line});
       }
-      count++;
+      ++count;
     }
+    ++linecount;
   }
-  carry="";
+
   if (count)
   {
-    if (flags&GREP_L) carry=sprintf("%s\n",fullname);
-    else if (flags&GREP_H) data="";
-    else data=sprintf(" %s:",fullname);
-    if (flags&GREP_C) carry=sprintf("%s %d passende Zeile%s.\n",data,count,
-                             (count==1?"":"n"));
+    // Bei -h werden die Dateinamen unterdrueckt.
+    if (flags&GREP_H)
+      fullname="";
     else
-      carry=(data+"\n"+implode(result,"\n")+"\n");
+      fullname=sprintf("%s ",fullname);
+
+    if (flags&GREP_C)
+      result=sprintf("%s%d passende Zeile%s.\n",fullname, count,
+                           (count==1?"":"n"));
+    else
+      result = ( (sizeof(fullname) ? fullname + "\n" : "")
+                + implode(result,"\n") + "\n");
   }
+
   if (flags&GREP_F)
-    return write_file("/players/"+getuid()+"/grep.out",carry);
-  write(carry);
+    return write_file("/players/"+getuid()+"/grep.out",result);
+  write(result);
   return RET_OK;
 }
 
