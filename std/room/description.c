@@ -97,6 +97,7 @@ static void WriteRoomMessage()
 varargs string int_long(mixed viewer,mixed viewpoint,int flags)
 {
   string descr, inv_descr;
+  string|int transparency;
 
   flags &= 3;
   if( IS_LEARNER(viewer) && viewer->QueryProp( P_WANTS_TO_LEARN ) )
@@ -125,14 +126,14 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
   if ( inv_descr != "" )
     descr += inv_descr;
 
-  if(environment() && (inv_descr=QueryProp(P_TRANSPARENT)))
+  if(environment() && (transparency=QueryProp(P_TRANSPARENT)))
   {
-    if(stringp(inv_descr)) descr += inv_descr;
+    if(stringp(transparency)) descr += transparency;
     else                   descr += "Ausserhalb siehst Du:\n";
-            
+
     descr += environment()->int_short(viewer,ME);
   }
-                  
+
   return descr;
 }
 
