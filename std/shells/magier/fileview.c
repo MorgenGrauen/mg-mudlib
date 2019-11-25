@@ -598,7 +598,7 @@ private int grep_file(mixed filedata, string rexpr, int flags)
     rexpr=lower_case(rexpr);
   do
   {
-    data=read_bytes(fullname,ptr,MAXLEN)||"";
+    data=to_text(read_bytes(fullname,ptr,MAXLEN)||"", "UTF-8");
     ptr+=MAXLEN;
     lines=explode(carry+data,"\n");
     switch(sizeof(lines))
