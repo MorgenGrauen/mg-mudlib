@@ -2871,7 +2871,7 @@ void save_me(mixed value_items)
   // Autoloader identifizieren und speichern
   autoload=([]);
   foreach(object ob: deep_inventory(ME)) {
-    int val = ob->QueryProp( P_AUTOLOADOBJ );
+    mixed val = ob->QueryProp( P_AUTOLOADOBJ );
     if (val && clonep(ob))
     {
       string obname=load_name(ob);
