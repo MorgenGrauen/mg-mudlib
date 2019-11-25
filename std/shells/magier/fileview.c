@@ -223,7 +223,8 @@ static int _ls(string cmdline)
 {
   int flags,cmp,i,arg_size,size;
   int maxlen,counter,maxcount;
-  string *args,output;
+  mixed* args;
+  string output;
   mixed *tmp;
   closure output_fun,v_read,v_write,creator,sort_fun;
   
