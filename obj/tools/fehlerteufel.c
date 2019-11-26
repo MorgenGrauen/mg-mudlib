@@ -5,7 +5,7 @@
 */
 
 #pragma strict_types
-#pragma pedantic
+//#pragma pedantic
 #pragma range_check
 #pragma no_shadow
 #pragma no_inherit

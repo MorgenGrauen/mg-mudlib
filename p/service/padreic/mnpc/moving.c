@@ -1,4 +1,4 @@
-#pragma save_types,strong_types,rtt_checks,pedantic
+#pragma save_types,strong_types,rtt_checks
 
 inherit "/std/living/moving";
 

@@ -16,7 +16,7 @@
 #pragma no_inherit
 #pragma verbose_errors
 #pragma combine_strings
-#pragma pedantic
+//#pragma pedantic
 #pragma warn_deprecated
 
 #include "haus.h"
