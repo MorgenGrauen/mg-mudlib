@@ -8,7 +8,7 @@
 #pragma no_shadow
 #pragma verbose_errors
 #pragma combine_strings
-#pragma pedantic
+//#pragma pedantic
 #pragma range_check
 #pragma warn_deprecated
 

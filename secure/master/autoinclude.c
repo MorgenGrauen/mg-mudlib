@@ -9,7 +9,7 @@
 // fuer alte Homemuds...
 #if __VERSION__ >= "3.5.0"
 #define RTTCHECKS PRAGMA("rtt_checks")
-#define DEFAULTS PRAGMA("save_types")
+#define DEFAULTS PRAGMA("save_types, no_warn_empty_casts")
 #else
 #define RTTCHECKS ""
 #define DEFAULTS PRAGMA("combine_strings, verbose_errors, warn_deprecated")
@@ -28,13 +28,13 @@ private nosave mapping autoincludes = ([
                  0: "",
                ]),
     "std":    ([
-                 0: PRAGMA("strong_types,pedantic") RTTCHECKS,
+                 0: PRAGMA("strong_types") RTTCHECKS,
                ]),
     "items":    ([
-                 0: PRAGMA("strong_types,pedantic") RTTCHECKS,
+                 0: PRAGMA("strong_types") RTTCHECKS,
                ]),
     "secure": ([
-                 0: PRAGMA("strong_types,range_check,pedantic") RTTCHECKS,
+                 0: PRAGMA("strong_types,range_check") RTTCHECKS,
                ]),
     "p":      ([
                  0: "",
