@@ -134,7 +134,7 @@ SIEHE AUCH
      Verwandt:
        :doc:`SetAttackChats`
      Props:
-       :doc:`../props/P_CHAT_CHANCE`
+       :doc:`../props/P_CHAT_CHANCE`, :doc:`../props/P_ACHATS`, :doc:`../props/P_ACHAT_CHANCE`
      Sonstiges:
        :doc:`../sefun/send_room`, :doc:`../sefun/process_string`
 

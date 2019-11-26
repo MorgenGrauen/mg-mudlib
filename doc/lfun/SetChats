@@ -148,7 +148,7 @@ SIEHE AUCH
       SetAttackChats()
 
    Props:
-      P_CHAT_CHANCE
+      P_CHAT_CHANCE, P_ACHATS, P_ACHAT_CHANCE
 
    Sonstiges:
       send_room(), process_string()

@@ -19,3 +19,11 @@ BESCHREIBUNG
 ============
 
    Alist mit Strings, die das Monster zufaellig ausgibt.
+
+
+SIEHE AUCH
+==========
+
+   Methoden:    SetChats(), SetAttackChats()
+
+   Properties:  P_CHAT_CHANCE, P_ACHATS, P_ACHAT_CHANCE

@@ -19,3 +19,11 @@ BESCHREIBUNG
 ============
 
    Wahrscheinlichkeit, mit der die Chats ausgegeben werden.
+
+
+SIEHE AUCH
+==========
+
+   Methoden:    SetChats(), SetAttackChats()
+
+   Properties:  P_CHATS, P_ACHATS, P_ACHAT_CHANCE

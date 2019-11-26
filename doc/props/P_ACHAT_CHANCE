@@ -19,3 +19,11 @@ BESCHREIBUNG
 ============
 
    Wahrscheinlichkeit fuer die Attack-Chat-Ausgabe.
+
+
+SIEHE AUCH
+==========
+
+   Methoden:    SetChats(), SetAttackChats()
+
+   Properties:  P_CHATS, P_ACHATS, P_CHAT_CHANCE

@@ -98,7 +98,7 @@ SIEHE AUCH
      Verwandt:
        :doc:`SetChats`, :doc:`AddSpell`
      Props:
-       :doc:`../props/P_CHAT_CHANCE`
+       :doc:`../props/P_ACHAT_CHANCE`, :doc:`../props/P_CHATS`, :doc:`../props/P_CHAT_CHANCE`
      Sonstiges:
        :doc:`../sefun/send_room`, :doc:`../sefun/process_string`
 

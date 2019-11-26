@@ -117,7 +117,7 @@ SIEHE AUCH
       SetChats(), AddSpell()
 
    Props:
-      P_CHAT_CHANCE
+      P_ACHAT_CHANCE, P_CHATS, P_CHAT_CHANCE
 
    Sonstiges:
       send_room(), process_string()
