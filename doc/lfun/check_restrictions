@@ -146,7 +146,7 @@ BEMERKUNGEN
      Hier kann ein String-Array mit den Namen (Keys) der Quest(s) angegeben
      werden, die der Spieler bestanden haben muss, um die Aktion ausfuehren
      zu koennen.
-   SQ_MINIQUEST
+   SR_MINIQUEST
      Hier kann entweder ein String-Array mit den Ladenamen der vergebenden
      Objekte oder ein Int-Array mit den Index-Nummern (IDs) der
      Miniquest(s) (empfohlen!) angegeben werden, die der Spieler bestanden
