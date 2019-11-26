@@ -34,7 +34,6 @@ private void configure_object(object ziel, mapping newprops)
   props = ([:0]);
   foreach (string k, mixed v : newprops)
   {
-    printf("VSH: Prop %s, %O\n", k, v);
     int reset_prop;
     if (k[0] == VI_RESET_PREFIX)
     {
