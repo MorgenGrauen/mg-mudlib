@@ -394,7 +394,7 @@ string SimpleInv(object player) {
     result+=sprintf("%-20s %-57s\n",armour_order[i],list[i] || "");
   }
 
-  object ob=ob=player->QueryProp(P_WEAPON);
+  object ob=player->QueryProp(P_WEAPON);
   if (objectp(ob)) 
   {
     string waffentyp;
