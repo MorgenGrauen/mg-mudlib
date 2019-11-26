@@ -91,8 +91,8 @@ public varargs mapping QuerySkillAttributeModifier(object caster,
                            string *attr);
 
 // Kompatibilitaetsfunktion mit altem Interface.
-public int    ModifySkillAttributeOld(object caster, string atrname, int value,
-                          int duration, mixed fun);
+public varargs int ModifySkillAttributeOld(object caster, string atrname,
+                     int value, int duration, mixed fun);
 
 #endif // __SKILL_ATTRIBUTES_H_PROTO__
 
