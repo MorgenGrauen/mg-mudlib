@@ -49,47 +49,44 @@ BEISPIEL
 ========
 
    #define TP this_player()
-   ...
+   #define BS(x) break_string(x, 78)
 
    int heilung=1;
-   ...
 
-   create()
+   protected void create()
    {
-    ::create();
-    SetProp(P_NAME,"Heilpflanze");
-    ...
+     ::create();
+     SetProp(P_NAME,"Heilpflanze");
+     ...
 
-    AddCmd("iss","eat");
+     AddCmd("iss&@ID", "eat", "WAS willst Du essen?");
    }
 
    int eat(string str)
    {
-     notify_fail("WAS willst Du essen?\n");
-     if ( !str || !id(str) )
-      return 0;
-     ...
-
-     if ( !TP->eat_food(25) )
-      return 1;
-
-     TP->buffer_hp(20,5);
-     TP->buffer_sp(80,10);
-     heilung--;
-     write(BS("Du fuehlst langsam, wie Deine Kraefte zurueckkehren."));
-
+     if ( TP->eat_food(25) )
+     {
+       TP->buffer_hp(20,5);
+       TP->buffer_sp(80,10);
+       heilung--;
+       tell_object(this_player(), BS("Du fuehlst langsam, wie Deine Kraefte "
+           "zurueckkehren."));
+     }
+     // Wenn der Spieler nichts mehr essen kann, wird die Meldung von
+     // eat_food() erzeugt.
      return 1;
    }
 
-   reset()
+   void reset()
    {
      heilung=1;
      ::reset();
    }
 
-   Es wird durch eat_food getestet, ob der Spieler noch genuegend essen kann.
-   Wenn ja, kriegt unser Held die 25 automatisch oben drauf und ausserdem
-   20 LP in 5-LP-Schritten und 80 KP in 10-LP-Schritten gutgeschrieben.
+   Es wird durch eat_food() getestet, ob der Spieler noch genuegend essen
+   kann. Wenn ja, kriegt unser Held die 25 automatisch oben drauf und
+   ausserdem 20 LP in 5-LP-Schritten und 80 KP in 10-KP-Schritten
+   gutgeschrieben.
 
 
 SIEHE AUCH

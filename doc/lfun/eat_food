@@ -79,12 +79,9 @@ BEISPIEL
                  "dem Keks herum und fuehlst Dich gleich viel besser.", 78));
 
      // alle Lebewesen im Raum bekommen das auch mit
-     foreach(object ob:
-             (filter(all_inventory(environment(this_player())), #'living) -
-              ({this_player()})))
-       ob->ReceiveMsg(this_player()->Name()+" knuspert einen Keks weg.",
-                      MT_LOOK|MT_LISTEN,
-                      MA_EAT);
+     tell_room(environment(this_player()),
+         this_player()->Name()+" knuspert einen Keks weg.\n",
+         ({this_player()}));
 
      // Rassenabhaengige Heilung: Sofort oder in Schritten
      // Tragbare Heilungen sollten auch eher buffer_hp/_sp benutzen.

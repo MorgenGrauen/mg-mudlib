@@ -251,6 +251,8 @@ BEISPIEL
            "Stueck aus dessen Keule und braet diese fuer @WEN1."}));
 
 LISTE DER ALTEN PLATZHALTER (DEPRECATED):
+-----------------------------------------
+::
            &&  - pl->name(WER,2)
            &1& - pl->name(WER,2)
            &2& - pl->name(WESSEN,2)
