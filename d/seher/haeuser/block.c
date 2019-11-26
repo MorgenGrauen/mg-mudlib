@@ -10,11 +10,11 @@
 #include <combat.h>
 #include "haus.h"
 
-inherit "std/clothing";
+inherit "/std/clothing";
 
 private nosave int shadowing;
 
-create()
+protected void create()
 {
   if (!clonep(this_object())) return;
 
@@ -288,8 +288,7 @@ protected void NotifyMove(object dest, object oldenv, int method) {
   return ::NotifyMove(dest, oldenv, method);
 }
 
-int
-remove(int silent)
+varargs int remove(int silent)
 {
   if (clonep(this_object()) && environment())
     environment()->SeherHatGenug();
