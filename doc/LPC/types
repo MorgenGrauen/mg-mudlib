@@ -11,9 +11,9 @@ DESCRIPTION
                 macros __INT_MIN__ and __INT_MAX__.
 
                 Integer values can be specified in decimal, in
-                sedecimal when preceeded by '0x' (e.g. 0x11), binary
+                sedecimal when preceded by '0x' (e.g. 0x11), binary
                 when preceeded by '0b' (e.g. 0b00010001), octal when
-                preceeded by '0o' (e.g. 0o21) and as character
+                preceded by '0o' (e.g. 0o21) and as character
                 yielding the charset value for the character as the number
                 to use (e.g. '0' yields 48 on ASCII machines).
 
@@ -60,25 +60,39 @@ DESCRIPTION
                   \<LF>     : ignored
                   \<LF><CR> : ignored
 
-                  \N   : the character code N in decimal
-                  \0xN : the character code N in sedecimal
-                  \xN  : the character code N in sedecimal
-                  \0oN : the character code N in octal
-                  \0bN : the character code N in binary
-                  \a   : BEL (0x07)
-                  \b   : Backspace (0x08)
-                  \t   : Tab (0x09)
-                  \e   : Escape (0x1b)
-                  \n   : Newline (0x0a)
-                  \f   : Formfeed (0x0c)
-                  \r   : Carriage Return (0x0d)
-                  \"   : The double quote (")
+                  \N        : the character code N in decimal
+                  \0xN      : the character code N in sedecimal
+                  \xN       : the character code N in sedecimal
+                  \0oN      : the character code N in octal
+                  \0bN      : the character code N in binary
+                  \uNNNN    : Unicode character N in sedicimal
+                  \UNNNNNNNN: Unicode character N in sedicimal
+                  \a        : BEL (0x07)
+                  \b        : Backspace (0x08)
+                  \t        : Tab (0x09)
+                  \e        : Escape (0x1b)
+                  \n        : Newline (0x0a)
+                  \f        : Formfeed (0x0c)
+                  \r        : Carriage Return (0x0d)
+                  \"        : The double quote (")
                   \<other character>: the given character
 
                 Adjacent string literals are automatically
                 concatenated by the driver when the LPC program is
                 compiled. String literals joined with '+' are
                 concatenated by the LPC compiler as well.
+
+    o bytes     Byte sequences are similar to strings. They offer
+                the same operations, but cannot be mixed with strings.
+
+                Byte sequence literals are written between double-quotes
+                prefixed with a 'b' (e.g. b""). Adjacent byte sequence
+                literals are automatically concatenated.
+
+                The text is allowed to consist of ASCII characters
+                (equivalent to bytes 0-127) and escape-sequences
+                just like strings, with the exception of the \u and \U
+                unicode escape sequences.
 
     o object    Pointer to an object. Objects are always passed by
                 reference.

@@ -1,9 +1,9 @@
 SYNOPSIS
-        varargs int id(string str, int lvl);
+        int id(string str)
 
 DESCRIPTION
         Let the object identify itself. If str matches an id of the
-        current object then return a none zero value.
+        current object then return a non-zero value.
 
         This lfun is applied for the efun present().
 
@@ -14,4 +14,3 @@ EXAMPLE
 
 SEE ALSO
         present(E)
-        id(L)

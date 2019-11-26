@@ -1,23 +1,14 @@
-query_allow_shadow(M)
-FUNKTION:
-     int query_allow_shadow(object victim)
+SYNOPSIS
+        int query_allow_shadow(object victim)
 
-DEFINITION:
-     /secure/master.c
+DESCRIPTION
+        Return 1 if previous_object() is allowed to use efun shadow()
+        on object victim, 0 if it is not.
 
-BESCHREIBUNG:
-     Gibt 1 zurueck, wenn das Objekt victim von previous_object() beschattet 
-     werden darf, 0 sonst.
+        The function should deny shadowing on all root objects, else
+        it might query the victim for clearance. Most installations
+        seem to use victim->prevent_shadow(previous_object()) to
+        check if the victim denies being shadowed.
 
-     Die Funktion prueft, ob das Objekt victim ein Root-Objekt ist, oder
-     ob es beim Aufruf von query_prevent_shadow() 1 zurueckgibt.
-
-BEMERKUNGEN:
-     Wird automatisch bei shadow() ausgefuehrt.
-
-SIEHE AUCH:
-     Rechte:	     query_prevent_shadow(L)
-     Generell:	     shadow(E), unshadow(E)
-     Informationen:  query_shadowing(E)
-
-20. Mai 2004 Gloinson
+SEE ALSO
+        shadow(E)

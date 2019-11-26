@@ -1,0 +1,191 @@
+PRELIMINARY
+CONCEPT
+        python
+
+DESCRIPTION
+        Python can be used to extend the LDMud driver. At the startup
+        of LDMud a python script will be called that can register
+        additional efuns. The python script can either be given
+        on the command line using the --python-script option,
+        or at compile time with the --with-python-script configuration
+        option.
+
+        The python script can import the builtin ldmud module.
+        This module provides the following functions:
+
+          - register_efun(name, function) -> None
+                Registers a new efun name. This is not allowed during
+                compilation of an LPC object.
+
+                If the Python function has type annotations for its
+                arguments and return value, the type is checked
+                at compile and runtime. Union types can be specified
+                as tuples of types.
+
+          - unregister_efun(name) -> None
+                Removes a python efun from registration. This is not
+                allowed during compilation of an LPC object. The
+                removal will only affect newly compiled code,
+                already compiled code will produce errors when
+                calling this efun.
+
+          - register_socket(fd, function [,eventmask]) -> None
+                Registers a socket <fd> to watch for events (like
+                poll/select). The socket must be either given as
+                an integer or an object with a fileno() method
+                returning an integer. The function must be a callable
+                accepting one argument, the actual event mask.
+                <eventmask> may be an combination of select.POLLIN,
+                select.POLLOUT and select.POLLPRI or a callable
+                returning such a combination.
+
+          - unregister_socket(fd) -> None
+                Removes a previously registered socket from the
+                watch list.
+
+          - register_hook(hook, function) -> None
+                Register a hook. The python function will be called
+                whenever <hook> happens. <hook> can be one of the
+                following:
+
+                  ON_HEARTBEAT
+                    Called without arguments for every backend loop
+
+                  ON_OBJECT_CREATED
+                    Called whenever an object was created, with the
+                    object as its first and only argument. This call
+                    happens before any LPC code of the object ran.
+
+                  ON_OBJECT_DESTRUCTED
+                    Called just before an object will be destructed,
+                    with the object as its first and only argument.
+
+          - unregister_hook(hook, function) -> None
+                Removes a hook function.
+
+          - get_master() - > Object
+                Returns the current master object.
+                Returns None, if there is no master object (yet).
+
+          - get_simul_efun() - > Object
+                Returns the current simul-efun object
+                (or None if there is none).
+
+
+        This module provides the following types:
+
+          - Object(filename)
+                Corresponds to the LPC object type.
+                On instantiation a filename for an object
+                to search or load is required.
+
+          - Array([values | size])
+                Corresponds to an LPC array.
+                Can either be initialized with a list of values
+                or to a given size.
+
+                Supports element access with [], len() and __contains__.
+
+          - Mapping([values | width])
+                Corresponds to an LPC mapping.
+                Can either be initialized with a dict, a list of tuples
+                or as an empty mapping with a given width.
+
+                Supports element access with [], len(), __contains__
+                and has a width member.
+
+          - Struct(object, name [, values])
+               Corresponds to an LPC struct.
+               On initialization the name of the struct definition and
+               the correspopnding object is required. It can be initialized
+               with a list of values or dict.
+
+               Supports member access as regular python members.
+
+          - Closure(object [,name [, lfun_object]])
+               Corresponds to an LPC closure.
+               On initialization a closure bound to <object> will be created,
+               like a call to symbol_function(<name> [, <lfun_object>]).
+
+               Supports function calls.
+
+          - Symbol(name [, quotes])
+              Corresponds to an LPC symbol.
+              On initialization the name of the symbol is required.
+              Optionally the number of quotes (at least 1) can be specified.
+
+              Has two members: name and quotes.
+
+          - QuotedArray(array [, quotes])
+              Corresponds to an LPC quoted array.
+              On initialization an array is required.
+              Optionally the number of quotes (at least 1) can be specified.
+
+              Has two members: array and quotes.
+
+
+        This module contains the following sub-namespaces:
+
+          - efuns
+              This namespace contains all original efuns (without any
+              registered python efuns or simul-efuns). These can be called
+              as a regular function.
+
+
+EXAMPLE
+        import ldmud
+
+        def hello_world(name: str) -> int:
+            print("Hello, world, %s!\n" % (name,))
+            return 1
+
+        ldmud.register_efun("hello", hello_world)
+
+NOTES
+        Just like simul-efuns python efuns can shadow real efuns. The
+        original efun is then inaccessible for LPC code (except for code
+        that was compiled before the efun was registered). Python efuns are
+        nearly indistinguishable from real efuns, they also use the efun::
+        prefix. However they can be detected with
+            CLOSURE_IS_PYTHON_EFUN(get_type_info(#'efun,1))
+
+        Without the prefix the order of name resolution for function calls is:
+         1. lfuns
+         2. simul-efuns
+         3. python efuns
+         4. real efuns
+
+        Also just like simul-efuns python-registered efuns are called
+        from LPC code that was compiled after the registration. LPC code
+        that was compiled before the registration will still call the
+        original efuns (or throw a compile error if that efun doesn't exist).
+        Therefore such efuns should be registered in the python startup
+        script.
+
+        When a python efun is unregistered, code that was compiled while the
+        registration was in effect will throw a runtime error. (Regardless
+        of whether a driver efun with the same name exists or not.)
+
+        There is a limit of 2048 python efuns. Not only registered, but also
+        formerly registered - but now unregistered - efuns count toward that
+        limit. Re-registering the same efun name again won't count a second
+        time. (LPC code that was compiled during the previous registration
+        will also call the new efun after the re-registration.)
+
+        As LDMud is single-threaded, the python code will run in the same
+        thread as the LPC machine. So any long-running python function will
+        halt the MUD for all players. Hence python functions should return
+        promptly and source out any lengthy tasks to another process. If
+        other threads are spawned from python, then these threads are not
+        allowed to access any LDMud functions or objects.
+
+        Finally a note of caution: Don't change the meaning of base efuns
+        fundamentally as it furthers confusion and hinders exchange of LPC
+        code and knowledge between mudlibs.
+
+HISTORY
+        LDMud 3.5 implemented the python functionality.
+        LDMud 3.6 added type checks.
+
+SEE ALSO
+        simul_efun(C)

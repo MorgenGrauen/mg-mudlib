@@ -11,6 +11,7 @@ DESCRIPTION
         Some of the hooks are mandatory, some not. Most hooks accept
         unbound lambda closures as values, some also lfun closures or
         even strings.
+
         The hooks are identified by an ordinal number, for which
         symbolic names are defined in /sys/driverhooks.h.
 
@@ -30,7 +31,7 @@ DESCRIPTION
         H_CREATE_CLONE
           Optional hooks to initialize an object after creation.
 
-          H_CREATE_SUPER is called for blueprints implicitely loaded
+          H_CREATE_SUPER is called for blueprints implicitly loaded
           by inheritance, H_CREATE_OB for explicitely loaded
           blueprints/objects, and H_CREATE_CLONE for cloned objects.
 
@@ -104,9 +105,14 @@ DESCRIPTION
           the source of every compiled LPC object.
 
 
+        H_FILE_ENCODING
+          Optonal hook specifying the name of the encoding to be used
+          for decoding a file (default: "ascii").
+
+
         H_TELNET_NEG
           Optional hook to specifiy how to perform a single telnet
-          negotiation.  If not set, most telnet options are rejected (read:
+          negotiation. If not set, most telnet options are rejected (read:
           only a very minimal negotiation takes place).
 
 
@@ -124,6 +130,10 @@ DESCRIPTION
           Optional hook to notify the mudlib about the termination of
           the erq demon.
 
+
+        H_MSG_DISCARDED
+          Optional hook to specify a message or take other measures
+          when a message had to be discarded.
 
 HISTORY
         The hooks concept was introduced in 3.2.1

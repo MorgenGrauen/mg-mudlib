@@ -10,11 +10,11 @@ DESCRIPTION
         some special changes to it. That doesn't work by copying the
         file.. Ouch! Don't replicate code! But by putting a tiny inherit
         declaration
-        
+
                 inherit "<model-class>";
-                
+
         at the beginning of your new file. This must come before any local
-        ariables or functions. Once inherited your class will behave just
+        variables or functions. Once inherited your class will behave just
         like the model class, because all the public methods are available
         to the outside world. Now it is in your hands to change such an
         inherited behaviour. You have the following tools to do so:
@@ -52,7 +52,6 @@ DESCRIPTION
         variant.
 
 EXAMPLE
-
         Let's imagine very simple food in a file called "/the/food.c":
 
                 // unless "modified" variables are accessible by inheritors
@@ -124,7 +123,6 @@ EXAMPLE
                 }
 
 ADVANCED USAGE
-
         * Doing multiple inheritance
 
         While the Java(TM) language has so-called interfaces as a kludge,
@@ -137,16 +135,17 @@ ADVANCED USAGE
 
         * Wildcarded multiple inheritance
 
-        LDMUD 3.2.1@117 introduces an advanced voodoo syntax which allows
-        you to call several methods in model classes at once, but for some
-        technical reasons it cannot pass any arguments. This works by
+        LDMud 3.2.1@117 introduces an advanced voodoo syntax which allows
+        you to call several methods in model classes at once. This works by
         writing a glob type match ('*' and '?' wildcards) into the string
-        in front of the double colon, as in "*"::create(). I wouldn't
-        recommend you to use this, it's better to be clearly conscious of
-        what you inherit and do. But if you're desperate, there you go.
+        in front of the double colon, as in "*"::create().
+        I wouldn't recommend you to use this, it's better to be clearly
+        conscious of what you inherit and do. But if you're desperate, there
+        you go.
+
+        Since LDMud 3.5.0 it is possible to pass arguments as well.
 
 ADVANCED EXAMPLE
-
           inherit "foo";
           inherit "bar";
           inherit "baz";
@@ -172,6 +171,6 @@ AUTHOR
 
 SEE ALSO
         functions(LPC), initialisation(LPC), modifiers(LPC), pragma(LPC),
-        overloading(C)
-        function_exists(efun), functionlist(efun), inherit_list(efun),
-        symbol_variable(efun), variable_exists(efun), variable_list(efun).
+        overloading(C),
+        function_exists(E), functionlist(E), inherit_list(E),
+        symbol_variable(E), variable_exists(E), variable_list(E)

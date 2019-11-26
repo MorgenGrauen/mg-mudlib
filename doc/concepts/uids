@@ -28,11 +28,9 @@ DESCRIPTION
 
         As uids, euids are assigned at an objects creation through
         the two aformentioned driverhooks. They can be queried with
-        the efun geteuid() and changed with the efun seteuid(). Calls
-        to the latter are verified by the master lfun valid_seteuid().
-
-        Additionally objects can impose their uid onto an other objects
-        euid with the efun export_uid().
+        the efun geteuid() and changed with the efun configure_object
+        (using the OC_EUID option). Calls to the latter are verified by
+        the master lfun privilege_violation().
 
 
         If the driver is run in 'strict euids' mode, euids are taken
@@ -51,9 +49,11 @@ DESCRIPTION
 
         When an object is newly loaded, the H_LOAD_UIDS hook is
         called with the object name as argument.
+
         When an object is cloned, the H_CLONE_UIDS hook is called
         with the blueprint object as first and the clone's designated
         name as second argument.
+
         In both cases the new object already exists, but has 0 uids.
 
         For the result, the following possibilities exist (<num> is
@@ -71,9 +71,8 @@ DESCRIPTION
              ({ <num>, <no-string> })   -> uid = 'default', euid = 0
 
 
-
         Slightly different rules apply to the (e)uid of the master.
-        The masters (e)uid is determined by a call to
+        The master's (e)uid is determined by a call to
         master->get_master_uid():
 
              "<uid"> -> uid = "<uid>", euid = "<uid>"
@@ -92,5 +91,6 @@ DESCRIPTION
         the appropriate driver hooks.
 
 SEE ALSO
-        native(C), get_root_uid(M), valid_seteuid(M),
-        objects(C), clone_object(E), geteuid(E), getuid(E), seteuid(E)
+        native(C), get_root_uid(M), privilege_violation(M),
+        objects(C), clone_object(E), geteuid(E), getuid(E),
+        configure_object(E)
