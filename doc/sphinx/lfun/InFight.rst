@@ -5,7 +5,7 @@ FUNKTION
 --------
 ::
 
-        mixed InFight()
+        object InFight()
 
 ARGUMENTE
 ---------
@@ -23,7 +23,10 @@ BESCHREIBUNG
         Funktion environment gefiltert und so festgestellt, ob
         die Umgebung der beiden Feinde gleich ist.
 
-RUECKGABEWERT: 
+RUECKGABEWERT
+-------------
+::
+
         Als Rueckgabewert enthaelt man entweder 0, wenn das Objekt
         im Moment keine Feinde hat bzw. die nicht im selben Raum
         sind, oder aber das Feindobjekt, das als erstes im Array

@@ -81,6 +81,8 @@ BESCHREIBUNG
      M_SILENT
           Es werden beim Bewegen keine Meldungen ausgegeben. Dieser
           Parameter wirkt sich nur auf das Bewegen von Lebenwesen aus.
+          (Magier mit 'mschau an' sehen die Bewegungen dennoch, es wird
+           eine Standardmeldung ausgegeben.)
 
      M_GET
           Das Objekt wird von einem unbelebten Objekt (zB. einem Raum, einer

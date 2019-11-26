@@ -20,11 +20,9 @@ BESCHREIBUNG
         Ist die Property in einem NPC definiert, so wird ihr Ergebnis
         ausgewertet, bevor eine Frage an das Infosystem uebergeben wird.
 
-        
-
         Moegliche Werte:
-        - numerischer Wert ungleich 0
-          => der NPC gibt _keinerlei_ Antwort, die Frage fuehrt sozusagen
+        - numerischer Wert > 0
+          => der NPC gibt keinerlei Antwort, die Frage fuehrt sozusagen
              ins Leere
 
         - Stringwert
@@ -34,10 +32,11 @@ BESCHREIBUNG
             Der Fragende selbst bekommt bei angegebenem Stringwert:
             "XY " + Stringwert.
 
-        - Closure
-          => die Antwort bzw. Reaktion des NPCs obliegt ganz der 
-             angegebenen Closure. Diese muss dabei einen String oder 
-             Ganzzahlen-Wert zurueckgeben
+        - Wenn eine als Querymethode gesetzte Closure einen String oder
+          einen Integer > 0 zurueckgibt, sind die  Auswirkungen identisch
+          zu den beiden oben beschriebenen Faellen. Siehe auch Beispiel
+          unten.
+
 
 BEISPIEL
 --------
@@ -48,22 +47,14 @@ BEISPIEL
 
           SetProp(P_CHAT_CHANCE,0); // NPC latscht los
 
-        
-
         Und eine Weile spaeter:
 
-        
-
           SetProp(P_CHAT_CHANCE,5); // NPC ruht wieder, quasselt rum
-
-        
 
         Waehrend des Herumlaufens, also wenn er nicht automatisch schwatzt,
         soll er auch keinerlei Fragen beantworten:
 
-          
-
-          Set(P_PRE_INFO, function mixed () {
+          Set(P_PRE_INFO, function string () {
             return (QueryProp(P_CHAT_CHANCE) ? 0 : 
               "hat gerade keine Zeit fuer Dich."); 
             }, F_QUERY_METHOD);
@@ -83,5 +74,5 @@ SIEHE AUCH
         AddInfo(), /std/npc/info.c
 
 
-Last modified: 01.03.2016 by Arathorn
+Last modified: 2019-Okt-16 by Arathorn
 
