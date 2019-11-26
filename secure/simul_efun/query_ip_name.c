@@ -28,9 +28,9 @@ string query_ip_number(object ob)
 {
   ob= ob || this_player();
   if (!objectp(ob) || !interactive(ob)) return 0;
-  if(ob->query_realip() && (string)ob->query_realip()!="")
+  if(ob->query_realip() && ob->query_realip()!="")
   {
-    return (string)ob->query_realip();
+    return ob->query_realip();
   }
   return _query_ip_number(ob);
 }
@@ -39,7 +39,7 @@ string query_ip_name(mixed ob)
 {
   if ( !ob || objectp(ob) )
       ob=query_ip_number(ob);
-  return (string)"/p/daemon/iplookup"->host(ob);
+  return "/p/daemon/iplookup"->host(ob);
 }
 
 #endif

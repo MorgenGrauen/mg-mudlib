@@ -31,7 +31,7 @@ public varargs string getuuid( object ob )
     if ( !query_once_interactive(ob) )
        return getuid(ob);
 
-    ret = (mixed)master()->get_userinfo( getuid(ob) );
+    ret = master()->get_userinfo( getuid(ob) );
 
     if ( !pointerp(ret) || sizeof(ret) < 5 )
        return getuid(ob);

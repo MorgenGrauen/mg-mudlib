@@ -3,9 +3,9 @@
 // simul_efun.c -- simul efun's
 //
 // $Id: simul_efun.c 7408 2010-02-06 00:27:25Z Zesstra $
-#pragma strict_types,save_types,rtt_checks
+#pragma strong_types,save_types,rtt_checks
 #pragma no_clone,no_shadow,no_inherit
-#pragma pedantic,range_check,warn_deprecated
+#pragma range_check,warn_deprecated
 #pragma warn_empty_casts,warn_missing_return,warn_function_inconsistent
 
 // Absolute Pfade erforderlich - zum Zeitpunkt, wo der Master geladen
@@ -184,7 +184,7 @@ void ___updmaster()
 varargs string country(mixed ip, string num) {
   mixed ret;
 
-  if(ret = (string)"/p/daemon/iplookup"->country(num || ip)) {
+  if(ret = "/p/daemon/iplookup"->country(num || ip)) {
     return ret;
   } else return "???";
 }
@@ -227,7 +227,7 @@ nomask varargs int snoop( object me, object you )
 
         if ( (snooper = efun::interactive_info(you, II_SNOOP_NEXT)) &&
              query_wiz_grp(snooper) >= query_wiz_grp(me) ){
-            if ( (int)snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
+            if ( snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
                return 0;
 
             tell_object( snooper, sprintf( "%s snooped jetzt %s.\n",
@@ -397,7 +397,7 @@ int file_time(string path) {
 
 // * Magier-Level abfragen
 int query_wiz_level(mixed player) {
-  return (int)"/secure/master"->query_wiz_level(player);
+  return "/secure/master"->query_wiz_level(player);
 }
 
 #ifdef __ALISTS__
@@ -753,7 +753,7 @@ nomask string process_string( mixed str )
       return funcall(str);
   }
   else if (str==0)
-      return((string)str);
+      return(str);
   else if ( !stringp(str) ) {
       return to_string(str);
   }
@@ -848,7 +848,7 @@ mixed save_object(mixed name)
   }
 
   save = m_allocate(0, 2);
-  properties = (mapping)previous_object()->QueryProperties();
+  properties = previous_object()->QueryProperties();
 
   if(mappingp(properties))
   {
@@ -944,7 +944,7 @@ int restore_object(string name)
   }
 
   // get actual property settings (by create())
-  properties = (mapping)previous_object()->QueryProperties();
+  properties = previous_object()->QueryProperties();
 
 //  DEBUG(sprintf("RESTORE %O\n",name));
   // restore object
@@ -952,8 +952,8 @@ int restore_object(string name)
   //'))
   //_get_save_data liefert tatsaechlich mixed zurueck, wenn das auch immer ein 
   //mapping sein sollte.
-  save = (mixed)previous_object()->_get_save_data();
-  if(mappingp(save))
+  save = previous_object()->_get_save_data();
+  if((save))
   {
     index = m_indices(save);
     for(i = sizeof(index)-1; i>=0; i--)
@@ -1143,7 +1143,7 @@ private void _destroy( mixed key, object *obs, string text, int uid ) {
     // laeuft.
     catch( efun::raise_error(           
          sprintf( text,                   
-           uid ? (string)master()->creator_file(key) : key,                   
+           uid ? master()->creator_file(key) : key,                   
            sizeof(obs), object_name(obs[<1]) ) );publish);
     // Und weg mit dem Kram...
     filter( obs, #'efun::destruct/*'*/ );
@@ -1276,7 +1276,7 @@ mixed call_out_info() {
   // ungefilterten Output nur fuer bestimmte Objekte, Objekte in /std oder
   // /obj haben die BackboneID.
   if (query_wiz_level(getuid(po)) >= ARCH_LVL
-       || (string)master()->creator_file(load_name(po)) == BACKBONEID ) {
+       || master()->creator_file(load_name(po)) == BACKBONEID ) {
       return coi;
   }
   else {
@@ -1378,7 +1378,7 @@ void __set_environment(object ob, mixed target)
     efun::set_environment(ob,target);
     return;
   }
-  path=(string)master()->make_path_absolute(target);
+  path=master()->make_path_absolute(target);
   if (stringp(path) && file_size(path+".c")>=0 &&
       !catch(load_object(path);publish) )
   {
@@ -1497,7 +1497,7 @@ varargs void notify_fail(mixed nf, int prio) {
         prio=NF_NL_OWN;
       else if (living(po))
         prio=NF_NL_LIVING;
-      else if ((int)po->IsRoom())
+      else if (po->IsRoom())
         prio=NF_NL_ROOM;
       else
         prio=NF_NL_THING;
@@ -1507,7 +1507,7 @@ varargs void notify_fail(mixed nf, int prio) {
       oldprio=NF_NL_OWN;
     else if (living(oldo))
       oldprio=NF_NL_LIVING;
-    else if ((int)oldo->IsRoom())
+    else if (oldo->IsRoom())
       oldprio=NF_NL_ROOM;
     else
       oldprio=NF_NL_THING;
@@ -1660,7 +1660,7 @@ nomask mixed __create_player_dummy(string name)
     write("Fehler beim Laden von /secure/login.c\n"+err+"\n");
     return 0;
   }
-  if (objectp(m=(mixed)ob->new_logon(name))) netdead[name]=m;
+  if (objectp(m=ob->new_logon(name))) netdead[name]=m;
   return m;
 }
 
@@ -1746,7 +1746,7 @@ nomask int set_light(int i)
     if (i!=0) ob->SetProp(P_LIGHT, ob->QueryProp(P_LIGHT)+i);
 
     // Lichtberechnung findet eigentlich in der Mudlib statt.
-    return (int)ob->QueryProp(P_INT_LIGHT);
+    return ob->QueryProp(P_INT_LIGHT);
 }
 
 public varargs string CountUp( string *s, string sep, string lastsep )
@@ -1839,37 +1839,37 @@ varargs string replace_personal(string str, mixed *obs, int caps) {
           parts[i] = funcall(name_cls[ob_nr], casus);     break;
         case "RQP": case "SSENQP": case "MQP": case "NQP":       // Pronoun
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPronoun(casus);
+            parts[i] = tmp->QueryPronoun(casus);
           break;
         case "RQA": case "SSENQA": case "MQA": case "NQA":       // Article
           if (objectp(tmp = obs[ob_nr]))
-            tmp = (string)tmp->QueryArticle(casus, 1, 1);
+            tmp = tmp->QueryArticle(casus, 1, 1);
           if (stringp(tmp) && !(tmp[<1]^' ')) 
             tmp = tmp[0..<2];                // Extra-Space wieder loeschen
           break;
         case "RQPPMS": case "SSENQPPMS": case "MQPPMS": case "NQPPMS":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(MALE, casus, SINGULAR);
+            parts[i] = tmp->QueryPossPronoun(MALE, casus, SINGULAR);
           break;
         case "RQPPFS": case "SSENQPPFS": case "MQPPFS": case "NQPPFS":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(FEMALE, casus, SINGULAR);
+            parts[i] = tmp->QueryPossPronoun(FEMALE, casus, SINGULAR);
           break;
         case "RQPPNS": case "SSENQPPNS": case "MQPPNS": case "NQPPNS":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(NEUTER, casus, SINGULAR);
+            parts[i] = tmp->QueryPossPronoun(NEUTER, casus, SINGULAR);
           break;
         case "RQPPMP": case "SSENQPPMP": case "MQPPMP": case "NQPPMP":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(MALE, casus, PLURAL);
+            parts[i] = tmp->QueryPossPronoun(MALE, casus, PLURAL);
           break;
         case "RQPPFP": case "SSENQPPFP": case "MQPPFP": case "NQPPFP":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(FEMALE, casus, PLURAL);
+            parts[i] = tmp->QueryPossPronoun(FEMALE, casus, PLURAL);
           break;
         case "RQPPNP": case "SSENQPPNP": case "MQPPNP": case "NQPPNP":
           if (objectp(tmp = obs[ob_nr]))
-            parts[i] = (string)tmp->QueryPossPronoun(NEUTER, casus, PLURAL);
+            parts[i] = tmp->QueryPossPronoun(NEUTER, casus, PLURAL);
           break;
         default:
           continue;
