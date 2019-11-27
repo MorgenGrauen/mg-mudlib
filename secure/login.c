@@ -596,7 +596,8 @@ static int check_password( string str )
 static void select_race()
 {
     int i;
-    string s;
+    string race;
+    int selectable;
 
     races = get_dir( "/std/shells/*.c" );
 
@@ -606,18 +607,20 @@ static void select_race()
     
     for ( i = sizeof(races); i--; ){
         races[i] = "/std/shells/" + races[i][0..<3];
-        s = 0;
+        selectable = 0;
+        race = 0;
+        if ( catch(selectable = ({int})call_other( races[i],
+                   "QueryAllowSelect" ); publish) 
+            || !selectable)
+            selectable = 0;
+        else if ( catch(race = ({string})call_other(races[i],
+                "QueryProp", P_RACE );publish) )
+            race = 0;
 
-        if ( catch(s = (string)call_other( races[i], "QueryAllowSelect" ); publish) 
-            || !s)
-            s = 0;
-        else if ( catch(s = (string)call_other( races[i], "QueryProp", P_RACE );publish) )
-            s = 0;
-
-        if ( !sizeof(s) )
+        if ( !selectable || !sizeof(race) )
             races[i..i] = ({});
         else
-            races[i] = ({ races[i], s });
+            races[i] = ({ races[i], race });
     }
 
     if ( sizeof(races) == 1 ){
