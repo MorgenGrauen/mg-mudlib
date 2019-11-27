@@ -324,7 +324,7 @@ ParseRest(string arg, mixed extra)  {
 
 private int
 ParseRemote(string arg)  {
-  string wer,*words; 
+  string* words;
 
   adverb = 0; // Adverb vom letzten Mal keinesfalls wiederverwenden. ;-)
 
@@ -359,7 +359,7 @@ ParseRemote(string arg)  {
   // else if, weil im if fuer Spieler oben who genullt werden kann und dann
   // nochmal nach nem NPC gesucht werden soll.)
   if (!who) {
-    wer = match_living(lower_case(words[0]));
+    string|int wer = match_living(lower_case(words[0]));
     if(stringp(wer)) 
       who=present(wer,environment(ME));
     if (!who) who=present(words[0], environment(ME));
