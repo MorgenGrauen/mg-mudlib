@@ -28,11 +28,11 @@
 
 // hilfreiche makros
 #define FAO_HAS_TITLE_GIFT(x)   (x!=0 && query_once_interactive(x) \
-    && ((int)x->QueryProp(P_FAO)&FAO_TITLE)!=0)
+    && (({int})x->QueryProp(P_FAO)&FAO_TITLE)!=0)
 #define FAO_HAS_PORTALS1_GIFT(x)  (x!=0 && query_once_interactive(x) \
-    && ((int)x->QueryProp(P_FAO)&FAO_PORTALS1)!=0)
+    && (({int})x->QueryProp(P_FAO)&FAO_PORTALS1)!=0)
 #define FAO_HAS_PORTALS2_GIFT(x)  (x!=0 && query_once_interactive(x) \
-    && ((int)x->QueryProp(P_FAO)&FAO_PORTALS2)!=0)
+    && (({int})x->QueryProp(P_FAO)&FAO_PORTALS2)!=0)
 #define FAO_HAS_PORTALS_GIFT(x)   (FAO_HAS_PORTALS1_GIFT(x) || FAO_HAS_PORTALS2_GIFT(x))
 #define FAO_MAY_USE_PORTAL(x,p)   (intp(p) && ((FAO_HAS_PORTALS1_GIFT(x) && \
         member(FAO_PORTALS1_LIST,p)!=-1 )||(FAO_HAS_PORTALS2_GIFT(x) && \

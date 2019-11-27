@@ -6,7 +6,7 @@
 #pragma strong_types
 #pragma save_types
 #pragma no_clone
-#pragma pedantic
+//#pragma pedantic
 //#pragma range_check
 
 inherit "/std/living/comm";
@@ -391,7 +391,7 @@ private string permutate(string msg)
   if (!objectp(ob))
     return msg;
 
-  return (string)ob->permutate_string(msg)||"";
+  return ({string})ob->permutate_string(msg)||"";
 }
 
 // neue nachricht an den Kobold anhaengen
@@ -505,7 +505,7 @@ private int check_ignore(mixed ignore, string verb, string name)
 
 private int comm_beep() {
   if (QueryProp(P_VISUALBELL)) return 0; // kein ton
-  int beep_interval=(int)QueryProp(P_MESSAGE_BEEP);
+  int beep_interval=({int})QueryProp(P_MESSAGE_BEEP);
   if (!beep_interval || ((time()-last_beep_time) < beep_interval)) return 0;
   last_beep_time=time();
   return 1;
@@ -962,7 +962,7 @@ static int _msg_prepend(string str) {
   }
 
   _notify("Senderwiederholung bei Mitteilungen: "+ 
-          ((int)QueryProp(P_MESSAGE_PREPEND) ?  "aus" : "ein")+".",
+          (({int})QueryProp(P_MESSAGE_PREPEND) ?  "aus" : "ein")+".",
           query_verb());
 
   return 1;
@@ -1111,7 +1111,7 @@ varargs int _tell(string who, mixed msg)
   {
     if ( QueryProp(P_QP) )
     {
-      if (ret=(string)INETD->_send_udp(xname[1],
+      if (ret=({string})INETD->_send_udp(xname[1],
                                     ([ REQUEST:   "tell",
                                        RECIPIENT: xname[0],
                                        SENDER:    getuid(ME),
@@ -1173,7 +1173,7 @@ varargs int _tell(string who, mixed msg)
   // oder irgendwas anderes an den Absender ausgeben...
   if (!visflag && interactive(ob))
       _notify("Kein solcher Spieler!",MA_TELL);
-  else if (away = (string)ob->QueryProp(P_AWAY))
+  else if (away = ({string})ob->QueryProp(P_AWAY))
       ReceiveMsg( break_string( away, 78, capitalize(it)
                            + " ist gerade nicht da: ", BS_INDENT_ONCE ),
           MT_NOTIFICATION|MSG_DONT_WRAP|MSG_DONT_IGNORE,

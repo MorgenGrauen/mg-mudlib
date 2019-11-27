@@ -325,7 +325,7 @@ void checkConsistency()
   int   m;
 
   if (pointerp(h=RaceDefault(P_HANDS)) && sizeof(h)>1)
-    m=(int)h[1];
+    m=h[1];
   else
     m=30;
   if((h=Query(P_HANDS))[1] > m && !IS_LEARNER(this_object())) {
@@ -1009,7 +1009,7 @@ static int self_delete()
 int self_delete2(string str)
 {
   int ret;
-  ret=(int)"secure/master"->delete_player(str, getuid(PL));
+  ret=({int})"secure/master"->delete_player(str, getuid(PL));
   if (!ret)
   {
     write("Das hat nicht hingehauen (Jof sei Dank ....)\n");
@@ -1459,7 +1459,7 @@ protected void smart_log(string myname, string str, object obj)
   else
   {
     // Eintragung in die Fehler-DB
-    string hashkey = (string)ERRORD->LogReportedError(err);
+    string hashkey = ({string})ERRORD->LogReportedError(err);
     ReceiveMsg(sprintf(
           "Ein kleiner Fehlerteufel hat D%s an %s unter der ID %s "
           "notiert.",
@@ -1594,7 +1594,7 @@ static int score(string arg) {
       printf("Du bist nicht ansprechbar: %O\n",ind);
   }
 
-  if(sizeof(enem1=((mixed)QueryEnemies())[0])) {
+  if(sizeof(enem1=(QueryEnemies())[0])) {
     enem2=({});
     inv=all_inventory(environment(ME));
     foreach(object en: enem1) {
@@ -2861,7 +2861,7 @@ static void calculate_value()
   carried_value=0;
   foreach(object ob: deep_inventory(ME)) {
     if (!ob->QueryProp(P_AUTOLOADOBJ))
-      carried_value+=((value=(int)ob->QueryProp(P_VALUE)) > 1000 ? 1000 : value);
+      carried_value+=((value=({int})ob->QueryProp(P_VALUE)) > 1000 ? 1000 : value);
   }
   SetProp(P_CARRIED_VALUE, carried_value);
 }
