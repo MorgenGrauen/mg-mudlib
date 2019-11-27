@@ -1786,32 +1786,27 @@ nomask varargs int query_next_reset(object ob) {
 
 
 // ### Ersatzaufloesung in Strings ###
-varargs string replace_personal(string str, mixed *obs, int caps) {
-  int i;
-  string *parts;
-
-  parts = regexplode(str, "@WE[A-SU]*[0-9]");
-  i = sizeof(parts);
+varargs string replace_personal(string str, <string|object>* obs, int caps) {
+  string* parts = regexplode(str, "@WE[A-SU]*[0-9]");
+  int i = sizeof(parts);
 
   if (i>1)
   {
     int j, t;
-    closure *name_cls;
-
     t = j = sizeof(obs);
 
-    name_cls  =  allocate(j);
-    while (j--)
+    <string|closure>* name_cls  =  allocate(j);
+    while (j--) {
       if (objectp(obs[j]))
         name_cls[j] = symbol_function("name", obs[j]);
       else if (stringp(obs[j]))
         name_cls[j] = obs[j];
+    }
 
     while ((i-= 2)>0)
     {
-      int ob_nr;
       // zu ersetzendes Token in Fall und Objektindex aufspalten
-      ob_nr = parts[i][<1]-'1';
+      int ob_nr = parts[i][<1]-'1';
       if (ob_nr<0 || ob_nr>=t) {
         set_this_object(previous_object());
         raise_error(sprintf("replace_personal: using wrong object index %d\n",
