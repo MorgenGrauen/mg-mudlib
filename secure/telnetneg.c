@@ -148,16 +148,16 @@ protected varargs int send_telnet_neg_str(bytes str, int bm_flags) {
     case DO:
     case DONT:
         (opt->lo_wishes)->remoteside = str[0];
-        str=to_bytes(sprintf("%c%s",IAC,str), "ASCII");
+        str = to_bytes(({IAC})) + str;
         break;
     case WILL:
     case WONT:
         (opt->lo_wishes)->localside = str[0];
-        str=to_bytes(sprintf("%c%s",IAC,str), "ASCII");
+        str = to_bytes(({IAC})) + str;
         break;
     case SB:
-        (opt->lo_wishes)->sbdata = map(explode(str[0..],""), #'to_int);
-        str=to_bytes(sprintf("%c%s%c%c", IAC, str, IAC, SE), "ASCII");
+        (opt->lo_wishes)->sbdata = to_array(str[1..]);
+        str = to_bytes(({IAC})) + str + to_bytes(({IAC,SE}));
         break;
     default:
         break;
@@ -244,8 +244,10 @@ private void _std_lo_handler_mssp(struct telopt_s opt, int action) {
     send_telnet_neg( ({WONT, TELOPT_MSSP }) );
   else
   {
-    send_telnet_neg_str(to_bytes(sprintf("%c%c%s",
-          SB, TELOPT_MSSP, mssp->get_telnegs_str()), "ASCII"));
+    send_telnet_neg_str(
+        to_bytes(({SB, TELOPT_MSSP}))
+        + to_bytes(sprintf("%s", mssp->get_telnegs_str()),
+                   "ASCII//TRANSLIT"));
     // die Daten brauchen wir nicht mehr
     opt->lo_wishes->sbdata = 0;
   }
