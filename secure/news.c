@@ -297,7 +297,7 @@ static int allowed(string name, int mode)
 
 int WriteNote(mixed message,mixed keepname)
 {
-  mixed *group;
+  mixed group;
   int uidok,tmp;
   string name;
 
@@ -326,7 +326,7 @@ int WriteNote(mixed message,mixed keepname)
 int RemoveNote(string name, int note)
 {
   int num;
-  mixed *group;
+  mixed group;
 
   if ((note<0) && (name=="dwnews"))
   {
@@ -368,7 +368,7 @@ int RemoveNote(string name, int note)
 
 mixed GetNotes(string name)
 {
-  mixed *group;
+  mixed group;
   
   if (!pointerp(group=load_group(name))) return -2;
   if (!allowed(name, F_READ)) return -2;
@@ -389,7 +389,7 @@ protected varargs void expire(string grp,int etime)
 // etime ist anfangs in Tagen und bezeichnet das max. Alter, was Artikel in
 // der Gruppe haben duerfen.
 {
-  mixed *group;
+  mixed group;
 
   if (!pointerp(group=load_group(grp))) return;
   if (etime)
@@ -430,7 +430,7 @@ protected varargs void expire(string grp,int etime)
 void dump_group(string grp)
 {
   int to_expire,size,last;
-  mixed *group;
+  mixed group;
 
   if (!ARCH_SECURITY || process_call()) return;
   if (!pointerp(group=load_group(grp))) return;
@@ -518,7 +518,7 @@ mixed GetGroups()
 
 int AskAllowedWrite(string n)
 {
-  mixed *group;
+  mixed group;
 
   if (!member(grouplist,n)) return -2;
   if (!pointerp(group=load_group(n))) return -2;

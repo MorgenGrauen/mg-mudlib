@@ -11,7 +11,7 @@
 #include <properties.h>
 #include <www.h>
 
-string MakeLink(mixed entry)
+string MakeLink(<object|string>* entry)
 {
   string nm;
   int idx;
@@ -30,12 +30,18 @@ string MakeLink(mixed entry)
 
 string Request(mapping cmds)
 {
-  string *who, *list; int i, s;
-  if (!sizeof(cmds)) return ERROR("Anfrage ung&uuml;ltig!");
-  who = allocate(s = sizeof(list = WHO));
-  for(i = s; i--; i > 0) 
-    who[i] = MakeLink(list[s - i - 1]);
-  // who = map(WHO, #'MakeLink/*'*/);
+  if (!sizeof(cmds))
+    return ERROR("Anfrage ung&uuml;ltig!");
+  // Wer-Liste abfragen
+  <object|string>** list = WHO;
+  int size=sizeof(list);
+  string *who = allocate(size);
+
+  // Listenreihenfolge umkehren.
+  foreach(int i : size) {
+    who[i] = MakeLink(list[<i+1]);
+  }
+
   return "<H2>Wer ist gerade in "MUDNAME"?</H2><HR>"
        + "<OL><LI>"+implode(who, "\n<LI>")+"</OL>";
 }

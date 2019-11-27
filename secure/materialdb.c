@@ -147,10 +147,10 @@ varargs string MaterialName(string mat, int casus, mixed idinf) {
     if (pointerp(dif=props[P_RECOC])
 && (!intp(idinf)||idinf<100) ) { // 100=exakte Erkennung
       int i, n, recval;
-      mixed *grps, tmp, x;
+      mixed tmp, x;
 
       recval=0;
-      grps=props[P_MG_FRACTIONS];
+      mapping grps=props[P_MG_FRACTIONS];
       if (!pointerp(idinf))
         idinf=({idinf});
 

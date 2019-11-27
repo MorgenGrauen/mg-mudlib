@@ -115,11 +115,11 @@ private int expired(mixed *list, int i)
 
 string ArticleList(string group)
 {
-  string *list, ret;
+  string ret;
   mapping t;
   int i;
 
-  list = NEWSD->GetNotes(group = old_explode(group, ":")[0]);
+  mixed list = NEWSD->GetNotes(group = old_explode(group, ":")[0]);
   if (!pointerp(list)) {
   return "<H2>Gruppe: "+group+"</H2>"
     "<H3>existiert nicht.</H3>"
