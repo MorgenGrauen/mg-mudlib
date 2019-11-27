@@ -15,7 +15,6 @@ void udp_reply(mapping data)
   string err,recpt,serv;
   object ob;
   
-  
   if (pointerp(data[SYSTEM])&&member(data[SYSTEM],TIME_OUT)>-1)
   {
     if (data[SENDER])
@@ -24,17 +23,20 @@ void udp_reply(mapping data)
       {
         switch(data[REQUEST])
         {
-          case "tell": serv="teile mit: ";break;
-          case "who":  serv="wer: ";break;
-          default: serv=data[REQUEST]+": "; break;
+          case "tell": serv="teile mit: ";      break;
+          case "who":  serv="wer: ";            break;
+          default:     serv=data[REQUEST]+": "; break;
         }
         tell_object(ob, break_string("Das Mud \'" + data[NAME] +
                                      "\' konnte nicht erreicht werden.\n",
                                      78,serv));
       }
-      else
-        if (objectp(ob = data[SENDER])||(ob = find_object(data[SENDER])))
+      else {
+        if (stringp(data[SENDER]))
+          ob = find_object(data[SENDER]);
+        if (objectp(ob))
           ob->udp_reply(data);
+      }
     }
     return;
   }
