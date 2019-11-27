@@ -116,7 +116,7 @@ static int read_log(string str)
       write("Folgendes ist neu in <"+query_verb()+">.\n");
       if (si<logs[query_verb(),1])
         PL->more(logs[query_verb(),0]);
-      else PL->More(read_bytes(logs[query_verb(),0],
+      else PL->More(read_file(logs[query_verb(),0],
 	    logs[query_verb(),1],si-logs[query_verb(),1]));
     }
   }
