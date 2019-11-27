@@ -39,30 +39,27 @@ protected void create()
 
 string _query_info()
 {
-  string info;
-  info = Query(P_INFO);
-  if(!info)info=="";
-  info = (string)query_wiz_level(this_object());
+  string info = Query(P_INFO, F_VALUE) || "";
+  int wizlvl = query_wiz_level(ME);
   if(IS_GOD(this_object()))
-    return info+" [Gott]\n";
+    return sprintf(info+"Magierstufe %d [Gott]\n", wizlvl);
   if(IS_ARCH(this_object()))
-    return info+" [Erzmagier]\n";
+    return sprintf(info+"Magierstufe %d [Erzmagier]\n", wizlvl);
   if(IS_ELDER(this_object()))
-    return info+" [Weiser]\n";
+    return sprintf(info+"Magierstufe %d [Weiser]\n", wizlvl);
   if(IS_LORD(this_object()))
-    return info+" [Regionschef]\n";
+    return sprintf(info+"Magierstufe %d [Regionsmagier]\n", wizlvl);
   if(IS_SPECIAL(this_object()))
-    return info+" [Special]\n";
+    return sprintf(info+"Magierstufe %d [Hilfsmagier]\n", wizlvl);
   if(IS_DOMAINMEMBER(this_object()))
-    return info+" [Regionsmitarbeiter]\n";
+    return sprintf(info+"Magierstufe %d [Regionsmitarbeiter]\n", wizlvl);
   if(IS_WIZARD(this_object()))
-    return info+" [Magier]\n";
+    return sprintf(info+"Magierstufe %d [Magier]\n", wizlvl);
   if(IS_LEARNER(this_object()))
-    return info+" [Magieranwaerter]\n";
-  info = QueryProp(P_LEVEL);
+    return sprintf(info+"Magierstufe %d [Magieranwaerter]\n", wizlvl);
   if(IS_SEER(this_object()))
-    return info+" [Seher]\n";
-  return info+" [Spieler]\n";
+    return sprintf(info+"Stufe %d [Seher]\n", QueryProp(P_LEVEL));
+  return sprintf(info+"Stufe %d [Spieler]\n", QueryProp(P_LEVEL));
 }
 
 int _query_size() {
