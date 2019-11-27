@@ -68,7 +68,7 @@ void create()
       + (IS_LEARNER(this_object()) ? WIZARD_SHORTCUTS : ([])));
 }
 
-static mixed _query_localcmds()
+static <int|string>** _query_localcmds()
 {
   return ({({"-","ChannelParser", 1, 0}),
            ({"ebene", "ChannelAdmin", 0, 0}),
@@ -76,9 +76,9 @@ static mixed _query_localcmds()
          });
 }
 
-mixed RegisterChannels()
+string* RegisterChannels()
 {
-  mixed err;
+  string* err;
   if(extern_call() &&
      previous_object() != find_object(CHMASTER)) return;
   c_status = 0;
@@ -96,10 +96,10 @@ mixed RegisterChannels()
   return err;
 }
 
-mixed RemoveChannels()
+string* RemoveChannels()
 {
   closure cl;
-  mixed err=({});
+  string* err=({});
   if(extern_call() &&
      previous_object() != find_object(CHMASTER)) return;
   if(!c_status) c_status = 1;
@@ -112,10 +112,9 @@ mixed RemoveChannels()
   return err;
 }
 
-varargs private string getName(mixed x, int fall) {
-  
-  mixed o = closurep(x) ? query_closure_object(x) : x;
-  if(stringp(o) && sizeof(o) && (x = find_object(o))) 
+varargs private string getName(string|object|closure x, int fall) {
+  string|object o = closurep(x) ? query_closure_object(x) : x;
+  if(stringp(o) && sizeof(o) && (x = find_object(o)))
     o = x;
   
   // Objekte
@@ -216,11 +215,12 @@ string ChannelMessage(<string|object|int>* msg, int nonint)
 
 private void createList(string n, mixed a, mixed m, mixed l)
 {
-  int pos; string sh, *mem;
-  if((pos = member(map(m_values(shortcut), #'lower_case/*'*/), n)) != -1)
+  int pos = member(map(m_values(shortcut), #'lower_case/*'*/), n);
+  string sh = "";
+  if(pos != -1)
     sh = m_indices(shortcut)[pos];
-  else sh = "";
-  mem=map(a[I_MEMBER],#'getName/*'*/, WER);
+
+  string* mem=map(a[I_MEMBER],#'getName/*'*/, WER);
   mem-=({"<MasteR>"});
   l += ({ sprintf("%-12.12'.'s %c[%-1.1s] %|12.12' 's (%-|3' 'd) %-42.42s\n",
                   a[I_NAME], (member(m, n) != -1 ? '*' : ' '), sh,
@@ -235,9 +235,10 @@ private void createList(string n, mixed a, mixed m, mixed l)
 
 private mixed getChannel(string ch)
 {
-  mixed ff;
-  if(!sizeof(ch)) ch = QueryProp(P_STD_CHANNEL);
-  if(shortcut && shortcut[ch]) ch = shortcut[ch];
+  if(!sizeof(ch))
+    ch = QueryProp(P_STD_CHANNEL);
+  if(shortcut && shortcut[ch])
+    ch = shortcut[ch];
   return CHMASTER->find(ch, this_object());
 }
 
@@ -340,7 +341,7 @@ int ChannelParser(string args)
         }
         else
         {
-          mixed list; list = ({});
+          string* list = ({});
           if(cmd[1][<1] == '!')
             l -= mkmapping(m_indices(l) - QueryProp(P_CHANNELS));
           walk_mapping(l, #'createList/*'*/, QueryProp(P_CHANNELS), &list);
@@ -358,14 +359,13 @@ int ChannelParser(string args)
     }
     case '*':
     {
-      mixed hist; int amount;
-      if(!pointerp(hist = CHMASTER->history(ch, this_object())) 
-              || !sizeof(hist))
+      mixed hist = CHMASTER->history(ch, this_object());
+      if(!pointerp(hist) || !sizeof(hist))
       {
         write("Es ist keine Geschichte fuer '"+ch+"' verfuegbar.\n");
         return 1;
       }
-      
+
       //(Zesstra) cmd hat offenbar immer 3 Elemente...
       //bei -all* ({"","all*",""})
       //bei -all*10 ({"","all*,"10"})
@@ -374,7 +374,7 @@ int ChannelParser(string args)
         amount = to_int(cmd[2]);
       else 
         amount=sizeof(hist);*/
-      amount=to_int(cmd[2]);
+      int amount=to_int(cmd[2]);
       if (amount <= 0 || amount >= sizeof(hist))
         amount=sizeof(hist);
 
@@ -437,7 +437,7 @@ int ChannelParser(string args)
 int ChannelAdmin(string args)
 {
   string n, descr, sh, cn;
-  mixed pa, tmp;
+  mixed tmp;
   args = _unparsed_args();
   notify_fail("Benutzung: ebene <Abkuerzung>=<Ebene>\n"
               "           ebene <Abkuerzung>=\n"
@@ -552,7 +552,7 @@ int ChannelAdmin(string args)
     write("Du stellst die Ebenen ab.\n");
     return 1;
   }
-  pa = old_explode(args, " ");
+  string* pa = old_explode(args, " ");
   if(!strstr("abkuerzungen", pa[0]))
   {
     string txt; txt = "";
