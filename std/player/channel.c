@@ -7,7 +7,7 @@
 #pragma save_types
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
+//#pragma pedantic
 
 #define NEED_PROTOTYPES
 #include <util.h>
@@ -79,8 +79,11 @@ static <int|string>** _query_localcmds()
 string* RegisterChannels()
 {
   string* err;
+  
   if(extern_call() &&
-     previous_object() != find_object(CHMASTER)) return;
+     previous_object() != find_object(CHMASTER))
+    return 0;
+
   c_status = 0;
   shortcut = QueryProp(P_CHANNEL_SHORT);
   SetProp(P_CHANNELS, map(QueryProp(P_CHANNELS) || ({}),
@@ -100,8 +103,11 @@ string* RemoveChannels()
 {
   closure cl;
   string* err=({});
+  
   if(extern_call() &&
-     previous_object() != find_object(CHMASTER)) return;
+     previous_object() != find_object(CHMASTER))
+    return 0;
+
   if(!c_status) c_status = 1;
   else return ({});
   cl=symbol_function("leave", CHMASTER);
