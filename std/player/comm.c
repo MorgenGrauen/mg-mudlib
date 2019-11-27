@@ -6,7 +6,7 @@
 #pragma strong_types
 #pragma save_types
 #pragma no_clone
-//#pragma pedantic
+#pragma pedantic
 //#pragma range_check
 
 inherit "/std/living/comm";
@@ -943,7 +943,7 @@ static int _msg_beep(string str) {
     else return 0;
   }
 
-  beep_interval=(int)QueryProp(P_MESSAGE_BEEP);
+  beep_interval=({int})QueryProp(P_MESSAGE_BEEP);
   _notify("Ton bei Mitteilungen: "+
         (beep_interval ? "aller "+beep_interval+" Sekunden." : "aus."),
         query_verb());
