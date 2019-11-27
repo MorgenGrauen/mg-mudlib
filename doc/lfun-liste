@@ -82,6 +82,8 @@ Verzeichnis der dokumentierten lfuns
 
 * AddTouchDetail()
 
+* AddvItem()
+
 * AllGroups()
 
 * AllMaterials()
@@ -241,6 +243,8 @@ Verzeichnis der dokumentierten lfuns
 * GetReputations()
 
 * GetShopItems()
+
+* GetVItemClones()
 
 * GetValue()
 
@@ -566,6 +570,8 @@ Verzeichnis der dokumentierten lfuns
 
 * RemoveTouchDetail()
 
+* AddvItem()
+
 * ResizeRingBuffer()
 
 * RingBufferGet()
@@ -835,6 +841,8 @@ Verzeichnis der dokumentierten lfuns
 * pick_objects()
 
 * present_objects()
+
+* present_vitem()
 
 * put()
 
