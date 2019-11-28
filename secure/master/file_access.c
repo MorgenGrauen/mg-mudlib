@@ -79,22 +79,18 @@ string make_path_absolute(string path) {
 
 static int project_access(string user, string project)
 {
-  mixed *lines;
-  string s;
-  mapping tmp;
-
   if (!member(projects,project))
   {
-    s=read_file(PROJECTDIR+"/"+project+"/ACCESS_RIGHTS");
+    string s=read_file(PROJECTDIR+"/"+project+"/ACCESS_RIGHTS");
     if(!s||s=="")
       return 0;
-    tmp=([]);
-    for (lines=explode(s,"\n")-({""});sizeof(lines);lines=lines[1..])
+    mapping tmp=([]);
+    foreach(string line: explode(s,"\n")-({""}))
     {
-      if (lines[0][0]=='*')
-        tmp[lines[0][1..]]=2;
+      if (line[0]=='*')
+        tmp[line[1..]]=2;
       else
-        tmp[lines[0]]=1;
+        tmp[line]=1;
     }
     projects[project]=({tmp,time()});
     return tmp[user];
