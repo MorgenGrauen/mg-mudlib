@@ -580,7 +580,7 @@ string encode(mixed arg) {
       // 0-9)? Dann muss nen $ davor.
       // TODO: Mhmm. Oder vielleicht doch per RegExp?
       if ( (arg[0] == '$') || ((arg & "0123456789") == arg))
-        arg = '$' + arg;
+        arg = "$" + arg;
     }
     return arg;
 }
