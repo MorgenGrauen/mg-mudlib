@@ -1,12 +1,12 @@
 SYNOPSIS
         string capitalize(string str)
 
-DESCRIPTION
-        Convert the first character in str to upper case, and return
-        the new string.
+BESCHREIBUNG
+        Konvertiert das erste Zeichen des Strings <str> in einen
+        Grossbuchtaben und gibt den neuen String zurueck.
 
-EXAMPLES
-        capitalize("heya!") -> "Heya!"
+BEISPIELE
+        capitalize("hallo welt!") -> "Hallo welt!"
 
-SEE ALSO
+SIEHE AUCH
         lower_case(E), upper_case(E)

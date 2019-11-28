@@ -19,21 +19,14 @@ BESCHREIBUNG
         Ist <n> nicht gegeben, aber <str> hat die Form "<id> <n>" , wird
         ebenfalls das n-te Objekt mit Namen <id> zurueckgeliefert.
 
-        Es ist: id(str) { return str == <name>; }
+        <str> kann auch ein Objekt (anstatt einer Id) sein, was den Test
+        schneller und einfacher macht.
 
-        <str> kann auch ein Objekt (anstatt einem object_name()) sein, was den
-        Test schneller und einfacher macht.
+        Das Argument <env> ist optional. <env> gibt das Objekt an, in welchem
+        nach <str> gesucht wird. Nur das Inventory von <env> wird durchsucht,
+        nicht jedoch dessen Umgebung.
 
-        Das Argument <env> ist optional. <env> gibt an, wo nach <str> gesucht
-        wird. Nur das Inventory von <env> wird durchsucht, nicht jedoch dessen
-        Umgebung. Oftmals wird fuer <env> this_player() gesetzt.
-
-
-ANMERKUNG
-        Diese efun kann u.U. _sehr_ teuer sein! Bitte schaut euch auf jeden
-        Fall auch die efun present_clone() an und schaut, ob die evtl. das
-        kann, was ihr machen wollt. present_clone() ist erheblich billiger.
-
+ANMERKUNGEN
         Wenn die efun sowohl in this_object() als auch dessen Umgebung
         sucht, werden, soweit es die Numerierung betrifft, die beiden
         Umgebungen zusammenhaengend betrachtet.
@@ -70,7 +63,7 @@ BEISPIELE
                 }
             }
 
-HISTORY
+GESCHICHTE
         LDMud 3.2.11/3.3.610 fuehrte die (str, n)-Form ein.
         LDMud 3.3.713 aenderte die Numerierung wenn sowohl Inventory
           als auch Umgebung durchsucht werden. In der vorherigen

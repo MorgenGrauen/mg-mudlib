@@ -1,25 +1,38 @@
-SYNOPSIS:
+GESCHUETZT
+SYNOPSIS
         string traceprefix(string prefix)
         string traceprefix(int dummy)
 
-DESCRIPTION:
-        If called with a string, only objects matching this prefix will
-        be traced. The string must not contain a leading "/" because
-        the object names are stored internally without it. If called
-        with a number, the traceprefix will be ignored and all objects
-        will be traced. Returns the last traceprefix or 0 if there
-        wasn't any.
+BESCHREIBUNG
+        Wenn die Funktion mit einem String als Argument aufgerufen wird,
+        werden nur Objekte getracet, deren Name mit diesem String
+        uebereinstimmt. Der String <prefix> darf am Anfang keinen "/"
+        enthalten, weil Objektnamen intern ohne diesen "/" am Anfang
+        gespeichert werden. Wird traceprefix() mit einer Zahl als Argument
+        aufgerufen, wird traceprefix ignoriert und alle Objekte werden
+        getracet.
 
-EXAMPLE:
+        Die Funktion liefert das alte Praefix zurueck oder 0, wenn keines
+        gefunden wurde.
+
+        Die Master-Lfun valid_trace() wird mit ("traceprefix", prefix)
+        aufgerufen, um die Erlaubnis fuer die Benutzung dieser Funktion zu
+        erhalten.
+
+BEISPIELE
         object obj;
         string prefix;
-        obj = find_player("deepthought");
-        prefix = object_name(obj);
-        prefix = prefix[1..strlen(prefix)-1]; /* cut off the leading "/" */
+        obj=find_player("thomas");
+        prefix = object_name(obj);  /* z.B. /std/player#69         */
+        prefix = prefix[1..];       /* entfernt den fuehrenden "/" */
         traceprefix(prefix);
-        trace(1|2|4|8);
+        /* Von hier an wird nur Code im Objekt std/player#69 getracet */
+        trace(TRACE_CALL|TRACE_CALL_OTHER|TRACE_RETURN|TRACE_ARGS);
         ...
-        trace(0);
-        
-SEE ALSO:
+        trace(TRACE_NOTHING);
+
+GESCHICHTE
+        Ab LDMud 3.2.9 wird das Argument <prefix> an valid_trace() uebergeben.
+
+SIEHE AUCH
         trace(E)

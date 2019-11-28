@@ -1,10 +1,10 @@
-SYNOPSIS:
-        object this_object(void)
+SYNOPSIS
+        object this_object()
 
-DESCRIPTION:
-        Return the object pointer for this object. This is not to be
-        confused with the internal name of an object, which is used by
-        the id() function.
+BESCHREIBUNG
+        Liefert den Objektpointer auf dieses Objekt. Der Pointer darf nicht
+        mit dem internen Namen des Objekts verwechselt werden, welcher von
+        id() verwendet wird.
 
-SEE ALSO:
+SIEHE AUCH
         this_player(E), previous_object(E), object_name(E), find_object(E)

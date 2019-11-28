@@ -1,19 +1,16 @@
+GESCHUETZT
 SYNOPSIS
-        mixed get_extra_wizinfo (object wiz)
-        mixed get_extra_wizinfo (string wiz)
-        mixed get_extra_wizinfo (int    wiz)
+        mixed get_extra_wizinfo(object|string|int wiz)
 
-DESCRIPTION
-        Returns the 'extra' information that was set for the given
-        wizard <wiz> in the wizlist.
+BESCHREIBUNG
+        Liefert die <extra> Information, die in der Wizlist fuer den
+        angegebenen Gott <wiz> angegeben wurde.
 
-        If <wiz> is an object, the entry of its creator (uid) is used.
-        If <wiz> is a string (a creator aka uid), it names the entry
-        to use.
-        If <wiz> is the number 0, the data is get from the default wizlist
-        entry.
+        Ist <wiz> ein Objekt, so wird der Eintrag des Erzeugers (UID)
+        verwendet.
+        Ist <wiz> ein String (ein Erzeuger oder eine UID), so bezeichnet er
+        den Namen des Eintrags in der Wizlist, der gelesen werden soll.
+        Ist <wiz> 0, wird der Standardeintrag aus der Wizlist genommen.
 
-        The function causes a privilege violation.
-
-SEE ALSO
+SIEHE AUCH
         wizlist_info(E), set_extra_wizinfo(E)

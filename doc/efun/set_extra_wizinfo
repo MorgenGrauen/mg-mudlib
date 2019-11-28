@@ -1,22 +1,25 @@
+GESCHUETZT
 SYNOPSIS
-        void set_extra_wizinfo (object wiz, mixed extra)
-        void set_extra_wizinfo (string wiz, mixed extra)
-        void set_extra_wizinfo (int    wiz, mixed extra)
+        void set_extra_wizinfo(object wiz, mixed extra)
+        void set_extra_wizinfo(string wiz, mixed extra)
+        void set_extra_wizinfo(int    wiz, mixed extra)
 
-DESCRIPTION
-        Set the value <extra> as the 'extra' information for the wizlist
-        entry of <wiz>.
+BESCHREIBUNG
+        Setzt den Wert <extra> als Eintrag im 'Extra' Feld in der Wizlist fuer
+        den Gott <wiz>.
 
-        If <wiz> is an object, the entry of its creator (uid) is used.
-        If <wiz> is a string (a creator aka uid), it names the entry
-        to use.
-        If <wiz> is the number 0, the data is set in the default wizlist
-        entry. It can be used to store data for the lifetime of this
-        driver run, like the time of the last reboot.
+        Ist <wiz> ein Objekt, wird der Eintrag vom Erzeuger des Objekts (also
+        dessen UID) verwendet.
+        Ist <wiz> ein String (ein Erzeuger bzw. eine UID), bezeichnet dieser
+        den Eintrag, dem <extra> zugewiesen wird.
+        Ist <wiz> 0, wird <extra> im Standardeintrag der Wizlist gesetzt.
+        Diese Funktion kann man verwenden, um Daten fuer die gesamte Laufzeit
+        des Treibers bis zum naechsten Shutdown zu speichern, zum Beispiel den
+        Zeitpunkt des letzten Reboot.
 
-        The <extra> argument may be any value.
+        Das Argument <extra> kann jeden Wert enthalten.
 
-        The function causes a privilege violation.
+        Die Funktion verursacht eine Schutzverletzung.
 
-SEE ALSO
+SIEHE AUCH
         get_extra_wizinfo(E), set_extra_wizinfo_size(E), wizlist_info(E)

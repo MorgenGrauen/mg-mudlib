@@ -1,37 +1,37 @@
+GESCHUETZT
 SYNOPSIS
         int attach_erq_demon(object ob, int do_close)
         int attach_erq_demon(string obname, int do_close)
 
-DESCRIPTION
-        This privileged efun is to set/change the connection of the
-        driver to the external erq demon, thus in effect changing the
-        demons.
+BESCHREIBUNG
+        Diese geschuetzte Funktion setzt oder aendert die die Verbindung des
+        Treibers zum externen Erq-Demon, aendert also effektiv die Demons.
 
-        The connection of the given interactive 'ob'ject is taken away(!)
-        from it and stored as the erq-connection. The object itself is
-        then no longer needed, but may stay alive - it is just another
-        non-interactive object then.
+        Die Verbindung wird dabei vom interaktiven Objekt <ob> entfernt (!)
+        und als Erq-Verbindung gespeichert. Das Objekt <ob> wird anschliessend
+        nicht mehr benoetigt, es kann aber als (nicht interaktives) Objekt
+        weiter existieren.
 
-        In the second form, the string will be combined as suffix to
-        the filename ERQFILE<obname>, which is then the binary to be
-        forked off as new erq demon. The communication with this erq
-        will take place over unix domain sockets. ERQFILE defaults to
-    BINDIR/erq, where BINDIR is the configuration value for the
-    executable directory.
+        In der zweiten Form wird der String an den Dateinamen ERQFILE<obname>
+        angehaengt, das dann als Binary als neuer Erq-Demon aufgespalten wird.
+        Die Kommunikation mit diesem Erq verlaeuft ueber Unix Domainsockets.
+        ERQFILE greift standardmaessig auf BINDIR/erq zu, wobei BINDIR der
+        konfigurierte Wert fuer das ausfuehrbare Verzeichnis ist.
 
-        If there is alreay an erq demon connected to the driver, the
-        function will fail unless 'do_close' (default 0) is specified
-        as 1 (or any other odd integer): then the old connection will
-        be closed before attaching the new.
-        The efun returns 1 on success, else 0.
+        Besteht bereits eine Verbindung zu einem Erq-Demon, schlaegt die
+        Funktion fehl, wenn nicht do_close auf 1 gesetzt ist (Standard ist
+        do_close == 0). In diesem Fall wird die alte Verbindung geschlossen,
+        bevor zum neuen Demon verbunden wird.
 
-EXAMPLE
-        To restart the (default) erq, write in
-        master.c::stale_erq(closure c):
-          attach_erq_demon("", 0);
+        Die Efun liefert 1 bei Erfolg, 0 sonst.
 
-HISTORY
-        Introduced in 3.2.1@61.
+BEISPIELE
+        Um den (Standard-)Erq neu zu starten, muss in
+        master.c::stale_erq(closure c) geschrieben werden:
+        attach_erq_demon("", 0);
 
-SEE ALSO
+GESCHICHTE
+        Eingefuehrt in 3.2.1@61.
+
+SIEHE AUCH
         send_erq(E), erq(C)

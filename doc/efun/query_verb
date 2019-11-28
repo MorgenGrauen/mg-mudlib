@@ -1,36 +1,24 @@
 SYNOPSIS
-        string query_verb();
-        string query_verb(int flag);
+        string query_verb()
+        string query_verb(int flag)
 
 BESCHREIBUNG
         Liefert das Verb des aktuellen Kommandos oder 0, wenn kein Kommando
-        bearbeitet wird.
+        bearbeitet wird. Wenn <flag> nicht angegeben oder 0 ist, wird das Verb
+        wie vom User eingegeben geliefert (das ist das erste Wort der
+        Inputzeile des Spielers, bis zum (aber ohne) den ersten Leerschlag /
+        Zeilenumbruch). Wenn <flag> nicht 0 ist, wird das Verb entsprechend
+        der add_action() zurueck gegeben.
 
-        Wenn <flag> nicht angegeben oder 0 ist, wird das Verb wie vom User
-        eingegeben geliefert (das ist das erste Wort der Inputzeile des
-        Spielers, bis zum (aber ohne) den ersten Leerschlag / Zeilenumbruch).
-        Wenn <flag> nicht 0 ist, wird das Verb entsprechend der add_action()
-        zurueck gegeben.
-
-        Innerhalb einer add_action()-Funktion, die von mehreren Kommandos
-        aufgerufen wird kann man so zwischen diesen Kommandos unterscheiden.
-
-BEMERKUNGEN
-        Die fruehere Einschraenkung, dass bei geschachtelten Kommandos
-        query-verb() nach dem inneren Kommando 0 zurueck gibt ist jetzt
-        entfallen.
-
-BEISPIEL
-        void init()
-        {
+BEISPIELE
+        void init() {
             ...
             add_action("sing","singe");
             add_action("sing","jodel", 1);
             ...
         }
 
-        int sing(string str)
-        {
+        int sing(string str) {
             write("Das Kommando war:"+query_verb()+(str ? str : "")+"\n");
             write("Das Verb war:"+query_verb(1)+(str ? str : "")+"\n");
         }
@@ -47,7 +35,8 @@ BEISPIEL
             Das Kommando war: jodele
             Das Verb war: jodel
 
-SIEHE AUCH
-        query_command(E), add_action(E), AddCmd(L), AddAction(L)
+GESCHICHTE
+        LDMud 3.2.9. fuehrte das optionale Argument <flag> ein.
 
-7.Aug 2007 Gloinson
+SIEHE AUCH
+        add_action(E), query_command(E)

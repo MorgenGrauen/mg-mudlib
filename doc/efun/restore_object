@@ -1,6 +1,6 @@
 SYNOPSIS
-        int restore_object(string name);
-        int restore_object(string str);     (VORLAEUFIG)
+        int restore_object(string name)
+        int restore_object(string str)
 
 BESCHREIBUNG
         Laedt Werte von Variablen fuer das aktuelle Objekt aus der Datei
@@ -12,8 +12,9 @@ BESCHREIBUNG
 
         Wenn Variablen aus einer Datei geladen werden, kann <name> mit .c
         enden. Diese Dateiendung wird vom Treiber entfernt. Das Masterobjekt
-        fuegt dem Dateinamen ein .o hinzu. Die Gueltigkeit des Dateinamens
-        wird mit der Funktion check_valid_path() automatisch ueberprueft.
+        fuegt vermutlich dem Dateinamen ein .o hinzu. Die Gueltigkeit des
+        Dateinamens wird mit der Funktion check_valid_path() automatisch
+        ueberprueft.
 
         Die Funktion gibt 1 zurueck, wenn die Variablen erfolgreich geladen
         wurden und 0, wenn es nichts zu laden gab.
@@ -21,7 +22,7 @@ BESCHREIBUNG
         Variablen mit dem Typenvermerk nosave werden nicht geladen, zum
         Beispiel nosave int xxx;
 
-        Closures aus Lfuns, Variablne und simul_efuns werden nur geladen,
+        Clousers aus Lfuns, Variablne und simul_efuns werden nur geladen,
         wenn sie gefunden werden. Falls nicht, werden sie mit dem Wert '0'
         geladen.
 
@@ -33,13 +34,15 @@ BESCHREIBUNG
         einzigartigen Namen bei nicht-statischen Variablen. So wird auch das
         manuelle Lesen oder Editieren des Savefiles einfacher.
 
-AENDERUNGEN
+GESCHICHTE
         Das direkte Laden aus einem String wurde in LDMud 3.2.8 eingefuehrt,
             wird aber moeglicherweise in Zukunft in eine separate Efun
             ausgelagert.
         LDMud 3.2.9 ergaenzte die Funktion um die Moeglichkeit,
             NonLambda-Closures, Symbole und gequotete Arrays zu laden,
             indem ein neues Format fuer das Savefile verwendet wird.
+        LDMud 3.5.0 unterstuetzt das Einlesen von Formatversion 2 mit hoeherer
+            Praezision der Gleitkommazahlen.
 
 SIEHE AUCH
         save_object(E), restore_value(E), valid_read(M)

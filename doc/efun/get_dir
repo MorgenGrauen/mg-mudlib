@@ -1,8 +1,8 @@
 SYNOPSIS
         #include <files.h>
 
-        mixed *get_dir(string str)
-        mixed *get_dir(string str, int mask)
+        mixed * get_dir(string str)
+        mixed * get_dir(string str, int mask)
 
 BESCHREIBUNG
         Benoetigt einen Pfad als erstes Argument und liefert ein Feld
@@ -57,6 +57,14 @@ BESCHREIBUNG
         Die Eintraege in der Bitmaske koennen miteinander kombiniert
         werden.
 
+ANMERKUNGEN
+        Der als Argument angegebene Pfad wird vor Benutzung von valid_read()
+        im Master der Mudlib verarbeitet. Hierbei kann die Mudlib eine
+        Normalisierung vornehmen (z.B. fuehrende und endstaendige "/"
+        entfernen). Dann fuehrt dann u.U. zu erwarteten Resultaten (z.B. dass
+        get_dir("/dir/", ...) nicht den Inhalt von /dir/ zurueckgibt).
+        Compat mode: GETDIR_PATH liefert die Pfade ohne fuehrenden /.
+
 BEISPIELE
         Funktion                         Rueckgabewert
         -------------------------------------------------------------------
@@ -64,8 +72,8 @@ BEISPIELE
                                          /obj enthalten sind.
         get_dir("/obj/")                 Wie get_dir("/obj/").
 
-        get_dir("/obj/fackel.c")        ({ "fackel.c" }), sofern
-                                         /obj/fackel.c existiert (als
+        get_dir("/obj/schwert.c")        ({ "schwert.c" }), sofern
+                                         /obj/schwert.c existiert (als
                                          Datei oder Verzeichnis), ansonsten
                                          ({}), sofern /obj ein Verzeichnis
                                          ist, ansonsten 0.
@@ -77,9 +85,9 @@ BEISPIELE
                                          Verzeichnisse in /obj, sofern /obj
                                          ein Verzeichnis ist, ansonsten 0.
 
-        get_dir("/obj/fackel.c", GETDIR_SIZES)
-                                         ({ <Groesse von /obj/fackel.c> }),
-                                         sofern /obj/fackel.c existiert.
+        get_dir("/obj/schwert.c", GETDIR_SIZES)
+                                         ({ <Groesse von /obj/schwert.c> }),
+                                         sofern /obj/schwert.c existiert.
         get_dir("/obj/.", GETDIR_NAMES)  Wie get_dir("/obj/.").
         get_dir("/obj/.", GETDIR_SIZES)  Ein unsortiertes Feld mit den
                                          Groessen der Dateien in /obj.
@@ -90,24 +98,30 @@ BEISPIELE
                                          jede Datei in /obj den Namen, die
                                          Groesse und den Zeitpunkt der
                                          letzten Aenderung enthaelt, z.B.
-                                         ({
-                                             "axt.c"    ,  927, 994539583,
-                                             "fackel.c", 1283, 998153903,
-                                             }).
+                                           ({
+                                              "axt.c"    ,  927, 994539583,
+                                              "schwert.c", 1283, 998153903,
+                                           }).
 
-        get_dir("/obj/fackel.c", GETDIR_NAMES|GETDIR_PATH)
-                                         ({ "/obj/fackel.c" }), sofern
+        get_dir("/obj/schwert.c", GETDIR_NAMES|GETDIR_PATH)
+                                         ({ "/obj/sword.c" }), sofern
                                          vorhanden.
-        get_dir("/obj/fackel.c", GETDIR_PATH)  Kurzform dafuer.
+        get_dir("/obj/schwert.c", GETDIR_PATH)  Kurzform dafuer.
 
         transpose_array(({ get_dir(str, GETDIR_NAMES|GETDIR_UNSORTED)
                          , get_dir(str, GETDIR_SIZES)
                          , get_dir(str, GETDIR_DATES) }));
         Liefert ein unsortiertes Feld mit Feldern, von denen ein jedes
         Name, Groesse und Zeit einer Datei enthaelt, z. B.
-        ({
-            ({ "fackel.c", 1283, 998153903 }),
-            ({ "axt.c"    ,  927, 994539583 }),
-            }).
+          ({
+             ({ "schwert.c", 1283, 998153903 }),
+             ({ "axt.c"    ,  927, 994539583 }),
+          }).
+
+GESCHICHTE
+        LDMud 3.2.9: GETDIR_PATH eingefuehrt.
+        LDMud 3.2.11: GETDIR_ACCESS und GETDIR_MODES eingefuehrt.
+
 SIEHE AUCH
-        cat(E), mkdir(E), rmdir(E), file_size(E)
+        mkdir(E), rmdir(E), file_size(E), write_file(E), write_bytes(E),
+        read_file(E), read_bytes(E)

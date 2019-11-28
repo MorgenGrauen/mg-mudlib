@@ -1,17 +1,14 @@
 SYNOPSIS
         int program_time()
-        int program_time(object ob)
+        int program_time(object obj)
 
-DESCRIPTION
-        Returns the creation (compilation) time of the object's
-        program. In other words, this is the object_time() of
-        the blueprint.
+BESCHREIBUNG
+        Gibt den Zeitpunkt an, zu dem das Objekt <obj> (bzw. this_object(),
+        wenn nichts angegeben wurde) erzeugt, d.h. kompiliert wurde.
 
-        Default is this_object(), if no arg is given.
+ANMERKUNGEN
+        Diese Efun swapt das Programm zurueck ins Objekt, wenn es ausgelagert
+        war.
 
-	
-        CAVEAT: If the objects program is swapped out, this efun
-          swaps it back in.
-
-SEE ALSO
+SIEHE AUCH
         object_time(E), program_name(E)

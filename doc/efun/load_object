@@ -1,23 +1,23 @@
 SYNOPSIS
-        object load_object(string name)
+        object load_object(string file)
 
-DESCRIPTION
-        Load the object from the file <name> and return it. If the
-        object already exists, just return it.
+BESCHREIBUNG
+        Laedt und liefert das Objekt aus der Datei <file>. Wenn das Objekt
+        bereits existiert, wird es nur zurueckgeliefert.
 
-        This efun can be used only to load blueprints - for clones, use
-        the efun clone_object().
+        Diese Efun laedt nur Blueprints. Fuer Clone muss clone_object()
+        verwendet werden.
 
-        If strict euids are enforced, the cloning object must have
-        a non-zero euid.
+        Werden strikte EUIDs verlangt, muss das ladende Objekt eine EUID != 0
+        haben.
 
-EXAMPLE
-        // Update and reload the standard player object
+BEISPIELE
+        // Erneuere das Standard Player-Objekt
         destruct(find_object("/std/player"));
         load_object("/std/player");
 
-HISTORY
-        Introduced in LDMud 3.2.6.
+GESCHICHTE
+        Eingefuehrt in LDMud 3.2.6.
 
-SEE ALSO
+SIEHE AUCH
         clone_object(E)

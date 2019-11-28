@@ -1,21 +1,21 @@
 SYNOPSIS
         mixed * get_error_file(string name, int set_forget_flag)
 
-DESCRIPTION
-        Return information about the last error which occured for
-        <name> (where <name> is a valid name from the wiz list).
+BESCHREIBUNG
+        Liefert Informationen ueber den letzten Fehler, der fuer <name>
+        aufgetreten ist, wobei <name> ein gueltiger Eintrag in der Wizlist
+        sein muss.
 
-        Result is an array of four elements: the filename of the
-        program where the error occured, the linenumber in the
-        program, the error message (runtime error messages usually
-        start with a '*'), and a numerical flag (the 'forget flag') if
-        the error information has been queried already.
+        Das Resultat ist ein Array aus vier Elementen: der Dateiname des
+        Programms, in dem der Fehler aufgetreten ist, die Zeilennummer in der
+        Datei, die Fehlermeldung (Laufzeitfehler beginnen gewoehnlich mit
+        einem *) und ein numerisches Flag (das 'forget flag'), wenn der
+        Fehler bereits angeschaut wurde.
 
-        If there is no error stored for the given <name>, 0 is
-        returned.
+        Wenn es keinen Fehler fuer <name> gibt, wird 0 zurueckgegeben.
 
-        If <set_forget_flag> is non-zero, the 'forget' flag is set
-        for the error message after it has been returned.
+        Wenn <set_forget_flag> ungleich 0 ist, wird das 'forget flag' gesetzt,
+        nachdem die Fehlermeldung ausgegeben wurde.
 
-SEE ALSO
+SIEHE AUCH
         ed(E), valid_read(M)

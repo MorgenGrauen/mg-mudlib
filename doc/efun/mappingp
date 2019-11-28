@@ -1,9 +1,10 @@
-SYNOPSIS:
-	int mappingp(mixed arg)
+SYNOPSIS
+        int mappingp(mixed arg)
 
-DESCRIPTION:
-	Return 1 if the argument is a mapping, or 0 if it is not. 
+BESCHREIBUNG
+        Liefert 1, wenn das Argument ein Mapping ist, ansonsten 0.
 
-SEE ALSO:
-	intp(E), stringp(E), objectp(E), pointerp(E), mkmapping(E),
-	m_indices(E), m_values(E), m_delete(E), sizeof(E)
+SIEHE AUCH
+        intp(E), stringp(E), bytesp(E), objectp(E), pointerp(E),
+        mkmapping(E), m_indices(E), m_values(E), m_delete(E),
+        sizeof(E), widthof(E).

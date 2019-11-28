@@ -1,202 +1,126 @@
+GESCHUETZT
 SYNOPSIS
-        #include <object_info.h>
-
-        mixed object_info(object ob, int what)
-
-DESCRIPTION
-        Returns some internal information about object <ob>. The
-        Argument <what> determines which information is returned.
-
-        It can be either a configuration option as given to
-        configure_object() or one of the following options:
-
-
-
-        Object Flags:
-
-        <what> == OI_ONCE_INTERACTIVE:
-           1 if <ob> was once (or still is) interactive, 0 else.
-
-        <what> == OI_RESET_STATE:
-           1 if <ob> is (still) reset, 0 else.
-
-        <what> == OI_WILL_CLEAN_UP:
-           1 if <ob>'s clean_up() will be called, 0 else.
-
-        <what> == OI_LAMBDA_REFERENCED:
-           1 if <ob> has lambdas (and there replace_program()
-           is not allowed anymore), 0 else.
-
-        <what> == OI_REPLACED:
-           1 if the program for <ob> was replaced, 0 else.
-
-
-
-        Program Flags:
-
-        <what> == OI_NO_INHERIT:
-           1 if the program can't be inherited.
-
-        <what> == OI_NO_CLONE:
-           1 if the program/blueprint can't be cloned.
-
-        <what> == OI_NO_SHADOW:
-           1 if the program's functions can't be shadowed.
-
-        <what> == OI_SHARE_VARIABLES:
-           1 if clones of this program share their initial
-           variable values with the blueprint.
-
-
-
-        Swapping Information:
-
-        <what> == OI_SWAPPED:
-           1 if <ob> is swapped, 0 else.
-
-        <what> == OI_PROG_SWAPPED:
-           1 if <ob>'s program is swapped, 0 else.
-
-        <what> == OI_VAR_SWAPPED:
-           1 if <ob>'s variables are swapped, 0 else.
-
-        <what> == OI_SWAP_NUM:
-           The swap number for <ob>s program, or -1 if not swapped.
-
-
-
-        Time Information:
-
-        <what> == OI_NEXT_RESET_TIME:
-            Time of the next reset.
-
-        <what> == OI_NEXT_CLEANUP_TIME:
-            Time of the next data cleanup.
-
-        <what> == OI_LAST_REF_TIME:
-            Time of the last call to <ob>.
-
-
-
-        Object List:
-
-        <what> == OI_OBJECT_NEXT:
-           The next object in the global object list.
-
-        <what> == OI_OBJECT_PREV:
-           The previous object in the global object list.
-
-        <what> == OI_OBJECT_POS:
-           The position of <ob> in the global object list,
-           counting from 0 up. This can be expensive to compute.
-
-
-
-        Shadows:
-
-        <what> == OI_SHADOW_NEXT:
-           The next object in the shadow list, i.e. the object
-           that is shadowing <ob>, or 0 if <ob> is not shadowed.
-
-        <what> == OI_SHADOW_PREV:
-           The previous object in the shadow list, i.e. the object
-           that <ob> is currently shadowing, or 0 if <ob> is not a shadow.
-
-        <what> == OI_SHADOW_ALL:
-           Returns an array of all objects that are currently
-           shadowing <ob>, or an empty array if <ob> is not shadowed.
-
-
-
-        Object Statistics:
-
-        <what> == OI_OBJECT_REFS:
-           The number of references to <ob>.
-
-        <what> == OI_TICKS:
-           The accumulated evaluation cost spend in <ob> modulo 1000000000.
-
-        <what> == OI_GIGATICKS:
-           The accumulated evaluation cost spend in <ob> divided by 1000000000.
-
-        <what> == OI_DATA_SIZE:
-           The total size of the values held in the object's variables,
-           scaled down according to the extend of data sharing.
-
-        <what> == OI_DATA_SIZE_TOTAL:
-           The unmodified total size of the values held in the
-           object's variables
-
-
-
-        Program Statistics:
-
-        <what> == OI_PROG_REFS:
-           The number of references to <ob>'s program.
-
-        <what> == OI_NUM_FUNCTIONS:
-           The number of functions in the program.
-
-        <what> == OI_NUM_VARIABLES:
-           The number of variables in the program.
-
-        <what> == OI_NUM_STRINGS:
-           The number of strings in the program.
-
-        <what> == OI_NUM_INHERITED:
-           The number of explicitely inherited programs.
-
-        <what> == OI_NUM_INCLUDED:
-           The number of included files in the program.
-
-        <what> == OI_SIZE_FUNCTIONS:
-           The size needed for the function structures.
-           Note that this does not include size of the function code.
-
-        <what> == OI_SIZE_VARIABLES:
-           The size needed for the variable structures.
-           Note that this does not include size of the variable data,
-           See OI_DATA_SIZE/OI_DATA_SIZE_TOTAL for that.
-
-        <what> == OI_SIZE_STRINGS:
-           The size needed for the string pointers.
-
-        <what> == OI_SIZE_STRINGS_DATA:
-           The size needed for the string values,
-           scaled down according to the extend of data sharing.
-
-        <what> == OI_SIZE_STRINGS_DATA_TOTAL:
-           The unmodified size needed for the string values.
-
-        <what> == OI_SIZE_INHERITED:
-           The size needed for the inherit structures.
-
-        <what> == OI_SIZE_INCLUDED:
-           The size needed for the include structures.
-
-        <what> == OI_PROG_SIZE:
-           The size of the program structure.
-
-        <what> == OI_PROG_SIZE_TOTAL:
-           The total size of the program.
-
-
-HISTORY
-        Introduced in LDMud 3.2.6.
-        Changes in LDMud 3.2.7:
-          - new basic result OIB_REPLACED.
-          - basic result OIB_IS_WIZARD is always 0 if set_is_wizard()
-              is not available.
-          - basic result OIB_APPROVED is gone.
-        LDMud 3.2.8 added OIM_DATA_SIZE to the result of OINFO_MEMORY.
-        LDMud 3.2.9 added the index mechanism, OIM_NUM_INCLUDES,
-          OIM_NO_INHERIT, OIM_NO_SHADOW, OIM_NO_CLONE, OIM_SIZE_STRINGS_DATA,
-          OIM_SIZE_STRINGS_TOTAL, and OIM_DATA_SIZE_TOTAL to the result
-          of OINFO_MEMORY.
-        LDMud 3.3.378 added the OIM_SHARE_VARIABLES to the result
-          of OINFO_MEMORY.
-        LDMud 3.3.654 added the OIB_NEXT_CLEANUP to the result of OINFO_BASIC.
-        LDMud 3.5.0 redesigned the whole efun.
-
-SEE ALSO
-        configure_object(E), interactive_info(E), driver_info(E)
+        #include <objectinfo.h>
+
+        mixed * object_info(object ob, int what)
+        mixed * object_info(object ob, int what, int index)
+
+BESCHREIBUNG
+        Liefert einige interne Informationen ueber das Objekt <ob> in Form
+        eines Arrays. Das Argument <what> gibt an, welche Informationen
+        geliefert werden.
+
+        Das Resultat ist normalerweise ein Array. Wird jedoch <index>
+        spezifiziert, wird nur der Wert geliefert, der im Array an der
+        Position <index> stehen wuerde.
+
+        Die moeglichen Werte fuer <what> und die Indizes des gelieferten
+        Arrays sind in <objectinfo.h> definiert und muessen eingebunden
+        werden. Diese Definitionen koennen sich in zukuenftigen Versionen
+        des Drivers aendern!
+
+        <what> == OINFO_BASIC:
+
+        Dieser Aufruf liefert grundlegende Informationen ueber <ob>:
+        int [OIB_HEART_BEAT]:       1, wenn <ob> einen heart_beat() hat,
+                                    sonst 0.
+        int [OIB_IS_WIZARD]:        1, wenn <ob> ein Gott ist (das
+                                    Wizard Flag gesetzt hat), sonst 0. Der
+                                    Eintrag ist immer 0, wenn set_is_wizard()
+                                    nicht verfuegbar ist.
+        int [OIB_ENABLE_COMMANDS]:  1, wenn <ob> Kommandos geben darf, sonst 0.
+        int [OIB_CLONE]:            1, wenn <ob> ein Clon ist, sonst 0.
+        int [OIB_DESTRUCTED]:       1, wenn <ob> zerstoert wurde, sonst 0.
+        int [OIB_SWAPPED]:          1, wenn <ob> geswapt wurde, sonst 0.
+        int [OIB_ONCE_INTERACTIVE]: 1, wenn <ob> einmal interaktiv war,
+                                    sonst 0.
+        int [OIB_RESET_STATE]:      1, wenn <ob> im gleichen Zustand wie nach
+                                    einem reset() ist, sonst 0.
+        int [OIB_WILL_CLEAN_UP]:    1, wenn <ob> clean_up() aufruft, sonst 0.
+        int [OIB_LAMBDA_REFERENCED]:1, wenn <ob> Lambdas beinhaltet, sonst 0.
+        int [OIB_SHADOW]:           1, wenn <ob> ein Schatten uebergeworfen
+                                    wurde, sonst 0.
+        int [OIB_REPLACED]:         1, wenn das Programm von <ob> ersetzt
+                                    wurde (mit replace_program()), sonst 0.
+        int [OIB_NEXT_RESET]:       Zeit bis zum naechsten Reset.
+        int [OIB_TIME_OF_REF]:      Zeit des letzen Aufrufs von <ob>.
+        int [OIB_REF]:              Anzahl Aufrufe von <ob>.
+        int [OIB_GIGATICKS]:        GIGATICKS und TICKS liefern die summierten
+        int [OIB_TICKS]:            Evalkosten von <ob>.
+        int [OIB_SWAP_NUM]:         Die Swap-Nummer von <ob>s Programm, oder
+                                    -1, wenn <ob> nicht geswapt wurde.
+        int [OIB_PROG_SWAPPED]:     1, wenn <ob>'s Programm geswapt wurde,
+                                    sonst 0.
+        int [OIB_VAR_SWAPPED]:      1, wenn <ob>'s Variablen geswapt wurden,
+                                    sonst 0.
+        int [OIB_NAME]:             der Objektname von <ob>.
+        object [OIB_NEXT_ALL]:      das naechste Objekt in der Objektliste.
+        object [OIB_PREV_ALL]:      das vorherige Objekt in der Objektliste.
+
+        <what> == OINFO_POSITION:
+
+        Dieser Aufruf liefert Informationen ueber die Position von <ob> in der
+        globalen Objektliste:
+
+        object [OIP_NEXT]:          naechstes Objekt in der Objektliste.
+        object [OIP_PREV]:          vorheriges Objekt in der Objektliste.
+        int [OIP_POS]:              die Position von <ob> in der Objektliste,
+                                    beginnend von 0 aufwaerts.
+
+        Dieser Aufruf kann aufwendig an Rechenzeit sein.
+
+        <what> == OINFO_MEMORY:
+
+        Dieser Aufruf liefert Informationen ueber Speichernutzung von <ob>.
+
+        int [OIM_REF]:                Anzahl Referenzierungen von <ob>.
+        string [OIM_NAME]:            Name von <ob>.
+        int [OIM_PROG_SIZE]:          Programmgroesse.
+        int [OIM_NUM_FUNCTIONS]:      Anzahl Funktionen in <ob>.
+        int [OIM_SIZE_FUNCTIONS]:     Speicherbedarf der Funktionen
+        int [OIM_NUM_VARIABLES]:      Anzahl Variablen im Programm.
+        int [OIM_SIZE_VARIABLES]:     Speicherbedarf der Variablen.
+        int [OIM_NUM_STRINGS]:        Anzahl Strings im Programm.
+        int [OIM_SIZE_STRINGS]:       Speicherbedarf der String-Pointer.
+        int [OIM_SIZE_STRINGS_DATA]:  Speicherbedarf der String-Daten,
+                                      korrigiert um das Ausmass des Daten-
+                                      Sharing.
+        int [OIM_SIZE_STRINGS_TOTAL]: unkorrigierter Speicherbedarf der
+                                      String-Daten.
+        int [OIM_NUM_INCLUDES]:       Anzahl Includefiles im Programm.
+        int [OIM_NUM_INHERITED]:      Anzahl inheriter Programme.
+        int [OIM_SIZE_INHERITED]:     Speicherbedarf der Inherits.
+        int [OIM_TOTAL_SIZE]:         Gesamter Speicherbedarf des Programms.
+        int [OIM_DATA_SIZE]:          Gesamte Speicherbedarf der Variablenwerte
+                                      des Objekts <ob>, korrigiert um das
+                                      Ausmass des Daten-Sharings.
+        int [OIM_DATA_SIZE_TOTAL]:    unkorrigierter Gesamter Speicherbedarf
+                                      der Variablenwerte des Objekts.
+        int [OIM_NO_INHERIT]:         1, wenn das Programm nicht inheritet
+                                      werden kann.
+        int [OIM_NO_CLONE]:           1, wenn das Programm / der Blueprint
+                                      nicht geclont werden kann.
+        int [OIM_NO_SHADOW]:          1, wenn dem Objekt kein Shadow
+                                      uebergeworfen werden darf.
+
+        Dieser Aufruf holt das Programm aus dem Swap, falls notwendig.
+        Die OIM_SIZE_xxx-Eintraege zeigen nur den Speicherbedarf der
+        Strukturen / Pointer an, nicht aber den Speicherbedarf von
+        Variablenwerten, Funktionscode oder der Strings selbst.
+
+
+GESCHICHTE
+        Eingefuehrt in LDMud 3.2.6.
+        Aenderungen in LDMud 3.2.7:
+          - neues Kriterium OIB_REPLACED.
+          - das Kriterium OIB_IS_WIZARD ist immer 0, wenn set_is_wizard()
+            nicht verfuegbar ist.
+          - das Kriterium OIB_APPROVED wurde entfernt.
+        LDMud 3.2.8 fuehrte neu OIM_DATA_SIZE im Resultat von OINFO_MEMORY ein.
+        LDMud 3.2.9 erweiterte OINFO_MEMORY um den Index Mechanismus,
+            OIM_NUM_INCLUDES, OIM_NO_INHERIT, OIM_NO_SHADOW, OIM_NO_CLONE,
+            OIM_SIZE_STRINGS_DATA, OIM_SIZE_STRINGS_TOTAL, und
+            OIM_DATA_SIZE_TOTAL
+
+SIEHE AUCH
+        debug_info(E)

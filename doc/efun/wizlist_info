@@ -1,38 +1,39 @@
+GESCHUETZT
 SYNOPSIS
         #include <wizlist.h>
 
         mixed * wizlist_info()
 
-DESCRIPTION
-        Returns an array with the interesting entries of the wizlist.
-        Needs to be privileged by the master object.
+BESCHREIBUNG
+        Liefert ein Array mit Eintraegen aus der Wizlist (der internen
+        Goetterliste). Die Benutzung muss durch das Masterobjekt erlaubt
+        werden.
 
-        The result is an array with one entry for every wizard (uid).
-        Every entry is an array itself:
+        Das Resultat ist ein Array mit einem Eintrag fuer jeden Gott (uid).
+        Jeder Eintrag enthaelt wiederum ein Array mit folgenden Elementen:
 
-          string w[WL_NAME]        = Name of the wizard.
-          int    w[WL_COMMANDS]    = Weighted number of commands execute by
-                                     objects of this wizard.
-          int    w[WL_COST],
-          int    w[WL_GIGACOST]       = Weighted sum of eval_costs.
-          int    w[WL_TOTAL_COST],
-          int    w[WL_TOTAL_GIGACOST] = Total sum of eval_costs.
-          int    w[WL_HEART_BEATS]   = Weighted count of heart_beats.
-          int    w[WL_CALL_OUT]      = Reserved for call_out() (unused yet).
-          int    w[WL_ARRAY_TOTAL]   = Total size of arrays in elements.
-          int    w[WL_MAPPING_TOTAL] = Total size of mappings in elements.
-          int    w[WL_STRUCT_TOTAL]  = Total size of structs in elements.
-          mixed  w[WL_EXTRA]         = Extra wizlist-info if set.
+            string  w[WL_NAME]          Name des Gottes
+            int w[WL_COMMANDS]          Gewichtete Anzahl Kommandos, die von
+                                        Objekten dieses Gottes ausgefuehrt
+                                        wurden
+            int w[WL_COSTE]             Gewichtete Summe der Eval-Kosten
+            int w[WL_GIGACOST]          Gewichtete Summe der Eval-Kosten
+            int W[WL_TOTAL_COST]        Totale Summe der Eval-Kosten
+            int w[WL_TOTAL_GIGACOST]    Totale Summe der Eval-Kosten
+            int w[WL_HEART_BEAT]        Gewichtete Anzahl der heat_beat()s
+            int w[WL_CALL_OUT]          Reserviert fuer call_out()s
+                                        (bisher nicht implementiert)
+            int w[WL_ARRAY_TOTAL]       Totale Groesse aller Arrays in
+                                        Elementen
+            mixed w[WL_EXTRA]           Die eigentliche Wizlist-Info
 
-        The 'weighted' entries decay every hour by 10%.
+        Die "gewichteten" Werte verfallen pro Stunde um 10%.
 
-HISTORY
-        LDMud 3.2.10 split the old WL_EVAL_COST into WL_COST and WL_GIGACOST
-          to accomodate for longer uptimes, and introduced
-          WL_TOTAL_COST/WL_TOTAL_GIGACOST.
-        LDMud 3.3.174 added WL_MAPPING_TOTAL.
-        LDMud 3.3.? added WL_STRUCT_TOTAL.
+GESCHICHTE
+        LDMud 3.2.10 trennte das alte WL_EVAL_COST in WL_COST und WL_GIGACOST,
+            um laengeren Uptimes gerecht zu werden. Ausserdem wurde
+            WL_TOTAL_COST und WL_TOTAL_GIGACOST eingefuehrt.
 
-SEE ALSO
-        privilege_violation(M), set_extra_wizinfo_size(E)
+SIEHE AUCH
+        privilege_violation(M), set_extra_wizinfo_size(E),
         get_extra_wizinfo(E), set_extra_wizinfo(E)

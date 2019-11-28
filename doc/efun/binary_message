@@ -1,6 +1,6 @@
 GESCHUETZT
 SYNOPSIS
-        int binary_message(int *|string messages, int flags);
+        int binary_message(int *|bytes messages, int flags)
 
 BESCHREIBUNG
         Liest den Output aus und sendet diesen direkt mit write() OHNE IAC
@@ -21,15 +21,15 @@ BESCHREIBUNG
             werden - der Rueckgabewert ist nicht definiert.
 
         Bit 1 (Wert 2): Der Puffer wird ausgelesen, _nachdem_ die Nachricht
-            angefuegt wurde. Ist nur in Verbindung mit Bit 0 sinnvoll.
+            angefuegt wurde. Macht nur in Verbindung mit Bit 0 Sinn.
 
-        Die Idee hinter den Flags ist, dass das Senden von Kommandocodes
-        zum Beispiel fuer Farben an den vorhandenen Filtern fuer erlaubte
-        Zeichen vorbeigeschleust werden muss, jedoch nicht wichtig genug
-        ist, um die Verschwendung von Bandbreite mittels einer
-        synchronen Uebertragung zu rechtfertigen.
+            Die Idee hinter den Flags ist, dass das Senden von Kommandocodes
+            zum Beispiel fuer Farben an den vorhandenen Filtern fuer erlaubte
+            Zeichen vorbeigeschleust werden muss, jedoch nicht wichtig genug
+            ist, um die Verschwendung von Bandbreite mittels einer
+            synchronen Uebertragung zu rechtfertigen.
 
-AENDERUNGEN
+GESCHICHTE
         Eingefuehrt in 3.2.1@40.
 
 SIEHE AUCH

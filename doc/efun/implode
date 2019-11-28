@@ -1,11 +1,13 @@
 SYNOPSIS
         string implode(mixed *arr, string del)
+        bytes  implode(mixed *arr, bytes  del)
 
 BESCHREIBUNG
 	Setzt alle Zeichenketten (Strings) aus dem Feld (Array) arr zu
         einer Zeichenkette zusammen und fuegt dabei die Zeichenkette del
         zwischen je zwei Elementen ein. Elemente aus dem Feld arr, welche
-        keine Zeichenketten sind, werden ignoriert.
+        keine Zeichenketten sind, werden ignoriert. Mit Bytefolgen wird
+        analog verfahren.
 
 BEISPIELE
 	Funktion                                        Rueckgabewert
@@ -18,8 +20,8 @@ BEISPIELE
         implode(explode("a short text", " "), "_")      "a_short_text"
 
 	Heutzutage kann man stattdessen auch
-	regreplace("a short text", " ", "_", 1)
+	    regreplace("a short text", " ", "_", 1)
 	verwenden.
 
 SIEHE AUCH
-        explode(E)
+        explode(E), regreplace(E)

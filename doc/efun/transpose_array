@@ -1,22 +1,23 @@
-SYNOPSIS:
-	mixed *transpose_array (mixed *arr);
+SYNOPSIS
+        mixed * transpose_array(mixed *arr)
 
-DESCRIPTION:
-	transpose_array ( ({ ({1,2,3}), ({a,b,c}) }) )
-			== ({ ({1,a}), ({2,b)}, ({3,c}) }) 
+BESCHREIBUNG
+        Transponiert das Array <arr>.
 
-	transpose_array() applied to an alist results in an array of
-	({ key, data }) pairs, useful if you want to use sort_array()
-	or filter() on the alist.
+        transpose_array( ({ ({1,2,3}) , ({a,b,c}) }) )
+        ergibt: ({ ({1,a}), ({2,b}), ({3,c}) })
 
-EXAMPLE:
-	sort_array(transpose_array( ({ m_indices(map), m_values(map) }) ),
-		   lambda( ({ 'a, 'b }),
-			   ({ #'<, ({ #'[, 'a, 0 }),
-				   ({ #'[, 'b, 0}) }) ) )
+        Wird transpose_array() auf eine Alist angewendet, ergibt das ein
+        Array von ({ key, data }) in Paaren. Das ist praktisch, wenn
+        sort_array() oder filter() auf die Alist angewendet werden soll.
 
-	The given mapping 'map' is returned as an array of 
-	({ key,	data })  pairs, sorted by the keys.
+BEISPIELE
+        sort_array(transpose_array( ({m_indices(map), m_values(map) }) ),
+                   lambda( ({'a, 'b}),
+                           ({#'<, ({ #'[, 'a, 0}),
+                                  ({ #'[, 'b, 0}) }) ));
+        Dieses Gebilde liefert das Mapping 'map' als Array von ({key, data })
+        Paaren, sortiert nach den Keys.
 
-SEE ALSO:
-	alists(LPC), sort_array(E)
+SIEHE AUCH
+        alists(LPC), sort_array(E)

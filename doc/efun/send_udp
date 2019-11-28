@@ -1,12 +1,39 @@
-SYNOPSIS:
-	int send_udp(string host, int port, string message)
+GESCHUETZT
+SYNOPSIS
+        int send_udp(string host, int port, bytes message)
+        int send_udp(string host, int port, int *message)
 
-DESCRIPTION:
-	Sends The message in an UDP packet to the given host and port
-	number. Causes a privilege violation.
-	Returns 1 on success, 0 on failure.
+BESCHREIBUNG
+        Sendet die Nachricht <message> als UDP Paket an den angegebenen Host
+        bzw. Port.
 
-SEE ALSO:
-	receive_udp(M)
+        Die Efun verursacht eine Schutzverletzung. Wenn USE_DEPRECATED gesetzt
+        ist, wird zuerst send_imp() ausgeloest, anschliessend - wenn send_imp()
+        fehlschlaegt - send_udp(). Wenn USE_DEPRECATED nicht gesetzt ist,
+        wird nur send_udp() ausgeloest.
 
-29.10.2006 Zesstra
+        Die Funktion liefert 1 bei Erfolg, sonst 0.
+
+        MERKE: auf manchen Systemen wird ein fehlgeschlagener Versuch von
+        send_udp() nicht registriert, bis das naechste send_udp() aufgerufen
+        wird. Das spaetere send_udp() kann in diesem Fall 0 zurueck liefern,
+        obwohl es erfolgreich war.
+
+FEHLER
+        Ist <host> ein qualifizierter Hostname (anstelle einer IP Adresse),
+        blockiert die Ausfuehrung fuer die Dauer der Namensaufloesung.
+
+ANMERKUNGEN
+        Auf manchen Systemen wird ein fehlgeschlagener Versuch von send_udp()
+        nicht registriert, bis das naechste send_udp() aufgerufen wird.
+        Das spaetere send_udp() kann in diesem Fall 0 zurueckliefern, obwohl
+        es erfolgreich war.
+
+GESCHICHTE
+        LDMud 3.2.9 benannte diese Efun von send_imp() und veraenderte auch
+            die Schutzverletzung (bzw. die entsprechende Fehlermeldung) und
+            die Apply Namen. Die alte Version ist verfuegbar, wenn im
+            Treiber USE_DEPRECATED gesetzt ist.
+
+SIEHE AUCH
+        query_udp_port(E), receive_udp(M)

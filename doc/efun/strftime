@@ -24,10 +24,10 @@ BESCHREIBUNG
      0: Ausgabe im klassischen "C" locale (english)
      1: Ausgabe in Landessprache des Mudrechners.
 
-BEMERKUNGEN:
+ANMERKUNGEN
      Der zurueckgebene Ergebnisstring ist max. 511 Zeichen lang.
 
-PLATZHALTER:
+PLATZHALTER
      Diese Funktion versteht alle Platzhalter, die die Funktion strftime() aus
      der C-Standardbibliothek versteht. Momentan sind dies:
        %a     Der abgekuerzte Wochentag abhaengig von der momentanen Locale.
@@ -101,12 +101,18 @@ PLATZHALTER:
               %H:%M:%S %z').
        %Z     Die Zeitzone oder der Name oder die Abkuerzung.
        %+     Datum und Zeit im Format von date(1).
-       %%     Das Zeichen '%'.
-     
-BEISPIEL
+       %%     Das Zeichen '%'.                                                            
+    
+FEHLER
+     Es gibt keinen Platzhalter fuer die Mondphase.
+
+BEISPIELE
      write(strftime("Heute ist %A, der %d. %B %Y.\n"))
      ergibt z.B.
      "Heute ist Montag, der 24. September 2007.\n"
+
+GESCHICHTE
+    Eingefuehrt in LDMud 3.3.718.
 
 SIEHE AUCH
      ctime(E), gmtime(E), localtime(E), mktime(E), time(E), utime(E)

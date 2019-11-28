@@ -1,13 +1,16 @@
 SYNOPSIS
-        #include <sys/tls.h>
+        #include <tls.h>
 
         string hash(int method, string arg [, int iterations ] )
+        string hash(int method, bytes  arg [, int iterations ] )
         string hash(int method, int *  arg [, int iterations ] )
 
 BESCHREIBUNG
         Berechne den Hash <method> vom Argument <arg>. Der Hash wird
         mit <iterations> Wiederholungen berechnet, wird der Wert weggelassen,
-        wird eine Wiederholung verwendet.
+        wird eine Wiederholung verwendet. Falls ein String als <arg>
+        uebergeben wurde, so wird dieser in eine UTF-8-Bytefolge konvertiert
+        und davon der Hash berechnet.
 
         <method> ist eine der TLS_HASH_-Konstanten in tls.h; nicht jede
         beschriebene Methode ist in einem gegebenen Driver vorhanden:
@@ -20,8 +23,11 @@ BESCHREIBUNG
           TLS_HASH_MD5       (6)
           TLS_HASH_RIPEMD160 (7)
 
-        Diese Funktion ist nur verfuegbar wenn der Driver mit OpenSSL
-        compiliert wurde.
+        Wenn der Driver ohne OpenSSL- oder GCrypt-Unterstuetzung compiliert
+        wurde, sind nur TLS_HASH_SHA1 und TLS_HASH_MD5 verfuegbar.
+
+        Jede Iteration kostet 10 Evalution-Ticks.
+
 
 BEISPIELE
         string s;
@@ -30,7 +36,8 @@ BEISPIELE
         s = hash(TLS_HASH_SHA1, ({ 'H', 'e', 'l', 'l', 'o' }) )
 
 GESCHICHTE
-        Eingefuehrt in LDMud 3.3.714
+        Eingefuehrt in LDMud 3.3.714.
+        LDMud 3.3.719 fuehrte die iterationsbasierten Evaluationskosten ein.
 
 SIEHE AUCH
         crypt(E), md5(E), md5_crypt(E), sha1(E), hmac(E)

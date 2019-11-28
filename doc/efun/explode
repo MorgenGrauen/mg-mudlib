@@ -1,10 +1,13 @@
 SYNOPSIS
-        string *explode(string str, string del)
+        string * explode(string str, string del)
+        bytes *  explode(bytes str, bytes del)
 
 BESCHREIBUNG
         Liefert ein Feld (Array) mit Zeichenketten (Strings), indem alle
         Vorkommen von del (delimiter = Trenner) aus str herausgeschnitten
-        werden und so str in mehrere Zeichenketten zerlegt wird.
+        werden und so str in mehrere Zeichenketten zerlegt wird. Falls
+        eine Bytefolge uebergeben wurde, so wird diese in gleicher Weise
+        zerschnitten und zurueckgegeben.
 
         implode(explode(str, del), del) == str ist immer wahr.
 
@@ -13,16 +16,19 @@ BEISPIELE
         -------------------------------------------------------------------
         explode(" ab cd ef ", " ")  ({ "", "ab", "cd", "ef", "" })
         explode("abc", "abc")       ({ "", "" })
-        explode("", "")             ({})
+        explode("", "")             ({ "" })
+        explode("", <whatever>)     ({ "" })
         explode("abc", "xyz")       ({ "abc" })
         explode("abc", "")          ({ "a", "b", "c" })
 
-AENDERUNGEN
+GESCHICHTE
         Zeitpunkt der Aenderung unbekannt.
         explode(" ab cd ef ", " ") lieferte frueher ({ "ab", "cd", "ef" })
         anstatt ({ "", "ab", "cd", "ef", "" }), d. h., leere Zeichenketten
         wurden ignoriert. Das neue Verhalten ist schoener, da nun
         implode(explode(str, del), del) == str immer wahr ist.
+        Seit 3.5.0 liefert explode("","") ({""}) zurueck, sodass garantiert
+        ist, dass ein nicht-leeres Array geliefert wird.
 
 SIEHE AUCH
-        sscanf(E), implode(E), regexplode(E)
+        sscanf(E), extract(E), implode(E), regexplode(E)
