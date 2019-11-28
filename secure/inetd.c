@@ -218,9 +218,9 @@ int  dump_hosts_list() {
     "#Hostlist dump from "MUDNAME", created %s\n", strftime()), 1);
 
   foreach(string mudname, mixed tmp : hosts) {
-    // skip muds we did not hear from for 2 days.
-//    if (tmp[HOST_STATUS] + 172800 < time())
-//      continue;
+    // skip muds we did not hear from for 7 days.
+    if (tmp[HOST_STATUS] + 604800 < time())
+      continue;
     write_file(HOST_FILE+".dump",
         sprintf("%s:%s:%d:%s:%s\n",tmp[0],tmp[1],tmp[2],implode(tmp[3],","),
           implode(tmp[4],",")));
@@ -434,7 +434,7 @@ string valid_request(mapping data) {
  *            UDP packet (string)
  */
 void _receive_udp(string sender, string packet) {
-    mapping data;
+    mapping|int data;
     string req, err, id;
 
 #ifdef UDP_MASTER
