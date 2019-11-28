@@ -1,7 +1,3 @@
-#pragma strict_types,rtt_checks,pedantic
-
-#include "/secure/master.h"
-
 static mapping projects=([]);
 static string *insecure,*deputy_files;
 

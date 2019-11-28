@@ -4,10 +4,6 @@
 //
 // $Id: userinfo.c 9467 2016-02-19 19:48:24Z Zesstra $
 
-#pragma strict_types,rtt_checks,pedantic
-
-#include "/secure/master.h"
-#include "/sys/files.h"
 #include "/sys/object_info.h"
 
 // Makro aus wizlevels.h ersetzen, da secure_level ne sefun ist. *seufz*
@@ -542,6 +538,8 @@ public int good_password( string str, string name )
 }
 
 // User-ID fuer ein File ermitteln.
+// TODO: Bei get_wiz_name koennte man - so moeglich - auf 'wirkliche'
+//       Magiernamen gehen (Idee von mandragon) --> Pruefen
 public string get_wiz_name(string file) {
     return creator_file(file);
 }
@@ -886,7 +884,7 @@ public mapping get_all_players() {
 }
 
 // *************** interne Funktionen ********************************
-protected void create()
+protected void userinfo_init()
 {
   userlist=m_allocate(0,12);
   update_late_players();

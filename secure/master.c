@@ -3,25 +3,19 @@
 // master.c -- master object
 //
 // $Id: master.c 9530 2016-03-17 19:59:01Z Zesstra $
-#pragma strict_types,rtt_checks
-#pragma no_clone,no_shadow,no_inherit
-#pragma pedantic
+#pragma strict_types
+#pragma no_clone
+#pragma no_shadow
+#pragma no_inherit
+#pragma verbose_errors
+#pragma combine_strings
+//#pragma pedantic
 #pragma range_check
 #pragma warn_deprecated
 
 #include "/sys/files.h"
 #include "/sys/interactive_info.h"
 #include "/sys/driver_info.h"
-
-inherit "/secure/master/misc";
-inherit "/secure/master/userinfo";
-inherit "/secure/master/network";
-inherit "/secure/master/domain";
-inherit "/secure/master/guild";
-inherit "/secure/master/file_access";
-inherit "/secure/master/players_deny";
-
-#include "/secure/master.h"
 
 //for limited, set_limit(), etc. Abs. Pfad noetig, da noch kein Include-Hook
 #include "/sys/rtlimits.h"
@@ -30,11 +24,21 @@ inherit "/secure/master/players_deny";
 #include "/sys/driver_hook.h"
 #include "/sys/regexp.h"
 
+#include "/secure/master.h"
+#include "/secure/config.h"
 // Module des Master einfuegen. Per #include, damits geringfuegig schneller.
 // Da die Module ja nirgendwo sonst geerbt werden koennten, ist dies
 // ausnahmsweise OK. ;)
 #include "/secure/master/destruct.c"
+#include "/secure/master/userinfo.c"
+#include "/secure/master/file_access.c"
+#include "/secure/master/misc.c"
+#include "/secure/master/players_deny.c"
 #include "/secure/master/autoinclude.c"
+#include "/secure/master/network.c"
+#include "/secure/master/domain.c"
+#include "/secure/master/guild.c"
+
 
 // Fuer Logfile(-Rotation)
 #define RESETINT   3600                      // jede Stunde
@@ -71,7 +75,7 @@ protected void inaugurate_master(int arg) {
     CreateDataDirectories();
   }
 
-  userinfo::create();
+  userinfo_init();
   LoadPLDenylists();
 
   // Was soll vor jede Datei geschrieben werden?
@@ -540,9 +544,6 @@ protected mixed give_uid_to_object(string datei, object po)
 // Die System-IDs muessen bekannt sein
 string get_master_uid()          { return ROOTID;}
 string get_bb_uid()              { return BACKBONEID; }
-// TODO: Bei get_wiz_name koennte man - so moeglich - auf 'wirkliche'
-//       Magiernamen gehen (Idee von mandragon)
-string get_wiz_name(string file) { return creator_file(file);}
 
 //                     ##########################
 //###################### Sonstige GD-Funktionen #########################

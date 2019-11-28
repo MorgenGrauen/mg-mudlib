@@ -10,11 +10,6 @@
  * Bisher werden nur Gildenmagier verwaltet.
  */
 
-#pragma strict_types,rtt_checks,pedantic
-
-#include "/secure/master.h"
-
-
 int guild_master(string user, string guild)
 {
   string *guilds;

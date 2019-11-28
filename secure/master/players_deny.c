@@ -3,10 +3,7 @@
 // master.c -- master object
 //
 // $Id: master.c 7041 2008-10-13 18:18:27Z Zesstra $
-#pragma strict_types,no_clone,no_shadow
-#pragma pedantic,range_check,warn_deprecated
 
-#include "/secure/config.h"
 #define WHITELIST "/"LIBDATADIR"/secure/ARCH/players_deny_whitelist.o"
 #define TARGETLIST "/"LIBDATADIR"/secure/ARCH/players_deny_targets.o"
 #define WHITELISTDUMP "/"LIBDATADIR"/secure/ARCH/players_deny_whitelist.dump"
@@ -15,7 +12,6 @@
 //#define PLDENY_LEARNMODE
 
 #include "/secure/wizlevels.h"
-#include "/secure/master.h"
 
 /* Diese Objekte duerfen aus /players/ includieren/erben */
 nosave private mapping whitelist;

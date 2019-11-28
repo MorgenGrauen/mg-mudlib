@@ -4,19 +4,13 @@
 //
 // $Id: misc.c 9467 2016-02-19 19:48:24Z Zesstra $
 
-#pragma strict_types,rtt_checks,pedantic
-
 #include "/sys/functionlist.h"
 #include "/sys/lpctypes.h"
 #include "/sys/object_info.h"
-#include "/sys/interactive_info.h"
-#include "/sys/files.h"
 
-#include "/secure/master.h"
 #include "/mail/post.h"
 #include "/sys/thing/language.h"
 #include "/sys/thing/description.h"
-#include "/sys/configuration.h"
 
 // Fuer CIDR-Notatio im sbanish
 #include "/secure/master/cidr.c"

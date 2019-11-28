@@ -4,9 +4,6 @@
 //
 // $Id: network.c 8934 2014-09-10 21:57:12Z Zesstra $
 
-#pragma strict_types,rtt_checks,pedantic
-
-#include "/secure/master.h"
 #define BBMASTER "/secure/bbmaster"
 
 /*

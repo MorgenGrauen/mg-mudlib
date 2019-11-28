@@ -4,11 +4,6 @@
 //
 // $Id: domain.c 7162 2009-02-26 21:14:43Z Zesstra $
 
-#pragma strict_types,rtt_checks,pedantic
-
-#include "/secure/master.h"
-#include "/sys/files.h"
-
 int domain_master(string user, string domain)
 {
   string *domains;
