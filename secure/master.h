@@ -68,8 +68,8 @@
 // aus master.c
 string        creator_file(mixed str);
 protected mixed give_uid_to_object(string datei,object po);
-void          save_wiz_file();
-mixed         load_uid_hook(string datei);
+protected void  save_wiz_file();
+protected mixed load_uid_hook(string datei);
 protected mixed clone_uid_hook(object blueprint,string new_name);
 protected mixed call_sefun(string sefun, varargs mixed args);
 
