@@ -55,7 +55,7 @@ SIEHE AUCH
 
    * long()
 
-   * AddExtraLook(), RemoveExtraLook()
+   * AddExtraLook(), RemoveExtraLook() HasExtraLook()
 
    * /std/living/description.c, /std/player/base.c
 

@@ -6,7 +6,7 @@ RemoveExtraLook()
 FUNKTION
 ========
 
-int RemoveExtraLook(string key);
+   int RemoveExtraLook(string key);
 
 
 DEFINIERT IN
@@ -81,7 +81,7 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      AddExtraLook(), P_INTERNAL_EXTRA_LOOK
+      AddExtraLook(), P_INTERNAL_EXTRA_LOOK, HasExtraLook()
 
    Sonstiges:
       replace_personal(), break_string()

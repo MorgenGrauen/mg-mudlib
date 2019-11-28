@@ -172,7 +172,7 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      RemoveExtraLook(), P_INTERNAL_EXTRA_LOOK
+      RemoveExtraLook(), P_INTERNAL_EXTRA_LOOK, HasExtraLook()
 
    Sonstiges:
       replace_personal(), break_string()

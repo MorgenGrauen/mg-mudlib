@@ -71,7 +71,7 @@ SIEHE AUCH
 ==========
 
    Verwandt:
-      AddExtraLook(), RemoveExtraLook() long()
+      AddExtraLook(), RemoveExtraLook() long(), HasExtraLook()
 
    Fuer Spielerobjekte:
       P_EXTRA_LOOK
