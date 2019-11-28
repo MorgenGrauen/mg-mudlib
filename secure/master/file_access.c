@@ -123,9 +123,7 @@ static void _cleanup_projects() {
 
 int access_rights(string *p_arr, string euid)
 {
-  int i;
-
-  i = sizeof(p_arr) - 2;
+  int i = sizeof(p_arr) - 2;
 
   while ( i >= 0 &&
           file_size( implode(p_arr[0..i], "/") + "/access_rights.c" ) < 0 )
@@ -134,7 +132,7 @@ int access_rights(string *p_arr, string euid)
   if ( i < 0 )
       return 0;
 
-  if ( !catch(i = (int)call_other( 
+  if ( !catch(i = ({int})call_other( 
           implode(p_arr[0..i], "/") + "/access_rights",
           "access_rights", euid,
           implode(p_arr[i+1..], "/") ); publish) )

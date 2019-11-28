@@ -832,7 +832,7 @@ int delete_player(string passwd, string real_name)
   if (!PO || PO!=TP || PO!=TI || real_name != getuid(PO) ||
       !find_userinfo(real_name))
     return 0;
-  mixed erstie=(mixed)this_interactive()->QueryProp(P_SECOND);
+  string|int erstie=({string|int})this_interactive()->QueryProp(P_SECOND);
   password = userlist[real_name,USER_PASSWORD];
   wlevel = get_wiz_level(real_name);
   if (!update_password(passwd, passwd)) return 0;
@@ -977,7 +977,7 @@ protected void set_domains(string player, string *domains)
   // entfernt werden, das uebernimmt RemoveWizardFromUID().
   if (pointerp(userlist[player, USER_DOMAIN])) {
     string *removeduids=
-      ((string*)userlist[player, USER_DOMAIN] | domains) - domains;
+      (userlist[player, USER_DOMAIN] | domains) - domains;
     foreach(string uid: removeduids)
       RemoveWizardFromUID(uid, player);
   }
@@ -996,7 +996,7 @@ protected void set_guilds(string player, string *guilds)
   // entfernt werden, das uebernimmt RemoveWizardFromUID().
   if (pointerp(userlist[player, USER_GUILD])) {
     string *removeduids=
-      ((string*)userlist[player, USER_GUILD] | guilds) - guilds;
+      (userlist[player, USER_GUILD] | guilds) - guilds;
     foreach(string uid: removeduids)
       RemoveWizardFromUID(uid, player);
   }
@@ -1070,7 +1070,7 @@ private string* ExpandUIDAlias(string alias, int rec) {
       object guild;
       catch(guild=load_object(GUILDDIR"/"+alias));
       if (objectp(guild) 
-          && (sizeof(spbook=(string)
+          && (sizeof(spbook=({string})
                  guild->QueryProp(P_GUILD_DEFAULT_SPELLBOOK)))
                 && spbook!=alias)
           uids += ({GUILDID"."+spbook});

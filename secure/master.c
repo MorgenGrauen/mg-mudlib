@@ -129,7 +129,7 @@ protected void inaugurate_master(int arg) {
   // Standard-Fehlermeldung
   //set_driver_hook(H_NOTIFY_FAIL,        "Wie bitte?\n");
   set_driver_hook(H_NOTIFY_FAIL, function string (string cmd, object tp)
-      {if (tp && stringp(cmd=(string)tp->QueryProp(P_DEFAULT_NOTIFY_FAIL)))
+      {if (tp && stringp(cmd=({string})tp->QueryProp(P_DEFAULT_NOTIFY_FAIL)))
          return(cmd);
        return("Wie bitte?\n");});
 
@@ -610,7 +610,7 @@ protected object compile_object(string filename)
       || file_size(compiler+".c")>0)
   {
     if(catch(
-          ret=(object)call_other(compiler,"compile_object",str[<1]); publish))
+          ret=({object})call_other(compiler,"compile_object",str[<1]); publish))
       return 0;
   }
   else
@@ -753,7 +753,7 @@ int query_allow_shadow(object ob)
     return 0;
   
   // Ansonsten query_prevent_shadow fragen ...
-  return !(int)ob->query_prevent_shadow(PO);
+  return !({int})ob->query_prevent_shadow(PO);
 }
 
 

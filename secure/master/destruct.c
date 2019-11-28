@@ -23,7 +23,7 @@ private void recursive_remove(object ob, int immediate_destruct) {
     // wenn Bewegung buggt oder nicht funktioniert und ob noch existiert,
     // rekursiv zerstoeren.
     object oldenv=environment(ob);
-    if ( (catch(res=(int)ob->move("/room/void",M_TPORT|M_NOCHECK,0,"faellt");
+    if ( (catch(res=({int})ob->move("/room/void",M_TPORT|M_NOCHECK,0,"faellt");
            publish) || (ob && environment(ob) == oldenv) )
           && ob) {
             // Spieler speichern, dann erst Inventar entleeren, dann remove() und
@@ -53,11 +53,11 @@ private void recursive_remove(object ob, int immediate_destruct) {
 protected mixed prepare_destruct(object ob)
 {
   object old_env,env,item;
-  mixed res;
+  int|string res;
 
   // zuerst das notify_destruct() rufen und ggf. abbrechen, falls ob
   // privilegiert ist.
-  catch(res = (mixed)ob->NotifyDestruct(previous_object()); publish);
+  catch(res = ({int|string})ob->NotifyDestruct(previous_object()); publish);
   if (res &&
       (getuid(ob) == ROOTID ||
        (IS_ARCH(ob)) ||

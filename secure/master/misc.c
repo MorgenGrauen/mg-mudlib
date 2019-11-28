@@ -417,9 +417,8 @@ static void CheckDeputyRights()
     mixed *ginfo;
 
     // Lese- und Schreibberechtigungen fuer die Rubrik 'polizei' setzen
-    call_other( "/secure/news", "???" );
-    ob = find_object("secure/news");
-    ginfo = ((mixed)ob->GetGroup("polizei"))[5..6];
+    ob = load_object("secure/news");
+    ginfo = (({mixed*})ob->GetGroup("polizei"))[5..6];
     ob->RemoveAllowed( "polizei", 0, ginfo[0], ginfo[1] );
     ob->AddAllowed( "polizei", 0, deputies, deputies );
     LoadDeputyFileList();
@@ -565,7 +564,7 @@ void restart_heart_beat(object heart_beat)
   if (heart_beat) heart_beat->_restart_beat();
 }
 
-int renew_player_object(mixed who)
+int renew_player_object(string|object who)
 {
   object newob;
   object *obs, *obs2;
@@ -615,8 +614,8 @@ int renew_player_object(mixed who)
   }
   efun::configure_object(who, OC_COMMANDS_ENABLED, 0);
   efun::set_this_player(0);
-  armours=(object *)who->QueryProp(P_ARMOURS);
-  weapon=(object)who->QueryProp(P_WEAPON);
+  armours=({object*})who->QueryProp(P_ARMOURS);
+  weapon=({object})who->QueryProp(P_WEAPON);
 
   if ( previous_object() && object_name(previous_object()) == "/secure/merlin" )
       send_channel_msg("Debug",
@@ -630,7 +629,7 @@ int renew_player_object(mixed who)
   ob_name=explode(object_name(newob),"#")[0];
   if (sizeof(ob_name)>11 && ob_name[0..11]=="/std/shells/")
     ob_name=ob_name[11..];
-  ob_name=ob_name+":"+getuid((object)who);
+  ob_name=ob_name+":"+getuid(who);
   if (active)
     exec(newob,who);
   if (active && (interactive(who)||!interactive(newob)))
