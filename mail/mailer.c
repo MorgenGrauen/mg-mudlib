@@ -125,8 +125,8 @@ string GetReTitle(string s);
 static string Message2string(int nr);
 int * GetNumbers(mixed s);
 
-void create() {
-  (::create());
+protected void create() {
+  ::create();
   seteuid(getuid());
   SetProp(P_IDS,({"mailer"}));
   SetProp(P_NAME,"mailer");
@@ -139,7 +139,7 @@ void create() {
 } 
 
 
-void init() {
+public varargs void init(object origin) {
   (::init());
   init_rescue();
   add_action("postneustart","post");
