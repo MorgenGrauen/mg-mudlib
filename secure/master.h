@@ -70,7 +70,7 @@ string        creator_file(mixed str);
 mixed         give_uid_to_object(string datei,object po);
 void          save_wiz_file();
 mixed         load_uid_hook(string datei);
-mixed         clone_uid_hook(string blueprint,string new_name);
+mixed         clone_uid_hook(object blueprint,string new_name);
 protected mixed call_sefun(string sefun, varargs mixed args);
 
 // aus domains.c

@@ -502,7 +502,7 @@ string creator_file(mixed str) {
 
 // UID und EUID an Objekt geben (oder eben nicht)
 // Keine GD-Funktion, aber von Hooks aufgerufen
-protected mixed give_uid_to_object(string datei,object po)
+protected mixed give_uid_to_object(string datei, object po)
 {
   string creator,pouid;
 
@@ -1224,19 +1224,11 @@ protected void save_wiz_file()
 // EUID und UID werden von give_uid_to_object() vergeben, diese sind in
 // inaugurate_master() als driver hooks angemeldet.
 
-/*load_uid_hook() sollte machen, was diese Lambda machte...
-  unbound_lambda( ({'printf_obj_name}),
-               ({#'give_uid_to_object,'printf_obj_name,
-                   ({#'previous_object}),0})));   */
 protected mixed load_uid_hook(string datei) {
-    return(give_uid_to_object(datei,previous_object()));
+    return(give_uid_to_object(datei, previous_object()));
 }
 
-/* clone_uid_hook sollte machen, was diese Lambda machte...
-            unbound_lambda( ({'blueprint, 'new_name}), 
-              ({#'give_uid_to_object,'new_name,
-                  ({#'previous_object}),1})));      */
-protected mixed clone_uid_hook(string blueprint,string new_name) {
-    return(give_uid_to_object(new_name,previous_object()));
+protected mixed clone_uid_hook(object blueprint, string new_name) {
+    return(give_uid_to_object(new_name, previous_object()));
 }
 
