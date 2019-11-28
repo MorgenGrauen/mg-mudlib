@@ -96,7 +96,7 @@ protected void inaugurate_master(int arg) {
   // Driver konfigurieren
   // Lagerkennung erst ne Minute spaeter, waehrend preload darfs momentan
   // ruhig laggen (Zeit: vorlaeufig 1min)
-  call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 100000);
+  call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 200000);
 
   // Hooks setzen 
 
