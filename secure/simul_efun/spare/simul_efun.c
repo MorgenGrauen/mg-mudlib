@@ -53,8 +53,7 @@ nomask int secure_level();
 nomask string secure_euid();
 public nomask int process_call();
 nomask mixed __create_player_dummy(string name);
-varargs string replace_personal(string str, mixed *obs, int caps);
-
+varargs string replace_personal(string str, <string|object>* obs, int caps);
 
 //replacements for dropped efuns in LD
 #if !__EFUN_DEFINED__(extract)
