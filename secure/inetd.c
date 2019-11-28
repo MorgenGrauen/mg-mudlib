@@ -570,15 +570,18 @@ string encode(mixed arg) {
     // konvertiert werden...
     if (objectp(arg))
         arg = object_name(arg);
-    else if (!stringp(arg))
+    else if (intp(arg))
         arg = to_string(arg);
-
-    // faengt es mit $ an oder ist es ne zahl (als string, d.h. enthaelt nur
-    // 0-9)? Dann muss nen $ davor.
-    // TODO: Mhmm. Oder vielleicht doch per RegExp?
-    if ( (arg[0] == '$') || ((arg & "0123456789") == arg))
+    else 
+    {
+      if (!stringp(arg))
+        arg = to_string(arg);
+      // faengt es mit $ an oder ist es ne zahl (als string, d.h. enthaelt nur
+      // 0-9)? Dann muss nen $ davor.
+      // TODO: Mhmm. Oder vielleicht doch per RegExp?
+      if ( (arg[0] == '$') || ((arg & "0123456789") == arg))
         arg = '$' + arg;
-
+    }
     return arg;
 }
 
