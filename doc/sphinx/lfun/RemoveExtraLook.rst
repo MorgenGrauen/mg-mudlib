@@ -4,7 +4,7 @@ RemoveExtraLook()
 FUNKTION
 --------
 
-int RemoveExtraLook(string key);
+    int RemoveExtraLook(string key);
 
 DEFINIERT IN
 ------------
@@ -72,7 +72,7 @@ SIEHE AUCH
 ----------
 
    Verwandt:
-     :doc:`AddExtraLook`, :doc:`../props/P_INTERNAL_EXTRA_LOOK`
+     :doc:`AddExtraLook`, :doc:`../props/P_INTERNAL_EXTRA_LOOK`, :doc:`../lfun/HasExtraLook`
    Sonstiges:
      :doc:`../sefun/replace_personal`, :doc:`../sefun/break_string`
    Fuer Spielerobjekte:

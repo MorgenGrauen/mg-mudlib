@@ -55,6 +55,7 @@ SIEHE AUCH
 
   - :doc:`../lfun/long`
   - :doc:`../lfun/AddExtraLook`, :doc:`../lfun/RemoveExtraLook`
+    :doc:`../lfun/HasExtraLook`
   - /std/living/description.c, /std/player/base.c
   - :doc:`../sefun/replace_personal`
 

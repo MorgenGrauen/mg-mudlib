@@ -65,7 +65,7 @@ SIEHE AUCH
 
    Verwandt:
      :doc:`../lfun/AddExtraLook`, :doc:`../lfun/RemoveExtraLook`
-     :doc:`../lfun/long`
+     :doc:`../lfun/long`, :doc:`../lfun/HasExtraLook`
    Fuer Spielerobjekte:
      :doc:`../props/P_EXTRA_LOOK`
 

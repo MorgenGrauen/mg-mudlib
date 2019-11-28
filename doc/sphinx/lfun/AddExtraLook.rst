@@ -160,7 +160,7 @@ SIEHE AUCH
 ----------
 
    Verwandt:
-     :doc:`RemoveExtraLook`, :doc:`../props/P_INTERNAL_EXTRA_LOOK`
+     :doc:`RemoveExtraLook`, :doc:`../props/P_INTERNAL_EXTRA_LOOK`, :doc:`../lfun/HasExtraLook`
    Sonstiges:
      :doc:`../sefun/replace_personal`, :doc:`../sefun/break_string`
    Fuer Spielerobjekte:
