@@ -4,7 +4,7 @@
 //
 // $Id: userinfo.c 9467 2016-02-19 19:48:24Z Zesstra $
 
-#pragma strict_types
+#pragma strict_types,rtt_checks,pedantic
 
 #include "/secure/master.h"
 #include "/sys/files.h"

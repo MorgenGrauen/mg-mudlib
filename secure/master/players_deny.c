@@ -3,14 +3,8 @@
 // master.c -- master object
 //
 // $Id: master.c 7041 2008-10-13 18:18:27Z Zesstra $
-#pragma strict_types
-#pragma no_clone
-#pragma no_shadow
-#pragma verbose_errors
-#pragma combine_strings
-//#pragma pedantic
-#pragma range_check
-#pragma warn_deprecated
+#pragma strict_types,no_clone,no_shadow
+#pragma pedantic,range_check,warn_deprecated
 
 #include "/secure/config.h"
 #define WHITELIST "/"LIBDATADIR"/secure/ARCH/players_deny_whitelist.o"

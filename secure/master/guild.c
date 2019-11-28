@@ -10,7 +10,7 @@
  * Bisher werden nur Gildenmagier verwaltet.
  */
 
-#pragma strict_types
+#pragma strict_types,rtt_checks,pedantic
 
 #include "/secure/master.h"
 

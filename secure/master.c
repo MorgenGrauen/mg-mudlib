@@ -3,13 +3,9 @@
 // master.c -- master object
 //
 // $Id: master.c 9530 2016-03-17 19:59:01Z Zesstra $
-#pragma strict_types
-#pragma no_clone
-#pragma no_shadow
-#pragma no_inherit
-#pragma verbose_errors
-#pragma combine_strings
-//#pragma pedantic
+#pragma strict_types,rtt_checks
+#pragma no_clone,no_shadow,no_inherit
+#pragma pedantic
 #pragma range_check
 #pragma warn_deprecated
 

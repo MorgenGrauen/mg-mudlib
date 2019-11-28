@@ -4,7 +4,7 @@
 //
 // $Id: misc.c 9467 2016-02-19 19:48:24Z Zesstra $
 
-#pragma strict_types,rtt_checks
+#pragma strict_types,rtt_checks,pedantic
 
 #include "/sys/functionlist.h"
 #include "/sys/lpctypes.h"

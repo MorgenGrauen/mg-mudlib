@@ -1,4 +1,4 @@
-#pragma strict_types, no_warn_deprecated
+#pragma strict_types,rtt_checks,pedantic
 
 #include "/secure/master.h"
 
