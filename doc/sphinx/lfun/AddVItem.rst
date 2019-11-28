@@ -97,7 +97,7 @@ BEMERKUNGEN
 BEISPIELE
 ---------
 
-  .. code-block:: pike
+.. code-block:: pike
 
   // Ein einfaches VItem ohne Templat, nicht nehmbar
   AddVItem("regal", VI_REFRESH_NONE,
