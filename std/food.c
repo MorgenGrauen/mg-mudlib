@@ -415,7 +415,7 @@ protected varargs int try_consume(object consumer, int testonly) {
 
   if (is_bad()) consume_bad(entry_info);
 
-  int result = (int)consumer->consume(entry_info, testonly);
+  int result = ({int})consumer->consume(entry_info, testonly);
   if (!result) {
     tell_object(consumer,
       "Da ist was schief gelaufen! Sprich mal mit einem Magier.\n");
