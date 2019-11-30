@@ -45,6 +45,10 @@
 //{
 //}
 
+protected void create_super() {
+      set_next_reset(-1);
+}
+
 public varargs void RemoveVItem(string key)
 {
   mixed vitems=QueryProp(P_VITEMS);
