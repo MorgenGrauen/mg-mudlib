@@ -181,7 +181,8 @@ private string put_or_get(object o, object dest)
                               " nicht mehr rein.");
 
         case ME_CANT_BE_DROPPED:
-            if (o && stringp(str = o->QueryProp(P_NODROP)))
+            str = o->QueryProp(P_NODROP);
+            if (o && stringp(str) && sizeof(str))
                 return str;
 
             if (dest == environment())
@@ -193,7 +194,8 @@ private string put_or_get(object o, object dest)
             return "So wirst Du " + wen1 + " nicht los...";
 
         case ME_CANT_BE_TAKEN:
-            if (o && stringp(str = o->QueryProp(P_NOGET)))
+            str = o->QueryProp(P_NODROP);
+            if (o && stringp(str) && sizeof(str))
                 return str;
 
             if (stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
