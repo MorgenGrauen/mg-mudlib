@@ -9,7 +9,7 @@ BESCHREIBUNG
      Objektes zu nehmen:
 
      Das Objekt bekommt einen reset()-Aufruf fruehestens in <delay> Sekunden.
-     Bei Angabe eines Wertes <0 wird der reset() für das Objekt abgeschaltet,
+     Bei Angabe eines Wertes <0 wird der reset() fÃ¼r das Objekt abgeschaltet,
      was fuer Blueprints gelegentlich sinnvoll ist.
 
      Intern wird in gleichbleibenden Abstaenden (derzeit: in der Regel 2s,

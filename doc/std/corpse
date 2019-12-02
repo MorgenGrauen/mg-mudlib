@@ -43,7 +43,7 @@ BEISPIELE:
       }
 
       /*
-       * Das ist die für "iss leiche" aufgerufene Funktion.
+       * Das ist die fÃ¼r "iss leiche" aufgerufene Funktion.
        */
       int mampf( string str )
       {

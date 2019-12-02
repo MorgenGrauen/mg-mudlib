@@ -35,7 +35,7 @@
 
      Zusaetzliche Eigenschaften:
 	P_DAMAGED	enthaelt den Ausmass des Schadens an Waffe
-	P_QUALITY	setzbar: Qualit‰t/Haltbarkeit der Waffe
+	P_QUALITY	setzbar: Qualit√§t/Haltbarkeit der Waffe
 	P_EFFECTIVE_AC	setzbar: falls HitFunc WC nicht sichbar aendert
 	P_EFFECTIVE_WC	setzbar: falls Parieren AC nicht sichbar aendert
 

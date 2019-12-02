@@ -34,7 +34,7 @@
 
      Zusaetzliche Eigenschaften:
 	P_DAMAGED	enthaelt den Ausmass des Schadens an Waffe
-	P_QUALITY	setzbar: Qualit‰t/Haltbarkeit der Waffe
+	P_QUALITY	setzbar: Qualit√§t/Haltbarkeit der Waffe
 	P_EFFECTIVE_AC	setzbar: falls DefendFunc AC nicht sichbar aendert
 	P_DAM_TYPE	setzbar: interessant bei Kaempferangriffen
 

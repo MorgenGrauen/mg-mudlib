@@ -6,8 +6,9 @@ AddvItem()
 FUNKTION
 ========
 
-   public varargs void AddvItem(string key, int refresh, mapping shadowprops,
-                                string path, mapping props)
+   public varargs void AddvItem(string key, int refresh, mapping
+   shadowprops,
+      string path, mapping props)
 
 
 DEFINIERT IN
@@ -20,29 +21,35 @@ ARGUMENTE
 =========
 
    key
-     Eindeutige Bezeichnung des vItems und mit dieser wieder loeschbar. Das
-     vItem wird im Raum auch unter dieser ID ansprechbar sein.
+      Eindeutige Bezeichnung des vItems und mit dieser wieder
+      loeschbar. Das vItem wird im Raum auch unter dieser ID
+      ansprechbar sein.
+
    refresh
-     Refresheinstellungen des vItems, nachdem es mitgenommen wurde
+      Refresheinstellungen des vItems, nachdem es mitgenommen wurde
+
    shadowprops
-     Properties des vItems *im Raum* (optional, wenn <path> genutzt)
+      Properties des vItems *im Raum* (optional, wenn <path> genutzt)
+
    path
-     Vorlage/Templat des vItems und Blueprint fuer Clones (optional)
+      Vorlage/Templat des vItems und Blueprint fuer Clones (optional)
+
    props
-     Properties, welche in Clones von der Vorlage gesetzt werden (optional)
+      Properties, welche in Clones von der Vorlage gesetzt werden
+      (optional)
 
 
 BESCHREIBUNG
 ============
 
-   Dem Container/Raum wird ein virtuelles Item hinzugefuegt. Dieses ist
-   kein im Container vorhandenes reales Objekt, kann aber (weitgehend) wie ein
-   solches untersucht und behandelt werden.
+   Dem Container/Raum wird ein virtuelles Item hinzugefuegt. Dieses
+   ist kein im Container vorhandenes reales Objekt, kann aber
+   (weitgehend) wie ein solches untersucht und behandelt werden.
 
-   Falls das vItem ein reales Objekt als Templat hat (d.h. <path> angegeben
-   wird), kann das vItem standardmaessig mitgenommen werden, es wird dafuer
-   automatisch erzeugt. (Das Mitnehmen ist aber wie immer mit P_NOGET
-   verhinderbar.)
+   Falls das vItem ein reales Objekt als Templat hat (d.h. <path>
+   angegeben wird), kann das vItem standardmaessig mitgenommen werden,
+   es wird dafuer automatisch erzeugt. (Das Mitnehmen ist aber wie
+   immer mit P_NOGET verhinderbar.)
 
    Das Mapping <shadowprops> enthaelt die Properties, welche das vItem
    im Container beschreiben. Hat das vItem ein Templat, werden alle
@@ -50,53 +57,59 @@ BESCHREIBUNG
    Templat entnommen. Auf diese Weise kann man einem Objekt im Raum
    unterschiedliche Eigenschaften geben.
 
-   Wird ein vItem mitgenommen, wird <path> geclont und die im Argument <props>
-   angegebenen Properties in ihm gesetzt. Auf diese Weise kann man das
-   genommene Objekt noch individuell konfigurieren.
+   Wird ein vItem mitgenommen, wird <path> geclont und die im Argument
+   <props> angegebenen Properties in ihm gesetzt. Auf diese Weise kann
+   man das genommene Objekt noch individuell konfigurieren.
 
-   Zu beachten ist: in <shadowprops> enthaltene Properties *ersetzen* (nicht
-   ergaenzen) im Regelfall diejenigen im Templat *und* in <props>. In <props>
-   enthaltene Properties *ersetzen* wiederum diejenigen im Templat.
-   Ausnahmen sind Properties, welche ein Mapping oder ein Array enthalten:
-   Deren Inhalt wird *hinzugefuegt*. Dies betrifft insbesondere die Properties:
-   P_DETAILS, P_READ_DETAILS, P_SMELLS, P_SOUNDS, P_TOUCH_DETAILS, P_IDS,
-   P_CLASS, P_ADJECTIVES.
-   Will man dies nicht, kann man den Propertynamen so angeben:
-   VI_PROP_RESET(P_DETAILS), was dazu fuehrt, dass P_DETAILS vor dem
-   Hinzufuegen geloescht wird.
+   Zu beachten ist: in <shadowprops> enthaltene Properties *ersetzen*
+   (nicht ergaenzen) im Regelfall diejenigen im Templat *und* in
+   <props>. In <props> enthaltene Properties *ersetzen* wiederum
+   diejenigen im Templat. Ausnahmen sind Properties, welche ein
+   Mapping oder ein Array enthalten: Deren Inhalt wird *hinzugefuegt*.
+   Dies betrifft insbesondere die Properties: P_DETAILS,
+   P_READ_DETAILS, P_SMELLS, P_SOUNDS, P_TOUCH_DETAILS, P_IDS,
+   P_CLASS, P_ADJECTIVES. Will man dies nicht, kann man den
+   Propertynamen so angeben: VI_PROP_RESET(P_DETAILS), was dazu
+   fuehrt, dass P_DETAILS vor dem Hinzufuegen geloescht wird.
 
-   Nachdem ein vItem mitgenommen wurde, ist es im Raum nicht mehr ansprechbar.
-   Es wird es je nach <refresh> wieder verfuegbar:
+   Nachdem ein vItem mitgenommen wurde, ist es im Raum nicht mehr
+   ansprechbar. Es wird es je nach <refresh> wieder verfuegbar:
 
-     - VI_REFRESH_NONE
-       Es wird erst nach dem Neuladen/Neuerstellen des Containers wieder
-       verfuegbar.
-     - VI_REFRESH_ALWAYS
-       Es wird mit dem naechsten Reset wieder verfuegbar. *Vorsicht!*
-     - VI_REFRESH_REMOVE
-       Es wird mit dem naechsten Reset wieder verfuegbar, wenn das geclonte
-       Objekt nicht mehr im Raum ist.
-     - VI_REFRESH_DESTRUCT
-       Es wird mit dem naechsten Reset wieder verfuegbar, wenn das geclonte
-       Objekt nicht mehr existiert.
-     - VI_REFRESH_MOVE_HOME
-       Das geclonte Objekt wird im naechsten Reset 'zurueckgeholt', d.h.
-       zerstoert und das vItem ist wieder im Raum verfuegbar.
-     - VI_REFRESH_INSTANT
-       Es ist abweichend vom Normalverhalten sofort nach Mitnehmen wieder
-       verfuegbar und mitnehmbar. **Vorsicht!**
+      * VI_REFRESH_NONE Es wird erst nach dem Neuladen/Neuerstellen
+        des Containers wieder verfuegbar.
+
+      * VI_REFRESH_ALWAYS Es wird mit dem naechsten Reset wieder
+        verfuegbar. *Vorsicht!*
+
+      * VI_REFRESH_REMOVE Es wird mit dem naechsten Reset wieder
+        verfuegbar, wenn das geclonte Objekt nicht mehr im Raum ist.
+
+      * VI_REFRESH_DESTRUCT Es wird mit dem naechsten Reset wieder
+        verfuegbar, wenn das geclonte Objekt nicht mehr existiert.
+
+      * VI_REFRESH_MOVE_HOME Das geclonte Objekt wird im naechsten
+        Reset 'zurueckgeholt', d.h. zerstoert und das vItem ist wieder
+        im Raum verfuegbar.
+
+      * VI_REFRESH_INSTANT Es ist abweichend vom Normalverhalten
+        sofort nach Mitnehmen wieder verfuegbar und mitnehmbar.
+        **Vorsicht!**
 
 
 BEMERKUNGEN
 ===========
 
-   * vItems koennen geschachtelt werden, falls es sich um vItems mit Vorlagen
-     handelt.
-   * vItems sind verhaeltnismaessig aufwendig. Sie sollten nur verwendet
-     werden, wenn sie einen Mehrwert ggue. einfachen Details haben. Es bringt
-     nichts, jedes Detail gegen ein vItem zu ersetzen.
-   * Es kann aber praktisch sein, komplexe Detailbaeume an einem vItem zu
-     verankern, wenn man diesen Detailbaum ein- oder ausblenden will.
+   * vItems koennen geschachtelt werden, falls es sich um vItems mit
+     Vorlagen handelt.
+
+   * vItems sind verhaeltnismaessig aufwendig. Sie sollten nur
+     verwendet werden, wenn sie einen Mehrwert ggue. einfachen Details
+     haben. Es bringt nichts, jedes Detail gegen ein vItem zu
+     ersetzen.
+
+   * Es kann aber praktisch sein, komplexe Detailbaeume an einem
+     vItem zu verankern, wenn man diesen Detailbaum ein- oder
+     ausblenden will.
 
 
 BEISPIELE
@@ -177,6 +190,6 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   AddvItem(), AddItem(), RemoveItem() /std/vitems
+   AddvItem(), AddItem(), RemoveItem() *../std/vitems*
 
 Last modified: 03.04.2019, Zesstra

@@ -43,16 +43,16 @@ arrays.
 Any idea you want to code in an LPMud is possible.  LPC is a language
 which is amazingly well suited to this task.  All that prevents you from
 coding your ideas is your knowledge of LPC or an inadequate mudlib or
-your mudﾕs theme or administrative policies.  This textbook cannot make
+your mudﾃ不 theme or administrative policies.  This textbook cannot make
 the mudlib you are working with any better, and it cannot change the mud
-theme or the mudﾕs administrative policies.  Never once think that LPC is
+theme or the mudﾃ不 administrative policies.  Never once think that LPC is
 incapable of doing what you want to do.  If your idea is prevented by
 administrative policies or themes, then it is simply not an idea for your
 current mud.  If the mudlib is inadequate, talk to the people in charge of
 your mudlib about what can be done at the mudlib level to facilitate it.  You
 would be surprised by what is actually in the mudlib you did not know
 about.  More important, after reading this textbook, you should be able to
-read all of the mudlib code in your mudﾕs mudlib and understand what is
+read all of the mudlib code in your mudﾃ不 mudlib and understand what is
 going on at each line in the mudlib code.  You may not as yet be able to
 reproduce that code on your own, but at least you can understand what is
 going on at the mudlib level.
@@ -135,7 +135,7 @@ tasks, is incredibly powerful and unequalled for the tasks of building an
 area in MUD type games.  For the beginner, it allows you to easily jump in
 and code useful objects without even knowing what you are doing.  For the
 intermediate person, it allows you to turn any idea you have into textual
-virtual reality.  And for the advanced person, itﾕs object oriented features
+virtual reality.  And for the advanced person, itﾃ不 object oriented features
 can allow you to build one of the most popular games on the internet.  What
 you can do is simply limited by how much you know.  And learning more
 does not require a computer science degree.

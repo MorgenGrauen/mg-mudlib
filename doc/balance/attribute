@@ -13,7 +13,7 @@
     Veraenderungen sind von der Balance zu genehmigen, da diese Property 
     mit P_M_ATTR_MOD interagiert.
    - Soll eine Attributveraenderung ohne Beruecksichtigung der Properties
-    P_M_ATTR_MOD und P_X_ATTR_MOD ver‰ndert werden, geschieht das ueber die
+    P_M_ATTR_MOD und P_X_ATTR_MOD ver√§ndert werden, geschieht das ueber die
     Property P_TIMED_ATTR_MOD. 
 
 

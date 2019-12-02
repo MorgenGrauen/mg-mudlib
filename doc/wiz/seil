@@ -1,4 +1,3 @@
-
 Dokumentation fuer das Std-Seil: /obj/seil.c
 
 Abhaengigkeiten: /sys/thing/seil.h
@@ -46,14 +45,14 @@ Seile koennen ueber NPC's/Raeume und Zauber gesteuert werden:
 
 varargs int binde_seil(string ziel, string msg)
 
-	Ziel beschreibt das Object oder Raum, wo es festgebunden werden soll
-	msg ist die Ausgabe. Wird msg nicht gesetzt, so wird eine 
-	    Standard-Ausgabe ausgegeben.
+        Ziel beschreibt das Object oder Raum, wo es festgebunden werden soll
+        msg ist die Ausgabe. Wird msg nicht gesetzt, so wird eine 
+            Standard-Ausgabe ausgegeben.
 
 varargs int loese_seil(string msg)
-	Das Seil wird geloest - es wird dabei die msg in den Raum
+        Das Seil wird geloest - es wird dabei die msg in den Raum
         ausgegeben. Ist msg nicht definiert, wird eine Standardausgabe
-    	erzeugt.
+        erzeugt.
 
 
 Beide Funktionen werden wir von enem Spieler behandelt - es werden tie() und
@@ -65,4 +64,5 @@ Benutzung des Seiles ueber die Funktionen binde_seil() und loese_seil().
 Ist diese Propertie auf 0, so koennen nur Spieler das Seil benutzen.
 
 
-Letzte Änderung: 25.6. Gando
+Letzte Aenderung: 25.6. Gando
+
