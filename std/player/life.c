@@ -406,13 +406,15 @@ varargs protected int second_life( object corpse )
     limits[LIMIT_EVAL] = 150000;
     limits[LIMIT_COST] = LIMIT_DEFAULT;
 
-    mixed killer = QueryProp(P_KILLER);
-    mixed gi = QueryProp(P_GUILD);
+    string|object killer = QueryProp(P_KILLER);
+    string|object gi = QueryProp(P_GUILD);
     if (stringp(gi))
         gi = find_object("/gilden/"+gi);
     // jedes Objekt nur einmal, aber nicht via m_indices(mkmapping)) wegen
     // Verlust der Reihenfolge.
-    object *items = ({killer});
+    object* items = ({});
+    if (objectp(killer))
+        items = ({killer});
     if (environment() != killer)
         items += ({environment()});
     if (gi != killer && gi != environment())
