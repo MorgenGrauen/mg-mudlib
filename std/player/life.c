@@ -259,7 +259,7 @@ nomask public int do_damage( int dam, object enemy )
                           sprintf( "%s %s(%d/%d) toetete %s(%d/%d)%s\n",
                                    ctime(time()),
                                    getuid(enemy), query_wiz_level(enemy),
-                                   (int) enemy->QueryProp(P_LEVEL), getuid(ME),
+                                   enemy->QueryProp(P_LEVEL), getuid(ME),
                                    query_wiz_level(ME), QueryProp(P_LEVEL),
                                    (hit_point ? " NOTWEHR=>KEIN PK" : "") ) );
             }
