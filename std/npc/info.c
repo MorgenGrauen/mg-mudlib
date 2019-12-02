@@ -90,9 +90,9 @@ public varargs void init(object origin)
 
 static void smart_npc_log(string str)
 {
-  string creat, creat_det;
-
-  if (!stringp(creat=QueryProp(P_LOG_INFO))) {
+  string creat_det;
+  string|int creat = QueryProp(P_LOG_INFO);
+  if (!stringp(creat)) {
     creat = MASTER->creator_file(this_object());
     if (creat == ROOTID)
       creat = "ROOT";
