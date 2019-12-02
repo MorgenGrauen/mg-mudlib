@@ -104,7 +104,7 @@ public void listen(string eid, object trigob, mixed data)
       || !trigob
       || !query_once_interactive(trigob)
       || IS_LEARNER(trigob)
-      || (mixed)trigob->QueryProp(P_TESTPLAYER)
+      || trigob->QueryProp(P_TESTPLAYER)
       || trigob->QueryGuest()
       || trigob->QueryProp(P_NO_TOPLIST)
      )
