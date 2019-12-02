@@ -622,7 +622,6 @@ static int make_to_money(object ob, int value)
 // Interne Funktion, die ob versucht in das Lager zu ueberfuehren und das
 // Geld das dabei fuer den Spieler abfaellt zurueckliefert.
 {
-  string str;
   int ret;
 
   if (!objectp(ob) || environment(ob)==find_object(storage)) {
@@ -671,12 +670,14 @@ static int make_to_money(object ob, int value)
       ob->remove(1);
       return value;
     }
-    else if (ret == ME_CANT_BE_DROPPED) {
-      if ((str=ob->QueryProp(P_NODROP)) && stringp(str)) {
-        write(str);
-        return 0;
-      }
-      write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!", 78));
+    else if (ret == ME_CANT_BE_DROPPED)
+    {
+      string|int nodrop = ob->QueryProp(P_NODROP);
+      if (stringp(nodrop) && sizeof(nodrop))
+        write(nodrop);
+      else
+        write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!",
+          78));
       return 0;
     }
     else
@@ -693,12 +694,19 @@ static int make_to_money(object ob, int value)
     UpdateCounter(ob,1);
     return value;
   }
-  else if (ret == ME_CANT_BE_DROPPED) {
-    if ((str=ob->QueryProp(P_NODROP)) && stringp(str))
-       write(str);
-    else write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!", 78));
+  else if (ret == ME_CANT_BE_DROPPED)
+  {
+    string|int nodrop = ob->QueryProp(P_NODROP);
+    if (stringp(nodrop) && sizeof(nodrop))
+      write(nodrop);
+    else
+      write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!",
+        78));
+    return 0;
   }
-  else write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!", 78));
+  else
+    write(break_string("Du kannst "+ob->name(WEN,1)+" nicht verkaufen!",
+      78));
   return 0;
 }
 
