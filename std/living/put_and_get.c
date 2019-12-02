@@ -805,7 +805,7 @@ varargs int pick_objects(string str, int flag, mixed msg)
 {
     object *obs;
 
-    if (((int)QueryProp(P_MAX_HANDS)) < 1){
+    if (QueryProp(P_MAX_HANDS) < 1){
         NF("Ohne Haende kannst Du nichts nehmen.");
         return 0;
     }
@@ -838,7 +838,7 @@ varargs int give_objects(string str, mixed msg)
 
     string *tokens = explode(str, " ");
 
-    if (((int)QueryProp(P_MAX_HANDS)) < 1){
+    if (QueryProp(P_MAX_HANDS) < 1){
         NF("Ohne Haende kannst Du nichts weggeben.");
         return 0;
     }
