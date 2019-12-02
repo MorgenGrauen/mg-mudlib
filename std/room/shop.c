@@ -581,8 +581,8 @@ static int buy(string str)
     return 0;
   }
 
-  par = (int)ob->QueryProp(P_PARRY);
-  dex = (int)PL->QueryAttribute(A_DEX);
+  par = ob->QueryProp(P_PARRY);
+  dex = PL->QueryAttribute(A_DEX);
 
   if ((((par < PARRY_ONLY) && ((dex + 8) * 10) < ob->QueryProp(P_WC)) ||
        ((par > PARRY_NOT)  && ((dex + 5) *  2) < ob->QueryProp(P_AC))) &&
