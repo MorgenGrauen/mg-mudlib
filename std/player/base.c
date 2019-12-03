@@ -1462,8 +1462,8 @@ protected void smart_log(string myname, string str, object obj)
     string hashkey = ({string})ERRORD->LogReportedError(err);
     ReceiveMsg(sprintf(
           "Ein kleiner Fehlerteufel hat D%s an %s unter der ID %s "
-          "notiert.",
-          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc,
+          "notiert.", desc,
+          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),
           hashkey || "N/A"),
         MT_NOTIFICATION | MSG_DONT_BUFFER | MSG_DONT_STORE | MSG_DONT_IGNORE,
         MA_UNKNOWN, 0, ME);
