@@ -97,18 +97,18 @@ private void check_player(string pl, mixed extra)
   // Der playerdata hat als UID unsere eigene, weil wir ihn geclont haben.
   // Damit darf er alle Spielersavefiles lesen...
   pldata->ReleasePlayer();
-  (int)pldata->LoadPlayer(pl);
+  pldata->LoadPlayer(pl);
   // Testspieler ausnehmen, Spieler, die 90 Tage nicht da waren.
-  if ( ((int)pldata->QueryProp(P_LAST_LOGIN) < time() - 7776000
+  if ( (({int})pldata->QueryProp(P_LAST_LOGIN) < time() - 7776000
         && !find_player(pl))
-      || (mixed)pldata->QueryProp(P_TESTPLAYER))
+      || ({<int|string>})pldata->QueryProp(P_TESTPLAYER))
     return;
   // Wenn kein SPieler/Seher, sondern Magier: auch ueberspringen
-  mixed* uinfo = (mixed*)master()->get_userinfo(pl);
+  mixed* uinfo = ({mixed*})master()->get_userinfo(pl);
   if (uinfo[USER_LEVEL+1] >= LEARNER_LVL)
     return;
 
-  string eps=(string)master()->query_ep(pl) || "";
+  string eps=({string})master()->query_ep(pl) || "";
   int p=-1;
   int count, avgcount;
   while ((p=next_bit(eps,p)) != -1)
@@ -252,7 +252,7 @@ static void dumpEPObjects(string *doit)
   j = sizeof(doit);
 
   for (i=0; i<j; i++) {
-    id = (string)master()->creator_file(doit[i]);
+    id = ({string})master()->creator_file(doit[i]);
     if (member(dumpMap, id))
       dumpMap[id] += ({ doit[i] });
     else
@@ -690,7 +690,7 @@ nomask int GiveExplorationPoint(string key)
   
   catch(ep = set_bit(ep, obs[fn,1]));
 
-  return (int)MASTER->update_ep(getuid(this_interactive()),ep);
+  return ({int})MASTER->update_ep(getuid(this_interactive()),ep);
 }
 
 nomask int GiveExplorationPointObject(string key, object ob)
@@ -718,7 +718,7 @@ nomask int GiveExplorationPointObject(string key, object ob)
 
   catch(ep = set_bit(ep, obs[fn,1]));
 
-  return (int)MASTER->update_ep(getuid(ob),ep);
+  return ({int})MASTER->update_ep(getuid(ob),ep);
 }
 
 
