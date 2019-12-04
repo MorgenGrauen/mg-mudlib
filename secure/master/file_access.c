@@ -44,7 +44,18 @@ string *path_array(string path) {
   // nicht gross wird.
   int p;
   while((p=member(p_arr, "..")) != -1)
+  {
+    if(sizeof(p_arr)-1>p)
+    {
       p_arr = p_arr[0..p-2]+p_arr[p+1..];
+    }
+    else
+    {
+      // Hier ist keine weitere Abfrage noetig, da bei einem niedrigeren
+      // zweiten Index ein leeres Array zurueckgegeben wird.
+      p_arr = p_arr[0..p-2];
+    }
+  }
 
   // Pfade absolutieren
   // leeres Pfadarray fuehrt zur Rueckgabe von einem Array, was hinterher "/"
