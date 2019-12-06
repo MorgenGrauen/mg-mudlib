@@ -32,7 +32,8 @@ mapping registered = ([
 	"zook": "zo",
 	"humni": "hu",
 	"miril": "mi",
-	"gloinson": "gl"
+	"gloinson": "gl",
+  "amaryllis": "ama"
 ]);
 
 int allowed() {
