@@ -193,14 +193,14 @@ static int _trans(string str)
 
   if (!sizeof(str))
     return _notify_fail("Syntax: trans <spielername>\n"),0;
-  str=match_living(str,0);
-  if (intp(str))
-    switch (str)
+  string|int livname=match_living(str,0);
+  if (intp(livname))
+    switch (livname)
     {
       case -1: write("Das war nicht eindeutig.\n"); return 1;
       case -2: write("So ein Wesen gibt es nicht.\n"); return 1;
     }
-  if(living=find_living(str))
+  if(living=find_living(livname))
   {
     if (living->move(object_name(environment()),
                      M_TPORT|M_NOCHECK)<=0)
