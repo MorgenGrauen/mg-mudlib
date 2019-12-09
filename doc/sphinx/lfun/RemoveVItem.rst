@@ -1,5 +1,5 @@
-AddvItem()
-==========
+RemoveVItem()
+=============
 
 FUNKTION
 --------
