@@ -62,7 +62,10 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   // pruefen ob die Paramter zulaessig sind...
   if (time<0) ERROR("negative time to RegisterWalker() from %O.\n");
   if (rand<0) ERROR("negative random to RegisterWalker() from %O.\n");
-  if ((time+rand) > (MAX_MASTER_TIME))
+  // das max. Delay darf max. MAX_MASTER_TIME-1 sein, sonst landet der MNPC im
+  // HB evtl. wieder in dem Slot, der gerade bearbeitet wird und der direkt
+  // danach komplett genullt wird...
+  if ((time+rand) >= (MAX_MASTER_TIME))
     ERROR("Too long delaytime from %s to RegisterWalker().\n");
 
   if (Registration())

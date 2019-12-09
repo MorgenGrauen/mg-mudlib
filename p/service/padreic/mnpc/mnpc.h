@@ -14,7 +14,7 @@
 // max. Wartezeit zwischen 2 Bewegungen (in Sekunden), welche vom walk_master
 // verwaltet wird. (Muss ganzzahlig durch __HEART_BEAT_INTERVAL__ dividierbar
 // sein)
-#define MAX_MASTER_TIME          180
+#define MAX_MASTER_TIME          182
 
 // ist automatisch in jedem mnpc gesetzt
 #define P_MNPC                    "mnpc"

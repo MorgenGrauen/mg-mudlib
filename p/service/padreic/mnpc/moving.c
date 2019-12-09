@@ -38,7 +38,7 @@ static void mnpc_create()
 
 protected void RegisterWalk()
 {
-  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))<=MAX_MASTER_TIME)
+  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM)) < MAX_MASTER_TIME)
   {
     if (!WALK_MASTER->Registration())
       WALK_MASTER->RegisterWalker(QueryProp(MNPC_DELAY),
@@ -67,7 +67,7 @@ public int RestartWalk()
         || find_call_out("Walk") > -1)
       return -1;
     // ansonsten MNPC registrieren, falls geeignet.
-    if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))<=MAX_MASTER_TIME)
+    if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))<MAX_MASTER_TIME)
       WALK_MASTER->RegisterWalker(QueryProp(MNPC_DELAY), QueryProp(MNPC_RANDOM));
     // und mit kurzer Verzoegerung einmal laufen. (ja, absicht, hier
     // MNPC_DELAY zu nutzen - denn solange dauert das Walk vom Master
@@ -341,7 +341,7 @@ int Walk()
     return 0;
 
   //ggf. neuen Callout eintragen, bevor irgendwas anderes gemacht wird.
-  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))>MAX_MASTER_TIME)
+  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))>=MAX_MASTER_TIME)
     call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
 
   // Im Kampf ggf. nicht weitergehen.
