@@ -21,7 +21,8 @@ protected void create()
   SetProp( P_INT_SHORT, "Ein Testraum fuer vItems." );
   SetProp( P_INT_LONG, BS(
       "Dies ist Testraum fuer vItems. An der Wand haengt ein Seil und eine "
-      "Fackel. Auf dem Boden liegen eine Eisstange und ein Ue-Ei."
+      "Fackel. Auf dem Boden liegen eine Eisstange und ein Ue-Ei. Und ein "
+      "Schild gibts hier auch noch."
          ));
   SetProp(P_INDOORS,1);
   AddDetail( ({ "boden", "fussboden" }), BS(
@@ -54,7 +55,9 @@ protected void create()
            );
   AddVItem("schild", VI_REFRESH_NONE,
            ([P_SHORT:"Ein Schild.",
-             P_LONG: "Ein einfaches Holzschild. Du kannst es lesen.\n",
+             P_LONG: break_string("Ein einfaches Schild aus Holz. "
+                     "Du kannst es lesen. "
+                     "Man koennte es auch abtasten und dran riechen.",78),
              P_READ_DETAILS: ([SENSE_DEFAULT:
                "Dies ist ein vItem-Test.\n" ]),
              P_SMELLS: ([SENSE_DEFAULT:
