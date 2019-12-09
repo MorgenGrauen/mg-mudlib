@@ -11,6 +11,9 @@
 
 // bitte dieses #define benutzen und nicht den direkten Pfad verwenden
 #define WALK_MASTER              "/p/service/padreic/mnpc/walk_master"
+// max. Wartezeit zwischen 2 Bewegungen (in Sekunden), welche vom walk_master
+// verwaltet wird. (Muss ganzzahlig durch __HEART_BEAT_INTERVAL__ dividierbar
+// sein)
 #define MAX_MASTER_TIME          180
 
 // ist automatisch in jedem mnpc gesetzt

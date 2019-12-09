@@ -21,8 +21,11 @@
 #pragma strong_types,rtt_checks
 #pragma no_clone,no_inherit
 
-#define MAX_DELAYTIME       90   /* max. delay ist 2*MAX_DELAYTIME */
-#define DEFAULT_WALK_DELAY 180   /* ist der billigste Wert :) */
+#include "/p/service/padreic/mnpc/mnpc.h"
+
+#define MAX_DELAY_HBS (MAX_MASTER_TIME/__HEART_BEAT_INTERVAL__)
+#define DEFAULT_WALK_DELAY MAX_MASTER_TIME   /* ist der billigste Wert :) */
+
 /* Ab welcher Rest-Tickmenge wird die Verarbeitung von Walkers unterbrochen */
 #define MAX_JOB_COST    200000
 
@@ -48,7 +51,7 @@ public int Registration();
 
 protected void create()
 {
-  walker=map(allocate(MAX_DELAYTIME+1), #'allocate);
+  walker=map(allocate(MAX_DELAY_HBS+1), #'allocate);
 }
 
 #define ERROR(x) raise_error(sprintf(x, previous_object()));
@@ -59,7 +62,7 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   // pruefen ob die Paramter zulaessig sind...
   if (time<0) ERROR("negative time to RegisterWalker() from %O.\n");
   if (rand<0) ERROR("negative random to RegisterWalker() from %O.\n");
-  if ((time+rand) > (2*MAX_DELAYTIME)) 
+  if ((time+rand) > (MAX_MASTER_TIME))
     ERROR("Too long delaytime from %s to RegisterWalker().\n");
 
   if (Registration())
@@ -89,9 +92,9 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
     set_heart_beat(1);
   }
   int next=counter;
-  //min. 1 Heartbeat delay erzwingen
-  next += max(1, (time+random(rand))/2);
-  if (next>MAX_DELAYTIME) next-=MAX_DELAYTIME;
+  //min. 1 Heartbeat delay erzwingen, ab jetzt in Heartbeats
+  next += max(1, (time+random(rand))/__HEART_BEAT_INTERVAL__);
+  if (next>MAX_DELAY_HBS) next-=MAX_DELAY_HBS;
   walker[next]+=({ func });
   clients += ([ get_type_info(func, 2): func; wert; next ]);
 }
@@ -158,9 +161,10 @@ void heart_beat()
              // diesen aktuellen zeitslot wieder ein (ja, Magier tun solche
              // Dinge), der ja nach Abarbeiten des Slots genullt wird.
              int next = counter
-                        + max(1, (TIME(delay) + random(RANDOM(delay)))/2);
-             if (next > MAX_DELAYTIME)
-               next -= MAX_DELAYTIME;
+                        + max(1, (TIME(delay) + random(RANDOM(delay)))
+                                 /__HEART_BEAT_INTERVAL__);
+             if (next > MAX_DELAY_HBS)
+               next -= MAX_DELAY_HBS;
              walker[next] += ({ func });
              clients[mnpc, WALK_TIMESLOT] = next;
            }
@@ -175,7 +179,7 @@ void heart_beat()
      walker[counter]=({}); // fertiger Zeitslot, komplett leeren
    }
    // Wrap-around am Ende des Arrays.
-   if (counter == MAX_DELAYTIME)
+   if (counter == MAX_DELAY_HBS)
      counter=0;
    else
      counter++;
