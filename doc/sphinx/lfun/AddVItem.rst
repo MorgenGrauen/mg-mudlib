@@ -4,8 +4,7 @@ AddvItem()
 FUNKTION
 --------
 
-  public varargs void AddvItem(string key, int refresh, mapping shadowprops,
-                               string path, mapping props)
+  public varargs void AddvItem(string key, int refresh, mapping shadowprops, string path, mapping props)
 
 
 DEFINIERT IN
@@ -68,10 +67,10 @@ BESCHREIBUNG
       Es wird erst nach dem Neuladen/Neuerstellen des Containers wieder
       verfuegbar.
     - VI_REFRESH_ALWAYS
-      Es wird mit dem naechsten Reset wieder verfuegbar. *Vorsicht!*
     - VI_REFRESH_REMOVE
-      Es wird mit dem naechsten Reset wieder verfuegbar, wenn das geclonte
-      Objekt nicht mehr im Raum ist.
+      Es wird mit dem naechsten Reset wieder verfuegbar, wenn das Item
+      genommen wurde (auch wenn es danach wieder um Raum abgelegt wurde).
+      *Vorsicht*
     - VI_REFRESH_DESTRUCT
       Es wird mit dem naechsten Reset wieder verfuegbar, wenn das geclonte
       Objekt nicht mehr existiert.
