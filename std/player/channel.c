@@ -24,12 +24,11 @@
 #include <sys_debug.h>
 #include <regexp.h>
 
-#define P_SWAP_CHANNELS  "swap_channels"
 #define P_CHANNEL_SHORT  "short_channels"
 
 #define CHANNELCMDS      "[#@%$&()<>a-zA-Z0-9\\-]"
 
-#define DEFAULT_CHANNELS ({"Abenteuer", "Anfaenger","Grats","Tod", "ZT"})
+#define DEFAULT_CHANNELS ({"Abenteuer", "Anfaenger", "Grats", "Tod", "ZT"})
 #define DEFAULT_SHORTCUTS \
 ([                     \
  "b":"Abenteuer",      \
@@ -51,7 +50,9 @@
  "m":"Magier",         \
 ])
 
-
+// TODO: <shortcut> wird eigentlich nur in getChannel() sinnvoll verwendet
+// Koennte man an sich komplett einsparen und dort wie ueberall sonst auch
+// einfach nur mit P_CHANNEL_SHORT arbeiten.
 private nosave mapping shortcut;
 private nosave int c_status;
 
@@ -64,7 +65,7 @@ void create()
   Set(P_STD_CHANNEL, SAVE, F_MODE);
   Set(P_CHANNEL_SHORT, SAVE, F_MODE);
   Set(P_CHANNEL_SHORT, DEFAULT_SHORTCUTS
-      + (IS_LEARNER(this_object()) ? WIZARD_SHORTCUTS : ([])));
+      + (IS_LEARNER(ME) ? WIZARD_SHORTCUTS : ([])));
 }
 
 static <int|string>** _query_localcmds()
@@ -89,7 +90,7 @@ string* RegisterChannels()
   string* err;
   if (closurep(cl))
   {
-    err = filter(QueryProp(P_CHANNELS), cl, this_object());
+    err = filter(QueryProp(P_CHANNELS), cl, ME);
   }
   if (QueryProp(P_LEVEL) < 5)
     return err;
@@ -97,7 +98,7 @@ string* RegisterChannels()
   // CHMASTER->new() gibt bei Erfolg 0 zurueck, d.h. es bleiben
   // alle Elemente erhalten, deren Channel nicht erstellt werden konnten.
   // Die werden an die Aufrufer zurueckgegeben.
-  return filter(err, CHMASTER, "new", this_object());
+  return filter(err, "new", CHMASTER, ME);
 }
 
 string* RemoveChannels()
@@ -116,22 +117,38 @@ string* RemoveChannels()
   closure cl = symbol_function("leave", CHMASTER);
   if (closurep(cl))
   {
-    err = filter(QueryProp(P_CHANNELS), cl, this_object());
+    err = filter(QueryProp(P_CHANNELS), cl, ME);
     SetProp(P_CHANNELS, QueryProp(P_CHANNELS) - err);
   }
   return err;
 }
 
-varargs private string getName(string|object|closure x, int fall) {
-  string|object o = closurep(x) ? query_closure_object(x) : x;
-  if (stringp(o) && sizeof(o) && (x = find_object(o)))
-    o = x;
+varargs private string getName(string|object|closure who, int fall) {
+  // Objekt zur Closure raussuchen. <o> ist danach entweder jenes Objekt,
+  // oder aber <who> selbst, das Objekt oder String sein kann.
+  //
+  // query_closure_object() KANN auch 0 oder -1 zurueckgeben. In beiden
+  // Faellen fuehrt das hier zu einem Laufzeit-Typfehler, weil ein Integer
+  // bzw. die urspruengliche Closure zugewiesen wird. Diesen Fall abzufangen
+  // und separat zu behandeln, hilft nicht, weil es auch keine alternative
+  // Moeglichkeit gibt, <who> in verwendbare Daten umzuwandeln, denn das ist
+  // ja offenbar eine kaputte Closure. Dieser Fall ist ausserdem anscheinend
+  // so exotisch, dass wir vorerst auf Absicherungen mittels catch()
+  // verzichten.
+  string|object o = closurep(who) ? query_closure_object(who) : who;
+
+  // Ist es ein String, pruefen wir, ob es vielleicht ein Objektname ist,
+  // indem wir es in ein Objekt umzuwandeln versuchen. Schlaegt das fehl,
+  // schreiben wir <who> wieder zurueck, so dass <o> wieder der urspruengliche
+  // String ist.
+  if (stringp(o) && sizeof(o))
+    o = find_object(o) || who;
 
   // Objekte
   if (objectp(o))
   {
     // Magier sehen unsichtbare nicht nur als "Jemand"
-    if (o->QueryProp(P_INVIS) && IS_LEARNING(this_object()))
+    if (o->QueryProp(P_INVIS) && IS_LEARNING(ME))
       return "("+capitalize(getuid(o))+")";
     // Froesche mit Namen versorgen.
     if (o->QueryProp(P_FROG))
@@ -149,7 +166,7 @@ varargs private string getName(string|object|closure x, int fall) {
       if (p != -1)
       {
         // Magier im Magiermodus kriegen den Realnamen, andere nicht.
-        if (IS_LEARNING(this_object()))
+        if (IS_LEARNING(ME))
           return o[1..p-1];
         else
           return o[p+1..];
@@ -204,7 +221,7 @@ string ChannelMessage(<string|object|int>* msg, int nonint)
       break;
     case MSG_SAY:
     default:
-      string presay=sprintf("[%s:%s] ", channel, sender_name);
+      string presay = sprintf("[%s:%s] ", channel, sender_name);
       channel_message = break_string(message, max(78,sizeof(presay)+10),
                           presay, prepend_indent_flag);
       break;
@@ -230,51 +247,142 @@ string ChannelMessage(<string|object|int>* msg, int nonint)
   return 0;
 }
 
-private void createList(string n, mixed a, mixed m, mixed l)
+// string n: Channelname
+// <object*|closure|string|object>* a: Channeldaten
+// string* m: P_CHANNELS
+// string* l: Ausgabeliste.
+private void OLDcreateList(string n, <object*|closure|string|object>* a,
+             string* m, string* l)
 {
-  int pos = member(map(m_values(shortcut), #'lower_case/*'*/), n);
+  // Wir suchen das vom Spieler festgelegte Kuerzel fuer die aktuell
+  // bearbeitete Ebene, falls vorhanden.
   string sh = "";
-  if (pos != -1)
-    sh = m_indices(shortcut)[pos];
+  foreach(string sc, string chan : shortcut) {
+    if ( lower_case(chan) == n ) {
+      sh = sc;
+      break;
+    }
+  }
 
-  string* mem=map(a[I_MEMBER],#'getName/*'*/, WER);
-  mem -= ({"<MasteR>"});
   l += ({ sprintf("%-12.12'.'s %c[%-1.1s] %|12.12' 's (%-|3' 'd) %-42.42s\n",
-          a[I_NAME], (member(m, n) != -1 ? '*' : ' '), sh,
-          a[I_MASTER] ?
-          getName(a[I_MASTER]) : getName(a[I_ACCESS]),
-          sizeof(mem),
-          (closurep(a[I_INFO]) && objectp(query_closure_object(a[I_INFO]))) ?
-              funcall(a[I_INFO]) || "- Keine Beschreibung -" :
-              (stringp(a[I_INFO]) ? a[I_INFO] : "- Keine Beschreibung -")
-          ) });
+          a[I_NAME],
+          (member(m, n) != -1
+              ? '*'
+              : ' '),
+          sh,
+          a[I_MASTER]
+              ? getName(a[I_MASTER])
+              : getName(a[I_ACCESS]),
+          sizeof(a[I_MEMBER] - ({ find_object(CHMASTER) })),
+          (closurep(a[I_INFO]) && objectp(query_closure_object(a[I_INFO])))
+              ? funcall(a[I_INFO]) || "- Keine Beschreibung -"
+              : (stringp(a[I_INFO])
+                    ? a[I_INFO]
+                    : "- Keine Beschreibung -")) });
 }
 
-private mixed getChannel(string ch)
+private void createList(mapping ch_list, string* p_channels,
+                           int show_only_subscribed) {
+  // Kopfzeile der Tabelle erstellen.
+  string listhead =
+            sprintf("%-12.12' 's  [A] %|12' 's (%-3' 's) %-42.42s\n",
+                    "Name", "Eigner", "Sp", "Beschreibung");
+  // Linie drunter.
+  listhead += ("-"*78 + "\n");
+
+  // Rest der Daten erstmal in einem Array zusammenstellen, um es
+  // anschliessend sortieren zu koennen.
+  string* entries = ({});
+
+  object* ch_members;
+  string|object ch_master;
+  string ch_real_name, ch_description;
+  closure|string ch_access;
+  closure|string ch_info;
+  string sh;
+
+  foreach(string chname, <object*|closure|string|object>* chdata : ch_list)
+  {
+    // Wenn nur abonnierte Ebenen aufgelistet werden sollen, dann alle
+    // ueberspringen, die nicht in P_CHANNELS stehen.
+    int is_subscribed = (member(p_channels, chname) > -1);
+    if (show_only_subscribed && !is_subscribed)
+      continue;
+
+    ch_members =   chdata[I_MEMBER];
+    ch_master =    chdata[I_MASTER];
+    ch_access =    chdata[I_ACCESS];
+    ch_real_name = chdata[I_NAME];
+    ch_info =      chdata[I_INFO];
+    sh = "";
+
+    // Ist eine Closure als I_INFO eingetragen, zu der es auch ein Objekt
+    // gibt, tragen wir deren Rueckgabewert als Beschreibung ein.
+    if (closurep(ch_info) && objectp(query_closure_object(ch_info))) {
+      ch_description = funcall(ch_info);
+    }
+    // Ist es ein String, wird er unveraendert uebernommen.
+    else if (stringp(ch_info)) {
+      ch_description = ch_info;
+    }
+    // Sollte nirgends etwas eingetragen sein, oder die Closure 0 zurueck-
+    // gegeben haben, gibt es eine Defaultbeschreibung. Man haette die
+    // Variable auch schon mit dem Default initialisieren koennen, der kann
+    // aber bei Rueckgabe von 0 aus der Closure wieder ueberschrieben werden.
+    // Daher passiert das erst hier.
+    ch_description ||= "- Keine Beschreibung -";
+
+    // Wir brauchen noch das vom Spieler festgelegte Kuerzel fuer die aktuell
+    // bearbeitete Ebene, falls vorhanden, um es in die Liste eintragen
+    // zu koennen.
+    foreach(string _sh_cut, string _chan_name : shortcut) {
+      if ( lower_case(_chan_name) == chname ) {
+        sh = _sh_cut;
+        break;
+      }
+    }
+
+    // Jetzt haben wir endlich alle Infos beisammen und koennen die
+    // Eintraege zusammenbauen.
+    entries += ({
+      sprintf("%-12.12'.'s %c[%-1.1s] %|12.12' 's (%-|3' 'd) %-42.42s\n",
+          ch_real_name,
+          is_subscribed ? '*' : ' ',
+          sh,
+          ch_master ? getName(ch_master) : getName(ch_access),
+          sizeof(ch_members - ({ find_object(CHMASTER) })),
+          ch_description
+      ) });
+  }
+
+   // alphabetisch sortieren
+  entries = sort_array(entries, #'>);
+
+  More( listhead +             // Listenkopf
+        implode(entries, "") + // Eintraege
+        "-"*78+"\n" );         // Linie drunter
+}
+
+private string|string* getChannel(string ch)
 {
   if (!sizeof(ch))
     ch = QueryProp(P_STD_CHANNEL);
   if (shortcut && shortcut[ch])
     ch = shortcut[ch];
-  return CHMASTER->find(ch, this_object());
+  return CHMASTER->find(ch, ME);
 }
-
-#ifndef DEBUG
-#define DEBUG(x) if (funcall(symbol_function('find_player),"zesstra"))\
-          tell_object(funcall(symbol_function('find_player),"zesstra"),\
-                  "MDBG: "+x+"\n")
-#endif
 
 int ChannelParser(string args)
 {
-  mixed ch;
+  string|string* ch;
   int pos, type, err;
-  string txt, tmp;
-  string|string* cmd = query_verb();
-  args = _unparsed_args();
+  string tmp;
   notify_fail("Benutzung: -<Ebene>[ ]['|:|;]<Text>\n"
               "           -<Ebene>[+|-|?|!|*]\n"
               "           -?\n");
+
+  args = _unparsed_args(1);
+  string|string* cmd = query_verb();
   if (!cmd && !args)
     return 0;
 
@@ -282,7 +390,7 @@ int ChannelParser(string args)
     args = "";
 
   cmd = cmd[1..];
-  cmd = regexplode(cmd, "^" CHANNELCMDS "*" "([+-]|\\!|\\?|\\*)*")
+  cmd = regexplode(cmd, "^" CHANNELCMDS "*" "([+-]|\\!|\\?|\\*)*");
   if (sizeof(cmd) > 1)
   {
     //z.B. cmd= ({"","allgemein",":testet"})
@@ -297,8 +405,8 @@ int ChannelParser(string args)
       if (pointerp(ch))
       {
         notify_fail("Diese Angabe war nicht eindeutig! "
-                    "Folgende Ebenen passen:\n"
-                    +implode(ch, ", ")+"\n");
+                    "Folgende Ebenen passen:\n"+
+                    implode(ch, ", ")+"\n");
         return 0;
       }
       else if (!ch)
@@ -311,7 +419,7 @@ int ChannelParser(string args)
     if (sizeof(cmd[1])) {
       switch (cmd[1][<1]) {
         case '+':
-          switch (CHMASTER->join(ch, this_object()))
+          switch (CHMASTER->join(ch, ME))
           {
             case E_ACCESS_DENIED:
               notify_fail("Du darfst an die Ebene '"+ch+"' nicht heran.\n");
@@ -322,23 +430,24 @@ int ChannelParser(string args)
             default:
               break;
           }
-          write("Du betrittst die Ebene '"+ch+"'.\n");
+          tell_object(ME,"Du betrittst die Ebene '"+ch+"'.\n");
           if (member(QueryProp(P_CHANNELS), ch = lower_case(ch)) == -1)
             SetProp(P_CHANNELS, QueryProp(P_CHANNELS) + ({ ch }));
           return 1;
 
         case '-':
-          switch (CHMASTER->leave(ch, this_object()))
+          switch (CHMASTER->leave(ch, ME))
           {
             case E_ACCESS_DENIED:
-              write("Du kannst die Ebene '"+ch+"' nicht verlassen.\n");
+              tell_object(ME,"Du kannst die Ebene '"+ch+"' nicht "
+                "verlassen.\n");
               break;
             case E_NOT_MEMBER:
-              write("Wie willst Du eine Ebene verlassen, welche Du nicht "
-                    "betreten hast?\n");
+              tell_object(ME,"Wie willst Du eine Ebene verlassen, welche Du "
+                "nicht betreten hast?\n");
               break;
             default:
-              write("Du verlaesst die Ebene '"+ch+"'.\n");
+              tell_object(ME,"Du verlaesst die Ebene '"+ch+"'.\n");
               SetProp(P_CHANNELS,
                       QueryProp(P_CHANNELS) - ({ lower_case(ch), ch }));
               break;
@@ -347,66 +456,60 @@ int ChannelParser(string args)
 
         case '!':
         case '?':
-          mapping l;
-          if (mappingp(l = CHMASTER->list(this_object())))
+          mapping l = CHMASTER->list(ME);
+          if (mappingp(l))
           {
+            // Es wurde ein Channel angegeben, dessen Infos gefragt sind.
             if (stringp(ch) && sizeof(ch) && pointerp(l[ch = lower_case(ch)]))
             {
-              int c; object o; string n; string *m;
-              m = sort_array(
-                    map(l[ch][I_MEMBER],#'getName/*'*/, WER),
-                  #'>/*'*/);
-              m-=({"<MasteR>"});
-              write(l[ch][I_NAME]+", "+funcall(l[ch][I_INFO])+".\n");
-              write("Du siehst "+((c = sizeof(m)) > 0
-                      ? (c == 1 ? "ein Gesicht" : c+" Gesichter")
-                         : "niemanden")+" auf der Ebene '"
-                    +l[ch][I_NAME]+"':\n");
-              write(break_string(implode(m,", "), 78));
-              write((l[ch][I_MASTER] ?
-                  getName(l[ch][I_MASTER]) : getName(l[ch][I_ACCESS], WER))
-                  +" hat das Sagen auf dieser Ebene.\n");
+              <object*|closure|string|object>* chdata = l[ch];
+              string* m =
+                sort_array(map(chdata[I_MEMBER], #'getName, WER), #'>) -
+                ({ CMNAME });
+
+              string wen;
+              switch(sizeof(m)) {
+                case 1:  wen = "ein Gesicht"; break;
+                case 0:  wen = "niemanden";   break;
+                // TODO: mittels Zahlwoerter-Objekt die Zahl als Text
+                // ausgeben?
+                default: wen = sprintf("%d Gesichter", sizeof(m)); break;
+              }
+
+              tell_object(ME,
+                chdata[I_NAME]+", "+funcall(chdata[I_INFO])+".\n" +
+                "Du siehst "+wen+" auf der Ebene '"+chdata[I_NAME]+"':\n"+
+                break_string(CountUp(m), 78) +
+                (chdata[I_MASTER] ? getName(chdata[I_MASTER])
+                                  : getName(chdata[I_ACCESS], WER))+
+                 " hat das Sagen auf dieser Ebene.\n");
             }
+            // kein Channel angegeben, dann Gesamtliste erzeugen
             else
             {
-              string* list = ({});
-              if (cmd[1][<1] == '!')
-                l -= mkmapping(m_indices(l) - QueryProp(P_CHANNELS));
-              walk_mapping(l, #'createList/*'*/, QueryProp(P_CHANNELS), &list);
-              list = sort_array(list, #'>/*'*/);
-              txt = sprintf("%-12.12' 's  [A] %|12' 's (%-3' 's) %-42.42s\n",
-                            "Name", "Eigner", "Sp", "Beschreibung")
-                  + "-------------------------------------------------------"
-                  + "-----------------------\n"
-                  + implode(list, "");
-              More(txt);
+              // Wenn nur die abonnierten angezeigt werden sollen
+              // (Kommando -!), wird die Bedingung im 3. Argument == 1, so
+              // dass createList() die reduzierte Tabelle erzeugt.
+              createList(l, QueryProp(P_CHANNELS), (cmd[1][<1] == '!'));
             }
           }
           return 1;
 
         case '*':
-          mixed hist = CHMASTER->history(ch, this_object());
+          int|<int|string>** hist = CHMASTER->history(ch, ME);
           if (!pointerp(hist) || !sizeof(hist))
           {
-            write("Es ist keine Geschichte fuer '"+ch+"' verfuegbar.\n");
+            tell_object(ME,"Es ist keine Geschichte fuer '"+ch+
+              "' verfuegbar.\n");
             return 1;
           }
 
-          //(Zesstra) cmd hat offenbar immer 3 Elemente...
-          //bei -all* ({"","all*",""})
-          //bei -all*10 ({"","all*,"10"})
-          //also ist bei -all* amount immer == 0 und es funktioniert eher
-          //zufaellig.
-          /*if(sizeof(cmd) > 2)
-            amount = to_int(cmd[2]);
-          else
-            amount=sizeof(hist);*/
           int amount = to_int(cmd[2]);
           if (amount <= 0 || amount >= sizeof(hist))
             amount = sizeof(hist);
 
-          txt = "Folgendes ist auf '"+ch+"' passiert:\n"
-              + implode(map(hist[<amount..], #'ChannelMessage/*'*/, 1), "");
+          string txt = "Folgendes ist auf '"+ch+"' passiert:\n" +
+                       implode(map(hist[<amount..], #'ChannelMessage, 1), "");
           More(txt);
           return 1;
 
@@ -416,17 +519,20 @@ int ChannelParser(string args)
     }
   }
 
-  if (sizeof(cmd = implode(cmd[2..], "")))
+  cmd = implode(cmd[2..], "");
+  if (sizeof(cmd))
     args = cmd + (sizeof(args) ? " " : "") + args;
 
   // KOntrollchars ausfiltern.
-  args = regreplace(args,"[[:cntrl:]]","",RE_PCRE|RE_GLOBAL);
+  args = regreplace(args, "[[:cntrl:]]", "", RE_PCRE|RE_GLOBAL);
   if (!sizeof(args))
     return 0;
 
   //Wenn cmd leer ist: MSG_SAY
   if (!sizeof(cmd))
+  {
     type = MSG_SAY;
+  }
   else
   {
     switch (cmd[0])
@@ -451,15 +557,16 @@ int ChannelParser(string args)
   if (!ch || !sizeof(ch))
     ch = QueryProp(P_STD_CHANNEL);
 
-  err = CHMASTER->send(ch, this_object(), args, type);
+  err = CHMASTER->send(ch, ME, args, type);
   if (err < 0)
   {
-    err = CHMASTER->join(ch, this_object());
+    err = CHMASTER->join(ch, ME);
     if (!err)
     {
-      if (member(QueryProp(P_CHANNELS), ch = lower_case(ch)) == -1)
+      ch = lower_case(ch);
+      if (member(QueryProp(P_CHANNELS), ch) == -1)
         SetProp(P_CHANNELS, QueryProp(P_CHANNELS) + ({ ch }));
-      err = CHMASTER->send(ch, this_object(), args, type);
+      err = CHMASTER->send(ch, ME, args, type);
     }
   }
 
@@ -479,8 +586,8 @@ int ChannelAdmin(string args)
 {
   args = _unparsed_args();
 
-  string n, descr, sh, cn;
-  mixed tmp;
+  string target_channel, descr, _sh_cut;
+  string|string* chans;
   notify_fail("Benutzung: ebene <Abkuerzung>=<Ebene>\n"
               "           ebene <Abkuerzung>=\n"
               "           ebene abkuerzungen [standard]\n"
@@ -489,123 +596,157 @@ int ChannelAdmin(string args)
               +(QueryProp(P_LEVEL) >= 5 ?
                 "           ebene neu <Name> <Bezeichnung>\n"
                 "           ebene beschreibung <Name> <Beschreibung>\n" : "")
-              +(IS_ARCH(this_object()) ?
+              +(IS_ARCH(ME) ?
                 "           ebene kill <Name>\n"
                 "           ebene clear <Name>\n": ""));
 
   if (!args || !sizeof(args))
     return 0;
 
-  if (sscanf(args, "kill %s", n) && IS_ARCH(this_object()))
+  if (sscanf(args, "kill %s", target_channel) && IS_ARCH(ME))
   {
-    cn = CHMASTER->find(n, this_object());
-    if (!cn)
-      cn = n;
+    chans = CHMASTER->find(target_channel, ME);
 
-    if (CHMASTER->remove(cn, this_object()) == E_ACCESS_DENIED) {
-      notify_fail("Die Ebene '"+cn+"' liess sich nicht entfernen!\n");
+    if (!chans)
+    {
+      notify_fail("Ebene '"+target_channel+"' nicht gefunden!\n");
       return 0;
     }
-
-    write("Du entfernst die Ebene '"+cn+"'.\n");
-    return 1;
-  }
-
-  if (sscanf(args, "clear %s", n) && IS_ARCH(this_object()))
-  {
-    cn = CHMASTER->find(n, this_object());
-    if (!cn)
-      cn = n;
-
-    if (CHMASTER->clear_history(cn, this_object()) == E_ACCESS_DENIED) {
-      notify_fail("Der Verlauf zur Ebene '"+cn+"' liess sich nicht "
+    else if (pointerp(chans))
+    {
+      notify_fail(
+        "Das war keine eindeutige Angabe! Folgende Ebenen passen:\n"+
+        break_string(CountUp(chans), 78));
+      return 0;
+    }
+    else if (CHMASTER->remove_channel(target_channel, ME))
+    {
+      notify_fail("Die Ebene '"+target_channel+"' lies sich nicht "
         "entfernen!\n");
       return 0;
     }
 
-    write("Du entfernst den Verlauf zur Ebene '"+cn+"'.\n");
+    tell_object(ME,"Du entfernst die Ebene '"+target_channel+"'.\n");
     return 1;
   }
 
-  if (sscanf(args, "neu %s %s", n, descr) == 2)
+  if (sscanf(args, "clear %s", target_channel) && IS_ARCH(ME))
   {
+    chans = CHMASTER->find(target_channel, ME);
+
+    if (!chans)
+    {
+      notify_fail("Ebene '"+target_channel+"' nicht gefunden!\n");
+      return 0;
+    }
+    else if (pointerp(chans))
+    {
+      notify_fail(
+        "Das war keine eindeutige Angabe! Folgende Ebenen passen:\n"+
+        break_string(CountUp(chans), 78));
+      return 0;
+    }
+    else if (CHMASTER->clear_history(target_channel, ME) == E_ACCESS_DENIED)
+    {
+      notify_fail("Der Verlauf zur Ebene '"+target_channel+"' liess sich "
+                  "nicht entfernen!\n");
+      return 0;
+    }
+
+    tell_object(ME,"Du entfernst den Verlauf zur Ebene '"+target_channel+
+      "'.\n");
+    return 1;
+  }
+
+  if (sscanf(args, "neu %s %s", target_channel, descr) == 2)
+  {
+    notify_fail(break_string("Neue Ebenen kannst Du erst erstellen, wenn "
+      "Du Spielerstufe 5 erreicht hast.", 78));
     if (QueryProp(P_LEVEL) < 5)
-    {
-      notify_fail("Neue Ebenen zu erstellen, ist Dir verwehrt.\n");
       return 0;
-    }
 
-    if (!sizeof(regexp(({ n }), "^" CHANNELCMDS CHANNELCMDS "*")))
-    {
-      notify_fail("Der Name '"+n+"' ist nicht konform!\n");
+    notify_fail("Der Name '"+target_channel+"' ist nicht konform!\n");
+    if (!sizeof(regexp(({target_channel}), "^" CHANNELCMDS CHANNELCMDS "*")))
       return 0;
-    }
 
-    if (sizeof(n) > 20 )
-    {
-      notify_fail("Der Name '"+n+"' ist zu lang.\n");
+    notify_fail("Der Name '"+target_channel+"' ist zu lang.\n");
+    if (sizeof(target_channel) > 20)
       return 0;
-    }
 
-    if (CHMASTER->new(n, this_object(), descr) == E_ACCESS_DENIED) {
-      notify_fail("Diese Ebene darfst du nicht erschaffen!\n");
+    notify_fail("Diese Ebene darfst du nicht erschaffen!\n");
+    if (CHMASTER->new(target_channel, ME, descr) == E_ACCESS_DENIED)
       return 0;
-    }
-    write("Du erschaffst die Ebene '"+n+"'.\n");
-    SetProp(P_CHANNELS, QueryProp(P_CHANNELS) + ({ lower_case(n) }));
+
+    tell_object(ME,"Du erschaffst die Ebene '"+target_channel+"'.\n");
+    SetProp(P_CHANNELS, QueryProp(P_CHANNELS) +
+                        ({lower_case(target_channel)}));
     return 1;
   }
 
-  if (sscanf(args, "beschreibung %s %s", n, descr) == 2)
+  if (sscanf(args, "beschreibung %s %s", target_channel, descr) == 2)
   {
-    cn = CHMASTER->find(n, this_object());
-    if (!cn || pointerp(cn))
+    chans = CHMASTER->find(target_channel, ME);
+
+    if (!chans)
     {
-      notify_fail("Die Ebene '"+n+"' existiert nicht oder die Angabe "
-        "war nicht eindeutig.\n");
+      notify_fail("Ebene '"+target_channel+"' nicht gefunden!\n");
+      return 0;
+    }
+    else if (pointerp(chans))
+    {
+      notify_fail(
+        "Das war keine eindeutige Angabe! Folgende Ebenen passen:\n"+
+        break_string(CountUp(chans), 78));
       return 0;
     }
 
-    mixed ch = CHMASTER->list(this_object());
-    if (ch[lower_case(cn)][I_MASTER] != this_object())
-    {
-      notify_fail("Du bist nicht berechtigt, die Beschreibung der Ebene"
-        " '"+cn+"' zu aendern.\n");
+    mapping ch = CHMASTER->list(ME);
+    notify_fail("Du bist nicht berechtigt, die Beschreibung der Ebene"
+      " '"+target_channel+"' zu aendern.\n");
+    if (ch[lower_case(chans)][I_MASTER] != ME)
       return 0;
-    }
-    ch[lower_case(cn)][I_INFO] = descr;
-    write("Die Ebene '"+cn+"' hat ab sofort die Beschreibung:\n"+descr+"\n");
+
+    ch[lower_case(target_channel)][I_INFO] = descr;
+    tell_object(ME,"Die Ebene '"+target_channel+"' hat ab sofort die "
+      "Beschreibung:\n"+descr+"\n");
     return 1;
   }
 
-  if sscanf(args, "%s=%s", sh, n) == 2 && sizeof(n))
+  if (sscanf(args, "%s=%s", _sh_cut, target_channel) == 2 &&
+      sizeof(target_channel))
   {
-    tmp = CHMASTER->find(n, this_object());
-    if (pointerp(tmp) || !tmp)
+    chans = CHMASTER->find(target_channel, ME);
+
+    if (!chans)
     {
-      notify_fail("Benutzung: ebene <Abkuerzung>=<Ebene>\n"+
-                  (pointerp(tmp) ?
-                      implode(tmp, ", ") + "\n" :
-                      "Ebene '"+n+"' nicht gefunden!\n"));
+      notify_fail("Ebene '"+target_channel+"' nicht gefunden!\n");
+      return 0;
+    }
+    else if (pointerp(chans))
+    {
+      notify_fail(
+        "Das war keine eindeutige Angabe! Folgende Ebenen passen:\n"+
+        break_string(CountUp(chans), 78));
       return 0;
     }
 
-    mapping sc = QueryProp(P_CHANNEL_SHORT) || ([]);
-    m_add(sc, sh, tmp);
-    SetProp(P_CHANNEL_SHORT, sc);
+    mapping shortcut_list = QueryProp(P_CHANNEL_SHORT) || ([]);
+    m_add(shortcut_list, _sh_cut, chans);
+    SetProp(P_CHANNEL_SHORT, shortcut_list);
 
     shortcut = QueryProp(P_CHANNEL_SHORT);
 
-    write("'"+sh+"' wird jetzt als Abkuerzung fuer '"+tmp+"' anerkannt.\n");
+    tell_object(ME,"'"+_sh_cut+"' wird jetzt als Abkuerzung fuer '"+chans+
+      "' anerkannt.\n");
     return 1;
   }
 
-  if (sscanf(args, "%s=", sh))
+  if (sscanf(args, "%s=", _sh_cut))
   {
     SetProp(P_CHANNEL_SHORT,
-      m_copy_delete(QueryProp(P_CHANNEL_SHORT) || ([]), sh));
+      m_delete(QueryProp(P_CHANNEL_SHORT) || ([]), _sh_cut));
     shortcut = QueryProp(P_CHANNEL_SHORT);
-    write("Du loeschst die Abkuerzung '"+sh+"'.\n");
+    tell_object(ME,"Du loeschst die Abkuerzung '"+_sh_cut+"'.\n");
     return 1;
   }
 
@@ -614,12 +755,12 @@ int ChannelAdmin(string args)
     if (pointerp(QueryProp(P_SWAP_CHANNELS)))
       SetProp(P_CHANNELS, QueryProp(P_SWAP_CHANNELS));
     else
-      SetProp(P_CHANNELS, m_indices(CHMASTER->list(this_object())));
+      SetProp(P_CHANNELS, m_indices(CHMASTER->list(ME)));
 
     // <excl> enthaelt die Channelnamen, deren Channel nicht erstellt wurden.
     string* excl = RegisterChannels();
-    write("Du schaltest folgende Ebenen ein:\n"+
-          break_string(implode(QueryProp(P_CHANNELS) - excl, ", "), 78));
+    tell_object(ME,"Du schaltest folgende Ebenen ein:\n"+
+          break_string(CountUp(QueryProp(P_CHANNELS) - excl), 78));
     SetProp(P_SWAP_CHANNELS, 0);
     return 1;
   }
@@ -629,66 +770,60 @@ int ChannelAdmin(string args)
     SetProp(P_SWAP_CHANNELS, QueryProp(P_CHANNELS));
     RemoveChannels();
     SetProp(P_CHANNELS, ({}));
-    write("Du stellst die Ebenen ab.\n");
+    tell_object(ME,"Du stellst die Ebenen ab.\n");
     return 1;
   }
 
   string* pa = old_explode(args, " ");
-  if (!strstr("abkuerzungen", pa[0]))
+  if (strstr("abkuerzungen", pa[0]) == 0)
   {
     string txt = "";
-    if (sizeof(pa) > 1 && !strstr("standard", pa[1]))
+    if (sizeof(pa) > 1 && strstr("standard", pa[1]) == 0)
     {
-      write("Die Standardabkuerzungen werden gesetzt.\n");
-      SetProp(P_CHANNEL_SHORT, DEFAULT_SHORTCUTS
-              + (IS_LEARNER(this_object()) ? WIZARD_SHORTCUTS : ([])));
+      tell_object(ME,"Die Standardabkuerzungen werden gesetzt.\n");
+      SetProp(P_CHANNEL_SHORT,
+        DEFAULT_SHORTCUTS + (IS_LEARNER(ME) ? WIZARD_SHORTCUTS : ([])));
     }
-    foreach (string abk, string ch_name : QueryProp(P_CHANNEL_SHORT)) {
-      txt += sprintf("%5.5s = %s\n", abk, ch_name);
+
+    mapping scut = QueryProp(P_CHANNEL_SHORT);
+    string* abbreviations = m_indices(scut);
+    foreach (string abk : sort_array(abbreviations, #'>))
+    {
+      txt += sprintf("%5.5s = %s\n", abk, scut[abk]);
     }
-    txt = sprintf("Folgende Abkuerzungen sind definiert:\n%-78#s\n",
-            implode(sort_array(old_explode(txt, "\n"), #'>/*'*/), "\n"));
-    More(txt);
+    More( "Folgende Abkuerzungen sind definiert:\n"+
+          sprintf("%-78#s\n", txt) );
     return 1;
   }
 
-  if (!strstr("standard", pa[0]))
+  if (strstr("standard", pa[0]) == 0)
   {
     if (sizeof(pa) < 2)
     {
-      notify_fail("Benutzung: ebene standard <Ebene>\n"
-                  +(QueryProp(P_STD_CHANNEL) ?
-                    "Momentan ist '"+QueryProp(P_STD_CHANNEL)+
-                      "' eingestellt.\n" :
-                    "Es ist keine Standardebene eingestellt.\n"));
+      notify_fail("Benutzung: ebene standard <Ebene>\n"+
+        (QueryProp(P_STD_CHANNEL)
+          ? "Momentan ist '"+QueryProp(P_STD_CHANNEL)+"' eingestellt.\n"
+          : "Es ist keine Standardebene eingestellt.\n"));
       return 0;
     }
-    else
+
+    chans = CHMASTER->find(pa[1], ME);
+    if (!chans)
     {
-      tmp = CHMASTER->find(pa[1], this_object());
-      if (pointerp(tmp))
-      {
-        notify_fail("Das war keine eindeutige Angabe! "
-                    "Folgende Ebenen passen:\n"+
-                    break_string(implode(tmp, ", "), 78));
-        return 0;
-      }
-      else
-      {
-        if (!tmp)
-        {
-          notify_fail("Ebene '"+pa[1]+"' nicht gefunden!\n");
-          return 0;
-        }
-        else
-        {
-          write("'"+tmp+"' ist jetzt die Standardebene.\n");
-          SetProp(P_STD_CHANNEL, tmp);
-          return 1;
-        }
-      }
+      notify_fail("Ebene '"+pa[1]+"' nicht gefunden!\n");
+      return 0;
     }
+    else if (pointerp(chans))
+    {
+      notify_fail(
+        "Das war keine eindeutige Angabe! Folgende Ebenen passen:\n"+
+        break_string(CountUp(chans), 78));
+      return 0;
+    }
+
+    tell_object(ME,"'"+chans+"' ist jetzt die Standardebene.\n");
+    SetProp(P_STD_CHANNEL, chans);
+    return 1;
   }
   return(0);
 }
-

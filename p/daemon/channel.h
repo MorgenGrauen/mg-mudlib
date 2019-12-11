@@ -7,8 +7,10 @@
 
 #define P_CHANNELS        "channels"
 #define P_STD_CHANNEL     "std_channel"
+#define P_SWAP_CHANNELS   "swap_channels"
 
 #define CHMASTER          "/p/daemon/channeld"
+#define CMNAME            "<MasteR>"
 
 // Message types
 #define MSG_SAY           0
@@ -31,7 +33,7 @@
 #define C_LIST            "list"
 #define C_FIND            "find"
 
-// definition of the channel list entry indices
+// Defines fuer den Zugriff auf die Channeldaten in <channels>.
 #define I_MEMBER          0
 #define I_ACCESS          1
 #define I_INFO            2
@@ -45,12 +47,8 @@
 
 #ifndef __CHANNEL_H_PROTO__
 #define __CHANNEL_H_PROTO__
-varargs int new(string ch, object pl, mixed info);
-varargs int send(string ch, object pl, string msg, int type);
-
-// ok, keine Prototypen, aber trotzdem nur fuer channeld.c interessant.
-#define MAX_HIST_SIZE   200
-#define MAX_CHANNELS    90
+public varargs int new(string ch_name, object owner, string|closure info);
+public varargs int send(string ch, object pl, string msg, int type);
 
 #endif //__CHANNEL_H_PROTO__
 

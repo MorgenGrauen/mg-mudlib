@@ -12,6 +12,7 @@
 #include <sys_debug.h>
 #include <lpctypes.h>
 #include <wizlevels.h>
+#include <regexp.h>
 
 #include <properties.h>
 #include <config.h>
@@ -20,86 +21,128 @@
 #define NEED_PROTOTYPES
 #include "channel.h"
 
-#define CMNAME       "<MasteR>"
-#define CHANNEL_SAVE "/p/daemon/save/channeld"
-#define MEMORY       "/secure/memory"
-#define TIMEOUT      (time() - 60)
-#define CMDS         ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
+#define CHANNEL_SAVE  "/p/daemon/save/channeld"
+#define MEMORY        "/secure/memory"
+#define MAX_HIST_SIZE 200
+#define MAX_CHANNELS  90
+#define CMDS          ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
 
-/* list of channels and their corresponding data (members, etc.)
+
+/* Ebenenliste und die zugehoerigen Daten, z.B. Mitglieder oder Beschreibung
    channels = ([string channelname : ({ ({object* members}),
                                           closure access_rights,
-                                          string channel_info,
+                                          string channel_desc,
                                           string|object master_object,
-                                          string channelname }) ]) */
-private nosave mapping channels;
+                                          string readable_channelname }) ]) */
+private nosave mapping channels = ([]);
 //private nosave mapping lowerch; // unused
 
-/* channel history
-   mapping channelH = ([ string channelname : ({ string channelname,
-                                                 string sender,
-                                                 string msg,
-                                                 int msg_type }) ]) */
+/* Ebenenhistory
+   mapping channelH = ([ string channelname : ({ ({string channelname,
+                                                   string sender,
+                                                   string msg,
+                                                   int msg_type}) }) ]) */
+// channelH wird in create() geeignet initialisiert
+// HINWEIS: Bitte beachten, dass channelH immer nur so manipuliert werden
+// darf, dass keine Kopie erstellt wird, weder direkt noch implizit. Die
+// History wird via Referenz in /secure/memory hinterlegt, damit sie einen
+// Reload des Channeld ueberlebt. Das funktioniert aber nur, wenn die Mapping-
+// Referenz in Memory und Channeld dieselbe ist.
 private nosave mapping channelH;
 
-/* list of global channelmaster stats
-   mapping stats:  ([ "time" : int object_time(),
-                      "boot" : string load_name(previous_object()),
+/* Globale channeld-Stats (Startzeit, geladen von, Anzahl erstellte und
+   zerstoerte Ebenen.
+   mapping stats = ([ "time" : int object_time(),
+                      "boot" : string getuid(previous_object()),
                       "new"  : int total_channels_created,
                       "disposed" : int total_channels_removed ]) */
+// stats wird in create() geeignet initialisiert
 private nosave mapping stats;
 
-/* channel cache
+/* Ebenen-Cache, enthaelt Daten zu inaktiven Ebenen.
    mapping channelC = ([ string channelname : ({ string I_NAME,
                                                  string I_INFO,
                                                  int time() }) ]) */
-private mapping channelC;
+private mapping channelC = ([]);
 
-/* list of players' banned commands, if any
-   mapping channelB = ([ string playername : ({ string* banned_commands })])*/
-private mapping channelB;
+/* Liste von Spielern, fuer die ein Bann besteht, mit den verbotenen Kommandos
+   mapping channelB = ([ string playername : string* banned_command ]) */
+private mapping channelB = ([]);
 
-/* timeout cache for player commands (timeout = 60 s, see above)
-   ensures that the same command is only executed once per minute, max
+/* Timeout-Liste der Datenabfrage-Kommandos; die Timestamps werden verwendet,
+   um sicherzustellen, dass jedes Kommando max. 1x pro Minute benutzt werden
+   kann.
+
    mapping Tcmd = ([ "lag": int timestamp,
                      "uptime":  int timestamp,
                      "statistik":  int timestamp]) */
 private mapping Tcmd = ([]);
 
-/* Flag to indicate that data changes have occurred and that we need saving
-   in the next save_object() run.
-   set to 0 or 1 */
+/* Flag, das anzeigt, dass Daten veraendert wurden und beim naechsten
+   Speicherevent das Savefile geschrieben werden soll.
+   Wird auf 0 oder 1 gesetzt. */
 private int save_me_soon;
 
 
 // BEGIN OF THE CHANNEL MASTER ADMINISTRATIVE PART
 
+// Indizes fuer Zugriffe auf das Mapping <admin>.
 #define RECV    0
 #define SEND    1
 #define FLAG    2
 
-// Channel flags
-// Levelbeschraenkungen gegen Magierlevel (query_wiz_level) pruefen, nicht
-// P_LEVEL.
+// Ebenenflags, gespeichert in admin[ch, FLAG]
+// F_WIZARD kennzeichnet reine Magierebenen
 #define F_WIZARD 1
-// Keine Gaeste. ;-)
+// Ebenen, auf denen keine Gaeste erlaubt sind, sind mit F_NOGUEST markiert.
 #define F_NOGUEST 2
 
+/* Speichert Sende- und Empfangslevel sowie Flags zu den einzelnen Channeln.
+   Wird beim Laden des Masters via create() -> initalize() -> setup() mit den
+   Daten aus dem Init-File ./channeld.init befuellt.
+   mapping admin = ([ string channel_name : int RECV_LVL,
+                                            int SEND_LVL,
+                                            int FLAG ]) */
 private nosave mapping admin = m_allocate(0, 3);
 
-int check(string ch, object pl, string cmd)
-{
-  int level;
+// check_ch_access() prueft die Zugriffsberechtigungen auf Ebenen.
+//
+// Gibt 1 zurueck, wenn Aktion erlaubt, 0 sonst.
+// Wird von access() gerufen; access() gibt das Ergebnis von
+// check_ch_access() zurueck.
+//
+// Verlassen (C_LEAVE) ist immer erlaubt. Die anderen Aktionen sind in zwei
+// Gruppen eingeteilt:
+// 1) RECV. Die Aktionen dieser Gruppe sind Suchen (C_FIND), Auflisten
+//          (C_LIST) und Betreten (C_JOIN).
+// 2) SEND. Die Aktion dieser Gruppe ist zur Zeit nur Senden (C_SEND).
+//
+// Aktionen werden zugelassen, wenn Spieler/MagierLevel groesser ist als die
+// fuer die jeweilige Aktionsgruppe RECV oder SEND festgelegte Stufe.
+// Handelt es sich um eine Magierebene (F_WIZARD), muss die Magierstufe
+// des Spielers groesser sein als die Mindeststufe der Ebene. Ansonsten
+// wird gegen den Spielerlevel geprueft.
+//
+// Wenn RECV_LVL oder SEND_LVL auf -1 gesetzt ist, sind die Aktionen der
+// jeweiligen Gruppen komplett geblockt.
 
+private int check_ch_access(string ch, object pl, string cmd)
+{
+  // <pl> ist Gast, es sind aber keine Gaeste zugelassen? Koennen wir
+  // direkt ablehnen.
   if ((admin[ch, FLAG] & F_NOGUEST) && pl->QueryGuest())
     return 0;
 
+  // Ebenso auf Magier- oder Seherebenen, wenn ein Spieler anfragt, der
+  // noch kein Seher ist.
   if ((admin[ch, FLAG] & F_WIZARD) && query_wiz_level(pl) < SEER_LVL)
     return 0;
 
-  level = (admin[ch, FLAG] & F_WIZARD
-              ? query_wiz_level(pl)
-              : pl->QueryProp(P_LEVEL));
+  // Ebene ist Magierebene? Dann werden alle Stufenlimits gegen Magierlevel
+  // geprueft, ansonsten gegen Spielerlevel.
+  int level = (admin[ch, FLAG] & F_WIZARD
+                  ? query_wiz_level(pl)
+                  : pl->QueryProp(P_LEVEL));
 
   switch (cmd)
   {
@@ -119,6 +162,7 @@ int check(string ch, object pl, string cmd)
         return 1;
       break;
 
+    // Verlassen ist immer erlaubt
     case C_LEAVE:
       return 1;
 
@@ -128,88 +172,155 @@ int check(string ch, object pl, string cmd)
   return (0);
 }
 
-private int CountUser(mapping l)
+/* CountUsers() zaehlt die Anzahl Abonnenten aller Ebenen. */
+// TODO: Mapping- und Arrayvarianten bzgl. der Effizienz vergleichen
+private int CountUsers()
 {
-  mapping n = ([]);
-  walk_mapping(l, function void (string chan_name, mixed * chan_data)
-    {
-      n += mkmapping(chan_data[I_MEMBER]);
-    });
-  return sizeof(n);
+  object* userlist = ({});
+  foreach(string ch_name, mixed* ch_data : channels)
+  {
+    userlist += ch_data[I_MEMBER];
+  }
+  // Das Mapping dient dazu, dass jeder Eintrag nur einmal vorkommt.
+  return sizeof(mkmapping(userlist));
 }
 
-private void banned(string n, string* cmds, string res)
+// Ist das Objekt <sender> Abonnent der Ebene <ch>?
+private int IsChannelMember(string ch, object sender)
 {
-  res += sprintf("%s [%s], ", capitalize(n), implode(cmds, ","));
+  return (member(channels[ch][I_MEMBER], sender) != -1);
 }
 
-void ChannelMessage(mixed msg)
+// Besteht fuer das Objekt <ob> ein Bann fuer die Ebenenfunktion <command>?
+private int IsBanned(string|object ob, string command)
 {
-  string ret, mesg;
-  mixed lag;
-  int max, rekord;
-  string tmp;
+  if (objectp(ob))
+    ob = getuid(ob);
+  return(pointerp(channelB[ob]) &&
+         member(channelB[ob], command) != -1);
+}
 
-  if (msg[1] == this_object() || !stringp(msg[2]) ||
-      msg[0] != CMNAME || previous_object() != this_object())
+private void banned(string plname, string* cmds, string res)
+{
+  res += sprintf("%s [%s], ", capitalize(plname), implode(cmds, ","));
+}
+
+#define TIMEOUT       (time() - 60)
+
+// IsNotBlocked(): prueft fuer die Liste der uebergebenen Kommandos, ob
+// die Zeitsperre fuer alle abgelaufen ist und sie ausgefuehrt werden duerfen.
+// Dabei gilt jedes Kommando, dessen letzte Nutzung laenger als 60 s
+// zurueckliegt, als "nicht gesperrt".
+private int IsNotBlocked(string* cmd)
+{
+  string* res = filter(cmd, function int (string str) {
+                    return (Tcmd[str] < TIMEOUT);
+                  });
+  // Wenn das Ergebnis-Array genauso gross ist wie das Eingabe-Array, dann
+  // sind alle Kommandos frei. Sie werden direkt gesperrt; return 1
+  // signalisiert dem Aufrufer, dass das Kommando ausgefuehrt werden darf.
+  if (sizeof(res) == sizeof(cmd)) {
+    foreach(string str : cmd) {
+      Tcmd[str] = time();
+    }
+    return 1;
+  }
+  return 0;
+}
+
+// Prueft, ob der gesendete Befehl <cmd> als gueltiges Kommando <check>
+// zugelassen wird. Anforderungen:
+// 1) <cmd> muss Teilstring von <check> sein
+// 2) <cmd> muss am Anfang von <check> stehen
+// 3) <cmd> darf nicht laenger sein als <check>
+// 4) die Nutzung von <cmd> darf nur einmal pro Minute erfolgen
+// Beispiel: check = "statistik", cmd = "stat" ist gueltig, nicht aber
+// cmd = "statistiker" oder cmd = "tist"
+// Wenn die Syntax zugelassen wird, wird anschliessend geprueft
+private int IsValidChannelCommand(string cmd, string check) {
+  // Syntaxcheck (prueft Bedingungen 1 bis 3).
+  if ( strstr(check, cmd)==0 && sizeof(cmd) <= sizeof(check) ) {
+    string* cmd_to_check;
+    // Beim Kombi-Kommando "lust" muessen alle 3 Befehle gecheckt werden.
+    // Der Einfachheit halber werden auch Einzelkommandos als Array ueber-
+    // geben.
+    if ( cmd == "lust" )
+      cmd_to_check = ({"lag", "statistik", "uptime"});
+    else
+      cmd_to_check = ({cmd});
+    // Prueft die Zeitsperre (Bedingung 4).
+    return (IsNotBlocked(cmd_to_check));
+  }
+  return 0;
+}
+
+#define CH_NAME   0
+#define CH_SENDER 1
+#define CH_MSG    2
+#define CH_MSG_TYPE 3
+// Gibt die Channelmeldungen fuer die Kommandos up, stat, lag und bann des
+// <MasteR>-Channels aus. Auszugebende Informationen werden in <ret> gesammelt
+// und dieses per Callout an send() uebergeben.
+// Argument: ({string channels[ch][I_NAME], object pl, string msg, int type})
+// Funktion muss public sein, auch wenn der erste Check im Code das Gegenteil
+// nahezulegen scheint, weil sie von send() per call_other() gerufen wird,
+// was aber bei einer private oder protected Funktion nicht moeglich waere.
+public void ChannelMessage(<string|object|int>* msg)
+{
+  // Wir reagieren nur auf Meldungen, die wir uns selbst geschickt haben,
+  // aber nur dann, wenn sie auf der Ebene <MasteR> eingegangen sind.
+  if (msg[CH_SENDER] == this_object() || !stringp(msg[CH_MSG]) ||
+      msg[CH_NAME] != CMNAME || previous_object() != this_object())
     return;
 
-  mesg = lower_case(msg[2]);
+  float* lag;
+  int max, rekord;
+  string ret;
+  string mesg = lower_case(msg[CH_MSG]);
 
-  if (!strstr("hilfe", mesg) && sizeof(mesg) <= 5)
+  if (IsValidChannelCommand(mesg, "hilfe"))
   {
-    ret = "Folgende Kommandos gibt es: hilfe, lag, up[time], statistik, bann";
+    ret = "Folgende Kommandos gibt es: hilfe, lag, uptime, statistik, lust, "
+      "bann. Die Kommandos koennen abgekuerzt werden.";
   }
-  else if (!strstr("lag", mesg) && sizeof(mesg) <= 3)
+  else if (IsValidChannelCommand(mesg, "lag"))
   {
-    // TODO: invert logic to make this better understandable, e.g.
-    // if ( CMD_AVAILABLE("lag") ) and rearrange code block
-    if (Tcmd["lag"] > TIMEOUT)
-      return;
-
-    Tcmd["lag"] = time();
     lag = "/p/daemon/lag-o-daemon"->read_ext_lag_data();
     ret = sprintf("Lag: %.1f%%/60, %.1f%%/15, %.1f%%/5, %.1f%%/1, "
               "%.1f%%/20s, %.1f%%/2s",
               lag[5], lag[4], lag[3], lag[2], lag[1], lag[0]);
+    // Erster Callout wird hier schon abgesetzt, um sicherzustellen, dass
+    // die Meldung in zwei Zeilen auf der Ebene erscheint.
     call_out(#'send, 2, CMNAME, this_object(), ret);
     ret = query_load_average();
   }
-  // TODO: move this logic to a function with a self-explanatory name
-  else if (!strstr("uptime", mesg) && sizeof(mesg) <= 6)
+  else if (IsValidChannelCommand(mesg, "uptime"))
   {
-    if (Tcmd["uptime"] > TIMEOUT)
-      return;
-
-    Tcmd["uptime"] = time();
-
-    if (file_size("/etc/maxusers") <= 0)
+    if (file_size("/etc/maxusers") > 0 && file_size("/etc/maxusers.ever"))
     {
-      ret = "Diese Information liegt nicht vor.";
+      string unused;
+      sscanf(read_file("/etc/maxusers"), "%d %s", max, unused);
+      sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, unused);
+      ret = sprintf("Das MUD laeuft jetzt %s. Es sind momentan %d Spieler "
+              "eingeloggt; das Maximum lag heute bei %d und der Rekord "
+              "bisher ist %d.", uptime(), sizeof(users()), max, rekord);
     }
     else
     {
-      sscanf(read_file("/etc/maxusers"), "%d %s", max, tmp);
-      sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, tmp);
-      ret = sprintf("Das MUD laeuft jetzt %s. Es sind momentan %d Spieler "
-          "eingeloggt; das Maximum lag heute bei %d und der Rekord "
-          "bisher ist %d.", uptime(), sizeof(users()), max, rekord);
+      ret = "Diese Information liegt nicht vor.";
     }
   }
-  else if (!strstr("statistik", mesg) && sizeof(mesg) <= 9)
+  else if (IsValidChannelCommand(mesg, "statistik"))
   {
-    if (Tcmd["statistik"] > TIMEOUT)
-      return;
-
-    Tcmd["statistik"] = time();
     ret = sprintf(
-        "Im Moment sind insgesamt %d Ebenen mit %d Teilnehmern aktiv.\n"
-        "Der %s wurde das letzte mal am %s von %s neu gestartet.\n"
-        "Seitdem wurden %d Ebenen neu erzeugt und %d zerstoert.\n",
-        sizeof(channels), CountUser(channels), CMNAME,
+        "Im Moment sind insgesamt %d Ebenen mit %d Teilnehmern aktiv. "
+        "Der %s wurde das letzte mal am %s von %s neu gestartet. "
+        "Seitdem wurden %d Ebenen neu erzeugt und %d zerstoert.",
+        sizeof(channels), CountUsers(), CMNAME,
         dtime(stats["time"]), stats["boot"], stats["new"], stats["dispose"]);
   }
-  else if (!strstr(mesg, "bann"))
+  // Ebenenaktion beginnt mit "bann"?
+  else if (strstr(mesg, "bann")==0)
   {
     string pl, cmd;
 
@@ -217,9 +328,15 @@ void ChannelMessage(mixed msg)
     {
       if (sizeof(channelB))
       {
-        ret = "";
-        walk_mapping(channelB, #'banned, &ret);
-        ret = "Fuer folgende Spieler besteht ein Bann: " + ret;
+        ret = "Fuer folgende Spieler besteht ein Bann: ";
+        // Zwischenspeicher fuer die Einzeleintraege, um diese spaeter mit
+        // CountUp() in eine saubere Aufzaehlung umwandeln zu koennen.
+        string* banlist = ({});
+        foreach(string plname, string* banned_cmds : channelB) {
+          banlist += ({ sprintf("%s [%s]",
+            capitalize(plname), implode(banned_cmds, ", "))});
+        }
+        ret = CountUp(banlist);
       }
       else
       {
@@ -228,123 +345,127 @@ void ChannelMessage(mixed msg)
     }
     else
     {
-      if (sscanf(mesg, "bann %s %s", pl, cmd) == 2 && IS_DEPUTY(msg[1]))
+      if (sscanf(mesg, "bann %s %s", pl, cmd) == 2 &&
+          IS_DEPUTY(msg[CH_SENDER]))
       {
         pl = lower_case(pl);
         cmd = lower_case(cmd);
 
         if (member(CMDS, cmd) != -1)
         {
+          // Kein Eintrag fuer <pl> in der Bannliste vorhanden, dann anlegen;
+          // ist der Eintrag kein Array, ist ohnehin was faul, dann wird
+          // ueberschrieben.
           if (!pointerp(channelB[pl]))
-            channelB[pl] = ({});
+            m_add(channelB, pl, ({}));
 
-          if (member(channelB[pl], cmd) != -1)
+          if (IsBanned(pl, cmd))
             channelB[pl] -= ({ cmd });
           else
             channelB[pl] += ({ cmd });
-          ret = "Fuer '" + capitalize(pl) + "' besteht "
-            + (sizeof(channelB[pl]) ?
-              "folgender Bann: " + implode(channelB[pl], ", ") :
-              "kein Bann mehr.");
 
+          ret = "Fuer '" + capitalize(pl) + "' besteht " +
+                (sizeof(channelB[pl])
+                  // TODO: implode() -> CountUp()?
+                  ? "folgender Bann: " + implode(channelB[pl], ", ") + "."
+                  : "kein Bann mehr.");
+
+          // Liste der gebannten Kommandos leer? Dann <pl> komplett austragen.
           if (!sizeof(channelB[pl]))
-            channelB = m_copy_delete(channelB, pl);
+            m_delete(channelB, pl);
 
           save_object(CHANNEL_SAVE);
         }
         else
         {
           ret = "Das Kommando '" + cmd + "' ist unbekannt. "
-                "Erlaubte Kommandos: "+ implode(CMDS, ", ");
+                "Erlaubte Kommandos: "+ CountUp(CMDS);
         }
       }
       else
       {
-        if (!IS_ARCH(msg[1]))
-          return;
-        else
+        if (IS_ARCH(msg[CH_SENDER]))
           ret = "Syntax: bann <name> <kommando>";
       }
     }
   }
-  else if (mesg == "lust")
+  else if (IsValidChannelCommand(mesg, "lust"))
   {
-    mixed t, up;
-
-    if (Tcmd["lag"] > TIMEOUT ||
-        Tcmd["statistik"] > TIMEOUT ||
-        Tcmd["uptime"] > TIMEOUT)
-      return;
-
-    Tcmd["lag"] = time();
-    Tcmd["statistik"] = time();
-    Tcmd["uptime"] = time();
     lag = "/p/daemon/lag-o-daemon"->read_lag_data();
-    sscanf(read_file("/etc/maxusers"), "%d %s", max, tmp);
-    sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, tmp);
-    t = time() - last_reboot_time();
-    up = "";
+    if (file_size("/etc/maxusers") > 0 && file_size("/etc/maxusers.ever"))
+    {
+      string unused;
+      sscanf(read_file("/etc/maxusers"), "%d %s", max, unused);
+      sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, unused);
+    }
 
+    int t = time() - last_reboot_time();
+
+    // TODO: fuer solche Anwendungen ein separates Inheritfile bauen, da
+    // die Funktionalitaet oefter benoetigt wird als nur hier.
+    string up = "";
     if (t >= 86400)
       up += sprintf("%dT", t / 86400);
 
+    t %= 86400;
     if (t >= 3600)
-      up += sprintf("%dh", (t = t % 86400) / 3600);
+      up += sprintf("%dh", t / 3600);
 
+    t %= 3600;
     if (t > 60)
-      up += sprintf("%dm", (t = t % 3600) / 60);
+      up += sprintf("%dm", t / 60);
 
     up += sprintf("%ds", t % 60);
+
     ret = sprintf("%.1f%%/15 %.1f%%/1 %s %d:%d:%d E:%d T:%d",
             lag[1], lag[2], up, sizeof(users()), max, rekord,
-            sizeof(channels), CountUser(channels));
+            sizeof(channels), CountUsers());
   }
   else
   {
     return;
   }
 
-  call_out(#'send, 2, CMNAME, this_object(), ret);
+  // Nur die Ausgabe starten, wenn ein Ausgabestring vorliegt. Es kann
+  // vorkommen, dass weiter oben keiner zugewiesen wird, weil die Bedingungen
+  // nicht erfuellt sind.
+  if (stringp(ret) && sizeof(ret))
+    call_out(#'send, 2, CMNAME, this_object(), ret);
 }
 
 // setup() -- set up a channel and register it
 //            arguments are stored in the following order:
-//            ({ channel name,
-//               receive level, send level,
-//               flags,
-//               description,
-//               master obj
-//            })
-private void setup(mixed c)
+//            string* chinfo = ({ channel_name, receive_level, send_level,
+//                                flags, description, masterobj })
+private void setup(string* chinfo)
 {
-  closure cl;
-  object m;
-  string d;
-  d = "- Keine Beschreibung -";
-  m = this_object();
+  string desc = "- Keine Beschreibung -";
+  object chmaster = this_object();
 
-  if (sizeof(c) && sizeof(c[0]) > 1 && c[0][0] == '\\')
-    c[0] = c[0][1..];
+  if (sizeof(chinfo) && sizeof(chinfo[0]) > 1 && chinfo[0][0] == '\\')
+    chinfo[0] = chinfo[0][1..];
 
-  switch (sizeof(c))
+  switch (sizeof(chinfo))
   {
+    // Alle Fallthroughs in dem switch() sind Absicht.
     case 6:
-      if (!stringp(c[5]) || !sizeof(c[5]) ||
-          (catch(m = load_object(c[5]); publish) ||
-          !objectp(m)))
-        m = this_object();
+      if (stringp(chinfo[5]) && sizeof(chinfo[5]))
+        catch(chmaster = load_object(chinfo[5]); publish);
+      if (!objectp(chmaster))
+        chmaster = this_object();
 
     case 5:
-      d = stringp(c[4]) || closurep(c[4]) ? c[4] : d;
+      if (stringp(chinfo[4]) || closurep(chinfo[4]))
+        desc = chinfo[4];
 
     case 4:
-      admin[c[0], FLAG] = to_int(c[3]);
+      admin[chinfo[0], FLAG] = to_int(chinfo[3]);
 
     case 3:
-      admin[c[0], SEND] = to_int(c[2]);
+      admin[chinfo[0], SEND] = to_int(chinfo[2]);
 
     case 2:
-      admin[c[0], RECV] = to_int(c[1]);
+      admin[chinfo[0], RECV] = to_int(chinfo[1]);
       break;
 
     case 0:
@@ -352,52 +473,43 @@ private void setup(mixed c)
       return;
   }
 
-  switch (new(c[0], m, d))
+  if (new(chinfo[0], chmaster, desc) == E_ACCESS_DENIED)
   {
-    case E_ACCESS_DENIED:
-      log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
-        dtime(time()), c[0], m));
-      break;
-
-    default:
-      break;
+    log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
+      dtime(time()), chinfo[0], chmaster));
   }
-
   return;
 }
 
-void initialize()
+private void initialize()
 {
-  mixed tmp;
+  string ch_list;
 #if !defined(__TESTMUD__) && MUDNAME=="MorgenGrauen"
-  tmp = read_file(object_name(this_object()) + ".init");
+  ch_list = read_file(object_name(this_object()) + ".init");
 #else
-  tmp = read_file(object_name(this_object()) + ".init.testmud");
+  ch_list = read_file(object_name(this_object()) + ".init.testmud");
 #endif
 
-  if (!stringp(tmp))
+  if (!stringp(ch_list))
     return;
 
-  tmp = regexp(old_explode(tmp, "\n"), "^[^#]");
-  tmp = map(tmp, #'regexplode, "[^:][^:]*$|[ \\t]*:[ \\t]*");
-  tmp = map(tmp, #'regexp, "^[^: \\t]");
-  map(tmp, #'setup);
+  // Channeldatensaetze erzeugen, dazu zuerst Datenfile in Zeilen zerlegen
+  // "Allgemein:   0: 0: 0:Allgemeine Unterhaltungsebene"
+  // Danach drueberlaufen und in Einzelfelder splitten, dabei gleich die
+  // Trennzeichen (Doppelpunkt, Tab und Space) rausfiltern.
+  foreach(string ch : old_explode(ch_list, "\n"))
+  {
+    if (ch[0]=='#')
+      continue;
+    setup( regexplode(ch, ":[ \t]*", RE_OMIT_DELIM) );
+  }
 }
 
-        // BEGIN OF THE CHANNEL MASTER IMPLEMENTATION
-
+// BEGIN OF THE CHANNEL MASTER IMPLEMENTATION
 protected void create()
 {
   seteuid(getuid());
   restore_object(CHANNEL_SAVE);
-
-  if (!channelC)
-    channelC = ([]);
-
-  if (!channelB)
-    channelB = ([]);
-
-  channels = ([]);
 
   /* Die Channel-History wird nicht nur lokal sondern auch noch im Memory
      gespeichert, dadurch bleibt sie auch ueber ein Reload erhalten.
@@ -409,10 +521,11 @@ protected void create()
   if (call_other(MEMORY, "HaveRights"))
   {
     // Objektpointer laden
-    channelH = (mixed) call_other(MEMORY, "Load", "History");
+    channelH = (mapping) call_other(MEMORY, "Load", "History");
 
     // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger, dann
-    if (!mappingp(channelH)) {
+    if (!mappingp(channelH))
+    {
       // Zeiger erzeugen
       channelH = ([]);
       // und in den Memory schreiben
@@ -426,29 +539,35 @@ protected void create()
   }
 
   stats = (["time": time(),
-                "boot": capitalize(getuid(previous_object()) || "<Unbekannt>")]);
-  new (CMNAME, this_object(), "Zentrale Informationen zu den Ebenen");
+            "boot": capitalize(getuid(previous_object()) || "<Unbekannt>")]);
+
+  // <MasteR>-Ebene erstellen. Channeld wird Ebenenbesitzer und somit auch
+  // Zuhoerer, damit er auf Kommandos auf dieser Ebene reagieren kann.
+  new(CMNAME, this_object(), "Zentrale Informationen zu den Ebenen");
+
   initialize();
-  map_objects(efun::users(), "RegisterChannels");
+  users()->RegisterChannels();
+
+  // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+  // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+  // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+  // explizites call_other() auf this_object() gemacht, damit der
+  // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+  // einem externen.
   this_object()->send(CMNAME, this_object(),
     sprintf("%d Ebenen mit %d Teilnehmern initialisiert.",
       sizeof(channels),
-      CountUser(channels)));
+      CountUsers()));
 }
 
-// reset() and cache_to() - Cache Timeout, remove timed out cached channels
-// SEE: new, send
-private int cache_to(string key, mapping m, int t)
+varargs void reset()
 {
-  if (!pointerp(m[key]) || m[key][2] + 43200 > t)
-    return 1;
-
-  return (0);
-}
-
-varargs void reset(int nonstd)
-{
-  channelC = filter_indices(channelC, #'cache_to, channelC, time());
+  // Cache bereinigen entsprechend dessen Timeout-Zeit (12 h).
+  channelC = filter_indices(channelC, function int (string ch_name)
+  {
+    return (!pointerp(channelC[ch_name]) ||
+            channelC[ch_name][2] + 43200 > time());
+  });
 
   if (save_me_soon)
   {
@@ -468,22 +587,25 @@ string Name()
   return CMNAME;
 }
 
+#define CHAN_NAME(x) channels[x][I_NAME]
+#define MASTER_OB(x) channels[x][I_MASTER]
+#define ACC_CLOSURE(x) channels[x][I_ACCESS]
+
 // access() - check access by looking for the right argument types and
 //            calling access closures respectively
 // SEE: new, join, leave, send, list, users
 // Note: <pl> is usually an object, only the master supplies a string during
 //       runtime error handling.
-varargs private int access(mixed ch, mixed pl, string cmd, string txt)
+varargs private int access(string ch, object|string pl, string cmd,
+                           string txt)
 {
-  mixed co, m;
-
-  if (!stringp(ch) || !sizeof(ch = lower_case(ch)) || !channels[ch])
+  if (!sizeof(ch) || !pointerp(channels[ch]))
     return 0;
 
-  if (!channels[ch][I_ACCESS] || !previous_object(1) || !extern_call() ||
+  if (!ACC_CLOSURE(ch) || !previous_object(1) || !extern_call() ||
       previous_object(1) == this_object() ||
-      (stringp(channels[ch][I_MASTER]) &&
-      previous_object(1) == find_object(channels[ch][I_MASTER])) ||
+      (stringp(MASTER_OB(ch)) &&
+       previous_object(1) == find_object(MASTER_OB(ch))) ||
       getuid(previous_object(1)) == ROOTID)
     return 2;
 
@@ -491,67 +613,100 @@ varargs private int access(mixed ch, mixed pl, string cmd, string txt)
       ((previous_object(1) != pl) && (previous_object(1) != this_object())))
     return 0;
 
-  if (pointerp(channelB[getuid(pl)]) &&
-      member(channelB[getuid(pl)], cmd) != -1)
+  if (IsBanned(pl, cmd))
     return 0;
 
-  if (stringp(channels[ch][I_MASTER]) &&
-      (!(m = find_object(channels[ch][I_MASTER])) ||
-        (!to_object(channels[ch][I_ACCESS]) ||
-        get_type_info(channels[ch][I_ACCESS])[1])))
+  // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
+  if (!closurep(ACC_CLOSURE(ch)))
   {
-    string err;
-
-    if (!objectp(m))
-      err = catch(load_object(channels[ch][I_MASTER]); publish);
-
-    if (!err &&
-        ((!to_object(channels[ch][I_ACCESS]) ||
-           get_type_info(channels[ch][I_ACCESS])[1]) &&
-          !closurep(channels[ch][I_ACCESS] =
-          symbol_function("check", find_object(channels[ch][I_MASTER])))))
+    // Wenn der Ebenenbesitzer als String eingetragen ist, versuchen wir,
+    // die Closure wiederherzustellen. Dabei wird das Objekt gleichzeitig
+    // neugeladen.
+    if (stringp(MASTER_OB(ch)))
     {
-      log_file("CHANNEL", sprintf("[%s] %O -> %O\n",
-                dtime(time()), channels[ch][I_MASTER],
-                err));
-      channels = m_copy_delete(channels, ch);
-      return 0;
+      closure new_acc_cl;
+      string err = catch(new_acc_cl=
+                          symbol_function("check_ch_access", MASTER_OB(ch));
+                          publish);
+      /* Wenn sich die Closure fehlerfrei erstellen liess, dann wird sie als
+         neue Zugriffskontrolle eingetragen und auch der Ebenenbesitzer neu
+         gesetzt. */
+      // TODO: Ist das noetig, obwohl der neue Master ja weiter unten auch
+      // gleich beitritt?
+      if (!err)
+      {
+        ACC_CLOSURE(ch) = new_acc_cl;
+        MASTER_OB(ch) = to_string(to_object(new_acc_cl));
+      }
+      else
+      {
+        log_file("CHANNEL", sprintf("[%s] %O -> %O\n",
+                  dtime(time()), MASTER_OB(ch), err));
+        m_delete(channels, ch);
+        return 0;
+      }
     }
+    // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
+    // dieser nicht mehr existiert.
 
-    this_object()->join(ch, find_object(channels[ch][I_MASTER]));
+    // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+    // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+    // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+    // explizites call_other() auf this_object() gemacht, damit der
+    // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+    // einem externen.
+
+    // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
+    this_object()->join(ch, find_object(MASTER_OB(ch)));
   }
-
-  if (closurep(channels[ch][I_ACCESS]))
-    return funcall(channels[ch][I_ACCESS],
-              channels[ch][I_NAME], pl, cmd, &txt);
+  return funcall(ACC_CLOSURE(ch), CHAN_NAME(ch), pl, cmd, &txt);
 }
 
-// new() - create a new channel
-//         a channel with name 'ch' is created, the player is the master
-//         info may contain a string which describes the channel or a closure
-//         to display up-to-date information, check may contain a closure
-//         called when a join/leave/send/list/users message is received
-// SEE: access
+// Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
+// <info> kann die statische Beschreibung der Ebene sein oder eine Closure,
+// die dynamisch aktualisierte Infos ausgibt.
+// Das Objekt <owner> kann eine Funktion check_ch_access() definieren, die
+// gerufen wird, wenn eine Ebenenaktion vom Typ join/leave/send/list/users
+// eingeht.
+// check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
+// Nachricht gesendet werden darf oder nicht.
+
+// Ist keine Closure angegeben, wird die in diesem Objekt (Channeld)
+// definierte Funktion gleichen Namens verwendet.
 #define IGNORE  "^/xx"
 
-varargs int new(string ch, object pl, mixed info)
+// TODO: KOMMENTAR
+//check may contain a closure
+//         called when a join/leave/send/list/users message is received
+public varargs int new(string ch_name, object owner, string|closure info)
 {
-  mixed pls;
-
-  if (!objectp(pl) || !stringp(ch) || !sizeof(ch) ||
-      channels[lower_case(ch)] || (pl == this_object() && extern_call()) ||
-      sizeof(channels) >= MAX_CHANNELS ||
-      sizeof(regexp(({ object_name(pl) }), IGNORE)) ||
-      (pointerp(channelB[getuid(pl)]) &&
-      member(channelB[getuid(pl)], C_NEW) != -1))
+  // Kein Channelmaster angegeben, oder wir sind es selbst, aber der Aufruf
+  // kam von ausserhalb. (Nur der channeld selbst darf sich als Channelmaster
+  // fuer eine neue Ebene eintragen.)
+  if (!objectp(owner) || (owner == this_object() && extern_call()) )
     return E_ACCESS_DENIED;
 
+  // Kein gescheiter Channelname angegeben.
+  if (!stringp(ch_name) || !sizeof(ch_name))
+    return E_ACCESS_DENIED;
+
+  // Channel schon vorhanden oder schon alle Channel-Slots belegt.
+  if (channels[lower_case(ch_name)] || sizeof(channels) >= MAX_CHANNELS)
+    return E_ACCESS_DENIED;
+
+  // Der angegebene Ebenenbesitzer darf keine Ebenen erstellen, wenn fuer ihn
+  // ein Bann auf die Aktion C_NEW besteht, oder das Ignore-Pattern auf
+  // seinen Objektnamen matcht.
+  if (IsBanned(owner,C_NEW) || regmatch(object_name(owner), IGNORE))
+    return E_ACCESS_DENIED;
+
+  // Keine Infos mitgeliefert? Dann holen wir sie aus dem Cache.
   if (!info)
   {
-    if (channelC[lower_case(ch)])
+    if (channelC[lower_case(ch_name)])
     {
-      ch = channelC[lower_case(ch)][0];
-      info = channelC[lower_case(ch)][1];
+      ch_name = channelC[lower_case(ch_name)][0];
+      info = channelC[lower_case(ch_name)][1];
     }
     else
     {
@@ -560,124 +715,168 @@ varargs int new(string ch, object pl, mixed info)
   }
   else
   {
-    channelC[lower_case(ch)] = ({ ch, info, time() });
+    channelC[lower_case(ch_name)] = ({ ch_name, info, time() });
   }
 
-  pls = ({ pl });
-  channels[lower_case(ch)] = ({
-                  pls,
-                  symbol_function("check", pl) || #'check, info,
-                  (!living(pl) && !clonep(pl) && pl != this_object()
-                      ? object_name(pl)
-                      : pl),
-                  ch});
+  object* pls = ({ owner });
+  m_add(channels, lower_case(ch_name),
+           ({ pls,
+              symbol_function("check_ch_access", owner) || #'check_ch_access,
+              info,
+              (!living(owner) && !clonep(owner) && owner != this_object()
+                  ? object_name(owner)
+                  : owner),
+              ch_name }));
 
-  // ChannelH fuer einen Kanal nur dann initialisieren, wenn es sie noch nich gibt.
-  if (!pointerp(channelH[lower_case(ch)]))
-    channelH[lower_case(ch)] = ({});
+  // History fuer eine Ebene nur dann initialisieren, wenn es sie noch
+  // nicht gibt.
+  if (!pointerp(channelH[lower_case(ch_name)]))
+    channelH[lower_case(ch_name)] = ({});
 
-  if (pl != this_object())
+  // Erstellen neuer Ebenen loggen, wenn wir nicht selbst der Ersteller sind.
+  if (owner != this_object())
     log_file("CHANNEL.new", sprintf("[%s] %O: %O %O\n",
-        dtime(time()), ch, pl, info));
+        dtime(time()), ch_name, owner, info));
 
-  if (!pl->QueryProp(P_INVIS))
-    this_object()->send(CMNAME, pl,
-      "laesst die Ebene '" + ch + "' entstehen.", MSG_EMOTE);
+  // Erfolgsmeldung ausgeben, ausser bei unsichtbarem Ebenenbesitzer.
+  if (!owner->QueryProp(P_INVIS))
+  {
+    // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+    // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+    // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+    // explizites call_other() auf this_object() gemacht, damit der
+    // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+    // einem externen.
+    this_object()->send(CMNAME, owner,
+      "laesst die Ebene '" + ch_name + "' entstehen.", MSG_EMOTE);
+  }
 
   stats["new"]++;
   save_me_soon = 1;
   return (0);
 }
 
-// join() - join a channel
-//          this function checks whether the player 'pl' is allowed to join
-//          the channel 'ch' and add if successful, one cannot join a channel
-//          twice
-// SEE: leave, access
-int join(string ch, object pl)
+// Objekt <pl> betritt Ebene <ch>. Dies wird zugelassen, wenn <pl> die
+// Berechtigung hat und noch nicht Mitglied ist. (Man kann einer Ebene nicht
+// zweimal beitreten.)
+public int join(string ch, object pl)
 {
-  if (!funcall(#'access,&ch, pl, C_JOIN))
+  ch = lower_case(ch);
+  if (!access(ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
 
-  if (member(channels[ch][I_MEMBER], pl) != -1)
+  if (IsChannelMember(ch, pl))
     return E_ALREADY_JOINED;
 
   channels[ch][I_MEMBER] += ({ pl });
   return (0);
 }
 
-// leave() - leave a channel
-//           the access check in this function is just there for completeness
-//           one should always be allowed to leave a channel.
-//           if there are no players left on the channel it will vanish, unless
-//           its master is this object.
-// SEE: join, access
-int leave(string ch, object pl)
+// Objekt <pl> verlaesst Ebene <ch>.
+// Zugriffsrechte werden nur der Vollstaendigkeit halber geprueft; es duerfte
+// normalerweise keinen Grund geben, das Verlassen einer Ebene zu verbieten.
+// Dies ist in check_ch_access() so geregelt, allerdings koennte dem Objekt
+// <pl> das Verlassen auf Grund eines Banns verboten sein.
+// Wenn kein Spieler mehr auf der Ebene ist, loest sie sich auf, sofern nicht
+// noch ein Ebenenbesitzer eingetragen ist.
+public int leave(string ch, object pl)
 {
-  int pos;
-
-  if (!funcall(#'access,&ch, pl, C_LEAVE))
+  ch = lower_case(ch);
+  if (!access(ch, pl, C_LEAVE))
     return E_ACCESS_DENIED;
 
   channels[ch][I_MEMBER] -= ({0}); // kaputte Objekte erstmal raus
 
-  if ((pos = member(channels[ch][I_MEMBER], pl)) == -1)
+  if (!IsChannelMember(ch, pl))
     return E_NOT_MEMBER;
 
+  // Kontrolle an jemand anderen uebergeben, wenn der Ebenenbesitzer diese
+  // verlaesst.
   if (pl == channels[ch][I_MASTER] && sizeof(channels[ch][I_MEMBER]) > 1)
   {
     channels[ch][I_MASTER] = channels[ch][I_MEMBER][1];
 
     if (!pl->QueryProp(P_INVIS))
+    {
+      // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+      // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+      // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+      // explizites call_other() auf this_object() gemacht, damit der
+      // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+      // einem externen.
       this_object()->send(ch, pl, "uebergibt die Ebene an " +
         channels[ch][I_MASTER]->name(WEN) + ".", MSG_EMOTE);
+    }
   }
-  channels[ch][I_MEMBER][pos..pos] = ({ });
+  channels[ch][I_MEMBER] -= ({pl});
 
+  // Ebene loeschen, wenn keiner zuhoert und auch kein Masterobjekt
+  // existiert.
+  // Wenn Spieler, NPC, Clone oder Channeld als letztes die Ebene verlassen,
+  // wird diese zerstoert, mit Meldung.
   if (!sizeof(channels[ch][I_MEMBER]) && !stringp(channels[ch][I_MASTER]))
   {
-    // delete the channel that has no members
+    // Der Letzte macht das Licht aus, aber nur, wenn er nicht unsichtbar ist.
     if (!pl->QueryProp(P_INVIS))
-        this_object()->send(CMNAME, pl,
-          "verlaesst als "+
-          (pl->QueryProp(P_GENDER) == 1 ? "Letzter" : "Letzte")+
-          " die Ebene '"+channels[ch][I_NAME]+"', worauf diese sich in "
-          "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
-
+    {
+      // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+      // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+      // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+      // explizites call_other() auf this_object() gemacht, damit der
+      // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+      // einem externen.
+      this_object()->send(CMNAME, pl,
+        "verlaesst als "+
+        (pl->QueryProp(P_GENDER) == 1 ? "Letzter" : "Letzte")+
+        " die Ebene '"+channels[ch][I_NAME]+"', worauf diese sich in "
+        "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
+    }
     channelC[lower_case(ch)] =
       ({ channels[ch][I_NAME], channels[ch][I_INFO], time() });
+
+    // Ebene loeschen
     m_delete(channels, lower_case(ch));
-    // Wird ein Channel entfernt, wird auch seine History geloescht
-    // TODO: this foils the attempts at creating a persistent channel
-    // history via /secure/memory.c
-    channelH = m_copy_delete(channelH, lower_case(ch));
+    // History wird ebenfalls geloescht
+    // TODO: History cachen und wiederherstellen, wenn eine namensgleiche
+    // Ebene neu erstellt wird.
+    m_delete(channelH, lower_case(ch));
+
     stats["dispose"]++;
     save_me_soon = 1;
   }
   return (0);
 }
 
-// send() - send a message to all recipients of the specified channel 'ch'
-//          checks if 'pl' is allowed to send a message and sends if success-
-//          ful a message with type 'type'
-//          'pl' must be an object, the message is attributed to it. e.g.
-//            ignore checks use it. It can be != previous_object()
-// SEE: access, ch.h
-varargs int send(string ch, object pl, string msg, int type)
+// Nachricht <msg> vom Typ <type> mit Absender <pl> auf der Ebene <ch> posten,
+// sofern <pl> dort senden darf.
+public varargs int send(string ch, object pl, string msg, int type)
 {
-  int a;
-
-  if (!(a = funcall(#'access, &ch, pl, C_SEND, &msg)))
+  ch = lower_case(ch);
+  int a = access(ch, pl, C_SEND, msg);
+  if (!a)
     return E_ACCESS_DENIED;
 
-  if (a < 2 && member(channels[ch][I_MEMBER], pl) == -1)
+  // TODO: Wertebereich von <a> klaeren.
+  // a<2 bedeutet effektiv a==1, was dem Rueckgabewert von check_ch_access()
+  // entspricht, wenn die Aktion zugelassen wird.
+  if (a < 2 && !IsChannelMember(ch, pl))
     return E_NOT_MEMBER;
 
   if (!msg || !stringp(msg) || !sizeof(msg))
     return E_EMPTY_MESSAGE;
 
-  map_objects(channels[ch][I_MEMBER], "ChannelMessage",
-                ({ channels[ch][I_NAME], pl, msg, type }));
+  // Jedem Mitglied der Ebene wird die Nachricht ueber die Funktion
+  // ChannelMessage() zugestellt. Der Channeld selbst hat ebenfalls eine
+  // Funktion dieses Namens, so dass er, falls er Mitglied der Ebene ist, die
+  // Nachricht ebenfalls erhaelt.
+  // Um die Kommandos der Ebene <MasteR> verarbeiten zu koennen, muss er
+  // demzufolge Mitglied dieser Ebene sein. Da Ebenenbesitzer automatisch
+  // auch Mitglied sind, wird die Ebene <MasteR> im create() mittels new()
+  // erzeugt und der Channeld als Besitzer angegeben.
+  // Die Aufrufkette ist dann wie folgt:
+  // Eingabe "-< xyz" => pl::ChannelParser() => send() => ChannelMessage()
+  channels[ch][I_MEMBER]->ChannelMessage(
+                            ({ channels[ch][I_NAME], pl, msg, type}));
 
   if (sizeof(channelH[ch]) > MAX_HIST_SIZE)
     channelH[ch] = channelH[ch][1..];
@@ -692,71 +891,75 @@ varargs int send(string ch, object pl, string msg, int type)
                   + (pl->Name(WER, 2) || "<Unbekannt>")),
           msg + " <" + strftime("%a, %H:%M:%S") + ">\n",
           type }) });
-      return (0);
-    }
-
-private void clean(string n, mixed a)
-{
-  a[0] -= ({ 0 });
+  return (0);
 }
 
-// list() - list all channels, that are at least receivable by 'pl'
-//          returns a mapping,
-// SEE: access, channels
-mixed list(object pl)
+// Gibt ein Mapping mit allen Ebenen aus, die das Objekt <pl> lesen kann,
+// oder einen Integer-Fehlercode
+public int|mapping list(object pl)
 {
-  mapping chs = filter_indices(channels, #'access, pl, C_LIST);
-  walk_mapping(chs, #'clean);
+  mapping chs = ([]);
+  foreach(string chname, <object*|closure|string|object>* chdata : channels)
+  {
+    if(access(chname, pl, C_LIST))
+    {
+      m_add(chs, chname, chdata);
+      chs[chname][I_MEMBER] = filter(chs[chname][I_MEMBER], #'objectp);
+    }
+  }
 
   if (!sizeof(chs))
     return E_ACCESS_DENIED;
-  return deep_copy(chs);
+  return (chs);
 }
 
-// find() - find a channel by its name (may be partial)
-//          returns an array for multiple results and 0 for no matching name
-// SEE: access
-mixed find(string ch, object pl)
+// Ebene suchen, deren Name <ch> enthaelt, und auf der Objekt <pl> senden darf
+// Rueckgabewerte:
+// - den gefundenen Namen als String
+// - String-Array, wenn es mehrere Treffer gibt
+// - 0, wenn es keinen Treffer gibt
+public string|string* find(string ch, object pl)
 {
-  mixed chs, s;
+  ch = lower_case(ch);
 
-  if (stringp(ch))
-    ch = lower_case(ch);
+  // Suchstring <ch> muss Formatanforderung erfuellen;
+  // TODO: soll das ein Check auf gueltigen Ebenennamen als Input sein?
+  // Wenn ja, muesste laut Manpage mehr geprueft werden:
+  // "Gueltige Namen setzen sich zusammen aus den Buchstaben a-z, A-Z sowie
+  // #$%&@<>-." Es wuerden also $%&@ fehlen.
+  if (!regmatch(ch, "^[<>a-z0-9#-]+$"))
+    return 0;
 
-  if (!sizeof(regexp(({ch}), "^[<>a-z0-9#-]*$")))
-    return 0; // RUM
+  // Der Anfang des Ebenennamens muss dem Suchstring entsprechen und das
+  // Objekt <pl> muss auf dieser Ebene senden duerfen, damit der Ebenenname
+  // in das Suchergebnis aufgenommen wird.
+  string* chs = filter(m_indices(channels), function int (string chname) {
+                  return ( stringp(regmatch(chname, "^"+ch)) &&
+                           access(chname, pl, C_SEND) );
+                });
 
-  if (!sizeof(chs = regexp(m_indices(channels), "^" + ch + "$")))
-    chs = regexp(m_indices(channels), "^" + ch);
-
-  if ((s = sizeof(chs)) > 1)
-  {
-    if (sizeof(chs = filter(chs, #'access, pl, C_FIND)) == 1)
-      return channels[chs[0]][I_NAME];
-    else
-      return chs;
-  }
-
-  return ((s && funcall(#'access,chs[0], pl, C_FIND))
-            ? channels[chs[0]][I_NAME]
-            : 0);
+  int num_channels = sizeof(chs);
+  if (num_channels > 1)
+    return chs;
+  else if (num_channels == 1)
+    return channels[chs[0]][I_NAME];
+  else
+    return 0;
 }
 
-// history() - get the history of a channel
-// SEE: access
-mixed history(string ch, object pl)
+// Ebenen-History abfragen.
+public int|<int|string>** history(string ch, object pl)
 {
-  if (!funcall(#'access, &ch, pl, C_JOIN))
+  ch = lower_case(ch);
+  if (!access(ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
-  return deep_copy(channelH[ch]);
+  else
+    return channelH[ch];
 }
 
-// remove - remove a channel (wird aus der Shell aufgerufen)
-// SEE: new
-mixed remove(string ch, object pl)
+// Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
+public int remove_channel(string ch, object pl)
 {
-  mixed members;
-
   if (previous_object() != this_object())
   {
     if (!stringp(ch) ||
@@ -766,37 +969,43 @@ mixed remove(string ch, object pl)
       return E_ACCESS_DENIED;
   }
 
-  if (channels[lower_case(ch)])
+  if (member(channels, lower_case(ch)))
   {
-    channels[lower_case(ch)][I_MEMBER] =
-      filter_objects(channels[lower_case(ch)][I_MEMBER],
-      "QueryProp", P_CHANNELS);
-    map(channels[lower_case(ch)][I_MEMBER],
-    function mixed(object listener)
+    // Einer geloeschten Ebene kann man nicht zuhoeren: Ebenenname aus der
+    // Ebenenliste aller Mitglieder austragen. Dabei werden sowohl ein-, als
+    // auch temporaer ausgeschaltete Ebenen beruecksichtigt.
+    foreach(object listener : channels[lower_case(ch)][I_MEMBER])
+    {
+      string* pl_chans = listener->QueryProp(P_CHANNELS);
+      if (pointerp(pl_chans))
       {
-        string* chans = listener->QueryProp(P_CHANNELS);
-        chans -= ({lower_case(ch)});
-        ({string*})listener->SetProp(P_CHANNELS, chans);
-      });
-    channels = m_copy_delete(channels, lower_case(ch));
+        listener->SetProp(P_CHANNELS, pl_chans-({lower_case(ch)}));
+      }
+      pl_chans = listener->QueryProp(P_SWAP_CHANNELS);
+      if (pointerp(pl_chans))
+      {
+        listener->SetProp(P_SWAP_CHANNELS, pl_chans-({lower_case(ch)}));
+      }
+    }
+    // Anschliessend werden die Ebenendaten geloescht.
+    m_delete(channels, lower_case(ch));
 
-    // Wird ein Channel entfernt, wird auch seine History geloescht
-    if (pointerp(channelH[lower_case(ch)]))
-      channelH = m_copy_delete(channelH, lower_case(ch));
+    // Wird eine Ebene entfernt, kann auch ihre History weg.
+    m_delete(channelH, lower_case(ch));
 
+    // Zaehler fuer zerstoerte Ebenen in der Statistik erhoehen.
     stats["dispose"]++;
   }
 
-  if (!channelC[lower_case(ch)])
-    return E_ACCESS_DENIED;
+  if (channelC[lower_case(ch)])
+    m_delete(channelC, lower_case(ch));
 
-  channelC = m_copy_delete(channelC, lower_case(ch));
   save_me_soon = 1;
   return (0);
 }
 
-// Wird aus der Shell aufgerufen
-mixed clear_history(string ch)
+// Wird aus der Shell aufgerufen, fuer das Erzmagier-Kommando "clear".
+public int clear_history(string ch)
 {
   // Sicherheitsabfragen
   if (previous_object() != this_object())
