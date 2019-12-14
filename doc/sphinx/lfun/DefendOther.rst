@@ -5,8 +5,8 @@ FUNKTION
 --------
 ::
 
-    public <int|string*|mapping>* DefendOther(int dam, string* dam_type,
-                                        int|mapping si_spell, object enemy)
+    public <int|string*|mapping|object>* DefendOther(int dam,
+                       string* dam_type, int|mapping si_spell, object enemy)
 
 DEFINIERT IN
 ------------
