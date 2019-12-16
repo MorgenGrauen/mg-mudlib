@@ -743,7 +743,7 @@ varargs string _send_udp(string mudname, mapping data, int expect_reply) {
       // resultieren, weswegen das (hier) nicht geht. Daher bleibt nur
       // uebrig, alles nicht-ASCII wegzuwerfen.
       if (!send_udp(host_data[HOST_IP], host_data[HOST_UDP_PORT],
-                    to_bytes(packet_arr[i], "ASCII")))
+                    to_bytes(packet_arr[i], "ASCII//IGNORE")))
             return "inetd: Error in sending packet.\n";
     }
     return 0;
