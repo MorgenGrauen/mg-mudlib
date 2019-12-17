@@ -625,7 +625,16 @@ int renew_player_object(string|object who)
     ob_name=ob_name[11..];
   ob_name=ob_name+":"+getuid(who);
   if (active)
-    exec(newob,who);
+  {
+    if (!exec(newob,who))
+    {
+      send_channel_msg("Debug",previous_object(),
+                       "ERROR: exec() during Renew unsuccessful.\n");
+      newob->remove();
+      return 0;
+    }
+  }
+  // Safety check - should be redundant and never triggered though.
   if (active && (interactive(who)||!interactive(newob)))
   {
     send_channel_msg("Debug",previous_object(),
@@ -633,7 +642,7 @@ int renew_player_object(string|object who)
     newob->remove();
     return 0;
   }
-//   newob->start_player(capitalize(getuid(who)),who->_query_my_ip());
+  // newob->start_player(capitalize(getuid(who)),who->_query_my_ip());
   funcall(
           bind_lambda(
                       unbound_lambda( ({'x, 'y}),
