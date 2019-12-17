@@ -687,8 +687,7 @@ int valid_exec(string name, object ob, object obfrom)
     return 0;
 
   // renew_player_object() darf ...
-  if (name=="/secure/master/misc.c"
-      || name=="secure/master/misc.c")
+  if (name=="secure/master.c" || name=="/secure/master.c")
     return 1;
 
   // Ansonsten darf sich nur die Shell selber aendern ...
