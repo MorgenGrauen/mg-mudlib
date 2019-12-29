@@ -178,10 +178,10 @@ static mixed _set_resistance(mixed arg)
 
   if ( pointerp(old=QueryProp(P_RESISTANCE)) )
     for ( i=sizeof(old)-1 ; i>=0 ; i-- )
-      resimap[old[i]]=(1.0+((float)resimap[old[i]]))*2.0-1.0;
+      resimap[old[i]]=(1.0+resimap[old[i]])*2.0-1.0;
 
   for ( i=sizeof(arg)-1 ; i>=0 ; i-- )
-    resimap[arg[i]]=(1.0+((float)resimap[arg[i]]))*0.5-1.0;
+    resimap[arg[i]]=(1.0+resimap[arg[i]])*0.5-1.0;
 
   SetProp(P_RESISTANCE_STRENGTHS,resimap);
 
@@ -202,10 +202,10 @@ static mixed _set_vulnerability(mixed arg)
 
   if ( pointerp(old=QueryProp(P_VULNERABILITY)) )
     for ( i=sizeof(old)-1 ; i>=0 ; i-- )
-      resimap[old[i]]=(1.0+((float)resimap[old[i]]))*0.5-1.0;
+      resimap[old[i]]=(1.0+resimap[old[i]])*0.5-1.0;
 
   for ( i=sizeof(arg)-1 ; i>=0 ; i-- )
-    resimap[arg[i]]=(1.0+((float)resimap[arg[i]]))*2.0-1.0;
+    resimap[arg[i]]=(1.0+resimap[arg[i]])*2.0-1.0;
 
   SetProp(P_RESISTANCE_STRENGTHS,resimap);
 
@@ -262,7 +262,7 @@ public int InsertSingleEnemy(object ob)
 
     // Wie lange verfolgt dieses Living? Wenn Prop nicht gesetzt oder 
     // ungueltig, d.h. kein int oder <= 0, dann wird die Defaultzeit genommen.
-    int hunttime = (int)QueryProp(P_HUNTTIME);
+    int hunttime = QueryProp(P_HUNTTIME);
     hunttime = (intp(hunttime) && hunttime > 0) ? 
                  hunttime / __HEART_BEAT_INTERVAL__ : HUNTTIME;
 
@@ -341,7 +341,7 @@ public object *PresentEnemies() {
   object *netdead=({});
   mixed no_attack;
   foreach(object pl: enemies) {
-    if (no_attack = (mixed)pl->QueryProp(P_NO_ATTACK)) {
+    if (no_attack = pl->QueryProp(P_NO_ATTACK)) {
       m_delete(enemies,pl);
       // Und auch im Gegner austragen, sonst haut der weiter zu und dieses
       // Living wehrt sich nicht. (Zesstra, 26.11.2006)
@@ -427,7 +427,7 @@ protected void heart_beat() {
 
   // Wie lange verfolgt dieser NPC? Wenn Prop nicht gesetzt oder ungueltig,
   // d.h. kein int oder <= 0, dann wird die Defaultzeit genommen.
-  int hunttime = (int)QueryProp(P_HUNTTIME);
+  int hunttime = QueryProp(P_HUNTTIME);
   hunttime = (intp(hunttime) && hunttime > 0) ? 
               hunttime / __HEART_BEAT_INTERVAL__ : HUNTTIME;
   // erstmal die Hunttimes der Gegner aktualisieren und nebenbei die
@@ -688,16 +688,16 @@ public void Attack(object enemy)
       return;
 
     cl=symbol_function("name",ainfo[P_WEAPON]);
-    ainfo[SI_SKILLDAMAGE_MSG] = (" mit "+(string)funcall(cl,WEM,0));
-    ainfo[SI_SKILLDAMAGE_MSG2] = (" mit "+(string)funcall(cl,WEM,1));
+    ainfo[SI_SKILLDAMAGE_MSG] = (" mit "+funcall(cl,WEM,0));
+    ainfo[SI_SKILLDAMAGE_MSG2] = (" mit "+funcall(cl,WEM,1));
 
-    ainfo[SI_SKILLDAMAGE] = (int)ainfo[P_WEAPON]->QueryDamage(enemy);
+    ainfo[SI_SKILLDAMAGE] = ainfo[P_WEAPON]->QueryDamage(enemy);
 
     cl=symbol_function("QueryProp",ainfo[P_WEAPON]);
     ainfo[SI_SKILLDAMAGE_TYPE] = funcall(cl,P_DAM_TYPE);
-    ainfo[P_WEAPON_TYPE] = (string)funcall(cl,P_WEAPON_TYPE);
-    ainfo[P_NR_HANDS] = (int)funcall(cl,P_NR_HANDS);
-    ainfo[P_WC] = (int)funcall(cl,P_WC);
+    ainfo[P_WEAPON_TYPE] = funcall(cl,P_WEAPON_TYPE);
+    ainfo[P_NR_HANDS] = funcall(cl,P_NR_HANDS);
+    ainfo[P_WC] = funcall(cl,P_WC);
 
     // Zweihaendige Waffe?
     if ( ainfo[P_NR_HANDS]==2
@@ -705,7 +705,7 @@ public void Attack(object enemy)
         && member(res,SI_SKILLDAMAGE) )
     {
       // Nur den neuen Schadenswert uebernehmen.
-      ainfo[SI_SKILLDAMAGE]=((int)(res[SI_SKILLDAMAGE]));
+      ainfo[SI_SKILLDAMAGE]=res[SI_SKILLDAMAGE];
     }
   }
   else // Keine Waffe gezueckt
@@ -713,18 +713,18 @@ public void Attack(object enemy)
     /* Check if there is a magical attack */
     if ( mappingp(res=UseSkill(SK_MAGIC_ATTACK,([SI_ENEMY:enemy]))) )
     {
-      ainfo[SI_SKILLDAMAGE]=(int)res[SI_SKILLDAMAGE];
+      ainfo[SI_SKILLDAMAGE]=res[SI_SKILLDAMAGE];
       ainfo[SI_SKILLDAMAGE_TYPE]=res[SI_SKILLDAMAGE_TYPE];
 
       if ( stringp(res[SI_SKILLDAMAGE_MSG]) )
-        ainfo[SI_SKILLDAMAGE_MSG] = " mit "+(string)res[SI_SKILLDAMAGE_MSG];
+        ainfo[SI_SKILLDAMAGE_MSG] = " mit "+res[SI_SKILLDAMAGE_MSG];
       else
         ainfo[SI_SKILLDAMAGE_MSG] = " mit magischen Faehigkeiten";
 
       if ( stringp(res[SI_SKILLDAMAGE_MSG2]) )
-        ainfo[SI_SKILLDAMAGE_MSG2] = " mit "+(string)res[SI_SKILLDAMAGE_MSG2];
+        ainfo[SI_SKILLDAMAGE_MSG2] = " mit "+res[SI_SKILLDAMAGE_MSG2];
       else
-        ainfo[SI_SKILLDAMAGE_MSG2] = (string)ainfo[SI_SKILLDAMAGE_MSG];
+        ainfo[SI_SKILLDAMAGE_MSG2] = ainfo[SI_SKILLDAMAGE_MSG];
 
       if ( !(ainfo[P_WEAPON_TYPE]=res[P_WEAPON_TYPE]) )
         ainfo[P_WEAPON_TYPE]=WT_MAGIC;
@@ -742,13 +742,13 @@ public void Attack(object enemy)
       if ( !pointerp(res=QueryProp(P_HANDS)) || (sizeof(res)<2) )
         return;
 
-      ainfo[SI_SKILLDAMAGE] = (( 2*random(((int)res[1])+1)
+      ainfo[SI_SKILLDAMAGE] = (( 2*random(res[1]+1)
                               + 10*(QueryAttribute(A_STR)) )/3);
       ainfo[SI_SKILLDAMAGE_TYPE] = res[2];
       ainfo[SI_SKILLDAMAGE_MSG] = ainfo[SI_SKILLDAMAGE_MSG2]
-                                = ((string)res[0]);
+                                = res[0];
       ainfo[P_WEAPON_TYPE] = WT_HANDS;
-      ainfo[P_WC] = (int)res[1];
+      ainfo[P_WC] = res[1];
     }
   }  // besondere Faehigkeiten mit diesem Waffentyp?
   if ( mappingp(res=UseSkill(FIGHT(ainfo[P_WEAPON_TYPE]),
@@ -1224,13 +1224,13 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
     spell[EINFO_DEFEND][DEFEND_ARMOURS]=m_allocate(i,2);
     foreach(object armour : armours) {
       if ( objectp(armour) ) {
-        aty=(string)armour->QueryProp(P_ARMOUR_TYPE);
+        aty=armour->QueryProp(P_ARMOUR_TYPE);
 
         if ( member(spell[SP_REDUCE_ARMOUR],aty)
             && intp(res2=spell[SP_REDUCE_ARMOUR][aty]) && (res2>=0) )
           dam -= (res2*armour->QueryDefend(dam_type, spell, enemy))/100;
         else
-          dam -= (int)(armour->QueryDefend(dam_type, spell, enemy));
+          dam -= armour->QueryDefend(dam_type, spell, enemy);
         // Schaden NACH DefendFunc vermerken. 
         // Schutzwirkung VOR DefendFunc (DEF_ARMOUR_PROT) vermerkt
         // das QueryDefend() selber.
@@ -1252,7 +1252,7 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
                                SI_SKILLDAMAGE_TYPE : dam_type,
                                SI_SPELL            : spell     ]))) )
   {
-    dam=(int)res[SI_SKILLDAMAGE];
+    dam=res[SI_SKILLDAMAGE];
 
     if ( pointerp(res[SI_SKILLDAMAGE_TYPE]) )
         dam_type=res[SI_SKILLDAMAGE_TYPE];
@@ -1861,10 +1861,10 @@ static int _query_total_wc()
   int   totwc;
 
   if ( objectp(res=QueryProp(P_WEAPON)) )
-    totwc = ((int)(res->QueryProp(P_WC)));
+    totwc = res->QueryProp(P_WC);
   else if ( pointerp(res=QueryProp(P_HANDS)) && sizeof(res)>1
            && intp(res[1]) )
-    totwc=((int)res[1]);
+    totwc=res[1];
   else
     totwc=30;
 
@@ -1884,7 +1884,7 @@ static int _query_total_ac() {
   }
 
   foreach(object armour: armours)
-    totac += ((int)armour->QueryProp(P_AC));
+    totac += armour->QueryProp(P_AC);
 
   if ( objectp(parry) )
     totac += parry->QueryProp(P_AC);
@@ -2288,7 +2288,7 @@ public int Pacify(object caster) {
   string gilde = caster->QueryProp(P_GUILD) || "ANY";
 
   // ggf. P_PEACE_HISTORY initialisieren
-  mixed ph = (mixed)QueryProp(P_PEACE_HISTORY);
+  <int|mapping>* ph = QueryProp(P_PEACE_HISTORY);
   if (!pointerp(ph))
     SetProp(P_PEACE_HISTORY, ph=({time(), ([]) }) );
   
