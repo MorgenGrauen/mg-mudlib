@@ -8,6 +8,7 @@
 #pragma combine_strings
 
 #include <www.h>
+#include <news.h>
 
 #define DBG(x)  tell_object(find_player("hate"), sprintf("DBG: %O\n", x))
 
@@ -127,6 +128,9 @@ string ArticleList(string group)
   }
   t = m_allocate(0,4);
   for (i = sizeof(list)-1, ret = ""; i >= 0; i--)
+  {
+    list[i][M_TITLE] = to_text(to_bytes(list[i][M_TITLE],"ASCII//TRANSLIT"),
+                               "ASCII");
     if(!thread(list[i], i, t) || expired(list, i))
     {
       int ttmp;
@@ -144,7 +148,7 @@ string ArticleList(string group)
         +dtime(to_int(t[tid, 3]))[17..]+")" : ""),
             group, to_string(i)+":"+t[tid, 3])) + ret;
     }
-
+  }
   return "<H2>Gruppe: "+group+"</H2>"
     +"<H3>["+sizeof(list)+" Artikel, "
     +"letzte &Auml;nderung "+dtime(NEWSD->GetNewsTime(group))+"]</H3>"
@@ -166,8 +170,10 @@ private varargs string Message(string group, mixed article)
   if (pointerp(tmp) && (article >= sizeof(tmp)))
       return("Artikel nicht gefunden, soviele Artikel hat diese Rubrik "
 	  "nicht!\n");
-
   text = tmp[article];
+  text[M_TITLE] = to_text(to_bytes(text[M_TITLE], "ASCII//TRANSLIT"),"ASCII");
+  text[M_MESSAGE] = to_text(to_bytes(text[M_MESSAGE], "ASCII//TRANSLIT"),
+                            "ASCII");
 
   t = m_allocate(0,4);
   for(i = sizeof(tmp)-1; i > article; i--)
