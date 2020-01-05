@@ -89,9 +89,10 @@ private void check_player(string pl, mixed extra)
   object pldata = extra[3];
   if (!pldata)
   {
-    pldata=clone_object("/obj/playerdata");
+    pldata=clone_object("/secure/playerdata");
     extra[3]=pldata;
   }
+  //ZDEBUG(sprintf("check %s...",pl));
   // Letzte Loginzeit ermitteln, wenn laenger als 90 Tage her und nicht
   // eingeloggt, wird der Spieler uebersprungen.
   // Der playerdata hat als UID unsere eigene, weil wir ihn geclont haben.
@@ -134,6 +135,7 @@ private void check_player(string pl, mixed extra)
     pnstat += ([ count : ({ pl }) ]);
   else
     pnstat[count] = ({ pl })+pnstat[count];
+  //ZDEBUG(sprintf("done\n"));
 }
 
 // Mit allen Spielern fertig, aufraeumen.
