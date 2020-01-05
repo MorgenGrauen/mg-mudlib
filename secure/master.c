@@ -529,12 +529,16 @@ protected mixed give_uid_to_object(string datei, object po)
   // Keine euid, kein Laden ...
   if (!(pouid=geteuid(po))) return 1; // Disallow if no euid in po
 
-  // Root generiert keine Root-Objekte ;-)
-  // Nur UID setzen
+  // Root soll keine Root-Objekte via den BACKBONEID-Mechanismus weiter
+  // unten generieren.
+  // Ausserdem nur UID setzen, keine eUID.
   if (pouid==ROOTID)
     return ({creator,NOBODY}); // root does not create root objects!
 
-  // EUID mitsetzen, wenn PO==creator oder creator==BACKBONEID
+  // EUID mitsetzen, wenn PO und creator dieselbe UID sind.
+  // Wenn creator die BACKBONEID ist (im allg. liegt das Objekt dann in
+  // LIBOBJDIR), bekommt das Objekt nicht die BACKBONEID, sondern die UID des
+  // Erzeguers. Auch hier wird die eUID mitgesetzt.
   if (creator==pouid || creator==BACKBONEID)
     return pouid;
 
