@@ -95,8 +95,6 @@ private void check_player(string pl, mixed extra)
   //ZDEBUG(sprintf("check %s...",pl));
   // Letzte Loginzeit ermitteln, wenn laenger als 90 Tage her und nicht
   // eingeloggt, wird der Spieler uebersprungen.
-  // Der playerdata hat als UID unsere eigene, weil wir ihn geclont haben.
-  // Damit darf er alle Spielersavefiles lesen...
   pldata->ReleasePlayer();
   pldata->LoadPlayer(pl);
   // Testspieler ausnehmen, Spieler, die 90 Tage nicht da waren.
