@@ -347,8 +347,18 @@ varargs int liste(string arg)
 {
   if (!this_player())
     return 0;
+  int geloest_filter;
+  switch(arg)
+  {
+    case "geloest":
+      geloest_filter = 1;
+      break;
+    case "ungeloest":
+      geloest_filter = 2;
+      break;
+  }
 
-  string str = QM->liste(this_player());
+  string str = QM->liste(this_player(), geloest_filter);
 
   this_player()->More( str, 0 );
   return 1;

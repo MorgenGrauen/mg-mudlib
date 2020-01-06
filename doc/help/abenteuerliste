@@ -4,8 +4,12 @@ Abenteuerliste
  Die Liste der spielbaren Abenteuer haengt in jeder Gilde im MorgenGrauen aus.
  Sie ist mit dem Kommando "liste" abrufbar.
 
+ Will man nur die ungeloesten Quests anzeigen lassen, geht dies mit dem
+ Kommando "liste ungeloest", die Liste der geloesten Quests entsprechend
+ mit "liste geloest".
+
  Die in der Liste verwendeten Abkuerzungen werden im Folgenden erlaeutert:
- 
+
  AP       = Fuer die Quest vergebene Abenteuerpunkte
  Klasse   = Subjektive Einstufung innerhalb der Gruppe bzgl. Arbeitsaufwand,
             Dauer oder Gefahren
@@ -30,5 +34,5 @@ Abenteuerliste
  SIEHE AUCH:
     abenteuer, stufen, stufenpunkte, schlafe, kampf, reset
 
-26.05.2016, Zesstra
+ 06.01.2020, Zesstra
 

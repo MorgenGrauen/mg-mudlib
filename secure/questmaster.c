@@ -434,7 +434,10 @@ static int compare (mixed *i, mixed *j) {
     return i[4] > j[4];
 }
 
-varargs string liste(mixed pl) {
+#define FILTER_GELOEST   1
+#define FILTER_UNGELOEST 2
+varargs string liste(mixed pl, int geloest_filter)
+{
   int qgroups, i, j, qrfw;
   mixed *qlists, *qgrouped, *qtmp;
   string str;
@@ -448,7 +451,7 @@ varargs string liste(mixed pl) {
   if(!objectp(pl))
     return "Ohne Spielernamen/Spielerobjekt gibt es auch keine Liste.\n";
 
-  if ( ((string)pl->QueryProp(P_TTY)) == "ansi")
+  if ( (pl->QueryProp(P_TTY)) == "ansi")
   {
       ja = ANSI_GREEN + "ja" + ANSI_NORMAL;
       nein = ANSI_RED + "nein" + ANSI_NORMAL;
@@ -474,20 +477,30 @@ varargs string liste(mixed pl) {
   qgrouped = QueryGroupedKeys();
 
   for (i=sizeof(qgrouped)-1;i>=0; i--)
-    for (j=sizeof(qgrouped[i])-1;j>=0; j--) {
+    for (j=sizeof(qgrouped[i])-1;j>=0; j--)
+    {
       qtmp = QueryQuest(qgrouped[i][j]);
-      qlists[i] += ({ ({
-        qgrouped[i][j],
-        qtmp[Q_QP],
-        QCLASS_STARS(qtmp[Q_CLASS]),
-        capitalize(QATTR_STRINGS[qtmp[Q_ATTR]]),
-        qtmp[Q_DIFF],
-        (qtmp[Q_AVERAGE][1]>10 /*&& IS_ARCH(this_player())*/
-                  ? to_string(to_int(qtmp[Q_AVERAGE][0]))
-                  : "-"),
-        capitalize(qtmp[Q_WIZ]),
-        (int)pl->QueryQuest(qgrouped[i][j]) == OK ? ja : nein
-      }) });
+      int geloest_status = pl->QueryQuest(qgrouped[i][j]);
+      // Quest ausgeben, wenn "kein Filter" gegeben oder Quest geloest und
+      // Filter "geloest" oder Quest ungeloest und Filter "ungeloest".
+      if ( !(geloest_filter & (FILTER_GELOEST|FILTER_UNGELOEST))
+          || ((geloest_filter & FILTER_GELOEST) && geloest_status == OK)
+          || ((geloest_filter & FILTER_UNGELOEST) && geloest_status != OK)
+         )
+      {
+        qlists[i] += ({ ({
+          qgrouped[i][j],
+          qtmp[Q_QP],
+          QCLASS_STARS(qtmp[Q_CLASS]),
+          capitalize(QATTR_STRINGS[qtmp[Q_ATTR]]),
+          qtmp[Q_DIFF],
+          (qtmp[Q_AVERAGE][1]>10
+                    ? to_string(to_int(qtmp[Q_AVERAGE][0]))
+                    : "-"),
+          capitalize(qtmp[Q_WIZ]),
+          geloest_status == OK ? ja : nein
+        }) });
+      }
     }
 
   for( i=0; i<qgroups; i++ )
