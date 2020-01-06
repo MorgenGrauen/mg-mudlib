@@ -343,22 +343,12 @@ int advance(string arg)
 }
 
 // Spielerkommando fuer Abenteurerliste
-varargs int liste(mixed pl)
+varargs int liste(string arg)
 {
-  string str; 
-  if (!this_player()) return 0;
+  if (!this_player())
+    return 0;
 
-  if(!objectp(pl))
-    if(stringp(pl))
-      pl=find_player(pl)||find_netdead(pl);
-  if(!objectp(pl))
-    pl=PL;
-  if (pl != this_player()) {
-    write ("Du kannst Dir nur Deine eigenen Abenteuer ansehen.\n");
-    return 1;
-  }
-
-  str = QM->liste(pl);
+  string str = QM->liste(this_player());
 
   this_player()->More( str, 0 );
   return 1;
