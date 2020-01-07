@@ -656,11 +656,12 @@ private int grep_file(mixed filedata, string rexpr, int flags)
     else
       result = ( (sizeof(fullname) ? fullname + "\n" : "")
                 + implode(result,"\n") + "\n");
-  }
 
-  if (flags&GREP_F)
-    return write_file("/players/"+getuid()+"/grep.out",result);
-  write(result);
+    // Ergebnis ausgeben in File oder an Magier
+    if (flags&GREP_F)
+      return write_file("/players/"+getuid()+"/grep.out",result);
+    write(result);
+  }
   return RET_OK;
 }
 
