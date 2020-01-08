@@ -6,7 +6,7 @@ inherit "/std/thing";
 #pragma strict_types,rtt_checks
 
 object tied_to_ob;
-string tied_name;
+int|string tied_name;
 
 void create(){
   ::create();
@@ -127,7 +127,7 @@ int tie(string str)
    _notify_fail( "Soetwas findest Du hier nicht.\n" );
    if (!ob) return 0;
 
-   if (!(tied_name=(string)call_other(ob, "tie", t2)))
+   if (!(tied_name=call_other(ob, "tie", t2)))
    {
     if(ob->QueryProp(P_INVIS)) return 0;
     
