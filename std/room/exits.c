@@ -208,7 +208,8 @@ void RemoveSpecialExit(string|string* cmd)
 
 varargs string GetExits( object viewer ) 
 {
-    string *indices, *hidden;
+    string *indices;
+    int|string* hidden;
     string exits;
 
     if ( QueryProp(P_DOOR_INFOS) )

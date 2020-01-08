@@ -285,15 +285,15 @@ static int _query_fuel()
 
 static string _query_lightdesc()
 {
-  string *tmp;
-  int n,i;
+  string|string* l_desc = Query(P_LIGHTDESC);
+  if (!pointerp(l_desc))
+    return (string)l_desc;
   
-  tmp=Query(P_LIGHTDESC);
-  if (!pointerp(tmp)) return (string)tmp;
-  n=sizeof(tmp);
-  i=n*_query_fuel()/max_fuel;
-  if (i>=n) i=n-1;
-  return tmp[i];
+  int n = sizeof(l_desc);
+  int i = n * _query_fuel() / max_fuel;
+  if (i>=n)
+    i = n-1;
+  return l_desc[i];
 }
 
 static int _query_light()

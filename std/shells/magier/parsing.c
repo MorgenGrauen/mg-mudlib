@@ -296,10 +296,13 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
 
   if ((mode==MODE_LSA||mode==MODE_LSB))
   {
-    string *vrooms;
     object vcompiler =
       find_object(implode(patharray[0..<2],"/")+"/virtual_compiler");
-    if (vcompiler && pointerp(vrooms=(mixed *)vcompiler->QueryObjects()))
+
+    object *vrooms = ({});
+    if (vcompiler)
+      vrooms = vcompiler->QueryObjects();
+    
     map(vrooms,#'_vc_map,&data);
   }
   mixed *files=({});
