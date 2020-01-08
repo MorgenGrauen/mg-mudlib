@@ -967,8 +967,9 @@ SoulComm(string str, string _verb)  {
       Return("Wen willst Du denn erschrecken?\n");
     out_sel="Mit einem lauten BUH! erschreckst Du @@wen@@"
       +(adverb ? "@@adverb@@." : " fuerchterlich.");
-    out_vic="BUH! Du zuckst vor Schreck zusammen. Muss dieser Geist von "
-      +"@@gname@@ Dich auch@@adverb@@ erschrecken.";
+    out_vic="BUH! Du zuckst vor Schreck zusammen. @@gname@@ hat Dich"+
+      (adverb ?  "@@adverb@@" : " fuerchterlich")+" erschreckt und lacht "
+      "jetzt hohl ueber Dich.";
     out_oth="BUH! @@gname@@ erschreckt @@wen@@"
       +(adverb ? "@@adverb@@." : " fuerchterlich.");
     return FeelIt();
