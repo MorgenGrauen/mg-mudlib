@@ -11,7 +11,7 @@ private int secure()
 				 getuid(this_interactive()) == "wurzel"));
 }
 
-create()
+protected void create()
 {
   if (!clonep(this_object())) return;
   ::create();
