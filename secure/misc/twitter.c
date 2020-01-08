@@ -36,8 +36,10 @@ mapping registered = ([
   "amaryllis": "ama"
 ]);
 
+// Erlaubt sind EM+ und ausgewaehlte weitere Personen
 int allowed() {
-	return IS_ARCH(this_player()) || getuid(this_player())=="gloinson";
+	return ARCH_SECURITY
+         || getuid(this_interactive())=="gloinson";
 }
 
 string sig( object pl ) {
