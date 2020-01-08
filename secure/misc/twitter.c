@@ -35,7 +35,7 @@ mapping registered = ([
 	"miril": "mi",
 	"gloinson": "gl",
   "amaryllis": "ama",
-  "zaphob": "za",
+  "zaphob": "zap",
 ]);
 
 // Erlaubt sind EM+ und ausgewaehlte weitere Personen
