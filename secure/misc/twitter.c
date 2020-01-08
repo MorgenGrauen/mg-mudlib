@@ -35,6 +35,7 @@ mapping registered = ([
 	"miril": "mi",
 	"gloinson": "gl",
   "amaryllis": "ama",
+  "zaphob": "za",
 ]);
 
 // Erlaubt sind EM+ und ausgewaehlte weitere Personen
@@ -44,7 +45,7 @@ mapping registered = ([
 int allowed() {
 	return ARCH_SECURITY
          || ( member(registered, getuid(this_interactive()))
-              && secure_level() >= (query_wiz_level(geteuid(this_interactive)))
+              && secure_level() >= (query_wiz_level(geteuid(this_interactive())))
              ) ;
 }
 
