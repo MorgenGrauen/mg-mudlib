@@ -5,7 +5,7 @@ FUNKTION
 --------
 
   varargs int AddSpell(int rate, int damage,
-    string|<int|spell>* TextForEnemy, string|<int|string>* TextForOthers,
+    string|<int|string>* TextForEnemy, string|<int|string>* TextForOthers,
     string|string* dam_type, string|closure func, int|mapping spellarg)
 
 DEFINIERT IN
@@ -22,13 +22,13 @@ ARGUMENTE
   damage        - Der Schadenswert fuer Defend(),
                   muss > 0 sein
 
-  TextForEnemy  - Text, den der Feind erhalten soll
+  TextForEnemy  - Text, den der Feind erhalten soll.
                   String <text> oder
                   Array der Form ({<text>,<messagetype>})
                   (Siehe ReceiveMsg())
 
-  TextForOthers - Text, den andere im Raum erhalten sollen
-                  String <text> oder
+  TextForOthers - Text, den andere im Raum erhalten sollen.
+                  String <text> ode
                   Array der Form ({<text>,<messagetype>})
                   (Siehe ReceiveMsg())
 
@@ -37,12 +37,13 @@ ARGUMENTE
                   fuer physikalische Angriffe)
 
   func          - Funktionsname oder Closure, die nach Anwendung
-                  aufgerufen werden soll
+                  aufgerufen werden soll.
                   (Optional, bekommt als Argumente object enemy, 
                   int real_damage, string* dam_type)
 
   sinfo         - Skillinfomapping, muss SI_SPELL mit den SP_* fuer
-                  den Aufruf von Defend() enthalten
+                  den Aufruf von Defend() enthalten.
+                  Hierfuer muss <newskills.h> includiert werden.
                   Default ist ([SI_SPELL: ([SP_PHYSICAL_ATTACK: 0]),
                   SI_MAGIC_TYPE: ({ MT_ANGRIFF }) ])
 

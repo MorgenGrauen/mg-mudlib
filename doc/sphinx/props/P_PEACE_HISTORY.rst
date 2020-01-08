@@ -54,7 +54,7 @@ SIEHE AUCH
 ----------
 ::
 
-     P_PEACE_ACCEPT
+     P_ACCEPT_PEACE
      QueryPacify()
      /std/living/combat.c
 
