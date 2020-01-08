@@ -86,7 +86,7 @@ static int _clone(string cmdline)
                     "passiert...\n",Name(WER,1)),
             ({ this_object()}));
   destruct(ob);
-  printf("Clone: %s: Objekt konnte nicht bewegt werden.",args[0]);
+  printf("Clone: %s: Objekt konnte nicht bewegt werden.\n",args[0]);
   return 1;
 }
 
