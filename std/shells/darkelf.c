@@ -208,12 +208,14 @@ int StdSkill_Nightvision(object me, string sname, mixed sinfo)
 
 varargs int CannotSee(int silent)
 {
-  string is_blind;
+  string|int is_blind = QueryProp(P_BLIND);
 
-  if ( is_blind = QueryProp( P_BLIND ) ) {
+  if ( is_blind  ) {
      if (!silent) {
-       if (stringp(is_blind)) write(is_blind);
-       else write("Du bist blind!\n");
+       if (stringp(is_blind))
+         write(is_blind);
+       else
+         write("Du bist blind!\n");
      }
      return 1;
   }
