@@ -44,7 +44,8 @@ mapping registered = ([
 // der Interactive.
 int allowed() {
 	return ARCH_SECURITY
-         || ( member(registered, getuid(this_interactive()))
+         || ( this_interactive()
+              && member(registered, getuid(this_interactive()))
               && secure_level() >= (query_wiz_level(geteuid(this_interactive())))
              ) ;
 }
