@@ -265,7 +265,7 @@ static string _filter_addr( string addr )
 public string *DeliverMail( mixed msg, int expa )
 {
     string sender, *recipients, *recok, t, *tmp;
-    mixed *newmsg;
+    <string|string*>* newmsg;
     int i;
 #ifdef INTERNET_MAIL_ENABLED
     int ext;
