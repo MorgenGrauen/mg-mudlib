@@ -80,24 +80,24 @@ int QueryLEPForPlayer(object pl)
   ret = 100;
 
   // Beitrag A: Stupse von NPC-Erstkills
-  ret += (int)SCOREMASTER->QueryKillPoints(pl);
+  ret += ({int})SCOREMASTER->QueryKillPoints(pl);
 
   DEBUG("Nach KP: ret = %d\n", ret);
 
   // Beitrag B: Stupse von geloesten Miniquests
-  ret += (int)QM->QueryMiniQuestPoints(pl);
+  ret += ({int})QM->QueryMiniQuestPoints(pl);
 
   DEBUG("Nach MQP: ret = %d\n", ret);
 
   // Beitrag C: Questpunkte
   //  werden 1:1 uebernommen;
-  ret += (int)pl->QueryProp(P_QP);
+  ret += ({int})pl->QueryProp(P_QP);
 
   DEBUG("Nach QP: ret = %d\n", ret);
 
   // Beitrag D: Erfahrungspunkte
   //  Stupse = XPs ^ 0.32
-  val = (int)pl->QueryProp(P_XP);
+  val = ({int})pl->QueryProp(P_XP);
 
   if (val<1) l=0;
   else l=to_int(exp(log(to_float(val))*0.32));
@@ -109,19 +109,19 @@ int QueryLEPForPlayer(object pl)
   // Beitrag E: Zaubertraenke
   //  Gefundene Traenke geben 5 LEP
   //  Die Heiltraenke geben zusaetzlich 10+20+30+40 LEP
-  i = 80 - (val = sizeof((int *)pl->QueryProp(P_POTIONROOMS)));
+  i = 80 - (val = sizeof(({int *})pl->QueryProp(P_POTIONROOMS)));
 
   ret += 5*i + ([ 0: 100, 1: 60, 2: 30, 3: 10])[val];
 
   // Beitrag F: Forscherpunkte
   //  Pro FP gibt es 6 Stufenpunkte
-  ret += 6 * (int)EPMASTER->QueryExplorationPoints(pl);
+  ret += 6 * ({int})EPMASTER->QueryExplorationPoints(pl);
 
   DEBUG("Nach FP: ret = %d\n", ret);
 
   // Beitrag G: Gildeneinstufung
   //  Maximale Gildeneinstufung (10000) entspricht vier Leveln
-  ret += ((int)pl->QueryProp(P_GUILD_RATING))/25;
+  ret += (({int})pl->QueryProp(P_GUILD_RATING))/25;
 
   DEBUG("Nach GR: ret = %d\n", ret);
 
@@ -193,12 +193,12 @@ string QueryForschung()
   int max, my, avg;
   string ret;
 
-  if ((my=(int)EPMASTER->QueryExplorationPoints(getuid(previous_object()))) < MIN_EP)
+  if ((my=({int})EPMASTER->QueryExplorationPoints(getuid(previous_object()))) < MIN_EP)
     return "Du kennst Dich im "MUDNAME" so gut wie gar nicht aus.\n";
 
   my *= 100;
-  max = my/(int)EPMASTER->QueryMaxEP();
-  avg = my/(int)EPMASTER->QueryAverage();
+  max = my/({int})EPMASTER->QueryMaxEP();
+  avg = my/({int})EPMASTER->QueryAverage();
 
   ret = "Verglichen mit Deinen Mitspielern, kennst Du Dich im "MUDNAME" ";
   switch(avg) {
@@ -308,12 +308,12 @@ nomask mixed QueryWizardRequirements(object player)
   DEBUG("Abenteuerpunkte: %d ("+REQ_QP+")\n", player->QueryProp(P_QP));
   if (player->QueryProp(P_QP) < REQ_QP) {
     s += sprintf(" * Dir fehlen noch mindestens %d Abenteuerpunkte.\n", 
-		 REQ_QP - (int)player->QueryProp(P_QP));
+		 REQ_QP - ({int})player->QueryProp(P_QP));
     i--;
   }
 
   // Forscherpunkte
-  z = 6 * (int)EPMASTER->QueryExplorationPoints(player);
+  z = 6 * ({int})EPMASTER->QueryExplorationPoints(player);
   DEBUG("Forscherpunkte: %d ("+REQ_EP+")\n", z);
   if (z < REQ_EP) {
     s += sprintf(" * Du kennst Dich im "MUDNAME" noch nicht genug aus, "
@@ -323,7 +323,7 @@ nomask mixed QueryWizardRequirements(object player)
   }
 
   // Zaubertraenke
-  z = 80 - (val = sizeof((int*)player->QueryProp(P_POTIONROOMS)));
+  z = 80 - (val = sizeof(({int*})player->QueryProp(P_POTIONROOMS)));
   z = z*5 + ([0:100, 1:60, 2:30, 3:10])[val];
   DEBUG("Zaubertraenke: %d ("+REQ_P+")\n", z);
   if (z < REQ_P) {
@@ -333,7 +333,7 @@ nomask mixed QueryWizardRequirements(object player)
   }
 
   // Erstkills
-  z = (int)SCOREMASTER->QueryKillPoints(player);
+  z = ({int})SCOREMASTER->QueryKillPoints(player);
   DEBUG("Erstkills: %d ("+REQ_K+")\n", z);
   if (z < REQ_K) {
         s += sprintf(" * Du hast noch nicht genuegend wuerdige Gegner erlegt, genau "
@@ -346,7 +346,7 @@ nomask mixed QueryWizardRequirements(object player)
 
   // Restliche Stufenpunkte 
   DEBUG("Stufenpunkte: %d ("+REQ_LEP+")\n", player->QueryProp(P_LEP));
-  if ((int)(player->QueryProp(P_LEP)) < REQ_LEP) {
+  if (({int})(player->QueryProp(P_LEP)) < REQ_LEP) {
     s += sprintf(" * Du musst mindestens %d Stufenpunkte, entspricht Stufe %d, "
         "erreichen.\n", REQ_LEP, minlevel);
     i--;
@@ -354,7 +354,7 @@ nomask mixed QueryWizardRequirements(object player)
   
   // Demnach mindestens REQ/100-Level 
   DEBUG("Level: %d ("+REQ_LEP/100+")\n", player->QueryProp(P_LEVEL));
-  if ((int)player->QueryProp(P_LEVEL) < minlevel) {
+  if (({int})player->QueryProp(P_LEVEL) < minlevel) {
     s += sprintf(" * Du musst mindestens Stufe %d erreichen.\n", minlevel);
     i--;
   }

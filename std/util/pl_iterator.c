@@ -45,8 +45,9 @@ private void check_all_player(mapping allplayer, closure check_cl,
 protected int start_player_check(closure check_cl, closure finish_cl, int res,
                              varargs mixed extra)
 {
+  // Reservierte Ticks, pausieren, wenn weniger.
   res ||= 1250000;
-  mapping allplayer=(mapping)master()->get_all_players();
+  mapping allplayer=master()->get_all_players();
   call_out(#'check_all_player,2, allplayer, check_cl, finish_cl, res, extra...);
   return 1;
 }

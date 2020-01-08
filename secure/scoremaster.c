@@ -226,7 +226,7 @@ void reset()
   i=sizeof(whop=m_indices(to_change))-1;
   while (i>=0 && get_eval_cost()>100000)
   {
-    ek = (string)(MASTER->query_ek(who=whop[i]) || "");
+    ek = ({string})(MASTER->query_ek(who=whop[i]) || "");
     for (j=sizeof(what=to_change[who])-1;j>=0;j--) {
       if ((value=what[j])>0) {
     // Vergabestatistik hochzaehlen.
@@ -694,7 +694,7 @@ public string QueryAllKills(string pl)
 // filtert alle Eintraege aus dem Bitstring heraus, die fuer
 // ausgetragene/inaktive EKs stehen.
 public string QueryKills(string pl) {
-  string res = (string)MASTER->query_ek(pl) || "";
+  string res = ({string})MASTER->query_ek(pl) || "";
   // vergleichen mit den aktiven EKs aus active_eks und nur jene Bits
   // zurueckliefern, die in beiden Strings gesetzt sind.
   return and_bits(res,active_eks);
@@ -931,7 +931,7 @@ public mapping getFreeEKsForPlayer(object player)
       return ([]);
   }
   // alle EKs, die der Spieler hat
-  string eks = (string)master()->query_ek(getuid(player));
+  string eks = ({string})master()->query_ek(getuid(player));
   // als Tips kommen alle in Frage, die er nicht hat, vor dem Invertieren muss
   // aber sichergestellt werden, dass eks min. so lang ist wie active_eks, da
   // die Invertierung ja z.B. nur EKs 0-1700 beruecksichtigt, wenn 1700 der
@@ -947,7 +947,7 @@ public mapping getFreeEKsForPlayer(object player)
   // jetzt invertieren
   string non_eks = invert_bits(eks);
   // jetzt vorhande EK-Tips ausfiltern. Im Prinzip gleiches Spiel wie oben.
-  string ektips = (string)master()->query_ektips(getuid(player));
+  string ektips = ({string})master()->query_ektips(getuid(player));
   // jetzt alle nicht als Tip vergebenen NPC ermitteln, vor dem Invertieren
   // wieder Laenge angleichen...
   ektips = invert_bits(clear_bit(set_bit(ektips, lb), lb));
@@ -1196,9 +1196,9 @@ public string *QueryTipObjects(mixed player) {
   if (!stringp(player))
     return 0;
 
-  string tipstr=(string)master()->query_ektips(player);
+  string tipstr = ({string})master()->query_ektips(player);
   // jetzt EK-Tips ausfiltern, die erledigt sind. Dazu EK-Liste holen...
-  string eks=(string)master()->query_ek(player);
+  string eks = ({string})master()->query_ek(player);
   // als Tips kommen alle in Frage, die er nicht hat, vor dem Invertieren muss
   // aber sichergestellt werden, dass eks min. so lang ist wie tipstr, da
   // die Invertierung ja z.B. nur EKs 0-1700 beruecksichtigt, wenn 1700 der
@@ -1250,7 +1250,7 @@ public status playerMayGetTip(object player)
   if(!player || !query_once_interactive(player))    
       return 0;
   
-  lvl=(int)player->QueryProp(P_LEVEL);
+  lvl = ({int})player->QueryProp(P_LEVEL);
   numElegible=0;
   i=sizeof(EKTIPS_LEVEL_LIMITS)-1;
 
@@ -1261,7 +1261,7 @@ public status playerMayGetTip(object player)
       if(lvl>=EKTIPS_LEVEL_LIMITS[i]) numElegible++;
   }
 
-  tips=(string)MASTER->query_ektips(getuid(player)) || "";
+  tips = ({string})MASTER->query_ektips(getuid(player)) || "";
   // inaktive EKs ausfiltern.
   tips = and_bits(tips, active_eks);
   // und Gesamtzahl an Tips zaehlen. Hier werden erledigte Tips explizit nicht
@@ -1290,7 +1290,7 @@ public string giveTipForPlayer(object player)
 
   tmp=m_indices(free);
 
-  ektip=(string)MASTER->query_ektips(pl) || "";
+  ektip = ({string})MASTER->query_ektips(pl) || "";
  
   foreach(int i: EKTIPS_MAX_RETRY) {
       index=random(sizeof(tmp));
@@ -1362,7 +1362,7 @@ private void check_player(string pl) {
   int changed, changed2; 
   
   // EKs pruefen
-  string eks=(string)master()->query_ek(pl) || "";
+  string eks = ({string})master()->query_ek(pl) || "";
   string *opfer=allocate( (sizeof(eks)*6)+1, "");
   int p=-1;
   while ((p=next_bit(eks,p)) != -1) {
@@ -1389,7 +1389,7 @@ private void check_player(string pl) {
     }
   }
   // und noch die Ek-Tips...
-  string ektips = (string)master()->query_ektips(pl) || "";
+  string ektips = ({string})master()->query_ektips(pl) || "";
   p = -1;
   while ((p=next_bit(ektips,p)) != -1) {
     if (!member(by_num, p)) {
@@ -1428,9 +1428,9 @@ public void check_all_player(mapping allplayer) {
 
   if (!mappingp(allplayer)) {
       foreach(string key: npcs) {
-  npcs[key,NPC_COUNT]=0;
+        npcs[key,NPC_COUNT]=0;
       }
-      allplayer=(mapping)master()->get_all_players();
+      allplayer = ({mapping})master()->get_all_players();
       rm(WERKILLTWEN);
       call_out(#'check_all_player,2,allplayer);
       return;

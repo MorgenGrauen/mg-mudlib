@@ -117,7 +117,8 @@ secure()
     return 1;
   }
   
-  catch(ar = (int)(PATH+"access_rights")->access_rights(geteuid(this_interactive()), "haus.h"));
+  catch(ar = ({int})(PATH+"access_rights")->access_rights(
+                      geteuid(this_interactive()), "haus.h"));
 
   // Erzmagier und alle mit Schreibrechten auf haus.h duerfen
   if ( (this_interactive() == this_player()) &&
@@ -188,7 +189,8 @@ check_exits(string owner, int max, int rem)
       printf("error loading %O!\n", hname);
       continue;
     }
-    foreach (string dir, string path : (mapping)(here->QueryProp(P_EXITS))) {
+    foreach (string dir, string path : ({mapping})(here->QueryProp(P_EXITS)))
+    {
       // betrachte alle Ausgaenge
       if (dir == "raus") {
         // Haustuer aus dem Hauptraum darf natuerlich rausfuehren

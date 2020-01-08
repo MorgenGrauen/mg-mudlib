@@ -86,7 +86,7 @@ static varargs int nedit(string exitfunc,string pretext) {
   bend = cur = len = sizeof(nedittext)-1;
   nexitfunc=exitfunc;
   flags = 0;
-  editor_used=(string)TP->query_real_name();
+  editor_used=({string})TP->query_real_name();
   if (pretext)
     get_edit_line("~z");
   else {
@@ -300,7 +300,7 @@ static int get_edit_line(string str) {
   {
     str=str[2..<2];
     if (str[0..0]==" ") str=str[1..<1];
-    if (!str || catch(err=file_size(str=(string)"/secure/master"->_get_path(str,getuid(TP)))) || err<0) {
+    if (!str || catch(err=file_size(str=({string})"/secure/master"->_get_path(str,getuid(TP)))) || err<0) {
       write("File nicht gefunden.\n");
       //nedit_prompt();
       input_to("get_edit_line", INPUT_PROMPT, nedit_prompt());

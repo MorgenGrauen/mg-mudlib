@@ -14,7 +14,7 @@
 #pragma warn_deprecated
 
 // 2014-Mai-10, Arathorn: Er soll ja weiterhin auf tm reagieren.
-inherit "std/npc/comm.c";
+inherit "/std/npc/comm.c";
 
 #include <config.h>
 #include <properties.h>
@@ -343,8 +343,8 @@ private void AnnounceNewPlayer(object pl) {
     return;
   }
 
-  if (!(int)pl->QueryGuest()) {
-  string plname = (string)pl->Name(WER);
+  if (!pl->QueryGuest()) {
+  string plname = ({string})pl->Name(WER);
     CHMASTER->send("Anfaenger", this_object(),
       sprintf("%s macht nun ebenfalls das Morgengrauen unsicher. "
               "Herzlich Willkommen %s!", plname, plname)
@@ -429,7 +429,7 @@ mixed _query_no_attack() {
   tell_room(environment(), "Merlin schimpft: Lass das!!!\n",({PL}));
   tell_room(environment(),sprintf(
         "Merlin gibt %s eine schallende Ohrfeige.\n",      
-        capitalize((string)this_player()->name(WEM))), ({this_player()}));
+        capitalize(({string})this_player()->name(WEM))), ({this_player()}));
   return("Merlin schimpft: Lass das!!!\n"
       "Merlin gibt Dir eine schallende Ohrfeige.\n");
 }
@@ -455,11 +455,11 @@ void shoutansw()
 
   if (!(env=environment()))
     return;
-  if (!(ti=this_interactive())||(int)ti->QueryProp(P_LEVEL)<19||ti->QueryProp(P_GHOST))
+  if (!(ti=this_interactive())||ti->QueryProp(P_LEVEL)<19||ti->QueryProp(P_GHOST))
     return;
   tell_object(ti,"Du spuerst einen sengenden Schmerz.\n");
-  ti->do_damage( ((int)ti->QueryProp(P_HP)) / 2 + 5);
-  if((int)ti->QueryProp(P_GHOST)) return;
+  ti->do_damage( ti->QueryProp(P_HP) / 2 + 5);
+  if(ti->QueryProp(P_GHOST)) return;
   ans="ich hab nicht die leiseste Idee, wo ich hier bin ...\n";
   path=old_explode(object_name(env),"/");
   if (path[0]=="d")
@@ -646,10 +646,10 @@ int QueryBedingungen(object pl,string was)
   if (IS_SEER(pl))
     return 1;
   
-  if ((int)LEPMASTER->QueryReadyForWiz(pl)==1)
+  if (LEPMASTER->QueryReadyForWiz(pl)==1)
     return 1;
 
-  s=(string)LEPMASTER->QueryReadyForWizText(pl); 
+  s=({string})LEPMASTER->QueryReadyForWizText(pl); 
 
   tell_object(pl, break_string("Merlin gruebelt ein wenig und teilt Dir "
                                "nach einigem Ueberlegen mit:\n\n", 78,0,1));
@@ -660,8 +660,9 @@ int QueryBedingungen(object pl,string was)
                                78, "Merlin teilt Dir mit: "));
 
   if (environment() == environment(pl))
-    say((string)pl->name(WER)
-        +" erfuellt noch nicht alle Anforderungen fuer den "+was+"status.\n",pl);
+    say(pl->name(WER)
+        +" erfuellt noch nicht alle Anforderungen fuer den "+was+
+        "status.\n",pl);
   
   return 0;
 }
@@ -743,15 +744,15 @@ static int create_wizard(mixed who, mixed promoter)
       Say("Nur ein Erzmagier kann "+who->name(WEN)+" zum \"richtigen\" Magier machen!\n");
       return 0;
     }
-    ret=(int)"secure/master"->advance_wizlevel(geteuid(who),21);
+    ret=({int})"secure/master"->advance_wizlevel(geteuid(who),21);
     if (ret<=0)
     {
       say("Merlin: error "+ret+"\n");
       write("Merlin: error "+ret+"\n");
     }
-    write("Merlin ruft: "+(string)who->name(WER)+" ist in den Kreis der Magier "+
+    write("Merlin ruft: "+who->name(WER)+" ist in den Kreis der Magier "+
               "aufgenommen worden!\n");
-    shout("Merlin ruft: "+(string)who->name(WER)+" ist in den Kreis der Magier "+
+    shout("Merlin ruft: "+who->name(WER)+" ist in den Kreis der Magier "+
               "aufgenommen worden!\n");
     "secure/master"->renew_player_object(who);
     return 1;
@@ -762,7 +763,7 @@ static int create_wizard(mixed who, mixed promoter)
   //
   if (IS_WIZARD(who))
   {
-    domains=(string*)"secure/master"->get_domain_homes(getuid(who));
+    domains=({string*})"secure/master"->get_domain_homes(getuid(who));
     if (!domains || !pointerp(domains) || !sizeof(domains))
     {
       Say(who->name(WER)+" gehoert noch keiner Region an und kann daher noch "+
@@ -771,7 +772,7 @@ static int create_wizard(mixed who, mixed promoter)
                 "an und komm\ndann wieder!\n");
       return 0;
     }
-    ret=(int)"secure/master"->advance_wizlevel(geteuid(who),25);
+    ret=({int})"secure/master"->advance_wizlevel(geteuid(who),25);
     if(ret>0)
     {
       shout(who->name(WER)+" arbeitet jetzt an einer Region mit!\n");
@@ -793,13 +794,13 @@ static int create_wizard(mixed who, mixed promoter)
       Say("Nur ein Erzmagier kann "+who->name(WEN)+" zum \"richtigen\" Magier machen!\n");
       return 0;
     }
-    ret=(int)"secure/master"->advance_wizlevel(geteuid(who),20);
+    ret=({int})"secure/master"->advance_wizlevel(geteuid(who),20);
     if (ret<=0)
     {
       say("Merlin: error "+ret+"\n");
       write("Merlin: error "+ret+"\n");
     }
-    string wizname = (string)who->query_real_name();
+    string wizname = ({string})who->query_real_name();
     "secure/master"->renew_player_object(who);
     // Fehlerteufel geben
     call_out(#'GibFehlerteufel,4,find_player(wizname));
@@ -823,7 +824,7 @@ static int create_wizard(mixed who, mixed promoter)
   // Er schlaegt fehl, wenn der Vertrag der Clone einer alten BP ist.
   if (!(vertrag=present_clone("/obj/vertrag",who)) ||
       object_name(blueprint(vertrag))!="/obj/vertrag" ||
-      !((int)vertrag->is_unterschrieben()) )
+      !(vertrag->is_unterschrieben()) )
   {
     Write("Du hast ja gar keinen unterschriebenen Vertrag bei Dir. Besorg Dir "+
               "einen Ver-\ntrag, unterschreibe ihn und komm dann wieder!\n");
@@ -841,11 +842,12 @@ static int create_wizard(mixed who, mixed promoter)
   }
   if (!QueryBedingungen(who,"Magier"))
     return 0;
-  ret=(int)"secure/master"->advance_wizlevel(geteuid(who),15);
+  ret=({int})"secure/master"->advance_wizlevel(geteuid(who),15);
   if (ret>0)
   {
     PostMagier(capitalize(getuid(who)),
-        capitalize(secure_euid()),(int)who->QueryProp(P_GENDER));
+               capitalize(secure_euid()),
+               who->QueryProp(P_GENDER));
     write_file("/log/SPONSOR",dtime(time())+": "+capitalize(getuid(promoter))+" macht "+
              who->name(WER)+" zum Learner.\n");
     write(who->name(WER)+" ist in den Kreis der Magier aufgenommen worden!\n");
@@ -913,8 +915,8 @@ void seer_sequenz3(object player, string plname)
   "secure/master"->renew_player_object(player);
   player = find_player(playername);
   text = sprintf(" ist jetzt ein%s Seher%s!\n",
-    (((int)player->QueryProp(P_GENDER))==2?"e":""),
-    (((int)player->QueryProp(P_GENDER))==2?"in":""));
+    ((player->QueryProp(P_GENDER))==2?"e":""),
+    ((player->QueryProp(P_GENDER))==2?"in":""));
   write("Merlin ruft: "+capitalize(playername)+text);
   shout("Merlin ruft: "+capitalize(playername)+text);
   PostSeher(capitalize(playername),(int)player->QueryProp(P_GENDER));
@@ -969,7 +971,7 @@ void seer_sequenz1(object player, string plname)
             break_string(sprintf("Das ist eine grosse Freude. %s hat sich "
      "tapfer durch das "MUDNAME" geschlagen und mittlerweile alle "
      "Anforderungen erfuellt, um %s zu werden.",                                  
-     plname, ((int)player->QueryProp(P_GENDER))==1?"Seher":"Seherin"),
+     plname, (player->QueryProp(P_GENDER))==1?"Seher":"Seherin"),
               78, "Merlin sagt: "));
 
   call_out("seer_sequenz2", 4, player, plname);
@@ -1046,7 +1048,7 @@ void wandern()
       return;
   }
   // Ausgaenge durchsuchen
-  mapping ex=(mapping)environment()->QueryProp(P_EXITS);
+  mapping ex=({mapping})environment()->QueryProp(P_EXITS);
   if (!mappingp(ex))
     return;
   mapping rooms = m_allocate(sizeof(ex));
@@ -1105,7 +1107,7 @@ string make_invlist(object viewer,object *inv)
   for (i = 0; i < sizeof(inv); i++)
   {
     string sh;
-    sh = (string)inv[i]->short();
+    sh = ({string})inv[i]->short();
     if (iswiz)
     {
       if (sh) sh = sh[0..<2] + " ["+object_name(inv[i])+"]\n";
@@ -1151,7 +1153,7 @@ int befoerdere(string str)
     printf("%s ist schon Stufe %d.\n",capitalize(wen),l);
         return 1;
   }
-  ret=(int)"secure/master"->advance_wizlevel(wen,stufe);
+  ret=({int})"secure/master"->advance_wizlevel(wen,stufe);
   if (ret<=0)
     printf("Errorcode %d\n",ret);
   else
@@ -1192,7 +1194,7 @@ int gehen(string str)
     return 0;
   }
 
-  str=(string)this_interactive()->_unparsed_args();
+  str=({string})this_interactive()->_unparsed_args();
   switch (query_verb())
   {
     case "gilde":
@@ -1207,7 +1209,7 @@ int gehen(string str)
   if (query_verb()!="merlin")
     return 0;
   delay=1;
-  mapping exits=(mapping)environment()->QueryProp(P_EXITS);
+  mapping exits=({mapping})environment()->QueryProp(P_EXITS);
   if (!str||str=="")
   {
     printf(environment()->int_short(ME,ME));
@@ -1265,7 +1267,7 @@ int goto(mixed dest)
     move(object_name(ob),0);
     return 1;
   }
-  path=(mixed)master()->make_path_absolute(dest);
+  path = ({string})master()->make_path_absolute(dest);
   ret=catch(load_object(path);publish);
   if (ret && file_size(path)<0)
   {

@@ -157,7 +157,7 @@ private void Load_NumKey()
   string *keys;
   int i;
 
-  if ( !(keys = (string*) QM->QueryAllKeys()) ) return;
+  if ( !(keys = ({string*}) QM->QueryAllKeys()) ) return;
   keys=sort_array(keys,#'>);//')
   for ( i = 0, num_key = ([]); i < sizeof(keys); i++ )
     num_key += ([(i+1)+"":keys[i]]);
@@ -200,39 +200,39 @@ void ReadNewQuest (string str)
 	name = str;
       counter++;
       write ( sprintf("Punkte (>0) [%d]:\n",
-		      (do_change?(int)savequest[0]:10)) ); 
+		      (do_change ? savequest[0] : 10)) ); 
       input_to ( "ReadNewQuest" );
       break;
     case QP:
       if((!str||!sizeof(str)))
 	if(do_change)
-	  qp = (int) savequest[Q_QP];
+	  qp = ({int})savequest[Q_QP];
 	else
 	  qp = 10;
       else
 	sscanf ( str, "%d", qp );
       counter++;
       write ( sprintf("Erfahrung (>=0) [%d]:\n",
-		      (do_change?(int)savequest[1]:qp*1000)));
+		      (do_change ? savequest[1] : qp*1000)));
       input_to ( "ReadNewQuest" );
       break;
     case XP: 
       if((!str||!sizeof(str)))
 	if(do_change)
-	  xp = (int) savequest[Q_XP];
+	  xp = ({int})savequest[Q_XP];
 	else
 	  xp = qp * 1000;
       else
 	sscanf ( str, "%d", xp );
       counter++;
       write ( sprintf("Filenamen file1[,file2,...]) %s:\n",
-		      (do_change?"["+implode((string *)savequest[2],",")+"]":
+		      (do_change?"["+implode(savequest[2],",")+"]":
 		       "")) );
       input_to ( "ReadNewQuest" );
       break;
     case ALLOW:
       if((!str||!sizeof(str)) && do_change)
-	allowed = (string *) savequest[Q_ALLOWED];
+	allowed = ({string *}) savequest[Q_ALLOWED];
       else
 	allowed = old_explode(implode(old_explode(str,".c"),""),",");
       counter++;
@@ -249,7 +249,7 @@ void ReadNewQuest (string str)
 	info = str;
       counter++;
       write ( sprintf("Stufe (-1 <=lev<=10) (-1 ist eine Seherquest) [%d]:\n",
-		      (do_change?(int)savequest[4]:0)) );
+		      (do_change ? savequest[4] : 0)) );
       input_to ( "ReadNewQuest" );
       break;
     case LEVEL:
@@ -261,40 +261,40 @@ void ReadNewQuest (string str)
 	sscanf ( str, "%d", level );
       counter++;
       write ( sprintf("Klasse ([012345]) [%d]:\n",
-		      (do_change?(int)savequest[5]:0)) ); 
+		      (do_change ? savequest[5] : 0)) ); 
       input_to ( "ReadNewQuest" );
       break;
     case CLASS:
       if((!str||!sizeof(str)))
 	if(do_change)
-	  need = (int) savequest[Q_CLASS];
+	  need = ({int})savequest[Q_CLASS];
 	else
 	  need = 0;
       else
 	sscanf ( str, "%d", need );
       counter++;
       write ( sprintf("Attribut [01234]\n(1=fleissig,2=heroisch,3=episch,4=legendaer) %s:\n",
-		      (do_change?"["+(string)savequest[9]+"]":"")) );
+		      (do_change?"["+savequest[9]+"]":"")) );
       input_to ( "ReadNewQuest" );
       break;
     case ATTR:
       if ((!str||!sizeof(str)))
 	if (do_change)
-	  group = (int) savequest[Q_ATTR];
+	  group = ({int})savequest[Q_ATTR];
 	else
 	  group = 0;
       else
 	sscanf (str, "%d", group);
       counter++;
       write ( sprintf("Magier %s:\n",
-		      (do_change?"["+(string)savequest[7]+"]":"")) );
+		      (do_change?"["+savequest[7]+"]":"")) );
       input_to ( "ReadNewQuest" );
     break;	
     case WIZ:
       if((!str||!sizeof(str)) && do_change)
-	wizard = (string) savequest[Q_WIZ];
+        wizard = ({string})savequest[Q_WIZ];
       else
-	wizard = str;
+        wizard = str;
       wizard = lower_case(wizard);
       counter++;
       write ( sprintf("Wartender Magier %s:\n",
@@ -303,9 +303,9 @@ void ReadNewQuest (string str)
       break;
     case SCNDWIZ:
       if ((!str||!sizeof(str)) && do_change)
-	scndwizard = (string) savequest[Q_SCNDWIZ];
+        scndwizard = ({string}) savequest[Q_SCNDWIZ];
       else
-	scndwizard = str;
+        scndwizard = str;
       scndwizard = lower_case(scndwizard);
       counter++;
       write ( "Eintragen (j/n)?\n" );
@@ -320,7 +320,7 @@ void ReadNewQuest (string str)
       active = 0;
       if ( do_change && changekey && sizeof(changekey) )
       {
-	oldquest = (mixed *) QM->QueryQuest ( changekey );
+        oldquest = ({mixed *}) QM->QueryQuest ( changekey );
 
 	if ( !pointerp ( oldquest ) || !sizeof ( oldquest ) )
 	{
@@ -328,7 +328,7 @@ void ReadNewQuest (string str)
 	  return;
 	}
 
-	errstat = (int) QM->RemoveQuest( changekey );
+	errstat = ({int}) QM->RemoveQuest( changekey );
 
 	do_change = 0;
 	changekey = "";
@@ -347,7 +347,7 @@ void ReadNewQuest (string str)
 
       // add new Quest deactivated by default and keep old active flag
       // if changing an existing entry
-      errstat= (int)QM->AddQuest(name,qp,xp,allowed,info,level,need,active,
+      errstat= ({int})QM->AddQuest(name,qp,xp,allowed,info,level,need,active,
 				 wizard, scndwizard, group);
 
       switch ( errstat )
@@ -387,7 +387,7 @@ int Remove_Quest ( string str )
   if ( !(newstr = num_key[str+""]) )
     newstr = str;
 
-  oldquest = (mixed *) QM->QueryQuest ( newstr );
+  oldquest = ({mixed *}) QM->QueryQuest ( newstr );
 
   if ( !pointerp ( oldquest ) || !sizeof ( oldquest ) )
   {
@@ -395,7 +395,7 @@ int Remove_Quest ( string str )
     return 1;
   }
 
-  errstat = (int) QM->RemoveQuest( newstr );
+  errstat = ({int}) QM->RemoveQuest( newstr );
 
   switch ( errstat )
   {
@@ -427,7 +427,7 @@ int Change_Quest ( string str )
   if ( !(newstr = num_key[str+""]) )
     newstr = str;
 
-  oldquest = (mixed *) QM->QueryQuest ( newstr );
+  oldquest = ({mixed *}) QM->QueryQuest ( newstr );
 
   if ( !pointerp( oldquest ) || !sizeof ( oldquest ) )
   {
@@ -472,11 +472,9 @@ int Restore_Quest ( string str )
   }
 
   errstat = 
-	(int)QM->AddQuest( savekey, (int) savequest[0], (int) savequest[1],
-			  (string *) savequest[2], (string) savequest[3],
-			  (int) savequest[4], (int) savequest[5],
-			  (string) savequest[6], (int) savequest[7],
-			  (string) savequest[8] );
+	  ({int})QM->AddQuest(savekey, savequest[0], savequest[1],
+			           savequest[2], savequest[3], savequest[4], savequest[5],
+			           savequest[6], savequest[7], savequest[8]);
 
   switch ( errstat )
   {
@@ -531,7 +529,7 @@ int Set_Quest ( string str )
     return 1;
   }
   
-  write(ERRNO_2_STRING("GQ",(int)ob->GiveQuest(newquest,"__silent__"))+"\n");
+  write(ERRNO_2_STRING("GQ",({int})ob->GiveQuest(newquest,"__silent__"))+"\n");
   if(created)
   {
     ob->save_me(0);
@@ -577,7 +575,7 @@ int Del_Quest ( string str )
     return 1;
   }
   
-  write(ERRNO_2_STRING("DQ",(int) ob->DeleteQuest ( newquest ))+"\n");
+  write(ERRNO_2_STRING("DQ",({int}) ob->DeleteQuest ( newquest ))+"\n");
   if(created)
   {
     ob->save_me(0);
@@ -606,7 +604,7 @@ int Query_Quest ( string str )
   if ( !(newstr = num_key[str+""]) )
 	newstr = str;
 
-  quest = (mixed *) QM->QueryQuest( newstr );
+  quest = ({mixed *}) QM->QueryQuest( newstr );
 
   if ( !pointerp( quest ) || !sizeof ( quest ) )
   {
@@ -640,14 +638,14 @@ int Query_Keys ( string str )
   mixed *quest;
   int i;
 
-  if ( !(keys = (string *) QM->QueryAllKeys()) )
+  if ( !(keys = ({string *}) QM->QueryAllKeys()) )
     return 1;
 
   write ( "\n" );
   keys=sort_array(keys,#'>);//')
   for ( i = 0; i < sizeof(keys); i++ )
   {
-    quest = (mixed *) QM->QueryQuest(keys[i]);
+    quest = ({mixed *}) QM->QueryQuest(keys[i]);
     if(quest[6])
       active="*";
     else
@@ -667,13 +665,13 @@ int Query_Quests ( string str )
   string *keys, rstr;
   int i;
 
-  if ( !(keys = (mixed *) QM->QueryAllKeys()) )
+  if ( !(keys = ({mixed *})QM->QueryAllKeys()) )
     return 1;
 
   keys=sort_array(keys,#'>);//')
   for ( i = 0, rstr = ""; i < sizeof(keys); i++ )
   {
-    quest = (mixed *) QM->QueryQuest(keys[i]);
+    quest = ({mixed *}) QM->QueryQuest(keys[i]);
       write ( "\nKey              : "+keys[i] );
   if(quest[Q_ACTIVE])
     write (" (aktiviert)\n");

@@ -38,7 +38,7 @@ void create()
   // Zeiger auf Cloneliste holen
   if (call_other(MEMORY,"HaveRights")) {
     // Objektpointer laden
-    objects = (mixed) call_other(MEMORY,"Load","objects");
+    objects = call_other(MEMORY,"Load","objects");
 
     // Hats geklappt?
     if (!mappingp(objects)) 
@@ -68,11 +68,11 @@ object compile_object(string name)
 
   if (name[<6..<3] == "haus" )
   {
-    ob = (object) (VERWALTER)->_LadeHaus(name[0..<7]);
+    ob = ({object})(VERWALTER)->_LadeHaus(name[0..<7]);
   }
   else if (name[<7..<4] == "raum" )
   {
-    ob = (object) (VERWALTER)->_LadeRaum(name[0..<8], to_int(name[<3..<3]));
+    ob = ({object})(VERWALTER)->_LadeRaum(name[0..<8], to_int(name[<3..<3]));
   } 
   else 
   {
@@ -94,7 +94,7 @@ object compile_object(string name)
   Soll die Liste der Objekte zum VC per QueryObjects ausgegeben werden oder nicht?
 */
   
-int ToggleCloneList()
+void ToggleCloneList()
 {
   show_clone_list ^= 1;
   tell_object(this_player(), "Die Clone List wird nun "+

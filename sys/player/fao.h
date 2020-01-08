@@ -37,11 +37,11 @@
 #define FAO_MAY_USE_PORTAL(x,p)   (intp(p) && ((FAO_HAS_PORTALS1_GIFT(x) && \
         member(FAO_PORTALS1_LIST,p)!=-1 )||(FAO_HAS_PORTALS2_GIFT(x) && \
         member(FAO_PORTALS2_LIST,p)!=-1) ) && \
-    (pointerp((int*)x->QueryProp(P_FAO_PORTALS)) \
-     && member((int*)x->QueryProp(P_FAO_PORTALS),p)!=-1) )
+    (pointerp(({int*})x->QueryProp(P_FAO_PORTALS)) \
+     && member(({int*})x->QueryProp(P_FAO_PORTALS),p)!=-1) )
 #define FAO_HAS_SEER_PORTAL_GIFT(x)     (x!=0 && query_once_interactive(x) \
-    && ((int)x->QueryProp(P_FAO)&FAO_SEER_PORTAL)!=0)
+    && (({int})x->QueryProp(P_FAO)&FAO_SEER_PORTAL)!=0)
 #define FAO_IS_MEMBER(x) (x!=0 && query_once_interactive(x) \
-    && ((int)x->QueryProp(P_FAO)&FAO_MEMBER)!=0)
+    && (({int})x->QueryProp(P_FAO)&FAO_MEMBER)!=0)
 #endif // __PLAYER_FAO_H__
 

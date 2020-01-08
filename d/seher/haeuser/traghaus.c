@@ -177,7 +177,7 @@ zugsfertiges Seherhaus zurueck!\n\
 Du wirfst noch einmal einen verstohlenen Blick auf die Giesskanne, musst aber\n\
 feststellen, dass sie verschwunden ist und auch verschwunden bleibt.\n" );
 
-  say(capitalize((string)(this_player()->name()))+" verwandelt mit einem Tropfen Wasser "+
+  say(capitalize(this_player()->name())+" verwandelt mit einem Tropfen Wasser "+
       this_player()->QueryPossPronoun(this_object(), WEN) + " Haus.\n");
 
   VERWALTER->NeuesHaus(owner, environment(this_object()));
