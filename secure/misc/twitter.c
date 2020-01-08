@@ -7,6 +7,7 @@
  *
  * 25.5.2016 rumata@mg.mud.de
  */
+#pragma no_clone
 
 #include <wizlevels.h>
 #include <daemon/channel.h>
@@ -17,13 +18,13 @@
 #define DEBUG(x) tell_object(find_player("rumata"),x+"\n")
 
 void create() {
-	if( clonep() ) return;
 	seteuid(getuid());
 }
 
 object caller;
 string msgbuf;
 
+// Explizit erlaubte Personen/UIDs mit ihren Kuerzeln
 mapping registered = ([
 	"rumata": "ru",
 	"arathorn": "ara",
@@ -33,13 +34,25 @@ mapping registered = ([
 	"humni": "hu",
 	"miril": "mi",
 	"gloinson": "gl",
-  "amaryllis": "ama"
+  "amaryllis": "ama",
 ]);
 
 // Erlaubt sind EM+ und ausgewaehlte weitere Personen
+// geprueft wird anhand der UID des Interactives und weiterhin, dass alle
+// Objekte in der Aufrufkette mindestens ein gleich grosses Level haben wie
+// der Interactive.
 int allowed() {
 	return ARCH_SECURITY
-         || getuid(this_interactive())=="gloinson";
+         || ( member(registered, getuid(this_interactive()))
+              && secure_level() >= (query_wiz_level(geteuid(this_interactive)))
+             ) ;
+}
+
+// Wer darf das Tool bekommen/nutzen?
+// Alle oben eingetragenen UIDs.
+public int tool_allowed(object pl)
+{
+  return IS_ARCH(pl) || member(registered, getuid(pl));
 }
 
 string sig( object pl ) {
