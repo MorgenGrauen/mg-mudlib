@@ -65,15 +65,15 @@ void emit( string msg ) {
 void twitter(string msg) {
 	int err = 0;
 	if( !allowed() ) {
-		write( "Twitter ist ARCH+Gloinson only.\n" );
+		write( "Twitter ist ARCH+Berechtigte only.\n" );
 		return;
 	}
-	msg = msg + "^" + sig(this_player()) + "\n";
+	msg = msg + "^" + sig(this_interactive()) + "\n";
 	if(interactive(this_object())) {
 		tell_object(this_object(),msg);
 	} else {
 		msgbuf = msg;
-		caller = this_player();
+		caller = this_interactive();
 		if( (err=net_connect(HOST,PORT))!=0 ) {
 			write( "Konnte Tweet nicht senden. err="+err+"\n" );
 		}
@@ -86,7 +86,7 @@ void connect() {
 	int err = 0;
 	if( interactive(this_object()) ) return;
 	msgbuf = "";
-	caller = this_player();
+	caller = this_interactive();
 	if( (err=net_connect(HOST,PORT))!=0 ) {
 		write( "Konnte Tweet nicht connected. err="+err+"\n" );
 	}
