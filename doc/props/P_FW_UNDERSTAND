@@ -18,4 +18,13 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   *** KEINE BESCHREIBUNG VORHANDEN ***
+   Regelt das Sprachverstaendnis in Fernwest. Wird auf 1 gesetzt,
+   wenn der Spieler die Sprache versteht.
+
+
+SIEHE AUCH
+==========
+
+::
+   Wenn ein Bewohner von Fernwest progammiert werden soll, sollte man
+   den dafuer vorgesehenen Standard-NPC erben: /d/fernwest/std/npc.c

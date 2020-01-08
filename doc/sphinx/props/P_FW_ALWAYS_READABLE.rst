@@ -17,5 +17,11 @@ BESCHREIBUNG
 ------------
 ::
 
-    *** KEINE BESCHREIBUNG VORHANDEN ***
+    Wird auf 1 gesetzt, wenn der Spieler Texte in der Sprache von
+    Fernwest lesen kann.
+
+    Wirkt nur auf Texte in P_READ_MSG von Objekten, nicht auf 
+    ReadDetails oder manuell erzeugte Texte, und nur dann, wenn
+    das betreffende Objekt den Fernwest-Textgenerator unter
+    /d/fernwest/std/fw_lang.c geerbt hat.
 
