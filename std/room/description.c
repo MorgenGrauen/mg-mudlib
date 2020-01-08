@@ -145,7 +145,10 @@ string int_short(mixed viewer,mixed viewpoint)
 
   // Ist das letzte Zeichen kein Satzzeichen einen Punkt anhaengen, sonst nur
   // den \n.
-  int i=descr[<1];
+  int i;
+  if (sizeof(descr))
+    i = descr[<1];
+
   if(i!='.' && i!='!' && i!='?')
     descr+=".\n";
   else
