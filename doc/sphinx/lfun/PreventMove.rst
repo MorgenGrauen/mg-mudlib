@@ -1,7 +1,7 @@
 PreventMove()
 =============
 
-PreventInsert()
+PreventMove()
 ---------------
 ::
 
