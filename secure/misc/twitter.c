@@ -19,6 +19,7 @@
 
 void create() {
 	seteuid(getuid());
+  CHMASTER->join("twitter",this_object());
 }
 
 object caller;
@@ -49,7 +50,6 @@ int allowed() {
               && secure_level() >= (query_wiz_level(geteuid(this_interactive())))
              ) ;
 }
-
 // Wer darf das Tool bekommen/nutzen?
 // Alle oben eingetragenen UIDs.
 public int tool_allowed(object pl)
