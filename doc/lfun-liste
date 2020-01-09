@@ -42,8 +42,6 @@ Verzeichnis der dokumentierten lfuns
 
 * AddKnownPotion()
 
-* AddMaterial()
-
 * AddMiniQuest()
 
 * AddMoney()
@@ -570,7 +568,7 @@ Verzeichnis der dokumentierten lfuns
 
 * RemoveTouchDetail()
 
-* AddvItem()
+* RemoveVItem()
 
 * ResizeRingBuffer()
 

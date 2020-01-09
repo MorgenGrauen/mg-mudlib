@@ -3,17 +3,15 @@ PreventMove()
 
 PreventMove()
 ---------------
-::
+
 
 FUNKTION
 --------
-::
 
      protected int PreventMove(object dest, object oldenv, int method);
 
 DEFINIERT IN
 ------------
-::
 
      /std/thing/moving.c
      /std/living/moving.c
@@ -21,7 +19,6 @@ DEFINIERT IN
 
 ARGUMENTE
 ---------
-::
 
      dest
           Das Ziel des Moves
@@ -32,7 +29,6 @@ ARGUMENTE
 
 BESCHREIBUNG
 ------------
-::
 
      Mit dieser Funktion prueft ein Objekt, ob es von 'oldenv' nach 'dest'
      bewegt werden mag. Dabei wird 'method' beruecksichtigt (z.B. schaltet
@@ -47,7 +43,6 @@ BESCHREIBUNG
 
 RUeCKGABEWERT
 -------------
-::
 
      0, wenn das Objekt bewegt werden darf.
      Wenn es nicht bewegt werden darf, sind als Rueckgabewerte die in
@@ -57,28 +52,32 @@ RUeCKGABEWERT
 
 BEMERKUNGEN
 -----------
-::
 
      Diese Funktion kann ueberschrieben, um feinere Kontrolle ueber die
      Bewegungen des Objekt zu haben. Dabei aber bitte einige Dinge beachten:
+     
      1. Denkt daran, ggf. M_NOCHECK zu beruecksichtigen und und eure
      Pruefungen nur zu machen, wenn es nicht in method vorkommt.
-     2. GANZ WICHTIG: Wenn ihr mit euren Pruefungen fertig sein und das Objekt
-     bewegt werden duerfte, die geerbten Pruefungen noch testen, also _IMMER_
-     das geerbte PreventMove() noch aufrufen und dessen Wert
+     
+     2. *GANZ WICHTIG*: Wenn ihr mit euren Pruefungen fertig sein und das
+     Objekt bewegt werden duerfte, die geerbten Pruefungen noch testen,
+     also *IMMER* das geerbte PreventMove() noch aufrufen und dessen Wert
      zurueckgeben/beruecksichtigen, da sonst Pruefungen des Gewichts etc. 
-     nicht funktionieren oder bei Lebewesen die Prevent*() im Environment 
+     nicht funktionieren oder bei Lebewesen die Prevent\*() im Environment 
      nicht gerufen werden!
+     
      3. Die Funktion ist nur objektintern zu verwenden, Call-Other von aussen
      sind nicht moeglich, beim Ueberschreiben 'protected' nicht vergessen.
-     4. Nochmal: Geerbtes PreventMove() _NICHT VERGESSEN_!
+     
+     4. Nochmal: Geerbtes PreventMove() *NICHT VERGESSEN*!
 
 BEISPIELE
 ---------
-::
 
      Ein Objekt, was nur im Sternenlicht aufgenommen werden kann (warum
      auch immer):
+
+.. code-block:: pike
 
      protected int PreventMove(object dest, object oldenv, int method) {
        if ( (method & M_NOCHECK) ) {
@@ -99,12 +98,12 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-     PreventLeave(), NotifyInsert(), NotifyLeave(), MayAddObject(),
-     PreventInsertLiving(), PreventLeaveLiving(), NotifyMove(),
-     PreventMove(), MayAddWeight(), move(), /std/container/restrictions.c
+     :doc:`../lfun/PreventLeave`, :doc:`NotifyInsert`,
+     :doc:`NotifyLeave`, :doc:`MayAddObject`,
+     :doc:`PreventInsertLiving`, :doc:`PreventLeaveLiving`,
+     :doc:`NotifyMove`, :doc:`PreventMove`, :doc:`MayAddWeight`,
+     :doc:`move`
 
-
-Last modified: 04.08.2007, Zesstra
+Last modified: 09.01.2020, Zesstra
 
