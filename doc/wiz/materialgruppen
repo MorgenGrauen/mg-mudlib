@@ -1,7 +1,7 @@
 Materialgruppen
 ===============
 
-  Die ebenfalls kommentierte Liste unter /sys/thing/material.h ist immer
+  Die ebenfalls kommentierte Liste unter /sys/materials.h ist immer
   aktueller als diese hier.
 
   MATGROUP_SOLID          feste Dinge
@@ -41,13 +41,11 @@ Materialgruppen
 
 SIEHE AUCH:
      Konzepte:	  material, materialerkennung
-     Grundlegend: P_MATERIAL, /sys/thing/material.h
-     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
-     Listen:	  AllMaterials(), AllGroups(), Dump()
-		  materialliste
-     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
-		  GroupName(), MaterialName(),
-		  GetGroupMembers(), GetMatMembership()
+     Grundlegend: P_MATERIAL, MatDB, /sys/materials.h
+     Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList()
+     Listen:      AllMaterials(), AllGroups(), Dump(), materialliste
+     Master:      ConvMaterialList(), MaterialGroup(), GroupName(),
+                  MaterialName(), GetGroupMembers(), GetMatMembership()
      Sonstiges:	  P_MATERIAL_KNOWLEDGE
 
 7. Mai 2004 Gloinson

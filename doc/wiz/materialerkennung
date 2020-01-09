@@ -67,13 +67,12 @@ BEISPIEL:
 
 SIEHE AUCH:
      Konzepte:	  material
-     Grundlegend: P_MATERIAL, /sys/thing/material.h
+     Grundlegend: P_MATERIAL, MatDB, /sys/materials.h
      Methoden:    QueryMaterial(), QueryMaterialGroup(), MaterialList(),
-     Listen:	  AllMaterials(), AllGroups(), Dump()
-		  materialliste, materialgruppen
-     Master:	  AddMaterial(), ConvMaterialList(), MaterialGroup(),
-		  GroupName(), MaterialName(),
-		  GetGroupMembers(), GetMatMembership()
+     Listen:      AllMaterials(), AllGroups(), Dump()
+                  materialliste, materialgruppen
+     Master:	    ConvMaterialList(), MaterialGroup(), GroupName(), 
+                  MaterialName(), GetGroupMembers(), GetMatMembership()
      Sonstiges:	  P_MATERIAL_KNOWLEDGE
 
 7. Mai 2004 Gloinson
