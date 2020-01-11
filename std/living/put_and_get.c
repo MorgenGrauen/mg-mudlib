@@ -194,11 +194,12 @@ private string put_or_get(object o, object dest)
             return "So wirst Du " + wen1 + " nicht los...";
 
         case ME_CANT_BE_TAKEN:
-            str = o->QueryProp(P_NODROP);
+            str = o->QueryProp(P_NOGET);
             if (o && stringp(str) && sizeof(str))
                 return str;
 
-            if (stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
+            if (environment() &&
+                stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
                 return capitalize(
                     replace_personal(str, ({o, environment(o)}), 1));
 
@@ -223,9 +224,8 @@ private string put_or_get(object o, object dest)
             return capitalize(wen0 + " kannst Du dort nicht hineinstecken.");
 
         case ME_CANT_LEAVE_ENV:
-            // ME_CANT_LEAVE_ENV kann nur auftreten, wenn o ein Environment
-            // hat, deshalb kein Check dadrauf
-            if (stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
+            if (environment() &&
+                stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
                 return capitalize(
                     replace_personal(str, ({o, environment(o)}), 1));
 
