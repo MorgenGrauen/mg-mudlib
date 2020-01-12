@@ -326,10 +326,6 @@ static int direct_move(mixed dest, int method, string direction)
 
 int Walk()
 {
-  int     i;
-  mapping exits;
-  string  *rooms, *dirs, *ex, tmp;
-
   if (!environment())
   {
     // darf eigentlich nicht vorkommen.
@@ -363,12 +359,12 @@ int Walk()
   }
 
   // Ausgaenge ermitteln.
-  exits = (environment()->QueryProp(P_EXITS));
-  rooms = m_values(exits);
-  dirs  = m_indices(exits);
-  ex = ({});
+  mapping exits = (environment()->QueryProp(P_EXITS));
+  <string|closure> *rooms = m_values(exits);
+  string *dirs  = m_indices(exits);
+  string *ex = ({});
 
-  for (i=sizeof(rooms)-1; i>=0; i--)
+  for (int i=sizeof(rooms)-1; i>=0; i--)
   {
     if (!PreventEnter(rooms[i]))
       ex += ({ dirs[i] });
@@ -379,7 +375,7 @@ int Walk()
     // im direct mode keine SEs benutzbar...
     if (sizeof(ex))
     {
-       tmp=ex[random(sizeof(ex))];
+       string tmp=ex[random(sizeof(ex))];
        direct_move(explode(exits[tmp], "#")[<1], M_GO, "nach "+capitalize(tmp));
     }
     else
