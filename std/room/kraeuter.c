@@ -84,6 +84,7 @@ public int AddPlantDetail(string filename)
   // IDs und Adjektive parsen und den Datensatz zusammenstellen
   plant->ids = ob->Query(P_IDS, F_VALUE)-({ "Ding" });
   plant->adj = ob->Query(P_ADJECTIVES, F_VALUE);
+  plant->name = ob->Name(WER,1);
   // Keine Bewacher
   plant->guards = ({});
   // Ausserdem ist es nicht pflueckbar per Standardkommando (pickable nicht
