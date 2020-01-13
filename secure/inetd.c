@@ -22,6 +22,7 @@
 #define ZDEBUG(x)
 
 #include <udp.h>
+#include <wizlevels.h>
 
 /* --- Configurable definitions. --- */
 
@@ -250,6 +251,18 @@ void startup(string *muds) {
     muds -= part;
     if (sizeof(muds))
       call_out(#'startup, 4, muds);
+}
+
+varargs int remove(int silent)
+{
+  if (!ARCH_SECURITY)
+    return 0;
+
+  // Hostliste dumpen bevor die verlorengeht.
+  dump_hosts_list();
+
+  destruct(this_object());
+  return 1;
 }
 
 /*
