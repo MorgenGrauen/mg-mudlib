@@ -257,7 +257,7 @@ public void AddReadDetail(string|string* keys,
 {
   // Ab jetzt ist das unsere Prop, die aus dem Beschatteten ist egal.
   m_add(props,P_READ_DETAILS);
-  return ::AddDetail(keys, descr);
+  return ::AddReadDetail(keys, descr);
 }
 
 public void AddSounds(string|string* keys,
@@ -265,7 +265,7 @@ public void AddSounds(string|string* keys,
 {
   // Ab jetzt ist das unsere Prop, die aus dem Beschatteten ist egal.
   m_add(props,P_SOUNDS);
-  return ::AddDetail(keys, descr);
+  return ::AddSounds(keys, descr);
 }
 
 public void AddSmells(string|string* keys,
@@ -273,7 +273,7 @@ public void AddSmells(string|string* keys,
 {
   // Ab jetzt ist das unsere Prop, die aus dem Beschatteten ist egal.
   m_add(props,P_SMELLS);
-  return ::AddDetail(keys, descr);
+  return ::AddSmells(keys, descr);
 }
 
 public void AddTouchDetail(string|string* keys,
@@ -281,7 +281,7 @@ public void AddTouchDetail(string|string* keys,
 {
   // Ab jetzt ist das unsere Prop, die aus dem Beschatteten ist egal.
   m_add(props,P_TOUCH_DETAILS);
-  return ::AddDetail(keys, descr);
+  return ::AddTouchDetail(keys, descr);
 }
 
 // Beides nicht unterstuetzt fuer vitems.
