@@ -198,7 +198,7 @@ private string put_or_get(object o, object dest)
             if (o && stringp(str) && sizeof(str))
                 return str;
 
-            if (environment() &&
+            if (environment(o) &&
                 stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
                 return capitalize(
                     replace_personal(str, ({o, environment(o)}), 1));
@@ -224,7 +224,7 @@ private string put_or_get(object o, object dest)
             return capitalize(wen0 + " kannst Du dort nicht hineinstecken.");
 
         case ME_CANT_LEAVE_ENV:
-            if (environment() &&
+            if (environment(o) &&
                 stringp(str = environment(o)->QueryProp(P_NOLEAVE_MSG)))
                 return capitalize(
                     replace_personal(str, ({o, environment(o)}), 1));
