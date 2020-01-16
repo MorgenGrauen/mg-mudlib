@@ -29,10 +29,15 @@ telnet
     * tls
       Zeigt an, ob die Verbindung zwischen Client und MG mit TLS
       verschluesselt ist, so dass auf dem Weg niemand mitlesen kann.
+    * charset
+      Stellt den zu nutzenden Zeichensatz ein bzw. gibt ihn aus, wenn kein
+      Argument angegeben wird.
+      Soll die Einstellung geloescht und der Default wiederhergestellt werden,
+      muss als Argument \'loeschen\' angegeben werden.
 
  SIEHE AUCH:
-    telnegs, telnet_keepalive, telnet gmcp
+    telnegs, telnet_keepalive, telnet gmcp, telnet_charset
     P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
-    26.07.2019, Zesstra
+    16.01.2020, Zesstra

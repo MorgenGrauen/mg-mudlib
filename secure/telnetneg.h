@@ -17,6 +17,7 @@
 #define P_TTY_TYPE           "tty_type"
 #define P_TTY_SHOW           "tty_show"
 #define P_TELNET_RTTIME      "p_lib_telnet_rttime"
+#define P_TELNET_CHARSET     "p_lib_telnet_charset"
 
 #endif
 

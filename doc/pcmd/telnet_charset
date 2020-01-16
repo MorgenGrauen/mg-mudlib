@@ -1,0 +1,47 @@
+
+telnet charset
+----------------
+
+ KOMMANDO:
+    telnet charset [<charset> | loeschen ]
+
+ ARGUMENTE:
+
+     <charset>
+        Setzt den Zeichensatz auf <charset>
+     loeschen
+        Loescht diese Einstellung und stellt die Voreinstellung wieder her
+
+ BESCHREIBUNG:
+
+    Der Zeichensatz bestimmt, in welche Form Zeichen (Buchstaben, Ziffern,
+    Sonderzeichen) an Dich uebertragen werden. Es gibt sehr viele verschiedene
+    dieser Zeichensaetze. Uebertragt das Mud in einem anderen Zeichensatz als
+    Dein Client (oder Terminal) dies erwartet, kommt im besten Falle
+    Zeichensalat dabei heraus.
+
+    Wenn Dein Client die Telnet-Option CHARSET unterstuetzt, kann Dein Client
+    den gewuenschten Zeichensatz automatisch aushandeln. Dies tun aber nur
+    sehr wenige Clients.
+
+    Daher kann diese Einstellung auch manuell mit diesem Befehl eingestellt
+    werden. Welche das sein muss, haengt von Deinem Client (und ggf. dessen
+    Einstellungen) und/oder Deinem Terminal (und ggf. dessen Einstellungen)
+    ab.
+    Gebraeuchliche Zeichensaetze sind "ASCII", "UTF-8", "ISO8859-1" oder
+    "ISO8859-15". In fast allen Situationen wird der Zeichensatz "ASCII"
+    funktionieren, allerdings kann dieser nur sehr wenige Sonderzeichen
+    darstellen (z.B. keine deutschsprachigen Umlaute).
+
+    Wenn wir Zeichen an Dich senden muessen, welche in dem Zeichensatz, der
+    eingestellt ist, nicht dargestellt werden koennen, werden wir versuchen,
+    diese zu "transliterieren", d.h. durch eine darstellbare Entsprechung zu
+    senden.
+
+    Ohne Argumente wird der aktuelle Zustand angezeigt.
+
+ SIEHE AUCH:
+    telnegs, telnet gmcp,
+
+ LETZTE AeNDERUNG:
+    16.01.2020, Zesstra

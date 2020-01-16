@@ -12,6 +12,7 @@
 #include <sys_debug.h>
 #include <regexp.h>
 #include <input_to.h>
+#include <configuration.h>
 #include <logging.h>
 #include <werliste.h>
 #include <time.h>
@@ -254,6 +255,8 @@ protected void create()
   SetProp(P_NEWBIE_GUIDE,0);
   Set(P_NEWBIE_GUIDE,SAVE,F_MODE_AS);
 
+  // Daran sollte nicht jeder von aussen rumspielen.
+  Set(P_TELNET_CHARSET, PROTECTED|SAVE, F_MODE_AS);
 
   AddId("Interactive");
 
@@ -548,6 +551,30 @@ static void inits_nachholen( int logout, object *obs )
     filter( obs, "call_init", ME, logout );
 }
 
+// Zeichensatz konfigurieren.
+// Wenn es einen manuell konfigurierten Zeichensatz gibt (der jetzt ja
+// eingelesen ist), wird der erstmal eingestellt.
+private void set_manual_encoding()
+{
+  string enc = QueryProp(P_TELNET_CHARSET);
+  if (enc)
+  {
+    if (stringp(enc) &&
+        !catch(configure_interactive(ME, IC_ENCODING, enc); publish))
+    {
+      // hat geklappt fertig
+      return;
+    }
+    // wenn kein string oder nicht erfolgreich -> Prop zuruecksetzen
+    tell_object(ME, sprintf(
+          "Der von Dir eingestellte Zeichensatz \'%s\' konnte nicht "
+          "eingestellt werden. Die Voreinstellung \'%s\' wurde wieder "
+          "eingestellt.", enc,
+          interactive_info(ME, IC_ENCODING)));
+     SetProp(P_TELNET_CHARSET, 0);
+  }
+}
+
 /** Belebt einen Netztoten wieder.
   Wird im Login gerufen, wenn der Spieler netztot war. Aequivalent zu
   start_player()
@@ -565,6 +592,10 @@ varargs void Reconnect( int silent )
 
     if ( query_once_interactive(ME) )
     {
+        // Erstmal - sofern vorhanden - den manuell konfigurierten Zeichensatz
+        // einstellen. Im folgenden wird dann versucht, die TELOP CHARSET
+        // auszuhandeln, die aendert das evtl. nochmal.
+        set_manual_encoding();
         // perform the telnet negotiations. (all that are available)
         "*"::startup_telnet_negs();
         Set( P_LAST_LOGIN, time() );
@@ -2145,7 +2176,6 @@ private int RandomSize()
   * @sa start_player(), InitSkills(), FixSkills()
   */
 private void updates_after_restore(int newflag) {
- 
   // Seher duerfen die Fluchtrichtung uebermitteln lassen.
   // Eigentlich koennte es Merlin machen. Dummerweise gibt es ja auch alte
   // Seher und dann kann es gleiche fuer alle hier gemacht werden. (Ob der
@@ -2249,14 +2279,18 @@ varargs nomask int start_player( string str, string ip )
 
     updates_after_restore(newflag);
 
-   if ( query_once_interactive(ME) )
+    if ( query_once_interactive(ME) )
     {
+      // Erstmal - sofern vorhanden - den manuell konfigurierten Zeichensatz
+      // einstellen. Im folgenden wird dann versucht, die TELOP CHARSET
+      // auszuhandeln, die aendert das evtl. nochmal.
+      set_manual_encoding();
       // Telnet-Negotiations durchfuehren, aber nur die grundlegenden aus
       // telnetneg. Alle anderen sollten erst spaeter, nach vollstaendiger
       // Initialisierung gemacht werden.
-        telnetneg::startup_telnet_negs();
-        modify_prompt();
-        Set( P_LAST_LOGIN, time() );
+      telnetneg::startup_telnet_negs();
+      modify_prompt();
+      Set( P_LAST_LOGIN, time(), F_VALUE );
     }
 
     Set( P_WANTS_TO_LEARN, 1 ); // 1 sollte der default sein !!!
@@ -4264,6 +4298,62 @@ private int print_telnet_rttime() {
   return 1;
 }
 
+//TODO: beim manuellen Setzen sollte - sofern TELOPT CHARSET ausgehandelt
+//TODO::wurde, versucht werden, diesen neu mit dem Client zu verhandeln...
+private int set_telnet_charset(string enc) {
+  // Wenn es "loeschen" ist, wird die Prop genullt und wir stellen den Default
+  // ein.
+  if (!sizeof(enc))
+  {
+    tell_object(ME, break_string(sprintf(
+          "Zur Zeit ist der Zeichensatz \'%s\' aktiv. "
+          "Alle Ausgaben an Dich werden in diesem Zeichensatz gesendet "
+          "und wir erwarten alle Eingaben von Dir in diesem Zeichensatz. "
+          "Moeglicherweise hat Dein Client diesen Zeichensatz automatisch "
+          "ausgehandelt.", interactive_info(ME, IC_ENCODING)), 78));
+  }
+  else if (lower_case(enc) == "loeschen")
+  {
+    SetProp(P_TELNET_CHARSET, 0);
+    configure_interactive(ME, IC_ENCODING, interactive_info(0,IC_ENCODING));
+    tell_object(ME, break_string(sprintf(
+          "Der Default \'%s\' wurde wieder hergestellt. "
+          "Alle Ausgaben an Dich werden in diesem Zeichensatz gesendet "
+          "und wir erwarten alle Eingaben von Dir in diesem Zeichensatz. "
+          "Sollte Dein Client die Telnet-Option CHARSET unterstuetzen, kann "
+          "dieser allerdings direkt einen Zeichensatz aushandeln, der dann "
+          "stattdessen gilt.",
+          interactive_info(ME, IC_ENCODING)), 78));
+  }
+  else
+  {
+    // Wenn der Zeichensatz keine //TRANSLIT-Variante ist, machen wir den zu
+    // einer. Das verhindert letztlich eine Menge Laufzeitfehler, wenn ein
+    // Zeichen mal nicht darstellbar ist.
+    if (strstr(enc, "//TRANSLIT") == -1)
+      enc += "//TRANSLIT";
+    if (catch(configure_interactive(ME, IC_ENCODING, enc); nolog))
+    {
+      tell_object(ME, break_string(sprintf(
+            "Der Zeichensatz \'%s\' ist nicht gueltig oder zumindest auf "
+            "diesem System nicht verwendbar.", enc),78));
+    }
+    else
+    {
+      SetProp(P_TELNET_CHARSET, interactive_info(ME, IC_ENCODING));
+      tell_object(ME, break_string(sprintf(
+            "Der Zeichensatz \'%s\' wurde eingestellt. Alle Ausgaben an "
+            "Dich werden in diesem Zeichensatz gesendet und wir erwarten "
+            "alle Eingaben von Dir in diesem Zeichensatz. Sollte Dein "
+            "Client die Telnet-Option CHARSET unterstuetzen, kann "
+            "dieser allerdings direkt einen Zeichensatz aushandeln, der "
+            "dann stattdessen gilt.",
+            interactive_info(ME, IC_ENCODING)),78));
+    }
+  }
+  return 1;
+}
+
 int telnet_cmd(string str) {
   if (!str) return 0;
   string *args = explode(str, " ");
@@ -4279,6 +4369,8 @@ int telnet_cmd(string str) {
       return set_keep_alive(newargs);
     case "rttime":
       return print_telnet_rttime();
+    case "charset":
+      return set_telnet_charset(newargs);
     case "tls":
       if (tls_query_connection_state(ME) > 0)
         tell_object(ME,
