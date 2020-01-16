@@ -254,9 +254,6 @@ protected void create()
   SetProp(P_NEWBIE_GUIDE,0);
   Set(P_NEWBIE_GUIDE,SAVE,F_MODE_AS);
 
-  //TODO: Remove - Property ist not needed any more.
-  Set(P_TELNET_KEEP_ALIVE, PROTECTED|SAVE, F_MODE_AD);
-  SetProp(P_TELNET_KEEP_ALIVE, 0);
 
   AddId("Interactive");
 

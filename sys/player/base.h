@@ -90,9 +90,6 @@
 
 #define P_NEEDED_QP          "needed_qp"
 
-//TODO: Remove - Property is not needed any more.
-#define P_TELNET_KEEP_ALIVE  "send_telnet_keep_alive"
-
 #endif // __PLAYER_BASE_H__
 
 #ifdef NEED_PROTOTYPES
