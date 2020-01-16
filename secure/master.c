@@ -104,6 +104,8 @@ protected void inaugurate_master(int arg) {
   set_driver_hook(H_FILE_ENCODING, "UTF-8");
   // Und Encoding fuer Dateinamen im Filesystem
   configure_driver(DC_FILESYSTEM_ENCODING, "UTF-8");
+  // Standard-Encoding fuer Interactives
+  configure_interactive(0, IC_ENCODING, "UTF-8");
 
   // Standardincludeverzeichnisse fuer #include <>
   set_driver_hook(H_INCLUDE_DIRS, ({"/secure/","/sys/"}) );
