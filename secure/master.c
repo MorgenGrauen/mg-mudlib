@@ -765,7 +765,8 @@ int query_allow_shadow(object ob)
  *   0: The caller was probably misleaded; try to fix the error.
  *  -1: A real privilege violation. Handle it as error.
  */
-int privilege_violation(string op, mixed who, mixed arg1, mixed arg2)
+int privilege_violation(string op, mixed who, mixed arg1, mixed arg2,
+                        mixed arg3)
 {
 
   if (objectp(who) && 
