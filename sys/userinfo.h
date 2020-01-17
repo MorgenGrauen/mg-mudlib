@@ -8,7 +8,12 @@
 #define _USERINFO_
 
 /*
- * userinfo: what each field of /secure/PASSWD is
+ * Indices for the fields in the userlist of /secure/master/userinfo.c
+ * Important: these are the *internal* field indices. When obtained by
+ *            get_userinfo(), the fields in the resulting array are off by +1,
+ *            i.e. to get the level, you need to index with USER_LEVEL+1.
+ *            TODO: change that and use either correct additional defines or a
+ *            TODO::new data structure.
  */
 
 /* password (encrypted) */
