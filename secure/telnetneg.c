@@ -21,7 +21,7 @@ inherit "/secure/telnetneg-structs.c";
 #undef NEED_PROTOTYPES
 
 // unterstuetzte Optionen:
-// TELOPT_EOR, TELOPT_NAWS, TELOPT_LINEMODE, TELOPT_TTYPE
+// TELOPT_EOR, TELOPT_NAWS, TELOPT_LINEMODE, TELOPT_TTYPE, TELOPT_BINARY
 
 //#define __DEBUG__ 1
 
@@ -71,8 +71,7 @@ private string dtranslate(int i) {
     case TELOPT_NAMS: return "TELOPT_NAMS";
     case TELOPT_STATUS: return "TELOPT_STATUS";
     case TELOPT_TM: return "TELOPT_TM";
-
-    case TELOPT_MSDP: return "TELOPT_MSDP";
+    case TELOPT_BINARY: return "TELOPT_BINARY";
     case TELOPT_COMPRESS2: return "TELOPT_COMPRESS2";
     case TELOPT_MSP: return "TELOPT_MSP";
     case TELOPT_MXP: return "TELOPT_MXP";
@@ -85,7 +84,7 @@ private string dtranslate(int i) {
 
 // Gibt <arr> halbwegs lesbar an this_object() aus.
 private void _debug_print(string x, int *arr) {
-  if (arr[1] == SB && arr[<1] != SE)
+  if (sizeof(arr) >1 && arr[1] == SB && arr[<1] != SE)
     arr += ({IAC, SE});
   closure map_int = function string (int i)
     { if (i >= 32 && i <= 126) return sprintf("%c",i);
@@ -331,6 +330,26 @@ private void _std_re_handler_ttype(struct telopt_s opt, int action,
   }
 }
 
+// Der Handler fuer die BINARY option, wenn sie auf Clientseite
+// aktiviert/deaktivert wird, d.h. der Client sendet jetzt Binaerdaten statt
+// NVT-ASCII. Im Normalfall muessen wir im Handler nix machen. (SB gibts hier
+// nicht.)
+private void _std_re_handler_binary(struct telopt_s opt, int action,
+                                   int *data)
+{
+  DTN("tn_binary client-seite",({action}));
+}
+
+// Der Handler fuer die BINARY option, wenn sie auf unserer Seite
+// aktiviert/deaktivert wird, d.h. wir senden jetzt Binaerdaten statt
+// NVT-ASCII. Im Normalfall muessen wir im Handler nix machen. (SB gibts hier
+// nicht.)
+private void _std_lo_handler_binary(struct telopt_s opt, int action,
+                                   int *data)
+{
+  DTN("tn_binary mg-seite",({action}));
+}
+
 // Bindet/registriert Handler fuer die jew. Telnet Option. (Oder loescht sie
 // auch wieder.) Je nach <initneg> wird versucht, die Option neu zu
 // verhandeln.
@@ -377,13 +396,14 @@ protected int bind_telneg_handler(int option, closure re, closure lo,
 //            laufen.
 protected void SendTelopts()
 {
+  bind_telneg_handler(TELOPT_BINARY, #'_std_re_handler_binary,
+                      #'_std_lo_handler_binary, 1);
   bind_telneg_handler(TELOPT_EOR, 0, #'_std_lo_handler_eor, 1);
-  if (find_object("/secure/misc/mssp"))
-    bind_telneg_handler(TELOPT_MSSP, 0, #'_std_lo_handler_mssp, 1);
-
   bind_telneg_handler(TELOPT_NAWS, #'_std_re_handler_naws, 0, 1);
   bind_telneg_handler(TELOPT_LINEMODE, #'_std_re_handler_linemode, 0, 1);
   bind_telneg_handler(TELOPT_TTYPE, #'_std_re_handler_ttype, 0, 1);
+  if (find_object("/secure/misc/mssp"))
+    bind_telneg_handler(TELOPT_MSSP, 0, #'_std_lo_handler_mssp, 1);
   // fuer TELOPT_TM jetzt keine Verhandlung anstossen.
   bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
 }
@@ -394,16 +414,17 @@ protected void SendTelopts()
 // Verhandlungen initiiert.
 // gerufen aus base.c indirekt via startup_telnet_negs().
 protected void _bind_telneg_std_handlers() {
+  bind_telneg_handler(TELOPT_BINARY, #'_std_re_handler_binary,
+                      #'_std_lo_handler_binary, 0);
   bind_telneg_handler(TELOPT_EOR, 0, #'_std_lo_handler_eor, 0);
-  // Besondere Situation: MSSP ist nach Spielerlogin eigentlich uninteressant.
-  // Daher sparen wir uns das im Kontext des Spielerobjekts und schalten es
-  // einfach wieder aus.
-  bind_telneg_handler(TELOPT_MSSP, 0, 0, 0);
-
   bind_telneg_handler(TELOPT_NAWS, #'_std_re_handler_naws, 0, 0);
   bind_telneg_handler(TELOPT_LINEMODE, #'_std_re_handler_linemode, 0, 0);
   bind_telneg_handler(TELOPT_TTYPE, #'_std_re_handler_ttype, 0, 0);
   bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
+  // Besondere Situation: MSSP ist nach Spielerlogin eigentlich uninteressant.
+  // Daher sparen wir uns das im Kontext des Spielerobjekts und schalten es
+  // einfach wieder aus.
+  bind_telneg_handler(TELOPT_MSSP, 0, 0, 0);
 }
 
 
