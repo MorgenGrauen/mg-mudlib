@@ -584,7 +584,9 @@ protected int bind_telneg_handler(int option, closure re, closure lo,
 
 
 // Mal unsere Wuensche an den Client schicken und die Standardhandler
-// registrieren. Hierbei bei Bedarf neue Verhandlungen starten.
+// registrieren. Hierbei bei Bedarf neue Verhandlungen starten. Es wird hier
+// aber nur ein Basissatz an Optionen verhandelt, der Rest kommt spaeter
+// nachdem das Spielerobjekt die Verbindung hat (in startup_telnet_negs())
 // Gerufen aus login.c nach Verbindungsaufbau.
 // Bemerkung: das Spielerobjekt bietet evt. noch zusaetzliche Telnetoptionen
 //            an, die dann ueber startup_telnet_negs() (im Spielerobjekt)
@@ -599,8 +601,6 @@ protected void SendTelopts()
   bind_telneg_handler(TELOPT_TTYPE, #'_std_re_handler_ttype, 0, 1);
   if (find_object("/secure/misc/mssp"))
     bind_telneg_handler(TELOPT_MSSP, 0, #'_std_lo_handler_mssp, 1);
-  // fuer TELOPT_TM jetzt keine Verhandlung anstossen.
-  bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
   // und auch CHARSET wird verzoegert bis das Spielerobjekt da ist.
 }
 
@@ -616,7 +616,6 @@ protected void _bind_telneg_std_handlers() {
   bind_telneg_handler(TELOPT_NAWS, #'_std_re_handler_naws, 0, 0);
   bind_telneg_handler(TELOPT_LINEMODE, #'_std_re_handler_linemode, 0, 0);
   bind_telneg_handler(TELOPT_TTYPE, #'_std_re_handler_ttype, 0, 0);
-  bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
   // Besondere Situation: MSSP ist nach Spielerlogin eigentlich uninteressant.
   // Daher sparen wir uns das im Kontext des Spielerobjekts und schalten es
   // einfach wieder aus.
@@ -909,10 +908,12 @@ startup_telnet_negs()
 
       Set( P_TTY_TYPE, Terminals[0] );
   }
+  // fuer TELOPT_TM jetzt keine Verhandlung anstossen, aber Handler
+  // registrieren.
+  bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
   // und zum Schluss wird der Support fuer CHARSET aktiviert.
   bind_telneg_handler(TELOPT_CHARSET, #'_std_re_handler_charset,
                       #'_std_lo_handler_charset, 1);
-
 }
 
 // somehow completely out of the ordinary options processing/negotiation. But
