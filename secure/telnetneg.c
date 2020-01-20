@@ -19,9 +19,11 @@ inherit "/secure/telnetneg-structs.c";
 #define NEED_PROTOTYPES
 #include "/secure/telnetneg.h"
 #undef NEED_PROTOTYPES
+#include <configuration.h>
 
 // unterstuetzte Optionen:
-// TELOPT_EOR, TELOPT_NAWS, TELOPT_LINEMODE, TELOPT_TTYPE, TELOPT_BINARY
+// TELOPT_EOR, TELOPT_NAWS, TELOPT_LINEMODE, TELOPT_TTYPE, TELOPT_BINARY,
+// TELOPT_CHARSET
 
 //#define __DEBUG__ 1
 
@@ -34,7 +36,9 @@ inherit "/secure/telnetneg-structs.c";
 # define DTN(x,y)
 #endif
 
-
+// first element "" to yield the separator
+#define OFFERED_CHARSETS ({"", "UTF-8", "ISO8859-15", "LATIN-9", "ISO8859-1",\
+                             "LATIN1", "WINDOWS-1252", "US-ASCII"})
 
 // Aus mini_props.c:
 public varargs mixed Query( string str, int type );
@@ -72,6 +76,7 @@ private string dtranslate(int i) {
     case TELOPT_STATUS: return "TELOPT_STATUS";
     case TELOPT_TM: return "TELOPT_TM";
     case TELOPT_BINARY: return "TELOPT_BINARY";
+    case TELOPT_CHARSET: return "TELOPT_CHARSET";
     case TELOPT_COMPRESS2: return "TELOPT_COMPRESS2";
     case TELOPT_MSP: return "TELOPT_MSP";
     case TELOPT_MXP: return "TELOPT_MXP";
@@ -337,7 +342,7 @@ private void _std_re_handler_ttype(struct telopt_s opt, int action,
 private void _std_re_handler_binary(struct telopt_s opt, int action,
                                    int *data)
 {
-  DTN("tn_binary client-seite",({action}));
+  DTN("binary handler client",({action}));
 }
 
 // Der Handler fuer die BINARY option, wenn sie auf unserer Seite
@@ -347,8 +352,198 @@ private void _std_re_handler_binary(struct telopt_s opt, int action,
 private void _std_lo_handler_binary(struct telopt_s opt, int action,
                                    int *data)
 {
-  DTN("tn_binary mg-seite",({action}));
+  DTN("binary handler mg",({action}));
 }
+
+private int activate_charset(struct telopt_s opt, string charset)
+{
+  // Wenn der Client die Option nicht BINARY nicht unterstuetzt/will, duerfen
+  // wir auch keine nicht-ASCII-Zeichen uebertragen. In diesem Fall ist der
+  // einzige akzeptable Zeichensatz (US-)ASCII.
+  struct telopt_s binary = TN[TELOPT_BINARY];
+  if ( (!binary->state->remoteside || !binary->state->localside)
+       && (upper_case(charset) != "US-ASCII"
+          && upper_case(charset) != "ASCII") )
+  {
+    return 0;
+  }
+  // Wenn der Zeichensatz keine //-Variante ist, machen wir den zu
+  // einer. Das verhindert letztlich eine Menge Laufzeitfehler, wenn ein
+  // Zeichen mal nicht darstellbar ist.
+  if (strstr(charset, "//") == -1)
+    charset += "//TRANSLIT";
+  // Falls das zu sehr scrollt, weil Clients staendig ungueltige/nicht
+  // verwendbare Zeichensaetz schicken, muss das publish weg und ggf. sogar
+  // ein nolog hin...
+  if (!catch(configure_interactive(this_object(), IC_ENCODING, charset);
+             publish))
+  {
+    m_delete(opt->data, "failed_negotiations");
+    opt->data["accepted_charset"] = interactive_info(this_player(),
+                                                     IC_ENCODING);
+    return 1;
+  }
+  return 0;
+}
+#define REQUEST  1
+#define ACCEPTED 2
+#define REJECTED 3
+#define TTABLE_IS 4
+#define TTABLE_REJECTED 5
+// Der Handler fuer die CHARSET option, wenn sie auf/fuer Clientseite
+// aktiviert/deaktivert wird oder fuer empfangene SB.
+private void _std_re_handler_charset(struct telopt_s opt, int action,
+                                   int *data)
+{
+  DTN("charset handler client",({action}));
+
+  // Wenn action == REMOTEON: Ab diesem Moment darf uns der Client einen
+  // CHARSET REQUEST schicken (weil wir haben ihm auch schon ein DO
+  // geschickt).
+  if (action  == REMOTEON)
+  {
+    if (!mappingp(opt->data))
+      opt->data = ([]);
+  }
+  else if (action == REMOTEOFF)
+  {
+    // Wenn auch auf mg-seite aus, kann data geloescht werden.
+    if (!opt->state->localside)
+      opt->data = 0;
+  }
+  else if (action == SB)
+  {
+    mapping statedata = opt->data;
+    // <data> is the part following IAC SB TELOPT_CHARSET
+    switch(data[0])
+    {
+      case REQUEST:
+        // is the client allowed to REQUEST?
+        if (opt->state->remoteside)
+          return;
+        // And enough data?
+        if (sizeof(data) > 1 )
+        {
+          DTN("re_charset request:",data);
+          string *suggestions = explode(to_text(data[2..], "ASCII"),
+                                        sprintf("%c",data[1]));
+          // Wenn UTF-8 drin vorkommt, nehmen wir das. (Gross-/Kleinschreibung
+          // ist egal, aber wir muessen einen identischen String
+          // zurueckschicken). (Gemischte Schreibweise: *ignorier* *stoehn*)
+          string *selected = suggestions & ({"UTF-8","utf-8"});
+          if (sizeof(selected)
+              && activate_charset(opt, selected[0]))
+          {
+            send_telnet_neg(({ SB, TELOPT_CHARSET, ACCEPTED,
+                               to_array(selected[0]) }));
+            return;
+          }
+          else
+          {
+            // die ersten 10 Vorschlaege durchprobieren
+            foreach(string cs : suggestions[0..min(sizeof(suggestions)-1, 10)])
+            {
+              if (activate_charset(opt, cs))
+              {
+                send_telnet_neg(({ SB, TELOPT_CHARSET, ACCEPTED,
+                                   to_array(cs) }));
+                return; // yeay, found one!
+              }
+            }
+            // none acceptable
+            send_telnet_neg(({ SB, TELOPT_CHARSET, REJECTED }));
+            ++opt->data["failed_negotiations"];
+            // fall-through, no return;
+          }
+        }
+        else // malformed message
+        {
+          send_telnet_neg(({ SB, TELOPT_CHARSET, REJECTED }));
+          ++opt->data["failed_negotiations"];
+          // fall-through, no return;
+        }
+        // when arriving here, the negotiation was not successful. Check if
+        // too many unsuccesful tries in a row.
+        if (opt->data["failed_negotiations"] > 10)
+        {
+          send_telnet_neg(({ TELOPT_CHARSET, DONT }));
+          send_telnet_neg(({ TELOPT_CHARSET, WONT }));
+        }
+        break;
+      case ACCEPTED:
+        // great - the client accepted one of our suggested charsets.
+        // Negotiation concluded. However, check if we REQUESTed a charset in
+        // the first place... And if the accepted one is one of our
+        // suggestions
+        if (sizeof(data) > 1)
+        {
+          DTN("re_charset accepted:",data);
+          string charset = upper_case(to_text(data[1..], "ASCII"));
+          string *offered = statedata["offered"];
+          // in any case, we don't need the key in the future.
+          m_delete(statedata, "offered");
+          if (pointerp(offered) && member(offered, charset) > -1)
+          {
+            activate_charset(opt, charset);
+            return;
+          }
+          // else: client did not sent us back one of our suggestions or we
+          // did not REQUEST. :-(
+        }
+        ++opt->data["failed_negotiations"];
+        // else? Huh. malformed message.
+        break;
+      case REJECTED:
+        // none of our suggested charsets were acceptable. Negotiation is
+        // concluded, we keep the current charset (and maybe we will receive a
+        // suggestion of the client)
+        if (member(statedata, "offered"))
+          m_delete(statedata, "offered");
+        ++opt->data["failed_negotiations"];
+        DTN("re_charset_rejected:",data);
+        break;
+      case TTABLE_IS:
+        // we plainly don't support TTABLES
+        send_telnet_neg(({ SB, TELOPT_CHARSET, TTABLE_REJECTED }));
+        ++opt->data["failed_negotiations"];
+        break;
+    }
+  }
+}
+
+// Der Handler fuer die BINARY option, wenn sie auf/fuer unserere Seite
+// aktiviert/deaktivert wird.
+private void _std_lo_handler_charset(struct telopt_s opt, int action,
+                                   int *data)
+{
+  DTN("charset handler mg",({action}));
+  if (action == LOCALON)
+  {
+    // Ab diesem Moment duerfen wir dem Client einen CHARSET REQUEST schicken
+    // (denn wir haben auch schon ein DO erhalten). Und das tun wir auch
+    // direkt.
+    if (!mappingp(opt->data))
+      opt->data = ([ "offered": OFFERED_CHARSETS ]);
+    else
+      opt->data["offered"] = OFFERED_CHARSETS;
+    send_telnet_neg(({ SB, TELOPT_CHARSET, REQUEST })
+                    + to_array(implode(opt->data["offered"], ";"))) ;
+  }
+  else if (action == LOCALOFF)
+  {
+    // ok, keine REQUESTS mehr nach dem LOCALOFF, aber viel muss nicht getan
+    // werden. Wenn auch auf client-seite aus, kann data geloescht werden.
+    if (!opt->state->remoteside)
+      opt->data = 0;
+  }
+  // und SB gibt es nicht in diesem Handler.
+}
+#undef REQUEST
+#undef ACCEPTED
+#undef REJECTED
+#undef TTABLE-IS
+#undef TTABLE-REJECTED
+
 
 // Bindet/registriert Handler fuer die jew. Telnet Option. (Oder loescht sie
 // auch wieder.) Je nach <initneg> wird versucht, die Option neu zu
@@ -406,6 +601,7 @@ protected void SendTelopts()
     bind_telneg_handler(TELOPT_MSSP, 0, #'_std_lo_handler_mssp, 1);
   // fuer TELOPT_TM jetzt keine Verhandlung anstossen.
   bind_telneg_handler(TELOPT_TM, #'_std_re_handler_tm, 0, 0);
+  // und auch CHARSET wird verzoegert bis das Spielerobjekt da ist.
 }
 
 
@@ -713,6 +909,10 @@ startup_telnet_negs()
 
       Set( P_TTY_TYPE, Terminals[0] );
   }
+  // und zum Schluss wird der Support fuer CHARSET aktiviert.
+  bind_telneg_handler(TELOPT_CHARSET, #'_std_re_handler_charset,
+                      #'_std_lo_handler_charset, 1);
+
 }
 
 // somehow completely out of the ordinary options processing/negotiation. But

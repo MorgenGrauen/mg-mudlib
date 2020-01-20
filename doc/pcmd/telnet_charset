@@ -22,7 +22,8 @@ telnet charset
 
     Wenn Dein Client die Telnet-Option CHARSET unterstuetzt, kann Dein Client
     den gewuenschten Zeichensatz automatisch aushandeln. Dies tun aber nur
-    sehr wenige Clients.
+    sehr wenige Clients. Wenn Dein Client dies allerdings macht, hat die
+    von Deinem Client ausgehandelte Einstellung aber Prioritaet!
 
     Daher kann diese Einstellung auch manuell mit diesem Befehl eingestellt
     werden. Welche das sein muss, haengt von Deinem Client (und ggf. dessen
@@ -40,8 +41,14 @@ telnet charset
 
     Ohne Argumente wird der aktuelle Zustand angezeigt.
 
+ BEMERKUNG:
+
+    Damit die Aushandlung des Zeichensatzes durch den Client funktioniert,
+    muss dieser neben der Telnet-Option CHARSET, auch die Telnet-Option BINARY
+    unterstuetzen.
+
  SIEHE AUCH:
     telnegs, telnet gmcp,
 
  LETZTE AeNDERUNG:
-    16.01.2020, Zesstra
+    20.01.2020, Zesstra

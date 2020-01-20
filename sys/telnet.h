@@ -103,6 +103,7 @@ char *telcmds[] = {
 #define  TELOPT_AUTHENTICATION 37       /* authentication */
 #define  TELOPT_ENCRYPT       38        /* authentication */
 #define  TELOPT_NEWENV        39        /* Environment opt for Port ID */
+#define  TELOPT_CHARSET       42        /* Negotiate about charsets */
 #define  TELOPT_STARTTLS      46        /* Transport Layer Security */
 #define  TELOPT_KERMIT        47        /* Telnet KERMIT */
 #define  TELOPT_SEND_URL      48        /* Send URL */

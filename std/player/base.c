@@ -4298,39 +4298,73 @@ private int print_telnet_rttime() {
   return 1;
 }
 
-//TODO: beim manuellen Setzen sollte - sofern TELOPT CHARSET ausgehandelt
-//TODO::wurde, versucht werden, diesen neu mit dem Client zu verhandeln...
+// Falls es eine per telnet vom Client ausgehandelte Einstellung fuer CHARSET
+// gibt, hat die manuelle Einstellung von Spielern hier geringere Prioritaet
+// und bildet nur den Fallback.
 private int set_telnet_charset(string enc) {
-  // Wenn es "loeschen" ist, wird die Prop genullt und wir stellen den Default
-  // ein.
+  struct telopt_s tdata = query_telnet_neg()[TELOPT_CHARSET];
   if (!sizeof(enc))
   {
-    tell_object(ME, break_string(sprintf(
+    if (!tdata->data || !tdata->data["accepted_charset"])
+    {
+      tell_object(ME, break_string(sprintf(
+          "Zur Zeit ist der Zeichensatz \'%s\' aktiv. "
+          "Alle Ausgaben an Dich werden in diesem Zeichensatz gesendet "
+          "und wir erwarten alle Eingaben von Dir in diesem Zeichensatz. ",
+          interactive_info(ME, IC_ENCODING)), 78));
+    }
+    else
+    {
+      tell_object(ME, break_string(sprintf(
           "Zur Zeit ist der Zeichensatz \'%s\' aktiv. "
           "Alle Ausgaben an Dich werden in diesem Zeichensatz gesendet "
           "und wir erwarten alle Eingaben von Dir in diesem Zeichensatz. "
-          "Moeglicherweise hat Dein Client diesen Zeichensatz automatisch "
-          "ausgehandelt.", interactive_info(ME, IC_ENCODING)), 78));
+          "Dieser Zeichensatz wurde von Deinem Client ausgehandelt.",
+          interactive_info(ME, IC_ENCODING)), 78));
+      if (QueryProp(P_TELNET_CHARSET))
+        tell_object(ME, break_string(sprintf(
+          "Dein manuell eingestellter Zeichensatz ist \'%s\', welcher "
+          "aber nur genutzt wird, wenn Dein Client keinen Zeichensatz "
+          "aushandelt.", QueryProp(P_TELNET_CHARSET)),78));
+
+    }
   }
+  // Wenn es "loeschen" ist, wird die Prop genullt und wir stellen den Default
+  // ein. Allerdings nur, wenn nix per telnet ausgehandelt wurde, dann wird
+  // das beibehalten.
   else if (lower_case(enc) == "loeschen")
   {
     SetProp(P_TELNET_CHARSET, 0);
-    configure_interactive(ME, IC_ENCODING, interactive_info(0,IC_ENCODING));
-    tell_object(ME, break_string(sprintf(
+    // wurde was per telnet option charset ausgehandelt? dann wird (weiterhin)
+    // das genommen und nicht umgestellt.
+    if (!tdata->data || !tdata->data["accepted_charset"])
+    {
+      configure_interactive(ME, IC_ENCODING, interactive_info(0,IC_ENCODING));
+      tell_object(ME, break_string(sprintf(
           "Der Default \'%s\' wurde wieder hergestellt. "
           "Alle Ausgaben an Dich werden in diesem Zeichensatz gesendet "
           "und wir erwarten alle Eingaben von Dir in diesem Zeichensatz. "
           "Sollte Dein Client die Telnet-Option CHARSET unterstuetzen, kann "
-          "dieser allerdings direkt einen Zeichensatz aushandeln, der dann "
-          "stattdessen gilt.",
+          "dieser allerdings direkt einen Zeichensatz aushandeln oder "
+          "ausgehandelt haben, der dann stattdessen gilt.",
           interactive_info(ME, IC_ENCODING)), 78));
+    }
+    else
+    {
+      tell_object(ME, break_string(sprintf(
+          "Der Default \'%s\' wurde wieder hergestellt. Allerdings hat "
+          "Dein Client mit dem MG den Zeichensatz \'%s\' ausgehandelt, "
+          "welcher immer noch aktiv ist.",
+          interactive_info(0, IC_ENCODING),
+          interactive_info(ME, IC_ENCODING)), 78));
+    }
   }
   else
   {
-    // Wenn der Zeichensatz keine //TRANSLIT-Variante ist, machen wir den zu
+    // Wenn der Zeichensatz keine //-Variante ist, machen wir den zu
     // einer. Das verhindert letztlich eine Menge Laufzeitfehler, wenn ein
     // Zeichen mal nicht darstellbar ist.
-    if (strstr(enc, "//TRANSLIT") == -1)
+    if (strstr(enc, "//") == -1)
       enc += "//TRANSLIT";
     if (catch(configure_interactive(ME, IC_ENCODING, enc); nolog))
     {
@@ -4341,7 +4375,9 @@ private int set_telnet_charset(string enc) {
     else
     {
       SetProp(P_TELNET_CHARSET, interactive_info(ME, IC_ENCODING));
-      tell_object(ME, break_string(sprintf(
+      if (!tdata->data || !tdata->data["accepted_charset"])
+      {
+        tell_object(ME, break_string(sprintf(
             "Der Zeichensatz \'%s\' wurde eingestellt. Alle Ausgaben an "
             "Dich werden in diesem Zeichensatz gesendet und wir erwarten "
             "alle Eingaben von Dir in diesem Zeichensatz. Sollte Dein "
@@ -4349,7 +4385,22 @@ private int set_telnet_charset(string enc) {
             "dieser allerdings direkt einen Zeichensatz aushandeln, der "
             "dann stattdessen gilt.",
             interactive_info(ME, IC_ENCODING)),78));
+      }
+      else
+      {
+        // Der via telnet ausgehandelte Charset muss wieder hergestellt
+        // werden.
+        configure_interactive(ME, IC_ENCODING,
+                              tdata->data["accepted_charset"]);
+        tell_object(ME, break_string(sprintf(
+          "Der Zeichensatz \'%s\' wurde gespeichert. Allerdings hat "
+          "Dein Client mit dem MG den Zeichensatz \'%s\' ausgehandelt, "
+          "welcher immer noch aktiv ist.",
+          QueryProp(P_TELNET_CHARSET),
+          interactive_info(ME, IC_ENCODING)), 78));
+      }
     }
+
   }
   return 1;
 }
