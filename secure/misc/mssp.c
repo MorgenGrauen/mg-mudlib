@@ -65,7 +65,7 @@ private nosave mapping data = mindata + ([
     "OBJECTS"          : "5000",
     "ROOMS"            : "18000",
     "CLASSES"          : "13",
-    "LEVELS"           : "200",
+    "LEVELS"           : "220",
     "RACES"            : "8",
     "SKILLS"           : "170",
     "MULTICLASSING"    : "0",
@@ -114,10 +114,11 @@ private nosave mapping data = mindata + ([
     "HIRING BUILDERS"  : "1",
     "HIRING CODERS"    : "1",
     "CODEBASE-NOTES"         : "download daily snapshot of our public base "
-                               "mudlib at ftp://mg.mud.de/Software/MudLib/, "
-                               "get our driver at http://www.ldmud.eu/",
+                               "mudlib at https://mg.mud.de/gerrit/plugins/gitiles/mudlib-public/+/refs/heads/master, "
+                               "get our driver at http://www.ldmud.eu/; "
+                               "or ask in Morgengrauen if you have questions",
     "FAMILY-NOTES"           : "Descendant of Nightfall, base for several "
-                               "german MUDs, uses LDMud-3.5.x", 
+                               "german MUDs, uses LDMud-3.6.x", 
     "HELPFILES-NOTES"        : "each basic command, and hundreds of other docs",
     "MOBILES-NOTES"          : "npc's can be cloned, so there can be thousands",
     "OBJECTS-NOTES"          : "objects can be cloned, so there can be thousands",
