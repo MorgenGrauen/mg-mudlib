@@ -30,11 +30,11 @@ protected string list_ports() {
     MUDNAME" is a native German LPmud. It was founded in 1992 and has "\
     "been prospering since. The world features an original fantasy setting "\
     "with many facets. The 13 domains form a big world with 18000 rooms to "\
-    "explore and several thousand NPCs. You can choose between 7 races and "\
-    "10 classes (guilds). Advancing is done through a combination of "\
+    "explore and several thousand NPCs. You can choose between 8 races and "\
+    "13 classes (guilds). Advancing is done through a combination of "\
     "exploration points, experience points, class skills, finished "\
     "adventures and some more. The levels are not limited, current maximum "\
-    "is about 200. After becoming a high level player it's possible to "\
+    "is about 210. After becoming a high level player it's possible to "\
     "become a wizard and add your own imagination to the game. We are "\
     "especially proud of attracting a number of visually impaired players "\
     "who very much enjoy playing a text based online RPG. Thats why we have "\
@@ -61,13 +61,13 @@ private nosave mapping data = mindata + ([
     "CONTACT"          : "mud@mg.mud.de",
     "WEBSITE"          : "http://mg.mud.de/",
     "AREAS"            : "13",
-    "MOBILES"          : "2600",
-    "OBJECTS"          : "4000",
+    "MOBILES"          : "7000",
+    "OBJECTS"          : "5000",
     "ROOMS"            : "18000",
-    "CLASSES"          : "10",
+    "CLASSES"          : "13",
     "LEVELS"           : "200",
-    "RACES"            : "7",
-    "SKILLS"           : "140",
+    "RACES"            : "8",
+    "SKILLS"           : "170",
     "MULTICLASSING"    : "0",
     "PLAYERKILLING"    : "Restricted",
     "NEWBIE FRIENDLY"  : "1",
@@ -78,7 +78,7 @@ private nosave mapping data = mindata + ([
     "STATUS"           : "Live",
     "STATUS-NOTES"     : "live and running",
     "PORT-NOTES"       : "player ports are 23 and 4711, SSL port is 4712",
-    "QUEST-NOTES"      : "We have about 200 Quests and MiniQuests and "
+    "QUEST-NOTES"      : "We have about 270 Quests and MiniQuests and "
                          "they play an important role in gaining "
                          "levels and skills.",
     "MULTIPLAYING-NOTES"     : "for combat and quests only 2 characters may be active",
