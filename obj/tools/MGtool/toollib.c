@@ -139,6 +139,9 @@ string mixed_to_string(mixed mix, int lvl)
       return sprintf("%O", mix);
       case T_QUOTED_ARRAY:
       return "'"+mixed_to_string(funcall(lambda(0, mix)), lvl-1);
+      case T_BYTES:
+      case T_STRUCT:
+      return sprintf("%O",mix);
     }
   }
   return "...";
