@@ -271,9 +271,10 @@ varargs string finger_single(string str,int local)
        (member(tmp,getuid(this_player()))!=-1))) tmp = 1;
   else tmp=0;
 
-  string shell = master()->query_userlist(str, USER_OBJECT);
-  if (!(h=properties[P_RACE]) && sizeof(shell))
+  string shell=properties[P_RACE];
+  if (!stringp(shell))
   {
+    shell = master()->query_userlist(str, USER_OBJECT);
     shell = capitalize(explode(shell, "/")[3]);
     shell =(["Human":"Mensch","Dwarf":"Zwerg","Darkelf":"Dunkelelf",
              "Orc":"Ork"])[shell] || shell;
