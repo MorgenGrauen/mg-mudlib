@@ -3,15 +3,13 @@ getuuid()
 
 SYNOPSIS
 --------
-::
 
-    string getuuid(object ob)
+    string getuuid(object|string ob)
 
 DESCRIPTION
 -----------
-::
 
-    Liefert eine eindeutige (get unique uid) UID fuer einen Spieler.
+    Liefert eine eindeutige (get unique uid) UUID fuer einen Spieler.
     Wird zusammengesetzt aus der UID des Spielers und seinem
     Erstlogin-Datum.
 
@@ -21,11 +19,11 @@ DESCRIPTION
     Wenn die Funktion ohne Parameter aufgerufen wird, wird per Default
     this_object() genommen.
 
-    
+    Wird in <ob> ein string uebergeben, wird erwartet, dass es eine
+    Spieler-UID ist. 
 
 SEE ALSO
 --------
-::
 
-        getuid(E)
+        :doc:`../efun/getuid`
 
