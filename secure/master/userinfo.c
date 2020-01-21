@@ -450,7 +450,7 @@ public int find_userinfo(string user) {
 }
 
 // Daten aus der Userlist fuer diesen User liefern. Macht ggf. find_userinfo()
-public mixed *get_userinfo(string user) {
+public deprecated mixed *get_userinfo(string user) {
   if(!user||user=="")
     return 0;
   user=explode(user,".")[0];
