@@ -40,7 +40,7 @@ public varargs string getuuid( object|string ob )
   // unveraendert zurueckgeben.
   int creation = master()->query_userlist(uid, USER_CREATION_DATE);
 
-  if (creation)
+  if (!creation)
     return uid;
 
   // Username + "_" + CreationDate
