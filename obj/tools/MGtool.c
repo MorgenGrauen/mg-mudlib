@@ -998,22 +998,11 @@ static string PlayerRace(object obj, int flag)
 
 static string PlayerDomain(object obj, int flag)
 {
-  int i, s;
-  mixed *uinfo;
-  string *domains, pre;
-  
-  pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
+  string pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
   pre+="domainlord of: ";
-  uinfo=(mixed*)MASTER->get_userinfo(getuid(obj));
-  if(uinfo&&(domains=uinfo[3])&&(s=sizeof(domains)))
-  {
-    for(i=0; i<s; i++)
-    {
-      pre += CAP(domains[i]);
-      if(i<s-1)
-	pre += ", ";
-    }
-  }
+  string *domains = master()->query_userlist(getuid(obj),USER_DOMAIN);
+  if(sizeof(domains))
+    pre += CountUp(domains, ", ", ", ");
   return pre;
 }
 
