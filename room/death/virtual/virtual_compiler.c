@@ -26,11 +26,12 @@ void create()
 string Validate(string file) {
   string base, room, who;
 
- file = ::Validate(file);
- if(sscanf(file, "death_room_%s",who)!=1 ||
-    ((who[0..3]!="gast") &&
-    (!"/secure/master"->get_userinfo(who)))) return 0;
- return file;
+  file = ::Validate(file);
+  if(sscanf(file, "death_room_%s",who)!=1 ||
+     (who[0..3]!="gast" && !master()->find_userinfo(who)) )
+    return 0;
+
+  return file;
 }
 
 mixed CustomizeObject()
