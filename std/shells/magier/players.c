@@ -476,7 +476,6 @@ private string _spieler_time2string(int time)
 static int _spieler(string arg)
 {
   string dummy,ip;
-  object pl;
 
   arg=_unparsed_args();
   if(!sizeof(arg) || sscanf(arg,"aus ip %s",dummy)!=1)
@@ -497,8 +496,8 @@ static int _spieler(string arg)
     ip=arg;
 
   ip=implode((explode(ip,".")-({""})+({"*","*","*","*"}))[0..3],".");
-
-  if (catch(object *spieler=filter(users(),
+  object *spieler;
+  if (catch(spieler=filter(users(),
             function int (object u, string re) {
               return sizeof(regexp(({query_ip_number(u)}),re));
             } )))
@@ -519,10 +518,10 @@ static int _spieler(string arg)
               "Idle seit:\n"
        "----------------------------------------------------------------"
               "-----------\n",ip);
-  i=sizeof(spieler);
+
   foreach(object u: spieler)
   {
-    string second=spieler[i]->QueryProp(P_SECOND);
+    string second=u->QueryProp(P_SECOND);
     if (stringp(second) && sizeof(second))
     {
       if (!master()->find_userinfo(second))
@@ -535,8 +534,8 @@ static int _spieler(string arg)
 
     arg+=sprintf("%-11s %-17s %26s  %-15s\n",
                  capitalize(getuid(u)), second,
-                 dtime(spieler[i]->QueryProp(P_LAST_LOGIN)),
-                 _spieler_time2string(query_idle(spieler[i])));
+                 dtime(u->QueryProp(P_LAST_LOGIN)),
+                 _spieler_time2string(query_idle(u)));
   }
   arg+="==============================================================="
     "============\n\n";
