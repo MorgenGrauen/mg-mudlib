@@ -99,7 +99,7 @@ public int       find_userinfo(string user);
 protected mixed *get_full_userinfo(string user);
 public mixed    *get_userinfo(string user);
 public int       get_wiz_level(string user);
-public string    query_player_object( string name );
+public mixed     query_userlist(string user, int prop);
 public int       query_wiz_level(mixed player);
 int              update_wiz_level(string user,int lev);
 protected void   set_guilds(string player, string *guilds);

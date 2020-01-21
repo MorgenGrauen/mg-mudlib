@@ -467,12 +467,38 @@ public mixed *get_userinfo(string user) {
       userlist[user,USER_UIDS_TO_TAKE_CARE]});
 }
 
-// liefert das Objekt des users aus der Userlist zurueck.
-public string query_player_object( string name )
-{
-  mixed *userentry;
-  if( !find_userinfo(name) ) return "";
-  return userlist[name,USER_OBJECT];
+public mixed query_userlist(string user, int prop) {
+  if(!sizeof(user))
+    return 0;
+  user=explode(user,".")[0];
+  if (!member(userlist,user) && !find_userinfo(user))
+    return 0;
+  if (userlist[user,USER_LEVEL]==-1)
+    return 0;
+
+  switch(prop)
+  {
+    case USER_LEVEL:
+      return userlist[user,USER_LEVEL];
+    case USER_DOMAIN:
+      return userlist[user,USER_DOMAIN];
+    case USER_OBJECT:
+      return userlist[user,USER_OBJECT];
+    case USER_CREATION_DATE:
+      return userlist[user,USER_CREATION_DATE];
+    case USER_GUILD:
+      return userlist[user,USER_GUILD];
+    case USER_EKTIPS:
+      return userlist[user,USER_EKTIPS];
+    case USER_FPTIPS:
+      return userlist[user,USER_FPTIPS];
+    case USER_UIDS_TO_TAKE_CARE:
+      return userlist[user,USER_UIDS_TO_TAKE_CARE];
+    default:
+      raise_error(sprintf(
+        "Querying property %d in userlist is illegal.\n", prop));
+  }
+  return 0;
 }
 
 // Passwort ok?

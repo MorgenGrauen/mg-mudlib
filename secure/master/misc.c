@@ -590,7 +590,8 @@ int renew_player_object(string|object who)
   active=interactive(who);
   printf("OK, renewing %O\n",who);
   efun::configure_object(this_object(), OC_EUID, geteuid(who));
-  err=catch(newob=clone_object(query_player_object(getuid(who))); publish);
+  err=catch(newob=clone_object(query_userlist(getuid(who),USER_OBJECT));
+            publish);
   efun::configure_object(this_object(), OC_EUID, getuid(TO));
   if (err)
   {

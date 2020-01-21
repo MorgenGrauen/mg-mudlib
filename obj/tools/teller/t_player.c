@@ -21,11 +21,12 @@ _set_name( str ) { return name=str; }
 
 _query_race()
 {
-	if( race ) return race;
-		
-	return "/secure/master"
-		->query_player_object(lower_case(name))
-		->QueryProp(P_RACE);
+  if( race )
+    return race;
+  string shell = master()->query_userlist(lower_case(name), USER_OBJECT);
+  if (shell)
+    race = shell->QueryProp(P_RACE);
+  return race;
 }
 
 _query_hands()
