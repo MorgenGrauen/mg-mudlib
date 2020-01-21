@@ -607,12 +607,10 @@ protected void NotifyMove(object dest, object oldenv, int method)
     // erstmal beim Schrankmaster anmelden.
     SCHRANKMASTER->RegisterCnt(TO, QueryProp("cnt_version_std")
         +":"+QueryProp("cnt_version_obj"), uid, dest);
-    // UUID rausfinden
-    mixed ret = (mixed)master()->get_userinfo(uid);
-    if ( pointerp(ret) && sizeof(ret) >= 5 )
+    // wenn uid ein Spieler ist, dann SetBesitzer rufen.
+    if (master()->find_userinfo(uid))
     {
-      // Username + "_" + CreationDate
-      SetBesitzer(uid, ret[0] + "_" + ret[5]);
+      SetBesitzer(uid, getuuid(uid));
     }
     // else: User unbekannt? -> jedenfalls keine initialisierung moeglich.
   }
