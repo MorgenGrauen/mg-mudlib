@@ -1,5 +1,5 @@
 SYNOPSIS
-        closure lambda(mixed *arr, mixed);
+        closure lambda(mixed *arr, mixed)
 
 BESCHREIBUNG
         Erzeugt eine Lambda Closure, entsprechend den Lamda Closures in LISP.
@@ -10,19 +10,8 @@ BESCHREIBUNG
         beschreibt, die der Closure bei ihrer Auswertung durch funcall()
         oder apply() uebergeben werden.
 
-        Von der Verwendung wird aus Lesbarkeits- und Wartungsgruenden dringend
-        abgeraten.
-
-BEISPIEL
-        // Lambdas werden gern eingesetzt, um komplexere Filter zu schreiben
-        // Allerdings kann jede Lambda dabei auch durch eine Inline-Closure
-        // oder eine LFun-Closure ersetzt werden.
-        filter(users(), 
-          lambda(({'x}),
-                 ({#'==,
-                   ({#'call_other,'x,"QueryProp",P_SECOND}),"gloinson"
-                })));
+GESCHICHTE
+        Eingefuehrt in 3.2@70.
 
 SIEHE AUCH
-        Verwandt: unbound_lambda(E), apply(E), funcall(E), bind_lambda(E)
-        Generell: closures-abstract(LPC), closures(LPC)
+        closures(LPC), unbound_lambda(E), apply(E), funcall(E), bind_lambda(E)

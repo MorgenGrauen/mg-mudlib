@@ -1,33 +1,16 @@
-FUNKTION:
-        int get_eval_cost(void)
+SYNOPSIS
+        int get_eval_cost()
 
-BESCHREIBUNG:
+BESCHREIBUNG
         Liefert die noch verbleibenden Eval Kosten, die das momentane
         Kommando noch verbrauchen darf.
-        Der Maximalwert betraegt zur Zeit 1.500.000 Ticks (Stand: 2007). 
 
-        Sollten die Kosten bei der Ausfuehrung irgendwo groesser werden,
-        wird ein Fehler der Art "too long eval" erzeugt. Diese Funktion
-        dient dazu, solche Fehler genau zu lokalisieren bzw. 
-        herauszufinden, an welchen Stellen im Code wieviel Rechenzeit 
-        verbraucht wird.
-        
-BEISPIELE
-        void foo()
-        {
-          int prev, used, i;
-          
-          prev=get_eval_cost(); // Merken, was bis hierhin verbraucht wurde 
-          for (i=0;i<=1000;i++) // Dann kommt der zu testende Code, zB eine
-          {                     // Schleife
-            ...
-          }
-          used=prev-get_eval_cost(); // Berechnung der Differenz
-          printf("Die Schleife verbrauchte %d Ticks.\n", used);
-        }
+        Das Resultat beginnt bei einer hohen, vom Treiber festgelegten Zahl
+        und nimmt fuer jede ausgefuehrte Anweisung ab.
 
-SIEHE AUCH:
-        caller_stack_depth(E), rusage(E), command(E), query_limits(E)
-        Konstante: __MAX_EVAL_COST__
+GESCHICHTE
+        Der Anfangswert, also die vom Treiber zur Verfuegung gestellten Evals,
+            sind seit 3.2.6 in LDMud als Makro verfuegbar.
 
-4.Aug 2007 Gloinson
+SIEHE AUCH
+        rusage(E), command(E), query_limits(E)

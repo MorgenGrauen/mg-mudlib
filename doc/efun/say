@@ -1,11 +1,11 @@
 SYNOPSIS
-        void say(string str);
-        void say(string str, object exclude);
-        void say(string str, object *excludes);
+        void say(string str)
+        void say(string str, object exclude)
+        void say(string str, object *excludes)
 
-        void say(mixed *|mapping|struct|object msg);
-        void say(mixed *|mapping|struct|object msg, object exclude);
-        void say(mixed *|mapping|struct|object msg, object *excludes);
+        void say(mixed *|mapping|struct|object msg)
+        void say(mixed *|mapping|struct|object msg, object exclude)
+        void say(mixed *|mapping|struct|object msg, object *excludes)
 
 BESCHREIBUNG
         Es bestehen zwei Hauptanwendungen fuer say():
@@ -14,21 +14,22 @@ BESCHREIBUNG
         lebendigen Objekte im aktuellen Raum gesendet, ausser zum Objekt,
         das die Funktion aufgerufen hat.
 
-        Ist die Nachricht ein String, wird der Text an interaktive Objekte
-        direkt ausgegeben, fuer andere Objekte wird die lfun catch_tell()
-        in diesen aufgerufen.
-        Falls ein Lewebesen die Funktion catch_tell() definiert (-> shadow),
-        so wird der Text hier ausgewertet und nicht an den User ausgegeben.
+        Wenn das erste Argument ein nicht-String <msg> ist, wird die Lfun
+        catch_msg() in allen lebendigen Objekt im Raum aufgerufen, ausser im
+        Objekt, das say() aufgerufen hat. Der Wert <msg> wird als erstes
+        Argument an catch_msg() uebergeben, das aufrufende Objekt als zweites
+        Argument.
 
-        Wenn das zweite Argument, die Nachricht, kein String ist, wird in
-        allen Lebewesen, die den Text erhalten, catch_msg() anstatt
-        catch_tell() aufgerufen.
+        MERKE: Wenn die Lfun catch_msg() den Wert <msg> veraendert, erhalten
+        alle nachfolgenden Objekte das veraenderte <msg>.
 
-        Mit dem Array <*exclude> kann man verhindern, dass die Nachricht an
-        die darin enthaltenen Objekte gesendet wird. Der Sender muss nicht
-        noch einmal aufgefuehrt werden.
-        Das ist sinnvoll, wenn zB eine Spielergruppe Ausloeser einer Meldung
-        ist und diese selbst nicht erhalten soll.
+        Wird der Efun say() ein zweites Argument angegeben, kann man andere
+        Objekte als nur das aufrufende Objekt ausschliessen. Wenn das zweite
+        Argument ein einzelnes Objekt <exclude> ist, werden das aufrufende
+        Objekt und <exclude> von der Meldung ausgeschlossen. Wenn das zweite
+        Argument ein Array <excludes> ist, werden alle Objekte aus dieser
+        Liste zusaetzlich zum aufrufenden Objekt als Empfaenger von say()
+        ausgeschlossen.
 
         Das aufrufende Objekt wird nach folgenden Regeln bestimmt:
           - Wenn say() aus einem lebendigen Objekt aufgerufen wird, gilt
@@ -37,62 +38,61 @@ BESCHREIBUNG
             Handlung eines Benutzers aufgerufen wird (das heisst,
             this_player() ist gueltig), gilt this_player() als aufrufendes
             Objekt.
-          - In allen anderen Faellen (Aufruf aus reset zB) gilt das Objekt,
-            das say() aufgerufen hat, als aufrufendes Objekt.
-
-BEMERKUNGEN
-        - fuer laengere Meldungen sollte break_string() verwendet werden
-        - wird in einem catch_msg() der Wert von <msg> veraendert, erhalten
-          alle nachfolgenden Objekte das veraenderte <msg> (Referenz!)
-
-        - say(<str>) ist verhaltensgleich zu
-          tell_room(environment(), <str>, ({this_player()||this_object()}))
+          - In allen anderen Faellen gilt das Objekt, das say() aufgerufen
+            hat, als aufrufendes Objekt.
 
 BEISPIELE
-        // Folgende Aufrufe sind gleich, wenn sie durch ein Spielerkommando
-        // in einem nicht lebendigen Objekt aufgeloest werden:
+        Folgende Aufrufe sind gleich, wenn sie aus einem nicht lebendigen
+        Objekt aufgerufen werden:
 
             say("Hi!\n");
             say("Hi!\n", this_player());
 
-        // Das folgende Beispiel zeigt, wie say() zusammen mit catch_tell()
-        // funktioniert. Das zweite Objekt darf nicht lebendig sein, damit
-        // write() an den aktuellen Benutzer geht.
+        Das folgende Beispiel zeigt, wie say() zusammen mit catch_tell()
+        funktioniert. Das zweite Objekt darf nicht lebendig sein, sodass
+        write() an den aktuellen Benutzer geht.
 
         Objekt 1 (living):
-            void catch_tell(string str) {
+            void catch_tell(string str)
+            {
                 write("Empfangen: "+str+"\n");
             }
 
         Objekt 2 (nicht living):
-            void func() {
+            void func()
+            {
                 ...
                 say("HiHo!\n");
                 ...
             }
 
-        // Ein etwas komplexeres Beispiel zeigt das Zusammenspiel von say()
-        // und catch_msg(). Auch hier wird ein nicht-lebendiges Objekt
-        // verwendet, das die Nachricht ausgibt, sodass das 'wer' in
-        // catch_msg() auf den aktuellen Benutzer zeigt.
+        Ein etwas komplexeres Beispiel zeigt das Zusammenspiel von say()
+        und catch_msg(). Auch hier wird ein nicht-lebendiges Objekt
+        verwendet, das die Nachricht ausgibt, sodass das 'wer' in
+        catch_msg() auf den aktuellen Benutzer zeigt.
 
         Object 1 (living):
             void catch_msg(mixed *arr, object who) {
-                foreach(mixed element: arr)
-                    tell_object(who, sprintf("%O\n", element));
+                int i;
+                if (!arr) return;
+                for (i=0;i<sizeof(arr);i++)
+                    tell_object(who, (stringp(arr[i]) ? arr[i] : "-/-")+"\n");
             }
 
         Object 2 (nicht living):
             void func() {
                 ...
-                say( ({ "Hello", "there!" }) );
+                say(({ "Hello", "there!" }));
                 ...
             }
 
-SIEHE AUCH
-        Aehnlich:   tell_room(E), write(E), shout(E), tell_object(E),
-                    printf(E)
-        Verwandt:   catch_tell(E), catch_msg(A)
-        Sonstiges:  object_name(E)
+ANMERKUNGEN
+        Wenn die Lfun catch_msg() den Wert <msg> veraendert, erhalten alle
+        nachfolgenden Objekte das veraenderte <msg>.
 
-7.Aug 2007 Gloinson
+GESCHICHTE
+        LDMud 3.3.686 erlaubt die Verwendung eines mapping/struct/object als
+        zweites Argument.
+
+SIEHE AUCH
+        write(E), tell_object(E), tell_room(E)

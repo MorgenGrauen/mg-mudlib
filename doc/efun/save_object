@@ -1,10 +1,10 @@
 SYNOPSIS
-        int save_object(string name [, int format]);
-        string save_object([int format]);
+        int    save_object(string name [, int format])
+        string save_object([int format])
 
 BESCHREIBUNG
-        Codiert die speicherbaren (s.u.) Variablen des aktuellen Objekts in
-        einen String.
+        Codiert die speicherbaren Variablen des aktuellen Objekts in einen
+        String.
 
         In der ersten Form wir der String in die Datei <name> geschrieben. Eine
         Endung ".c" in <name> wird entfernt, dafuer kann eine Endung ".o"
@@ -24,23 +24,17 @@ BESCHREIBUNG
              0: das Originalformat nach Amylaar's LPMud und LDMud <=3.2.8
              1: LDMud >= 3.2.9: Non-Lambda Closures, Symbole und gequotete
                 Arrays koennen gespeichert werden
+             2: LDMUd >= 3.5.0: Gleitkommazahlen werden in einem neuen Format
+                geschrieben, welches kompakter ist die Gleitkommazahlen aus
+                3.5.x verlustfrei speichern kann.
+        
+        Es wird empfohlen, die Angabe des Formats wegzulassen oder in Version
+        2 (oder hoeher) zu speichern.
 
         Eine Variable wird als 'speicherbar' betrachtet, wenn sie nicht als
         'nosave' oder 'static' deklariert ist.
 
-        Bitte beachten, dass diese efun im MG durch eine Sefun ueberschrieben
-        wird und deren Manpage auch lesen!
-
-BEMERKUNGEN:
-        Damit ein Objekt in Verzeichnisse der Region/des Magiers schreiben
-        kann, muss es entsprechende Rechte, also eine gueltige EUID
-        besitzen. Im create() sollte daher ein:
-
-        seteuid(getuid(this_object()));
-
-        stehen.
-
-AENDERUNGEN
+GESCHICHTE
         Seit LDMud 3.2.8 liefert save_object() einen fixen Wert bei Erfolg.
         Das direkte Abspeichern in einen String wurde in LDMud 3.2.8
             eingefuehrt, wird aber in Zukunft eventuell in eine separate Efun
@@ -49,6 +43,7 @@ AENDERUNGEN
             Closures, Symbolen und gequoteten Arrays. Dazu wurde ein neues
             Format fuer die Speicherdatei eingefuehrt.
         LDMud 3.2.10 fuehrte das Argument <format> ein.
+        LDMud 3.5.0 fuehrte Formatversion 2 ein.
 
 SIEHE AUCH
-        restore_object(E), save_value(E), save_object (Sefun)
+        restore_object(E), save_value(E)

@@ -1,5 +1,5 @@
 SYNOPSIS
-        void raise_error(string arg);
+        void raise_error(string arg)
 
 BESCHREIBUNG
         Bricht die Ausfuehrung des laufenden Programms ab. Wenn das Programm
@@ -13,11 +13,6 @@ BESCHREIBUNG
         Da raise_error() sich wie andere 'echte' Laufzeitfehler verhaelt,
         einschliesslich der Erzeugung eines Stack Backtraces, ist diese
         Funktion sehr zeitintensiv.
-
-BEMERKUNGEN
-        Der String sollte umgebrochen oder wenigstens mit einem \n terminiert
-	werden, da die Ausgabe direkt an den interaktiven Magier erfolgen
-	kann bzw. auf dem Debug-Kanal das letzte Zeichen entfernt wird.
 
 SIEHE AUCH
         catch(E), throw(E)
