@@ -23,21 +23,28 @@ private void InitLivingData(mixed wizinfo) {
     netdead = wizinfo[NETDEAD_MAP] = ([]);
 }
 
-public varargs string getuuid( object ob )
+public varargs string getuuid( object|string ob )
 {
-  if ( !objectp(ob) )
-     ob = previous_object();
+  string uid;
+  if (stringp(ob))
+    uid = ob;
+  else
+  {
+    if ( !objectp(ob) )
+      ob = previous_object();
+    uid = getuid(ob);
+  }
 
-  if ( !query_once_interactive(ob) )
-     return getuid(ob);
+  // sollte <uid> kein Spieler-UID sein (keine Spieler-UID uebergeben oder
+  // !query_once_interactive(ob)), ist creation 0 und es wird die <uid>
+  // unveraendert zurueckgeben.
+  int creation = master()->query_userlist(uid, USER_CREATION_DATE);
 
-  int creation = master()->query_userlist(getuid(ob), USER_CREATION_DATE);
-
-  if (!intp(creation))
-     return getuid(ob);
+  if (creation)
+    return uid;
 
   // Username + "_" + CreationDate
-  return getuid(ob) + "_" + creation;
+  return uid + "_" + creation;
 }
 
 void set_object_living_name(string livname, object obj)
