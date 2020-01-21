@@ -201,8 +201,7 @@ static int _go_wiz_home(string str)
     move("/secure/merlin",M_TPORT|M_NOCHECK);
     return 1;
   }
-  if ((!call_other(master(),"get_userinfo",str))||
-      !IS_LEARNER(str))
+  if (!IS_LEARNER(str))
   {
     printf("Es gibt keinen Magier namens %s.\n",
            capitalize(str));
