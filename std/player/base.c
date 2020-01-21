@@ -2205,9 +2205,11 @@ private void updates_after_restore(int newflag) {
     size=RandomSize();
   Set(P_SIZE,size);
 
-  // Prop wird nicht mehr genutzt. TODO: irgendwann entfernen.
+  // Props werden nicht mehr genutzt. TODO: irgendwann entfernen, wenn
+  // sinnvoll oder Savefiles extern bereinigt.
   Set(P_SECOND_LIST, SAVE, F_MODE_AD);
   Set(P_SECOND_LIST, 0, F_VALUE);
+  Set("creation_date", SAVE|SECURED|PROTECTED, F_MODE_AD);
 }
 
 

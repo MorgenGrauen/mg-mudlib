@@ -942,16 +942,10 @@ static void load_player_ob_2( string obname, int guestflag )
   exec( ob, this_object() );
   ob->set_realip(realip);
   ob->start_player( cap_name );
-  //Hinweis: Das Spielerobjekt holt sich in updates_after_restore() von hier
-  //den Status von invis und setzt ggf. P_INVIS
+  // Hinweis: Das Spielerobjekt holt sich in updates_after_restore() von hier
+  // den Status von invis und setzt ggf. P_INVIS, ausserdem den Status der
+  // Telnet Negotiations.
 
-  // TODO: Prop rauswerfen und in Spielern SAVE entfernen, wenn die folgenden
-  // Verwendungen entsorgt sind:
-  // /d/wueste/hirudo/goldstrand/rooms/gefaengnis.c
-  // /d/inseln/tilly/feuerinsel/obj/formular.c
-  // /d/polar/files.chaos/tilly/obj/dose_obj.c
-  ob->SetProp( "creation_date", creation_date );
-  ob->Set( "creation_date", SAVE|SECURED|PROTECTED, F_MODE_AS );
   // wenn der Spieler noch nicht im Mud gespielt hat, wird die aktuelle Zeit
   // in die entsprechende Prop geschrieben. Die Prop ist transient und wird
   // absichtlich nicht gespeichert.
