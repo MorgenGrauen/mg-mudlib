@@ -105,8 +105,6 @@ string mixed_to_string(mixed mix, int lvl)
       default:
       case T_INVALID:
       return "<invalid>";
-      case T_STRUCT:
-      return to_string(mix);
       case T_LVALUE:
       return "&"+mixed_to_string(mix, lvl-1);
       case T_NUMBER:
