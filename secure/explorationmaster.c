@@ -103,8 +103,7 @@ private void check_player(string pl, mixed extra)
       || ({<int|string>})pldata->QueryProp(P_TESTPLAYER))
     return;
   // Wenn kein SPieler/Seher, sondern Magier: auch ueberspringen
-  mixed* uinfo = ({mixed*})master()->get_userinfo(pl);
-  if (uinfo[USER_LEVEL+1] >= LEARNER_LVL)
+  if (IS_LEARNER(pl))
     return;
 
   string eps=({string})master()->query_ep(pl) || "";

@@ -47,9 +47,9 @@ public int LoadPlayer(string name)
   if (query_wiz_level(getuid(previous_object())) < WIZARD_LVL)
     return 0;
 
-  mixed userinfo=MASTER->get_userinfo(name);
-  if (!pointerp(userinfo))
+  if (!master()->find_userinfo(name))
     return 0;
+
   // Wenn es das Spielerobjekt gibt, ist alles gut, dann fragen wir einfach
   // das.
   pl = find_player(name) || find_netdead(name);
