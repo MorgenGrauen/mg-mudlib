@@ -476,9 +476,8 @@ private string _spieler_time2string(int time)
 static int _spieler(string arg)
 {
   string dummy,ip;
-  object *spieler,pl;
-  int i;
-  
+  object pl;
+
   arg=_unparsed_args();
   if(!sizeof(arg) || sscanf(arg,"aus ip %s",dummy)!=1)
     return USAGE("spieler aus ip [von <spieler>|<ip>]");
@@ -486,23 +485,33 @@ static int _spieler(string arg)
   if (sscanf(arg,"von %s",dummy)==1)
   {
     dummy=lower_case(dummy);
-    if (!(pl=find_player(dummy)))
-      return notify_fail(sprintf("Spieler '%s' konnte nicht gefunden "
-                                 "werden.\n",capitalize(dummy))),0;
+    object pl = find_player(dummy);
+    if (!pl) {
+      notify_fail(sprintf("Spieler '%s' konnte nicht gefunden "
+                                 "werden.\n",capitalize(dummy)));
+      return 0;
+    }
     ip=query_ip_number(pl);
   }
-  else ip=arg;
-  ip=implode((explode(ip,".")-({""})+({"*","*","*","*"}))[0..3],".");
-if (catch(
-  spieler=filter(users(),
-    (: return sizeof(regexp(({query_ip_number($1)}),$2)); :),"^"+glob2regexp(ip)+"$")
+  else
+    ip=arg;
 
-                                      ))
-  return printf("In der IP duerfen nur Zahlen(0-255), Punkte (.) und "
-                "Sterne (*) vorkommen.\n"),1;
+  ip=implode((explode(ip,".")-({""})+({"*","*","*","*"}))[0..3],".");
+
+  if (catch(object *spieler=filter(users(),
+            function int (object u, string re) {
+              return sizeof(regexp(({query_ip_number(u)}),re));
+            } )))
+  {
+    printf("In der IP duerfen nur Zahlen(0-255), Punkte (.) und "
+                "Sterne (*) vorkommen.\n");
+    return 1;
+  }
+
   if (!sizeof(spieler))
     return printf("Es konnte kein Spieler mit der IP '%s' gefunden "
                   "werden.\n",ip),1;
+
   arg=sprintf("\nFolgende Spieler haben die IP %s:\n"
        "================================================================"
               "===========\n"
@@ -511,14 +520,21 @@ if (catch(
        "----------------------------------------------------------------"
               "-----------\n",ip);
   i=sizeof(spieler);
-  while(i--)
+  foreach(object u: spieler)
   {
+    string second=spieler[i]->QueryProp(P_SECOND);
+    if (stringp(second) && sizeof(second))
+    {
+      if (!master()->find_userinfo(second))
+        second = "*ungueltig*";
+      else
+        second = capitalize(second);
+    }
+    else
+      second = "";
+
     arg+=sprintf("%-11s %-17s %26s  %-15s\n",
-                 capitalize(getuid(spieler[i])),
-                 ((dummy=(string)spieler[i]->QueryProp(P_SECOND))?
-                  (sizeof((mixed *)call_other(master(),
-                                              "get_userinfo",dummy))?
-                   capitalize(dummy):"*ungueltig*"):""),
+                 capitalize(getuid(u)), second,
                  dtime(spieler[i]->QueryProp(P_LAST_LOGIN)),
                  _spieler_time2string(query_idle(spieler[i])));
   }
