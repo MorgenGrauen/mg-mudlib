@@ -16,7 +16,7 @@ int guild_master(string user, string guild)
   int i;
 
   if (!find_userinfo(user)||
-      !pointerp(guilds=get_userinfo(user)[USER_GUILD-1]))
+      !pointerp(guilds=query_userlist(user, USER_GUILD)))
     return 0;
   
   return (member(guilds,guild) != -1);
@@ -31,7 +31,7 @@ int add_guild_master(string user, string guild)
       !find_userinfo(user))
     return 0;
 
-  guilds=get_userinfo(user)[USER_GUILD-1];
+  guilds=query_userlist(user, USER_GUILD);
   if (!guilds)
     set_guilds(user, ({ guild }) );
   else {
@@ -47,7 +47,7 @@ int remove_guild_master(string user, string guild)
 
   if (!IS_GOD(geteuid(previous_object()))
       ||!find_userinfo(user)
-      ||!(guilds=get_userinfo(user)[USER_GUILD-1])
+      ||!(guilds=query_userlist(user, USER_GUILD))
       || member(guilds,guild)==-1)
     return 0;
   guilds -= ({ guild });

@@ -69,8 +69,7 @@ public void listen(string eid, object trigob, mixed data)
       && strstr(testie,"Gilde")==-1)
   {
     testie=lower_case(testie);
-    mixed plinfo = master()->get_userinfo(testie);
-    if (pointerp(plinfo))
+    if (master()->find_userinfo(testie))
     {
       sl_exec("INSERT OR REPLACE INTO testies(name, magier, lastlogin) "
               "VALUES(?1,?2,?3);",
@@ -84,14 +83,14 @@ public void listen(string eid, object trigob, mixed data)
   if (stringp(erstie))
   {
     erstie=lower_case(erstie);
-    mixed plinfo = master()->get_userinfo(erstie);
-    if (pointerp(plinfo))
+    if (master()->find_userinfo(erstie))
     {
       sl_exec("INSERT OR REPLACE INTO zweities(uuid, name, erstieuuid, erstie) "
               "VALUES(?1,?2,?3,?4);",
               getuuid(trigob),
               trigob->query_real_name(),
-              erstie + "_" + plinfo[USER_CREATION_DATE+1],
+              erstie + "_"
+                     + master()->query_userlist(erstie,USER_CREATION_DATE),
               erstie);
     }
     //ZDEBUG(sprintf("%O, %O, %O\n",eid,trigob,data));

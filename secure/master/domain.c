@@ -8,9 +8,9 @@ int domain_master(string user, string domain)
 {
   string *domains;
   int i;
-  
+
   if (!find_userinfo(user)||
-      !pointerp(domains=get_userinfo(user)[USER_DOMAIN+1]))
+      !pointerp(domains=query_userlist(user, USER_DOMAIN)))
     return 0;
   return (member(domains,domain) != -1);
 }
@@ -29,7 +29,7 @@ int add_domain_master(string user,string dom)
         call_other(SIMUL_EFUN_FILE, "secure_level") < GOD_LVL) ||
         !find_userinfo(user))
     return 0;
-  domains=get_userinfo(user)[USER_DOMAIN+1];
+  domains=query_userlist(user, USER_DOMAIN);
   if (!domains) 
     set_domains(user,({dom}));
   else
@@ -51,7 +51,7 @@ int remove_domain_master(string user,string dom)
 
   if (!IS_GOD(geteuid(previous_object()))
       ||!find_userinfo(user)
-      ||!(domains=get_userinfo(user)[USER_DOMAIN+1])
+      ||!(domains=query_userlist(user, USER_DOMAIN))
       || member(domains,dom)==-1)
     return 0;
   domains-=({dom});

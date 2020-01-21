@@ -117,7 +117,6 @@ string sponsoring(string name)
 
 varargs string finger_single(string str,int local)
 {
-  mixed  *userinfo;
   string ip,text,ipnum,filename,away;
   int wizlevel,playerlevel,idle,pos,flags,last;
   mixed h,data,tmp;
@@ -153,11 +152,10 @@ varargs string finger_single(string str,int local)
 
   /* does this player exist? */
   str=old_explode(str,".")[0];
-  userinfo=MASTER->get_userinfo(str);
   player=find_player(str)||find_netdead(str);
 
-  if( (!pointerp(userinfo) || userinfo[USER_LEVEL+1]==-1)
-	&& !player) {
+  if( (!master()->find_userinfo(str) && !player) )
+  {
     text="Hmm... diesen Namen gibt es im "MUDNAME" nicht.\n";
     if (tmp="/secure/master"->QueryBanished(str)){
       text="Hoppla - dieser Name ist reserviert oder gesperrt (\"gebanisht\")!\n";
@@ -273,16 +271,17 @@ varargs string finger_single(string str,int local)
        (member(tmp,getuid(this_player()))!=-1))) tmp = 1;
   else tmp=0;
 
-
-  if (!(h=properties[P_RACE]) && userinfo && pointerp(userinfo) && sizeof(userinfo)>4 &&
-      stringp(userinfo[4]) && sizeof(h=old_explode(userinfo[4],"/"))>2) {
-    h=capitalize(h[2]);
-    h=(["Human":"Mensch","Dwarf":"Zwerg","Darkelf":"Dunkelelf","Orc":"Ork"])[h] || h;
+  string shell = master()->query_userlist(str, USER_OBJECT);
+  if (!(h=properties[P_RACE]) && sizeof(shell))
+  {
+    shell = capitalize(explode(shell, "/")[3]);
+    shell =(["Human":"Mensch","Dwarf":"Zwerg","Darkelf":"Dunkelelf",
+             "Orc":"Ork"])[shell] || shell;
   }
 
-  if (!stringp(h)) h="<keine>";
-
-  text+="Rasse: "+h+",  Gilde: "+
+  if (!stringp(shell)) shell="<keine>";
+  int creation = master()->query_userlist(str, USER_CREATION_DATE);
+  text+="Rasse: "+shell+",  Gilde: "+
                      ((h=properties[P_VISIBLE_GUILD])?capitalize(h):((h=properties[P_GUILD])?capitalize(h):"Abenteurer"))+
                      ((h=properties[P_VISIBLE_SUBGUILD_TITLE])?" ("+capitalize(h)+")":((h=properties[P_SUBGUILD_TITLE])?" ("+capitalize(h)+")":""))+
                      ",  Geschlecht: "+({"neutral ?!","maennlich","weiblich","<verdammt seltsam>"})[properties[P_GENDER]]+"\n"+
@@ -292,9 +291,8 @@ varargs string finger_single(string str,int local)
                        ("Spielerlevel: "+properties[P_LEVEL]+( wizlevel ? " (Seher"+IN+")" : "" )+
                         (((h=properties[P_GUILD_LEVEL]) && h=h[properties[P_GUILD]]) ?
                          (",   Gildenlevel: "+h) : "" )
-                        ))+((userinfo&&pointerp(userinfo))?
-                        (sprintf("\nDatum des ersten Login: %s",
-                                 (userinfo[5] > 0) ? dtime(userinfo[5]) : "vor dem 10. Nov 1995")):"")+
+                        )) + ((sprintf("\nDatum des ersten Login: %s",
+                                 (creation > 0) ? dtime(creation) : "vor dem 10. Nov 1995")))+
                          (tmp ? ("\nE-Mail-Adresse: "+((h=properties[P_MAILADDR]) ? h : "keine")+"\n") : "\n");
 
   if (properties[P_HOMEPAGE])
@@ -384,21 +382,20 @@ varargs string finger_single(string str,int local)
     text+=capitalize(str)+" ist am "+dtime(hc_play)+" in das Nirvana eingegangen.\n";
   }
 
-  if (/*wiz && */userinfo) {
-    data=userinfo[3];
-    if (sizeof(data))
-      text+="Regionsmagier"+IN+" von     : "+implode(map(data,#'capitalize),", ")+".\n";
-    data="/secure/master"->get_domain_homes(str);
-data=filter(data-({"erzmagier"}),#'stringp); 
-    if ((wizlevel>=DOMAINMEMBER_LVL) && (sizeof(data)))
-      text+="Regionsmitarbeiter"+IN+" von: "+implode(map(data,#'capitalize),", ")+".\n";  /* #' */ 
-    }
+  data=master()->query_userlist(str, USER_DOMAIN);
+  if (sizeof(data))
+    text+="Regionsmagier"+IN+" von     : "
+          +implode(map(data,#'capitalize),", ")+".\n";
+  data="/secure/master"->get_domain_homes(str);
+  data=filter(data-({"erzmagier"}),#'stringp);
+  if ((wizlevel>=DOMAINMEMBER_LVL) && (sizeof(data)))
+    text+="Regionsmitarbeiter"+IN+" von: "
+          +implode(map(data,#'capitalize),", ")+".\n";
 
-  if (userinfo) {
-    data=userinfo[8];
+    data=master()->query_userlist(str, USER_GUILD);
     if (sizeof(data))
-      text += "Gildenmagier"+IN+" von      : "+implode(map(data, #'capitalize), ", ")+".\n";   /* #' */
-  }
+      text += "Gildenmagier"+IN+" von      : "
+              +implode(map(data, #'capitalize), ", ")+".\n";
 
   // ggf. Avatar-URI mit ausgeben.
   if (flags & FLAG_AVATAR

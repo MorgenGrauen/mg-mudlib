@@ -1,5 +1,7 @@
 // * living_name-Behandlung
 
+#include "/sys/userinfo.h"
+
 #define clean_log(s)
 //#define clean_log(s) log_file("CLEAN_SIM",ctime(time())[4..18]+": "+(s));
 
@@ -23,21 +25,19 @@ private void InitLivingData(mixed wizinfo) {
 
 public varargs string getuuid( object ob )
 {
-    mixed *ret;
+  if ( !objectp(ob) )
+     ob = previous_object();
 
-    if ( !objectp(ob) )
-       ob = previous_object();
+  if ( !query_once_interactive(ob) )
+     return getuid(ob);
 
-    if ( !query_once_interactive(ob) )
-       return getuid(ob);
+  int creation = master()->query_userlist(getuid(ob), USER_CREATION_DATE);
 
-    ret = master()->get_userinfo( getuid(ob) );
+  if (!intp(creation))
+     return getuid(ob);
 
-    if ( !pointerp(ret) || sizeof(ret) < 5 )
-       return getuid(ob);
-
-    // Username + "_" + CreationDate
-    return ret[0] + "_" + ret[5];
+  // Username + "_" + CreationDate
+  return getuid(ob) + "_" + creation;
 }
 
 void set_object_living_name(string livname, object obj)
