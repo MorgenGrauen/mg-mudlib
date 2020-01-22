@@ -33,10 +33,11 @@ public varargs string getuuid( object|string ob )
     if ( !objectp(ob) )
       ob = previous_object();
     uid = getuid(ob);
+    if (!query_once_interactive(ob))
+      return uid;
   }
 
-  // sollte <uid> kein Spieler-UID sein (keine Spieler-UID uebergeben oder
-  // !query_once_interactive(ob)), ist creation 0 und es wird die <uid>
+  // sollte <uid> kein Spieler-UID sein, ist creation 0 und es wird die <uid>
   // unveraendert zurueckgeben.
   int creation = master()->query_userlist(uid, USER_CREATION_DATE);
 
