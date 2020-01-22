@@ -38,41 +38,43 @@ RUeCKGABEWERT
    keiner
 
 
+HINWEISE
+========
+
+   Die genannte Funktion <fun> wird per call_other() an this_object()
+   gerufen, d.h. ihre Sichtbarkeit muss static oder public sein.
+
+
 BEISPIELE
 =========
 
    Wenn ein zufaellig ausgewaehlter Passagier eines Schiffes unterwegs
    seekrank werden soll, koennte man das wie folgt realisieren:
 
-   create()
-   {
+   protected void create() {
      ...
-
      AddFun("seekrank", 5);
      ...
    }
 
-   seekrank()
-   {
-     object *passagiere, opfer;
-
+   seekrank() {
      // soll nicht immer passieren
      if (random(5))
        return;
 
      // Opfer auswaehlen
-     passagiere = QueryPassengers();
+     object* passagiere = QueryPassengers();
+     object opfer;
      if (sizeof(passagiere))
        opfer = passagiere[random(sizeof(passagiere))];
 
-     // Und viel Spass...
      tell_object(opfer,
-       "Du wirst seekrank! Schnell stuerzt Du zur Reling um  Dich zu\n"
-      +"uebergeben.\n");
+       "Du wirst seekrank! Schnell stuerzt Du zur Reling, um Dich zu\n"
+       "uebergeben.\n");
      tell_room(this_object(),
-       sprintf("%s ueberkommt die Seekrankheit!\n%s stuerzt an die Reling, "
-              +"um sich zu uebergeben.\n",
-               capitalize(opfer->name(WEN)),
+       sprintf("%s ueberkommt die Seekrankheit!\n"
+               "%s stuerzt an die Reling, um sich zu uebergeben.\n",
+               opfer->Name(WEN),
                capitalize(opfer->QueryPronoun(WER))), ({ opfer }) );
    }
 
@@ -82,4 +84,4 @@ SIEHE AUCH
 
    AddRoute(), AddMsg(), /std/transport.c
 
-Last modified: Wed May 8 10:16:46 1996 by Wargon
+Last modified: 15.01.2020, Arathorn

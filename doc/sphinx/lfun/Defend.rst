@@ -158,12 +158,12 @@ BEISPIELE (SIEHE AUCH Defend_bsp)
   enem->Defend(100, ({DT_BLUDGEON}), ([SP_PHYSICAL_ATTACK:1]), this_object());
 
   // ein magischer Angriff (ohne Treffermeldung):
-  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_PHYSICAL_ATTACK:0]), 
-               this_object());
+  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), 
+        ([SP_PHYSICAL_ATTACK:0, SP_SHOW_DAMAGE:0 ]),this_object());
 
   // ein magischer Angriff mit Treffermeldung:
-  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), ([SP_SHOW_DAMAGE:1]),
-               this_object());
+  enem->Defend(100, ({DT_BLUDGEON, DT_FIRE}), 
+        ([SP_PHYSICAL_ATTACK:0, SP_SHOW_DAMAGE:1]), this_object());
 
 SIEHE AUCH
 ----------

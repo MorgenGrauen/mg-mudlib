@@ -39,7 +39,7 @@ BEISPIELE
      Treffermeldung und physischen Ruestungsschutz durchgeht.
      this_player()->Defend(random(500),
                            ({DT_PIERCE, DT_RIP}),
-                           ([SP_PHYSICAL_ATTACK: 0]),
+                           ([SP_PHYSICAL_ATTACK: 0, SP_SHOW_DAMAGE:0]),
                            this_object());
 
   4) Spell-Parameter
