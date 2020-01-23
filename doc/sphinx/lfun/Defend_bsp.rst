@@ -3,54 +3,62 @@ Defend_bsp()
 
 Defend() - BEISPIELE
 --------------------
-::
 
 FUNKTION
 --------
-::
 
      varargs int Defend(int dam, mixed dam_type, mixed spell, object enemy)
 
 BEMERKUNGEN
 -----------
-::
 
      Die hier aufgefuehrten Komplexbeispiele sind zum Verstaendnis gedacht.
 
 BEISPIELE
 ---------
-::
 
   1) Ein ordinaerer Biss ins Bein.
-     this_player()->Defend(random(500),
-                           ({DT_PIERCE, DT_RIP}),
-                           0,
-                           this_object());
+
+     .. code-block:: pike
+
+       this_player()->Defend(random(500),
+                             ({DT_PIERCE, DT_RIP}),
+                             0,
+                             this_object());
 
   2) Ein Biss ins Bein, mit der Hose als 200%ige Ruestung und Rest mit 100%.
-     this_player()->Defend(random(500),
-                           ({DT_PIERCE, DT_RIP}),
-                           ([SP_PHYSICAL_ATTACK: 1,
-                             SP_REDUCE_ARMOUR:   ([AT_TROUSERS: 200])
-                           ]),
-                           this_object());
+
+     .. code-block:: pike
+
+       this_player()->Defend(random(500),
+                             ({DT_PIERCE, DT_RIP}),
+                             ([SP_PHYSICAL_ATTACK: 1,
+                               SP_REDUCE_ARMOUR:   ([AT_TROUSERS: 200])
+                             ]),
+                             this_object());
 
   3) Der Biss, wenn ein Tier in die Hose gekrochen ist und dieser ohne
      Treffermeldung und physischen Ruestungsschutz durchgeht.
-     this_player()->Defend(random(500),
-                           ({DT_PIERCE, DT_RIP}),
-                           ([SP_PHYSICAL_ATTACK: 0, SP_SHOW_DAMAGE:0]),
-                           this_object());
+
+     .. code-block:: pike
+
+       this_player()->Defend(random(500),
+                             ({DT_PIERCE, DT_RIP}),
+                             ([SP_PHYSICAL_ATTACK: 0, SP_SHOW_DAMAGE:0]),
+                             this_object());
 
   4) Spell-Parameter
-     // Beispiel fuer einen Spell, der nur vom Helm normal und von einem
-     // Amulett mit 115% aufgehalten wird, alle anderen (angebenenen)
-     // Ruestungen haben 0% Schutzwirkung.
-     // Mit Ausgabe eigener Meldungen: beginnend mit -1, da der verursachte
-     // Schadenswert minimal 0 wird (fuers Ersetzen: Feind: @WEx2,
-     // Spieler: WEx1); maximal wird er (Empfindlichkeiten jetzt mal aussen
-     // vor) 49 (499/10 = 49), nicht 499!!!
-     this_player()->Defend(
+     Beispiel fuer einen Spell, der nur vom Helm normal und von einem
+     Amulett mit 115% aufgehalten wird, alle anderen (angebenenen)
+     Ruestungen haben 0% Schutzwirkung.
+     Mit Ausgabe eigener Meldungen: beginnend mit -1, da der verursachte
+     Schadenswert minimal 0 wird (fuers Ersetzen: Feind: @WEx2,
+     Spieler: WEx1); maximal wird er (Empfindlichkeiten jetzt mal aussen
+     vor) 49 (499/10 = 49), nicht 499!!!
+
+     .. code-block:: pike
+
+      this_player()->Defend(
        random(500),
        ({DT_PIERCE, DT_AIR}),
        ([SP_PHYSICAL_ATTACK: 1, // wegen DT_PIERCE
@@ -82,74 +90,97 @@ BEISPIELE
        ]),
        this_object());
 
-     // Etwas geschickter geht das Ganze, wenn wir einfach aus der Mudlib
-     // alle existierenden Ruestungen in ein Mapping packen und diese
-     // nullen (damit sind wir auch gegen neue Ruestungstypen sicher):
-     mapping amap = map_indices(VALID_ARMOUR_CLASS,#'!);
-     amap[AT_HELMET]=100;
-     amap[AT_AMULET]=115;
+     Etwas geschickter geht das Ganze, wenn wir einfach aus der Mudlib
+     alle existierenden Ruestungen in ein Mapping packen und diese
+     nullen (damit sind wir auch gegen neue Ruestungstypen sicher):
 
-     this_player()->Defend(random(500),
-                           ({DT_PIERCE, DT_AIR}),
-                           ([SP_PHYSICAL_ATTACK: 1,
-                             SP_REDUCE_ARMOUR: amap,
-                             SP_SHOW_DAMAGE: ({ ... (siehe oben)
+     .. code-block:: pike
+
+       mapping amap = map_indices(VALID_ARMOUR_CLASS,#'!);
+       amap[AT_HELMET]=100;
+       amap[AT_AMULET]=115;
+
+       this_player()->Defend(random(500),
+                             ({DT_PIERCE, DT_AIR}),
+                             ([SP_PHYSICAL_ATTACK: 1,
+                               SP_REDUCE_ARMOUR: amap,
+                               SP_SHOW_DAMAGE: ({ ... (siehe oben)
 
   5) Der Biss von weiter oben mit Meldung.
-     // Eine Meldung, die nur ausgegeben wird, wenn der Biss auch mindestens
-     // einen LP abzieht.
-     this_player()->Defend(random(500),
-                           ({DT_PIERCE, DT_RIP}),
-                           ([SP_PHYSICAL_ATTACK: 1,
-                             SP_REDUCE_ARMOUR:   ([AT_TROUSERS: 200]),
-                             SP_SHOW_DAMAGE: ({
-                               ({1,"@WER2 beisst Dich ins Bein!",
-                                   "Du beisst @WEN1 ins Bein!",
-                                   "@WER2 beisst @WEN1 ins Bein!"
-                                })           })
-                           ]),
-                           this_object());
+     Eine Meldung, die nur ausgegeben wird, wenn der Biss auch mindestens
+     einen LP abzieht.
+
+     .. code-block:: pike
+
+       this_player()->Defend(random(500),
+                             ({DT_PIERCE, DT_RIP}),
+                             ([SP_PHYSICAL_ATTACK: 1,
+                               SP_REDUCE_ARMOUR:   ([AT_TROUSERS: 200]),
+                               SP_SHOW_DAMAGE: ({
+                                 ({1,"@WER2 beisst Dich ins Bein!",
+                                     "Du beisst @WEN1 ins Bein!",
+                                     "@WER2 beisst @WEN1 ins Bein!"
+                                  })           })
+                             ]),
+                             this_object());
 
   6) DefendFunc() und Defend() in einem Objekt
-     6a)
-     // eine Luftangriffe reflektierende Ruestung:
-     int DefendFunc(string *dtyp, mixed spell, object enemy) {
-       if(member(dtyp, DT_AIR)>=0 && !spell[SP_RECURSIVE])
-         enemy->Defend(random(200),
-                       ({DT_AIR}),
-                       ([SP_RECURSIVE: 1,
-                         SP_SHOW_DAMAGE:
-                         ({"Ein Luftwirbel erfasst auch Dich.",
-                           "Deine Ruestung wirbelt @WEN1 herum.",
-                           "@WESSEN2 Ruestung wirbelt @WEN1 herum."
-                          })
-                       ]),
-                       QueryProp(P_WORN));
 
-       return 0; // -> In diesem Fall gibts keinen Ruestungsbonus!
-     }
+    a) eine Luftangriffe reflektierende Ruestung:
 
-     6b)
-     // Eine NUR REINE Luftangriffe reflektierende Ruestung:
-     int DefendFunc(string *dtyp, mixed spell, object enemy) {
-       if(!sizeof(dtyp-({DT_AIR})) && !spell[SP_RECURSIVE])
-         ...
+      .. code-block:: pike
+
+        int DefendFunc(string *dtyp, mixed spell, object enemy) {
+           if(member(dtyp, DT_AIR)>=0 && !spell[SP_RECURSIVE])
+             enemy->Defend(random(200),
+                           ({DT_AIR}),
+                           ([SP_RECURSIVE: 1,
+                             SP_SHOW_DAMAGE:
+                             ({"Ein Luftwirbel erfasst auch Dich.",
+                               "Deine Ruestung wirbelt @WEN1 herum.",
+                               "@WESSEN2 Ruestung wirbelt @WEN1 herum."
+                              })
+                           ]),
+                           QueryProp(P_WORN));
+
+           return 0; // -> In diesem Fall gibts keinen Ruestungsbonus!
+        }
+
+    b) Eine NUR REINE Luftangriffe reflektierende Ruestung:
+
+      .. code-block:: pike
+
+        int DefendFunc(string *dtyp, mixed spell, object enemy) {
+          if(!sizeof(dtyp-({DT_AIR})) && !spell[SP_RECURSIVE])
+          ...
 
 SIEHE AUCH
 ----------
-::
 
-     Angriff:   Attack(L), P_NO_ATTACK, InsertEnemy(L)
-     Schaden:   P_ENABLE_IN_ATTACK_OUT, P_LAST_MOVE, do_damage(L),
-                reduce_hit_points(L), reduce_spell_points(L)
-     Schutz:    P_DEFENDERS, InformDefend(L), DefendOther(L),
-                P_ARMOURS, P_AC, P_DEFEND_FUNC, QueryDefend(L),
-                P_BODY, A_DEX, Defend(L)
-     Daten:     P_LAST_COMBAT_TIME, P_LAST_XP, P_LAST_DAMAGE,
-                P_LAST_DAMTYPES, P_LAST_DAMTIME
-     Resistenz: P_RESISTANCE_STRENGTHS, CheckResistance(L)
-     Sonstiges: CheckSensitiveAttack(L), UseSkill(L),
-                InternalModifyDefend(L)
+  * Angriff:
+    :doc:`Attack`, :doc:`do_damage`, :doc:`InsertEnemy`,
+    :doc:`../props/P_NO_ATTACK`
 
-25. Mai 2011 Gabylon
+  * Schaden:
+    :doc:`reduce_hit_points`, :doc:`reduce_spell_points`,
+    :doc:`../props/P_ENABLE_IN_ATTACK_OUT`, :doc:`../props/P_LAST_MOVE`
 
+  * Schutz:
+    :doc:`InformDefend`, :doc:`DefendOther`, :doc:`QueryDefend`,
+    :doc:`Defend`,
+    :doc:`../props/P_DEFENDERS`, :doc:`../props/P_ARMOURS`,
+    :doc:`../props/P_AC`, :doc:`../props/P_DEFEND_FUNC`,
+    :doc:`../props/P_BODY`
+
+  * Resistenz:
+    :doc:`CheckResistance`, :doc:`../props/P_RESISTANCE_STRENGTHS`
+
+  * Daten:
+    :doc:`../props/P_LAST_COMBAT_TIME`, :doc:`../props/P_LAST_XP`,
+    :doc:`../props/P_LAST_DAMAGE`, :doc:`../props/P_LAST_DAMTYPES`,
+    :doc:`../props/P_LAST_DAMTIME`
+
+  * Sonstiges
+    :doc:`CheckSensitiveAttack`, :doc:`UseSkill`, :doc:`InternalModifyDefend`
+
+23.01.2020 Zesstra
