@@ -1,0 +1,53 @@
+
+MG-Manpages fuer efuns
+**********************
+
+Fuer einige efuns haben wir Ergaenzungen, Bemerkungen oder Beispiele
+zu den Manpages aus dem Driver erstellt. Diese sind im Folgenden zu
+finden.
+
+Verzeichnis der dokumentierten sefuns im Morgengrauen:
+
+* add_action(E)
+
+* all_inventory
+
+* call_out
+
+* count_bits
+
+* environment
+
+* file_size
+
+* filter
+
+* filter_objects
+
+* find_call_out
+
+* get_eval_cost
+
+* lambda
+
+* limited
+
+* map_objects
+
+* raise_error
+
+* BEISPIELE
+
+* replace_program
+
+* save_object
+
+* say
+
+* set_next_reset
+
+* sort_array
+
+* tell_room
+
+* walk_mapping

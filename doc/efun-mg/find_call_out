@@ -1,0 +1,33 @@
+
+find_call_out
+*************
+
+
+BEISPIELE
+=========
+
+      // Findet sich kein call_out auf die Funktion 'func', so kann er
+      // gestartet werden. (Wichtig falls der call_out nicht mehrfach
+      // aufgerufen werden soll).
+
+      if(find_call_out("func")==-1)
+        call_out("func",5);
+
+
+BEMERKUNGEN
+===========
+
+   Die Suche nach call_out()s auf Closures funktioniert nur, wenn der
+   genaue Wert der Closure gesucht wird.
+
+      // Das funktioniert:
+          closure cl = symbol_function("main", obj);
+          call_out(cl, 2);
+          find_call_out(cl);
+
+      // Das funktioniert nicht:
+          call_out(symbol_function("main", obj), 2);
+          find_call_out(symbol_function("main", obj));
+
+   Ein Codebeispiel, um alle call_out()s auf eine Funktion zu
+   entfernen, findet sich in der Manpage zu remove_call_out().

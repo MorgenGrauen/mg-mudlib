@@ -1,0 +1,26 @@
+
+BEISPIELE
+*********
+
+      // Einfache Abfrage z.B. aus der HitFunc einer Waffe:
+      if(random(101) >= 70)
+        return random(11);
+      else
+        return 0;
+
+      // Spieler soll in einen zufaellig ausgewaehlten Raum gemovt
+      // werden:
+      string *dest = ({ "raum1","raum2","raum3","raum4","raum5" });
+      this_player()->move(dest[random(sizeof(dest))],M_GO);
+
+      // Es soll eine zufaellige Meldung ausgegeben werden:
+      tell_object(this_player(),
+       ({ "Es knackt.\n", "Dir ist kalt.\n", "Du schwitzt.\n",
+          "Du bekommst Angst.\n", "Hinter Dir knackt es im Gebuesch.\n",
+          "Ein kuehler Wind kommt auf.\n" })[random(6)]);
+      // Hinweis: ist es nicht sehr effizient, dafuer staendig ein Array neu zu
+      // erzeugen.
+
+   Wie man sieht, gibt es fuer random() viele schoene Einsatz-
+   moeglichkeiten. Wobei letzteres Beispiel ueber AddRoomMessage (fuer
+   Raeume) viel einfacher umzusetzen ist.

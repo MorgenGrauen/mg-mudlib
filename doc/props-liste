@@ -798,6 +798,8 @@ Verzeichnis der dokumentierten Properties:
 
 * P_TEAM_WIMPY_ROW
 
+* P_TELNET_CHARSET
+
 * P_TELNET_KEEPALIVE_DELAY
 
 * P_TELNET_RTTIME

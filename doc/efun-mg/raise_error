@@ -1,0 +1,12 @@
+
+raise_error
+***********
+
+
+BEMERKUNGEN
+===========
+
+   Der String sollte umgebrochen oder wenigstens mit einem n
+   terminiert werden, da die Ausgabe direkt an den interaktiven Magier
+   erfolgen kann bzw. auf dem Debug-Kanal das letzte Zeichen entfernt
+   wird.

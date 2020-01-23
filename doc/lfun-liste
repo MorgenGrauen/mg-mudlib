@@ -850,6 +850,8 @@ Verzeichnis der dokumentierten lfuns
 
 * query_real_name()
 
+* query_userlist()
+
 * query_weight_contents()
 
 * reduce_hit_points()

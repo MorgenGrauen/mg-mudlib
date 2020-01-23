@@ -12,7 +12,7 @@ BEMERKUNGEN
   4. im init() spaeter eingetragene Kommandos oder spaeter hinzukommende
      Objekte werden bei der Kommandoauswertung VOR den alten beruecksichtigt.
      (Daher bewegt sich das Xtool der Magier regelmaessing neu in das
-      Inventory, um immer "erstes" Objekt zu sein.)
+     Inventory, um immer "erstes" Objekt zu sein.)
 
 BEISPIELE
 ---------
