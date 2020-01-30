@@ -3,70 +3,69 @@ PreventInsert()
 
 FUNKTION
 --------
-::
 
      int PreventInsert(object ob);
 
 DEFINIERT IN
 ------------
-::
 
      /std/container/restrictions.c
 
 ARGUMENTE
 ---------
-::
 
      ob
           Das Objekt, das in den Behaelter eingefuegt werden soll.
 
 BESCHREIBUNG
 ------------
-::
 
      Mit dieser Funktion kann ein Behaelter pruefen, ob er das Objekt ob
      aufnehmen moechte oder nicht.
 
-RUeCKGABEWERT
--------------
-::
-
-     0, wenn das Objekt aufgenommen werden kann; ein Wert groesser als 0
-     zeigt an, dass das Objekt nicht aufgenommen werden soll.
-
-BEMERKUNGEN
------------
-::
+     Man beachte bitte, dass nach dieser Funktion *nicht* garantiert ist,
+     dass das Objekt wirklich bewegt wird, es handelt sich lediglich um die
+     Abfrage der Erlaubnis! Die Bewegung kann aus einer Vielzahl an Gruenden
+     noch abgebrochen werden.
 
      Wenn ob mit dem Flag M_NOCHECK bewegt wird, wird PreventInsert() zwar
-     aufgerufen, das Objekt wird jedoch auf jeden Fall in den Behaelter
-     bewegt, unabhaengig vom Rueckgabewert!
+     aufgerufen, aber das Ergebnis ignoriert, d.h. die Aufnahme kann in dem
+     Fall nicht verhindert werden.
+
+RUeCKGABEWERT
+-------------
+
+     0
+       wenn das Objekt aufgenommen werden kann;
+     > 0
+       ein Wert groesser als 0 zeigt an, dass das Objekt nicht aufgenommen
+       werden soll.
 
 BEISPIELE
 ---------
-::
 
      Um zu verhindern, dass man Geld in einen Behaelter stecken kann, sollte
      man wie folgt vorgehen:
 
-     varargs int PreventInsert(object ob)
-     {
-       // Wenn es Geld ist, erheben wir sofort Einspruch
-       if (ob->id("geld"))
-         return 1;
-       // Ansonsten koennte ein ererbtes Objekt noch Einspruch erheben!
-       else
-         return ::PreventInsert(ob);
-     }
+     .. code-block:: pike
+
+       public int PreventInsert(object ob)
+       {
+         // Wenn es Geld ist, erheben wir sofort Einspruch
+         if (ob->id("geld"))
+           return 1;
+         // Ansonsten koennte ein ererbtes Objekt noch Einspruch erheben!
+         else
+           return ::PreventInsert(ob);
+       }
 
 SIEHE AUCH
 ----------
-::
 
-     PreventLeave(), NotifyInsert(), NotifyLeave(), MayAddObject(),
-     PreventInsertLiving(), PreventLeaveLiving(), NotifyMove(),
-     PreventMove(), MayAddWeight(), move(), /std/container/restrictions.c
+     :doc:`PreventLeave`, :doc:`NotifyInsert`, :doc:`NotifyLeave`,
+     :doc:`MayAddObject`, :doc:`MayAddWeight`, :doc:`PreventInsertLiving`,
+     :doc:`PreventLeaveLiving`, :doc:`NotifyMove`, :doc:`PreventMove`,
+     :doc:`move`, /std/container/restrictions.c
 
-
-Last modified: Sat Dec 18 02:00:00 1999 by Tiamak
+Last modified: 30.01.2020, Zesstra
 
