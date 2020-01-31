@@ -291,21 +291,6 @@ static int logon2( string str )
         return 0;
     }
 
-    // Unterstuetzung fuer das Mud Server Status Protocol
-    // (http://tintin.sourceforge.net/mssp/)
-#ifdef MSSP_SUPPORT
-    if (str == "MSSP-REQUEST") {
-      "/secure/misc/mssp"->print_mssp_response();
-      log_file( "MSSP.log", sprintf( "%s: %-15s (%s)\n",
-                                         strftime("%c"),
-                                         query_ip_number(this_object()),
-                                         query_ip_name(this_object())||"N/A" ) );
-      input_to("logon2", INPUT_PROMPT,
-          "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-      return 1;
-    }
-#endif
-
     if(strstr(str,SSL_GRRETING)==0)
     {
       if( member(PROXIES,query_ip_number(this_object()))>-1 )

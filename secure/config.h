@@ -28,9 +28,6 @@
 #  define SSLPORT 4714
 #endif
 
-// undef to disable MSSP support.
-#define MSSP_SUPPORT "MSSP-Plaintext"
-
 // undef to disable support for pure-ftpd virtual users
 #define _PUREFTPD_
 
