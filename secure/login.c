@@ -70,7 +70,7 @@ static void SendTelopts();
 public nomask string loginname();
 // the following 4 lfuns deal with real logins
 public nomask int logon();
-static int logon2( string str );
+static void logon2( string str );
 static int load_player_object( int guestflag );
 static void load_player_ob_2( string obname, int guestflag );
 static int check_illegal( string str );
@@ -280,7 +280,7 @@ static int valid_name( string str )
 }
 
 
-static int logon2( string str )
+static void logon2( string str )
 {
     int i, arg;
     mixed txt;
@@ -288,7 +288,7 @@ static int logon2( string str )
     if ( !str || str == "" ){
         write( "Abbruch!\n" );
         destruct( this_object() );
-        return 0;
+        return;
     }
 
     if(strstr(str,SSL_GRRETING)==0)
@@ -303,7 +303,7 @@ static int logon2( string str )
 
       input_to( "logon2", INPUT_PROMPT,
           "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-      return 1;
+      return;
     }
     
     if ( loginname != "logon" ) {
@@ -311,7 +311,7 @@ static int logon2( string str )
                                       "loginname = %O\n",
                                       dtime(time()), loginname ) );
         destruct( this_object() );
-        return 0;
+        return;
     }
 
     str = lower_case(str);
@@ -321,7 +321,7 @@ static int logon2( string str )
         cat( "/etc/WELCOME_NEW" );
         neu = 1;
         input_to( "logon2", INPUT_PROMPT, "Name: ");
-        return 1;
+        return;
     }
 
     if ( !valid_name(str) ){
@@ -332,7 +332,7 @@ static int logon2( string str )
             pr= "Bitte gib Dir einen anderen Namen: ";
 
         input_to( "logon2", INPUT_PROMPT, pr );
-        return 1;
+        return;
     }
 
     if ( sscanf( str, "gast%d", arg ) == 1 ){
@@ -358,7 +358,7 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-            return 1;
+            return;
         }
 
         for ( i = sizeof(user = users() - ({ 0, this_object() })); i--; )
@@ -366,15 +366,15 @@ static int logon2( string str )
                  ((string)user[i]->loginname()) == loginname ){
                 write( "Eine Anmeldung fuer diesen Namen laeuft bereits.\n" );
                 destruct( this_object() );
-                return 1;
+                return;
             }
 
         // Site-Banish checken
         if ( check_illegal(loginname))
-            return 1;
+            return;
 
         if ( check_too_many_from_same_ip() )
-            return 1;
+            return;
 
         /* new character */
         if ( sizeof(loginname) < 3 ){
@@ -382,7 +382,7 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Versuch einen anderen Namen: ");
-            return 1;
+            return;
         }
 
         
@@ -397,7 +397,7 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Bitte gib Dir einen anderen Namen: ");
-            return 1;
+            return;
         }
 
         /* Initialize the new secure savefile */
@@ -416,15 +416,15 @@ static int logon2( string str )
 
         input_to( "new_password", INPUT_NOECHO|INPUT_PROMPT,
             "Waehle ein Passwort: ");
-        return 1;
+        return;
     }
     else {
         if ( loginname == "gast" ){
             if ( check_illegal(loginname) )
-                return 1;
+                return;
 
             load_player_object(1);
-            return 1;
+            return;
         }
 
         if ( neu ){
@@ -432,7 +432,7 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Gib Dir einen anderen Namen: ");
-            return 1;
+            return;
         }
 
         if ( (int)master()->check_late_player(loginname) )
@@ -441,7 +441,7 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-            return 1;
+            return;
         }
 
         if ( txt = (string)master()->QueryTBanished(loginname) ){
@@ -449,12 +449,12 @@ static int logon2( string str )
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
                 "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-            return 1;
+            return;
         }
 
         if ( creation_date > (time() - 30*24*60*60)
              && check_too_many_from_same_ip() )
-            return 1;
+            return;
 
         write( "Schoen, dass Du wieder da bist, "+capitalize(loginname)+"!\n" );
 
@@ -462,12 +462,12 @@ static int logon2( string str )
             write( "Du hast KEIN PASSWORD!\n" );
             write( "Benutze den \"password\"-Befehl, um das zu aendern !\n" );
             load_player_object(0);
-            return 1;
+            return;
         }
 
         input_to( "check_password", INPUT_NOECHO|INPUT_PROMPT,
             "Passwort: ");
-        return 1;
+        return;
     }
 }
 
