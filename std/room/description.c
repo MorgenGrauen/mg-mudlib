@@ -19,8 +19,9 @@ inherit "/std/container/description";
 #include <wizlevels.h>
 #include <language.h>
 #include <doorroom.h>
+#include <room/description.h>
 
-void create()
+protected void create()
 {
   ::create();
   SetProp(P_NAME, "Raum");
@@ -194,10 +195,15 @@ varargs void exit(object liv, object dest) {
 static string _query_int_long() {return Query(P_INT_LONG, F_VALUE);}
 
 
-// Querymethode fuer P_DOMAIN - gibt die Region an, in der Raum liegt, sofern
-// er unter /d/ liegt...
+// Querymethode fuer P_DOMAIN - gibt die Region an, in der Raum liegt.
+// Automatisch ermittelt, sofern er unter /d/ liegt...
 static string _query_lib_p_domain()
 {
+  // Manuell gesetztes P_DOMAIN hat Prioritaet.
+  string domain = Query(P_DOMAIN, F_VALUE);
+  if (sizeof(domain))
+    return domain;
+
   string fn = object_name();
   if (strstr(fn, "/d/") == 0)
   {
