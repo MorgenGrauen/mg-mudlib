@@ -511,7 +511,7 @@ private void _std_re_handler_charset(struct telopt_s opt, int action,
   }
 }
 
-// Der Handler fuer die BINARY option, wenn sie auf/fuer unserere Seite
+// Der Handler fuer die CHARSET option, wenn sie auf/fuer unserere Seite
 // aktiviert/deaktivert wird.
 private void _std_lo_handler_charset(struct telopt_s opt, int action,
                                    int *data)
@@ -544,6 +544,58 @@ private void _std_lo_handler_charset(struct telopt_s opt, int action,
 #undef TTABLE-IS
 #undef TTABLE-REJECTED
 
+// Called from the telnetneg handler for TELOPT_STARTTLS to initiate the TLS
+// connection negotiation.
+protected void init_tls()
+{
+  // Dabei muss unser ganzer Telnet-Option-State muss zurueckgesetzt werden.
+  // Ja, wirklich! (Keine Sorge, der client muss das auch tun.)
+  TN = ([]);
+}
+
+#ifdef __TLS__
+// Der Handler fuer STARTTLS, wenn es auf der Clientseite
+// deaktiviert/aktiviert wird. Es wird nur auf der Clientseite aktiviert, der
+// Server darf kein WILL senden. Nach Aktivierung muessen wir ein FOLLOWS
+// senden.
+#define FOLLOWS 1
+private void _std_re_handler_starttls(struct telopt_s opt, int action,
+                                      int *data)
+{
+  DTN("starttls handler client",({action}));
+
+  // Wenn action == REMOTEON: Ab diesem Moment darf uns der Client einen
+  // STARTTLS FOLLOWS senden (weil wir haben ihm auch schon ein DO
+  // geschickt). Wir sollen ihm aber jetzt auch ein FOLLOWS senden. Sobald wir
+  // das gesendet haben und ein FOLLOWS erhalten haben, geht die Negotiation
+  // los.
+  if (action  == REMOTEON)
+  {
+    send_telnet_neg(({ SB, TELOPT_STARTTLS, FOLLOWS }));
+    opt->data = 1; // Nur ein Flag, dass wir es gesendet haben.
+  }
+  else if (action == REMOTEOFF)
+  {
+    // data zuruecksetzen, sonst muessen wir nix machen.
+    opt->data = 0;
+  }
+  else if (action == SB)
+  {
+    if (data[0] == FOLLOWS)
+    {
+      // FOLLOWS empfangen. Wenn wir noch kein FOLLOWS gesendet haben, tun wir
+      // das jetzt.
+      if (!opt->data)
+        send_telnet_neg(({ SB, TELOPT_STARTTLS, FOLLOWS }));
+      // Jetzt wird die Verhandlung auf unserer Seite gestartet, der Client
+      // macht das entweder schon oder spaetestens, wenn er unser FOLLOWS
+      // empfangen kann.
+      init_tls();
+    }
+  }
+}
+#undef FOLLOWS
+#endif // __TLS__
 
 // Bindet/registriert Handler fuer die jew. Telnet Option. (Oder loescht sie
 // auch wieder.) Je nach <initneg> wird versucht, die Option neu zu
@@ -593,6 +645,15 @@ protected int bind_telneg_handler(int option, closure re, closure lo,
 //            laufen.
 protected void SendTelopts()
 {
+#if __TLS__
+  // If this is a non-TLS-connection, we offer STARTTLS, but wait for the
+  // client to ask for it.
+  if (tls_available() && tls_query_connection_state() == 0)
+  {
+    bind_telneg_handler(TELOPT_STARTTLS, #'_std_re_handler_starttls,
+                        0, 0);
+  }
+#endif
   bind_telneg_handler(TELOPT_BINARY, #'_std_re_handler_binary,
                       #'_std_lo_handler_binary, 1);
   bind_telneg_handler(TELOPT_EOR, 0, #'_std_lo_handler_eor, 1);
@@ -604,12 +665,14 @@ protected void SendTelopts()
   // und auch CHARSET wird verzoegert bis das Spielerobjekt da ist.
 }
 
-
 // Bindet die Standardhandler _aus diesem_ Programm (und ueberschreibt dabei
 // ggf. andere). Hierbei werden nur die Handler neu gebunden, keine neuen
 // Verhandlungen initiiert.
 // gerufen aus base.c indirekt via startup_telnet_negs().
-protected void _bind_telneg_std_handlers() {
+protected void _bind_telneg_std_handlers()
+{
+  // BTW: es ist absicht, im Spielerobjekt keinen Support fuer STARTTLS mehr
+  // anzubieten.
   bind_telneg_handler(TELOPT_BINARY, #'_std_re_handler_binary,
                       #'_std_lo_handler_binary, 0);
   bind_telneg_handler(TELOPT_EOR, 0, #'_std_lo_handler_eor, 0);

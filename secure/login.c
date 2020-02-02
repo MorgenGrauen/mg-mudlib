@@ -33,9 +33,11 @@
 #include <properties.h>
 #include <moving.h>
 #include "/secure/wizlevels.h"
+
 #include <telnet.h>
 #include <defines.h>
 #include <input_to.h>
+#include <configuration.h>
 
 inherit "/secure/mini_props.c";
 inherit "/secure/telnetneg.c";
@@ -135,33 +137,95 @@ static int check_too_many_logons()
         return 0;
 }
 
+// Callback when a TLS connection negotiation was finished. This handler is
+// called for negotiations startet by the telnet option START_TLS.
+protected void tls_init_callback(int handshake_result)
+{
+  if (handshake_result < 0)
+  {
+    // Fehler im Vebindungsaufbau
+    write(break_string(sprintf(
+           "Can't establish a TLS/SSL encrypted connection: %s."
+           "Disconnecting now. If this error persists, please "
+           "disable the usage of TLS or STARTTLS in your client.",
+           tls_error(handshake_result)),78));
+    // Disconnect
+    destruct(this_object());
+    return;
+  }
+  // In this case, we will treat the newly negotiated TLS connection as as new
+  // connection and just start over again by calling logon(). And re-enable
+  // the telnet machine of the driver of course.
+  configure_interactive(this_object(), IC_TELNET_ENABLED, 1);
+  logon();
+}
+
+// Called from the telnetneg handler for TELOPT_STARTTLS to initiate the TLS
+// connection negotiation.
+protected void init_tls()
+{
+  ::init_tls();
+  configure_interactive(this_object(), IC_TELNET_ENABLED, 0);
+  tls_init_connection(this_object(), #'tls_init_callback);
+}
+
+// Wenn der Client via STARTTLS eine TLS negotiation angestossen hat und
+// die noch laeuft, darf keine Ausgabe erfolgen. In diesem Fall wird das
+// Loginverfahren ausgesetzt, bis die TLS-Verhandlung abgeschlossen ist.
+// Danach wird es fortgesetzt bzw. neugestartet. Dies gilt auch fuer Fall,
+// dass STARTTLS verhandelt wurde, aber die TLS-Verhandlung noch nicht
+// laeuft. (Bemerkung: beides pruefen ist nicht ueberfluessig. Den Zustand
+// der Telnet-Option muss man pruefen, weil der Client evtl. seine
+// Verhandlung noch nicht signalisiert hat (FOLLOWS vom Client) und die
+// efun muss man pruefen, weil nach Empfang von FOLLOWS vom Client der
+// Status der Telnet-Optiosn resettet wurde - standardkonform.)
+private int check_tls_negotiation()
+{
+  struct telopt_s s_tls = query_telnet_neg()[TELOPT_STARTTLS];
+  if (tls_query_connection_state(this_object()) < 0
+      || (structp(s_tls) && s_tls->state->remoteside) )
+    return 1;
+
+  return 0;
+}
 
 /*
  * This is the function that gets called by /secure/master for every user
  */
 public nomask int logon()
 {
+    set_next_reset(300); // Timeout fuer Loginverfahren
     loginname = "logon";
     newbie=0;
     realip="";
 
-    // als erstes wird ein Lookup gemacht, ob die Quelladresse ein
-    // Tor-Exitnode ist, der erlaubt, zu uns zu kommunizieren. Das Lookup ist
-    // asynchron und braucht eine Weile, wenn das Ergebnis noch nicht gecacht
-    // ist. An dieser Stelle wird das Ergebnis nicht ausgewertet. Achja, wie
+    SendTelopts();
+    // In theory, we should not send anything if SendTelops() offers
+    // TELOPT_STARTTLS. However, some clients to not answer unknown telnet
+    // options and it would introduce a delay in any case. Therefore we send
+    // the welcome message anway, unless we received a WILL from the Client.
+
+    // Es wird ein Lookup gemacht, ob die Quelladresse ein Tor-Exitnode ist,
+    // der erlaubt, zu uns zu kommunizieren. Das Lookup ist asynchron und
+    // braucht eine Weile, wenn das Ergebnis noch nicht gecacht ist.
+    // An dieser Stelle wird das Ergebnis nicht ausgewertet. Achja, wie
     // machen das natuerlich nicht fuer die IP vom Mudrechner...
     if (query_ip_number(this_object()) != "87.79.24.60")
     {
-      "/p/daemon/dnslookup"->check_tor(query_ip_number(this_object()),query_mud_port());
+      "/p/daemon/dnslookup"->check_tor(query_ip_number(this_object()),
+          query_mud_port());
       "/p/daemon/dnslookup"->check_dnsbl(query_ip_number(this_object()));
     }
+
+    // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden.
+    if (check_tls_negotiation())
+      return 1; // Verbindung behalten
+
     printf("HTTP/1.0 302 Found\n"
          "Location: http://mg.mud.de/\n\n"
          "NetCologne, Koeln, Germany. Local time: %s\n\n"
          MUDNAME" LDmud, NATIVE mode, driver version %s\n\n",
          strftime("%c"), __VERSION__);
-
-    SendTelopts();
 
     if ( check_too_many_logons() ){
         destruct(this_object());
@@ -169,13 +233,13 @@ public nomask int logon()
     }
 
     // ist die Verbindung schon wieder weg?
-    if (objectp(this_object()) && interactive(this_object())) {
-      cat( "/etc/WELCOME" );
-    }
+    if (!objectp(this_object()) || !interactive(this_object()))
+      return 0;
 
+
+    cat( "/etc/WELCOME" );
     input_to( "logon2", INPUT_PROMPT,
         "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
-    set_next_reset(300);
     return 1;
 }
 
@@ -278,7 +342,6 @@ static int valid_name( string str )
 
     return 1;
 }
-
 
 static void logon2( string str )
 {
