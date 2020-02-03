@@ -680,7 +680,7 @@ protected void SendTelopts()
   if (tls_available() && tls_query_connection_state() == 0)
   {
     bind_telneg_handler(TELOPT_STARTTLS, #'_std_re_handler_starttls,
-                        0, 0);
+                        0, 1);
   }
 #endif
   bind_telneg_handler(TELOPT_BINARY, #'_std_re_handler_binary,
