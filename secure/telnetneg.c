@@ -138,7 +138,8 @@ protected varargs int send_telnet_neg(int *arr, int bm_flags)
     return efun::binary_message(arr, bm_flags);
 }
 
-protected varargs int send_telnet_neg_str(bytes str, int bm_flags) {
+protected varargs int send_telnet_neg_str(bytes str, int bm_flags)
+{
 #ifdef __DEBUG__
     // Debugausgaben zur Zeit nur fuer arraybasierte Variante
     return send_telnet_neg(to_array(str), bm_flags);
@@ -171,6 +172,28 @@ protected varargs int send_telnet_neg_str(bytes str, int bm_flags) {
 #endif // __DEBUG__
 }
 
+// Wenn der Client via STARTTLS eine TLS negotiation angestossen hat und
+// die noch laeuft, darf keine Ausgabe erfolgen. In diesem Fall wird das
+// Loginverfahren ausgesetzt, bis die TLS-Verhandlung abgeschlossen ist.
+// Danach wird es fortgesetzt bzw. neugestartet. Dies gilt auch fuer Fall,
+// dass STARTTLS verhandelt wurde, aber die TLS-Verhandlung noch nicht
+// laeuft. (Bemerkung: beides pruefen ist nicht ueberfluessig. Den Zustand
+// der Telnet-Option muss man pruefen, weil der Client evtl. seine
+// Verhandlung noch nicht signalisiert hat (FOLLOWS vom Client) und die
+// efun muss man pruefen, weil nach Empfang von FOLLOWS vom Client der
+// Status der Telnet-Optiosn resettet wurde - standardkonform.)
+protected int check_tls_negotiation()
+{
+  struct telopt_s s_tls = TN[TELOPT_STARTTLS];
+  if (tls_query_connection_state(this_object()) < 0
+      || (structp(s_tls) && s_tls->state->remoteside) )
+  {
+    debug_message("In TLS negotiation.\n");
+    return 1;
+  }
+  return 0;
+}
+
 // Startet eine Verhandlung, um den Status einer Option zu aendern.
 // Wenn bereits eine Verhandlung laeuft, wird nichts gemacht und -1
 // zurueckgeben.
@@ -182,6 +205,12 @@ protected varargs int send_telnet_neg_str(bytes str, int bm_flags) {
 //           DO  : Option soll auf der anderen Seite eingeschaltet werden.
 //           DONT: Option soll auf der anderen Seite ausgeschaltet werden.
 protected int do_telnet_neg(int option, int action) {
+
+  // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden. In
+  // dem Fall nix verhandeln/senden, was nicht STARTTLS ist.
+  if (option != TELOPT_STARTTLS && check_tls_negotiation())
+    return 0;
+
   struct telopt_s opt = TN[option];
   if (!structp(opt))
   {
@@ -734,6 +763,11 @@ void
 telnet_neg(int command, int option, int *optargs)
 {
     DTN("recv_tn: ", ({IAC, command, option}) + (optargs||({})));
+
+    // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden. In
+    // dem Fall muessen wir alles ignorieren, was nicht STARTTLS ist.
+    if (option != TELOPT_STARTTLS && check_tls_negotiation())
+      return;
 
     struct telopt_s opt = TN[option];
     if (!structp(opt))

@@ -169,26 +169,6 @@ protected void init_tls()
   tls_init_connection(this_object(), #'tls_init_callback);
 }
 
-// Wenn der Client via STARTTLS eine TLS negotiation angestossen hat und
-// die noch laeuft, darf keine Ausgabe erfolgen. In diesem Fall wird das
-// Loginverfahren ausgesetzt, bis die TLS-Verhandlung abgeschlossen ist.
-// Danach wird es fortgesetzt bzw. neugestartet. Dies gilt auch fuer Fall,
-// dass STARTTLS verhandelt wurde, aber die TLS-Verhandlung noch nicht
-// laeuft. (Bemerkung: beides pruefen ist nicht ueberfluessig. Den Zustand
-// der Telnet-Option muss man pruefen, weil der Client evtl. seine
-// Verhandlung noch nicht signalisiert hat (FOLLOWS vom Client) und die
-// efun muss man pruefen, weil nach Empfang von FOLLOWS vom Client der
-// Status der Telnet-Optiosn resettet wurde - standardkonform.)
-private int check_tls_negotiation()
-{
-  struct telopt_s s_tls = query_telnet_neg()[TELOPT_STARTTLS];
-  if (tls_query_connection_state(this_object()) < 0
-      || (structp(s_tls) && s_tls->state->remoteside) )
-    return 1;
-
-  return 0;
-}
-
 /*
  * This is the function that gets called by /secure/master for every user
  */
@@ -347,6 +327,10 @@ static void logon2( string str )
 {
     int i, arg;
     mixed txt;
+
+    // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden.
+    if (check_tls_negotiation())
+      return;
 
     if ( !str || str == "" ){
         write( "Abbruch!\n" );
