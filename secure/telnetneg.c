@@ -1041,7 +1041,7 @@ void print_prompt(string prompt) {
     tell_object(this_object(), prompt);
     // Und EOR senden, falls vom Client gewuenscht.
     struct telopt_s opt = TN[TELOPT_EOR];
-    if (opt->state->localside == 1)
+    if (structp(opt) && opt->state->localside == 1)
     {
         binary_message(({IAC, EOR}), 1);
         DTN("tn_eor ",({IAC,EOR}));
