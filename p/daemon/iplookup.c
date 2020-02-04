@@ -63,7 +63,7 @@ public void update( string udp_reply );
 
 // IMPLEMENTATION
 
-public void create() {
+protected void create() {
 	seteuid(getuid());
 	restore_object( IPLOOKUP_SAVE );
 
@@ -136,7 +136,7 @@ static void make_request( string ipnum ) {
  * @return den Ort (oder das Land) in dem sich die ip-adresse
  * laut externem Server befindet.
  */
-public string country( mixed ipnum ) {
+public string country( string|object ipnum ) {
 	string host,city;
 	int expire,state;
 
@@ -160,7 +160,7 @@ public string country( mixed ipnum ) {
  * @return den Hostnamen der zu der angegebenen ip-adresse gehoert.
  * wenn der hostname nicht bekannt ist, wird die ipadresse zurueckgegeben.
  */
-public string host( mixed ipnum ) {
+public string host( string|object ipnum ) {
 	string host,city;
 	int expire,state;
 

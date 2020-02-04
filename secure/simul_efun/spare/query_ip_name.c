@@ -35,7 +35,7 @@ string query_ip_number(object ob)
   return _query_ip_number(ob);
 }
 
-string query_ip_name(mixed ob)
+public string query_ip_name(string|object ob)
 {
   if ( !ob || objectp(ob) )
       ob=query_ip_number(ob);
