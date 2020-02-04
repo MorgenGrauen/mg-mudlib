@@ -53,13 +53,8 @@ private mapping ipmap;
 #endif
 
 // PROTOTYPES
-
-public void create();
-public void reset();
-static int active_entry( string key, mixed* data );
 static void expire_cache_small();
 static void expire_cache_large( string* keys );
-public void update( string udp_reply );
 
 // IMPLEMENTATION
 
