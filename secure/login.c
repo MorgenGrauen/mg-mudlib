@@ -177,7 +177,7 @@ public nomask int logon()
     set_next_reset(300); // Timeout fuer Loginverfahren
     loginname = "logon";
     newbie=0;
-    realip="";
+    realip=0;
 
     SendTelopts();
     // In theory, we should not send anything if SendTelops() offers
@@ -264,7 +264,8 @@ static int check_illegal( string str )
     if (!res)
     {
       // check connection from Tor exit node
-      string eff_ip = (realip!="" ? realip : query_ip_number(this_object()));
+      string eff_ip = (sizeof(realip) ? realip
+                                      : query_ip_number(this_object()));
       if ("/p/daemon/dnslookup"->check_tor(eff_ip, query_mud_port())
           || "/p/daemon/dnslookup"->check_dnsbl(eff_ip))
         res = 
@@ -997,7 +998,6 @@ protected void create()
     creation_date = -1;
     catch( load_object( "/secure/merlin");publish );
     loginfails = 0;
-    realip="";
     if (clonep())
       set_next_reset(900);
     else
@@ -1149,9 +1149,9 @@ static mixed new_load_player_ob_2( string obname )
     return ob;
 }
 
-string query_realip()
+public string query_realip()
 {
-  return realip ? realip : "";
+  return realip ? realip : 0;
 }
 
 int query_invis()

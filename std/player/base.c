@@ -85,7 +85,7 @@ int hc_play;
 
 private nosave mapping autoload_rest;
 private nosave string  *autoload_error;
-private nosave string realip; 
+private nosave string realip;
 
 // HB-Zaehler. Wenn 0 erreicht wird, wird  ein Telnet TM Paket als Keep-Alive
 // an den Client gesendet und der Counter wieder auf hochgesetzt. 
@@ -259,8 +259,6 @@ protected void create()
   Set(P_TELNET_CHARSET, PROTECTED|SAVE, F_MODE_AS);
 
   AddId("Interactive");
-
-  realip="";
 }
 
 // ACHTUNG: Falls hier mal sonst noch weitere Resets geerbt werden, muss das
@@ -4509,17 +4507,19 @@ static mixed _set_fraternitasdonoarchmagorum(mixed arg)
   return Set(P_FAO,arg);
 }
 
-nomask void set_realip(string str)
+nomask public string set_realip(string str)
 {
-  if(previous_object() && strstr(object_name(previous_object()),"/secure")==0)
+  if(previous_object()
+     && strstr(object_name(previous_object()),"/secure")==0)
   {
     realip=str;
   }
+  return realip;
 }
 
-nomask string query_realip()
+nomask public string query_realip()
 {
-  return realip ? realip : "";
+  return realip ? realip : 0;
 }
 
 mixed _query_netdead_env() {

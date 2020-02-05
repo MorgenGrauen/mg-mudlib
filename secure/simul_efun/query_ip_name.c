@@ -37,7 +37,7 @@ public string query_ip_number(object ob)
   if(objectp(ob) && interactive(ob))
   {
     string realip = ob->query_realip();
-    if (sizeof(ob->query_realip()))
+    if (sizeof(realip))
     {
       return realip;
     }
