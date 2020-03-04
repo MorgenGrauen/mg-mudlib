@@ -108,8 +108,8 @@ void Identify( object ob )
     SetProp( P_MAX_HP, to_int(funcall(cl, P_MAX_HP))    );
     SetProp( P_RACE,   to_string(funcall(cl, P_RACE))   );
     SetProp( P_CLASS,  (string *)(funcall(cl, P_CLASS)) );
-    SetProp( P_HANDS,  (mixed *) funcall(cl, P_HANDS)   );
-    SetProp( P_WEIGHT, (mixed *) funcall(cl, P_WEIGHT)  );
+    SetProp( P_HANDS,  ({<int|string|string*>*}) funcall(cl, P_HANDS)   );
+    SetProp( P_WEIGHT, ({int}) funcall(cl, P_WEIGHT)  );
     SetProp( P_ALIGN,  to_int(funcall(cl, P_ALIGN))     );
     SetProp( P_ORIG_FILE_NAME, object_name(ob)          );
     SetProp( P_HEAL,   to_int(funcall(cl, P_HEAL))      );
