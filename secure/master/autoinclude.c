@@ -9,7 +9,7 @@
 // fuer alte Homemuds...
 #if __VERSION__ >= "3.5.0"
 #define RTTCHECKS PRAGMA("rtt_checks")
-#define DEFAULTS PRAGMA("save_types, no_warn_empty_casts")
+#define DEFAULTS PRAGMA("save_types")
 #else
 #define RTTCHECKS ""
 #define DEFAULTS PRAGMA("combine_strings, verbose_errors, warn_deprecated")
