@@ -92,22 +92,22 @@ void Identify( object ob )
 
     spielerleiche = query_once_interactive(ob);
     cl=symbol_function("QueryProp", ob);
-    _name = (string) ob->name(WESSEN,0);
+    _name = ({string}) ob->name(WESSEN,0);
     SetProp( P_SHORT, "Die Leiche "+ _name );
     SetProp( P_LONG, "Du siehst die sterblichen Ueberreste "+ _name + ".\n" );
     _decay = 4;
     SetProp( P_ORIG_NAME, to_string(ob->name(RAW))      );
     SetProp( P_PILE_NAME, to_string(ob->name(WEM))      );
     AddId( "\nleiche "+ QueryProp(P_PILE_NAME)          );
-    SetProp( P_KILLER,        (object)   funcall(cl, P_KILLER)        );
-    SetProp( P_ATTRIBUTES,    (mapping)  funcall(cl, P_ATTRIBUTES)    );
-    SetProp( P_LAST_DAMTYPES, (string *) funcall(cl, P_LAST_DAMTYPES) );
+    SetProp( P_KILLER, ({<object|string>})funcall(cl, P_KILLER));
+    SetProp( P_ATTRIBUTES,    ({mapping})funcall(cl, P_ATTRIBUTES));
+    SetProp( P_LAST_DAMTYPES, ({string*})funcall(cl, P_LAST_DAMTYPES) );
     SetProp( P_XP,     to_int(funcall(cl, P_XP))        );
     SetProp( P_SIZE,   to_int(funcall(cl, P_SIZE))      );
     SetProp( P_LEVEL,  to_int(funcall(cl, P_LEVEL))     );
     SetProp( P_MAX_HP, to_int(funcall(cl, P_MAX_HP))    );
     SetProp( P_RACE,   to_string(funcall(cl, P_RACE))   );
-    SetProp( P_CLASS,  (string *)(funcall(cl, P_CLASS)) );
+    SetProp( P_CLASS,  ({string*})(funcall(cl, P_CLASS)) );
     SetProp( P_HANDS,  ({<int|string|string*>*}) funcall(cl, P_HANDS)   );
     SetProp( P_WEIGHT, ({int}) funcall(cl, P_WEIGHT)  );
     SetProp( P_ALIGN,  to_int(funcall(cl, P_ALIGN))     );
@@ -137,7 +137,7 @@ void Identify( object ob )
     call_out( "do_decay", QueryProp(P_CORPSE_DECAY_TIME) );
 
     if ( !query_once_interactive(ob) )
-        moerder = (object) "/std/corpse"->_channel(ob);
+        moerder = ({object}) "/std/corpse"->_channel(ob);
 }
 
 public int IsPlayerCorpse() { return spielerleiche; }
@@ -283,8 +283,8 @@ static int mampf( string str )
 
     // Das folgende ist nicht ganz sauber, da die Staerke bei eat_food nicht
     // unbedingt dem Saettigungswert entsprechen muss (wegen FOOD_VALUE).
-    gegessen = (int) this_player()->QueryProp(P_MAX_FOOD) -
-      (int) this_player()->QueryProp(P_FOOD);
+    gegessen = ({int}) this_player()->QueryProp(P_MAX_FOOD) -
+      ({int})this_player()->QueryProp(P_FOOD);
     if (gegessen <= 0) {
       // Spieler ist proppenvoll, Meldung ausgeben
       gegessen = 0;
@@ -298,7 +298,7 @@ static int mampf( string str )
           write(mampf_heilung(nahrung_aktuell));
           say( sprintf("%s wird von %s voll Hingebung verspeist.\n",
                    capitalize(name(WER)),
-                   (string) this_player()->name(WEM)) );
+                   ({string})this_player()->name(WEM)) );
       }
       transform_into_pile();
       remove();
@@ -309,7 +309,7 @@ static int mampf( string str )
 	write(mampf_heilung(gegessen)+"Leider bist Du nicht in der Lage,"
                " alles aufzuessen.\n");
       say( sprintf("%s knabbert an %s herum.\n",
-                   (string) this_player()->name(),
+                   ({string})this_player()->name(),
                    capitalize(name(WEM)) ) );
       }
       nahrung_aktuell -= gegessen;
@@ -338,7 +338,7 @@ static int spott( string str )
         return _notify_fail( "Da solltest Du schon etwas spontaner sein.\n" )
             , 0;
 
-    str = (string) PL->_unparsed_args();
+    str = ({string})PL->_unparsed_args();
     
     switch ( str[0] )
         {
@@ -674,7 +674,7 @@ object _channel( object ob )
           if( !previous_object(i) || IS_LEARNER(previous_object(i)) )
               return rueck;
 
-          killer = (string) previous_object(i)->name();
+          killer = ({string}) previous_object(i)->name();
           
           if ( lower_case(killer) != getuid(previous_object(i)) )
               killer = capitalize(getuid(previous_object(i)));
@@ -682,23 +682,23 @@ object _channel( object ob )
           m_q = symbol_function( "QueryProp", ob ); // Monster
           s_q = symbol_function( "QueryProp", previous_object(i) ); // Spieler
           
-          if ( (m_FMM = (int) funcall( m_q, P_FORCE_MURDER_MSG )) >= 0 )
+          if ( (m_FMM = ({int}) funcall( m_q, P_FORCE_MURDER_MSG )) >= 0 )
               if ( (object_name(ob) == "/obj/shut") ||
                    (m_FMM > 0) ||
                    (nr = (random(100) >= 99) ? 1 : 0 ) || 
-                   (nr = ((x = (m_HP = (int) funcall( m_q, P_MAX_HP )) * 
-                           ((m_WC = (int) funcall( m_q, P_TOTAL_WC )) +
-                            (m_AC = (int) funcall( m_q, P_TOTAL_AC ))))
+                   (nr = ((x = (m_HP = ({int}) funcall( m_q, P_MAX_HP )) * 
+                           ((m_WC = ({int}) funcall( m_q, P_TOTAL_WC )) +
+                            (m_AC = ({int}) funcall( m_q, P_TOTAL_AC ))))
                           > 200000) ? 2 : 0) ||
                    (nr = (((y = m_HP * (m_WC + m_AC)) >
-                           (z = 5 * (s_HP = (int) funcall( s_q, P_MAX_HP )) *
-                            ((s_WC = (int) funcall( s_q, P_TOTAL_WC )) +
-                             (s_AC = (int) funcall( s_q, P_TOTAL_AC )))))
+                           (z = 5 * (s_HP = ({int}) funcall( s_q, P_MAX_HP )) *
+                            ((s_WC = ({int}) funcall( s_q, P_TOTAL_WC )) +
+                             (s_AC = ({int}) funcall( s_q, P_TOTAL_AC )))))
                           ? 3 : 0)))
                   {
-                      SetProp( P_NAME, "Geist "+(string) ob->name(WESSEN, 0) );
+                      SetProp( P_NAME, "Geist "+({string}) ob->name(WESSEN, 0) );
 
-                      if( !(msg = (string) ob->QueryProp(P_MURDER_MSG)) )
+                      if( !(msg = ({string|closure}) ob->QueryProp(P_MURDER_MSG)) )
                           msg = moerder_msgs[random(sizeof(moerder_msgs))]; 
 
 		      if ( stringp(msg) )
