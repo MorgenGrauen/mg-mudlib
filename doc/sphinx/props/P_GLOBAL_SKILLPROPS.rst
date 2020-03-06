@@ -31,6 +31,12 @@ BEISPIELE
         OFFSET(SI_SPELLCOST):  #'costOffset,
         FACTOR(SI_SPELLCOST):  #'costFactor]));
 
+BEMERKUNG
+---------
+
+  Diese Property wird in AddSpell() ausgewertet, nicht in UseSpell(). Sie
+  muss also vor dem Hinzufuegen von Spells mitels AddSpell gesetzt werden.
+
 SIEHE AUCH
 ----------
 ::
@@ -42,5 +48,4 @@ SIEHE AUCH
     * Properties:     P_SB_SPELLS
     Skills:           P_NEWSKILLS, spruchermuedung, skill_info_liste
 
-3. Okt 2011 Gloinson
-
+Letzte Aenderung: 06.03.2020, Bugfix
