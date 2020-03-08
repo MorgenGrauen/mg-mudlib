@@ -87,8 +87,8 @@ int query_weight_contents()
     i = sizeof(objs);
     
     while ( i-- ){
-        if ( !(w2 = (int)objs[i]->QueryProp(P_TOTAL_WEIGHT)) )
-            w2 = (int)objs[i]->QueryProp(P_WEIGHT);
+        if ( !(w2 = ({int})objs[i]->QueryProp(P_TOTAL_WEIGHT)) )
+            w2 = ({int})objs[i]->QueryProp(P_WEIGHT);
         w += w2;
     }
     
@@ -146,7 +146,7 @@ public int MayAddWeight( int w )
         // Wenn das Objekt ein env() hochbewegt wird, wird das Gewicht im alten
         // Container abgezogen. Weiterer Check im env() ist unnoetig (aw=0).
         if ( ENV(ENV(PO)) == ME )
-            nw = w - (int)ENV(PO)->QueryProp(P_WEIGHT_PERCENT) * w / 100;
+            nw = w - ({int})ENV(PO)->QueryProp(P_WEIGHT_PERCENT) * w / 100;
         // Eine Ebene tiefer bewegen: Test im neuen Container mit unveraendertem
         // Gewicht; Check im env() mit um Gewichtsreduktion verringertem Gewicht
         else if ( present( ME, ENV(PO) ) )
@@ -156,7 +156,7 @@ public int MayAddWeight( int w )
         // Differenz aus Gewicht in Container1 und in Container2.
         else if ( ENV(ENV(ENV(PO))) && ENV() == ENV(ENV(PO)) )
             aw = QueryProp(P_WEIGHT_PERCENT) * w / 100
-                - ((int)ENV(PO)->QueryProp(P_WEIGHT_PERCENT) * w / 100 || 1);
+                - (({int})ENV(PO)->QueryProp(P_WEIGHT_PERCENT) * w / 100 || 1);
     }
 
     if ( query_weight_contents() + nw > QueryProp(P_MAX_WEIGHT) )
@@ -193,7 +193,7 @@ static int _query_total_weight()
 // Hilfsfunktion
 static int _behalten( object ob, string uid )
 {
-    return (string)ob->QueryProp(P_KEEP_ON_SELL) == uid;
+    return ({string})ob->QueryProp(P_KEEP_ON_SELL) == uid;
 }
 
 
@@ -482,7 +482,7 @@ public object *locate_objects( string complex_desc, int info ) {
       object *found_obs = ({});
       foreach(object invob: present_objects(wo)) {
         // || ({}) weil invob ein Objekt ohne locate_objects() sein koennte.
-        found_obs += (object *)invob->locate_objects( was, info) || ({});
+        found_obs += ({object*})invob->locate_objects( was, info) || ({});
       }
       return found_obs;
     }

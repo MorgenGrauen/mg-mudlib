@@ -36,7 +36,7 @@ private string query_c_article(int casus)
   return ({ ({ "das ", "des ", "dem ", "das " }),
             ({ "der ", "des ", "dem ", "den " }),
             ({ "die ", "der ", "der ", "die " }) })
-    [(int)QueryProp(P_GENDER)][casus];
+    [({int})QueryProp(P_GENDER)][casus];
 }
 
 // Ende fuer Artikel und Adjektive
@@ -61,7 +61,8 @@ protected varargs int SuggestArticle(string id)
 
   // Objekt mit gleichem Namen im env? Dann unbestimmt
   for ( ob=first_inventory(environment()) ; ob ; ob=next_inventory(ob) )
-    if ( ob!=this_object()&& id==(string)ob->QueryProp(P_NAME) )
+    if ( ob!=this_object()
+         && id == ({string})ob->Name(RAW) )
       return 0;
 
   // sonst bestimmt
@@ -83,7 +84,7 @@ public varargs string QueryArticle(int casus, int dem, int force)
   // Unbestimmter Artikel
   if (QueryProp(P_PLURAL)) return "";
   
-  return sprintf("ein%s ",query_g_suffix((int)QueryProp(P_GENDER),casus));
+  return sprintf("ein%s ",query_g_suffix(({int})QueryProp(P_GENDER),casus));
 }
 
 // Besitzanzeiger fuer Objekt bestimmen
@@ -93,17 +94,17 @@ varargs string QueryOwn(int casus)
 }
 
 // Possessivpronomen bestimmen
-public varargs string QueryPossPronoun(mixed what, int casus, int number)
+public varargs string QueryPossPronoun(int|object what, int casus, int number)
 {
   int gen2;
 
   // Geschlecht ermitteln
-  gen2 = (objectp(what)?(int)what->QueryProp(P_GENDER):(int)what);
+  gen2 = (objectp(what)?({int})what->QueryProp(P_GENDER):what);
 
   // Plural ist schoen einfach
   if (QueryProp(P_PLURAL)) return "ihr"+query_g_suffix(gen2, casus, number);
 
-  return (((((int)QueryProp( P_GENDER ))==FEMALE )? "ihr":"sein")+
+  return ((((({int})QueryProp( P_GENDER ))==FEMALE )? "ihr":"sein")+
           query_g_suffix(gen2%3, casus, number));
 }
 
@@ -151,7 +152,7 @@ public varargs string QueryDu(int casus,int gender,int zahl)
 // Welches Geschlecht hat das Objekt als String?
 public string QueryGenderString()
 {
-  switch( (int)QueryProp( P_GENDER ))
+  switch( ({int})QueryProp( P_GENDER ))
   {
     case MALE:   return "maennlich";
     case FEMALE: return "weiblich";
@@ -183,12 +184,12 @@ public varargs string DeclAdj(string|string* adj, int casus, int demon)
     return adj + ({ ({ "e " , "en ", "en ", "e "  }),
 		    ({ "e " , "en ", "en ", "en " }),
 		    ({ "e " , "en ", "en ", "e "  }) })
-      [(int)QueryProp( P_GENDER )][casus];
+      [({int})QueryProp( P_GENDER )][casus];
   else
     return adj + ({ ({ "es ", "en ", "en ", "es " }),
 		    ({ "er ", "en ", "en ", "en " }),
 		    ({ "e " , "en ", "en ", "e "  }) })
-      [(int)QueryProp( P_GENDER )][casus];
+      [({int})QueryProp( P_GENDER )][casus];
 }
 
 // P_GENDER setzen. Es sind nur 0,1 und 2 (MALE,FEMALE,NEUTER) erlaubt
