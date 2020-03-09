@@ -353,7 +353,7 @@ public string LogReportedError(mapping err)
 
     //DEBUG("LogReportedError\n");
     // DEBUG(sprintf("%O\n",err));
-    string uid = (string)master()->creator_file(err[F_OBJ]);
+    string uid = ({string})master()->creator_file(err[F_OBJ]);
 
     // default-Typ
     if (!member(err, F_TYPE)) err[F_TYPE] = T_REPORTED_ERR;
@@ -435,7 +435,7 @@ public int LogError(string msg,string prg,string curobj,int line,mixed culprit,
     struct fullissue_s issue = (<fullissue_s>);
 
     //UID bestimmen
-    issue->uid=(string)master()->creator_file(curobj);
+    issue->uid=({string})master()->creator_file(curobj);
     //DEBUG(sprintf("LogError: UID: %s\n",uid));
 
     //Loadname (besser als BP, falls rename_object() benutzt wurde) bestimmen
@@ -591,7 +591,7 @@ public int LogWarning(string msg,string prg,string curobj,int line, int in_catch
     struct fullissue_s issue = (<fullissue_s>);
 
     //UID bestimmen
-    issue->uid=(string)master()->creator_file(curobj);
+    issue->uid=({string})master()->creator_file(curobj);
     //DEBUG(sprintf("LogWarning UID: %s\n",uid));
 
     //Loadname (besser als BP, falls rename_object() benutzt wurde) bestimmen
@@ -714,7 +714,7 @@ public int LogCompileProblem(string file,string msg,int warn) {
     struct fullissue_s issue = (<fullissue_s>);
 
     //UID bestimmen
-    issue->uid=(string)master()->creator_file(file);
+    issue->uid=({string})master()->creator_file(file);
     //DEBUG(sprintf("LogCompileProblem UID: %s\n",uid));
 
     // An File a) fuehrenden / anhaengen und b) endendes .c abschneiden. Macht
@@ -1170,7 +1170,7 @@ private int access_check(string uid, int mode) {
       case M_FIX:
         // Master nach UIDs fragen, fuer die der jew. Magier
         // zustaendig ist.
-        if (member((string *)master()->QueryUIDsForWizard(secure_euid()),uid) >= 0)
+        if (member(({string*})master()->QueryUIDsForWizard(secure_euid()),uid) >= 0)
           return 1;
 
         break;
@@ -1417,7 +1417,7 @@ private int versende_mail(struct fullissue_s issue)
   issue->command = 0;
 
   // erstmal eine Mail an zustaendige Magier.
-  empf = (string*)master()->QueryWizardsForUID(issue->uid);
+  empf = ({string*})master()->QueryWizardsForUID(issue->uid);
   // lang (180 Tage) nicht eingeloggte Magier ausfiltern
   empf = filter(empf, #'recent_lastlogout, time() - 15552000);
   if (sizeof(empf))
