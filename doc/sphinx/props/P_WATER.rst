@@ -27,17 +27,12 @@ BESCHREIBUNG
       diesem Typ haengt ab, welche Arten von Fischen es hier standardmaessig
       gibt und welche Arten von Angeln verwendet werden koennen. 
 
-      
-
       Beispiel:
 
       SetProp(P_WATER, W_HARBOR);
 
-      
-
-      Folgende
-      Typen stehen zur Verfuegung, von denen in Raeumen nur einer gesetzt
-      werden darf:
+      Folgende Typen stehen zur Verfuegung, von denen in Raeumen nur einer 
+      gesetzt werden darf:
 
       Salzwasser:
         W_BEACH   Strand: Scholle, Flunder, Rochen, Seezunge, Katzenhai
@@ -76,8 +71,6 @@ BESCHREIBUNG
       Verwendung einer fuer das oertliche Gewaesser ungeeigneten Angel fuehrt
       zu einer um 60+random(60) Sekunden verlaengerten Wartezeit beim Angeln.
 
-      
-
       Beispiel: Setzt man den Gewaessertyp mit 
 
         SetProp(P_WATER, W_HARBOR|W_OCEAN);
@@ -111,7 +104,8 @@ BESCHREIBUNG
       ein Mehlwurm hingegen fuer Suesswasser. Gesetzt wird P_WATER hierfuer
       auf die oben aufgefuehrten Werte.
       Verwendung eines ungeeigneten Koeders fuehrt zu einer um 60+random(60)
-      Sekunden laengeren Wartezeit beim Angeln.
+      Sekunden laengeren Wartezeit beim Angeln. Angeln in Gewaessern des
+      Typs W_USER fuehrt nie zu einer verlaengerten Wartezeit.
 
     Wasserbehaelter:
     ****************
@@ -127,5 +121,5 @@ SIEHE AUCH
     Methoden:   GetAquarium(L)
 
 
-Zuletzt geaendert: 2014-Aug-21, Arathorn
+Zuletzt geaendert: 2020-Mar-08, Arathorn
 

@@ -30,6 +30,9 @@ BESCHREIBUNG
      F_NOROTTEN
        Fisch fault nicht; ggf. sollte hier auch gleich F_NOHEAL gesetzt
        werden, weil sonst eine unverderbliche tragbare Tanke erzeugt wuerde.
+       Wenn sie verderben koennen, beginnen Fische nach 10 min zu verderben
+       und werden danach alle 2 Minuten schlechter, d.h. reduzieren ihren
+       Heilwert. Nach vier Schritten ist ein Fisch komplett vergammelt.
      F_NOTHUNGRY
        Fisch frisst Koeder nur, wenn er auch wirklich nachher an der Angel
        haengt. Ist er zu schwer fuer die Angel und reisst ab, bleibt der
@@ -41,7 +44,13 @@ BESCHREIBUNG
        Verwandlung kuemmert (z.B. Monster clonen und Fisch zerstoeren,
        Beispiel siehe unten).
      F_NOHEAL
-       Fisch heilt nicht bei Verzehr
+       Fisch heilt nicht bei Verzehr.
+       Wenn er heilt, ist die Heilung ist abhaengig vom Gewicht des Fisches
+       und limitiert auf den Wertebereich 0-40 LP. Der maximale Heilwert
+       ist bei 1280 g Gewicht erreicht und skaliert in Schritten von 32 g
+       linear. Pro LP, der geheilt wird, muss der Spieler Platz fuer 3
+       Food haben (ueber eat_food() realisiert). Die Heilung wird ueber
+       buffer_hp() mit einer Rate von 5 LP pro Heartbeat.
 
    Raum (OPTIONAL):
    ****************
@@ -62,8 +71,6 @@ BESCHREIBUNG
    P_WATER in der Angel und/oder P_WATER im Koeder nicht zum aktuellen
    Gewaesser passen. Der Malus betraegt jeweils 60+random(60) Sekunden.
 
-
-
    Der Standardwert fuer P_FISH im Raum ist 0 und bedeutet 100 % Bestand.
    Positive Werte erhoehen die Dichte, negative senken sie. Positive Werte
    sollten nicht >100 sein.
@@ -72,8 +79,6 @@ BESCHREIBUNG
    koennen Abzuege fuer falsches Gewaesser ueblicherweise kaum durch
    Boni auf Angel oder Koeder kompensiert werden. Ausserdem ist zu
    bedenken, dass es keine Boni fuer richtige Gewaesserwahl gibt.
-
-
 
    Koeder (OPTIONAL):
    ******************
@@ -112,7 +117,9 @@ BEISPIEL
 SIEHE AUCH
 ==========
 
-   Properties: P_WATER
-   Methoden:   GetAquarium(L)
+   Properties:   P_WATER, P_FOOD
+   Basisobjekte: /std/items/fishing/fish.c, /std/items/fishing/haken.c
+                 /std/items/fishing/koeder.c /std/items/fishing/angel.c
+   Methoden:     GetAquarium(L), eat_food(), buffer_hp()
 
-Zuletzt geaendert: 2018-Jul-18, Arathorn
+Zuletzt geaendert: 2020-Mar-09, Arathorn
