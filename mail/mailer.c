@@ -1,8 +1,8 @@
 /* =========================================================================
 
-   Ein Mailobjekt fuer Morgengrauen. 
+   Ein Mailobjekt fuer Morgengrauen.
    (C) 1993-97 Loco@MG. Unter Verwendung des std/post-codes von Jof
-   
+
    Verwendung ausserhalb von Morgengrauen ist gestattet unter folgenden
    Bedingungen:
    - Benutzung erfolgt auf eigene Gefahr. Jegliche Verantwortung wird
@@ -40,23 +40,23 @@
    020304 [Vanion]In do_mail() wird jetzt M_NOCHECK gemovet, sonst hat ein
                   Mailer eines Spielers, der voll ist, kein Environment.
    100105 [Zook] Magier mit Level >= 26 bekommen erst spaeter eine
-                 Mitteilung (Gebietswartung insb. f. Regionsmagier 
-		 erfordert schlicht ein groesseres Postfach). 
-   
+                 Mitteilung (Gebietswartung insb. f. Regionsmagier
+		 erfordert schlicht ein groesseres Postfach).
+
 ----------------------------------------------------------------------------
 
 Aufrufe von aussen zur Benutzung:
 
-a) im geklonten Objekt: 
+a) im geklonten Objekt:
     obj->do_mail()        interaktives Mailmenue
     obj->do_mail(empf)    'halbinteraktiv': _eine_ mail, an Empfaenger str
    Objekt zerstoert sich nach Gebrauch selbst.
-    Bei obj->do_mail("-silent") wird der Inhalt des Mailfolders nicht 
+    Bei obj->do_mail("-silent") wird der Inhalt des Mailfolders nicht
     aufgelistet. Ansonsten wie obj->do_mail()
-        
+
 b) in der blueprint:      nur non-interactive
     obj->do_mail(empf,titel,text)
-       sendet mail mit Titel titel und Inhalt text an Empfaenger empf. 
+       sendet mail mit Titel titel und Inhalt text an Empfaenger empf.
        Aliase etc. werden von this_interactive() genommen.
        Nur fuer 'trusted objects' zugelassen, siehe #define TRUSTED
 
@@ -118,7 +118,7 @@ static varargs string* send_mail(mixed back);
 string * unify_array(string * a);
 static mapping Read_mailrc(string file);
 static varargs void update(int directflag,int nocondflag);
-static varargs void ListContent();
+static varargs void ListContent(int limit);
 string GetFolderName(mixed fol);
 static void LagWarning();
 string GetReTitle(string s);
@@ -136,7 +136,7 @@ protected void create() {
   SetProp(P_NODROP,1);
   SetProp(P_SHORT,0);
   SetProp(P_WEIGHT,0);
-} 
+}
 
 
 public varargs void init(object origin) {
@@ -182,9 +182,9 @@ string SetOfficeName(string n) {
 static varargs void write_mail(mixed str, string std_subject, string text) {
   string str2;
   int h;
-  
+
   carbon=process_names(str);
-  if (!sizeof(carbon)) { 
+  if (!sizeof(carbon)) {
     write("Kein Empfaenger angegeben!\n"),(directflag?remove():input());
     return;
   }
@@ -200,7 +200,7 @@ static varargs void write_mail(mixed str, string std_subject, string text) {
     write("Mit dem Namen gibt es hier niemanden.\n"),(directflag?remove():input());
     return;
   }
-  
+
   receiver=str;
 
   if (text) {
@@ -242,7 +242,7 @@ static varargs void SendMail(string text,int flag) {
     write("Abbruch! Brief landet im Reisswolf.\n");
     if (directflag) {remove(); return;
     }
-    
+
     subject=receiver=carbon=message=0;
     return input();
   }
@@ -259,7 +259,7 @@ static void get_carbon_copy(string str) {	// Aufruf mit 0, wenn keine cc gewuens
   object p;
   string *oldcarbons,*h,*receivers;
   mapping orignames;
-  
+
   oldcarbons=carbon;
   if (str=="~q") return SendMail(0); // Abbruch, entspricht Abbruch im Editor
   if (!str || str=="") carbon=0;
@@ -273,7 +273,7 @@ static void get_carbon_copy(string str) {	// Aufruf mit 0, wenn keine cc gewuens
 	 return(0);});
   carbon-=blindcarbon;
   blindcarbon=map(blindcarbon,
-      function string (string x) 
+      function string (string x)
         {return(x[1..]);} );
 #endif
 
@@ -325,8 +325,8 @@ static void get_carbon_copy(string str) {	// Aufruf mit 0, wenn keine cc gewuens
 
   if (!pointerp(carbon) || !sizeof(carbon)){
     write("Brief NICHT verschickt, da keine Empfaenger gefunden!\n");
-  } else { 
-    string *a; 
+  } else {
+    string *a;
     DEBUGVAR(orignames);
     for (i=0;i<sizeof(carbon);i++){
       DEBUGVAR(carbon[i]);
@@ -336,13 +336,13 @@ static void get_carbon_copy(string str) {	// Aufruf mit 0, wenn keine cc gewuens
       if (pointerp(a))
       {
         a=a-({carbon[i]});
-        for (j=sizeof(a);j--;) 
-          if (p=find_player(a[j])) 
+        for (j=sizeof(a);j--;)
+          if (p=find_player(a[j]))
 	    tell_object(p,"Ein Postreiter ruft Dir aus einiger Entfernung zu, dass Du neue Post hast!\nDer Brief wurde wunschgemaess weitergeleitet.\n");
       }
       /* Benachrichtige Empfaenger */
 #ifndef MAILDEMON0297
-      if (p=find_player(carbon[i])) 
+      if (p=find_player(carbon[i]))
         tell_object(p,"Ein Postreiter ruft Dir aus einiger Entfernung zu, dass Du neue Post hast!\n");
 #endif
       receivers+=orignames[carbon[i]]||orignames["\\"+carbon[i]]||({});
@@ -370,7 +370,7 @@ static void get_carbon_copy(string str) {	// Aufruf mit 0, wenn keine cc gewuens
 
 static varargs string* send_mail(mixed back) {
   mixed *mail;
-  
+
   mail=allocate(9);
 
 #ifdef DEBUG
@@ -396,49 +396,124 @@ static varargs string* send_mail(mixed back) {
   return MAILDEMON->DeliverMail(mail,NO_SYSTEM_ALIASES|NO_USER_ALIASES);
 }
 
-
 varargs void do_mail(mixed str,string titel,string text) {
   // text und titel angegeben: versende Text, keine weiteren Taetigkeiten.
 
-  mixed i;
+  int i;
   int silent;
-  
-  if (name) return; /* security flag :-) */
-  if (!this_interactive()) return;
+
+  if (name)
+    return; /* security flag :-) */
+
+  if (!this_interactive())
+    return;
+
   if (!text) {
-    name=geteuid(this_interactive());
-    move(this_interactive(),M_NOCHECK);
-    if (!name) remove();
+    name = geteuid(this_interactive());
+    move(this_interactive(), M_NOCHECK);
+    if (!name)
+      remove();
   }
-  aliases=Read_mailrc(ALIASFILE(geteuid(this_interactive())))+
-	  Read_mailrc(SYSALIAS);
-//  akt_folder=member_array("newmail",folders[0]);
-//  if (akt_folder==-1) akt_folder=0;
-  if (str) {
-    str=lower_case(str);
-    
-    if(regreplace(regreplace(str," ","",1),"\t","",1)=="-silent")
+
+  aliases = Read_mailrc(ALIASFILE(geteuid(this_interactive())))+
+            Read_mailrc(SYSALIAS);
+
+  int display_limit;
+  if (str)
+  {
+    str = lower_case(str);
+
+    // Eingabestring zerlegen, um die Elemente der Reihe nach parsen zu
+    // koennen.
+    string* params = explode(str, " ");
+    string* recipients = ({});
+
+    /* Ueber alle Argumente laufen und auf Verwendbares pruefen.
+       Muss for() sein, damit wir zwischendrin mittels p++ Eintraege
+       ueberspringen koennen.
+       Gueltige Argumente sind -show [<zahl>|zeilen], -silent,
+       Empfaengerliste.
+       Wenn hinter -show irgendwas kommt, das weder Integer noch "zeilen"
+       ist, wird es verworfen.
+       Wenn irgendwelche Empfaenger angegeben sind, wird auf jeden Fall
+       an write_mail() weitergegeben, egal was sonst fuer Argumente
+       dabeiwaren. Dies ist Absicht, damit man sich z.B. ein Alias
+       "mail -show 20 $*" bauen kann, das ohne weitere Angaben den
+       Posteingang oeffnet, aber eine neue Mail erstellt, wenn man dahinter
+       einen Empfaenger angibt. Auf diese Weise kann man einen im Alias
+       eingestellten Defaultwert bei der Eingabe des Befehls immer noch
+       mit -silent oder einer anderen Zahl ueberschreiben. */
+    int p;
+    for(p=0; p<sizeof(params); p++)
     {
-      silent=1;
-    }
-    else
-    {
-      directflag=1;
-      if (text) {
-        if (this_interactive()!=this_player()) return 0;
-        if (!TRUSTED(previous_object())) return
-	  write(break_string("WARNUNG!!! Objekt "+object_name(previous_object())+
-	  		   " versucht, Mail mit Deinem Absender zu versenden! "
-                             "Bitte Erzmagier oder Loco verstaendigen.",78)+
-                             "\n");
-        directflag=2;
-        return write_mail(str,titel,text);
+      // Wenn das Argument -silent ist, Flag setzen.
+      if (params[p] == "-silent")
+      {
+        display_limit = 0;
+        silent = 1;
       }
-      directflag=1;
+      // Wenn es -show ist, checken wir ob das Array noch ein weiteres
+      // Element enthaelt und wenn ja, werten wir es aus und
+      else if (params[p] == "-show")
+      {
+        // hat das Array noch ein Element nach -show?
+        if (sizeof(params) >= p+2)
+        {
+          // wenn ja, ist es ein String ungleich Leerstring?
+          if (sizeof(params[p+1]))
+          {
+            string howmany = params[p+1];
+            // "zeilen" zuerst checken, weil das sonst im naechsten Check
+            // auch zu silent = 1 fuehren wuerde.
+            if (howmany == "zeilen")
+              display_limit = this_player()->QueryProp(P_SCREENSIZE);
+            // Kann man es in ein Integer >0 wandeln?
+            // Wenn 0 rauskommt, wurde entweder "-show 0" angegeben, oder
+            // ein ungueltiger Parameter. Beides interpretieren wir als
+            // "silent".
+            else if (to_int(howmany) == 0)
+              silent = 1;
+            // Alle anderen Ergebnisse werden als Zeilenlimit fuer die
+            // Anzeige interpretiert.
+            else
+              display_limit = to_int(howmany);
+          }
+          // Argumente nach -show werden in jedem Fall nicht nochmal
+          // verarbeitet, d.h. ein Schleifendurchlauf wird uebersprungen.
+          p++;
+        }
+      }
+      // Alles andere duerfte dann wohl ein Adressat sein.
+      else
+      {
+        recipients += ({params[p]});
+      }
+    }
+
+    // Wenn wir potentielle Empfaenger identifiziert haben, bauen wir den
+    // Argumentstring neu zusammen, damit wir ihn spaeter an write_mail()
+    // uebergeben koennen.
+    if(sizeof(recipients))
+    {
+      str = implode(recipients, " ");
+      directflag = 1;
+      if (text)
+      {
+        if (this_interactive()!=this_player())
+          return 0;
+        if (!TRUSTED(previous_object()))
+          return write(break_string(
+            "WARNUNG!!! Objekt "+object_name(previous_object())+" versucht, "
+            "Mail mit Deinem Absender zu versenden! Bitte Erzmagier oder "
+            "Loco verstaendigen.",78)+"\n");
+        directflag = 2;
+        return write_mail(str, titel, text);
+      }
+      directflag = 1;
       return write_mail(str);
     }
   }
-  
+
   update(0,1);
   if (!pointerp(folders) || sizeof(folders)!=2 || sizeof(folders[0])==0) {
     write("Du hast im Moment keine Post !\n");
@@ -448,9 +523,9 @@ varargs void do_mail(mixed str,string titel,string text) {
 
   if(!silent)
   {
-    ListContent();
+    ListContent(display_limit);
   }
-  
+
   write("Gesamtgroesse Deines Postfachs: "+
 	(i=(file_size(MAILFILEO(name))+512)/1024)+" KB.\n");
   // Kleiner Hack als Uebergangsloesung, weil ich die dumme Warnung
@@ -465,7 +540,7 @@ varargs void do_mail(mixed str,string titel,string text) {
   //
   // 2005-01-10, Zook
   if (query_wiz_level(this_interactive()) > DOMAINMEMBER_LVL) {
-    if (i>700) 
+    if (i>700)
       write("*************************************************************\n"
             "* Dein Postfach ist zu gross! Bitte versuche aufzuraeumen   *\n"
 	    "* und damit die Groesse zu reduzieren. Grosse Postfaecher   *\n"
@@ -497,7 +572,7 @@ varargs void do_mail(mixed str,string titel,string text) {
   else if (i>100) // Hinweis fuer andere.
     write("Der Postbeamte macht dich darauf aufmerksam, dass Dein Postfach\n"
 	  "relativ voll ist.\n");
-  
+
 
   if ((i=FWSERV->QueryForward(name))!=name)
     write("Du hast einen Nachsendeauftrag gestellt, Deine Post wird an\n"
@@ -507,7 +582,7 @@ varargs void do_mail(mixed str,string titel,string text) {
 
 
 static void MediumHelpPage() {
-  if (sizeof(folders[0])) 
+  if (sizeof(folders[0]))
     write("Aktueller Ordner ist \""+folders[0][akt_folder]+"\"\n");
   write("\n\
 Brief <nr> lesen                       '<nr>'                 (lies <nr>)\n\
@@ -548,7 +623,7 @@ static varargs int GetFolders(int nocondflag) {
 
 
 //  write("DEBUG: GetFolders called, old date "+folder_date+", old size "+folder_size+", nocondflag="+nocondflag+"\n");
-  if (!nocondflag && 
+  if (!nocondflag &&
       file_time(MAILFILEO(name))==folder_date &&
       file_size(MAILFILEO(name))==folder_size) return 0;
 
@@ -566,7 +641,7 @@ static varargs void update(int directflag,int nocondflag) {
 
   int i,j,k,newletters;
   mixed *ignored;
-  
+
   if (!GetFolders(nocondflag)) return; // es hat sich nix getan
 
   if (akt_nr<1) akt_nr=1;
@@ -602,7 +677,7 @@ static varargs void update(int directflag,int nocondflag) {
   for (k=0;k<sizeof(folders[1][j]);k++) {
 
     //    write("DEBUG: j="+j+"\n");
-    
+
     if (pointerp(ignored=this_player()->QueryProp(P_IGNORE)) &&
 		member(ignored, lower_case(folders[1][j][k][MSG_FROM]+".mail"))>=0) {
       mixed msg;
@@ -642,11 +717,11 @@ Titel: "+msg[MSG_SUBJECT]+"\n\
   MAILDEMON->RemoveFolder("unread",name);
 #endif
   if (newletters) {
-    if (office_name=="mpa Kurierdienst") 
+    if (office_name=="mpa Kurierdienst")
       write(break_string("Ein Kurier sagt \"Tach, Post!\", drueckt Dir "+
 	    ((newletters==1) ? "einen neuen Brief" : newletters+" neue Briefe")
 	    +" in die Hand und verschwindet wieder.\n",78));
-    else 
+    else
       write("Du siehst, wie ein Postbeamter "+
 	    ((newletters==1) ? "einen neuen Brief" : newletters+" neue Briefe")
 	    +" in Dein Fach legt.\n");
@@ -656,42 +731,119 @@ Titel: "+msg[MSG_SUBJECT]+"\n\
   if ((!akt_nr)&&sizeof(folders[1][akt_folder])) akt_nr=1;
 }
 
+// MSG_TIME enthaelt leider einen Datumsstring, so dass wir die MSG_ID
+// verwenden, um die Zeit daraus zu ermitteln. Die MSG_ID hat immer das
+// Format MUDNAME+":"+time().
+private string msgIDtoTime(string msg_id) {
+  int msg_time;
+  string unused;
+  // Damit das auch dann funktioniert, wenn man die Mailfolder aus dem
+  // Livemud im Testmud einliest, das ja ggf. einen anderen Namen hat,
+  // verwenden wir einen generischen Suchstring. Das Mud sollte dann aber
+  // keinen : im Namen haben.
+  if (sscanf(msg_id, "%s:%d", unused, msg_time) == 2)
+    return strftime("%d.%m.%Y", msg_time);
+  else
+    return "unbekannt";
+}
 
-static varargs void ListContent() {
-  int i;
+static varargs void ListContent(int limit) {
   update();
-//  DEBUGVAR(folders[0]);
-//  DEBUGVAR(folders[1]);
-  DEBUGVAR(akt_folder);
-  if (!pointerp(folders)||sizeof(folders)!=2||
-      !pointerp(folders[0])||!sizeof(folders[0])) {
+
+  if (!pointerp(folders) || sizeof(folders) != 2 ||
+      !pointerp(folders[0]) || !sizeof(folders[0])) {
     write("Du hast keinen einzigen Ordner!\n");
     return;
   }
+
   write("Ordner "+folders[0][akt_folder]+": ");
-  if (!pointerp(folders[1]) || akt_folder>=sizeof(folders[1]) || 
+  if (!pointerp(folders[1]) || akt_folder >= sizeof(folders[1]) ||
       !pointerp(folders[1][akt_folder])) {
     write("Dieser Ordner ist leer.\n");
     return;
   }
-  write(sizeof(folders[1][akt_folder])+" Brief"+
-	((sizeof(folders[1][akt_folder])!=1)?"e\n":"\n"));
-  for (i=0;i<sizeof(folders[1][akt_folder]);i++){
-    write(((i+1==akt_nr) ? "->" : "  ")+
-	  sprintf("%3d: (%12s, %s) ",i+1,capitalize(folders[1][akt_folder][i][MSG_FROM]),
-		  folders[1][akt_folder][i][MSG_DATE][5..11])+
-	  folders[1][akt_folder][i][MSG_SUBJECT]+"\n");
+
+  int mailcount = sizeof(folders[1][akt_folder]);
+  write(sprintf("%d Brief%s\n", mailcount, mailcount!=1 ? "e" : ""));
+
+  // Wieviele Zeichen muessen wir fuer die fortlaufenden Mail-Nummern
+  // reservieren? Dazu errechnen wir die Anzahl Ziffern der Arraygroesse.
+  int num_width = sizeof(to_string(mailcount));
+  // 4 Zeichen muessen reichen, damit sind immerhin 9999 Mails numerierbar.
+  num_width = min(4, num_width);
+
+  int sender_width;
+  string sender_name;
+  // Feldbreite fuer die Absenderangabe ermitteln. Wird weiter unten fuer
+  // die Anzeige der Mails benoetigt, um das Namensfeld dynamisch
+  // einzustellen. Dies soll helfen, mehr vom Subject anzeigen zu koennen.
+  // Leider muessen wir dazu einmal extra ueber die Liste laufen.
+  int i;
+  if (limit) {
+    limit = max(mailcount - limit, 0);
+  }
+  for (i = limit ; i < mailcount ; i++) {
+    sender_name = folders[1][akt_folder][i][MSG_FROM];
+    if (sizeof(sender_name) > sender_width)
+      sender_width = sizeof(sender_name);
+    // Wenn wir schon die max. Namenslaenge fuer Spieler erreicht haben,
+    // muss der Rest nicht mehr durchlaufen werden.
+    if (sender_width >= 11) {
+      // Groesse beschraenken; es kann sein, dass alte Mailboxen noch Mails
+      // von extern enthalten, und deren Mailadressen sprengen dann das
+      // Format.
+      sender_width = min(11, sender_width);
+      break;
+    }
+  }
+
+  // Subject-Breite anpassen, je nach Groesse der anderen dynamischen Felder.
+  // sender_width ist max 11, num_width ist max 4.
+  int subject_width = 46+(11-sender_width)+(4-num_width);
+
+  /* Format der Zeile. Wir bauen dynamische Feldbreiten an den Stellen ein,
+     wo es sinnvoll ist, und haben um den Mailzaehler herum zwei String-
+     Felder, die die Markierung fuer die aktuell bearbeitete Mail aufnehmen.
+     Absender und Betreffzeile werden durch den : im Formatcode
+     abgeschnitten. Es muss insbesondere beim Absender der : verwendet
+     werden, damit laengere Namen abgeschnitten werden, bei kuerzeren aber
+     korrekt mit Leerzeichen aufgefuellt wird. Verwendet man stattdessen
+     den ., macht sprintf() das nicht.
+
+     Beispiel einer Zeile mit markierter Mail:
+     [125:](Spielername, 18.12.2019) Test
+      ^_^   ^---------^              ^--^
+       |           |                   |
+      num_width    sender_width        subject_width */
+  string lineformat = "%s%"+num_width+"d:%s"+        // Mail-Zaehler
+                      "(%:"+sender_width+"s, %10s) "+ // Absender + Datum
+                      "%:-"+subject_width+"s\n";      // Betreffzeile
+
+  for (i = limit ; i < mailcount ; i++) {
+    // Leeres Subject wird als 0 gespeichert. Falls das zutrifft, wird das
+    // hier beruecksichtigt.
+    string subject = folders[1][akt_folder][i][MSG_SUBJECT];
+    if (!stringp(subject) || !sizeof(subject))
+      subject = "<kein Betreff>";
+    write(sprintf(lineformat,
+      (i+1==akt_nr) ? "[" : " ",
+      i+1,
+      (i+1==akt_nr) ? "]" : " ",
+      capitalize(folders[1][akt_folder][i][MSG_FROM]),
+      msgIDtoTime(folders[1][akt_folder][i][MSG_ID]),
+      subject
+    ));
   }
   return;
 }
 
 
-static void ChangeFolder(mixed x) {  
+static void ChangeFolder(mixed x) {
   if (!(x=GetFolderName(x))) return;
   akt_folder=member(folders[0],x);
   write("Du oeffnest den Ordner '"+x+"'.\n");
   if (akt_nr<=0) akt_nr=1;
-  if (akt_nr>=sizeof(folders[1][akt_folder])) 
+  if (akt_nr>=sizeof(folders[1][akt_folder]))
     akt_nr=sizeof(folders[1][akt_folder]);
   ListContent();
 }
@@ -757,7 +909,7 @@ static varargs int DeleteMessage(int *nrs) {
     default: write("MAILDEMON: Interner Fehler Nummer "+ret+"!\n"); break;
     }
   }
-  
+
   return ret;
 }
 
@@ -765,14 +917,14 @@ static varargs int DeleteMessage(int *nrs) {
 
 static int MoveMessage(mixed msg,mixed fol) {
   int ret,i;
-  
+
   for (i=0;i<sizeof(msg);i++) {
     ret=MAILDEMON->MoveMsg(msg[i]-i, akt_folder, fol, name);
     switch(ret) {
     case 1:
       write("Brief "+(msg[i]+1)+" verschoben nach "+fol+".\n");
       break;
-    case 0: 
+    case 0:
       write("So viele Briefe sind nicht im aktuellen Ordner.\n"); return 0;
     case -1:
       write("Seltsamer Fehler - duerfte eigentlich nicht passieren:\n'Kein aktueller Ordner.'\n"); return -1;
@@ -782,9 +934,9 @@ static int MoveMessage(mixed msg,mixed fol) {
       write("MAILDEMON: MoveMsg Interner Fehler "+ret+". Bitte Erzmagier verstaendigen.\n"); return ret;
     }
   }
-  if (akt_nr>=sizeof(folders[1][akt_folder])) 
+  if (akt_nr>=sizeof(folders[1][akt_folder]))
     akt_nr=sizeof(folders[1][akt_folder])-1;
-  
+
   return ret;
 }
 
@@ -807,7 +959,7 @@ static varargs int Reply(int nr,int group) {
     while (to[0]==' ') to=to[1..]; // ueberschuessige Leerzeichen entfernen
     while (to[<1]==' ') to=to[0..<2];
   }
-  else 
+  else
     to=folders[1][akt_folder][nr][MSG_FROM];
   if (group) // Gruppenantwort
     to=({to,
@@ -922,7 +1074,7 @@ static string Message2string(int nr) {
   if (stringp(letter[MSG_CC]) && letter[MSG_CC]!="" ||
       pointerp(letter[MSG_CC]) && sizeof(letter[MSG_CC])) {
     message+="\nCc: ";
-    if (!pointerp(letter[MSG_CC])) message+=capitalize(letter[MSG_CC]);    
+    if (!pointerp(letter[MSG_CC])) message+=capitalize(letter[MSG_CC]);
     else message+=implode(map(letter[MSG_CC],#'capitalize),", ");//'))
   }
   message+="\nDatum: "+letter[MSG_DATE]+"\n"+
@@ -956,7 +1108,7 @@ static varargs int SaveMessage(int * nrs) {
     write("Speichere nichts.\n");
     return 1;
   }
-  
+
   if ( sizeof(nrs) > 15 ) LagWarning();
 
   for (nr=0;nr<sizeof(nrs);nr++) {
@@ -987,7 +1139,7 @@ static void ListAliases() {
       "d.xyz        = Alle Mitarbeiter der Domain xyz\n"
       "freunde      = Deine Freunde (entsprechend Freundschaftsband)\n"
       "me           = "+(this_player()->QueryProp(P_MAILADDR))+"\n");
-  for (i=0;i<sizeof(a);i++) 
+  for (i=0;i<sizeof(a);i++)
     if (strstr(aliases[a[i]],"@")==-1) s+=sprintf("%-12s = %s\n",a[i],aliases[a[i]]);
   write(s);
 }
@@ -1001,7 +1153,7 @@ static void mail_cmds(string str) {
 
   string *strargs;
   int i,nrargs;
-  
+
   update();
 
   if (!str || str=="" || !(nrargs=sizeof(strargs=old_explode(str[0..0]+lower_case(str[1..])," ")))) {
@@ -1016,7 +1168,7 @@ static void mail_cmds(string str) {
   DEBUGVAR(strargs);
   switch (strargs[0]) {
   case "q":                    // quit
-  case "quit": 
+  case "quit":
     remove(); return;
   case "?":                    // Hilfeseite
   case "hilf":
@@ -1024,7 +1176,7 @@ static void mail_cmds(string str) {
     MediumHelpPage();
     return;
   case "oeff":                 // change folder
-  case "c": 
+  case "c":
     if (nrargs<2) {
       write("Welchen Ordner willst Du oeffnen (Name, Nummer, +, -)?\n");
       break;
@@ -1032,7 +1184,7 @@ static void mail_cmds(string str) {
     ChangeFolder(strargs[1]);
     break;
   case "ordn":                 // list folders
-  case "i": 
+  case "i":
     ListFolders();
     break;
   case "anze":                 // list content
@@ -1044,7 +1196,7 @@ static void mail_cmds(string str) {
     ListAliases();
     break;
   case "erze":                 // make new folder
-  case "n": 
+  case "n":
     if (nrargs<2) {
       write("Bitte als Argument einen Namen fuer den neuen Ordner angeben!\n");
       break;
@@ -1052,7 +1204,7 @@ static void mail_cmds(string str) {
     MakeFolder(lower_case(strargs[1]));
     break;
   case "entf":                 // delete folder
-  case "e": 
+  case "e":
     if (nrargs<2) {
       write("Bitte als Argument Name oder Nummer des zu loeschenden Ordners angeben.\n");
       break;
@@ -1065,7 +1217,7 @@ static void mail_cmds(string str) {
     else DeleteMessage(GetNumbers(strargs[1..]));
     break;
   case "schr":                 // write mail
-  case "m": 
+  case "m":
     if (nrargs<2) {
       write("Bitte Empfaenger als Argument angeben!\n");
       break;
@@ -1087,7 +1239,7 @@ static void mail_cmds(string str) {
   case "r":
   case "grup":
   case "g":
-    if (nrargs<2) { 
+    if (nrargs<2) {
       if (Reply(akt_nr-1,(strargs[0][0]=='g'))) return;
       break;
     }
@@ -1104,21 +1256,21 @@ static void mail_cmds(string str) {
     break;
   case "weit":
   case "f":
-    if (nrargs<2 || 
+    if (nrargs<2 ||
 	(IS_NUMBER(strargs[nrargs-1])&&sizeof(old_explode(strargs[nrargs-1],"@"))==1)) {
       write("Syntax: f [nr|nr-nr [nr|nr-nr ...]]  empfaenger [empf2 ...]\n");
       break;
-    } 
+    }
     if (!IS_NUMBER(strargs[1])) {
-      if (Forward(strargs[1..],akt_nr-1)) return; 
+      if (Forward(strargs[1..],akt_nr-1)) return;
     }  // return, nicht break: input() wird von get_carbon_copy() aufger.
     else {
       int pos; // letzte Position, an der eine Nummer steht
-      
+
       for (pos=nrargs-1;pos>1&&!IS_NUMBER(strargs[pos]);pos--);
       if (ForwardArea(strargs[(pos+1)..],GetNumbers(strargs[1..pos])))
 	return;
-    } 
+    }
     break;
   case "Weit":
   case "F":
@@ -1175,7 +1327,7 @@ static void mail_cmds(string str) {
 
 static string prompt() {
   string path;
-  
+
   update();
   if (!pointerp(folders)||!pointerp(folders[0])||
      sizeof(folders[0])<=akt_folder)
@@ -1220,7 +1372,7 @@ static mixed process_names(mixed s) {
 
 //  printf("DEBUG ANFANG: %O\n",a2);
 
-  foreach(string str: a2) { 
+  foreach(string str: a2) {
       if( !sizeof(str) ) continue;
       if (sscanf(str,"d.%s",domain)) {
 	  h=(get_dir("/d/"+domain+"/*")||({}))-({".",".."});
@@ -1231,30 +1383,30 @@ static mixed process_names(mixed s) {
 	  else
 	    a1+=({"d."+domain});
       }
-      else if (str=="freunde") 
+      else if (str=="freunde")
 	a1+=("/p/service/tiamak/obj/fbmaster"->get_friends(getuid(this_player()), 8));
-      else if (str=="me") 
+      else if (str=="me")
 	a1+=({this_player()->QueryProp(P_MAILADDR)});
-      else if (aliases[str]) 
+      else if (aliases[str])
 	a1+=GetAlias(str);
 #ifdef MAIL_SUPPORT_BCC
     else if (str[0]=='-')
 	a1+=map(RecurseProcessNames(str[1..]), function string (string x) {
 	    return("-"+x);});
 #endif
-    else if ( (str[0]>='a' && str[0]<='z') 
-	|| (sscanf(str,"%s@%s",domain,domain)) 
-	|| str[0]=='\\') 
+    else if ( (str[0]>='a' && str[0]<='z')
+	|| (sscanf(str,"%s@%s",domain,domain))
+	|| str[0]=='\\')
 	a1+=({str});
   }
-  
+
 //  printf("DEBUG ENDE: %O\n",a1);
 
-  a1=filter(a1,function int (string x) 
+  a1=filter(a1,function int (string x)
       { return(sizeof(x)>1); } );
 
   return(map(a1,#'lower_case));
-} 
+}
 
 
 static mixed GetAlias(mixed a) { return process_names(aliases[a]); }
@@ -1276,7 +1428,7 @@ static mapping Read_mailrc(string file) {
   al=([]);
   ar=explode(ar,"\n");
   for (i=sizeof(ar)-1;i>=0;i--)
-    if (sscanf(ar[i],"%s %s",s1,s2)==2) 
+    if (sscanf(ar[i],"%s %s",s1,s2)==2)
       al+=([s1:s2]);
 //  printf("Got aliases %O",al);
   return al;
@@ -1306,7 +1458,7 @@ string GetReTitle(string s) {
 int * GetNumbers(mixed s) {
   int i,h1,h2;
   mixed ret;
-  
+
   if (intp(s)) return ({s-1});
   if (stringp(s)) s=({s-1});
   if (!pointerp(s)) return 0;
@@ -1352,7 +1504,7 @@ string GetFolderName(mixed fol) {  // int oder string. alles andere -> Fehler!
   if (fol=="-") fol=akt_folder-1;
   if ((!fol)||(intp(fol))||(IS_NUMBER(fol))) {
     if (!intp(fol)) fol=to_int(fol)-1;
-    if (fol<0||fol>=sizeof(folders[0])) 
+    if (fol<0||fol>=sizeof(folders[0]))
       return write("Einen Ordner mit Nummer "+(fol+1)+" gibt es nicht.\n"),0;
     return folders[0][fol];
   }
