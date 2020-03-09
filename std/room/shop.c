@@ -816,11 +816,13 @@ static varargs int sell(string str, int f)
         give_money(make_to_money(obs[0], val));
         return 1;
      }
-     if (str=obs[0]->QueryProp(P_NODROP)) {
-        if (stringp(str))
-           write(str);
-        else write(break_string("Du kannst "+obs[0]->name(WEN,1)
-                               +" nicht verkaufen!", 78));
+     string|int nodrop = obs[0]->QueryProp(P_NODROP);
+     if (nodrop) {
+        if (stringp(nodrop))
+           write(nodrop);
+        else 
+          write(break_string(
+            "Du kannst "+obs[0]->name(WEN,1)+" nicht verkaufen!", 78));
         return 1;
      }
 
