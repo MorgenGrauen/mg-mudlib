@@ -5,13 +5,21 @@ Das Postsystem
     Anders als bei der Bundespost sind aber weder Briefe noch Postkarten im
     Mud freimachungspflichtig.
 
-    Man geht einfach in eine der Postfilialen und tippt `post' oder `mail', um
-    in das Postmenue zu gelangen. Das Postmenue gibt auf `h' (oder `hilfe')
+    Man geht einfach in eine der Postfilialen und tippt 'post' oder 'mail', um
+    in das Postmenue zu gelangen. Das Postmenue gibt auf 'h' (oder 'hilfe')
     eine kurze Hilfsseite mit einer Befehlsuebersicht.
 
-    Will man nach 'post' oder 'mail' nicht die im Folder enthaltenen Mails
-    aufgelistet bekommen, so nutze man stattdessen 'post -silent' oder
-    'mail -silent'.
+    Die Befehle 'post' oder 'mail' verstehen folgende Optionen:
+    -silent    Die im Ordner enthaltenen Mails werden nicht aufgelistet.
+    -show <n>  Zeigt nur die letzten n Mails im Posteingang an. Wirkt nur
+               beim Einstieg ins Postmenue, d.h. nicht beim Oeffnen anderer
+               Ordner innerhalb des Postmenues. Bei mehrfacher Verwendung
+               von -show <n> im selben Befehl wirkt immer nur der letzte.
+
+    Gibt man als letztes Argument einen Spielernamen an, wird immer eine
+    neue Mail an diesen Spieler erstellt, unabhaengig davon, welche Optionen
+    sonst angegeben wurden.
+
 
  Inhaltsverzeichnis dieser Hilfsseite:
 
@@ -178,5 +186,5 @@ Anregungen, Fehlermeldungen und Fragen bitte direkt an Loco,
 Flames direkt nach /dev/null.
 
 LETZTE AeNDERUNG:
-   28.10.2013, Zesstra
+   09.03.2020 Arathorn
 
