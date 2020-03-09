@@ -7,7 +7,6 @@
 #pragma save_types
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 #define ANZ 3
 #include <properties.h>

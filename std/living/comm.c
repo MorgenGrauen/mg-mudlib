@@ -6,7 +6,6 @@
 
 #pragma strong_types,save_types
 #pragma no_clone
-#pragma pedantic
 #pragma range_check
 
 #include <defines.h>

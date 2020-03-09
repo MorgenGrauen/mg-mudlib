@@ -2,7 +2,7 @@
 //
 // player/vitems.c -- no vitems for players
 //
-#pragma strict_types,rtt_checks, range_check, pedantic
+#pragma strict_types,rtt_checks, range_check
 #pragma no_clone
 
 protected object *GetVItemClones()

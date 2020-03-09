@@ -11,7 +11,6 @@
 #pragma save_types
 #pragma no_clone
 #pragma no_shadow
-#pragma pedantic
 #pragma range_check
 
 // Never do this at home. ;-)

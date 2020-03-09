@@ -8,7 +8,6 @@
 #pragma range_check
 #pragma no_clone
 #pragma no_shadow
-#pragma pedantic
 
 #include <regexp.h>
 #include <telnet.h>

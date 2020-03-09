@@ -8,7 +8,6 @@
 #pragma save_types
 #pragma no_clone
 #pragma range_check
-#pragma pedantic
 
 inherit "/std/thing/properties";
 inherit "/std/thing/commands";

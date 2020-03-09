@@ -5,7 +5,6 @@
 #pragma save_types,rtt_checks
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 #include <input_to.h>
 #include <properties.h>

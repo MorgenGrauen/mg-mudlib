@@ -8,7 +8,6 @@
 #pragma save_types
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 #include <living/helpers.h>
 #define NEED_PROTOTYPES

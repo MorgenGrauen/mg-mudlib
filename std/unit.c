@@ -7,7 +7,6 @@
 #pragma strong_types,save_types,rtt_checks
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 inherit "/std/thing";
 

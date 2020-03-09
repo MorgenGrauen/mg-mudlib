@@ -7,7 +7,6 @@
 #pragma save_types
 #pragma no_shadow
 #pragma no_clone
-#pragma pedantic
 #pragma range_check
 
 //#define NEED_PROTOTYPES

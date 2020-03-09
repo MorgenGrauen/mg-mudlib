@@ -17,7 +17,6 @@
 #pragma strict_types
 #pragma save_types
 #pragma range_check
-#pragma pedantic
 
 //#define NEED_PROTOTYPES
 

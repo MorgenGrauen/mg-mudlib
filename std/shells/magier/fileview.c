@@ -4,7 +4,7 @@
 //
 // $Id: fileview.c 9142 2015-02-04 22:17:29Z Zesstra $
 #pragma strict_types, rtt_checks
-#pragma range_check, pedantic
+#pragma range_check
 #pragma no_clone
 
 #include <ansi.h>

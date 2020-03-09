@@ -7,7 +7,6 @@
 inherit "std/container/restrictions";
 #pragma strong_types
 #pragma save_types
-#pragma pedantic
 #pragma range_check
 #pragma no_clone
 

@@ -13,7 +13,6 @@
 #pragma no_clone
 #pragma no_shadow
 #pragma range_check
-#pragma pedantic
 
 inherit "/std/thing";
 #include <properties.h>

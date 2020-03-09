@@ -5,7 +5,7 @@
 // $Id: food.c 8248 2012-11-23 21:28:04Z Zesstra $
 #pragma strict_types,save_types,rtt_checks
 #pragma no_clone
-#pragma pedantic,range_check
+#pragma range_check
 
 inherit "/std/thing";
 

@@ -10,7 +10,6 @@ inherit "/std/thing/light";
 #pragma save_types,rtt_checks
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 #define NEED_PROTOTYPES
 

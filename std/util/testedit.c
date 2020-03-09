@@ -5,7 +5,6 @@
 // $Id: testedit.c 6371 2007-07-17 22:46:50Z Zesstra $
 #pragma strict_types
 #pragma save_types
-#pragma pedantic
 #pragma range_check
 #pragma no_clone
 

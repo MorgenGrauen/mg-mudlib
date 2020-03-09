@@ -6,7 +6,6 @@
 #pragma strong_types
 #pragma save_types
 #pragma no_clone
-#pragma pedantic
 #pragma range_check
 
 #include <hook.h>

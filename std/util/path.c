@@ -1,4 +1,4 @@
-#pragma strict_types, rtt_checks, pedantic, range_check, no_clone
+#pragma strict_types, rtt_checks, range_check, no_clone
 
 #include <config.h>
 #include <shells.h>

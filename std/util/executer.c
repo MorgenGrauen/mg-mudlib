@@ -7,7 +7,6 @@
 #pragma save_types
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 protected mixed execute_anything(mixed fun, varargs mixed args)
 {

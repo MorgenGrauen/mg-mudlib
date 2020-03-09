@@ -5,7 +5,6 @@
 // spendiere ueberarbeitet, 22.05.2007 - Miril
 #pragma strong_types
 #pragma save_types
-#pragma pedantic
 #pragma range_check
 #pragma no_clone
 

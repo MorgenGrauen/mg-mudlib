@@ -21,7 +21,6 @@
 #pragma no_clone
 #pragma no_inherit
 #pragma no_shadow
-#pragma pedantic
 #pragma range_check
 
 #include <util/ringbuffer.h>

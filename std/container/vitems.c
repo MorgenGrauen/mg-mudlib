@@ -2,7 +2,7 @@
 //
 // container/vitems.c -- managing virtually present automatic items
 //
-#pragma strict_types,rtt_checks, range_check, pedantic
+#pragma strict_types,rtt_checks, range_check
 #pragma no_clone
 
 #include <properties.h>

@@ -5,7 +5,7 @@
 // $Id: def_workroom.c 7423 2010-02-07 22:56:38Z Zesstra $
 
 #pragma strong_types,save_types,rtt_checks
-#pragma pedantic, range_check
+#pragma range_check
 
 inherit "/std/room";
 

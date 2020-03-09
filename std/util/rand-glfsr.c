@@ -18,7 +18,7 @@
  * feedback polynomials (M-Sequence Feedback Taps), falls jemand braucht.
  *
 */
-#pragma strong_types,rtt_checks,pedantic
+#pragma strong_types,rtt_checks
 
 #include <tls.h>
 

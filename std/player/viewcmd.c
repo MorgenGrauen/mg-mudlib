@@ -8,7 +8,6 @@
 #pragma save_types
 #pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 //#include <player.h>
 #include <properties.h>

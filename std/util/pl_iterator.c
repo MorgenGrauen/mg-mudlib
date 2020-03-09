@@ -10,7 +10,7 @@
 */
 #pragma strong_types, save_types, rtt_checks
 #pragma no_clone, no_shadow
-#pragma pedantic, range_check
+#pragma range_check
 #pragma warn_deprecated
 
 private void check_all_player(mapping allplayer, closure check_cl,

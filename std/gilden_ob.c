@@ -8,7 +8,6 @@
 #pragma no_shadow
 #pragma no_clone
 #pragma range_check
-#pragma pedantic
 
 inherit "/std/restriction_checker";
 #include <properties.h>

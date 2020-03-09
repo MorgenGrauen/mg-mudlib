@@ -119,7 +119,6 @@
 #pragma save_types
 //#pragma range_check
 #pragma no_clone
-#pragma pedantic
 
 #define SOULHELP "/std/player/soulhelp"
 #define LF "\n"

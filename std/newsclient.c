@@ -9,7 +9,6 @@
 #pragma save_types
 #pragma no_clone
 #pragma range_check
-#pragma pedantic
 
 inherit "/std/thing";
 inherit "/std/more";

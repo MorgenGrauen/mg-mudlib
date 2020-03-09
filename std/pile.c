@@ -5,7 +5,6 @@
 
 #pragma strict_types
 #pragma save_types
-#pragma pedantic
 #pragma range_check
 
 inherit "std/container";
