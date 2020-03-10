@@ -3,7 +3,7 @@
 // gilde.c -- Standardgilde
 //
 // $Id: gilde.c 8388 2013-02-16 17:28:31Z Zesstra $
-#pragma strong_types
+#pragma strict_types
 #pragma save_types
 #pragma range_check
 #pragma no_clone
@@ -237,9 +237,9 @@ string get_new_title(int lev, object pl)
   if (lev<0) lev=0;
 
   if (pl->QueryProp(P_GENDER) == MALE)
-    titles=(mapping)QueryProp(P_GUILD_MALE_TITLES);
+    titles=QueryProp(P_GUILD_MALE_TITLES);
   else
-    titles=(mapping)QueryProp(P_GUILD_FEMALE_TITLES);
+    titles=QueryProp(P_GUILD_FEMALE_TITLES);
 
   if (!mappingp(titles) || !sizeof(titles)) return 0;
 
@@ -280,7 +280,7 @@ int try_player_advance(object pl) {
   // Falls die konkrete Gilde des Spielern irgedwas mit dem Titel in
   // ABhaengigkeit des Spielerlevels tun will. Ausnahmsweise per call_other,
   // die Funktion kommt eigentlich aus /std/gilden_ob.c.
-  string gname=(string)pl->QueryProp(P_GUILD);
+  string gname=({string})pl->QueryProp(P_GUILD);
   (GUILD_DIR+"/"+gname)->adjust_title(pl);
 
   return 1;

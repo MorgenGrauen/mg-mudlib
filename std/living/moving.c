@@ -3,7 +3,7 @@
 // living/moving.c -- moving of living objects
 //
 // $Id: moving.c 9448 2016-01-22 17:52:28Z Zesstra $
-#pragma strong_types
+#pragma strict_types
 #pragma save_types
 #pragma range_check
 #pragma no_clone
@@ -224,7 +224,7 @@ varargs public int move( object|string dest, int method, string direction,
                 || ((file_size(fn+".c")>0 ||
                     (file_size(vc=implode(explode(fn,"/")[0..<2],"/")+
                           "/virtual_compiler.c")>0 &&
-                    !catch(tmp=(int)call_other(vc,"QueryValidObject",fn);
+                    !catch(tmp=({int})call_other(vc,"QueryValidObject",fn);
                            publish) && tmp>0)) &&
                     !catch(load_object(fn);publish) )) &&
                   (!interactive(ME) || !fn->QueryProp(P_NO_PLAYERS) || 
@@ -301,13 +301,13 @@ varargs public int move( object|string dest, int method, string direction,
             string *mout;
             if ( !textout ){
                 if ( method & M_TPORT )
-                    textout = (string) QueryProp(P_MMSGOUT) ||
-                        (string) QueryProp(P_MSGOUT);
+                    textout = ({string}) QueryProp(P_MMSGOUT) ||
+                        ({string}) QueryProp(P_MSGOUT);
                 else 
-                    textout = (mout = explode( (string)
+                    textout = (mout = explode( ({string})
                                                 QueryProp(P_MSGOUT) || "",
                                                       "#" ))[0]
-                         || (string)QueryProp(P_MMSGOUT);
+                         || ({string})QueryProp(P_MMSGOUT);
             }
 
             if ( !sizeof(direction) )
@@ -378,9 +378,9 @@ varargs public int move( object|string dest, int method, string direction,
     if ( !(method & M_SILENT) ) {
       if ( !textin ) {        
         if ( method & M_TPORT )
-              textin = (string) QueryProp(P_MMSGIN);
+              textin = ({string}) QueryProp(P_MMSGIN);
         else
-              textin = (string) QueryProp(P_MSGIN);
+              textin = ({string}) QueryProp(P_MSGIN);
       }
             
       inv = all_inventory(environment()) - ({ this_object() });

@@ -397,7 +397,7 @@ public int ConfirmScore(mixed key) {
   int score = by_num[bit,BYNUM_SCORE];
   
   foreach(string pl: unconfirmed_scores[bit]) {
-      string eks = (string)master()->query_ek(pl);
+      string eks = ({string})master()->query_ek(pl);
       eks = set_bit(eks, bit);
       master()->update_ek(pl, eks);
       write_file(SCOREAUTOLOG, sprintf(

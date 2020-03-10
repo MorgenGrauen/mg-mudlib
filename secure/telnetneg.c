@@ -981,13 +981,13 @@ startup_telnet_negs()
   Set( P_TTY_TYPE, 0 );  //avoid ANY mistakes... Wird unten neu gesetzt.
   // Daten aus dem Loginobjekt uebertragen. Das ist wichtig! (Dabei wird dann
   // auch der Status von der letzten Session ueberschrieben.)
-  TN = (mapping) previous_object()->query_telnet_neg();
+  TN = ({mapping}) previous_object()->query_telnet_neg();
   // bevor irgendwas anderes gemacht wird, werden erstmal die Standardhandler
   // gesetzt. Die sind naemlich in diesem Objekt jetzt erstmal kaputt, weil
   // sie im Loginobjekt gerufen werden.
   _bind_telneg_std_handlers();
   // dann restliche Daten aus dem Loginobjekt holen.
-  Terminals = (string *) previous_object()->query_terminals();
+  Terminals = ({string *}) previous_object()->query_terminals();
   Set( P_TTY_COLS, previous_object()->Query(P_TTY_COLS) );
   Set( P_TTY_ROWS, previous_object()->Query(P_TTY_ROWS) );
 
@@ -1117,8 +1117,8 @@ private void eval_naws(int *optargs) {
           l = 24;
       }
 
-      if ( ((int) Query(P_TTY_ROWS) != l) ||
-           ((int) Query(P_TTY_COLS) != c) ){
+      if ( (({int}) Query(P_TTY_ROWS) != l) ||
+           (({int}) Query(P_TTY_COLS) != c) ){
           Set( P_TTY_ROWS, l );
           Set( P_TTY_COLS, c );
 

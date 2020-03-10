@@ -4,7 +4,7 @@
 //
 // $Id: pager.c 8755 2014-04-26 13:13:40Z Zesstra $
 
-#pragma strong_types
+#pragma strict_types
 #pragma save_types
 #pragma range_check
 #pragma no_clone
@@ -124,9 +124,9 @@ varargs public void More(string txt, int file,
       pinfo[MAXL] += sizeof(explode(tmp, "\n"))+1;
   pinfo[PAGE] = PAGELENGTH;
   if(!pinfo[PAGE]) pinfo[FLAG] |= E_CAT;
-  if ((this_interactive() && (j=(int)this_interactive()->QueryProp(P_MORE_FLAGS))) ||
+  if ((this_interactive() && (j=({int})this_interactive()->QueryProp(P_MORE_FLAGS))) ||
       (this_player() && interactive(this_player()) &&
-       (j=(int)this_player()->QueryProp(P_MORE_FLAGS))))
+       (j=({int})this_player()->QueryProp(P_MORE_FLAGS))))
     pinfo[FLAG] |= j;
   
   pinfo[CURL] = 1;

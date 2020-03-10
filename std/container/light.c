@@ -115,7 +115,7 @@ static int _query_int_light()
    // etwas an einem container geaendert wird. Daher Auswertung jedes mal
    // neu aktualisieren.
    if (!environment()
-       || !(envlight=(int)environment()->QueryProp(P_INT_LIGHT)))
+       || !(envlight=({int})environment()->QueryProp(P_INT_LIGHT)))
       return Query(P_INT_LIGHT, F_VALUE);
    else {
       intlight = Query(P_INT_LIGHT, F_VALUE);

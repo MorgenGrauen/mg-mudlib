@@ -17,7 +17,7 @@
 //  P_POISON        -- level of poison
 //  P_CORPSE        -- corpse-object
 //  P_DEAF          -- if living is deaf
-#pragma strong_types,save_types,rtt_checks
+#pragma strict_types,save_types,rtt_checks
 #pragma range_check
 #pragma no_clone
 
@@ -232,7 +232,7 @@ public int do_damage(int dam, object enemy)
   if ( QueryProp(P_XP) && objectp(enemy) )
   {
     if ( !QueryProp(P_NO_XP) )
-      enemy->AddExp(dam*(int)QueryProp(P_TOTAL_WC)/10);
+      enemy->AddExp(dam*({int})QueryProp(P_TOTAL_WC)/10);
   }
 
   if (living(enemy)) {
@@ -516,7 +516,7 @@ public varargs void die( int poisondeath, int extern )
   // NPC_Killed_By() rufen.
   if ( !query_once_interactive(ME) )
   {
-    object killer = ((object) QueryProp(P_KILLER)) || previous_object() ||
+    object killer = (({object}) QueryProp(P_KILLER)) || previous_object() ||
       this_interactive() || this_player();
 
     if ( killer && query_once_interactive(killer) )

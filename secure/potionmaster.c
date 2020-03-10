@@ -155,7 +155,7 @@ int AddPotionRoom(string room, int list) {
   // Pfad normalisieren - Expansion von Platzhaltern ist hier ziemlich
   // sinnloss und faellt daher weg (Neue ZTs in /players/ gibts eh nicht
   // mehr.)
-  room=(string)master()->make_path_absolute(room);
+  room=({string})master()->make_path_absolute(room);
 
   // Datei mit dem ZT-Spruch muss existieren.
   if ( file_size( TIPS(to_string(nextroom)+".zt") ) < 0 ) {
@@ -192,8 +192,8 @@ int ChangeRoomPath(string old, string new) {
   // Pfad normalisieren - Expansion von Platzhaltern ist hier ziemlich
   // sinnloss und faellt daher weg (Neue ZTs in /players/ gibts eh nicht
   // mehr.)
-  old=(string)master()->make_path_absolute(old);
-  new=(string)master()->make_path_absolute(new);
+  old=({string})master()->make_path_absolute(old);
+  new=({string})master()->make_path_absolute(new);
 
   // Der neue Raum darf nicht bereits eingetragen sein, ...
   if ( member(reverse_table,new) )

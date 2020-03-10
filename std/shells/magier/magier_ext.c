@@ -356,7 +356,7 @@ static int _snoop(string cmdline)
       printf("Du hoerst auf zu snoopen.\n");
     // evtl. irgendetwas loggen ... sollte eigentlich nicht passieren.
     }
-    snoopee=(object)0;
+    snoopee=0;
     return 1;
   }
   SetProp(P_SNOOPFLAGS,flags); // FUNKTIONIERT NUR, WENN magier.h und

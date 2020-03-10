@@ -42,7 +42,7 @@ IsGuildMember(object pl) {
 
   if (!pl && !(pl=this_player()))
     return 0;
-  if (!(plg=(string)pl->QueryProp(P_GUILD)))
+  if (!(plg=({string})pl->QueryProp(P_GUILD)))
     return 0;
   if (GuildName()!=plg) {
     _notify_fail("Du gehoerst dieser Gilde nicht an!\n");
@@ -72,7 +72,7 @@ int can_advance() {
   int lv;
   mapping lvs;
 
-  if (!(lv=(int)this_player()->QueryProp(P_GUILD_LEVEL))) return 1;
+  if (!(lv=({int})this_player()->QueryProp(P_GUILD_LEVEL))) return 1;
   if (!(lvs=QueryProp(P_GUILD_LEVELS))) return 0;
   return check_cond(lvs[lv+1]); // Bedingung fuer naechsten Level testen.
 }
@@ -83,9 +83,9 @@ void adjust_title(object pl) {
 
 
   if (!pl ||
-      !(lv=(int)pl->QueryProp(P_GUILD_LEVEL)))
+      !(lv=({int})pl->QueryProp(P_GUILD_LEVEL)))
     return;
-  switch((int)pl->QueryProp(P_GENDER)) {
+  switch(({int})pl->QueryProp(P_GENDER)) {
   case MALE:
     ti=QueryProp(P_GUILD_MALE_TITLES);
     break;
@@ -132,7 +132,7 @@ int beitreten() {
     printf("Du kannst dieser Gilde nicht beitreten.\nGrund: %s",res);
     return -3;
   }
-  if (erg=(int)GUILDMASTER->beitreten()) {
+  if (erg=({int})GUILDMASTER->beitreten()) {
     if (erg<0)
       return erg;
     if (!(this_player()->QueryProp(P_GUILD_LEVEL)))
@@ -143,7 +143,7 @@ int beitreten() {
 }
 
 varargs int austreten(int loss) {
-    return (int)GUILDMASTER->austreten(loss);
+    return ({int})GUILDMASTER->austreten(loss);
 }
 
 int bei_oder_aus_treten(string str) {
@@ -240,7 +240,7 @@ mapping QuerySpell(string spell) {
   if (!(sfunc=ski[SI_SKILLFUNC]))
     sfunc=spell;
   spellbook=SPELLBOOK_DIR+spellbook;
-  if (!(ski2=(mapping)(spellbook->QuerySpell(sfunc))))
+  if (!(ski2=({mapping})(spellbook->QuerySpell(sfunc))))
     return 0;
   return AddSkillMappings(ski2,ski); // Reihenfolge wichtig!
   // Die Gilde kann Spelleigenschaften neu definieren!
@@ -260,14 +260,14 @@ UseSpell(object caster, string spell, mapping sinfo) {
     ski+=sinfo;
   spellbook=SPELLBOOK_DIR+spellbook;
   // printf("%O %O %O %O\n",spellbook,caster,spell,ski);
-  return (int)spellbook->UseSpell(caster,spell,ski);
+  return ({int})spellbook->UseSpell(caster,spell,ski);
 }
 
 static int
 InitialSkillAbility(mapping ski, object pl) {
   if (!ski || !pl) return 0;
   return (300*GetOffset(SI_SKILLLEARN,ski,pl)+
-          (200*(int)pl->QueryAttribute(A_INT)*
+          (200*({int})pl->QueryAttribute(A_INT)*
            GetFactor(SI_SKILLLEARN,ski,pl))/100);
 }
 
@@ -451,7 +451,7 @@ int GuildRating(object pl)
   else if (sum > MAX_ABILITY)
     sum = MAX_ABILITY;
   
-  return (int)pl->SetProp(P_GUILD_RATING, sum);
+  return ({int})pl->SetProp(P_GUILD_RATING, sum);
 }
 
 // Wird von /std/player/quest.c aufgerufen, wenn Quest geloest.

@@ -214,7 +214,7 @@
 static string *parseargs(string cmdline,int flags,string opts,int build_fn);
 static varargs void asynchron(mixed* array, closure cmd, mixed data, mixed flags, int c);
 static varargs mixed *file_list(string *files, int mode, int recursive, string dest, string mask);
-static mixed to_filename(string str);
+static string to_filename(string str);
 static int _verfolge(string str);
 static string glob2regexp(string str);
 

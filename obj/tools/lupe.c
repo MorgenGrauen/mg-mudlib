@@ -697,7 +697,7 @@ mixed rec_desc(mixed ob)
   if (intp(ob))
     return ""+ob;
   if (stringp(ob))
-    return string_desc((string)ob);
+    return string_desc(ob);
   if (objectp(ob))
     return "OBJ("+object_name(ob)+")";
   if (!pointerp(ob))

@@ -40,7 +40,7 @@ string expand_path(string path, string user)
       break;
     default:
       if(user && PL && getuid(PL) == user
-          && (cwd=(string)PL->QueryProp(P_CURRENTDIR)))
+          && (cwd=({string})PL->QueryProp(P_CURRENTDIR)))
         path=cwd + "/" + path;
   }
   return path;

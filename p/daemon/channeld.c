@@ -305,7 +305,7 @@ protected void create()
   // Hab ich die noetigen Rechte im Memory?
   if (call_other(MEMORY,"HaveRights")) {
     // Objektpointer laden
-    channelH = (mixed) call_other(MEMORY,"Load","History");
+    channelH = call_other(MEMORY,"Load","History");
 
     // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger, dann
     if (!mappingp(channelH)){

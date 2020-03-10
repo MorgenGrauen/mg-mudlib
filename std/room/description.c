@@ -4,7 +4,7 @@
 //
 // $Id: description.c 9468 2016-02-19 21:07:04Z Gloinson $
 
-#pragma strong_types
+#pragma strict_types
 #pragma save_types
 #pragma range_check
 #pragma no_clone
@@ -109,7 +109,7 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
   
   // ggf. Tueren hinzufuegen.
   if (QueryProp(P_DOOR_INFOS)) {
-    string tmp=((string)call_other(DOOR_MASTER,"look_doors"));
+    string tmp=(({string})call_other(DOOR_MASTER,"look_doors"));
     if (stringp(tmp) && sizeof(tmp))
         descr += tmp;
   }
@@ -120,7 +120,7 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
     descr += GetExits(viewer) || "";
 
   // Viewpoint (Objekt oder Objektarray) sind nicht sichtbar
-  inv_descr = (string) make_invlist(viewer, all_inventory(ME) 
+  inv_descr = ({string}) make_invlist(viewer, all_inventory(ME) 
 		  - (pointerp(viewpoint)?viewpoint:({viewpoint})) ,flags);
 
   if ( inv_descr != "" )
@@ -164,7 +164,7 @@ string int_short(mixed viewer,mixed viewpoint)
     descr += GetExits(viewer) || "";
 
   // Viewpoint (Objekt oder Objektarray) sind nicht sichtbar
-  inv_descr = (string) make_invlist( viewer, all_inventory(ME) 
+  inv_descr = ({string}) make_invlist( viewer, all_inventory(ME) 
 		  - (pointerp(viewpoint)?viewpoint:({viewpoint})) );
 
   if ( inv_descr != "" )

@@ -161,7 +161,7 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
   string group="";
   if (flags&LS_U)
   {
-    creator=(string)call_other(master(),"creator_file", full);
+    creator=({string})call_other(master(),"creator_file", full);
     switch(creator)
     {
       case ROOTID: creator="root"; break;
@@ -445,10 +445,10 @@ static int _man(string cmdline)
           !regexp(({""}),args[0]))
         return printf("man: Ungueltiger Ausdruck in Maske.\n"),1;
     }
-    tmp=(string *)call_other(MAND,"locate",args[0],flags&(MAN_M|MAN_R));
+    tmp=({string *})call_other(MAND,"locate",args[0],flags&(MAN_M|MAN_R));
   }
 
-  oldman_result=(mapping)0;
+  oldman_result=0;
   if(i && sizeof(tmp)>2 && sizeof(tmp)>=(i<<1))
     tmp=tmp[((i<<1)-2)..((i<<1)-1)];
   switch(sizeof(tmp))
@@ -500,7 +500,7 @@ static int _rman(string str)
   if (flags==-1||sizeof(args)!=2)
     return USAGE("rman <hilfeseite> <mudname>");
   write("man: " +
-        (string)call_other(UDP_CMD_DIR+"man","send_request",args[1],args[0]));
+        ({string})call_other(UDP_CMD_DIR+"man","send_request",args[1],args[0]));
   return 1;
 }
 

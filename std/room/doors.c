@@ -86,12 +86,12 @@ public varargs void init(object origin)
   string *cmds;
   int i,j;
 
-  if (!pointerp(info=(mixed *)QueryProp(P_DOOR_INFOS))) return;
+  if (!pointerp(info=({mixed *})QueryProp(P_DOOR_INFOS))) return;
   add_action("oeffnen","oeffne");
   add_action("schliessen","schliesse");
   add_action("schliessen","schliess");
   for (i=sizeof(info)-1;i>=0;i--) {
-    cmds=(string *)(info[i][D_CMDS]);
+    cmds=({string *})(info[i][D_CMDS]);
     for (j=sizeof(cmds)-1;j>=0;j--)
       add_action("go_door",cmds[j]);
     // Befehle IMMER anfuegen, gechecked wird sowieso erst beim Durchgehen.
@@ -108,14 +108,14 @@ int oeffnen (string str)
 {
   if (!str || !QueryProp(P_DOOR_INFOS))
     return 0;
-  return (int) call_other(DOOR_MASTER,"oeffnen",str);
+  return ({int}) call_other(DOOR_MASTER,"oeffnen",str);
 }
 
 int schliessen (string str)
 {
   if (!str || !QueryProp(P_DOOR_INFOS))
     return 0;
-  return (int) call_other(DOOR_MASTER,"schliessen",str);
+  return ({int}) call_other(DOOR_MASTER,"schliessen",str);
 }
 
 varargs int

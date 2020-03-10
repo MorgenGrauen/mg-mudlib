@@ -200,7 +200,7 @@ int query_valid_mail_host(string hostname)
 {
   string *match;
 
-  match=filter(m_indices((mapping)INETD->query("hosts")),
+  match=filter(m_indices(({mapping})INETD->query("hosts")),
 		#'match_mud_name,lower_case(hostname));
 
   return (sizeof(match)==1);

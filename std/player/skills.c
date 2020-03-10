@@ -7,7 +7,7 @@
 //
 // 2003-01-20: Nun Zooks Baustelle
 //
-#pragma strong_types
+#pragma strict_types
 #pragma save_types
 #pragma range_check
 #pragma no_clone
@@ -45,7 +45,7 @@ protected void create()
 
   // Wir holen die Gilden aus dem Gildenmaster 
   foreach(string guild:
-      (string *)call_other(GUILDMASTER,"QueryProp",P_VALID_GUILDS))
+      ({string *})call_other(GUILDMASTER,"QueryProp",P_VALID_GUILDS))
   {
     if(catch(act=call_other("/gilden/"+guild,"QueryProp",
         P_GUILD_DEACTIVATE_SKILLS); publish ))
@@ -299,8 +299,8 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
               //wt_aus=call_other(waf_aus,"QueryProp",P_WEAPON_TYPE);
               //if (wt_azu==wt_aus)
               if (objectp(waf_aus) && objectp(waf_azu) &&
-                  (string)waf_aus->QueryProp(P_WEAPON_TYPE)
-                     == (string)waf_azu->QueryProp(P_WEAPON_TYPE)) 
+                  ({string})waf_aus->QueryProp(P_WEAPON_TYPE)
+                     == ({string})waf_azu->QueryProp(P_WEAPON_TYPE)) 
                 {
                 // Bonus von bis zu 5 Punkten
                 //log_file("humni/log_azubi",

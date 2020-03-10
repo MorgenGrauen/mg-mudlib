@@ -6,7 +6,7 @@
 
 inherit "/std/unit";
 
-#pragma strong_types,rtt_checks
+#pragma strict_types,rtt_checks
 
 #include <properties.h>
 #include <language.h>
@@ -116,7 +116,7 @@ int _set_autoloadobj( mixed args )
 
 int _query_autoloadobj()
 {
-  return (int)Query(P_AMOUNT, F_VALUE);
+  return ({int})Query(P_AMOUNT, F_VALUE);
 }
 
 string current_long() {

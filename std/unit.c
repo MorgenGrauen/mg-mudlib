@@ -109,12 +109,13 @@ static int _set_value(int num) {
 
 static int _query_weight()
 {
-  mixed gpu, req;
-  if ((req=QueryProp(U_REQ))<1) return 0;
-  gpu=Query(U_GPU);
-  if (intp(gpu)) return req * gpu;
-  if (!pointerp(gpu)) return 0;
-  return MAX(1,(req*gpu[0])/gpu[1]);
+  int req = QueryProp(U_REQ);
+  if (req<1)
+    return 0;
+  int|int* gpu=Query(U_GPU, F_VALUE);
+  if (pointerp(gpu))
+    return MAX(1,(req*gpu[0])/gpu[1]);
+  return req * gpu;
 }
 
 static int _set_weight(int num) {
@@ -125,19 +126,18 @@ static int _set_weight(int num) {
 
 static int _query_total_weight()
 {
-  mixed gpu, amount;
-  if ((amount=Query(P_AMOUNT))<1) return 0;
-  gpu=Query(U_GPU);
-  if (intp(gpu))
-    return amount*(int)gpu;
-  if (!pointerp(gpu)) return 0;
-  return MAX(1,(amount*gpu[0])/gpu[1]);
+  int amount = Query(P_AMOUNT);
+  if (amount<1)
+    return 0;
+  int|int* gpu=Query(U_GPU, F_VALUE);
+  if (pointerp(gpu))
+    return MAX(1,(amount*gpu[0])/gpu[1]);
+  return amount*gpu;
 }
 
 static int _query_plural()
 {
-  int i;
-  i=QueryProp(U_REQ); // wichtig _nicht_ QueryProp
+  int i = QueryProp(U_REQ);
   return (i<=1 ? 0 : i);
 }
 
@@ -145,8 +145,8 @@ static int _query_plural()
 static string|string* _query_name()
 {
   if (QueryProp(U_REQ)==1)
-    return "%s%s"+((string *)Query(P_NAME))[0];
-  return "%d %s"+((string *)Query(P_NAME))[1];
+    return "%s%s"+Query(P_NAME)[0];
+  return "%d %s"+Query(P_NAME)[1];
 }
 
 // gibt string | string* zurueck.

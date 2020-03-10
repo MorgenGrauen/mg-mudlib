@@ -45,7 +45,7 @@ static int _udpq(string str)
   if (member(({"commands","email","hosts","inetd","list","mud_port","time",
          "version"}),type)==-1)
     write("TYPEs: commands, email, hosts, inetd, list, mud_port, time, version\n");
-  if (ret=(string)INETD->_send_udp(mud,([SENDER:getuid(), REQUEST:QUERY, DATA:type]),1))
+  if (ret=({string})INETD->_send_udp(mud,([SENDER:getuid(), REQUEST:QUERY, DATA:type]),1))
     write(ret);
   else
     write("Anfrage abgeschickt.\n");
@@ -189,7 +189,7 @@ static int sinners(string arg)
     }
     if ( arg=="*" )
     {
-        More((string)call_other("/secure/sinmaster","Dump",1));
+        More(({string})call_other("/secure/sinmaster","Dump",1));
         return 1;
     }
 
@@ -267,7 +267,7 @@ static int mbanish(string str)
     _notify_fail( "Syntax: mbanish <name> [<grund>]\n" );
 
     if ( !str || !stringp(str) || !sizeof(str) ){
-        if ( !mappingp(list = (mapping)"/secure/merlin"->MBanishList()) ||
+        if ( !mappingp(list = ({mapping})"/secure/merlin"->MBanishList()) ||
              !(i = sizeof(list)) ){
             write( "Momentan ist kein Spieler auf der mbanish-Liste.\n" );
             return 1;
@@ -357,14 +357,21 @@ static int sbanish( string str )
 {
     string ip;
     int days;
-    mapping sites;
 
     // Mindestens L26 fuer diesen Befehl
     if ( secure_level() <= DOMAINMEMBER_LVL )
         return 0;
 
-    if ( !str || !stringp(str) || !sizeof(str) ){
-        if ( !sizeof(sites = (mapping)MASTER->SiteBanish( 0, 0 )) ){
+    if ( !str || !stringp(str) || !sizeof(str) )
+    {
+        mapping|int sites = ({mapping|int})MASTER->SiteBanish( 0, 0 );
+        if ( !mappingp(sites) )
+        {
+            write("Du darfst (noch) keine gesperrten Adressen abfragen!\n");
+            return 1;
+        }
+        if ( !sizeof(sites) )
+        {
             write( "Es sind zur Zeit keine Adressen gesperrt!\n" );
             return 1;
         }
@@ -396,8 +403,11 @@ static int sbanish( string str )
 
 //    _notify_fail( "Ungueltiges Adress-Format!\n" );
 
-    if ( !days ){
-        int res=(int)MASTER->SiteBanish(ip, 0);
+    if ( !days )
+    {
+        // Eigentlich ist SiteBanish() int|mapping. Bei diesem Aufruf kommt
+        // jedoch nur int zurueck. Fall sichs das mal aendert, soll es buggen.
+        int res=({int})MASTER->SiteBanish(ip, 0);
         if ( res == 1 )
              printf( "Die Adresse '%s' ist jetzt nicht mehr gesperrt.\n",
                      ip );
@@ -407,17 +417,23 @@ static int sbanish( string str )
         else
             printf( "Du darfst nur eigene Sperrungen wieder aufheben!\n" );
     }
-    else {
-        int res;
+    else
+    {
         if ( days != 1 && !IS_DEPUTY(secure_euid()) )
+        {
             write( "Du darfst Adressen nur fuer einen Tag sperren!\n" );
-        else if ( (res = (int)MASTER->SiteBanish(ip, days)) == 1 )
+            return 1;
+        }
+        // Eigentlich ist SiteBanish() int|mapping. Bei diesem Aufruf kommt
+        // jedoch nur int zurueck. Fall sichs das mal aendert, soll es buggen.
+        int res = ({int})MASTER->SiteBanish(ip, days);
+        if ( res  == 1 )
              printf( "Die Adresse '%s' ist jetzt fuer %s gesperrt.\n",
                      ip, (days > 1 ? sprintf( "%d Tage", days ) :
                       (days > 0 ? "einen Tag" : "immer")) );
         else if ( res == -1 )
             write( "Du darfst " + (LORD_SECURITY ? "255 IP-Adressen"
-                                   : "nur einzelne IP-Adressen") + " sperren!\n" );
+                             : "nur einzelne IP-Adressen") + " sperren!\n" );
         else if ( res == -2 )
             write( "Du hast schon genug Adressen gesperrt!\n" );
     }

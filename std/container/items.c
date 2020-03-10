@@ -100,14 +100,14 @@ public varargs object AddItem(mixed filename, int refresh, mixed props)
   {
     for(i=sizeof(filename);i--;)
     {
-      filename[i] = (string)master()->make_path_absolute( filename[i] );
+      filename[i] = ({string})master()->make_path_absolute( filename[i] );
     }
       
     file=filename[random(sizeof(filename))];
   }
   else 
   {
-    file=filename=(string)master()->make_path_absolute(filename);
+    file=filename=({string})master()->make_path_absolute(filename);
   }
   
   if(props==1)

@@ -370,7 +370,7 @@ varargs static int _make(string file, int flags,int recursive)
       // mittels Configure()
       if ( ! (flags & UPD_C ) )
       {
-        catch(restore_config=(mixed)call_resolved(&configdata,obj,
+        catch(restore_config=call_resolved(&configdata,obj,
                                                   "Configure",0);
               publish);
         // Wenn UPD_CONF gesetzt wird, _muss_ das Objekt ein oeffentliches
@@ -388,7 +388,7 @@ varargs static int _make(string file, int flags,int recursive)
           mixed items;
           // Herausbekommen, ob hier Items existieren, die per AddItem 
           // erzeugt werden. Die duerfen nicht gesichert werden.
-          items=(mixed)obj->QueryProp(P_ITEMS); // mixed, da array of arrays
+          items=({mixed})obj->QueryProp(P_ITEMS); // mixed, da array of arrays
           if (pointerp(items)&&sizeof(items))
           {
             items=transpose_array(items)[0];
@@ -407,7 +407,7 @@ varargs static int _make(string file, int flags,int recursive)
       env = environment(obj);
       if ( flags & UPD_C )
       {
-        pro = (mapping)(obj->QueryProperties());
+        pro = ({mapping})(obj->QueryProperties());
       }
     }
     else inv = ({});
@@ -461,7 +461,7 @@ varargs static int _make(string file, int flags,int recursive)
         else if (restore_config)
         {
           int conf_res;
-          if (!catch(conf_res=(int)obj->Configure(configdata); publish)
+          if (!catch(conf_res=({int})obj->Configure(configdata); publish)
               && conf_res == 1)
           {
             msg += ", (re-)konfiguriert";

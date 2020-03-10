@@ -33,7 +33,7 @@ static string glob2regexp(string str)
 // Rueckgabe: Dateiname
 //
 
-static mixed to_filename(string str)
+static string to_filename(string str)
 {
   string *tmp,p,newfn;
   int i;
@@ -88,7 +88,7 @@ private void _parseargs(string str, string *line,int flags,string opts,
   }
   if (build_fn)
   {
-    if (str=(string)to_filename(str)) line+=({ str });
+    if (str=to_filename(str)) line+=({ str });
   } 
   else
     line+= ({ str });

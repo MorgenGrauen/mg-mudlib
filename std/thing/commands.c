@@ -277,7 +277,7 @@ varargs void AddCmd(mixed cmd, mixed func, mixed flag, mixed cmdid) {
   // ggf. id in das ID-Mapping eintragen
   if(cmdid) {
    mixed *tmp;
-   j=sizeof((string*)added_cmds[str, CMDIDX_FUN]);
+   j=sizeof(added_cmds[str, CMDIDX_FUN]);
    tmp=added_cmds[str, CMDIDX_ID]||allocate(j);
    if(sizeof(tmp)<j) tmp+=allocate(j-sizeof(tmp));
    tmp[<1]=cmdid;
@@ -355,7 +355,8 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
       cachecl[j..j] = allocate(0);
       if(ids) {
        ids[j..j] = allocate(0);
-       if(!sizeof(ids-allocate(1))) ids=(mixed*)0;
+       if(!sizeof(ids-allocate(1)))
+         ids=0;
       }
       ret++;
      }
@@ -378,7 +379,7 @@ varargs int RemoveCmd(mixed cmd, int del_norule, mixed onlyid) {
 static int _execute(mixed fun, string str, mixed *parsed) {
   switch(typeof(fun)) {
     case T_CLOSURE:
-      return ((int)funcall(fun,str,&parsed));
+      return (({int})funcall(fun,str,&parsed));
     case T_STRING:
       int ret;
       if(!call_resolved(&ret, this_object(), fun, str, &parsed))
@@ -488,7 +489,7 @@ static int _process_command(string str, string *noparsestr,
        else if(check_present&CHECK_ID && id(tmpstr))	// ID ?
         matchstr=this_object();
        else if((check_present&CHECK_PUTGET) &&	// PUT_GET_??? ?
-               (tmpobj=(object*)
+               (tmpobj=({object*})
                   this_player()->find_obs(tmpstr,
                       ([CHECK_PUTGETNONE:PUT_GET_NONE,
                         CHECK_PUTGETDROP:PUT_GET_TAKE,
@@ -669,7 +670,7 @@ static mapping _query_commands() {
 }
 
 static mapping _set_commands(mapping commands) {
-  if(!commands) added_cmds=(mapping)0;
+  if(!commands) added_cmds=0;
   else if(mappingp(commands)) {
     if(widthof(commands) != CMDS_WIDTH)
       raise_error("SetProp(P_COMMANDS): corrupt commands-mapping.\n");

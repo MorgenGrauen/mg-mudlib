@@ -88,7 +88,7 @@ protected void create()
   Set( P_CLONER, NOSETMETHOD|SECURED, F_MODE_AS );
 
   // Gibt es FPs ?
-  explore = (mixed *)EPMASTER->QueryExplore();
+  explore = ({<string*|int>*})EPMASTER->QueryExplore();
 
   return;
 }
@@ -121,7 +121,7 @@ static void GiveEP( int type, string key )
 // Danach sollte der EPMASTER neu nach den Details befragt werden.
 visible void __reload_explore()
 {
-  explore = (mixed *)EPMASTER->QueryExplore();
+  explore = ({<string*|int>*})EPMASTER->QueryExplore();
   return;
 }
 
@@ -359,7 +359,7 @@ public varargs string name(int casus,int demon)
       case WEM:
       case WEN:
         if ( art && last=='e'&&QueryProp(P_GENDER) == MALE)
-          sh = (string)sh + "n";
+          sh = sh + "n";
         break;
 
       case WESSEN:
@@ -370,11 +370,11 @@ public varargs string name(int casus,int demon)
             case 'x':
             case 's':
             case 'z':
-              sh = (string)sh + "'";
+              sh = sh + "'";
               break;
 
           default:
-            sh = (string)sh + "s";
+            sh = sh + "s";
           }
         } 
         else
@@ -383,11 +383,11 @@ public varargs string name(int casus,int demon)
           {
             default:
               if (QueryProp(P_GENDER)!=FEMALE)
-                sh=(string)sh+"s";
+                sh=sh+"s";
               break;
             case 'e':
               if (QueryProp(P_GENDER)==MALE)
-                sh=(string)sh+"n";
+                sh=sh+"n";
             case 'x':
             case 's':
             case 'z':
@@ -398,7 +398,7 @@ public varargs string name(int casus,int demon)
   } /* pointerp(sh) */
 
   // RAW? Dann mal zurueck
-  if (demon == RAW) return (string)sh;
+  if (demon == RAW) return sh;
 
   // Selber Artikel suchen ...
   if (demon==2)
@@ -653,11 +653,11 @@ public varargs string GetDetail(string key, string race, int sense)
   if (!stringp(detail))
   {
     if (closurep(detail))
-      detail = (string)funcall(detail,key);
+      detail = ({string})funcall(detail,key);
     else if (mappingp(detail))
-      detail = (string)(detail[race]||detail[0]);
+      detail = detail[race] || detail[0];
     else if (pointerp(detail))
-      detail = (string)(detail[random(sizeof(detail))]);
+      detail = detail[random(sizeof(detail))];
   }
 
   // FP vergeben (so vorhanden ;-) )
@@ -722,7 +722,7 @@ public void AddClass(string|string* str)
   if (stringp(str)) 
       str = ({ str });
   // Aliase aufloesen und implizite Klassen addieren.
-  str = (string*)CLASSDB->AddImplicitClasses(str);
+  str = ({string*})CLASSDB->AddImplicitClasses(str);
   // Summe mit alten Klassen bilden und Doppelte eliminieren
   str = str + Query(P_CLASS, F_VALUE);
   Set( P_CLASS, m_indices(mkmapping(str)), F_VALUE);
@@ -737,7 +737,7 @@ public void RemoveClass(string|string* str)
       str = ({ str });
 
   // Aliase aufloesen und implizite Klassen addieren.
-  str = (string*)CLASSDB->AddImplicitClasses(str);
+  str = ({string*})CLASSDB->AddImplicitClasses(str);
 
   // Und alle - inklusive impliziter Klassen - entfernen
   // TODO: Pruefen, ob dies die richtige Entscheidung ist.
@@ -833,14 +833,14 @@ public int QueryMaterial( string mat )
 // Anteil der Gruppe am Objekt
 public int QueryMaterialGroup( string matgroup )
 {
-  return (int)call_other( MATERIALDB, "MaterialGroup",
+  return ({int})call_other( MATERIALDB, "MaterialGroup",
                           QueryProp(P_MATERIAL), matgroup );
 }
 
 
 public string MaterialList( int casus, mixed idinf )
 {
-  return (string)call_other( MATERIALDB, "ConvMaterialList",
+  return ({string})call_other( MATERIALDB, "ConvMaterialList",
                              QueryProp(P_MATERIAL), casus, idinf );
 }
 

@@ -98,17 +98,17 @@ int xflags(object ob){
     if (!ob || !objectp(ob))
         return 0;
     re=0;
-    if (((object)ob->QueryProp(P_WEAR_FUNC))==ob  ||
-        ((object)ob->QueryProp(P_WIELD_FUNC))==ob )
+    if ((({object})ob->QueryProp(P_WEAR_FUNC))==ob  ||
+        (({object})ob->QueryProp(P_WIELD_FUNC))==ob )
         re += AWF_PUTON;
-    if (((object)ob->QueryProp(P_REMOVE_FUNC))==ob  ||
-        ((object)ob->QueryProp(P_UNWIELD_FUNC))==ob )
+    if ((({object})ob->QueryProp(P_REMOVE_FUNC))==ob  ||
+        (({object})ob->QueryProp(P_UNWIELD_FUNC))==ob )
         re += AWF_PUTOFF;
-    if (((object)ob->QueryProp(P_DEFEND_FUNC))==ob ||
-        ((object)ob->QueryProp(P_HIT_FUNC))==ob    )
+    if ((({object})ob->QueryProp(P_DEFEND_FUNC))==ob ||
+        (({object})ob->QueryProp(P_HIT_FUNC))==ob    )
         re += AWF_BOOST;
     // ists nen Mapping und nicht leer?
-    if (mappingp(m=(mapping)ob->QueryProp(P_RESISTANCE_STRENGTHS))
+    if (mappingp(m=({mapping})ob->QueryProp(P_RESISTANCE_STRENGTHS))
         && sizeof(m))
         re += AWF_RESIST;
     return re;
@@ -127,17 +127,17 @@ void RegisterArmour()
     {
         armours[id][AWM_TIME]=time();
         flag=0;
-        if ((h=(int)ob->QueryProp(P_AC)) > armours[id][AWM_CLASS])
+        if ((h=({int})ob->QueryProp(P_AC)) > armours[id][AWM_CLASS])
         {
             armours[id][AWM_CLASS]=h;
             flag=1;
         }
-        if ((h=(int)ob->QueryProp(P_EFFECTIVE_AC)) > armours[id][AWM_EFF_CLASS])
+        if ((h=({int})ob->QueryProp(P_EFFECTIVE_AC)) > armours[id][AWM_EFF_CLASS])
         {
             armours[id][AWM_EFF_CLASS]=h;
             flag=1;
         }
-        if ((h=(int)ob->QueryProp(P_NR_HANDS)) < armours[id][AWM_HANDS])
+        if ((h=({int})ob->QueryProp(P_NR_HANDS)) < armours[id][AWM_HANDS])
         {
             armours[id][AWM_HANDS]=h;
             flag=1;
@@ -181,17 +181,17 @@ void RegisterWeapon()
     {
         weapons[id][AWM_TIME] = time();
         flag=0;
-        if ((h=(int)ob->QueryProp(P_WC)) > weapons[id][AWM_CLASS])
+        if ((h=({int})ob->QueryProp(P_WC)) > weapons[id][AWM_CLASS])
         {
             weapons[id][AWM_CLASS]=h;
             flag=1;
         }
-        if ((h=(int)ob->QueryProp(P_EFFECTIVE_WC)) > weapons[id][AWM_EFF_CLASS])
+        if ((h=({int})ob->QueryProp(P_EFFECTIVE_WC)) > weapons[id][AWM_EFF_CLASS])
         {
             weapons[id][AWM_EFF_CLASS]=h;
             flag=1;
         }
-        if ((h=(int)ob->QueryProp(P_NR_HANDS)) < weapons[id][AWM_HANDS])
+        if ((h=({int})ob->QueryProp(P_NR_HANDS)) < weapons[id][AWM_HANDS])
         {
             weapons[id][AWM_HANDS]=h;
             flag=1;

@@ -3,8 +3,7 @@
 // user_filter.c -- Hilfsmodul fuer die wer-Liste
 //
 // $Id: user_filter.c 8755 2014-04-26 13:13:40Z Zesstra $
-#pragma strict_types
-#pragma save_types
+#pragma save_types,rtt_checks
 #pragma no_clone
 #pragma range_check
 
@@ -37,7 +36,7 @@ static int is_wiz_level_ge( object ob, mixed x )
 
 static int is_prop_set( object ob, mixed x )
 {
-  return (mixed)ob->QueryProp(x) != 0;
+  return ob->QueryProp(x) != 0;
 }
 
 static int is_second( object ob, mixed x )
@@ -56,13 +55,14 @@ static int is_in_gilde( object ob, mixed x )
 
   // nur Magier koennen eine andere Gilde per P_VISIBLE_GUILD in werlisten
   // etc. vortaeuschen.
-  if (IS_LEARNER(ob)) {
+  if (IS_LEARNER(ob))
+  {
     // Querymethode von P_VISIBLE_GUILD fragt ggf. auch P_GUILD ab.
-    if ( !stringp(str = (string)ob->QueryProp(P_VISIBLE_GUILD)) )
-      return 0;
+    str = ob->QueryProp(P_VISIBLE_GUILD);
   }
-  else {
-      str = (string)ob->QueryProp(P_GUILD);
+  else
+  {
+      str = ob->QueryProp(P_GUILD);
   }
   if (!stringp(str)) return 0; // login hat z.B. keine Gilde.
   return strstr(lower_case(str),x) == 0;
@@ -70,12 +70,12 @@ static int is_in_gilde( object ob, mixed x )
 
 static int is_in_team( object ob, mixed x )
 {
-  object team;
-  
-  if ( !objectp(team = (object)ob->QueryProp(P_TEAM)) )
+  object team = ob->QueryProp(P_TEAM);
+
+  if ( !objectp(team) )
     return x == "";
-  
-  return lower_case((string)team->Name()) == x;
+
+  return lower_case(team->Name()) == x;
 }
 
 static int is_name_in( object ob, mixed x )
@@ -91,17 +91,17 @@ static int is_in_region( object ob, mixed x )
 
 static int is_region_member( object ob, mixed x )
 {
-  return (int)master()->domain_member( geteuid(ob), x );
+  return master()->domain_member( geteuid(ob), x );
 }
 
 static int is_region_master( object ob, mixed x )
 {
-  return (int)master()->domain_master( geteuid(ob), x );
+  return master()->domain_master( geteuid(ob), x );
 }
 
 static int is_guild_master(object ob, mixed x)
 {
-  return (int)master()->guild_master(geteuid(ob), x);
+  return master()->guild_master(geteuid(ob), x);
 }
 
 static int is_gender( object ob, mixed x )
@@ -131,7 +131,7 @@ static int is_hc( object ob)
 
 static int is_ghost( object ob)
 {
-  return (int)ob->QueryProp(P_GHOST);
+  return ob->QueryProp(P_GHOST);
 }
 
 static int uses_ssl(object ob)
@@ -146,7 +146,7 @@ static int uses_ssl(object ob)
 }
 
 protected int is_active_guide(object ob) {
-    int cic=(int)ob->QueryProp(P_NEWBIE_GUIDE);
+    int cic=({int})ob->QueryProp(P_NEWBIE_GUIDE);
     if (!intp(cic) || cic <= 0)
       return 0;
     else if (cic < 60)
@@ -389,16 +389,15 @@ object *filter_users( string str )
     case "erwartete":
       if ( i < (sz-1) && words[i+1] == "wegen" ) {
         i++;
-
-        if ( !mappingp(x = (mixed)this_player()->QueryProp(P_WAITFOR_REASON)) ||
-             !pointerp(x = m_indices(x)) )
+        x = this_player()->QueryProp(P_WAITFOR_REASON);
+        if ( !mappingp(x) )
           break;
-        
+        x=m_indices(x);
         zwi = filter( orig, "is_name_in", ME, x );
         break;
       }
-      
-      if ( !pointerp(x = (mixed)this_player()->QueryProp(P_WAITFOR)) )
+      x = this_player()->QueryProp(P_WAITFOR);
+      if ( !pointerp(x) )
         break;
       zwi = filter( orig, "is_name_in", ME, x );
       break;

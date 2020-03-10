@@ -919,7 +919,7 @@ void seer_sequenz3(object player, string plname)
     ((player->QueryProp(P_GENDER))==2?"in":""));
   write("Merlin ruft: "+capitalize(playername)+text);
   shout("Merlin ruft: "+capitalize(playername)+text);
-  PostSeher(capitalize(playername),(int)player->QueryProp(P_GENDER));
+  PostSeher(capitalize(playername),({int})player->QueryProp(P_GENDER));
   if(!catch(
         faq=clone_object("/d/seher/haeuser/special/seherfaqmobil") ;publish))
   {

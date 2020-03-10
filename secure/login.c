@@ -260,7 +260,7 @@ static int check_illegal( string str )
 {
     string res;
 
-    res = (string)master()->QuerySBanished(query_ip_number(this_object()));
+    res = ({string})master()->QuerySBanished(query_ip_number(this_object()));
     if (!res)
     {
       // check connection from Tor exit node
@@ -411,7 +411,7 @@ static void logon2( string str )
 
         for ( i = sizeof(user = users() - ({ 0, this_object() })); i--; )
             if ( object_name(user[i])[0..12] == "/secure/login" &&
-                 ((string)user[i]->loginname()) == loginname ){
+                 (({string})user[i]->loginname()) == loginname ){
                 write( "Eine Anmeldung fuer diesen Namen laeuft bereits.\n" );
                 destruct( this_object() );
                 return;
@@ -434,7 +434,7 @@ static void logon2( string str )
         }
 
         
-        if ( (txt = (string)master()->QueryBanished(loginname)) ){
+        if ( (txt = ({string})master()->QueryBanished(loginname)) ){
             if ( txt != "Dieser Name ist gesperrt." )
                 txt = sprintf("Hoppla - dieser Name ist reserviert oder gesperrt "
                     "(\"gebanisht\")!\nGrund: %s\n",txt);
@@ -483,7 +483,7 @@ static void logon2( string str )
             return;
         }
 
-        if ( (int)master()->check_late_player(loginname) )
+        if ( ({int})master()->check_late_player(loginname) )
         {
             write( "Dieser Spieler hat uns leider fuer immer verlassen.\n" );
             loginname = "logon";
@@ -492,7 +492,7 @@ static void logon2( string str )
             return;
         }
 
-        if ( txt = (string)master()->QueryTBanished(loginname) ){
+        if ( txt = ({string})master()->QueryTBanished(loginname) ){
             write( txt );
             loginname = "logon";
             input_to( "logon2", INPUT_PROMPT,
@@ -826,7 +826,7 @@ static int load_player_object( int guestflag )
     }
 
     if ( guestflag ){
-        if ( catch(guestflag = (int)GUESTMASTER->new_guest();publish) 
+        if ( catch(guestflag = ({int})GUESTMASTER->new_guest();publish) 
              || !guestflag ){
             write( "Derzeit ist kein Gastlogin moeglich!\n" );
             destruct( this_object() );
@@ -891,7 +891,7 @@ static int load_player_object( int guestflag )
             /* Now reconnect to the old body */
             exec( ob, this_object() );
             ob->set_realip(realip);
-            if ( ((int)ob->QueryProp(P_LEVEL)) == -1 )
+            if ( (({int})ob->QueryProp(P_LEVEL)) == -1 )
                 ob->start_player( cap_name );
             else
                 ob->Reconnect( was_interactive );

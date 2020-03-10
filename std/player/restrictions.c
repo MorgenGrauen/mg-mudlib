@@ -54,23 +54,18 @@ protected void create()
 
 // **** local property methods
 static int _query_max_weight() {
-  int str,val;
-  mixed ski;
-  
   if (QueryProp(P_GHOST) && !IS_WIZARD(ME))
     return 0;
-  str=QueryAttribute(A_STR);
-  ski = UseSkill(SK_CARRY, ([SI_SKILLARG : str ]));
+  int str=QueryAttribute(A_STR);
+  int ski = UseSkill(SK_CARRY, ([SI_SKILLARG : str ]));
 
-  if (!intp(ski))
-    ski = 0;
-  
+  int val;
   if (str<0) {
-    val=9200+str*160+(int)ski;
+    val=9200+str*160+ski;
     if (val<3000) val=3000;
     return val;
   }
-  val = 9200+str*800+(int)ski;
+  val = 9200+str*800+ski;
   if (val<3000)
     val = 3000;
   return val;

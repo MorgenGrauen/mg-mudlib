@@ -95,8 +95,8 @@ static void _mv_ask_overwrite(mixed *filedata, int mode, int flags);
 static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
 {
   string source,dest;
-  source=(string)filedata[FULLNAME];
-  dest=(string)filedata[DESTNAME];
+  source=filedata[FULLNAME];
+  dest=filedata[DESTNAME];
   if (source==dest) return ERROR(SAME_FILE,source,RET_FAIL);
   if (!MAY_READ(source)) return ERROR(NO_READ,source,RET_JUMP);
   if (!MAY_WRITE(dest)) return ERROR(NO_WRITE,dest,RET_JUMP);

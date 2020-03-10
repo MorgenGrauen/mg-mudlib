@@ -41,11 +41,11 @@ protected int PreventMove(object dest, object oldenv, int method) {
       return ME_CANT_BE_TAKEN;
 
   // Gewicht ermitteln
-  if ( !(tmp = (int)QueryProp(P_TOTAL_WEIGHT)) )
-      tmp = (int)QueryProp(P_WEIGHT);
+  if ( !(tmp = ({int})QueryProp(P_TOTAL_WEIGHT)) )
+      tmp = ({int})QueryProp(P_WEIGHT);
         
   // Ist das Objekt nicht zu schwer?
-  if ( (tmp = (int)dest->MayAddWeight(tmp)) < 0) {
+  if ( (tmp = ({int})dest->MayAddWeight(tmp)) < 0) {
       if ( tmp == -2 ) return ME_TOO_HEAVY_FOR_ENV;
       return ME_TOO_HEAVY;
   }
@@ -87,7 +87,7 @@ public varargs int move( object|string dest, int method )
   // Bewegung in Para-Welt-Raeume?
   // tmp ist die Ziel-Parallelweltnummer
   if (!environment()||!living(environment())||
-      !intp(tmp =(int)environment()->Query(P_PARA)))
+      !intp(tmp =({int})environment()->Query(P_PARA)))
     tmp=0;
     
   // Wenn das Objekt von einem in der Parawelt befindlichen Spieler
@@ -110,7 +110,7 @@ public varargs int move( object|string dest, int method )
           if ( (find_object(fn) || ((file_size(fn+".c")>0||
                   (file_size(vc=implode(explode(fn,"/")[0..<2],"/")+
                   "/virtual_compiler.c")>0 &&
-                  !catch(tmp=(int)call_other(vc,"QueryValidObject",fn);
+                  !catch(tmp=({int})call_other(vc,"QueryValidObject",fn);
                     publish) && tmp>0)) &&
                   !catch(load_object( fn );publish))) &&
               (!fn->QueryProp(P_NO_PLAYERS) || QueryProp(P_TESTPLAYER)) )

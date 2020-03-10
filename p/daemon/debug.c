@@ -30,7 +30,8 @@ int check( string ch, object pl, string cmd, string txt )
             // Wer (noch) nicht auf dem Kanal ist, bekommt auch keine
             // Ausgabe - sonst gibt es selbige doppelt, da der CHMASTER
             // einen automatisch den Kanal betreten laesst ...
-            if ( !objectp(pl) || !pointerp(tmp=(mixed)pl->QueryProp(P_CHANNELS)) ||
+            if ( !objectp(pl) ||
+                 !pointerp(tmp=({string*})pl->QueryProp(P_CHANNELS)) ||
                  member( tmp, lower_case(ch) ) == -1 )
                 return 1;
 
