@@ -229,36 +229,34 @@ static int _trans(string str)
 
 static int _frieden(string sname)
 {
-  object *enem,obj;
-  int i;
-  string him;
-  
   if (!sname)
   {
-    enem=all_inventory(environment());
-    map_objects(enem,"StopHuntingMode");
-    tell_room(environment(),sprintf("%s stiftet Frieden.\n",capitalize(getuid())),
-              ({ this_object()}));
+    object *enemies=all_inventory(environment());
+    map_objects(enemies,"StopHuntingMode");
+    tell_room(environment(),sprintf("%s stiftet Frieden.\n",
+              capitalize(getuid())), ({ this_object()}));
     printf("Du stiftest Frieden.\n");
-    return 1;
   }
   else
   {
-    if (!obj=find_living(sname))
-      return printf("Kein solches Lebewesen im Spiel.\n"),1;
-    him=({string})obj->name(WEM);
-    i=sizeof(enem=(object *)(((mixed *)obj->StopHuntingMode())[0]));
-    // Mistdriver ... object** waere richtig gewesen ... *seufz*
-    while(i--)
+    object obj = find_living(sname);
+    if (!obj)
     {
-      enem[i]->StopHuntFor(obj);
+      printf("Kein solches Lebewesen im Spiel.\n");
+      return 1;
+    }
+    string him=({string})obj->name(WEM);
+    mapping enemies = ({mapping})obj->StopHuntingMode(1);
+    foreach(object en : enemies)
+    {
+      en->StopHuntFor(obj, 1);
       tell_object(obj,sprintf("%s beendet Deinen Kampf mit %s.\n",
-                              capitalize(getuid()),enem[i]->Name(WEM)));
-      tell_object(enem[0],sprintf("%s beendet Deinen Kampf mit %s.\n",
+                              capitalize(getuid()),en->Name(WEM)));
+      tell_object(en,sprintf("%s beendet Deinen Kampf mit %s.\n",
                                   capitalize(getuid()),him));
     }
+    printf("%s und alle Gegner wurden befriedet.\n",obj->Name(WER));
   }
-  printf("%s und alle Gegner wurden befriedet.\n",obj->Name(WER));
   return 1;
 }
 
