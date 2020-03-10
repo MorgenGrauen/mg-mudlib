@@ -160,7 +160,7 @@ private void AddTemporaryPlayer(string uid) {
       
       mixed erstie;
       if (ob)
-        erstie = (string)ob->QueryProp(P_SECOND);
+        erstie = ({string})ob->QueryProp(P_SECOND);
 
       ldata += ([uid: time() + LOGTIME + random(LOGTIME/2); 
 	              0;

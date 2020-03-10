@@ -46,8 +46,8 @@ nomask int beitreten() {
     return -4;
   }
 
-  if ((ogname=(string)pl->QueryProp(P_GUILD)) && 
-      (ogname!=(((string)pl->QueryProp(P_DEFAULT_GUILD)) || DEFAULT_GUILD))) {
+  if ((ogname=({string})pl->QueryProp(P_GUILD)) && 
+      (ogname!=((({string})pl->QueryProp(P_DEFAULT_GUILD)) || DEFAULT_GUILD))) {
     write("Du bist noch in einer anderen Gilde.\n");
     return -1;
   }
@@ -90,7 +90,7 @@ varargs nomask int austreten(int loss) {
   // Gilden muessen Blueprints sein, so. ;-)
   gname=object_name(gilde);
   if (gname[0..7]!=GUILD_DIR ||
-      ((string)pl->QueryProp(P_GUILD))!=gname[8..]) {
+      (({string})pl->QueryProp(P_GUILD))!=gname[8..]) {
       write("Du kannst hier nicht aus einer anderen Gilde austreten.\n");
       return -1;
   }
@@ -100,7 +100,7 @@ varargs nomask int austreten(int loss) {
         return -1;
   }
   if (loss<=0) loss=20;
-  skills=(mapping)pl->QueryProp(P_NEWSKILLS);
+  skills=({mapping})pl->QueryProp(P_NEWSKILLS);
   walk_mapping(skills,"loose_ability",this_object(),loss);
   pl->SetProp(P_NEWSKILLS,skills);
   pl->SetProp(P_GUILD,0);
@@ -112,7 +112,7 @@ varargs nomask int austreten(int loss) {
       E_LAST_GUILDNAME: gname ]) );
 
   // Defaultgilde ggf. neuen Titel setzen lassen.
-  gname = (string)pl->QueryProp(P_GUILD);
+  gname = ({string})pl->QueryProp(P_GUILD);
   (GUILD_DIR+"/"+gname)->adjust_title(pl);
 
   return 1;

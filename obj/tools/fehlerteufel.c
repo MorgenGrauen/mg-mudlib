@@ -78,7 +78,7 @@ protected int _feingabe_fertig(string arg) {
     }
     else
     {
-      string hashkey = (string)ERRORD->LogReportedError(feingabe);
+      string hashkey = ({string})ERRORD->LogReportedError(feingabe);
       tell_object(PL, sprintf(
          "Vielen Dank! Die ID des eingegebenen Fehlers lautet: %s\n",
          hashkey || "N/A"));
@@ -201,7 +201,7 @@ private int DeleteErrorsForLoadname(string loadname)
     {
       foreach(<int|string>* row : list)
       {
-          if ((int)ERRORD->ToggleDeleteError(row[0]) == 1)
+          if (({int})ERRORD->ToggleDeleteError(row[0]) == 1)
           {
             tell_object(PL,
                 row[0] + " als geloescht markiert.\n");
@@ -216,7 +216,7 @@ private int DeleteErrorsForLoadname(string loadname)
 public int CmdFehlerLoeschen(string arg)
 {
   int issueid;
-  arg = (string)this_player()->_unparsed_args(0);
+  arg = ({string})this_player()->_unparsed_args(0);
 
   if (stringp(arg) && sizeof(arg))
       issueid = to_int(arg);
@@ -225,7 +225,7 @@ public int CmdFehlerLoeschen(string arg)
 
   notify_fail("Einen Eintrag mit dieser ID/diesem Loadname gibt es nicht!\n");
 
-  int res = (int)ERRORD->ToggleDeleteError(issueid);
+  int res = ({int})ERRORD->ToggleDeleteError(issueid);
   if (res == 1)
   {
     tell_object(PL,
@@ -414,7 +414,7 @@ public int CmdFehlerListe(string arg) {
 
 public int CmdFilter(string arg) {
 
-  arg=(string)PL->_unparsed_args(0);  
+  arg=({string})PL->_unparsed_args(0);  
 
   if (!stringp(arg) || !sizeof(arg)) {
     tell_object(PL,break_string(
@@ -480,7 +480,7 @@ public int CmdFilter(string arg) {
 
 public int CmdMonitor(string arg) {
 
-  arg=(string)PL->_unparsed_args(0);  
+  arg=({string})PL->_unparsed_args(0);  
 
   if (!stringp(arg) || !sizeof(arg)) {
     tell_object(PL,break_string(
@@ -566,7 +566,7 @@ int CmdAddNote(string str) {
   if(!objectp(TI))
     return 0;
 
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return 0;
 
@@ -577,7 +577,7 @@ int CmdAddNote(string str) {
 
   str=implode(arr[1..]," ");  //text wiederherstellen, aber ohne ID
 
-  switch((int)ERRORD->AddNote(issueid,str))
+  switch(({int})ERRORD->AddNote(issueid,str))
   {
     case -1:
       tell_object(PL,
@@ -604,7 +604,7 @@ int CmdFix(string str)
   if(!objectp(TI))
     return 0;
 
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return 0;
 
@@ -620,11 +620,11 @@ int CmdFix(string str)
   if (query_verb()=="ffix" || query_verb()=="fehlerfix")
   {
       fixing=1;
-      res = (int)ERRORD->ResolveIssue(issueid, str);
+      res = ({int})ERRORD->ResolveIssue(issueid, str);
   }
   else
   {
-      res = (int)ERRORD->ReOpenIssue(issueid, str);
+      res = ({int})ERRORD->ReOpenIssue(issueid, str);
   }
 
   if (res==-1)
@@ -670,7 +670,7 @@ int CmdLock(string str) {
   if(!objectp(TI))
     return 0;
 
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return 0;
 
@@ -686,11 +686,11 @@ int CmdLock(string str) {
   if (query_verb()=="flock" || query_verb()=="fehlerlock")
   {
       locking=1;
-      res=(int)ERRORD->LockIssue(issueid,str);
+      res=({int})ERRORD->LockIssue(issueid,str);
   }
   else
   {
-      res=(int)ERRORD->UnlockIssue(issueid,str);
+      res=({int})ERRORD->UnlockIssue(issueid,str);
   }
 
   if (res==-1)
@@ -739,7 +739,7 @@ int CmdReassign(string str) {
   if(!objectp(TI))
     return 0;
 
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return 0;
 
@@ -755,7 +755,7 @@ int CmdReassign(string str) {
   else
     str = 0;
 
-  switch((int)ERRORD->ReassignIssue(issueid, newuid, str))
+  switch(({int})ERRORD->ReassignIssue(issueid, newuid, str))
   {
     case -1:
       tell_object(PL,
@@ -960,13 +960,13 @@ void reset()
 // ******** private functions *********************
 private void get_uids()
 {
-    uids=(string *)master()->QueryUIDsForWizard(owner);
+    uids=({string *})master()->QueryUIDsForWizard(owner);
     xmonitoruids=({});
     if (sizeof(monitoruids))
     {
       closure cl=symbol_function("QueryUIDAlias", master());
       foreach(string uid: monitoruids) {
-        xmonitoruids += (string*)funcall(cl, uid);
+        xmonitoruids += ({string*})funcall(cl, uid);
       }
     }
 }
@@ -992,7 +992,7 @@ private varargs int get_issuelist(int lmodus)
           {
             //DEBUG(sprintf("Type: %d, UID: %s\n",type,uid));
             < <int|string>* >* list =
-                  (< <int|string>* >*)ERRORD->QueryIssueList(type,uid);
+                  ({< <int|string>* >*})ERRORD->QueryIssueList(type,uid);
             count += sizeof(list);
 
             if (!member(issuelist, type))
@@ -1026,9 +1026,9 @@ private struct fullissue_s get_issue(string arg)
   // Wurde eine ID oder nichts uebergeben, ist issueid die ID als int und 
   // arg die ID als string.
   if (to_string(issueid) == arg)
-    issue = (struct fullissue_s)ERRORD->QueryIssueByID(issueid);
+    issue = ({struct fullissue_s})ERRORD->QueryIssueByID(issueid);
   else
-    issue = (struct fullissue_s)ERRORD->QueryIssueByHash(arg);
+    issue = ({struct fullissue_s})ERRORD->QueryIssueByHash(arg);
   return issue;
 }
 
@@ -1054,7 +1054,7 @@ private struct fullissue_s|struct fullissue_s* get_issues(string arg)
       if (!(m & modus))
         continue;
       struct fullissue_s *tmp = 
-                       (struct fullissue_s *)ERRORD->QueryIssuesByFile(arg, m);
+                       ({struct fullissue_s *})ERRORD->QueryIssuesByFile(arg, m);
       if (tmp)
         issues+=tmp;
     }

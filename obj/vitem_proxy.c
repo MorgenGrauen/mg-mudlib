@@ -95,7 +95,7 @@ public int SmartLog(string unused, string error_type, string meldung,
       break;
   }
   // Eintragung in die Fehler-DB
-  string hashkey = (string)ERRORD->LogReportedError(err);
+  string hashkey = ({string})ERRORD->LogReportedError(err);
   if (stringp(hashkey))
   {
     previous_object()->ReceiveMsg(sprintf(
