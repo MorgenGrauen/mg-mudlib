@@ -42,10 +42,10 @@ static mixed _query_localcmds()
 
 private string _zap_message(string str, object obj)
 {
-  str=regreplace(str,"@@wer@@",(string)obj->name(WER,2),1);
-  str=regreplace(str,"@@wessen@@",(string)obj->name(WESSEN,2),1);
-  str=regreplace(str,"@@wem@@",(string)obj->name(WEM,2),1);
-  str=regreplace(str,"@@wen@@",(string)obj->name(WEN,2),1);
+  str=regreplace(str,"@@wer@@",({string})obj->name(WER,2),1);
+  str=regreplace(str,"@@wessen@@",({string})obj->name(WESSEN,2),1);
+  str=regreplace(str,"@@wem@@",({string})obj->name(WEM,2),1);
+  str=regreplace(str,"@@wen@@",({string})obj->name(WEN,2),1);
   str=regreplace(str,"@@ich@@",name(WER,2),1);
   return capitalize(str);
 }
@@ -246,7 +246,7 @@ static int _frieden(string sname)
   {
     if (!obj=find_living(sname))
       return printf("Kein solches Lebewesen im Spiel.\n"),1;
-    him=(string)obj->name(WEM);
+    him=({string})obj->name(WEM);
     i=sizeof(enem=(object *)(((mixed *)obj->StopHuntingMode())[0]));
     // Mistdriver ... object** waere richtig gewesen ... *seufz*
     while(i--)
@@ -302,7 +302,7 @@ static int _pwho()
      spieler[i]->QueryAttribute(A_CON),
      spieler[i]->QueryProp(P_TOTAL_WC),
      spieler[i]->QueryProp(P_TOTAL_AC),
-     (sizeof(hands=((int *)spieler[i]->QueryProp(P_HANDS)))?hands[1]:0),
+     (sizeof(hands=(({int *})spieler[i]->QueryProp(P_HANDS)))?hands[1]:0),
      spieler[i]->QueryProp(P_HP),
      spieler[i]->QueryProp(P_MAX_HP));
   More(res);
@@ -329,7 +329,8 @@ static int _zwinge(string str)
   if (living->command_me(what))
   {
     printf("Du zwingst %s zu \"%s\".\n",capitalize(living_name),what);
-    if (!IS_ARCH(this_object())&&getuid()!=(string)living->QueryProp(P_TESTPLAYER))
+    if (!IS_ARCH(this_object()) &&
+        getuid()!=({string|int})living->QueryProp(P_TESTPLAYER))
       log_file(SHELLLOG("ZWINGE"),
                sprintf("%s zwingt %s (%s) zu %s [%s]\n",
                        capitalize(getuid()),living->Name(),capitalize(getuid(living)),
@@ -359,17 +360,20 @@ static int _heile(string name)
     printf("'%s' ist momentan nicht da.\n",capitalize(name));
     return 1;
   }
-  lpv = (int)ob->QueryProp(P_HP);
-  mpv = (int)ob->QueryProp(P_SP);
+  lpv = ({int})ob->QueryProp(P_HP);
+  mpv = ({int})ob->QueryProp(P_SP);
   ob->heal_self(1000000);
-  if (!IS_LEARNER(ob) && (!ob->QueryProp(P_TESTPLAYER)||
-          (((string)ob->QueryProp(P_TESTPLAYER))[<5..<1]=="Gilde")))
+  string|int testie = ({string|int})ob->QueryProp(P_TESTPLAYER);
+  if (!IS_LEARNER(ob)
+      && (!testie || (to_string(testie)[<5..<1] == "Gilde")))
+  {
     log_file(SHELLLOG("HEAL"),
        sprintf("%s heilt %s (%s) %s (LP: %d -> %d, MP: %d -> %d)\n",
          capitalize(geteuid(this_player())),
          call_other(ob,"name"), capitalize(geteuid(ob)),
-         dtime(time()), lpv, (int)ob->QueryProp(P_HP),
-               mpv,(int)ob->QueryProp(P_SP)));
+         dtime(time()), lpv, ({int})ob->QueryProp(P_HP),
+               mpv,({int})ob->QueryProp(P_SP)));
+  }
   tell_object(ob, QueryProp(P_NAME) + " heilt Dich.\n");
   printf("Du heilst %s.\n",capitalize(name));
   return 1;
@@ -426,7 +430,7 @@ static int _people()
                     (list[i]->QueryProp(P_INVIS)?"("+name_+")":name_),
                     a_end,a_level, MASTER->get_wiz_level(getuid(list[i])),
                     a_end,a_age,
-                    time2string("%4x %0X",((int)list[i]->QueryProp(P_AGE))*2),
+                    time2string("%4x %0X",(({int})list[i]->QueryProp(P_AGE))*2),
                     query_idle(list[i])>=300?(a++,(a_idle+"I")):" ",
                     a_end,
                     query_editing(list[i])?a_idle+"E"+a_end:" ",
