@@ -88,7 +88,7 @@ mixed         valid_write(string path, string euid, string fun, object obj);
 
 // aus misc.c
 string         _get_path(string path, string user);
-mixed          QueryBanished(string str);
+string         QueryBanished(string str);
 int            TBanishName(string name, int days);
 
 // sendet bei Befoerderungen Infomail an Magier

@@ -63,7 +63,7 @@ static string *explode_files(string file) {
 
 void UpdateTBanish();
 
-mixed QueryBanished(string str){
+string QueryBanished(string str){
   int i;
 
   if (!str) return 0;
@@ -79,7 +79,7 @@ mixed QueryBanished(string str){
   return 0;
 }
 
-mixed QueryTBanished(string str) {
+string QueryTBanished(string str) {
   int i;
 
   if (!str || !mappingp(tbanished) || !(i=tbanished[str]))
@@ -265,7 +265,7 @@ int TBanishName(string name, int days)
 }
 
 
-mixed QuerySBanished( string ip )
+string QuerySBanished( string ip )
 {
     int save_me, site;
     string banished_meldung =
@@ -314,7 +314,7 @@ private int _sbanished_by( int key, string name )
 }
 
 
-mixed SiteBanish( string ip, int days )
+mapping|int SiteBanish( string ip, int days )
 {
     string *s, tmp, euid;
     int t, level;
@@ -339,10 +339,12 @@ mixed SiteBanish( string ip, int days )
         return 0;
     }
 
-    if ( !days ) {
+    if ( !days )
+    {
         int int_ip = IPv4_addr2int(ip);
 
-        if( member(sbanished, int_ip) ){
+        if( member(sbanished, int_ip) )
+        {
             // Fremde Sitebanishs duerfen nur Deputies loeschen.
             if ( sbanished[int_ip, 1] != euid && !IsDeputy(euid) )
                 return -1;
@@ -354,11 +356,13 @@ mixed SiteBanish( string ip, int days )
                              capitalize(sbanished[int_ip, 1]) ) );
 
             m_delete( sbanished, int_ip );
+            //Fall-through ans Ende der Funktion fuer return 1;
         }
         else
             return 0;
     }
-    else {
+    else
+    {
         // Alles, was nicht Deputy ist, darf nur fuer einen Tag sbanishen.
         if ( days != 1 && !IsDeputy(euid) )
             return -1;
@@ -400,7 +404,6 @@ mixed SiteBanish( string ip, int days )
                                      : "fuer einen Tag")
                          : "bis zum St. Nimmerleinstag" ) );
     }
-
     UpdateSBanish();
     return 1;
 }

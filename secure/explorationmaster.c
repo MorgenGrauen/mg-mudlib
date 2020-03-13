@@ -589,7 +589,7 @@ nomask void PrepareVCQuery(string file)
   }
 }
 
-nomask mixed *QueryExplore()
+nomask <string*|int>* QueryExplore()
 {
   string fn;
 
@@ -603,7 +603,7 @@ nomask mixed *QueryExplore()
     }
 
   vc_ob = 0;
-  return ({ obs[fn, MPOS_TYPE], obs[fn] });
+  return ({ obs[fn, MPOS_TYPE], obs[fn, MPOS_KEY] });
 }
 
 nomask int QueryMaxEP()
