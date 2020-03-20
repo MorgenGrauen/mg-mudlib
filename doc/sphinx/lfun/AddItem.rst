@@ -32,6 +32,8 @@ ARGUMENTE
 	  - REFRESH_ALWAYS    - Neuer Clone bei jedem Reset.
 	  - REFRESH_MOVE_HOME - Objekt wird bei Reset automatisch
 	                        zurueckgeholt, wenn es wegbewegt wurde.
+                          Wurde das Objekt zerstoert, wird es automatisch neu
+                          erzeugt, wie bei REFRESH_DESTRUCT.
 	                        (nur in Raeumen!)
 	  Bei NPC's gilt zusaetzlich:
 	  - CLONE_WEAR       - Item Anziehen, wenn es eine Ruestung ist.
@@ -105,6 +107,7 @@ BESCHREIBUNG
 	    herumlaufende NPCs oder bei erzwungenen Bewegungen nicht von
 	    P_GUARD zurueckgehaltene NPCs wieder an einen definierten
 	    Ausgangsort zurueckzubringen.
+      Wurde das Objekt zerstoert, wird es neu erzeugt.
 	Hat man in Raeumen als <filename> ein Array von Dateinamen
 	uebergeben, so wird beim Reset jedesmal aufs Neue ein zufaelliges
 	Objekt aus der Liste ausgewaehlt (nicht in NPC's).
