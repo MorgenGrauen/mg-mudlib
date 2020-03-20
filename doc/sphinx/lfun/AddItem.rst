@@ -143,7 +143,6 @@ BEMERKUNGEN
 
 	Wenn man Blueprints benutzt, sollte man daran denken, dass sich von
 	dieser dann keine Clones mehr erstellen lassen!
-	RemoveItem() zum Entfernen von Items ist nur fuer Raeume definiert!
 
 	Die Option CLONE_NEW ist veraltet. Die Objekte werden nun immer
 	neu erzeugt. Die Option darf noch angegeben werden, hat aber keine
