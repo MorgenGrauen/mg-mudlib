@@ -47,7 +47,7 @@ private object TestType(object *armours) {
 
     foreach(object armour: armours)
     {
-      if (type==(armour->QueryProp(P_ARMOUR_TYPE)))
+      if (type==(({string})armour->QueryProp(P_ARMOUR_TYPE)))
         {
             // Ruestung vom gleichen Typ gefunden -> zurueckgeben
             return armour;
@@ -75,14 +75,14 @@ protected int _check_wear_restrictions(int silent, int all) {
 	  object_name()));
   }
 
-  armours=(object*)PL->QueryProp(P_ARMOURS) - ({0});
+  armours=({object*})PL->QueryProp(P_ARMOURS) - ({0});
 
   // Von jedem Ruestungstyp ausser AT_MISC kann man immer nur ein
   // Teil tragen
   if ( (type!=AT_MISC) && (res=TestType(armours)) && objectp(res)) {
     msg(break_string(sprintf(
 	  "Du traegst bereits %s als Schutz der Sorte %s.",
-	  res->name(WEN,1), type),78,
+	  ({string})res->name(WEN,1), type),78,
 	  (all?(Name(WER)+": "):0)), all);
     return(-1);
   }
@@ -91,7 +91,7 @@ protected int _check_wear_restrictions(int silent, int all) {
   // Ruestungstyp zu hohen Schutzwert koennen nicht angezogen werden
   if ( (type==AT_ILLEGAL) || (QueryProp(P_AC)>VALID_ARMOUR_CLASS[type])) {
     write("Ungueltiger Ruestungstyp, bitte Erzmagier verstaendigen.\n");
-        "/p/daemon/ruestungen"->RegisterArmour();      
+        ({void})"/p/daemon/ruestungen"->RegisterArmour();      
     return(-2);
   }
 
@@ -99,7 +99,8 @@ protected int _check_wear_restrictions(int silent, int all) {
   // das gesetzte Limit verstossen, haben keine Wirkung bezueglich der
   // Attribute. Dies gibt aber nur ne Meldung aus, angezogen werden darf sie
   // trotzdem.
-  if (mappingp(res=QueryProp(P_M_ATTR_MOD)) && PL->TestLimitViolation(res) ) {
+  if (mappingp(res=QueryProp(P_M_ATTR_MOD)) && 
+    ({int})PL->TestLimitViolation(res) ) {
     write(break_string(sprintf(
           "Irgendetwas an Deiner Ausruestung verhindert, dass Du Dich mit "
           "%s so richtig wohl fuehlst.",name(WEM,1)),78,
@@ -114,16 +115,16 @@ protected int _check_wear_restrictions(int silent, int all) {
 protected void _informwear(int silent, int all) {
 
   // Ruestungen koennen Resistenzen beeinflussen
-  PL->AddResistanceModifier(QueryProp(P_RESISTANCE_STRENGTHS),
+  ({int})PL->AddResistanceModifier(QueryProp(P_RESISTANCE_STRENGTHS),
                             QueryProp(P_ARMOUR_TYPE));
 
   // Ruestungen koennen Attribute aendern/blockieren. Also muessen diese
   // nach dem Anziehen aktualisiert werden
-  PL->register_modifier(ME);
-  PL->UpdateAttributes();
+  ({void})PL->register_modifier(ME);
+  ({void})PL->UpdateAttributes();
 
   // P_TOTAL_AC im Traeger updaten (fuer Query()s)
-  PL->QueryProp(P_TOTAL_AC);
+  ({int})PL->QueryProp(P_TOTAL_AC);
 
   // Alle Ruestungen werden im awmaster registriert, sobald sie von
   // einem Spieler gezueckt werden
@@ -160,15 +161,15 @@ protected int _check_unwear_restrictions(object worn_by, int silent,
 protected void _informunwear(object worn_by, int silent, int all) {
   mixed res;
   // Gesetzte Resistenzen loeschen
-  worn_by->RemoveResistanceModifier(res=QueryProp(P_ARMOUR_TYPE));
+  ({void})worn_by->RemoveResistanceModifier(res=QueryProp(P_ARMOUR_TYPE));
   
   // Ruestungen koennen Attribute aendern/blockieren. Also muessen diese
   // nach dem Ausziehen aktualisiert werden
-  worn_by->deregister_modifiers(ME);
-  worn_by->UpdateAttributes();
+  ({void})worn_by->deregister_modifiers(ME);
+  ({void})worn_by->UpdateAttributes();
 
   // P_TOTAL_AC im Traeger updaten
-  worn_by->QueryProp(P_TOTAL_AC);
+  ({int})worn_by->QueryProp(P_TOTAL_AC);
 
   // die geerbte Funktion aus der Kleindung gibt noch meldungen aus und ruft
   // Informunwear().
@@ -248,7 +249,7 @@ int Damage(int new_dam) {
 
   // P_TOTAL_AC im Traeger updaten, wenn vorhanden
   if (objectp(w=QueryProp(P_WORN)))
-    w->QueryProp(P_TOTAL_AC);
+    ({int})w->QueryProp(P_TOTAL_AC);
 
   // Rueckgabewert: Durchgefuehrte Aenderung an P_DAMAGE
   return new_dam;

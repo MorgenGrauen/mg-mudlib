@@ -51,7 +51,7 @@ string _query_short()
 
  if (tied_to_ob)
   return Name(WER)+", "+artikel+" an "
-     + (tied_name?tied_name:(string)(tied_to_ob->name(WEM)))
+     + (tied_name?tied_name:(({string})tied_to_ob->name(WEM)))
      + " festgebunden ist";
  return Name(WER);
 
@@ -129,11 +129,11 @@ int tie(string str)
 
    if (!(tied_name=call_other(ob, "tie", t2)))
    {
-    if(ob->QueryProp(P_INVIS)) return 0;
+    if(({int})ob->QueryProp(P_INVIS)) return 0;
     
     if (ob != environment(this_player()))
     {
-     _notify_fail("Du kannst "+name(WER)+" nicht an "+ob->name(WEM)+
+     _notify_fail("Du kannst "+name(WER)+" nicht an "+({string})ob->name(WEM)+
                  " festbinden.\n");
      return 0;
     }
@@ -154,9 +154,9 @@ int tie(string str)
   tied_to_ob = ob;
 
   if (tied_to_ob != environment(this_player()) || 
-      environment(this_player())->name()!=0 )
+      ({string})environment(this_player())->name()!=0 )
    {
-    tied_name = (string)(tied_to_ob->name(WEM));
+    tied_name = (({string})tied_to_ob->name(WEM));
    }
   else
    {
@@ -175,13 +175,15 @@ int tie(string str)
   else
   {
    write("Du bindest "+name(WER)+" an " + tied_name + " fest.\n");
-   say(this_player()->name(WER) + " bindet "+name(WER)+" an "
+   say(({string})this_player()->name(WER) + " bindet "+name(WER)+" an "
    + tied_name + " fest.\n");
   }
 
   // den object mitteilen, an wen es gebunden ist.
-  if(tied_to_ob->QueryProp(P_TIED)==0) tied_to_ob->SetProp(P_TIED,([]) );
-  tied_to_ob->SetProp(P_TIED,tied_to_ob->QueryProp(P_TIED)+([this_object(): 
+  if(({mapping})tied_to_ob->QueryProp(P_TIED)==0)
+    ({mapping})tied_to_ob->SetProp(P_TIED,([]) );
+  ({mapping})tied_to_ob->SetProp(P_TIED,
+    ({mapping})tied_to_ob->QueryProp(P_TIED)+([this_object(): 
      ([
        "player":this_player(),
        "time"  :time()
@@ -225,15 +227,15 @@ int tie(string str)
    else
    {
     write("Du bindest "+name(WER)+" los.\n");
-    say(this_player()->name()+" bindet "+name(WER)+" los.\n");
+    say(({string})this_player()->name()+" bindet "+name(WER)+" los.\n");
    }
 
-  tied_map=([])+tied_to_ob->QueryProp(P_TIED);
+  tied_map=([])+({mapping})tied_to_ob->QueryProp(P_TIED);
   tied_map=m_copy_delete(tied_map,this_object());
 
-  tied_to_ob->SetProp(P_TIED,tied_map);
+  ({mapping})tied_to_ob->SetProp(P_TIED,tied_map);
 
-  tied_to_ob = (object) 0;
+  tied_to_ob = 0;
  
   return 1;
  }

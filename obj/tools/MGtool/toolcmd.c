@@ -60,7 +60,7 @@ int Xcall(string str)
     {
       obj=find_object(LPC_FILE);
       ru1=rusage();
-      error=catch(res=(mixed)obj->eval(callobj, cloner, ENV(cloner)));
+      error=catch(res=obj->eval(callobj, cloner, ENV(cloner)));
       ru2=rusage();
       if(error)
 	W("Error: "+error[1..]);
@@ -183,7 +183,7 @@ int Xcd(string str)
   TK("Xcd: str: "+(str?str:"(NULL)"));
   if(!str)
   {
-    if(!(path=(string)cloner->QueryProp("start_home")))
+    if(!(path=cloner->QueryProp("start_home")))
       path="/";
   }
   else if((dest=XFindObj(str,1)))
@@ -487,7 +487,7 @@ int Xeval(string str)
   else
   {
     ru1=rusage();
-    error=catch(res=(mixed)obj->eval(cloner, ENV(cloner)));
+    error=catch(res=obj->eval(cloner, ENV(cloner)));
     ru2=rusage();
     if(error)
       W("Error: "+error[1..]);
@@ -952,7 +952,7 @@ int Xlag(string str)
   if(!(daemon=load_object(LAG_O_DAEMON)))
     lag=({-1.0,-1.0,-1.0});
   else
-    lag=(float *)daemon->read_lag_data();
+    lag=daemon->read_lag_data();
   lags="Letzte 60 min: ";
   if(lag[0]>=0.0)
   {
@@ -1102,7 +1102,7 @@ int Xlpc(string str)
   else
   {
     ru1=rusage();
-    error=catch(res=(mixed)obj->eval(cloner, ENV(cloner)));
+    error=catch(res=obj->eval(cloner, ENV(cloner)));
     ru2=rusage();
     if(error)
       W("Error: "+error[1..]);
@@ -1266,12 +1266,12 @@ int Xmtp(string str)
     opt="";
   else
     opt=implode(strs[0..s-3], " ");
-  if(!(dir="/"+(string)MASTER->valid_read(strs[s-2], geteuid(),
+  if(!(dir="/"+MASTER->valid_read(strs[s-2], geteuid(),
 					  "get_dir", ME))) {
     WDLN("No permission to open directory for reading");
     return TRUE;
   }
-  if(!(file="/"+(string)MASTER->valid_write(strs[s-1], geteuid(),
+  if(!(file="/"+MASTER->valid_write(strs[s-1], geteuid(),
 					    "write_file", ME))) {
     WDLN("No permission to open script file for writing");
     return TRUE;
@@ -1380,7 +1380,7 @@ int Xprof(string str)
   }
   else if(obj=XFindObj(str))
   {
-    if(xpr=(mapping)obj->__query_xprof_data__())
+    if(xpr=obj->__query_xprof_data__())
     {
       funcs=m_indices(xpr);
       data=m_values(xpr);

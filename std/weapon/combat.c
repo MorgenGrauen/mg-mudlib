@@ -82,7 +82,7 @@ void doWieldMessage()
 
       if(interactive(this_player()))
       {
-        this_player()->ReceiveMsg(str[0],
+        ({int})this_player()->ReceiveMsg(str[0],
             MT_NOTIFICATION|MSG_BS_LEAVE_LFS, MA_WIELD, 0,
             this_player());
       }
@@ -99,7 +99,7 @@ void doWieldMessage()
       s1 = replace_personal(sprintf(QueryProp(P_WIELD_MSG)[0],"@WEN2"),
 		      ({this_player(),this_object()}), 1);
 
-      this_player()->ReceiveMsg(s1,
+      ({int})this_player()->ReceiveMsg(s1,
           MT_NOTIFICATION|MSG_BS_LEAVE_LFS, MA_WIELD, 0,
           this_player()); 
     }
@@ -120,7 +120,7 @@ void doWieldMessage()
    */
   else if(interactive(this_player()))
   {
-    this_player()->ReceiveMsg(
+    ({int})this_player()->ReceiveMsg(
         "Du zueckst "+name(WEN,1)+".",
         MT_NOTIFICATION, MA_WIELD, 0, this_player());
   }
@@ -130,7 +130,7 @@ void doWieldMessage()
   // +name(WEN,0)+".",78),({ this_player() }));
   if ( objectp(environment()) && objectp(environment(environment())) )
       send_room(environment(environment()),    
-          this_player()->Name(WER)+" zueckt "+name(WEN,0)+".",
+          ({string})this_player()->Name(WER)+" zueckt "+name(WEN,0)+".",
           MT_LOOK,
           MA_WIELD, 0, ({this_player()}), environment());
 }
@@ -156,7 +156,7 @@ void doUnwieldMessage(object wielded_by)
 
       if(interactive(wielded_by))
       { 
-        wielded_by->ReceiveMsg(str[0],
+        ({int})wielded_by->ReceiveMsg(str[0],
           MT_NOTIFICATION|MSG_BS_LEAVE_LFS, MA_UNWIELD, 0, wielded_by);
       }
       if ( objectp(environment()) && objectp(environment(environment())) )
@@ -171,7 +171,7 @@ void doUnwieldMessage(object wielded_by)
     {
       s1 = replace_personal(sprintf(QueryProp(P_UNWIELD_MSG)[0],"@WEN2"),
 		      ({this_player(),this_object()}), 1); 
-      wielded_by->ReceiveMsg(s1,
+      ({int})wielded_by->ReceiveMsg(s1,
           MT_NOTIFICATION|MSG_BS_LEAVE_LFS, MA_UNWIELD, 0, wielded_by);
     }
 
@@ -190,13 +190,13 @@ void doUnwieldMessage(object wielded_by)
    */
   else if(interactive(wielded_by))
   {
-    wielded_by->ReceiveMsg(
+    ({int})wielded_by->ReceiveMsg(
         "Du steckst "+name(WEN,1)+" zurueck.",
         MT_NOTIFICATION, MA_UNWIELD, 0, wielded_by);
   }
   if ( objectp(environment()) && objectp(environment(environment())) )
       send_room(environment(environment()),
-              wielded_by->Name(WER) +" steckt "+name(WEN,0)+" zurueck.",
+              ({string})wielded_by->Name(WER) +" steckt "+name(WEN,0)+" zurueck.",
               MT_LOOK,
               MA_UNWIELD, 0, ({wielded_by}), environment()); 
 }
@@ -246,7 +246,7 @@ varargs int DoWield(int silent)
     // Waffen, die ein oder mehrere Attribut veraendern und gegen
     // das gesetzte Limit verstossen, haben keine Wirkung bezueglich der
     // Attribute.
-    if ( mappingp(res=QueryProp(P_M_ATTR_MOD)) && PL->TestLimitViolation(res) )
+    if ( mappingp(res=QueryProp(P_M_ATTR_MOD)) && ({int})PL->TestLimitViolation(res) )
     {
         write(break_string(
             "Irgendetwas an Deiner Ausruestung verhindert, dass Du Dich mit "+
@@ -257,15 +257,15 @@ varargs int DoWield(int silent)
     // gleich auf eine WieldFunc zurueckgreifen zu muessen.
     // Die Auswertung erfolgt ueber den RestrictionChecker
     if ( (res=QueryProp(P_RESTRICTIONS)) && mappingp(res) &&
-         (res=(string)call_other("/std/restriction_checker","check_restrictions",
+         (res=call_other("/std/restriction_checker","check_restrictions",
              PL,res)) && stringp(res) ) 
     {
         notify_fail(res);
         return 0;
     }
 
-    parry=(int)QueryProp(P_PARRY);
-    dex=(int)PL->QueryAttribute(A_DEX);
+    parry=QueryProp(P_PARRY);
+    dex=({int})PL->QueryAttribute(A_DEX);
 
     // Testen, ob der Spieler die noetige Geschicklichkeit besitzt, um
     // mit dieser (Parier)Waffe umgehen zu koennen
@@ -278,9 +278,9 @@ varargs int DoWield(int silent)
     }
 
     // Eine Gezueckte Waffe muss natuerlich erst mal weggesteckt werden.
-    if ( (parry<PARRY_ONLY) && objectp(res=(object)PL->QueryProp(P_WEAPON)) )
+    if ( (parry<PARRY_ONLY) && objectp(res=({object})PL->QueryProp(P_WEAPON)) )
     {
-        if ( (res->DoUnwield(silent)) && !((object)PL->QueryProp(P_WEAPON)) )
+        if ( (({int})res->DoUnwield(silent)) && !(({object})PL->QueryProp(P_WEAPON)) )
         {
             // Wenn die alte Waffe weggesteckt werden konnte, nochmal
             // versuchen zu zuecken
@@ -295,9 +295,9 @@ varargs int DoWield(int silent)
         }
     }
     // Das gleiche gilt natuerlich fuer Parierwaffen
-    if ( (parry>PARRY_NOT) && objectp(res=(object)PL->QueryProp(P_PARRY_WEAPON)) )
+    if ( (parry>PARRY_NOT) && objectp(res=({object})PL->QueryProp(P_PARRY_WEAPON)) )
     {
-        if ( (res->DoUnwield(silent)) && !(PL->QueryProp(P_PARRY_WEAPON)) )
+        if ( (({int})res->DoUnwield(silent)) && !(({object})PL->QueryProp(P_PARRY_WEAPON)) )
         {
             // Wenn die alte Parierwaffe weggesteckt werden konnte, nochmal
             // versuchen zu zuecken
@@ -314,7 +314,7 @@ varargs int DoWield(int silent)
 
     // Ist eine WieldFunc gesetzt, wird diese aufgerufen.
     if (objectp(res=QueryProp(P_WIELD_FUNC)) 
-	&& !(res->WieldFunc(ME,silent,environment())))
+	&& !(({int})res->WieldFunc(ME,silent,environment())))
     {
         // Eine Meldung sollte schon von der WieldFunc ausgegeben werden.
         return 1;
@@ -336,7 +336,7 @@ varargs int DoWield(int silent)
     }
 
     // Testen, ob der Zuecker genug Haende frei hat.  
-    if (!(PL->UseHands(ME,QueryProp(P_NR_HANDS))))
+    if (!(({int})PL->UseHands(ME,QueryProp(P_NR_HANDS))))
     {
         notify_fail("Du hast keine Hand mehr frei.\n");
         return 0;
@@ -361,18 +361,18 @@ varargs int DoWield(int silent)
 
     // Waffen koennen Attribute aendern/blockieren. Also muessen diese
     // nach dem Zuecken aktualisiert werden
-    PL->register_modifier(ME);
-    PL->UpdateAttributes();
+    ({void})PL->register_modifier(ME);
+    ({void})PL->UpdateAttributes();
 
     // P_TOTAL_AC/P_TOTAL_WC im Spieler aktualisieren. Da dort Attribute
     // eingehen, kann das erst hier gemacht werden.
     if (parry<PARRY_ONLY)
     {
-        PL->QueryProp(P_TOTAL_WC);
+        ({int})PL->QueryProp(P_TOTAL_WC);
     }
     if (parry>PARRY_NOT)
     {
-        PL->QueryProp(P_TOTAL_AC);
+        ({int})PL->QueryProp(P_TOTAL_AC);
     }
 
     // Zueck-Meldung ausgeben, wenn das silent-Flag nicht gesetzt ist
@@ -412,7 +412,7 @@ varargs int DoUnwield(int silent)
 
     // Ist eine UnwieldFunc gesetzt, wird diese aufgerufen
     if ( objectp(res=QueryProp(P_UNWIELD_FUNC)) &&
-         !(res->UnwieldFunc(ME,silent,wielded_by)) ) 
+         !(({int})res->UnwieldFunc(ME,silent,wielded_by)) ) 
     {
         // Eine Meldung muss die UnwieldFunc schon selbst ausgeben.
         return 1;
@@ -463,23 +463,23 @@ varargs int DoUnwield(int silent)
     } 
 
     // Die Haende, die bisher von der Waffe benutzt wurden, freigeben
-    wielded_by->FreeHands(ME);
+    ({int})wielded_by->FreeHands(ME);
     SetProp(P_WIELDED, 0);
 
     // Waffen koennen Attribute aendern/blockieren. Also muessen diese
     // nach dem Wegstecken aktualisiert werden
-    wielded_by->deregister_modifier(ME);
-    wielded_by->UpdateAttributes();
+    ({void})wielded_by->deregister_modifier(ME);
+    ({void})wielded_by->UpdateAttributes();
 
     // P_TOTAL_AC/P_TOTAL_WC im Spieler aktualisieren. Da dort Attribute
     // eingehen, kann das erst hier gemacht werden.
     if (parry<PARRY_ONLY)
     {
-        wielded_by->QueryProp(P_TOTAL_WC);
+        ({int})wielded_by->QueryProp(P_TOTAL_WC);
     }
     if (parry>PARRY_NOT)
     {
-        wielded_by->QueryProp(P_TOTAL_AC);
+        ({int})wielded_by->QueryProp(P_TOTAL_AC);
     }
 
     // Inform-Funktion aufrufen
@@ -526,8 +526,8 @@ int unwield(string str)
 
     // Ist wirklich diese Waffe gemeint?
     if ( !stringp(str) || !id(str) ||
-         ((parry<PARRY_ONLY)&&((object)PL->QueryProp(P_WEAPON)!=ME)) ||
-         ((parry>PARRY_NOT)&&((object)PL->QueryProp(P_PARRY_WEAPON)!=ME)) )
+         ((parry<PARRY_ONLY)&&(({object})PL->QueryProp(P_WEAPON)!=ME)) ||
+         ((parry>PARRY_NOT)&&(({object})PL->QueryProp(P_PARRY_WEAPON)!=ME)) )
     {
         return 0;
     }
@@ -561,7 +561,7 @@ int QueryDamage(object enemy)
 
     // Den Basis-Schaden berechnen. Die Staerke des Benutzers wird
     // hier beruecksichtigt.
-    dam = (2*QueryProp(P_WC)+10*((int)wielder->QueryAttribute(A_STR)))/3;
+    dam = (2*QueryProp(P_WC)+10*(({int})wielder->QueryAttribute(A_STR)))/3;
 
     // Wie gut man getroffen hat, wird ueber ein random() simuliert
     dam = random(1+dam);
@@ -746,7 +746,7 @@ int Damage(int new_dam)
 
         // P_TOTAL_WC im Traeger updaten, so vorhanden
         if (objectp(w=QueryProp(P_WIELDED)))
-            w->QueryProp(P_TOTAL_WC);
+            ({int})w->QueryProp(P_TOTAL_WC);
 
         // Rueckgabewert: Durchgefuehrte Aenderung an P_DAMAGE
         return new_dam;
@@ -786,7 +786,7 @@ int Damage(int new_dam)
 
     // P_TOTAL_AC im Traeger updaten, so vorhanden
     if (objectp(w=QueryProp(P_WIELDED)))
-        w->QueryProp(P_TOTAL_AC);
+        ({int})w->QueryProp(P_TOTAL_AC);
     
     // Rueckgabewert: Durchgefuehrte Aenderung an P_DAMAGE
     return new_dam;

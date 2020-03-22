@@ -345,12 +345,12 @@ varargs string finger_single(string str,int local)
   {
     if (IS_WIZARD(this_player())) {
        text+=capitalize(str)+" ist";
-       switch((int)properties[P_SECOND_MARK]) {
+       switch(properties[P_SECOND_MARK]) {
          case -1: text+=" unsichtbar markierte"
-                       +((int)properties[P_GENDER]!=FEMALE ? "r": "");
+                       +(properties[P_GENDER]!=FEMALE ? "r": "");
                   break;
          case  0: text+=" nicht namentlich markierte"
-                       +((int)properties[P_GENDER]!=FEMALE ? "r": "");
+                       +(properties[P_GENDER]!=FEMALE ? "r": "");
                   break;
          default:
        }
@@ -359,14 +359,14 @@ varargs string finger_single(string str,int local)
          text+=" ("+capitalize(h)+")";
        text+=".\n";
     }
-    else if ((int)properties[P_SECOND_MARK]>0)
+    else if (properties[P_SECOND_MARK]>0)
     {
       text+=capitalize(str)+" ist Zweitspieler"+IN;
       if (stringp(h))
         text+=" ("+capitalize(h)+")";
       text+=".\n";
     }
-    else if ((int)properties[P_SECOND_MARK]>-1)
+    else if (properties[P_SECOND_MARK]>-1)
       text+=capitalize(str)+" ist Zweitspieler"+IN+".\n";
   }
   if (properties[P_DEADS])

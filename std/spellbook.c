@@ -106,28 +106,28 @@ TryAttackSpell(object victim, int damage, mixed dtypes,
   mixed no_attack;
   int nomag;
 
-  if (no_attack = (mixed)victim->QueryProp(P_NO_ATTACK)) {
+  if (no_attack = ({int|string})victim->QueryProp(P_NO_ATTACK)) {
     if (stringp(no_attack))
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         no_attack,
         MT_NOTIFICATION,
         MA_FIGHT);
     else
-      caster->ReceiveMsg(
-        victim->Name(WER,1)+" laesst sich nicht angreifen!",
+      ({int})caster->ReceiveMsg(
+        ({string})victim->Name(WER,1)+" laesst sich nicht angreifen!",
         MT_NOTIFICATION,
         MA_FIGHT);
     return 0;
   }
-  if (victim->QueryProp(P_GHOST)) {
-    caster->ReceiveMsg(
-      victim->Name(WER,1)+" ist ein Geist!",
+  if (({int})victim->QueryProp(P_GHOST)) {
+    ({int})caster->ReceiveMsg(
+      ({string})victim->Name(WER,1)+" ist ein Geist!",
       MT_NOTIFICATION,
       MA_FIGHT);
     return 0;
   }
 
-  damage=(damage*(int)caster->QuerySkillAttribute(SA_DAMAGE))/100;
+  damage=(damage*({int})caster->QuerySkillAttribute(SA_DAMAGE))/100;
 
   // ggf. Loggen von PK-Versuchen und ggf. ausserdem Angriff abbrechen.
   // BTW: Aufruf von InsertEnemy() gibt 0 zurueck, wenn der Gegner nicht
@@ -140,22 +140,22 @@ TryAttackSpell(object victim, int damage, mixed dtypes,
         sprintf("Spellbook: %O, Spell: %O\n",
                 object_name(this_object()),
                 ((mappingp(sinfo) && is_spell) ? sinfo[SP_NAME]  : "")))
-      && !caster->IsEnemy(victim)
-      && !caster->InsertEnemy(victim)
+      && !({int})caster->IsEnemy(victim)
+      && !({int})caster->InsertEnemy(victim)
       )
   {
     tell_object(ME, "Ein goettlicher Einfluss schuetzt Deinen Gegner.\n");
     return 0;
   }
 
-  nomag=(int)victim->QueryProp(P_NOMAGIC);
+  nomag=({int})victim->QueryProp(P_NOMAGIC);
   if ((sinfo[SI_NOMAGIC] < nomag) &&
-      nomag*100 > random(100)*(int)caster->QuerySkillAttribute(SA_ENEMY_SAVE)) {
-    printf("%s wehrt Deinen Zauber ab.\n", capitalize((string)victim->name(WER, 1)));
+      nomag*100 > random(100)*({int})caster->QuerySkillAttribute(SA_ENEMY_SAVE)) {
+    printf("%s wehrt Deinen Zauber ab.\n", capitalize(({string})victim->name(WER, 1)));
     return 0;
   }
   else {
-    return (int)victim->Defend(damage, dtypes, is_spell, caster);
+    return ({int})victim->Defend(damage, dtypes, is_spell, caster);
   }
 }
 
@@ -168,7 +168,7 @@ TryDefaultAttackSpell(object victim, object caster, mapping sinfo,
   if (!si_spell) si_spell=sinfo[SI_SPELL];
   // Wenn der Spieler in einem Team ist, die Teamreihen-Boni
   // beruecksichtigen. Wenn nicht, eben nicht.
-  if (!team=((object)caster->QueryProp(P_TEAM)))
+  if (!team=(({object})caster->QueryProp(P_TEAM)))
   return TryAttackSpell(victim,
                         GetRandFValueO(SI_SKILLDAMAGE,sinfo,caster),
                         GetData(SI_SKILLDAMAGE_TYPE,sinfo,caster),
@@ -177,7 +177,7 @@ TryDefaultAttackSpell(object victim, object caster, mapping sinfo,
                         sinfo);
   else
   {
-	  row=(int)caster->PresentPosition();
+	  row=({int})caster->PresentPosition();
 	  return TryAttackSpell(victim,
 		  GetRandFValueO(SI_SKILLDAMAGE,sinfo,caster)+
 		  // Nur wenn SI_SKILLDAMAGE_BY_ROW ein mapping ist, 
@@ -199,17 +199,17 @@ SpellSuccess(object caster, mapping sinfo) {
   int cval,abil,res;
 
   abil=sinfo[SI_SKILLABILITY];
-  cval=(int)caster->UseSkill(SK_CASTING);
+  cval=({int})caster->UseSkill(SK_CASTING);
   res=abil + (SMUL(abil,cval)) / MAX_ABILITY - random(MAX_ABILITY);
   if (cval && res>MAX_ABILITY) // besonders gut gelungen?
-    caster->LearnSkill(SK_CASTING,1+(res-MAX_ABILITY)/2000);
+    ({void})caster->LearnSkill(SK_CASTING,1+(res-MAX_ABILITY)/2000);
   return res;
 }
 
 int
 CanTrySpell(object caster, mapping sinfo) {
-  if (caster->QueryProp(P_GHOST)) {
-    caster->ReceiveMsg(
+  if (({int})caster->QueryProp(P_GHOST)) {
+    ({int})caster->ReceiveMsg(
       "Als Geist kannst Du nicht zaubern.",
       MT_NOTIFICATION,
       MA_SPELL);
@@ -220,7 +220,7 @@ CanTrySpell(object caster, mapping sinfo) {
   if (mappingp(rmap)
       && (res=check_restrictions(caster,rmap)))
   {
-    caster->ReceiveMsg(res, MT_NOTIFICATION|MSG_DONT_WRAP, MA_SPELL);
+    ({int})caster->ReceiveMsg(res, MT_NOTIFICATION|MSG_DONT_WRAP, MA_SPELL);
     return 0;
   }
   return 1;
@@ -243,15 +243,15 @@ Learn(object caster, string spell, mapping sinfo) {
 	// Ich gehe davon aus, dass wir nie nie nie
 	// ein weiteres Attribut ins MG einfuegen.
 	// Wir berechnen den Mittelwert
-	attval=((int)caster->QueryAttribute(A_INT)*attr[A_INT]+
-		(int)caster->QueryAttribute(A_DEX)*attr[A_DEX]+
-		(int)caster->QueryAttribute(A_STR)*attr[A_STR]+
-		(int)caster->QueryAttribute(A_CON)*attr[A_CON])
+	attval=(({int})caster->QueryAttribute(A_INT)*attr[A_INT]+
+		({int})caster->QueryAttribute(A_DEX)*attr[A_DEX]+
+		({int})caster->QueryAttribute(A_STR)*attr[A_STR]+
+		({int})caster->QueryAttribute(A_CON)*attr[A_CON])
 		/(attr[A_CON]+attr[A_INT]+attr[A_STR]+attr[A_DEX]);
 		
 	 
  } else {
-	 attval=(int)caster->QueryAttribute(A_INT);
+	 attval=({int})caster->QueryAttribute(A_INT);
  }
 
   
@@ -259,19 +259,19 @@ Learn(object caster, string spell, mapping sinfo) {
        GetOffset(SI_SKILLLEARN,sinfo,caster));
   if (!(diff=GetFValueO(SI_DIFFICULTY,sinfo,caster)))
     diff=GetFValueO(SI_SPELLCOST,sinfo,caster);
-  caster->LearnSkill(spell,val,diff);
+  ({void})caster->LearnSkill(spell,val,diff);
 }
 
 void
 Erfolg(object caster, string spell, mapping sinfo) {
   object env;
   if(env=environment(caster))
-     env->SpellInform(caster,spell,sinfo);
+     ({void})env->SpellInform(caster,spell,sinfo);
 }
 
 void
 Misserfolg(object caster, string spell, mapping sinfo) {
-  caster->ReceiveMsg(
+  ({int})caster->ReceiveMsg(
     "Der Zauberspruch ist missglueckt.\n"
     "Du lernst aus Deinem Fehler.\n",
     MT_NOTIFICATION|MSG_DONT_WRAP,
@@ -319,14 +319,14 @@ UseSpell(object caster, string spell, mapping sinfo) {
   if (!CanTrySpell(caster, ski))
     return 1;
 
-  if (caster->QueryProp(P_SP) < (cost=GetFValueO(SI_SPELLCOST,ski,caster))) {
+  if (({int})caster->QueryProp(P_SP) < (cost=GetFValueO(SI_SPELLCOST,ski,caster))) {
     if(txt=ski[SI_SP_LOW_MSG])
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         txt,
         MT_NOTIFICATION,
         MA_SPELL);
     else
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
       "Du hast zu wenig Zauberpunkte fuer diesen Spruch.",
       MT_NOTIFICATION,
       MA_SPELL);
@@ -339,9 +339,9 @@ UseSpell(object caster, string spell, mapping sinfo) {
     // nicht leer ist, ist man zu erschoepft.
     tmp = filter(ski[SI_X_SPELLFATIGUE],
         function int (string key, int val)
-        { return (int)caster->CheckSpellFatigue(key); } );
+        { return ({int})caster->CheckSpellFatigue(key); } );
     if (sizeof(tmp)) {
-        caster->ReceiveMsg(
+        ({int})caster->ReceiveMsg(
           ski[SI_TIME_MSG] || 
           "Du bist noch zu erschoepft von Deinem letzten Spruch.",
           MT_NOTIFICATION,
@@ -350,8 +350,8 @@ UseSpell(object caster, string spell, mapping sinfo) {
     }
   }
   else {
-    if (caster->CheckSpellFatigue()) {
-        caster->ReceiveMsg(
+    if (({int})caster->CheckSpellFatigue()) {
+        ({int})caster->ReceiveMsg(
           ski[SI_TIME_MSG] ||
           "Du bist noch zu erschoepft von Deinem letzten Spruch.",
           MT_NOTIFICATION,
@@ -361,14 +361,14 @@ UseSpell(object caster, string spell, mapping sinfo) {
   }
 
   if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY) &&
-      caster->QueryProp(P_ATTACK_BUSY)) {
+      ({int})caster->QueryProp(P_ATTACK_BUSY)) {
     if (txt=ski[SI_ATTACK_BUSY_MSG])
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         txt,
         MT_NOTIFICATION,
         MA_SPELL);
     else
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         "Du bist schon zu sehr beschaeftigt.",
         MT_NOTIFICATION,
         MA_SPELL);
@@ -376,13 +376,13 @@ UseSpell(object caster, string spell, mapping sinfo) {
   }
 
   // Spruchvorbereitung
-  if (pointerp(ps=(mixed)caster->QueryProp(P_PREPARED_SPELL)) // Ausstehender Spruch
+  if (pointerp(ps=({<int|mapping|string>*})caster->QueryProp(P_PREPARED_SPELL)) // Ausstehender Spruch
       && sizeof(ps)>=3 && intp(ps[0] && stringp(ps[1]))) {
     if (ps[1]==spell) { // Dieser Spruch wird noch vorbereitet
       if (time()<ps[0]) {
         if (!stringp(txt=ski[SI_PREPARE_BUSY_MSG]))
           txt="Du bist noch mit der Spruchvorbereitung beschaeftigt.\n";
-        caster->ReceiveMsg(
+        ({int})caster->ReceiveMsg(
           txt,
           MT_NOTIFICATION,
           MA_SPELL);
@@ -396,7 +396,7 @@ UseSpell(object caster, string spell, mapping sinfo) {
       printf(txt,ps[1]);
       if (fat=GetValue(SI_PREPARE_TIME,ski,caster)) {
         // Spruch braucht vorbereitungszeit
-        caster->SetProp(P_PREPARED_SPELL,({time()+fat,spell,ski[SI_SKILLARG]}));
+        ({<int|mapping|string>*})caster->SetProp(P_PREPARED_SPELL,({time()+fat,spell,ski[SI_SKILLARG]}));
         prepare_spell(caster,spell,ski);
         return 1;
       }
@@ -405,27 +405,27 @@ UseSpell(object caster, string spell, mapping sinfo) {
   else {
     if (fat=GetValue(SI_PREPARE_TIME,ski,caster)) {
       // Spruch braucht vorbereitungszeit
-      caster->SetProp(P_PREPARED_SPELL,({time()+fat,spell,ski[SI_SKILLARG]}));
+      ({<int|mapping|string>*})caster->SetProp(P_PREPARED_SPELL,({time()+fat,spell,ski[SI_SKILLARG]}));
       prepare_spell(caster,spell,ski);
       return 1;
     }
   }
   if (ps)
-    caster->SetProp(P_PREPARED_SPELL,0);
+    ({<int|mapping|string>*})caster->SetProp(P_PREPARED_SPELL,0);
   
   // Funktion kann anderen Namen haben als Spell
   if (!(fname=sinfo[SI_SKILLFUNC]))
     fname=sname;
 
-  if((ski[SI_NOMAGIC] < environment(caster)->QueryProp(P_NOMAGIC)) &&
-      random(100) < environment(caster)->QueryProp(P_NOMAGIC)) {
+  if((ski[SI_NOMAGIC] < ({int})environment(caster)->QueryProp(P_NOMAGIC)) &&
+      random(100) < ({int})environment(caster)->QueryProp(P_NOMAGIC)) {
     if (txt=ski[SI_NOMAGIC_MSG])
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         txt,
         MT_NOTIFICATION,
         MA_SPELL);
     else
-      caster->ReceiveMsg(
+      ({int})caster->ReceiveMsg(
         "Dein Zauberspruch verpufft im Nichts.",
         MT_NOTIFICATION,
         MA_SPELL);
@@ -433,7 +433,7 @@ UseSpell(object caster, string spell, mapping sinfo) {
   }
   else {
     // Spruch ausfuehren.
-    res=(int)call_other(this_object(),fname,caster,ski);
+    res=funcall(symbol_function(fname),caster,ski);
   }
   if (!res || !caster)
     return 1;
@@ -444,24 +444,24 @@ UseSpell(object caster, string spell, mapping sinfo) {
   if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY))
   	{
 	if (!ski[SI_ATTACK_BUSY_AMOUNT])  
-    		caster->SetProp(P_ATTACK_BUSY,1);
+    		({int})caster->SetProp(P_ATTACK_BUSY,1);
 	else
-		caster->SetProp(P_ATTACK_BUSY,ski[SI_ATTACK_BUSY_AMOUNT]);
+		({int})caster->SetProp(P_ATTACK_BUSY,ski[SI_ATTACK_BUSY_AMOUNT]);
   	}
 
-  caster->restore_spell_points(-1*cost);
+  ({void})caster->restore_spell_points(-1*cost);
 
   if (mappingp(ski[SI_X_SPELLFATIGUE])) {
     // fuer jeden Key die Spellfatigue setzen. Keys mit Dauer 0 loesen keine
     // Spellfatigue aus.
     filter(ski[SI_X_SPELLFATIGUE],
         function int (string key, int val)
-        { return (int)caster->SetSpellFatigue(val, key); } );
+        { return ({int})caster->SetSpellFatigue(val, key); } );
   }
   else {
     if ((fat=GetFValueO(SI_SPELLFATIGUE,ski,caster))<0)
       fat=1;
-    caster->SetSpellFatigue(fat);
+    ({int})caster->SetSpellFatigue(fat);
   }
 
 
@@ -482,11 +482,11 @@ FindGroup(object pl, int who) {
   res=({});
   if (!pl || !(env=environment(pl))) return res;
   p1 = query_once_interactive(pl) ? 1 : -1;
-  team=(object)pl->QueryProp(P_TEAM);
+  team=({object})pl->QueryProp(P_TEAM);
   for (ob=first_inventory(env);ob;ob=next_inventory(ob)) {
     if (!living(ob)) continue;
     qp=symbol_function("QueryProp",ob);
-    if (pl->IsEnemy(ob)) // Feinde sind immer Gegner
+    if (({int})pl->IsEnemy(ob)) // Feinde sind immer Gegner
       p2=-1*p1;
     else if (objectp(team) && funcall(qp,P_TEAM)==team)
       p2=p1; // Teammitglieder sind immer auf Seite des Spielers
@@ -499,7 +499,7 @@ FindGroup(object pl, int who) {
     if ( who<0 && (funcall(qp,P_NO_ATTACK) || funcall(qp,P_NO_GLOBAL_ATTACK)) )
       continue;
     if (IS_LEARNING(ob) &&
-        (funcall(qp,P_INVIS) || (who<0 && !pl->IsEnemy(ob))))
+        (funcall(qp,P_INVIS) || (who<0 && !({int})pl->IsEnemy(ob))))
       continue;
     if (p1*p2*who >=0)
       res+=({ob});
@@ -510,7 +510,7 @@ FindGroup(object pl, int who) {
 object *
 FindGroupN(object pl, int who, int n) {
   if (!pl) return ({});
-  n=(n*(int)pl->QuerySkillAttribute(SA_EXTENSION))/100;
+  n=(n*({int})pl->QuerySkillAttribute(SA_EXTENSION))/100;
   if (n<1) n=1;
   return FindGroup(pl,who)[0..(n-1)];
 }
@@ -522,7 +522,7 @@ FindGroupP(object pl, int who, int pr) {
 
   nres=({});
   if (!pl) return nres;
-  pr=(pr*(int)pl->QuerySkillAttribute(SA_EXTENSION))/100;
+  pr=(pr*({int})pl->QuerySkillAttribute(SA_EXTENSION))/100;
   if (pr<0) return nres;
   res=FindGroup(pl,who);
   for (i=sizeof(res)-1;i>=0;i--)
@@ -544,16 +544,16 @@ FindDistantGroups(object pl, int dist, int dy, int dx) {
     return ({({}),({})});
   if (!dy) dy=100;
   if (!dx) dx=MAX_TEAM_ROWLEN*100;
-  x=(int)pl->QuerySkillAttribute(SA_EXTENSION);
+  x=({int})pl->QuerySkillAttribute(SA_EXTENSION);
   dx=(dx*x)/100;dy=(dy*x)/100;
-  dist=(dist*(int)pl->QuerySkillAttribute(SA_RANGE))/100;
+  dist=(dist*({int})pl->QuerySkillAttribute(SA_RANGE))/100;
   min=dist-dy/2;
   max=dist+dy/2;
 
   pos=([]);
   p1=query_once_interactive(pl) ? 1 : -1;
   is_enemy=symbol_function("IsEnemy",pl); // zur Beschleunigung
-  myteam=(object)pl->QueryProp(P_TEAM);
+  myteam=({object})pl->QueryProp(P_TEAM);
   for (ob=first_inventory(environment(pl));ob;ob=next_inventory(ob)) {
     if (!living(ob)) continue;
     qp=symbol_function("QueryProp",ob); // zur Beschleunigung
@@ -561,7 +561,7 @@ FindDistantGroups(object pl, int dist, int dy, int dx) {
     // Zuerst mal die Position feststellen:
     if (!objectp(enteam=funcall(qp,P_TEAM)))
       pos[ob]=1;
-    else if (!pos[ob] && mappingp(x=(mapping)ob->PresentTeamPositions()))
+    else if (!pos[ob] && mappingp(x=({mapping})ob->PresentTeamPositions()))
       pos+=x;
     // PresentTeamPositions wird nur einmal pro Team ausgerechnet, weil
     // anschliessend jedes anwesende Teammitglied pos[ob]!=0 hat.
@@ -575,7 +575,7 @@ FindDistantGroups(object pl, int dist, int dy, int dx) {
     else if (objectp(myteam) && myteam==enteam)
         ;            // Teammitglieder sind immer auf eigener Seite
     else
-      pos[ob]*=(p1*((int)(query_once_interactive(ob)||
+      pos[ob]*=(p1*((query_once_interactive(ob)||
                           funcall(qp,P_FRIEND))?1:-1));
 
     // Den Spieler auf keinen Fall entfernen
@@ -652,7 +652,7 @@ find_victim(string wen, object pl) {
 
   if (!pl) return 0;
   if (!sizeof(wen)) {
-    if (victim = (object)pl->SelectEnemy())
+    if (victim = ({object})pl->SelectEnemy())
       return victim;
     else
       return 0;
@@ -669,7 +669,7 @@ FindVictim(string wen, object pl, string msg) {
   object vic;
 
   if (!(vic=find_victim(wen,pl)) && msg)
-    pl->ReceiveMsg(
+    ({int})pl->ReceiveMsg(
       msg,
       MT_NOTIFICATION,
       MA_SPELL);
@@ -681,8 +681,8 @@ FindLivingVictim(string wen, object pl, string msg) {
 
   if (!(vic=FindVictim(wen,pl,msg)))
     return 0;
-  if (!living(vic) || vic->QueryProp(P_GHOST)) {
-    printf("%s lebt doch nicht!\n", capitalize((string)vic->name()));
+  if (!living(vic) || ({int})vic->QueryProp(P_GHOST)) {
+    printf("%s lebt doch nicht!\n", capitalize(({string})vic->name()));
     return 0;
   }
   return vic;
@@ -699,31 +699,31 @@ DoFindEnemyVictim(string wen, object pl, string msg,
     if ((stringp(wen) && wen!="") || !objectp(pl))
       return 0;
     if (pointerp(func)) { // Soll einer DIESER Gegner genommen werden?
-      if (!(vic=(object)pl->SelectEnemy(func))) // Dann daraus auswaehlen
+      if (!(vic=({object})pl->SelectEnemy(func))) // Dann daraus auswaehlen
         return 0;
     } else {
       if (!stringp(func))
         func="SelectEnemy";
-      if (!(vic=(object)call_other(pl,func,0,min,max)))
+      if (!(vic=({object})call_other(pl,func,0,min,max)))
         return 0;
     }
     func=0; // kein zweites Mal pruefen.
   }
-  if (no_attack = (mixed)vic->QueryProp(P_NO_ATTACK)) {
+  if (no_attack = ({int|string})vic->QueryProp(P_NO_ATTACK)) {
     if (stringp(no_attack))
-      pl->ReceiveMsg(
+      ({int})pl->ReceiveMsg(
         no_attack,
         MT_NOTIFICATION,
         MA_FIGHT);
     else
-      pl->ReceiveMsg(
-        vic->Name(WER,1)+" laesst sich nicht angreifen.",
+      ({int})pl->ReceiveMsg(
+        ({string})vic->Name(WER,1)+" laesst sich nicht angreifen.",
         MT_NOTIFICATION,
         MA_FIGHT);
     return 0;
   }
   if (vic==pl) {
-    pl->ReceiveMsg(
+    ({int})pl->ReceiveMsg(
       "Du koenntest Dir dabei wehtun.",
       MT_NOTIFICATION,
       MA_FIGHT);
@@ -732,39 +732,39 @@ DoFindEnemyVictim(string wen, object pl, string msg,
   if (stringp(func)) {
     switch(func) {
     case "SelectNearEnemy":
-      if (pl->PresentPosition()>1) {
-        pl->ReceiveMsg(
+      if (({int})pl->PresentPosition()>1) {
+        ({int})pl->ReceiveMsg(
           "Du stehst nicht in der ersten Kampfreihe.",
           MT_NOTIFICATION,
           MA_FIGHT);
         return 0;
       }
-      if (vic->PresentPosition()>1) {
-        pl->ReceiveMsg(
-          vic->Name(WER,1)+" ist in einer hinteren Kampfreihe.",
+      if (({int})vic->PresentPosition()>1) {
+        ({int})pl->ReceiveMsg(
+          ({string})vic->Name(WER,1)+" ist in einer hinteren Kampfreihe.",
           MT_NOTIFICATION,
           MA_FIGHT);
         return 0;
       }
       break;
     case "SelectFarEnemy":
-      if (row=(int)vic->PresentPosition())
+      if (row=({int})vic->PresentPosition())
         row--;
       if (row>=min && row<=max)
         break;
       if (row<min)
-        pl->ReceiveMsg(
-          vic->Name(WER,1)+" ist zu nahe.",
+        ({int})pl->ReceiveMsg(
+          ({string})vic->Name(WER,1)+" ist zu nahe.",
           MT_NOTIFICATION,
           MA_FIGHT);
       else if (row>max)
-        pl->ReceiveMsg(
-          vic->Name(WER,1)+" ist zu weit weg.",
+        ({int})pl->ReceiveMsg(
+          ({string})vic->Name(WER,1)+" ist zu weit weg.",
           MT_NOTIFICATION,
           MA_FIGHT);
       else
-        pl->ReceiveMsg(
-          vic->Name(WER,1)+" ist unerreichbar.",
+        ({int})pl->ReceiveMsg(
+          ({string})vic->Name(WER,1)+" ist unerreichbar.",
           MT_NOTIFICATION,
           MA_FIGHT);
       return 0;
@@ -772,16 +772,16 @@ DoFindEnemyVictim(string wen, object pl, string msg,
     }
   } else if (pointerp(func)) {
     if (member(func,vic)<0) {
-      pl->ReceiveMsg(
-        vic->Name(WER,1)+" ist unerreichbar.",
+      ({int})pl->ReceiveMsg(
+        ({string})vic->Name(WER,1)+" ist unerreichbar.",
         MT_NOTIFICATION,
         MA_FIGHT);
       return 0;
     }
   }
 
-  if (!pl->IsEnemy(vic)) // War es bisher kein Feind?
-    pl->Kill(vic);       // Dann ist es jetzt einer.
+  if (!({int})pl->IsEnemy(vic)) // War es bisher kein Feind?
+    ({int})pl->Kill(vic);       // Dann ist es jetzt einer.
   return vic;
 }
 
@@ -840,7 +840,7 @@ TryGlobalAttackSpell(object caster, mapping sinfo, int suc,
 
   obs=x[0];
   for (i=sizeof(obs)-1;i>=0;i--)
-    if (objectp(ob=obs[i]) && suc>=ob->SpellDefend(caster,sinfo))
+    if (objectp(ob=obs[i]) && suc>=({int})ob->SpellDefend(caster,sinfo))
       TryAttackSpell(ob,(damage?random(damage):
                          GetRandFValueO(SI_SKILLDAMAGE,sinfo,caster)),
                      dt,is_spell,caster,sinfo);
@@ -849,8 +849,8 @@ TryGlobalAttackSpell(object caster, mapping sinfo, int suc,
     return 1;
   obs=x[1];
   for (i=sizeof(obs)-1;i>=0;i--)
-    if (objectp(ob=obs[i]) && suc>=ob->SpellDefend(caster,sinfo))
-      ob->reduce_hit_points(((damage?random(damage):
+    if (objectp(ob=obs[i]) && suc>=({int})ob->SpellDefend(caster,sinfo))
+      ({int})ob->reduce_hit_points(((damage?random(damage):
                               GetRandFValueO(SI_SKILLDAMAGE,sinfo,caster))
                              *coldam)/10);
   // 10 statt 100 ist Absicht, weil reduce_hit_points schon um Faktor

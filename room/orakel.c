@@ -76,8 +76,8 @@ int NeuerTip()
    int	   sps;     // Stufenpunkte des Spielers
 
    platt  = this_player()->QueryProp(P_ATTRIBUTES);
-   summe  = (int)platt["int"] + (int)platt["con"] + 
-	    (int)platt["dex"] + (int)platt["str"] - 4; 
+   summe  = platt["int"] + platt["con"] + 
+	    platt["dex"] + platt["str"] - 4; 
    summe  += sizeof(this_player()->QueryProp(P_KNOWN_POTIONROOMS));
    sps	  = this_player()->QueryProp(P_LEP);
 
