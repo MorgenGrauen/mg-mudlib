@@ -2,7 +2,7 @@
 #define __UPTIME_MASTER__
 
 #define UPTIME_MASTER  "/p/daemon/uptime_master"
-#define MAX_UPTIME     "/p/daemon/save/maxuptime"
+#define MAX_UPTIME     "/"LIBDATADIR"/p/daemon/save/maxuptime"
 #define RECORD_CHANNEL "<MasteR>"
 
 #define DEBUG(x)

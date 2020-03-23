@@ -3,6 +3,7 @@
 
 #include "/p/daemon/ch.h"
 #include "/p/daemon/uptime_master.h"
+#include <config.h>
 
 /// Prototypen ///
 

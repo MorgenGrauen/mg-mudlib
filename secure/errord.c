@@ -1053,7 +1053,7 @@ mixed QueryResolved()
 void create() {
     seteuid(getuid(ME));
 
-    if (sl_open("/secure/ARCH/errord.sqlite") != 1)
+    if (sl_open("/"LIBDATADIR"/secure/ARCH/errord.sqlite") != 1)
     //if (sl_open("/errord.sqlite") != 1)
     {
       raise_error("Datenbank konnte nicht geoeffnet werden.\n");
