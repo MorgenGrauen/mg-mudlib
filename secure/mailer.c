@@ -398,7 +398,7 @@ public string *DeliverMail( mixed msg, int expa )
                 recok += ({ recipients[i] });
             }
             else {
-                string *tmpmsg = copy(newmsg);
+                <string|string*>* tmpmsg = copy(newmsg);
                 tmpmsg[MSG_BODY] = "--- Text der Mail geloescht. ---\n";
                 write_file( sprintf( "/data/mail/outbound/postmaster.%d-%d",
                                      time(), random(time()) ),
