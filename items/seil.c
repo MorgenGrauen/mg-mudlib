@@ -50,10 +50,10 @@ string _query_short()
  }
 
  if (tied_to_ob)
-  return this_object()->Name(WER)+", "+artikel+" an "
+  return Name(WER)+", "+artikel+" an "
      + (tied_name?tied_name:(string)(tied_to_ob->name(WEM)))
      + " festgebunden ist";
- return (string)this_object()->Name(WER);
+ return Name(WER);
 
 }
 
@@ -148,7 +148,7 @@ int tie(string str)
   /* Is he carrying the rope ? */
   if (environment() == this_player()) 
   {
-   this_object()->move(environment(this_player()));
+   move(environment(this_player()));
   }
 
   tied_to_ob = ob;
