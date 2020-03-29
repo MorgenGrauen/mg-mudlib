@@ -186,7 +186,27 @@ public varargs int move( object|string dest, int method )
   int res;
   if (ziel)
   {
-    res=ziel->move(dest, method);
+    // PreventMove() im Ziel fragt die Props P_NOGET, P_WEIGHT etc. nicht via
+    // Callother ab, daher wird die Abfrage nicht durch diesen Shadow
+    // geleitet. Daher muss hier selber geprueft werden. Das PreventMove() in
+    // diesem Objekt beruecksichtigt die Properties des Schatten und des
+    // Beschatteten.
+    // Bemerkung: das bedeutet, dass PreventInsert() auch zweimal gerufen
+    // wird, fuer den Shadow und das Ziel. Deswegen darf man auch *nicht* per
+    // M_NOCHECK bewegen, weil die PreventInsert() fuer den Beschatteten ja
+    // noch ablehnend sein koennen.
+    dest = move_norm_dest(dest);
+    res = PreventMove(dest, 0, method);
+    if (res)
+    {
+      // auf gueltigen Fehler pruefen, wer weiss, was Magier da evtl.
+      // versehentlich zurueckgeben.
+      if (VALID_MOVE_ERROR(res))
+        return res;
+      else
+        return ME_DONT_WANT_TO_BE_MOVED;
+    }
+    res = ziel->move(dest, method);
     if (res == MOVE_OK)
     {
       // virtuellem environment bescheidsagen, dass das Objekt bewegt wurde.
