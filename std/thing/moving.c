@@ -22,7 +22,7 @@
 // b) zum Ueberschreiben
 protected int PreventMove(object dest, object oldenv, int method) {
   int tmp;
-  
+
   // M_NOCHECK? -> Bewegung eh erlaubt (und Rueckgabewert wuerde ignoriert)
   if ((method&M_NOCHECK)) {
     // Bei M_NOCHECK zwar Prevent* aufrufen, aber das Resultat ignorieren
@@ -43,7 +43,7 @@ protected int PreventMove(object dest, object oldenv, int method) {
   // Gewicht ermitteln
   if ( !(tmp = ({int})QueryProp(P_TOTAL_WEIGHT)) )
       tmp = ({int})QueryProp(P_WEIGHT);
-        
+
   // Ist das Objekt nicht zu schwer?
   if ( (tmp = ({int})dest->MayAddWeight(tmp)) < 0) {
       if ( tmp == -2 ) return ME_TOO_HEAVY_FOR_ENV;
@@ -69,40 +69,35 @@ protected int PreventMove(object dest, object oldenv, int method) {
 protected void NotifyMove(object dest, object oldenv, int method) {
 }
 
-public varargs int move( object|string dest, int method )
+protected object move_norm_dest(object|string dest)
 {
-  object oldenv;
-  int tmp;
-  string fn,vc;
-  mixed sens;
+  if (objectp(dest))
+    return dest;
 
-  if (!objectp(dest) && !stringp(dest))
-      raise_error(sprintf("Wrong argument 1 to move(). 'dest' must be a "
-            "string or object! Argument was: %.100O\n",
-            dest));
+  int parawelt;
+  // Wenn dieses Objekt gerade in einem Lebewesen ist, dann soll das Ziel der
+  // Bewegung implizit in dieselbe Para-Welt erfolgen wie das Living.
+  // parawelt ist die Ziel-Parallelweltnummer
+  if (!environment() || !living(environment()) ||
+      !intp(parawelt =({int})environment()->Query(P_PARA)))
+    parawelt=0;
 
-  // Jetzige Umgebung merken
-  oldenv = environment();
-
-  // Bewegung in Para-Welt-Raeume?
-  // tmp ist die Ziel-Parallelweltnummer
-  if (!environment()||!living(environment())||
-      !intp(tmp =({int})environment()->Query(P_PARA)))
-    tmp=0;
-    
   // Wenn das Objekt von einem in der Parawelt befindlichen Spieler
   // oder NPC bewegt wird, sollte es auch wieder in der Parawelt landen.
   // Um Rechenzeit zu sparen, wird angenommen, dass bei Bewegungen in
   // das Inv oder Env des Spielers 'dest' als Objekt uebergeben wird,
   // wohingegen bei Bewegungen in Nachbarraeume (die eigentlich nur
   // interessant sind) 'dest' als Filename angegeben wird.
-  if (tmp&&!objectp(dest)&&!environment(dest)) {
+  if (parawelt && !environment(dest))
+  {
       // Falls der Zielraum nicht schon explizit in der Parallelwelt ist,
       // neuen Zielraum suchen. Aber nur, wenn das Ziel kein Clone ist. Sonst
       // buggt, wenn man versucht, nach raum#42^para zu bewegen.
-      if (!IS_PARA(dest) && strrstr(dest,"#")==-1) {
-        fn=dest+"^"+tmp;
-
+      if (!IS_PARA(dest) && strrstr(dest,"#")==-1)
+      {
+        string fn=dest+"^"+parawelt;
+        string vc;
+        int valid;
         // Der Parawelt-Raum wird nur zum Ziel, wenn er a) existiert
         // und b) auch von Spielern betreten werden darf. Letzteres
         // Kriterium kann nur mit im Objekt gesetzter Property
@@ -110,31 +105,45 @@ public varargs int move( object|string dest, int method )
           if ( (find_object(fn) || ((file_size(fn+".c")>0||
                   (file_size(vc=implode(explode(fn,"/")[0..<2],"/")+
                   "/virtual_compiler.c")>0 &&
-                  !catch(tmp=({int})call_other(vc,"QueryValidObject",fn);
-                    publish) && tmp>0)) &&
-                  !catch(load_object( fn );publish))) &&
+                  !catch(valid=({int})vc->QueryValidObject(fn);publish)
+                  && valid>0)) &&
+                  !catch(load_object(fn);publish))) &&
               (!fn->QueryProp(P_NO_PLAYERS) || QueryProp(P_TESTPLAYER)) )
            dest = fn;
       }
   }
-    
   // dest auf Objekt normieren.
   if (stringp(dest))
       dest = load_object(dest);
-    
+  return dest;
+}
+
+public varargs int move( object|string dest, int method )
+{
+  if (!objectp(dest) && !stringp(dest))
+      raise_error(sprintf("Wrong argument 1 to move(). 'dest' must be a "
+            "string or object! Argument was: %.100O\n",
+            dest));
+
+  // Jetzige Umgebung merken
+  object oldenv = environment();
+
+  dest = move_norm_dest(dest);
+
   // testen, ob das Objekt bewegt werden will
-  if (tmp=PreventMove(dest, oldenv, method)) {
+  int valid = PreventMove(dest, oldenv, method);
+  if (valid)
+  {
       // auf gueltigen Fehler pruefen, wer weiss, was Magier da evtl.
       // versehentliche zurueckgeben.
-      if (VALID_MOVE_ERROR(tmp))
-        return(tmp);
+      if (VALID_MOVE_ERROR(valid))
+        return(valid);
       else
-        return(ME_DONT_WANT_TO_BE_MOVED);
+        return ME_DONT_WANT_TO_BE_MOVED;
   }
 
   // Sensitive Objekte muessen entfernt werden
-  sens = QueryProp(P_SENSITIVE);
-
+  mixed *sens = QueryProp(P_SENSITIVE);
   if (sens && environment())
   {
     environment()->RemoveSensitiveObject( this_object() );
@@ -165,7 +174,7 @@ public varargs int move( object|string dest, int method )
   }
   //wurde das Objekt vielleicht noch zerstoert?
   if (!objectp(ME)) return(ME_WAS_DESTRUCTED);
-  
+
   //scheint wohl alles ok zu sein.
   return MOVE_OK;
 }
