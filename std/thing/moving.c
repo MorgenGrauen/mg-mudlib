@@ -120,11 +120,6 @@ protected object move_norm_dest(object|string dest)
 
 public varargs int move( object|string dest, int method )
 {
-  if (!objectp(dest) && !stringp(dest))
-      raise_error(sprintf("Wrong argument 1 to move(). 'dest' must be a "
-            "string or object! Argument was: %.100O\n",
-            dest));
-
   // Jetzige Umgebung merken
   object oldenv = environment();
 
