@@ -38,7 +38,10 @@ public varargs void init(object origin)
 // beruecksichtigt... Don't do this anywhere else.
 protected int PreventMove(object dest, object oldenv, int method)
 {
-  return ME_NOT_ALLOWED;
+  // Wert vom PreventMove liefern (fuer Meldungen bzgl. P_NOGET & Co), aber
+  // wenn das die Bewegung erlauben wurde, darf sie dennoch nicht stattfinden,
+  // dann generischer Move-Fehler.
+  return ::PreventMove(dest, 0, method) || ME_NOT_ALLOWED;
 }
 
 public object *AllVirtualEnvironments()
