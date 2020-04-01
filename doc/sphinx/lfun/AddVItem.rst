@@ -1,4 +1,4 @@
-AddvItem()
+AddVItem()
 ==========
 
 FUNKTION
@@ -16,8 +16,8 @@ ARGUMENTE
 ---------
 
   key
-    Eindeutige Bezeichnung des vItems und mit dieser wieder loeschbar. Das
-    vItem wird im Raum auch unter dieser ID ansprechbar sein.
+    Eindeutige Bezeichnung des vItems und mit dieser wieder loeschbar.
+    Das vItem bekommt dies u.U. auch als ID (s.u.)
   refresh
     Refresheinstellungen des vItems, nachdem es mitgenommen wurde
   shadowprops
@@ -48,6 +48,10 @@ BESCHREIBUNG
   Wird ein vItem mitgenommen, wird <path> geclont und die im Argument <props>
   angegebenen Properties in ihm gesetzt. Auf diese Weise kann man das
   genommene Objekt noch individuell konfigurieren.
+
+  Werden fuer ein reines vItem ohne Vorlage keine P_IDS in <shadowprops>
+  angegeben, so bekommt das vItem den string <key> als ID, damit es irgendwie
+  im Raum ansprechbar ist.
 
   Zu beachten ist: in <shadowprops> enthaltene Properties *ersetzen* (nicht
   ergaenzen) im Regelfall diejenigen im Templat *und* in <props>. In <props>
