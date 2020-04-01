@@ -6,14 +6,8 @@
 
 #define PRAGMA(x) "#pragma "x"\n"
 
-// fuer alte Homemuds...
-#if __VERSION__ >= "3.5.0"
 #define RTTCHECKS PRAGMA("rtt_checks")
 #define DEFAULTS PRAGMA("save_types")
-#else
-#define RTTCHECKS ""
-#define DEFAULTS PRAGMA("combine_strings, verbose_errors, warn_deprecated")
-#endif
 
 // geschachteltes Mapping in toplevel.region.magier Hierarchie.
 // Wichtig: jede Hierarchiebene _muss_ ein Mapping sein, welches einen Eintrag
