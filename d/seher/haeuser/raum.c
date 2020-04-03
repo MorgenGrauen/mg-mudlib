@@ -1708,7 +1708,7 @@ static int report(string str)
 
     lines = old_explode(rep, "\n");
     s = sizeof(lines);
-    for ( l=0; prev == 0; l++ ) {
+    for ( l=0; prev == 0 && l<s; l++ ) {
       if (sscanf(lines[l], "%s von %s in Raum %d %s:", d, d, nr, d)==4)
         prev = lines[l];
     }
