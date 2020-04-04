@@ -84,7 +84,9 @@ void twitter(string msg) {
 		return;
 	}
 	msg = msg + "^" + sig(this_interactive()) + "\n";
-	if(interactive(this_object())) {
+	if (sizeof(msg) > 279)
+    write("Tweet ist zu lang.\n");
+  if(interactive(this_object())) {
 		tell_object(this_object(),msg);
 	} else {
 		msgbuf = msg;
