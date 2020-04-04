@@ -3,19 +3,16 @@ NotifyPlayerDeath()
 
 FUNKTION
 --------
-::
 
   void NotifyPlayerDeath(object victim,object killer,int lost_exp);
 
 DEFINIERT IN
 ------------
-::
 
   /std/player/life.c
 
 ARGUMENTE
 ---------
-::
 
   victim
     Getoeteter Spieler.
@@ -26,15 +23,16 @@ ARGUMENTE
 
 BESCHREIBUNG
 ------------
-::
 
   Diese Funktion wird aus dem Spielerobjekt heraus immer dann
   aufgerufen, wenn der Spieler stirbt und zwar:
-    1) im Gegner, der den Spieler getoetet hat,
-    2) im Environment des getoeteten Spielers,
-    3) in der Gilde des Spielers,
-    4) in allen Objekten in diesem Environment und
-    5) in allen Objekten (auch innerhalb Containern) im Spieler.
+
+    1. im Gegner, der den Spieler getoetet hat,
+    2. im Environment des getoeteten Spielers,
+    3. in der Gilde des Spielers,
+    4. in allen Objekten in diesem Environment und
+    5. in allen Objekten (auch innerhalb Containern) im Spieler.
+  
   Der Gegner wird hierbei nur einmal informiert, also bei letzteren
   Faellen herausgefiltert, falls noetig!
   Hauptaufgabe dieser Funktion ist es somit, auf Tode von Spielern zu
@@ -44,8 +42,9 @@ BESCHREIBUNG
   Geist und noch _nicht_ im Todesraum - dies wird im Anschluss an den Aufruf
   der NotifyPlayerDeath() durchgefuehrt.
 
+  Wenn ein Spieler an Gift stirbt, gibt es kein Killerobjekt - in dem Fall
+  ist <killer> 0. (P_KILLER im Opfer ist in diesem Fall "gift".)
   
-
   Aufgerufen wird die Funktion aus '/std/player/life.c' mittels catch() und
   werden mit limited() auf max. 150k (Gegner, Environment, Gilde) bzw. 80k 
   (alle anderen Objekte) Ticks beschraenkt.
@@ -54,18 +53,18 @@ BESCHREIBUNG
 
 RUeCKGABEWERT
 -------------
-::
 
   keiner
 
 BEISPIELE
 ---------
-::
 
   Folgendes Beispiel demonstriert beispielsweise, wie man Tode von
   Spielern mitloggen kann (das Beispiel ist hierbei auf den am
   haeufigsten auftretenden Fall bezogen, dass nur das toetende Objekt
   den Tod protokollieren soll):
+
+  .. code-block:: pike
 
     void NotifyPlayerDeath(object dead, object killer, int lost_exp) 
     { 
@@ -90,10 +89,10 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-  Defend(), do_damage(), NotifyHpChange(), catch(), write_file(), log_file()
-  P_LAST_DEATH_PROPS
+  :doc:`Defend`, :doc:`do_damage`,
+  :doc:`../efun/catch`, :doc:`../efun/write_file`, :doc:`../sefun/log_file`
+  :doc:`../props/P_LAST_DEATH_PROPS`
 
-24.03.2012, Zesstra
+04.04.2020, Zesstra
 

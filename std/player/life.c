@@ -414,6 +414,13 @@ varargs protected int second_life( object corpse )
     object* items = ({});
     if (objectp(killer))
         items = ({killer});
+    else
+    {
+      // (Fast) alle NotifyPlayerDeath() gehen davon aus, dass <killer> nur
+      // ein Objekt ist. Daher wird im Falle von Gifttoden - wenn <killer>
+      // ein string ist, immer 0 uebergehen.
+      killer = 0;
+    }
     if (environment() != killer)
         items += ({environment()});
     if (gi != killer && gi != environment())
