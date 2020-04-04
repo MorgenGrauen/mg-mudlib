@@ -64,7 +64,7 @@ protected void create()
    AddCmd(({"trink", "trinke"}), "trinken");
    AddCmd("meditiere", "meditieren");
    AddCmd(({"wirf", "werfe"}), "werfen");
-   AddExit("osten", "/players/boing/orakel/organg2");
+   AddExit("osten", "/d/gebirge/boing/orakel/organg2");
 }
 
 // Es wird berechnet ob der Spieler einen neuen Tip bekommen kann.
