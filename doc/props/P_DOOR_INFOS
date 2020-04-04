@@ -18,17 +18,17 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Mapping mit Informationen ueber eine im Raum per NewDoor() definierte
+   Array mit Informationen ueber eine im Raum per NewDoor() definierte
    Tuer. Diese Infos werden ueber /std/room/doors.c an den /obj/doormaster.c
    weitergegeben und dem Raum, der die Tuer besitzt, als Property gesetzt.
-   Werden mehrere Tueren in einem Raum eingebunden, enthaelt das Mapping
+   Werden mehrere Tueren in einem Raum eingebunden, enthaelt das Array
    entsprechend viele Eintraege.
 
-   Dieses Mapping dient zur internen Verwaltung der Tueren im
+   Dieses Property dient zur internen Verwaltung der Tueren im
    /obj/doormaster.c und sollte nicht per Hand veraendert werden!
 
-   Die Eintraege im Mapping haben folgende keys (definiert in
-   /sys/doorroom.h):
+   Jeder Eintrag im Array ist erneut ein Array und hat folgende Indices
+   (definiert in /sys/doorroom.h):
 
    D_DEST : Zielraum (string)
    D_CMDS : Befehl(e), um durch die Tuer zu gehen (string oder *string)
@@ -55,4 +55,4 @@ SIEHE AUCH
    NewDoor(), QueryDoorKey(), QueryDoorStatus(), SetDoorStatus(),
    /std/room/doors.c, /obj/doormaster.c, GetPhiolenInfos(), QueryAllDoors()
 
-Letzte Aenderung: Don, 08.05.2014, Gabylon
+Letzte Aenderung: 13.3.2020 Zesstra
