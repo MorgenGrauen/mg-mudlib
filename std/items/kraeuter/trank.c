@@ -792,6 +792,7 @@ private int act_attr_flee_tport(int effekt)
                   "/d/ebene/room/PortVain/po_haf2",
                   "/d/gebirge/room/he3x3",
                   "/d/ebene/room/huette",
+                  "/room/orakel",
                  });
         break;
     }
