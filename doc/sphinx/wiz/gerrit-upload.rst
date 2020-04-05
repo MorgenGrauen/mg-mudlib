@@ -62,23 +62,23 @@ bekommt (z.B. kann man direkt mit dem ersten Push automatisiert Reviewer fuer
 alle Changes festlegen, Topics und Hashtags zur Kategorisierung verwenden). Es
 ist empfehlenswert, in die Doku von Gerrit zu schauen:
 
-  * `https://mg.mud.de/gerrit/Documentation/user-upload.html` 
-  * `https://mg.mud.de/gerrit/Documentation/user-upload.html#push_create` 
-  * `https://mg.mud.de/gerrit/Documentation/user-upload.html#push_replace` 
+  * `<https://mg.mud.de/gerrit/Documentation/user-upload.html>` 
+  * `<https://mg.mud.de/gerrit/Documentation/user-upload.html#push_create>` 
+  * `<https://mg.mud.de/gerrit/Documentation/user-upload.html#push_replace>` 
 
 Mehr Informationen ueber die Change-ID bekommt ihr hier:
-`https://mg.mud.de/gerrit/Documentation/user-changeid.html` 
+`<https://mg.mud.de/gerrit/Documentation/user-changeid.html>` 
 
 Ihr koennt git auch beibringen, dass in alle eure Commit-Messages die sog.
 Change-ID automatisch ergaenzt wird, in dem ihr einen 'commit-msg' hook aus
 Gerrit in euerem Repository installiert:
 ``scp -p -P 29418 <user>@mg.mud.de:hooks/commit-msg .git/hooks/``
 Details bekommt ihr hier:
-`https://mg.mud.de/gerrit/Documentation/user-changeid.html#creation` 
+`<https://mg.mud.de/gerrit/Documentation/user-changeid.html#creation>` 
 
 Die Doku geht auch auf haeufige Taetigkeiten im Zusammenhang mit dem Upload
 von Aenderungen ein:
-`https://mg.mud.de/gerrit/Documentation/user-changeid.html#_git_tasks` 
+`<https://mg.mud.de/gerrit/Documentation/user-changeid.html#_git_tasks>` 
 
 
 Siehe auch

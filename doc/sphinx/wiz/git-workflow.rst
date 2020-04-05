@@ -154,8 +154,8 @@ SIEHE AUCH
   * gerrit
   * Doku von Gerrit:
 
-    * `https://mg.mud.de/gerrit/Documentation/intro-user.html` 
-    * `https://mg.mud.de/gerrit/Documentation/index.html#_tutorials` 
+    * `<https://mg.mud.de/gerrit/Documentation/intro-user.html>` 
+    * `<https://mg.mud.de/gerrit/Documentation/index.html#_tutorials>` 
 
   * `gerrit-upload`: Wie man Dinge in Gerrit hochlaedt
   * git-howto: Wie git benutzt wird
