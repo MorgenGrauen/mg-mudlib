@@ -1,11 +1,12 @@
 Was ist Gerrit?
----------------
+===============
 
 Gerrit nenntn sich die Software, die im Morgengrauen die git-Repositories
 verwaltet. Sie kann auch zum Review verwendet werden.
 
 Welche Doku existiert im MG?
 ----------------------------
+
 - gerrit-account: Accounterstellung
 - gerrit-cli: Kommandozeilenbefehle
 - gerrit-projekte: Anlegen von Gerrit-Projekten
@@ -17,12 +18,14 @@ Welche Doku existiert im MG?
 
 Welche Doku liefert gerrit?
 ---------------------------
+
 Diese findest Du im Web unter dem Reiter "Documentation" bzw. unter der URL:
-https://mg.mud.de:8443/Documentation/index.html
+`https://mg.mud.de:8443/Documentation/index.html` 
+
 Ganz wichtig ist sicher diese, welche erklaert, die man Aenderungen hochladen
 kann:
-https://mg.mud.de/gerrit/Documentation/user-upload.html
+`https://mg.mud.de/gerrit/Documentation/user-upload.html` 
 
 SIEHE AUCH:
   git
-  
+
