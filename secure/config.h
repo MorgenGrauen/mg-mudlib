@@ -29,7 +29,10 @@
 #endif
 
 // undef to disable support for pure-ftpd virtual users
-#define _PUREFTPD_
+// Im Homemud wird das wohl kaum gebraucht.
+#ifndef __TESTMUD__
+#  define _PUREFTPD_
+#endif
 
 #define _MUDLIB_NAME_ "MorgenGrauen"
 #define _MUDLIB_VERSION_ "3.3.5"
