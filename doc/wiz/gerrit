@@ -20,11 +20,11 @@ Welche Doku liefert gerrit?
 ---------------------------
 
 Diese findest Du im Web unter dem Reiter "Documentation" bzw. unter der URL:
-`https://mg.mud.de:8443/Documentation/index.html` 
+https://mg.mud.de/gerrit/Documentation/index.html und insb. den Leitfaden fuer
+Benutzer https://mg.mud.de/gerrit/Documentation/intro-user.html
 
 Ganz wichtig ist sicher diese, welche erklaert, die man Aenderungen hochladen
-kann:
-`https://mg.mud.de/gerrit/Documentation/user-upload.html` 
+kann: https://mg.mud.de/gerrit/Documentation/user-upload.html
 
 SIEHE AUCH:
   git
