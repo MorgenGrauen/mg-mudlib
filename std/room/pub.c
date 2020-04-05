@@ -888,14 +888,14 @@ int spendiere(string str)
      return 1;
    }
 
-   notify_fail((string)QueryProp(P_PUB_NOT_ON_MENU)||"So etwas gibt es hier nicht!\n");
+   notify_fail(QueryProp(P_PUB_NOT_ON_MENU)||"So etwas gibt es hier nicht!\n");
 
    return search_what(what,PL,target);
 }
 
 int bestelle(string str)
 {
-  notify_fail((string)QueryProp(P_PUB_NOT_ON_MENU));
+  notify_fail(QueryProp(P_PUB_NOT_ON_MENU));
 
   if ( !stringp(str) )
     return 0;

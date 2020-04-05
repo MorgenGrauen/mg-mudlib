@@ -277,7 +277,7 @@ int AutoAttack(object ob) {
     for (i=sizeof(ind)-1;i>=0;i--) {
       x=ind[i];
       if ((z=m[x][ob->QueryProp(x)]) || (z=m[x][0])) {
-  f=f+(float)z;
+  f=f+z;
   n++;
       }
     }

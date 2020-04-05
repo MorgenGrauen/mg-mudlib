@@ -137,7 +137,7 @@ static int Command(string str)
   nostore++;
   if(MODE(MODE_ECHO))
     WLN("Doing: "+str);
-  i=(int)cloner->command_me(str);
+  i=({int})cloner->command_me(str);
   nostore--;
   return i;
 }
@@ -288,9 +288,9 @@ static void PrintObj(object obj, string file)
       str="Ein Teddy (stumm)";
     else
     {
-      if(str=(string)obj->QueryProp(P_INT_LONG))
+      if(str=({string})obj->QueryProp(P_INT_LONG))
 	;
-      else if(str=(string)obj->QueryProp(P_LONG))
+      else if(str=({string})obj->QueryProp(P_LONG))
 	;
       else
 	str="- no long description -\n";
@@ -329,8 +329,8 @@ static varargs void PrintShort(string pre, object obj, string file)
       str=capitalize(getuid(obj));
     else
     {
-      if(!((str=(string)obj->QueryProp(P_INT_SHORT))||
-	   (str=(string)obj->QueryProp(P_SHORT))))
+      if(!((str=({string})obj->QueryProp(P_INT_SHORT))||
+	   (str=({string})obj->QueryProp(P_SHORT))))
 	if(is_player(obj))
 	  str=CRNAME(obj)+" (invisible)";
 	else
@@ -408,7 +408,7 @@ static string propflags(string key, object ob)
 {
   int tmp;
   string *flags;
-  tmp=(int)ob->Query(key,1);
+  tmp=({mixed})ob->Query(key,1);
   flags=({});
   tmp&SAVE ?	       flags+=({"SAV"}) : flags+=({"   "});
   tmp&PROTECTED ?      flags+=({"PRO"}) : flags+=({"   "});
@@ -431,7 +431,7 @@ static void dprop2(string key, mixed data, object ob)
 
 static mixed propmethods(string key, object ob)
 {
-  return (mixed)ob->Query(key,2);
+  return ({mixed})ob->Query(key,2);
 }
 
 static void dprop3(string key, mixed data, object ob)
@@ -450,13 +450,13 @@ static void DumpProperties(object obj, int flag)
   PIPE_DELETE(pipe_of);
   switch (flag) {
     case 0:
-      walk_mapping(((mapping *)(obj->__query_properties()))[0],#'dprop,obj); //')
+      walk_mapping(((({mixed*})obj->__query_properties()))[0],#'dprop,obj);
       break;
     case 1:
-      walk_mapping(((mapping *)(obj->__query_properties()))[0],#'dprop2,obj); //')
+      walk_mapping(((({mixed*})obj->__query_properties()))[0],#'dprop2,obj);
       break;
     case 2:
-      walk_mapping(((mapping *)(obj->__query_properties()))[0],#'dprop3,obj); //')
+      walk_mapping(((({mixed*})obj->__query_properties()))[0],#'dprop3,obj);
       break;
   }
 }
@@ -474,7 +474,7 @@ static int MoveObj(object obj1, object obj2, int silent)
   if(!(obj1&&obj2))
     return FALSE;
   oldenv=ENV(obj1);
-  err=(int)obj1->move(obj2, M_SILENT|M_NOCHECK);
+  err=({int})obj1->move(obj2, M_SILENT|M_NOCHECK);
   if(!silent)
     switch(err)
     {
@@ -513,7 +513,7 @@ static void Destruct(object obj)
 {
   if(!obj || !this_object())
     return;
-  catch(obj->remove());
+  catch(({int})obj->remove());
   if(objectp(obj) && !query_once_interactive(obj))
     destruct(obj);
 }
@@ -935,7 +935,7 @@ static string PlayerAge(object obj)
   
   if(!obj)
     return NULL;
-  i=(int)obj->QueryProp(P_AGE);
+  i=({int})obj->QueryProp(P_AGE);
   str=" "+ARIGHT(""+(i/43200), 4, ".");
   i-=(i/43200)*43200;
   return str+":"+ARIGHT(""+(i/1800), 2, "0");
@@ -947,7 +947,7 @@ static string crname(object who)
 
   if((uid=getuid(who))==ROOTID && 
      object_name(who)[0..7]=="/secure/" &&
-     (lname=(string)who->loginname()))
+     (lname=({string})who->loginname()))
     return CAP(lname);
   return CAP(uid);
 }
@@ -959,12 +959,12 @@ static string PlayerWho(object obj)
   str=ARIGHT(""+LEVEL(obj)  ,  3, " ");
   str+=ALEFT(" "+crname(obj)+" ", 12, ".");
   str+=PlayerAge(obj);
-  str+=((int)obj->QueryProp(P_GENDER)==1 ? " m " : " f ");
-  str+=(obj->QueryProp(P_FROG))  ? "f" : ".";
-  str+=(obj->QueryProp(P_GHOST)) ? "g" : ".";
-  str+=(obj->QueryProp(P_INVIS)) ? "i" : ".";
+  str+=(({int})obj->QueryProp(P_GENDER)==1 ? " m " : " f ");
+  str+=(({int})obj->QueryProp(P_FROG))  ? "f" : ".";
+  str+=(({int})obj->QueryProp(P_GHOST)) ? "g" : ".";
+  str+=(({int})obj->QueryProp(P_INVIS)) ? "i" : ".";
   str+=(query_editing(obj)||query_input_pending(obj) ? "e" : ".");
-  str+=(obj->QueryProp(P_AWAY))  ? "a" : ".";
+  str+=(({string})obj->QueryProp(P_AWAY))  ? "a" : ".";
   str+=" "+PlayerIdle(obj)+" ";
   str+=(tmp=ENV(obj)) ? ObjFile(tmp) : "- fabric of space -";
   return str;
@@ -975,7 +975,7 @@ static string PlayerMail(object obj, int flag)
   string pre;
   
   pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
-  return pre+"mail: "+obj->QueryProp(P_MAILADDR);
+  return pre+"mail: "+({string})obj->QueryProp(P_MAILADDR);
 }
 
 static string PlayerIP(object obj, int flag)
@@ -991,8 +991,9 @@ static string PlayerRace(object obj, int flag)
   string tmp, pre;
   
   pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
-  pre=pre+"race: "+ALEFT(obj->QueryProp(P_RACE)+" ", 10, ".")+" guild: ";
-  tmp=(string)obj->QueryProp(P_GUILD);
+  pre=pre+"race: "+ALEFT(({string})obj->QueryProp(P_RACE)+" ", 10, ".")+
+    " guild: ";
+  tmp=({string})obj->QueryProp(P_GUILD);
   return tmp ? pre+tmp : pre+"- none -";
 }
 
@@ -1000,7 +1001,8 @@ static string PlayerDomain(object obj, int flag)
 {
   string pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
   pre+="domainlord of: ";
-  string *domains = master()->query_userlist(getuid(obj),USER_DOMAIN);
+  string *domains = ({string*})master()->query_userlist(getuid(obj),
+    USER_DOMAIN);
   if(sizeof(domains))
     pre += CountUp(domains, ", ", ", ");
   return pre;
@@ -1011,15 +1013,15 @@ static string PlayerStats(object obj, int flag)
   string pre;
   
   pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
-  pre+="hp="+ARIGHT(obj->QueryProp(P_HP), 3, "0");
-  pre+="/"+ARIGHT(obj->QueryProp(P_MAX_HP), 3, "0");
-  pre+=" sp="+ARIGHT(obj->QueryProp(P_SP), 3, "0");
-  pre+="/"+ARIGHT(obj->QueryProp(P_MAX_SP), 3, "0");
-  pre+=" food="+ARIGHT(obj->QueryProp(P_FOOD), 3, "0");
-  pre+="/"+ARIGHT(obj->QueryProp(P_MAX_FOOD), 3, "0");
-  pre+=" drink="+ARIGHT(obj->QueryProp(P_DRINK), 3, "0");
-  pre+="/"+ARIGHT(obj->QueryProp(P_MAX_DRINK), 3, "0");
-  pre+=" exps="+obj->QueryProp(P_XP);
+  pre+="hp="+ARIGHT(({int})obj->QueryProp(P_HP), 3, "0");
+  pre+="/"+ARIGHT(({int})obj->QueryProp(P_MAX_HP), 3, "0");
+  pre+=" sp="+ARIGHT(({int})obj->QueryProp(P_SP), 3, "0");
+  pre+="/"+ARIGHT(({int})obj->QueryProp(P_MAX_SP), 3, "0");
+  pre+=" food="+ARIGHT(({int})obj->QueryProp(P_FOOD), 3, "0");
+  pre+="/"+ARIGHT(({int})obj->QueryProp(P_MAX_FOOD), 3, "0");
+  pre+=" drink="+ARIGHT(({int})obj->QueryProp(P_DRINK), 3, "0");
+  pre+="/"+ARIGHT(({int})obj->QueryProp(P_MAX_DRINK), 3, "0");
+  pre+=" exps="+({int})obj->QueryProp(P_XP);
   return pre;
 }
 
@@ -1042,7 +1044,7 @@ static string PlayerCmdAvg(object obj, int flag)
   string pre;
   
   pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
-  return pre+"cmdavg: "+(int)obj->_query_command_average();
+  return pre+"cmdavg: "+({int})obj->_query_command_average();
 }
 
 
@@ -1132,7 +1134,7 @@ string _query_short()
       WDLN(crname(RTP)+" scanned you (short) ["+query_verb()+"] "+
 	   (PREV ? ObjFile(PREV) : "[destructed object]"));
 	if( sh=Query(P_SHORT) ) return sh; // added by Rumata
-    return cloner->name(WESSEN)+" "+TOOL_TITLE+" ["+
+    return ({string})cloner->name(WESSEN)+" "+TOOL_TITLE+" ["+
       ctime(time())[11..18]+"]";
   }
   return TOOL_TITLE;
@@ -1201,7 +1203,7 @@ void _set_autoloadobj(mixed *args)
     ;
   else
   {
-    if((string)args[0]!=TOOL_INTERNAL)
+    if(args[0]!=TOOL_INTERNAL)
     {
       WLN("*****************************");
       WLN("***	    NEW EDITION      ***");
@@ -1209,8 +1211,8 @@ void _set_autoloadobj(mixed *args)
       WLN("***	 more information    ***");
       WLN("*****************************");
     }
-    modi=(int)args[1];
-    morelines=(int)args[2];
+    modi=args[1];
+    morelines=args[2];
     return;
   }
   W("(bad autoload, using default)\n");
@@ -1290,7 +1292,7 @@ void DropObj(object obj)
 {
   if(!obj||!objectp(obj))
     return;
-  obj->move(ENV(cloner),M_NOCHECK|M_NO_SHOW);
+  ({int})obj->move(ENV(cloner),M_NOCHECK|M_NO_SHOW);
 }
 
 #define ACTIONS\
@@ -1444,7 +1446,7 @@ varargs int ParseLine(string str)
     if(!verb||!sizeof(verb)||!GetFunc(verb,TRUE))
       return FALSE;
 
-    str=(string)this_player()->_unparsed_args();
+    str=({string})this_player()->_unparsed_args();
     pipe_in=FALSE;
     pipe_of=NULL;
     pipe_ovr=TRUE;
@@ -1564,7 +1566,7 @@ static int CallFunc(string verb, string str)
 #endif
   if(str=="")
     str=NULL;
-  return fun?(int)call_other(ME,fun,str):FALSE;
+  return fun?({int})call_other(ME,fun,str):FALSE;
 }
 
 static string GetFunc(string verb, int test)
@@ -1577,7 +1579,7 @@ static string GetFunc(string verb, int test)
   if(verb[0..0]!="x") // Assume all commands start with "x"
     return 0;
 
-  if (!(fun=(string)ACTIONS[verb,0])) { // Try exact hit first
+  if (!(fun=ACTIONS[verb,0])) { // Try exact hit first
     key="";
     len=sizeof(verb);
     for (i=sizeof(keys=m_indices(ACTIONS))-1;i>=0;i--) {
@@ -1653,7 +1655,7 @@ public <int|object>* insert_hook(object pl, int hookid, object ob)
 void add_insert_hook()
 {
   if(objectp(cloner))
-    cloner->HRegisterToHook(H_HOOK_INSERT, #'insert_hook,
+    ({int})cloner->HRegisterToHook(H_HOOK_INSERT, #'insert_hook,
         H_HOOK_LIBPRIO(2), H_LISTENER, 0);
 }
 

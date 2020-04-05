@@ -271,24 +271,24 @@ static int direct_move(mixed dest, int method, string direction)
          {
             // wenn ein VC existiert, prüfen ob dieser ParaObjecte unterstuetzt
             // wenn ja, dann testen ob sich Raum laden laesst...
-            if ((!catch(tmp=(int)call_other(vc,"NoParaObjects")) && (!tmp)) &&
+            if ((!catch(tmp=call_other(vc,"NoParaObjects")) && (!tmp)) &&
                 (!catch(call_other( fn, "???" ))))
                 dest=fn;
          }
       }
 
-      res = (int)call_other(ME, "move", dest, M_NOCHECK);
+      res = call_other(ME, "move", dest, M_NOCHECK);
 
       if (oldenv==environment())
         return res;
 
       // als erstes die Meldung fuer das Verlassen des Raumes...
       if ( method & M_TPORT )
-        textout = (string) QueryProp(P_MMSGOUT) || (string) QueryProp(P_MSGOUT);
+        textout = QueryProp(P_MMSGOUT) || QueryProp(P_MSGOUT);
       else
       {
-        mout = explode( (string) QueryProp(P_MSGOUT) || "", "#" );
-        textout = mout[0] || (string) QueryProp(P_MMSGOUT);
+        mout = explode( QueryProp(P_MSGOUT) || "", "#" );
+        textout = mout[0] || QueryProp(P_MMSGOUT);
       }
 
       if (stringp(textout))
@@ -308,9 +308,9 @@ static int direct_move(mixed dest, int method, string direction)
       // nun die Meldung für das "Betreten" des Raumes...
 
       if ( method & M_TPORT )
-        textin = (string) QueryProp(P_MMSGIN);
+        textin = QueryProp(P_MMSGIN);
       else
-        textin = (string) QueryProp(P_MSGIN);
+        textin = QueryProp(P_MSGIN);
 
       if (stringp(textin))
       {

@@ -1140,8 +1140,8 @@ mapping make_potion(object* plants)
     raise_error(sprintf("make_potion() got invalid object in plant array "
                         "%.50O\n",plants));
 
-  int* plantids = (int*)plants->QueryPlantId();
-  int* qualities = (int*)plants->QueryProp(P_QUALITY);
+  int* plantids = plants->QueryPlantId();
+  int* qualities = plants->QueryProp(P_QUALITY);
 
   return calculate_potion(plantids, qualities,
                           ZWEITIES->QueryFamilie(this_player()));

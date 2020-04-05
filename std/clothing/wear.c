@@ -112,7 +112,8 @@ varargs void doWearMessage(int all) {
      (all?(Name(WER)+": "):0)));
   }
   if ( objectp(environment()) && objectp(environment(environment())) )
-      tell_room(environment(environment()),break_string(PL->Name(WER)
+      tell_room(environment(environment()),break_string(
+            ({string})PL->Name(WER)
             + " zieht " + name(WEN,0) +" an.",78), ({PL}));
 }
 
@@ -173,7 +174,8 @@ void doUnwearMessage(object worn_by, int all)
      (all?(Name(WER)+": "):0)));
   }
   if ( objectp(environment(worn_by)) )
-      tell_room(environment(worn_by), break_string(worn_by->Name(WER)
+      tell_room(environment(worn_by), break_string(
+            ({string})worn_by->Name(WER)
             + " zieht " + name(WEN,0) + " aus.",78), ({ worn_by }) );
 }
 
@@ -223,7 +225,7 @@ protected int _check_wear_restrictions(int silent, int all) {
   // gleich auf eine WearFunc zurueckgreifen zu muessen.
   // Die Auswertung erfolgt ueber den RestrictionChecker
   if ((res=QueryProp(P_RESTRICTIONS)) && mappingp(res) &&
-      (res=(string)"/std/restriction_checker"->check_restrictions(PL,res))
+      (res=({string})"/std/restriction_checker"->check_restrictions(PL,res))
       && stringp(res)) {  
     msg(break_string(res,78,(all?(Name(WER)+": "):0)),all);
     return(-1);
@@ -231,7 +233,7 @@ protected int _check_wear_restrictions(int silent, int all) {
 
   // Ist eine WearFunc gesetzt, wird diese aufgerufen.
   if (objectp(res=QueryProp(P_WEAR_FUNC)) && 
-      !(res->WearFunc(ME, silent, environment()))) {
+      !(({int})res->WearFunc(ME, silent, environment()))) {
     // Eine Meldung muss von der WearFunc ausgegeben werden
     return(-2);
   }
@@ -276,7 +278,7 @@ varargs int DoWear(int silent, int all) {
   // Wenn Haende benutzt werden sollen, muss natuerlich auch getestet
   // werden, ob das ueberhaupt geht
   if (nh>0) {
-    if (!(PL->UseHands(ME, nh))) {
+    if (!(({int})PL->UseHands(ME, nh))) {
       // Schade, nicht genug Haende frei -> Meldung ausgeben
       write(break_string("Du hast keine Hand mehr frei.",78,
             (all?(Name(WER)+": "):0)));
@@ -291,16 +293,16 @@ varargs int DoWear(int silent, int all) {
   // oder aehnliches...
   if (!QueryProp(P_WEAPON_TYPE)) {
     // Aktion noch setzen, Spieler hat ja was angezogen
-    PL->SetProp(P_LAST_WEAR_ACTION,({WA_WEAR,time()}));
+    ({int*})PL->SetProp(P_LAST_WEAR_ACTION,({WA_WEAR,time()}));
     // Im Kampf verliert der Spieler durch Kleidungswechsel eine Runde.
-    if (PL->InFight()) {
-      PL->SetProp(P_ATTACK_BUSY,1);
+    if (({int})PL->InFight()) {
+      ({int})PL->SetProp(P_ATTACK_BUSY,1);
     }
   }
   // Eintragen in P_CLOTHING/P_ARMOURS
-  PL->Wear(this_object());
+  ({int})PL->Wear(this_object());
 
-  PL->SetProp(P_EQUIP_TIME,time());
+  ({int})PL->SetProp(P_EQUIP_TIME,time());
   SetProp(P_WORN, PL);
   SetProp(P_EQUIP_TIME,time());
 
@@ -329,7 +331,7 @@ protected int _check_unwear_restrictions(object worn_by, int silent,
   // Im Falle von M_NOCHECK wird das Ergebnis allerdings ignoriert.
   mixed res=QueryProp(P_REMOVE_FUNC);
   if (objectp(res)
-      && !res->RemoveFunc(ME,silent,worn_by)
+      && !({int})res->RemoveFunc(ME,silent,worn_by)
       && !(silent & M_NOCHECK)
       )
   {
@@ -408,14 +410,14 @@ varargs int DoUnwear(int silent, int all) {
     return(!all);
 
   // OK, alles klar, die Ruestung wird ausgezogen
-  worn_by->Unwear(ME);
+  ({int})worn_by->Unwear(ME);
 
   // Benutzte Haende wieder freigeben
   if (nh>0) {
-    worn_by->FreeHands(ME);
+    ({int})worn_by->FreeHands(ME);
   }
 
-  worn_by->SetProp(P_EQUIP_TIME, time());
+  ({int})worn_by->SetProp(P_EQUIP_TIME, time());
   SetProp(P_WORN, 0);
 
   // Flag noch setzen, Spieler hat ja was ausgezogen
@@ -424,9 +426,9 @@ varargs int DoUnwear(int silent, int all) {
   if (PL && PL==worn_by && !QueryProp(P_WEAPON_TYPE)) {
     //Behinderung beim Wechsel nur fuer Spieler
     if (query_once_interactive(PL)) {
-      PL->SetProp(P_LAST_WEAR_ACTION,({WA_UNWEAR,time()}));
-      if (PL->InFight()) { 
-        PL->SetProp(P_ATTACK_BUSY,1);
+      ({int*})PL->SetProp(P_LAST_WEAR_ACTION,({WA_UNWEAR,time()}));
+      if (({int})PL->InFight()) { 
+        ({int})PL->SetProp(P_ATTACK_BUSY,1);
       }
     }
   }
@@ -453,8 +455,8 @@ protected int _do_wear(string str, int silent, int all) {
   }
 
   // Vielleicht darf der Spieler ja gar nix mehr anziehen.
-  if ((object)PL->InFight()) {        
-    last=(int*)PL->QueryProp(P_LAST_WEAR_ACTION);
+  if (({int})PL->InFight()) {        
+    last=({int*})PL->QueryProp(P_LAST_WEAR_ACTION);
       if (pointerp(last) && (last[0]==WA_UNWEAR) && ((time()-last[1])<2)) {
         notify_fail("Du hast doch gerade erst etwas ausgezogen!\n"
             "So schnell bist Du nicht!\n");        
@@ -503,8 +505,8 @@ protected int _do_unwear(string str, int silent, int all) {
   }
 
   // Vielleicht darf der Spieler ja gar nichts mehr ausziehen.
-  if ((object)PL->InFight()) {
-    last=(int*)PL->QueryProp(P_LAST_WEAR_ACTION);
+  if (({int})PL->InFight()) {
+    last=({int*})PL->QueryProp(P_LAST_WEAR_ACTION);
     if (pointerp(last) && (last[0]==WA_WEAR) && ((time()-last[1])<2)) {
       notify_fail("Du hast doch gerade erst etwas angezogen!\n"              
           "So schnell bist Du nicht!\n");
