@@ -1,5 +1,8 @@
+Git workflow
+============
+
 Typischer Arbeitsablauf
-=======================
+-----------------------
 
 (Es gibt andere Arbeitsweisen, aber dies hier ist eine, die sich bewaehrt
  hat.)
@@ -24,9 +27,7 @@ Clone des jeweiligen Repositories durchgefuehrt.
   Ausserdem ist es dann einfacher, zwischenzeitliche Aenderungen aus dem Mud zu
   integrieren.
 
-2. Neuen Zweig erstellen
-
-  ::
+2. Neuen Zweig erstellen::
 
     git checkout -b neue_kampftaktik
 

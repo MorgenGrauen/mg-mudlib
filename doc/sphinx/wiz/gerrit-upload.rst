@@ -1,5 +1,5 @@
-Commits in gerrit pushen
-========================
+Upload via Gerrit
+=================
 
 Zunaechst sei einmal auf die Manpage :doc:`git-workflow` verwiesen.
 
@@ -43,7 +43,7 @@ wie folgt weiter:
         in diesem dann eure Commits editieren.
         Wechselt in euren lokalen Zweig und benutzt ``git rebase -i master``
         (dies bedeutet "setze diesen Zweig neu auf den master auf und lass
-        mich dabei Aenderungen vornehmen).
+        mich dabei Aenderungen vornehmen").
         Spaetestens hierbei **muss** in allen Commit-Messages die zu diesem
         Commit passende Change-ID aus Gerrit als *letzte Zeile* und mit einer
         Leerzeile getrennt auftauchen.
@@ -88,7 +88,7 @@ Siehe auch
   * git-howto: Wie git benutzt wird
   * git-workflow: Wie man sinnvoll vorgehen kann beim Entwickeln
   * git-kooperation: Ein ueber git-workflow hinausgehendes Beispiel zur
-      Synchronisation bzw Kooperation mehrerer Magier/Rechner
+    Synchronisation bzw Kooperation mehrerer Magier/Rechner
   * gerrit-sync: Wie die Synchronisierung zw. git-Repos und Mudlib ablaeuft
   * git-faq: haeufig gestellte Fragen/Probleme
 
