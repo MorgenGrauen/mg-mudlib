@@ -76,11 +76,13 @@ void QuarterReached() {
     }
   }
   str = "";
+# ifndef __TESTMUD__
   if (minuten < 10) {
     log_file("USER_STATISTIK", ulog);
     ulog = sprintf("\n%s%02d: ",(!std?("# "+lt[TM_WDAY]+":\n"):""),std);
   }
   ulog += sprintf("%4d",sizeof(users()));
+# endif
   WaitForQuarterHour();
 }
 
