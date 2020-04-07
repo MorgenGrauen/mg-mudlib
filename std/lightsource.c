@@ -126,10 +126,10 @@ bool light(string str)
       env->_set_last_content_change();
   call_time = (fuel < CALL_OUT_TIME)? fuel : CALL_OUT_TIME ;
   call_out( "out_of_fuel", call_time ) ;
-  if( (int)PL->QueryProp(P_PLAYER_LIGHT) == 1 )
+  if( ({int})PL->QueryProp(P_PLAYER_LIGHT) == 1 )
     write( "Du kannst wieder etwas sehen.\n" ) ;
   else write( "Ok.\n" ) ;
-  say((string)PL->Name(WER)
+  say(({string})PL->Name(WER)
       + " zuendet " + name( WEN, 0 ) + " an.\n" ) ;
 
   return TRUE ;
@@ -172,17 +172,16 @@ bool extinguish(string str)
       //
       // Tiamak
       env->_set_last_content_change();
-  if ( this_player()->QueryProp(P_PLAYER_LIGHT) == 0 )
+  if ( ({int})this_player()->QueryProp(P_PLAYER_LIGHT) == 0 )
   {
     write( "Es wird dunkel.\n" ) ;
-    say((string)PL->Name(WER) 
-	+ " macht das Licht aus.\n" ) ;
+    say(({string})PL->Name(WER) + " macht das Licht aus.\n" ) ;
   }
   else
   {
     write( "Ok.\n" ) ;
-    say((string)PL->Name(WER)
-	+ " loescht " + name( WEN, 0 ) + " aus.\n" ) ;
+    say(({string})PL->Name(WER) + " loescht " + name( WEN, 0 )
+        + " aus.\n" ) ;
   }
 
   if( fuel <= 0 ) test_remove() ;
