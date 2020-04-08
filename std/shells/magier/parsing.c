@@ -285,7 +285,7 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
   }
 
   // Normalisiertes Pfadarray besorgen
-  string *patharray=master()->path_array(filename);
+  string *patharray=({string*})master()->path_array(filename);
   // und daraus auch filename neu erzeugen
   filename=implode(patharray, "/");
 
@@ -301,7 +301,7 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
 
     object *vrooms = ({});
     if (vcompiler)
-      vrooms = vcompiler->QueryObjects();
+      vrooms = ({object*})vcompiler->QueryObjects();
     
     map(vrooms,#'_vc_map,&data);
   }

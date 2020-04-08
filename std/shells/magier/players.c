@@ -87,7 +87,7 @@ static int _zap(string str)
       if ( !pointerp(message) || sizeof(message) != 3 ){
           tell_room(environment(),sprintf("%s beschwoert einen Blitz "
                 "vom Himmel.\n",capitalize(getuid())),({ this_object() }));
-          printf("Du toetest %s.\n",opfer->name( WEN,2));
+          printf("Du toetest %s.\n",({string})opfer->name( WEN,2));
       }
       else
       {
@@ -97,7 +97,7 @@ static int _zap(string str)
         tell_object(opfer,_zap_message(message[2],opfer));
       }
 
-      opfer->die();
+      ({void})opfer->die();
       return 1;
   }
   else{
@@ -121,7 +121,7 @@ static int _verfolge(string str)
     mixed *pur = Query(P_PURSUERS);
     if ( pointerp(pur) && sizeof(pur) && objectp(pur[0]) )
     {
-      pur[0]->RemovePursuer(this_object());
+      ({void})pur[0]->RemovePursuer(this_object());
       ReceiveMsg("Verfolgungsmodus abgeschaltet.", MT_NOTIFICATION);
     }
     else
@@ -167,10 +167,10 @@ static int _verfolge(string str)
     else
     {
       ReceiveMsg(sprintf(
-        "Du verfolgst jetzt %s. [%s]", ziel->name(WEN), object_name(ziel)),
+        "Du verfolgst jetzt %s. [%s]", ({string})ziel->name(WEN), object_name(ziel)),
         MT_NOTIFICATION, MA_MOVE);
-      ziel->AddPursuer(this_object());
-      ziel->TakeFollowers();
+      ({void})ziel->AddPursuer(this_object());
+      ({void})ziel->TakeFollowers();
     }
   }
   else
@@ -201,10 +201,10 @@ static int _trans(string str)
     }
   if(living=find_living(livname))
   {
-    if (living->move(object_name(environment()),
+    if (({int})living->move(object_name(environment()),
                      M_TPORT|M_NOCHECK)<=0)
     {
-      printf("Teleportieren von %s fehlgeschlagen.\n",living->Name(WEM));
+      printf("Teleportieren von %s fehlgeschlagen.\n",({string})living->Name(WEM));
       if (IS_LEARNER(living))
         tell_object(living,sprintf("%s wollte Dich teleportieren, "
              "hat aber versagt!\n",capitalize(getuid())));
@@ -215,7 +215,7 @@ static int _trans(string str)
     "Du verlierst die Orientierung ...\n"
     +(QueryProp(P_INVIS)?"":"%s holt Dich zu sich.\n"),
     capitalize(getuid())));
-    printf("%s wurde herbeizitiert.\n",living->Name(WER));
+    printf("%s wurde herbeizitiert.\n",({string})living->Name(WER));
     return 1;
   }
   printf("Das Lebewesen '%s' konnte nicht gefunden werden.\n",
@@ -249,13 +249,13 @@ static int _frieden(string sname)
     mapping enemies = ({mapping})obj->StopHuntingMode(1);
     foreach(object en : enemies)
     {
-      en->StopHuntFor(obj, 1);
+      ({int})en->StopHuntFor(obj, 1);
       tell_object(obj,sprintf("%s beendet Deinen Kampf mit %s.\n",
-                              capitalize(getuid()),en->Name(WEM)));
+                              capitalize(getuid()),({string})en->Name(WEM)));
       tell_object(en,sprintf("%s beendet Deinen Kampf mit %s.\n",
                                   capitalize(getuid()),him));
     }
-    printf("%s und alle Gegner wurden befriedet.\n",obj->Name(WER));
+    printf("%s und alle Gegner wurden befriedet.\n",({string})obj->Name(WER));
   }
   return 1;
 }
@@ -281,7 +281,7 @@ static int _pwho()
   spieler = filter(users(),(: return !IS_LEARNER($1); :));
 #endif
   spieler = sort_array(spieler, function int (object a, object b)
-      { return a->QueryProp(P_LEVEL) > b->QueryProp(P_LEVEL); } );
+      { return ({int})a->QueryProp(P_LEVEL) > ({int})b->QueryProp(P_LEVEL); } );
   
   res = "Lvl Name         Erfahrung   QP  Int Str Dex Con WC   "
     "AC   HANDS HP  (max)\n"
@@ -290,19 +290,19 @@ static int _pwho()
   for (i=sizeof(spieler)-1; i>=0; i--)
     res += sprintf("%3d %-12s %9d %5d %3d %3d %3d %3d %4d %4d  %5d "
                    "%4d (%4d)\n",
-     spieler[i]->QueryProp(P_LEVEL),
+     ({int})spieler[i]->QueryProp(P_LEVEL),
      capitalize(getuid(spieler[i])),
-     spieler[i]->QueryProp(P_XP),
-     spieler[i]->QueryProp(P_QP),
-     spieler[i]->QueryAttribute(A_INT),
-     spieler[i]->QueryAttribute(A_STR),
-     spieler[i]->QueryAttribute(A_DEX),
-     spieler[i]->QueryAttribute(A_CON),
-     spieler[i]->QueryProp(P_TOTAL_WC),
-     spieler[i]->QueryProp(P_TOTAL_AC),
-     (sizeof(hands=(({int *})spieler[i]->QueryProp(P_HANDS)))?hands[1]:0),
-     spieler[i]->QueryProp(P_HP),
-     spieler[i]->QueryProp(P_MAX_HP));
+     ({int})spieler[i]->QueryProp(P_XP),
+     ({int})spieler[i]->QueryProp(P_QP),
+     ({int})spieler[i]->QueryAttribute(A_INT),
+     ({int})spieler[i]->QueryAttribute(A_STR),
+     ({int})spieler[i]->QueryAttribute(A_DEX),
+     ({int})spieler[i]->QueryAttribute(A_CON),
+     ({int})spieler[i]->QueryProp(P_TOTAL_WC),
+     ({int})spieler[i]->QueryProp(P_TOTAL_AC),
+     (sizeof(hands=(({<int|string|string*>*})spieler[i]->QueryProp(P_HANDS)))?hands[1]:0),
+     ({int})spieler[i]->QueryProp(P_HP),
+     ({int})spieler[i]->QueryProp(P_MAX_HP));
   More(res);
   return 1;
 }
@@ -324,14 +324,14 @@ static int _zwinge(string str)
   if (!(living = find_living(living_name)))
     return printf ("Ein Lebewesen namens '%s' konnte nicht gefunden werden!\n",
                    capitalize(living_name)),1;
-  if (living->command_me(what))
+  if (({int})living->command_me(what))
   {
     printf("Du zwingst %s zu \"%s\".\n",capitalize(living_name),what);
     if (!IS_ARCH(this_object()) &&
         getuid()!=({string|int})living->QueryProp(P_TESTPLAYER))
       log_file(SHELLLOG("ZWINGE"),
                sprintf("%s zwingt %s (%s) zu %s [%s]\n",
-                       capitalize(getuid()),living->Name(),capitalize(getuid(living)),
+                       capitalize(getuid()),({string})living->Name(),capitalize(getuid(living)),
                        what,dtime(time())));
   }
   else
@@ -360,7 +360,7 @@ static int _heile(string name)
   }
   lpv = ({int})ob->QueryProp(P_HP);
   mpv = ({int})ob->QueryProp(P_SP);
-  ob->heal_self(1000000);
+  ({void})ob->heal_self(1000000);
   string|int testie = ({string|int})ob->QueryProp(P_TESTPLAYER);
   if (!IS_LEARNER(ob)
       && (!testie || (to_string(testie)[<5..<1] == "Gilde")))
@@ -368,7 +368,7 @@ static int _heile(string name)
     log_file(SHELLLOG("HEAL"),
        sprintf("%s heilt %s (%s) %s (LP: %d -> %d, MP: %d -> %d)\n",
          capitalize(geteuid(this_player())),
-         call_other(ob,"name"), capitalize(geteuid(ob)),
+         ({string})call_other(ob,"name"), capitalize(geteuid(ob)),
          dtime(time()), lpv, ({int})ob->QueryProp(P_HP),
                mpv,({int})ob->QueryProp(P_SP)));
   }
@@ -422,11 +422,11 @@ static int _people()
   a=0;res="";
   for(i=0; i<sizeof(list); i++) {
     string name_; 
-    name_ = capitalize(list[i]->query_real_name()||"<logon>");
+    name_ = capitalize(({string})list[i]->query_real_name()||"<logon>");
     res += sprintf( "%s%-15s%s %s%-13s%s %s%3d%s %s %s %s%s%s%s %s%s\n",
                     a_ipnum, query_ip_number(list[i]),a_end,a_name,
-                    (list[i]->QueryProp(P_INVIS)?"("+name_+")":name_),
-                    a_end,a_level, MASTER->get_wiz_level(getuid(list[i])),
+                    (({int})list[i]->QueryProp(P_INVIS)?"("+name_+")":name_),
+                    a_end,a_level, ({int})MASTER->get_wiz_level(getuid(list[i])),
                     a_end,a_age,
                     time2string("%4x %0X",(({int})list[i]->QueryProp(P_AGE))*2),
                     query_idle(list[i])>=300?(a++,(a_idle+"I")):" ",
@@ -522,10 +522,10 @@ static int _spieler(string arg)
 
   foreach(object u: spieler)
   {
-    string second=u->QueryProp(P_SECOND);
+    string second=({string})u->QueryProp(P_SECOND);
     if (stringp(second) && sizeof(second))
     {
-      if (!master()->find_userinfo(second))
+      if (!({int})master()->find_userinfo(second))
         second = "*ungueltig*";
       else
         second = capitalize(second);
@@ -535,7 +535,7 @@ static int _spieler(string arg)
 
     arg+=sprintf("%-11s %-17s %26s  %-15s\n",
                  capitalize(getuid(u)), second,
-                 dtime(u->QueryProp(P_LAST_LOGIN)),
+                 dtime(({int})u->QueryProp(P_LAST_LOGIN)),
                  _spieler_time2string(query_idle(u)));
   }
   arg+="==============================================================="

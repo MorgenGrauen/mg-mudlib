@@ -226,7 +226,7 @@ void reset()
   i=sizeof(whop=m_indices(to_change))-1;
   while (i>=0 && get_eval_cost()>100000)
   {
-    ek = ({string})(MASTER->query_ek(who=whop[i]) || "");
+    ek = (({string})MASTER->query_ek(who=whop[i]) || "");
     for (j=sizeof(what=to_change[who])-1;j>=0;j--) {
       if ((value=what[j])>0) {
     // Vergabestatistik hochzaehlen.
@@ -245,7 +245,7 @@ void reset()
   sprintf("SET_CLEAR_BIT (reset): %s %4d %s\n",
     who, j, strftime("%d%m%Y-%T",time()) ));
     }
-    MASTER->update_ek(who, ek);
+    ({int})MASTER->update_ek(who, ek);
 
     if (member(users_ek, who))
       m_delete(users_ek, who);
@@ -399,7 +399,7 @@ public int ConfirmScore(mixed key) {
   foreach(string pl: unconfirmed_scores[bit]) {
       string eks = ({string})master()->query_ek(pl);
       eks = set_bit(eks, bit);
-      master()->update_ek(pl, eks);
+      ({int})master()->update_ek(pl, eks);
       write_file(SCOREAUTOLOG, sprintf(
     "SETBIT: %s %5d %s\n",
     strftime("%d%m%Y-%T",time()), bit, pl));
@@ -688,7 +688,7 @@ public varargs int MoveScore(mixed oldkey, string newpath)
 // ausgetragen/deaktiviet sind.
 public string QueryAllKills(string pl)
 {
-  return (MASTER->query_ek(pl) || "");
+  return (({string})MASTER->query_ek(pl) || "");
 }
 
 // filtert alle Eintraege aus dem Bitstring heraus, die fuer
@@ -711,7 +711,7 @@ public int QueryKillPoints(mixed pl) {
 
   if (member(users_ek,pl)) return users_ek[pl];
 
-  string s = (MASTER->query_ek(pl) || "");
+  string s = (({string})MASTER->query_ek(pl) || "");
   
   int p=-1;
   int summe;
@@ -779,11 +779,11 @@ public int GiveKill(object pl, int bit)
   }
   else {
     // sonst wird das Bit direkt im Spieler gesetzt.
-    ek = (MASTER->query_ek(pls) || "");
+    ek = (({string})MASTER->query_ek(pls) || "");
     if (test_bit(ek, bit))
       return -3;
     ek = set_bit(ek, bit);
-    MASTER->update_ek(pls, ek);
+    ({int})MASTER->update_ek(pls, ek);
     // Vergabestatistik hochzaehlen.
     npcs[by_num[bit,BYNUM_KEY],NPC_COUNT]++;
   }
@@ -818,7 +818,7 @@ public int HasKill(mixed pl, mixed npc)
       member(pls,pl) != -1)
     return 1;
 
-  string eks = (MASTER->query_ek(pl) || "");
+  string eks = (({string})MASTER->query_ek(pl) || "");
 
   return test_bit(eks, bit);
 }
@@ -865,9 +865,9 @@ public int SetScoreBit(string pl, int bit)
   if (!allowed())
     return SCORE_NO_PERMISSION;
 
-  ek = (MASTER->query_ek(pl) || "");
+  ek = (({string})MASTER->query_ek(pl) || "");
   ek = set_bit(ek, bit);
-  MASTER->update_ek(pl, ek);
+  ({int})MASTER->update_ek(pl, ek);
 
   // Vergabestatistik hochzaehlen.
   npcs[by_num[bit,BYNUM_KEY],NPC_COUNT]++;
@@ -889,9 +889,9 @@ public int ClearScoreBit(string pl, int bit)
   if (!allowed())
     return SCORE_NO_PERMISSION;
 
-  ek = (MASTER->query_ek(pl) || "");
+  ek = (({string})MASTER->query_ek(pl) || "");
   ek = clear_bit(ek, bit);
-  MASTER->update_ek(pl, ek);
+  ({int})MASTER->update_ek(pl, ek);
 
   // Vergabestatistik runterzaehlen.
   npcs[by_num[bit,BYNUM_KEY],NPC_COUNT]--;
@@ -1297,7 +1297,7 @@ public string giveTipForPlayer(object player)
       tip=getTip(tmp[index]);
       if (stringp(tip) && sizeof(tip)) {
     ektip=set_bit(ektip,npcs[tmp[index],NPC_NUMBER]);
-    MASTER->update_ektips(pl,ektip);
+    ({int})MASTER->update_ektips(pl,ektip);
     break; //fertig
       }
   }
@@ -1412,10 +1412,10 @@ private void check_player(string pl) {
   }
 
   if (changed) {
-      master()->update_ek(pl, eks);
+      ({int})master()->update_ek(pl, eks);
   }
   if (changed2) {
-      master()->update_ektips(pl, ektips);
+      ({int})master()->update_ektips(pl, ektips);
   }
   opfer-=({""});
   write_file(WERKILLTWEN,sprintf("%s\n%=-78s\n\n",pl,CountUp(opfer)||""));

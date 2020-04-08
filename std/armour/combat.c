@@ -60,7 +60,7 @@ int QueryDefend(string|string* dam_type, int|mapping spell, object enemy)
             prot = (pac/4 + random(pac*3/4 + 1)) || 1 ;
           object stat = find_object("/d/erzmagier/zesstra/pacstat");
           if (stat)
-            stat->acstat(QueryProp(P_ARMOUR_TYPE),prot,
+            ({string})stat->acstat(QueryProp(P_ARMOUR_TYPE),prot,
                          random(pac)+1);
 
           // ruestungschutz an defendfunc weitermelden
@@ -112,7 +112,7 @@ int QueryDefend(string|string* dam_type, int|mapping spell, object enemy)
 // Es duerfen nur "legale" Ruestungstypen gesetzt werden, ansonsten
 // wird AT_ILLEGAL gesetzt.
 static mixed _set_armour_type(mixed type ) {
-    if (!COMBAT_MASTER->valid_armour_type(type))
+    if (!({int})COMBAT_MASTER->valid_armour_type(type))
     {
         Set(P_ARMOUR_TYPE, (type=AT_ILLEGAL), F_VALUE);
     }
@@ -213,7 +213,7 @@ static mixed _set_resistance_strengths(mixed resmap) {
     // muss der Traeger davon natuerlich beeinflusst werden.
     if (objectp(worn_by=QueryProp(P_WORN)))
     {
-        worn_by->AddResistanceModifier(resistance_strengths,
+        ({int})worn_by->AddResistanceModifier(resistance_strengths,
                                        QueryProp(P_ARMOUR_TYPE));
     }
    return resistance_strengths;

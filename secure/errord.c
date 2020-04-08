@@ -459,7 +459,7 @@ public int LogError(string msg,string prg,string curobj,int line,mixed culprit,
     // nicht gespeichert.
     if (this_interactive() && IS_LEARNER(this_interactive())
         && strstr(issue->loadname,WIZARDDIR)==0
-        && this_interactive()->QueryProp(P_DONT_LOG_ERRORS))
+        && ({int})this_interactive()->QueryProp(P_DONT_LOG_ERRORS))
     {
         return 0;
     }
@@ -624,7 +624,7 @@ public int LogWarning(string msg,string prg,string curobj,int line, int in_catch
     // nicht gespeichert.
     if (this_interactive() && IS_LEARNER(this_interactive())
         && strstr(issue->loadname,WIZARDDIR)==0
-        && this_interactive()->QueryProp(P_DONT_LOG_ERRORS)) {
+        && ({int})this_interactive()->QueryProp(P_DONT_LOG_ERRORS)) {
         return 0;
     }
 
@@ -1435,7 +1435,7 @@ private int versende_mail(struct fullissue_s issue)
     mail[MSG_BODY]=text;
     mail[MSG_ID]=sprintf(MUDNAME": %d.%d",time(),random(__INT_MAX__));
 
-    if (!sizeof("/secure/mailer"->DeliverMail(mail,0)))
+    if (!sizeof(({string*})"/secure/mailer"->DeliverMail(mail,0)))
       res = -1; // an niemanden erfolgreich zugestellt. :-(
     else
       res = 1;
@@ -1462,7 +1462,7 @@ private int versende_mail(struct fullissue_s issue)
                                 getuid(TI));
     mail[MSG_BODY] = text;
 
-    if (!sizeof("/secure/mailer"->DeliverMail(mail,0)))
+    if (!sizeof(({string*})"/secure/mailer"->DeliverMail(mail,0)))
       res |= -1;
     else
       res |= 1;

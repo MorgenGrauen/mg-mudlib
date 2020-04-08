@@ -26,8 +26,8 @@ protected int PreventMove(object dest, object oldenv, int method) {
   // M_NOCHECK? -> Bewegung eh erlaubt (und Rueckgabewert wuerde ignoriert)
   if ((method&M_NOCHECK)) {
     // Bei M_NOCHECK zwar Prevent* aufrufen, aber das Resultat ignorieren
-    if (oldenv) oldenv->PreventLeave(this_object(),dest);
-    dest->PreventInsert(this_object());
+    if (oldenv) ({int})oldenv->PreventLeave(this_object(),dest);
+    ({int})dest->PreventInsert(this_object());
 
     return 0; // das wars, rest ist egal.
   }
@@ -51,15 +51,15 @@ protected int PreventMove(object dest, object oldenv, int method) {
   }
 
   // Ist das Zielobjekt schon voll?
-  if ( !dest->MayAddObject(this_object()) )
+  if ( !({int})dest->MayAddObject(this_object()) )
       return TOO_MANY_OBJECTS;
 
   // Darf hinausbewegt werden?
-  if ( oldenv && oldenv->PreventLeave(this_object(), dest) )
+  if ( oldenv && ({int})oldenv->PreventLeave(this_object(), dest) )
       return ME_CANT_LEAVE_ENV;
 
   // Darf hineinbewegt werden?
-  if ( dest->PreventInsert(this_object()) )
+  if ( ({int})dest->PreventInsert(this_object()) )
       return ME_CANT_BE_INSERTED;
 
   return(0);
@@ -108,7 +108,7 @@ protected object move_norm_dest(object|string dest)
                   !catch(valid=({int})vc->QueryValidObject(fn);publish)
                   && valid>0)) &&
                   !catch(load_object(fn);publish))) &&
-              (!fn->QueryProp(P_NO_PLAYERS) || QueryProp(P_TESTPLAYER)) )
+              (!({int})fn->QueryProp(P_NO_PLAYERS) || ({int|string})QueryProp(P_TESTPLAYER)) )
            dest = fn;
       }
   }
@@ -141,7 +141,7 @@ public varargs int move( object|string dest, int method )
   mixed *sens = QueryProp(P_SENSITIVE);
   if (sens && environment())
   {
-    environment()->RemoveSensitiveObject( this_object() );
+    ({void})environment()->RemoveSensitiveObject( this_object() );
     if (!objectp(ME))
       return ME_WAS_DESTRUCTED;
   }
@@ -156,16 +156,16 @@ public varargs int move( object|string dest, int method )
   NotifyMove(environment(), oldenv, method);
 
   // Alte Umgebung informieren
-  if (oldenv) oldenv->NotifyLeave(this_object(), dest);
+  if (oldenv) ({void})oldenv->NotifyLeave(this_object(), dest);
 
   // Wenn das Objekt eine Umgebung hat, selbige informieren
   if (environment()) {
     if (sens)
     {
-      environment()->InsertSensitiveObject(this_object(),sens);
+      ({void})environment()->InsertSensitiveObject(this_object(),sens);
       if (!objectp(ME)) return ME_WAS_DESTRUCTED;
     }
-    environment()->NotifyInsert(this_object(), oldenv);
+    ({void})environment()->NotifyInsert(this_object(), oldenv);
   }
   //wurde das Objekt vielleicht noch zerstoert?
   if (!objectp(ME)) return(ME_WAS_DESTRUCTED);
@@ -179,8 +179,8 @@ public varargs int remove(int silent)
 {
     if (environment() ) {
         if(QueryProp(P_SENSITIVE))
-                environment()->RemoveSensitiveObject(this_object());
-        environment()->NotifyRemove(this_object());
+                ({void})environment()->RemoveSensitiveObject(this_object());
+        ({void})environment()->NotifyRemove(this_object());
     }
     if (objectp(this_object()))
         destruct(this_object());
@@ -197,7 +197,7 @@ public string NotifyDestruct(object caller) {
       // Der Zweck heiligt ja bekanntlich die Mittel. ;-)
       //
       // Tiamak
-      env->_set_last_content_change();
+      ({int})env->_set_last_content_change();
   }
   return 0;
 }

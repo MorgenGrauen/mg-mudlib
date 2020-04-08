@@ -28,10 +28,10 @@ private void recursive_remove(object ob, int immediate_destruct) {
           && ob) {
             // Spieler speichern, dann erst Inventar entleeren, dann remove() und
         // und destruct() anwenden.
-        catch(ob->save_me(1); publish);
+        catch(({void})ob->save_me(1); publish);
         filter(all_inventory(ob), #'recursive_remove, immediate_destruct);
         if (!immediate_destruct) 
-          catch(ob->remove(0);publish);
+          catch(({int})ob->remove(0);publish);
         if (ob) 
           destruct(ob);
     }
@@ -43,7 +43,7 @@ private void recursive_remove(object ob, int immediate_destruct) {
     filter(all_inventory(ob), #'recursive_remove, immediate_destruct);
     // ggf. zuerst remove versuchen
     if (!immediate_destruct)
-      catch(ob->remove(1);publish);
+      catch(({int})ob->remove(1);publish);
     if (ob)
       destruct(ob);
   }
@@ -82,7 +82,7 @@ protected mixed prepare_destruct(object ob)
       old_env=environment(item);
       // M_MOVE_ALL, falls item nen Unitobjekt ist. Sonst clonen die u.U. noch
       // wieder nen neues Objekt im alten Env.
-      if(catch(item->move(env, M_NOCHECK|M_MOVE_ALL);publish))
+      if(catch(({int})item->move(env, M_NOCHECK|M_MOVE_ALL);publish))
         recursive_remove(item, 1);
       else if (item && environment(item) == old_env)
         recursive_remove(item, 1);

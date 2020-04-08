@@ -90,6 +90,7 @@ mixed         valid_write(string path, string euid, string fun, object obj);
 string         _get_path(string path, string user);
 string         QueryBanished(string str);
 int            TBanishName(string name, int days);
+varargs void   BanishName(string name, string reason, int force);
 
 // sendet bei Befoerderungen Infomail an Magier
 protected void SendWizardHelpMail(string name, int level);

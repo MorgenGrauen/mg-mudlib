@@ -54,6 +54,6 @@ varargs string normalize_path(string path, string user, int expand) {
     user = getuid(RPL || PL);
   if (expand)
     path=expand_path(path, user);
-  return implode(master()->path_array(path), "/");
+  return implode(({string*})master()->path_array(path), "/");
 }
 

@@ -51,9 +51,9 @@
 #include <player/base.h>
 
 #define PAGELENGTH	(this_interactive() ? \
-			   this_interactive()->QueryProp(P_SCREENSIZE) : \
+			   ({int})this_interactive()->QueryProp(P_SCREENSIZE) : \
 			   (interactive(this_player()) ? \
-			     this_player()->QueryProp(P_SCREENSIZE) : 20))
+			     ({int})this_player()->QueryProp(P_SCREENSIZE) : 20))
 
 // old_explode() must create an array that implode()'s to the same string
 #define Explode(s,x)	(explode(s,x))

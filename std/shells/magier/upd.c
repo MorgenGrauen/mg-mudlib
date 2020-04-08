@@ -39,7 +39,7 @@ static mixed _save( object obj, object inv_saver )
 { 
     if ( query_once_interactive(obj) )
       { 
-        obj->move( inv_saver, NO_CHECK );
+        ({int})obj->move( inv_saver, NO_CHECK );
         return obj;
       }
     return 0;
@@ -140,7 +140,7 @@ private varargs int _update(string file, int dummy, int flags)
   }
   if (!(flags&UPD_H))
   {
-    if(err = catch(obj->remove()))
+    if(err = catch(({int})obj->remove()))
       printf("upd: %s: remove() fehlgeschlagen. Aufruf von " +
              "destruct().\n",file);
   }
@@ -394,10 +394,10 @@ varargs static int _make(string file, int flags,int recursive)
             items=transpose_array(items)[0];
             while (i--)
               if (member(items, inv[i])==-1)
-                    inv[i]->move(inv_saver,NO_CHECK);
+                    ({int})inv[i]->move(inv_saver,NO_CHECK);
           }
           else // In diesem Objekt sind keine Items gesetzt.
-            while (i--) inv[i]->move(inv_saver,NO_CHECK);
+            while (i--) ({int})inv[i]->move(inv_saver,NO_CHECK);
         }
       }
       else
@@ -453,7 +453,7 @@ varargs static int _make(string file, int flags,int recursive)
                  _illegal_closure(pro[names[i], F_SET_METHOD]) )
               m_delete( pro, names[i] );
           
-          obj->SetProperties(pro);
+          ({mapping})obj->SetProperties(pro);
           msg += ", Properties gesetzt";
         }
         // Wenn kein UPD_C, wird ggf. das Ergebnis von Configure() wieder
@@ -476,7 +476,7 @@ varargs static int _make(string file, int flags,int recursive)
         }
         if (env)
         {
-          if ( obj->move( env, NO_CHECK ) <= 0 )
+          if ( ({int})obj->move( env, NO_CHECK ) <= 0 )
             printf( "upd: /%O konnte nicht in /%O zurueckbewegt werden\n",
                     obj, env );
           else
@@ -484,7 +484,7 @@ varargs static int _make(string file, int flags,int recursive)
         }
         if (i=sizeof(inv))
         {
-          while(i--) if (inv[i]) inv[i]->move(obj, NO_CHECK );
+          while(i--) if (inv[i]) ({int})inv[i]->move(obj, NO_CHECK );
           msg += ", Inhalt zurueckbewegt";
         }
       }

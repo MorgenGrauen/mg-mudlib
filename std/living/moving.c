@@ -51,7 +51,7 @@ public void AddPursuer(object ob)
     return;
   
   SetProp(P_PURSUERS,({ pur[0], pur[1]+({ob})-({0}) }));
-  ob->_SetPursued(ME);
+  ({void})ob->_SetPursued(ME);
 }
 
 public void RemovePursuer(object ob)
@@ -63,7 +63,7 @@ public void RemovePursuer(object ob)
   {
     pur[1]-=({ob,0});
     if (ob)
-      ob->_RemovePursued(ME);
+      ({void})ob->_RemovePursued(ME);
     if (!pur[0]&&!sizeof(pur[1]))
       pur=0;
     SetProp(P_PURSUERS,pur);
@@ -78,7 +78,7 @@ public void _SetPursued(object ob)
     pur=({0,({})});
   else
     if (objectp(pur[0]))
-      pur[0]->RemovePursuer(ME);
+      ({void})pur[0]->RemovePursuer(ME);
   pur[0]=ob;
   pur[1]-=({0});
   Set(P_PURSUERS,pur);
@@ -100,10 +100,10 @@ public void _RemovePursued(object ob)
 
 private void kampfende( object en ) {
   if (!objectp(en)) return;
-  tell_object( ME, capitalize(en->name()) +
+  tell_object( ME, capitalize(({string})en->name()) +
       " ist jetzt hinter Dir her.\n" );
   tell_object( en, "Du verfolgst jetzt " + name(WEN) + ".\n" );      
-  en->InsertSingleEnemy(ME);
+  ({int})en->InsertSingleEnemy(ME);
 }
 
 private int _is_learner(object pl) {
@@ -120,9 +120,9 @@ protected int PreventMove(object dest, object oldenv, int method) {
   if ((method&M_NOCHECK)) {
       // erst PreventLeaveLiving() rufen...
       if(environment())        
-          environment()->PreventLeaveLiving(this_object(), dest);
+          ({int})environment()->PreventLeaveLiving(this_object(), dest);
       // dann PreventInsertLiving() im Ziel-Env.
-      dest->PreventInsertLiving(this_object());
+      ({int})dest->PreventInsertLiving(this_object());
       // und raus...
       return(0);
   }
@@ -139,17 +139,17 @@ protected int PreventMove(object dest, object oldenv, int method) {
   // alte und neue Umgebung auf NO_TPORT pruefen.
   if ( (method & M_TPORT) ) {
     if ( environment() &&
-        (environment()->QueryProp(P_NO_TPORT) & (NO_TPORT_OUT|NO_TPORT)) )
+        (({int})environment()->QueryProp(P_NO_TPORT) & (NO_TPORT_OUT|NO_TPORT)) )
           return ME_CANT_TPORT_OUT;
-    else if ( dest->QueryProp(P_NO_TPORT) & (NO_TPORT_IN|NO_TPORT) )
+    else if ( ({int})dest->QueryProp(P_NO_TPORT) & (NO_TPORT_IN|NO_TPORT) )
           return ME_CANT_TPORT_IN;
   }
 
   // erst PreventLeaveLiving() testen...
-  if( environment() && environment()->PreventLeaveLiving(this_object(), dest))
+  if( environment() && ({int})environment()->PreventLeaveLiving(this_object(), dest))
       return ME_CANT_LEAVE_ENV;
   // dann PreventInsertLiving() im Ziel-Env
-  if (dest->PreventInsertLiving(this_object())) 
+  if (({int})dest->PreventInsertLiving(this_object())) 
       return ME_CANT_BE_INSERTED;
 
   return 0;
@@ -178,7 +178,7 @@ protected void NotifyMove(object dest, object oldenv, int method) {
       && objectp(ME)
       && QueryProp(P_TEAM_AUTOFOLLOW)
       && objectp( enem = IsTeamLeader() ) )
-      enem->StartFollow(oldenv); // Teamverfolgung
+      ({void})enem->StartFollow(oldenv); // Teamverfolgung
 
 }
 
@@ -227,7 +227,7 @@ varargs public int move( object|string dest, int method, string direction,
                     !catch(tmp=({int})call_other(vc,"QueryValidObject",fn);
                            publish) && tmp>0)) &&
                     !catch(load_object(fn);publish) )) &&
-                  (!interactive(ME) || !fn->QueryProp(P_NO_PLAYERS) || 
+                  (!interactive(ME) || !({int})fn->QueryProp(P_NO_PLAYERS) || 
                   (method & M_NOCHECK) || IS_LEARNER(ME) ||
                   (stringp(res = QueryProp(P_TESTPLAYER)) &&
                    IS_LEARNER( lower_case(res) ))) )
@@ -248,7 +248,7 @@ varargs public int move( object|string dest, int method, string direction,
         if ( pointerp(res) && sizeof(res) >= 3
              && intp(res[0]) && time()<res[0]
              && objectp(res[1]) && stringp(res[2]) ){
-            if ( res = call_other( res[1], res[2], dest, method, direction,
+            if ( res = ({mixed})call_other( res[1], res[2], dest, method, direction,
                                    textout, textin ) ){
                 if ( pointerp(res) && sizeof(res) == 5 ){
                     dest = res[0];
@@ -352,7 +352,7 @@ varargs public int move( object|string dest, int method, string direction,
             filter((QueryEnemies()[0] & all_inventory(oldenv))-({0}),
                 #'kampfende);
             // Bugs im exit() sind ohne catch() einfach mist.
-            catch(environment()->exit(ME, dest);publish);
+            catch(({void})environment()->exit(ME, dest);publish);
         }
     }
 
@@ -429,11 +429,11 @@ public void TakeFollowers()
     if (objectp(follower) && environment(follower)!=env) {
       //meth=M_NOCHECK;
       meth=M_GO;
-      if (follower->Query(P_FOLLOW_SILENT))
+      if (({int})follower->Query(P_FOLLOW_SILENT))
           meth|=M_SILENT|M_NO_SHOW;
-      catch(r=follower->PreventFollow(env);publish);
+      catch(r=({int})follower->PreventFollow(env);publish);
       if (!r)
-          follower->move(env,meth);
+          ({int})follower->move(env,meth);
       else if (r==2)
           RemovePursuer(follower);
     }
@@ -446,9 +446,9 @@ varargs public int remove()
   if (environment())
   {
     if ( objectp(team=Query(P_TEAM)) )
-      catch(team->RemoveMember(ME);publish);
+      catch(({int})team->RemoveMember(ME);publish);
 
-    environment()->NotifyRemove(ME);
+    ({void})environment()->NotifyRemove(ME);
   }
   destruct(ME);
   return 1;

@@ -50,7 +50,7 @@ int haps(string str)
   notify_fail("So etwas hast Du nicht.\n");
   if((!ob=present(s2,this_player())) && 
      (!ob=present(s2,environment()))) return 0;
-  if(ob->QueryProp(P_NODROP) || ob->QueryProp(P_NEVERDROP)){
+  if(({int|string})ob->QueryProp(P_NODROP) || ({int})ob->QueryProp(P_NEVERDROP)){
     write("Das kannst Du nicht wegwerfen.\n");
     return 1;
   }
@@ -58,15 +58,15 @@ int haps(string str)
     write("Der Muellschlucker frisst keine Lebewesen.\n");
     return 1;
   }
-  if(ob->QueryProp(P_VALUE)){
+  if(({int})ob->QueryProp(P_VALUE)){
     write("Das ist zu wertvoll, das vertraegt der Muellschlucker nicht.\n");
     return 1;
   }
-  if (ob->QueryProp(P_CURSED)) {
+  if (({int})ob->QueryProp(P_CURSED)) {
     write("Verfluchte Dinge bekommen dem Muellschlucker nicht!\n");
     return 1;
   }
-  ob->remove();
+  ({int})ob->remove();
   if(ob){
     write("Aus irgendeinem Grund scheint das dem Muellschlucker nicht "+
     "zu schmecken.\n");

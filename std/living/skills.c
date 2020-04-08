@@ -116,14 +116,14 @@ nomask private int valid_setskills(string gilde)
       return 1; // Die sollten problemlos aendern duerfen
 
     if ( file_size("/gilden/access_rights")>0
-       && call_other("/gilden/access_rights",
+       && ({int})call_other("/gilden/access_rights",
                     "access_rights",
                     getuid(previous_object()),
                     gilde+".c"))
       return 1; // Setzendes Objekt kommt vom Gildenprogrammierer
 
     if ( file_size("/gilden/"+gilde+".c")>0
-        && call_other("/gilden/"+gilde,
+        && ({int})call_other("/gilden/"+gilde,
                       "valid_setskills",
                         explode(fn,"#")[0]) )
       return 1; // Die Gilde selber kann Ausnahmen zulassen
@@ -140,7 +140,7 @@ nomask private int valid_setskills(string gilde)
     if ( IS_ARCH(this_interactive()) )
       return 1; // Erzmagier duerfen immer aendern
 
-    if ( call_other("/gilden/access_rights",
+    if ( ({int})call_other("/gilden/access_rights",
                     "access_rights",
                     getuid(this_interactive()),
                     gilde+".c"))
@@ -159,7 +159,7 @@ nomask private int valid_setskills(string gilde)
             this_interactive(),
             gilde,
             ( this_interactive() ? query_verb() + " " +
-                this_interactive()->_unparsed_args() : "") ));
+                ({string})this_interactive()->_unparsed_args() : "") ));
 
   return 0;
 }

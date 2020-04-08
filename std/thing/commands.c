@@ -79,10 +79,10 @@ protected int _cmd_syntaxhelp(string str, mixed *args)
   // Restriktionen vor dem Anzeigen pruefen.
   if (mappingp(restr))
   {
-    string res = "/std/restriction_checker"->check_restrictions(PL,restr);
+    string res = ({string})"/std/restriction_checker"->check_restrictions(PL,restr);
     if (res)
     {
-      PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
+      ({int})PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
                      "die Syntaxhilfe (noch) nicht lesen:\n"
                      + res,
                      MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
@@ -96,12 +96,12 @@ protected int _cmd_syntaxhelp(string str, mixed *args)
     if (res)
     {
       if (intp(res))
-        PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
+        ({int})PL->ReceiveMsg("Fuer " + name(WEN,1) + " darfst Du "
                        "die Syntaxhilfe (noch) nicht lesen.",
                        MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
                        "syntaxhilfe",0,this_object());
       else if (stringp(res))
-        PL->ReceiveMsg(res,
+        ({int})PL->ReceiveMsg(res,
                        MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
                        "syntaxhilfe",0,this_object());
       return 1;
@@ -127,7 +127,7 @@ protected int _cmd_syntaxhelp(string str, mixed *args)
     return 0;
   }
   if (stringp(help) && sizeof(help))
-    PL->ReceiveMsg(help, MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
+    ({int})PL->ReceiveMsg(help, MT_NOTIFICATION|MSG_BS_LEAVE_LFS,
                    "syntaxhilfe",0,this_object());
 
   return 1;

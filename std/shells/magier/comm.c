@@ -51,7 +51,7 @@ static int _echoto(string str)
   }
   msg=break_string(msg,78);
   tell_object(ob,msg);
-  printf("%s->%s",ob->Name(WEN),msg);
+  printf("%s->%s",({string})ob->Name(WEN),msg);
   return 1;
 }
 

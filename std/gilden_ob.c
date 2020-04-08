@@ -57,7 +57,7 @@ int check_cond(mixed cond) {
   if (intp(cond)) {
     _notify_fail("Dir fehlt noch die noetige Erfahrung. "+
                 "Komm spaeter wieder.\n");
-    return (this_player()->QueryProp(P_XP)>=cond);
+    return (({int})this_player()->QueryProp(P_XP)>=cond);
   }
   if (mappingp(cond)) {
     res=check_restrictions(this_player(),cond);
@@ -98,19 +98,19 @@ void adjust_title(object pl) {
   if (mappingp(ti))
     ti=ti[lv];
   if (stringp(ti))
-    pl->SetProp(P_GUILD_TITLE,ti);
+    ({string})pl->SetProp(P_GUILD_TITLE,ti);
   
   // Spielertitel nullen, damit der Gildentitel angezeigt wird.
   if (!IS_SEER(pl) && !FAO_HAS_TITLE_GIFT(pl))
-      pl->SetProp(P_TITLE,0);
+      ({string})pl->SetProp(P_TITLE,0);
 }
 
 void do_advance() {
   int lv;
 
-  lv=this_player()->QueryProp(P_GUILD_LEVEL)+1;
+  lv=({int})this_player()->QueryProp(P_GUILD_LEVEL)+1;
   if (lv<1) lv=1;
-  this_player()->SetProp(P_GUILD_LEVEL,lv);
+  ({int})this_player()->SetProp(P_GUILD_LEVEL,lv);
   adjust_title(this_player());
 }
 
@@ -135,7 +135,7 @@ int beitreten() {
   if (erg=({int})GUILDMASTER->beitreten()) {
     if (erg<0)
       return erg;
-    if (!(this_player()->QueryProp(P_GUILD_LEVEL)))
+    if (!(({int})this_player()->QueryProp(P_GUILD_LEVEL)))
       try_advance(); // Level 1 wird sofort vergeben
     return 1;
   }
@@ -369,7 +369,7 @@ LearnSpell(string spell,object pl) {
   spell=lower_case(spell);
   if (!(ski=QuerySpell(spell)))
     return 0;
-  if (pl->QuerySkill(spell)) {
+  if (({mapping})pl->QuerySkill(spell)) {
     _notify_fail("Du kannst diesen Spruch doch schon!\n");
     return 0;
   }
@@ -384,7 +384,7 @@ LearnSpell(string spell,object pl) {
   write("Du lernst einen neuen Zauberspruch.\n");
   if (!(diff=GetFValueO(SI_DIFFICULTY,ski,pl)))
     diff=GetFValueO(SI_SPELLCOST,ski,pl);
-  pl->ModifySkill(spell,abil,diff);
+  ({void})pl->ModifySkill(spell,abil,diff);
   return 1;
 }
 
@@ -406,7 +406,7 @@ LearnSkill(string skill) {
   skill=capitalize(skill);
   if (!(ski=QuerySkill(skill)))
     return 0;
-  if (pl->QuerySkill(skill)) {
+  if (({mapping})pl->QuerySkill(skill)) {
     _notify_fail("Du hast diese Faehigkeit doch schon!\n");
     return 0;
   }
@@ -421,7 +421,7 @@ LearnSkill(string skill) {
   if (abil<-MAX_ABILITY) abil=-MAX_ABILITY;
   write("Du erwirbst eine neue Faehigkeit.\n");
   diff=GetFValueO(SI_DIFFICULTY,ski,pl);
-  pl->ModifySkill(skill,abil,diff);
+  ({void})pl->ModifySkill(skill,abil,diff);
   return 1;
 }
 

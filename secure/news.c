@@ -131,7 +131,7 @@ int AddGroup(string name, string owner)
 
   if (member(grouplist, name)) return -2; // Gibt es schon
 
-  if (!master()->find_userinfo(owner)) return -3;
+  if (!({int})master()->find_userinfo(owner)) return -3;
 
   savefilea = old_explode(name,".");
   savefile = implode(savefilea,"/");

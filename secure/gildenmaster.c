@@ -57,9 +57,9 @@ nomask int beitreten() {
               "Bitte verstaendige einen Erzmagier.\n");
       return -2;
   }
-  pl->SetProp(P_GUILD,gname);
+  ({string})pl->SetProp(P_GUILD,gname);
   // Event Gildenwechsel triggern
-  EVENTD->TriggerEvent(EVT_GUILD_CHANGE, ([
+  ({int})EVENTD->TriggerEvent(EVT_GUILD_CHANGE, ([
       E_OBJECT: pl, E_PLNAME: getuid(pl),
       E_ENVIRONMENT: environment(pl),
       E_GUILDNAME: gname,
@@ -94,7 +94,7 @@ varargs nomask int austreten(int loss) {
       write("Du kannst hier nicht aus einer anderen Gilde austreten.\n");
       return -1;
   }
-  if (gname[8..]==(pl->QueryProp(P_DEFAULT_GUILD)||DEFAULT_GUILD))
+  if (gname[8..]==(({string})pl->QueryProp(P_DEFAULT_GUILD)||DEFAULT_GUILD))
   {
         write("Aus dieser Gilde kannst Du nicht austreten.\n");
         return -1;
@@ -102,18 +102,18 @@ varargs nomask int austreten(int loss) {
   if (loss<=0) loss=20;
   skills=({mapping})pl->QueryProp(P_NEWSKILLS);
   walk_mapping(skills,"loose_ability",this_object(),loss);
-  pl->SetProp(P_NEWSKILLS,skills);
-  pl->SetProp(P_GUILD,0);
+  ({mapping})pl->SetProp(P_NEWSKILLS,skills);
+  ({string})pl->SetProp(P_GUILD,0);
   // Event Gildenwechsel triggern
-  EVENTD->TriggerEvent(EVT_GUILD_CHANGE, ([
+  ({int})EVENTD->TriggerEvent(EVT_GUILD_CHANGE, ([
       E_OBJECT: pl, E_PLNAME: getuid(pl),
       E_ENVIRONMENT: environment(pl),
-      E_GUILDNAME: pl->QueryProp(P_GUILD),
+      E_GUILDNAME: ({string})pl->QueryProp(P_GUILD),
       E_LAST_GUILDNAME: gname ]) );
 
   // Defaultgilde ggf. neuen Titel setzen lassen.
   gname = ({string})pl->QueryProp(P_GUILD);
-  (GUILD_DIR+"/"+gname)->adjust_title(pl);
+  ({void})(GUILD_DIR+"/"+gname)->adjust_title(pl);
 
   return 1;
 }

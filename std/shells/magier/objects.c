@@ -67,8 +67,8 @@ static int _clone(string cmdline)
   if (!objectp(ob))
     return printf("clone: %s: Objekt beim Erzeugen zerstoert.\n",
                   args[0]),1;
-  if ((ob->move(this_object(),M_GET)>0) || 
-      (!objectp(ob)||ob->move(environment(),M_NOCHECK)>0)||!objectp(ob))
+  if ((({int})ob->move(this_object(),M_GET)>0) || 
+      (!objectp(ob)||({int})ob->move(environment(),M_NOCHECK)>0)||!objectp(ob))
   {
     if (!objectp(ob))
       return printf("clone: %s: Objekt beim Erzeugen zerstoert.\n",
@@ -118,11 +118,11 @@ static int _destruct(string cmdline)
   }
   else
     ob=args[0];
-  cmdline=capitalize(to_string(ob->name(WER)));
+  cmdline=capitalize(to_string(({string})ob->name(WER)));
   flags=({int})ob->QueryProp(P_PLURAL); // Missbrauch von flags :o)
   if (query_verb()=="destruct")
   {
-    if (!ob->remove())
+    if (!({int})ob->remove())
     {
       notify_fail(cmdline+" will nicht zerstoert werden!\n");
       return 0;

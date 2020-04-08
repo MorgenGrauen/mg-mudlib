@@ -17,7 +17,7 @@ inherit "/std/unit";
 // zum debuggen (debugmode kommt aus /std/unit.c
 #include <living/comm.h>
 #define ZDEBUG(x) if (stringp(debugmode) && find_player(debugmode)) \
-  find_player(debugmode)->ReceiveMsg(x,MT_DEBUG,0,object_name()+": ",ME)
+  ({int})find_player(debugmode)->ReceiveMsg(x,MT_DEBUG,0,object_name()+": ",ME)
 //#define ZDEBUG(x)
 
 protected void NotifyMove(object dest, object oldenv, int method)
@@ -30,7 +30,7 @@ protected void NotifyMove(object dest, object oldenv, int method)
         !query_once_interactive(previous_object()) &&
         load_name(previous_object()) != GELD) &&
         moneylog)
-      moneylog->AddMoney( previous_object(), Query(U_REQ) );
+      ({void})moneylog->AddMoney( previous_object(), Query(U_REQ) );
 
   // Hier passiert Vereinigung mit anderen Geldobjekten... Etc.
   ::NotifyMove(dest, oldenv, method);
@@ -68,7 +68,7 @@ protected void NotifyMove(object dest, object oldenv, int method)
                     || present(BOERSEID, environment());
     if (boerse)
     {
-      boerse->MergeMoney(this_object());
+      ({void})boerse->MergeMoney(this_object());
       // Sollten wir jetzt P_AMOUNT == 0 haben, zerstoert uns der Code aus
       // unit.c spaeter.
       ZDEBUG(sprintf("NotifyMove nach Boersenvereinigung 1: amount: %d\n",
@@ -80,7 +80,7 @@ protected void NotifyMove(object dest, object oldenv, int method)
     object boerse = present(GELDBOERSE_MIT_GELD, environment());
     if (boerse)
     {
-      boerse->MergeMoney(this_object());
+      ({void})boerse->MergeMoney(this_object());
       ZDEBUG(sprintf("NotifyMove nach Boersenvereinigung 2: amount: %d\n",
              QueryProp(P_AMOUNT)));
     }
@@ -90,7 +90,7 @@ protected void NotifyMove(object dest, object oldenv, int method)
       object geldkarte = present(SEHERKARTEID_AKTIV, environment());
       if (geldkarte)
       {
-        geldkarte->MergeMoney(this_object());
+        ({void})geldkarte->MergeMoney(this_object());
         ZDEBUG(sprintf("NotifyMove nach Kartenvereinigung: amount: %d\n",
                QueryProp(P_AMOUNT)));
       }
@@ -140,13 +140,13 @@ static int action_schnipps(string str) {
   ((Query(U_REQ)==1)?"Du nimmst die Muenze":
                      "Du nimmst eine der Muenzen")+
   " und schnippst sie in die Luft. Sie klingt hell auf. "+
-  ((this_player() && this_player()->QueryAttribute(A_DEX)>10)?
+  ((this_player() && ({int})this_player()->QueryAttribute(A_DEX)>10)?
    "Geschickt faengst Du sie wieder auf.":
    "Sie plumpst Dir wieder in die Hand und beinahe laesst Du "
    "sie fallen."),78));
  if(this_player() && environment(this_player()))
   tell_room(environment(this_player()),
-            break_string(this_player()->Name()+" schnippt mit hellem "
+            break_string(({string})this_player()->Name()+" schnippt mit hellem "
                          "Klingen ein Muenze in die Luft und faengt sie "
                          "wieder.",78),
             ({this_player()}));
@@ -163,7 +163,7 @@ static int action_pruefe(string str) {
   78));
  if(this_player() && environment(this_player()))
   tell_room(environment(this_player()),
-            break_string(this_player()->Name()+" beisst in eine Muenze "
+            break_string(({string})this_player()->Name()+" beisst in eine Muenze "
                          "und schaut irgendwie befriedigt drein.",78),
             ({this_player()}));
  return 1;
@@ -213,7 +213,7 @@ static int action_wurf(string str)
 	   "betrachtest das Ergebnis:", 78));
   if (this_player() && environment(this_player()))
     tell_room(environment(this_player()),
-	      break_string(this_player()->Name()+" wirft "+
+	      break_string(({string})this_player()->Name()+" wirft "+
          	   ((num==1)?"eine Muenze":
 			   sprintf("%d Muenzen", num))+
 		   " hoch, laesst sie zu Boden prasseln und betrachtet "
@@ -276,10 +276,10 @@ static int action_wurf(string str)
 	((num==1)?"Deine Muenze":"Deine Muenzen")+" wieder ein.", 78));
   if (this_player() && environment(this_player()))
     tell_room(environment(this_player()),
-	      break_string(this_player()->Name()+ " sammelt schnell "+
-	      ((num==1)?(this_player()->QueryPossPronoun(FEMALE,WEN, SINGULAR)
+	      break_string(({string})this_player()->Name()+ " sammelt schnell "+
+	      ((num==1)?(({string})this_player()->QueryPossPronoun(FEMALE,WEN, SINGULAR)
 			 +" Muenze wieder ein."):
-	       (this_player()->QueryPossPronoun(FEMALE,WEN, PLURAL)+
+	       (({string})this_player()->QueryPossPronoun(FEMALE,WEN, PLURAL)+
 		" Muenzen wieder ein."))), ({this_player()}));
   return 1;
 }

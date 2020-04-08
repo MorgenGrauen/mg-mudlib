@@ -89,7 +89,7 @@ static int _addmaster(string str)
   if (!str) return 0;
   if (sscanf(str,"%s %s",master,domain)!=2) return 0;
   if (!master || !domain) return 0;
-  if (!"/secure/master"->add_domain_master(master,domain))
+  if (!({int})"/secure/master"->add_domain_master(master,domain))
     write("Hat nicht funktioniert.\n");
   else
     write("Ok.\n");
@@ -109,7 +109,7 @@ static int _removemaster(string str)
   if (!str) return 0;
   if (sscanf(str,"%s %s",master,domain)!=2) return 0;
   if (!master || !domain) return 0;
-  if (!"/secure/master"->remove_domain_master(master,domain))
+  if (!({int})"/secure/master"->remove_domain_master(master,domain))
     write("Hat nicht funktioniert.\n");
   else
     write("Ok.\n");
@@ -130,7 +130,7 @@ static int _addguildmaster(string str)
   if (!str) return 0;
   if (sscanf(str, "%s %s", master, guild)!=2) return 0;
   if (!master || !guild) return 0;
-  if (!"/secure/master"->add_guild_master(master,guild))
+  if (!({int})"/secure/master"->add_guild_master(master,guild))
     write("Hat nicht funktioniert.\n");
   else
     write ("Ok.\n");
@@ -150,7 +150,7 @@ static int _removeguildmaster(string str)
   if (!str) return 0;
   if (sscanf(str, "%s %s", master, guild)!=2) return 0;
   if (!master || !guild) return 0;
-  if (!"/secure/master"->remove_guild_master(master,guild))
+  if (!({int})"/secure/master"->remove_guild_master(master,guild))
     write("Hat nicht funktioniert.\n");
   else
     write("Ok.\n");
@@ -179,12 +179,12 @@ static int sinners(string arg)
 
     if ( arg=="?" )
     {
-        write(call_other("/secure/sinmaster","ListSinners"));
+        write(({string})call_other("/secure/sinmaster","ListSinners"));
         return 1;
     }
     if ( arg=="!" )
     {
-        write(call_other("/secure/sinmaster","Dump"));
+        write(({string})call_other("/secure/sinmaster","Dump"));
         return 1;
     }
     if ( arg=="*" )
@@ -200,7 +200,7 @@ static int sinners(string arg)
     {
       if ( i<2 )
         return 0;
-      write(call_other("/secure/sinmaster","RemoveSin",
+      write(({string})call_other("/secure/sinmaster","RemoveSin",
             lowerstring(parts[0][1..]),
             to_int(parts[1])));
     }
@@ -208,7 +208,7 @@ static int sinners(string arg)
     {
       if ( i<2 )
         return 0;
-      write(call_other("/secure/sinmaster","AddSin",
+      write(({string})call_other("/secure/sinmaster","AddSin",
             lowerstring(parts[0][1..]),
             implode(parts[1..]," ")));
     }
@@ -216,7 +216,7 @@ static int sinners(string arg)
     {
       if ( i>1 )
         return 0;
-      write(call_other("/secure/sinmaster","ListSins",
+      write(({string})call_other("/secure/sinmaster","ListSins",
             lowerstring(parts[0])));
     }
     return 1;
@@ -251,7 +251,7 @@ static int banish(string str)
   }
 
   name=lower_case(name);
-  "/secure/master"->BanishName( name, grund, force );
+  ({int})"/secure/master"->BanishName( name, grund, force );
   return 1;
 }
 
@@ -305,7 +305,7 @@ static int mbanish(string str)
     name = lower_case(name);
 
     if ( !grund || !stringp(grund) || lower_case(grund) != "loeschen" ){
-        "/secure/merlin"->MBanishInsert( name, grund, this_interactive() );
+        ({void})"/secure/merlin"->MBanishInsert( name, grund, this_interactive() );
         write( "Du setzt "+capitalize(name)+" auf die MBanish-Liste.\n" );
     }
     else{
@@ -313,7 +313,7 @@ static int mbanish(string str)
             write( "Das duerfen nur Erzmagier.\n" );
             return 1;
         }
-        "/secure/merlin"->MBanishDelete( name );
+        ({void})"/secure/merlin"->MBanishDelete( name );
         write( "Du loescht "+capitalize(name)+" von der MBanish-Liste.\n" );
     }
 
@@ -342,7 +342,7 @@ static int tbanish( string str )
 
   name = lower_case(name);
 
-  if ( !"/secure/master"->TBanishName( name, days ) )
+  if ( !({int})"/secure/master"->TBanishName( name, days ) )
       return 1;
 
   if ( !days )
@@ -395,7 +395,7 @@ static int sbanish( string str )
 
     _notify_fail("Syntax: sbanish <numerische ip> <tage>\n");
 
-    if ( sscanf( this_player()->_unparsed_args(), "%s %d", ip, days ) != 2 )
+    if ( sscanf( ({string})this_player()->_unparsed_args(), "%s %d", ip, days ) != 2 )
         return 0;
 
     if ( !ip || !sizeof(ip) )

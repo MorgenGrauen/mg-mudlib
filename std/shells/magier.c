@@ -166,7 +166,7 @@ static string _query_racedescr()
 
 static string _query_race()
 {
-  if (previous_object() && previous_object()->query_login_object())
+  if (previous_object() && ({int})previous_object()->query_login_object())
     return 0;
 
   return Query(P_RACE) ? Query(P_RACE) : Set(P_RACE, "Magier");
@@ -304,7 +304,7 @@ mixed modify_command(string str) {
   if (str=="\\ESCAPE" && IS_LORD(this_object()))
   {
     __set_environment(this_object(),"/room/void");
-    environment()->init();
+    ({void})environment()->init();
     printf("You escaped.\n");
     return "";
   }

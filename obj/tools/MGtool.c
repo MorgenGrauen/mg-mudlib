@@ -399,9 +399,9 @@ static string break_string_hard(string str, int len, string pre)
 static void dprop(string key, mixed data, object obj)
 {
   if(pipe_out&&pipe_of)
-    write_file(pipe_of,break_string_hard(mixed_to_string(obj->QueryProp(key),MAX_RECURSION),78,ALEFT(key+" ",18,".")+" = "));
+    write_file(pipe_of,break_string_hard(mixed_to_string(({mixed})obj->QueryProp(key),MAX_RECURSION),78,ALEFT(key+" ",18,".")+" = "));
   else
-    W(break_string_hard(mixed_to_string(obj->QueryProp(key),MAX_RECURSION),78,ALEFT(key+" ",18,".")+" = "));
+    W(break_string_hard(mixed_to_string(({mixed})obj->QueryProp(key),MAX_RECURSION),78,ALEFT(key+" ",18,".")+" = "));
 }
 
 static string propflags(string key, object ob)

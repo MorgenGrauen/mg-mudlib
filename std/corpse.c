@@ -95,8 +95,8 @@ void Identify( object ob )
     SetProp( P_SHORT, "Die Leiche "+ _name );
     SetProp( P_LONG, "Du siehst die sterblichen Ueberreste "+ _name + ".\n" );
     _decay = 4;
-    SetProp( P_ORIG_NAME, to_string(ob->name(RAW))      );
-    SetProp( P_PILE_NAME, to_string(ob->name(WEM))      );
+    SetProp( P_ORIG_NAME, ({string})ob->name(RAW)      );
+    SetProp( P_PILE_NAME, ({string})ob->name(WEM)      );
     AddId( "\nleiche "+ QueryProp(P_PILE_NAME)          );
     SetProp( P_KILLER, ({<object|string>})funcall(cl, P_KILLER));
     SetProp( P_ATTRIBUTES,    ({mapping})funcall(cl, P_ATTRIBUTES));
@@ -256,10 +256,10 @@ private string mampf_heilung(int wieviel)
   heal = heal * wieviel / nahrung_gesamt;
   if ( ( heal ) < 0 ) {
     // 
-    this_player()->do_damage( random(-heal), this_object() );
+    ({int})this_player()->do_damage( random(-heal), this_object() );
     msg = "Buah, diese Leiche war zweifellos nicht besonders gesund.\n";
   } else {
-    this_player()->heal_self( random(heal) );
+    ({int})this_player()->heal_self( random(heal) );
     msg = "Hmmm, lecker!\n";
   }
   return msg;
@@ -274,7 +274,7 @@ static int mampf( string str )
     if ( !str || !id(str) )
         return 0;
 
-    if (this_player()->QueryProp(P_GHOST))
+    if (({int})this_player()->QueryProp(P_GHOST))
     {
 	_notify_fail("Das wuerde durch Dich hindurch fallen.\n");
 	return 0;
@@ -290,7 +290,7 @@ static int mampf( string str )
       write("Du bekommst von der Leiche nicht einen Bissen mehr runter.\n");
     } else if (gegessen >= nahrung_aktuell) {
       // spieler kann die gesamte Leiche essen, also entfernen.
-      this_player()->eat_food(nahrung_aktuell);
+      ({int})this_player()->eat_food(nahrung_aktuell);
       // Verdammt. eat_food() kann TP umgebracht haben und im Falle eines NPC
       // ist der dann weg.
       if (objectp(this_player())) {
@@ -303,7 +303,7 @@ static int mampf( string str )
       remove();
     } else {
       // Auch teilweise Verspeisung ist moeglich, nahrung_aktuell anpassen
-      this_player()->eat_food(gegessen);
+      ({int})this_player()->eat_food(gegessen);
       if (objectp(this_player())) {
 	write(mampf_heilung(gegessen)+"Leider bist Du nicht in der Lage,"
                " alles aufzuessen.\n");
@@ -342,15 +342,15 @@ static int spott( string str )
     switch ( str[0] )
         {
         case ':':
-            "/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_EMOTE );
+            ({void})"/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_EMOTE );
             break;
           
         case ';':
-            "/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_GEMOTE );
+            ({void})"/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_GEMOTE );
             break;
           
         default:
-            "/std/corpse"->ChannelMessageJeer( PL, str, MSG_SAY );
+            ({void})"/std/corpse"->ChannelMessageJeer( PL, str, MSG_SAY );
             break;
         }
   
@@ -364,7 +364,7 @@ static int spott( string str )
 void ChannelMessageJeer( mixed sender, string text, int flag )
 {
   if (member(inherit_list(previous_object()),CORPSE_OBJ)>-1)
-      CHMASTER->send( "Moerder", sender, text, flag );
+      ({int})CHMASTER->send( "Moerder", sender, text, flag );
 }
 
 
@@ -703,7 +703,7 @@ object _channel( object ob )
 		      if ( stringp(msg) )
 			  msg = sprintf( msg, killer || "Moerder" );
 
-                      CHMASTER->send( "Moerder", this_object(), funcall(msg) );
+                      ({int})CHMASTER->send( "Moerder", this_object(), funcall(msg) );
 
                       rueck = previous_object(i);
                   }
@@ -717,12 +717,12 @@ object _channel( object ob )
 }
 
 void transform_into_pile() {
-	if( environment()->QueryProp(P_PREVENT_PILE) ) return;
+	if( ({int})environment()->QueryProp(P_PREVENT_PILE) ) return;
 	object* inv = all_inventory();
 	if( sizeof(inv)<2 ) return;
 	object p = clone_object(PILE_OBJ);
 	filter_objects( inv, "move", p, M_SILENT | M_NOCHECK );
-	p->move( environment(), M_SILENT | M_NOCHECK );
+	({int})p->move( environment(), M_SILENT | M_NOCHECK );
 }
 
 // Verhindert die Zerstoerung im reset() von Containern, die mit

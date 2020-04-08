@@ -26,8 +26,8 @@ int add_guild_master(string user, string guild)
 {
   string *guilds;
   
-  if ((call_other(SIMUL_EFUN_FILE, "process_call") ||
-       call_other(SIMUL_EFUN_FILE, "secure_level") < GOD_LVL) ||
+  if ((({int})call_other(SIMUL_EFUN_FILE, "process_call") ||
+       ({int})call_other(SIMUL_EFUN_FILE, "secure_level") < GOD_LVL) ||
       !find_userinfo(user))
     return 0;
 

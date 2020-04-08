@@ -47,7 +47,7 @@ protected void create()
   foreach(string guild:
       ({string *})call_other(GUILDMASTER,"QueryProp",P_VALID_GUILDS))
   {
-    if(catch(act=call_other("/gilden/"+guild,"QueryProp",
+    if(catch(act=({mapping})call_other("/gilden/"+guild,"QueryProp",
         P_GUILD_DEACTIVATE_SKILLS); publish ))
         log_file("WEAPON_SKILLS", sprintf ("%s: Gilde nicht ladbar: "
               +"TP: %O, TI: %O, PO: %O, Gilde: %s\n", dtime(time()),
@@ -223,10 +223,10 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
         WT_SPEAR : 6,
         WT_CLUB  : 1,
         WT_WHIP  : 9,
-        WT_STAFF : 7])[sinfo[P_WEAPON]->QueryProp(P_WEAPON_TYPE)];
+        WT_STAFF : 7])[({string})sinfo[P_WEAPON]->QueryProp(P_WEAPON_TYPE)];
       
 
-  val = sinfo[SI_SKILLABILITY]*(sinfo[P_WEAPON]->QueryProp(P_WC)*
+  val = sinfo[SI_SKILLABILITY]*(({int})sinfo[P_WEAPON]->QueryProp(P_WC)*
                                 (w*QueryAttribute(A_DEX)+
                                  (10-w)*QueryAttribute(A_STR))/700)
         /MAX_ABILITY;
@@ -239,7 +239,7 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
                                    previous_object(), val,
                                    QueryAttribute(A_DEX),
                                    QueryAttribute(A_STR), sinfo[P_WEAPON],
-                                   sinfo[P_WEAPON]->QueryProp(P_WC)));
+                                   ({int})sinfo[P_WEAPON]->QueryProp(P_WC)));
     val = 85;
   }
 
@@ -276,7 +276,7 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
        || (!random(300) && sinfo[SI_SKILLABILITY]<MAX_ABILITY))
   {
          enemy=sinfo[SI_ENEMY];
-         if (objectp(enemy) && (enemy->QueryProp(P_XP)>0))
+         if (objectp(enemy) && (({int})enemy->QueryProp(P_XP)>0))
          {
            object ausbilder;
         //         log_file("humni/log_wurm","Haut: %s und zwar %s, mit xp %d\n",geteuid(this_object()),to_string(enemy),enemy->QueryProp(P_XP));
@@ -293,7 +293,7 @@ protected mapping ShortRangeSkill(object me, string sname, mapping sinfo)
               object waf_aus,waf_azu;
 
               waf_azu=QueryProp(P_WEAPON);
-              waf_aus=call_other(ausbilder,"QueryProp",P_WEAPON);
+              waf_aus=({object})call_other(ausbilder,"QueryProp",P_WEAPON);
 
               //wt_azu=call_other(waf_azu,"QueryProp",P_WEAPON_TYPE);
               //wt_aus=call_other(waf_aus,"QueryProp",P_WEAPON_TYPE);
@@ -332,7 +332,7 @@ protected mapping LongRangeSkill(object me, string sname, mapping sinfo, int dam
 { int abil,val;
 
   if (!mappingp(sinfo) || !dam || !objectp(sinfo[P_WEAPON]) ||
-      (sinfo[P_WEAPON]->QueryProp(P_SHOOTING_WC))<5)
+      (({int})sinfo[P_WEAPON]->QueryProp(P_SHOOTING_WC))<5)
     return 0;
 
   abil=sinfo[SI_SKILLABILITY]+sinfo[OFFSET(SI_SKILLABILITY)]; 
@@ -559,7 +559,7 @@ static string _query_guild_title()
   if ( !t && query_once_interactive(this_object())
       && objectp(g=find_object("/gilden/"+gilde)) )
   {
-    g->adjust_title(this_object());
+    ({void})g->adjust_title(this_object());
     SetProp(P_TITLE,0);
 
     if ( !mappingp(titles=Query(P_GUILD_TITLE)) )

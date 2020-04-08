@@ -305,8 +305,8 @@ nomask mixed QueryWizardRequirements(object player)
   DEBUG("Es geht um: %O\n", player);
 
   // Abenteuerpunkte
-  DEBUG("Abenteuerpunkte: %d ("+REQ_QP+")\n", player->QueryProp(P_QP));
-  if (player->QueryProp(P_QP) < REQ_QP) {
+  DEBUG("Abenteuerpunkte: %d ("+REQ_QP+")\n", ({int})player->QueryProp(P_QP));
+  if (({int})player->QueryProp(P_QP) < REQ_QP) {
     s += sprintf(" * Dir fehlen noch mindestens %d Abenteuerpunkte.\n", 
 		 REQ_QP - ({int})player->QueryProp(P_QP));
     i--;
@@ -345,7 +345,7 @@ nomask mixed QueryWizardRequirements(object player)
   int minlevel = QueryLevel(REQ_LEP);
 
   // Restliche Stufenpunkte 
-  DEBUG("Stufenpunkte: %d ("+REQ_LEP+")\n", player->QueryProp(P_LEP));
+  DEBUG("Stufenpunkte: %d ("+REQ_LEP+")\n", ({int})player->QueryProp(P_LEP));
   if (({int})(player->QueryProp(P_LEP)) < REQ_LEP) {
     s += sprintf(" * Du musst mindestens %d Stufenpunkte, entspricht Stufe %d, "
         "erreichen.\n", REQ_LEP, minlevel);
@@ -353,7 +353,7 @@ nomask mixed QueryWizardRequirements(object player)
   }
   
   // Demnach mindestens REQ/100-Level 
-  DEBUG("Level: %d ("+REQ_LEP/100+")\n", player->QueryProp(P_LEVEL));
+  DEBUG("Level: %d ("+REQ_LEP/100+")\n", ({int})player->QueryProp(P_LEVEL));
   if (({int})player->QueryProp(P_LEVEL) < minlevel) {
     s += sprintf(" * Du musst mindestens Stufe %d erreichen.\n", minlevel);
     i--;

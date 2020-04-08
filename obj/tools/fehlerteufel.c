@@ -58,7 +58,7 @@ private int show_entry(struct fullissue_s issue)
 {
   if (!issue) return 0;
 
-  string txt=ERRORD->format_error(issue, 0);
+  string txt=({string})ERRORD->format_error(issue, 0);
 
   if (!stringp(txt) || !sizeof(txt))
       return 0;
@@ -196,7 +196,7 @@ private int DeleteErrorsForLoadname(string loadname)
   {
     if (!(m & modus))
       continue;
-    < <int|string>* >* list = ERRORD->QueryIssueListByLoadname(loadname,m);
+    < <int|string>* >* list = ({< <int|string>* >*})ERRORD->QueryIssueListByLoadname(loadname,m);
     if (pointerp(list))
     {
       foreach(<int|string>* row : list)
@@ -892,9 +892,10 @@ public varargs void init(object origin)
        return;
    }
    SetProp(P_EXTRA_LOOK,break_string(
-         "Auf "+environment()->Name(WESSEN)+" Schulter sitzt ein kleiner "
+         "Auf "+({string})environment()->Name(WESSEN)
+         +" Schulter sitzt ein kleiner "
          "Fehlerteufel, der "
-         +environment()->QueryPronoun(WEM)
+         +({string})environment()->QueryPronoun(WEM)
          +" immer wieder etwas ins Ohr fluestert.",78));
 
    call_out("reset",1);
@@ -1034,7 +1035,7 @@ private struct fullissue_s get_issue(string arg)
 
 private struct fullissue_s|struct fullissue_s* get_issues(string arg)
 {
-  arg=PL->_unparsed_args();
+  arg=({string})PL->_unparsed_args();
   struct fullissue_s|struct fullissue_s* issues;
 
   // Erstmal schauen, ob arg eine ID ist.
@@ -1046,7 +1047,7 @@ private struct fullissue_s|struct fullissue_s* get_issues(string arg)
     // wird im aktuellen Verzeichnis gesucht.
     if(sizeof(arg) && arg[0] != '/')
     {
-      arg=PL->QueryProp(P_CURRENTDIR)+"/"+arg;
+      arg=({string})PL->QueryProp(P_CURRENTDIR)+"/"+arg;
     }
     issues=({});
     foreach(int m: ALL_ERR_TYPES)

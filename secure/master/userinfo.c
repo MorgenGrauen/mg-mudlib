@@ -872,9 +872,9 @@ int delete_player(string passwd, string real_name)
   m_delete(userlist,real_name);
   
   if (wlevel >= LEARNER_LVL)
-    TO->BanishName(real_name, "So hiess mal ein Magier hier");
+    ({void})TO->BanishName(real_name, "So hiess mal ein Magier hier");
   else if (wlevel >= SEER_LVL)
-    TO->BanishName(real_name, "So hiess mal ein Seher hier");
+    ({void})TO->BanishName(real_name, "So hiess mal ein Seher hier");
 
 #ifdef _PUREFTPD_
     if (member(ftpuser,real_name)) {
@@ -1080,7 +1080,7 @@ private string* ExpandUIDAlias(string alias, int rec) {
     }
   }
   // Gildenname?
-  else if (GUILDMASTER->ValidGuild(alias)) {
+  else if (({int})GUILDMASTER->ValidGuild(alias)) {
       uids += ({GUILDID"."+alias});
       //hat die Gilde ein Projektverzeichnis?
       if (file_size("/"PROJECTDIR"/"+alias) == FSIZE_DIR) {

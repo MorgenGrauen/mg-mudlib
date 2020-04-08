@@ -300,7 +300,7 @@ protected string *get_simul_efun() {
 
   ++loading_simul_efuns;
 
-  if (!(err=catch(SIMUL_EFUN_FILE->start_simul_efun())) ) {
+  if (!(err=catch(({void})SIMUL_EFUN_FILE->start_simul_efun())) ) {
     --loading_simul_efuns;
     return ({SIMUL_EFUN_FILE});
   }
@@ -308,7 +308,7 @@ protected string *get_simul_efun() {
   debug_message("Failed to load simul efun " + SIMUL_EFUN_FILE +
       " " + err, DMSG_STDOUT | DMSG_LOGFILE | DMSG_STAMP);
 
-  if (!(err=catch(SPARE_SIMUL_EFUN_FILE->start_simul_efun())) ) {
+  if (!(err=catch(({void})SPARE_SIMUL_EFUN_FILE->start_simul_efun())) ) {
     --loading_simul_efuns;
     return ({SPARE_SIMUL_EFUN_FILE});
   }
@@ -593,7 +593,7 @@ protected object connect()
 
 // Was machen bei disconnect?
 protected void disconnect(object who, string remaining) {
-    who->NetDead(); return;
+    ({void})who->NetDead(); return;
 }
 
 // Es gibt kein File 'filename'. VC aktivieren so vorhanden ...
@@ -640,8 +640,8 @@ protected object compile_object(string filename)
 // Spieler bei Shutdown entfernen
 protected void remove_player(object victim)
 {
-  catch(victim->quit());
-  if (victim) catch(victim->remove());
+  catch(({int})victim->quit());
+  if (victim) catch(({int})victim->remove());
   if (victim) destruct(victim);
   return;
 }
@@ -652,7 +652,7 @@ protected void slow_shut_down(int minutes)
   //sollte nur vom GD gerufen werden. Oder allenfalls Master selbst
   filter(users(),#'tell_object,
   "Der Gamedriver ruft: Der Speicher wird knapp ! Bereitet euch auf das Ende vor !\n");
-  "/obj/shut"->shut(minutes);
+  ({int})"/obj/shut"->shut(minutes);
   return;
 }
 
@@ -885,7 +885,7 @@ protected int heart_beat_error( object culprit, string error, string program,
   if (efun::object_info(culprit, OI_ONCE_INTERACTIVE))
     call_out("restart_heart_beat", 5, culprit);
   else
-    catch(culprit->make_immortal(); publish);
+    catch(({void})culprit->make_immortal(); publish);
   return 0;
 }
 
@@ -1006,7 +1006,7 @@ private void handle_runtime_error(string err, string prg, string curobj,
   // nicht waehrend des ladens der simulefuns auftrat, bei der Ausgabe der
   // Meldung ueber die Kaenaele wieder sefuns genutzt werden.
   if (!loading_simul_efuns) {
-    if (titp && (IS_LEARNER(titp) || (titp->QueryProp(P_TESTPLAYER))))
+    if (titp && (IS_LEARNER(titp) || (({int|string})titp->QueryProp(P_TESTPLAYER))))
     {
       catch(send_channel_msg("Entwicklung",
                              capitalize(objectp(po) ? REAL_UID(po) : ""),

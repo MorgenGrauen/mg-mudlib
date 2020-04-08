@@ -25,8 +25,8 @@ int add_domain_master(string user,string dom)
 {
   string *domains;
   
-  if ((call_other(SIMUL_EFUN_FILE, "process_call") ||
-        call_other(SIMUL_EFUN_FILE, "secure_level") < GOD_LVL) ||
+  if ((({int})call_other(SIMUL_EFUN_FILE, "process_call") ||
+        ({int})call_other(SIMUL_EFUN_FILE, "secure_level") < GOD_LVL) ||
         !find_userinfo(user))
     return 0;
   domains=query_userlist(user, USER_DOMAIN);

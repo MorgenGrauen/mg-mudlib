@@ -140,7 +140,7 @@ private void DistributeExp(object enemy, int exp_to_give) {
   // ---------------------------------------
   //                2
   //
-  object *inv = enemy->TeamMembers();
+  object *inv = ({object*})enemy->TeamMembers();
   if ( pointerp(inv) )
   {
     present_enemies=m_allocate(sizeof(inv), 1);
@@ -179,7 +179,7 @@ private void DistributeExp(object enemy, int exp_to_give) {
   }
   if ( !total_damage )
   {
-    enemy->AddExp(exp_to_give);
+    ({int})enemy->AddExp(exp_to_give);
   }
   else
   {
@@ -216,15 +216,15 @@ public int do_damage(int dam, object enemy)
       && living(enemy)
       && !QueryProp(P_ENABLE_IN_ATTACK_OUT))
   {
-    al=time()-enemy->QueryProp(P_LAST_MOVE);
+    al=time()-({int})enemy->QueryProp(P_LAST_MOVE);
     if (al<3)      // Erste Kampfrunde nach Betreten des Raumes?
       dam/=(4-al); // Gegen Rein-Feuerball-Raus-Taktik
   }
 
   if ( QueryProp(P_GHOST) || QueryProp(P_NO_ATTACK) || (dam<=0)
       || ( objectp(enemy)
-          && ( enemy->QueryProp(P_GHOST)
-              || enemy->QueryProp(P_NO_ATTACK) ) ) )
+          && ( ({int})enemy->QueryProp(P_GHOST)
+              || ({int|string})enemy->QueryProp(P_NO_ATTACK) ) ) )
     return 0;
 
   hit_point = QueryProp(P_HP)-dam;
@@ -232,7 +232,7 @@ public int do_damage(int dam, object enemy)
   if ( QueryProp(P_XP) && objectp(enemy) )
   {
     if ( !QueryProp(P_NO_XP) )
-      enemy->AddExp(dam*({int})QueryProp(P_TOTAL_WC)/10);
+      ({int})enemy->AddExp(dam*({int})QueryProp(P_TOTAL_WC)/10);
   }
 
   if (living(enemy)) {
@@ -246,7 +246,7 @@ public int do_damage(int dam, object enemy)
       // nur wenn gegner NPC ist und noch nicht drinsteht: Daten aus
       // P_HELPER_NPC auswerten
       if (!member(enemy_damage,enemy) && !query_once_interactive(enemy)) {
-          mixed helper = enemy->QueryProp(P_HELPER_NPC);
+          mixed helper = ({mixed})enemy->QueryProp(P_HELPER_NPC);
           if (pointerp(helper) && objectp(helper[0]))
               enemy_damage[enname,1] = helper[0];
       }
@@ -260,7 +260,7 @@ public int do_damage(int dam, object enemy)
     //TODO: Warum nicht das ganze Zeug ins die() verlegen?
     if ( enemy )
     {
-      enemy->StopHuntFor(ME,1);
+      ({int})enemy->StopHuntFor(ME,1);
       if ( !QueryProp(P_NO_XP) )
         DistributeExp(enemy,QueryProp(P_XP)/100);
       if ( !query_once_interactive(ME) )
@@ -268,13 +268,13 @@ public int do_damage(int dam, object enemy)
 	    "[%s] %s, XP: %d, HP*WC: %d, Killer: %s\n",
 	    dtime(time()), object_name(ME), (QueryProp(P_XP)/100),
                   QueryProp(P_TOTAL_WC)*QueryProp(P_MAX_HP)/10,
-                  enemy->name()||"NoName" ));
-      al = QueryProp(P_ALIGN)/50 + enemy->QueryProp(P_ALIGN)/200;
+                  ({string})enemy->name()||"NoName" ));
+      al = QueryProp(P_ALIGN)/50 + ({int})enemy->QueryProp(P_ALIGN)/200;
       if (al>20)
         al=20;
       else if(al<-20)
         al=-20;
-      enemy->SetProp(P_ALIGN,enemy->QueryProp(P_ALIGN)-al);
+      ({int})enemy->SetProp(P_ALIGN,({int})enemy->QueryProp(P_ALIGN)-al);
     }
     SetProp(P_KILLER, enemy);
     
@@ -296,10 +296,10 @@ private void _transfer( object *obs, string|object dest, int flag )
     // Pruefung auf zerstoerte Objekte, da einige sich evtl. im NotifyPlayerDeath() 
     // zerstoeren.
    while ( i && get_eval_cost() > 300000 )
-        if ( objectp(obs[--i]) && !obs[i]->QueryProp(P_NEVERDROP) )
+        if ( objectp(obs[--i]) && !({int})obs[i]->QueryProp(P_NEVERDROP) )
         // Jetzt wird's noch etwas teurer mit catch() - aber manche Sachen
         // duerfen einfach nicht buggen
-            catch( obs[i]->move( dest, flag );publish );
+            catch( ({int})obs[i]->move( dest, flag );publish );
 
     if ( i > 0 )
         // Zuviel Rechenzeit verbraten, es muessen noch Objekte bewegt werden
@@ -359,7 +359,7 @@ protected object get_killing_player()
     return 0;
 
   while (killer && !query_once_interactive(killer))
-    killer = killer->QueryUser();
+    killer = ({object})killer->QueryUser();
 
   return killer;
 }
@@ -374,9 +374,9 @@ protected object GiveKillScore(object pl, int npcnum)
   mixed *fr;
   int i,j,sz;
 
-  if ( pointerp(obs=pl->TeamMembers()) && (member(obs,pl)>=0) )
+  if ( pointerp(obs=({object*})pl->TeamMembers()) && (member(obs,pl)>=0) )
   {
-    if ( !pointerp(fr=pl->PresentTeamRows())
+    if ( !pointerp(fr=({mixed})pl->PresentTeamRows())
         || !sizeof(fr)
         || !pointerp(fr=fr[0])) // Erste Reihe des Teams
       fr=({});
@@ -413,11 +413,11 @@ protected object GiveKillScore(object pl, int npcnum)
         && query_idle(ob)<600  // gegen Leute die sich nur mitschleppen lassen
         && environment(ob)==environment(pl) // Nur anwesende Teammitglieder
         && !IS_LEARNER(ob)
-//        && !ob->QueryProp(P_TESTPLAYER)
-        && !(SCOREMASTER->HasKill(ob,ME)) )
-      return SCOREMASTER->GiveKill(ob,npcnum),ob;
+//        && !({int|string})ob->QueryProp(P_TESTPLAYER)
+        && !(({int})SCOREMASTER->HasKill(ob,ME)) )
+      return ({int})SCOREMASTER->GiveKill(ob,npcnum),ob;
 
-  return SCOREMASTER->GiveKill(pl,npcnum),pl;
+  return ({int})SCOREMASTER->GiveKill(pl,npcnum),pl;
 }
 
 // zum ueberschreiben in Spielern
@@ -452,7 +452,7 @@ public varargs void die( int poisondeath, int extern )
             && intp(res[0]) && time()<res[0]
             && objectp(res[1]) && stringp(res[2]) )
         {
-            if ( res = call_other( res[1], res[2], poisondeath ) ) {
+            if ( res = ({mixed})call_other( res[1], res[2], poisondeath ) ) {
               SetProp(P_KILLER,0);
               return;
             }
@@ -503,12 +503,12 @@ public varargs void die( int poisondeath, int extern )
                                        ctime(time()),
                                        capitalize(getuid(killer)),
                                        query_wiz_level(killer),
-                                       killer->QueryProp(P_LEVEL),
+                                       ({int})killer->QueryProp(P_LEVEL),
                                        capitalize(getuid(ME)),
                                        query_wiz_level(ME),
                                        QueryProp(P_LEVEL) ) );
 
-          killer->SetProp( P_KILLS, -1 );
+          ({int})killer->SetProp( P_KILLS, -1 );
       }
     }
 
@@ -521,18 +521,18 @@ public varargs void die( int poisondeath, int extern )
 
     if ( killer && query_once_interactive(killer) )
     {
-      if (stringp(res=killer->QueryProp(P_GUILD))
+      if (stringp(res=({string})killer->QueryProp(P_GUILD))
           && objectp(res=find_object("/gilden/"+res)))
-        res->NPC_Killed_By(killer);
+        ({void})res->NPC_Killed_By(killer);
 
       if (environment())
-          environment()->NPC_Killed_By(killer);
+          ({void})environment()->NPC_Killed_By(killer);
 
       res = QueryProp(P_XP);
       res = (res < SCORE_LOW_MARK) ? 0 : ((res > SCORE_HIGH_MARK) ? 2 : 1);
       if ( !QueryProp(P_NO_SCORE) && !IS_LEARNER(killer) &&
            // !killer->QueryProp(P_TESTPLAYER) &&
-           pointerp( res = SCOREMASTER->QueryNPC(res)) )
+           pointerp( res = ({mixed})SCOREMASTER->QueryNPC(res)) )
         GiveKillScore( killer, res[0] );
     }
   }
@@ -570,8 +570,8 @@ public varargs void die( int poisondeath, int extern )
   else
   // sonst in die Leiche legen.
   {
-      corpse->Identify(ME);
-      corpse->move( environment(), M_NOCHECK|M_SILENT );
+      ({void})corpse->Identify(ME);
+      ({int})corpse->move( environment(), M_NOCHECK|M_SILENT );
       // Magier oder Testspieler behalten ihre Ausruestung.
       // Sonst kaemen u.U. Spieler an Magiertools etc. heran
       if ( !(IS_LEARNER(ME) || (tmp = Query(P_TESTPLAYER)) &&
@@ -585,7 +585,7 @@ public varargs void die( int poisondeath, int extern )
   if ( query_once_interactive(ME) ) {
       Set( P_DEADS, Query(P_DEADS) + 1 );
       // Spieler-Tod-event ausloesen
-      EVENTD->TriggerEvent(EVT_LIB_PLAYER_DEATH, ([
+      ({int})EVENTD->TriggerEvent(EVT_LIB_PLAYER_DEATH, ([
       E_OBJECT: ME, E_PLNAME: getuid(ME),
       E_ENVIRONMENT: environment(), E_TIME: time(),
       P_KILLER: QueryProp(P_KILLER),
@@ -617,8 +617,8 @@ public varargs void die( int poisondeath, int extern )
             P_RACE: QueryProp(P_RACE),
             P_CLASS: QueryProp(P_CLASS),
             ]);
-      EVENTD->TriggerEvent(EVT_LIB_NPC_DEATH(""), data);
-      EVENTD->TriggerEvent(
+      ({int})EVENTD->TriggerEvent(EVT_LIB_NPC_DEATH(""), data);
+      ({int})EVENTD->TriggerEvent(
           EVT_LIB_NPC_DEATH(load_name(ME)), data);
   }
 
@@ -768,11 +768,11 @@ public int reduce_hit_points(int dam)
     log_file("REDUCE_HP", name()+" by ");
     if(!this_player()) log_file("REDUCE_HP","?\n");
     else {
-      log_file("REDUCE_HP",this_player()->name());
+      log_file("REDUCE_HP",({string})this_player()->name());
       o=previous_object();
       if (o)
         log_file("REDUCE_HP", " " + object_name(o) + ", " +
-                 o->name(WER,0) + " (" + creator(o) + ")\n");
+                 ({string})o->name(WER,0) + " (" + creator(o) + ")\n");
       else
         log_file("REDUCE_HP", " ??\n");
     }
@@ -1023,10 +1023,10 @@ protected void heart_beat()
         // Gilde und Environment informieren ueber Alkoholauswirkung.
         if ( stringp(gilde = QueryProp(P_GUILD))
              && objectp(ob = find_object( "/gilden/" + gilde )) )
-            ob->InformAlcoholEffect( ME, n, ALC_EFFECT_AREA_GUILD );
+            ({void})ob->InformAlcoholEffect( ME, n, ALC_EFFECT_AREA_GUILD );
         
         if ( environment() )
-            environment()->InformAlcoholEffect( ME, n, ALC_EFFECT_AREA_ENV );
+            ({void})environment()->InformAlcoholEffect( ME, n, ALC_EFFECT_AREA_ENV );
     }
     
     // Alkohol abbauen und etwas extra heilen, falls erlaubt.

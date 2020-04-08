@@ -78,7 +78,7 @@ static int _query_total_light()
 
   // eigenes P_LIGHT und P_TOTAL_LIGHT der enthaltenen Objekte verrechnen
   int intlight = add_light_sources(
-      all_inventory()->QueryProp(P_TOTAL_LIGHT) + ({QueryProp(P_LIGHT)}));
+      ({int*})all_inventory()->QueryProp(P_TOTAL_LIGHT) + ({QueryProp(P_LIGHT)}));
   // P_INT_LIGHT (gerundet) abspeichern
   Set(P_INT_LIGHT, intlight, F_VALUE);
 

@@ -279,7 +279,7 @@ private void _std_lo_handler_mssp(struct telopt_s opt, int action) {
   {
     send_telnet_neg_str(
         to_bytes(({SB, TELOPT_MSSP}))
-        + to_bytes(sprintf("%s", mssp->get_telnegs_str()),
+        + to_bytes(sprintf("%s", ({string})mssp->get_telnegs_str()),
                    "ASCII//TRANSLIT"));
     // die Daten brauchen wir nicht mehr
     opt->lo_wishes->sbdata = 0;
@@ -988,8 +988,8 @@ startup_telnet_negs()
   _bind_telneg_std_handlers();
   // dann restliche Daten aus dem Loginobjekt holen.
   Terminals = ({string *}) previous_object()->query_terminals();
-  Set( P_TTY_COLS, previous_object()->Query(P_TTY_COLS) );
-  Set( P_TTY_ROWS, previous_object()->Query(P_TTY_ROWS) );
+  Set( P_TTY_COLS, ({int})previous_object()->Query(P_TTY_COLS) );
+  Set( P_TTY_ROWS, ({int})previous_object()->Query(P_TTY_ROWS) );
 
   struct telopt_s opt = TN[TELOPT_NAWS];
   if (optargs = (opt->re_wishes)->sbdata) {

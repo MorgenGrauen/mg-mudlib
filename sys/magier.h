@@ -30,9 +30,9 @@
 #define FILE_DELETED    "%s wurde geloescht.\n"
 #define NO_DELETE       "%s konnte nicht geloescht werden.\n"
 
-#define MAY_READ(x)   call_other(__MASTER_OBJECT__,"valid_read",x,getuid(this_object()))
-#define MAY_WRITE(x)  call_other(__MASTER_OBJECT__,"valid_write",x,getuid(this_object()))
-#define MAY_DELETE(x) call_other(__MASTER_OBJECT__,"remove_file",x,getuid(this_object()))
+#define MAY_READ(x)   ({mixed})call_other(__MASTER_OBJECT__,"valid_read",x,getuid(this_object()))
+#define MAY_WRITE(x)  ({mixed})call_other(__MASTER_OBJECT__,"valid_write",x,getuid(this_object()))
+#define MAY_DELETE(x) ({mixed})call_other(__MASTER_OBJECT__,"remove_file",x,getuid(this_object()))
 
 #define MAXLEN  50000
 

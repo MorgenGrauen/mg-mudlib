@@ -101,13 +101,13 @@ void create() {
 
   RebuildMQCache();
   set_next_reset(43200); // Reset alle 12 Stunden.
-  EVENTD->RegisterEvent(EVT_LIB_QUEST_SOLVED,"HandleQuestSolved",
+  ({int})EVENTD->RegisterEvent(EVT_LIB_QUEST_SOLVED,"HandleQuestSolved",
       ME);
 }
 
 public int remove(int silent) {
   save_info();
-  EVENTD->UnregisterEvent(EVT_LIB_QUEST_SOLVED, ME);
+  ({int})EVENTD->UnregisterEvent(EVT_LIB_QUEST_SOLVED, ME);
   destruct(ME);
   return 1;
 }
@@ -370,7 +370,7 @@ string Name() {
 void Channel(string msg) {
   if(!interactive(previous_object()))
     return;
-  catch(CHMASTER->send("Abenteuer", ME, msg);publish);
+  catch(({int})CHMASTER->send("Abenteuer", ME, msg);publish);
 }
 
  /* quoted from /sys/mail.h: */
@@ -423,7 +423,7 @@ void SendMail(string questname, mixed *quest, object player) {
   mail[MSG_ID]=MUDNAME":"+time();
   mail[MSG_BODY]=text;
 
-  "/secure/mailer"->DeliverMail(mail,0);
+  ({string*})"/secure/mailer"->DeliverMail(mail,0);
   return;
 }
 
@@ -451,7 +451,7 @@ varargs string liste(mixed pl, int geloest_filter)
   if(!objectp(pl))
     return "Ohne Spielernamen/Spielerobjekt gibt es auch keine Liste.\n";
 
-  if ( (pl->QueryProp(P_TTY)) == "ansi")
+  if ( (({string})pl->QueryProp(P_TTY)) == "ansi")
   {
       ja = ANSI_GREEN + "ja" + ANSI_NORMAL;
       nein = ANSI_RED + "nein" + ANSI_NORMAL;
@@ -480,7 +480,7 @@ varargs string liste(mixed pl, int geloest_filter)
     for (j=sizeof(qgrouped[i])-1;j>=0; j--)
     {
       qtmp = QueryQuest(qgrouped[i][j]);
-      int geloest_status = pl->QueryQuest(qgrouped[i][j]);
+      int geloest_status = ({int})pl->QueryQuest(qgrouped[i][j]);
       // Quest ausgeben, wenn "kein Filter" gegeben oder Quest geloest und
       // Filter "geloest" oder Quest ungeloest und Filter "ungeloest".
       if ( !(geloest_filter & (FILTER_GELOEST|FILTER_UNGELOEST))
@@ -552,7 +552,7 @@ void HandleQuestSolved(string eid, object trigob, mixed data) {
   string qname = data[E_QUESTNAME];
 
   if (!quests[qname] || !objectp(trigob)
-      || trigob->QueryProp(P_TESTPLAYER) || IS_LEARNER(trigob))
+      || ({int|string})trigob->QueryProp(P_TESTPLAYER) || IS_LEARNER(trigob))
     return;
 
   int lvl = ({int})trigob->QueryProp(P_LEVEL);
@@ -870,7 +870,7 @@ int GiveMiniQuest(object winner) {
       ((this_player() == winner) && !query_once_interactive(winner)))
     return MQ_ILLEGAL_OBJ;
   // Gaeste koennen keine Miniquests bestehen.
-  if (winner->QueryGuest())
+  if (({int})winner->QueryGuest())
     return MQ_GUEST;
   // Aufrufendes Objekt existiert gar nicht?
   if (!previous_object())
@@ -884,7 +884,7 @@ int GiveMiniQuest(object winner) {
   if (!miniquests[objname, MQ_DATA_ACTIVE])
     return MQ_IS_INACTIVE;
 
-  string mq = (MASTER->query_mq(getuid(winner)) || "");
+  string mq = (({string})MASTER->query_mq(getuid(winner)) || "");
 
   // Spieler hat die MQ schonmal bestanden? Dann keine weiteren Aktivitaet
   // noetig
@@ -892,14 +892,14 @@ int GiveMiniQuest(object winner) {
     return MQ_ALREADY_SET;
 
   catch(mq = set_bit(mq, miniquests[objname,MQ_DATA_QUESTNO]);publish);
-  MASTER->update_mq(getuid(winner), mq);
+  ({int})MASTER->update_mq(getuid(winner), mq);
 
   MQSOLVEDLOG(sprintf("%s: %s, (#%d), (Stupse %d)",
     objname, geteuid(winner), miniquests[objname, MQ_DATA_QUESTNO],
     miniquests[objname, MQ_DATA_POINTS]));
 
   // Miniquest-Event ausloesen
-  EVENTD->TriggerEvent( EVT_LIB_MINIQUEST_SOLVED, ([
+  ({int})EVENTD->TriggerEvent( EVT_LIB_MINIQUEST_SOLVED, ([
             E_OBJECT: previous_object(),
             E_OBNAME: objname,
             E_PLNAME: getuid(winner),
@@ -934,7 +934,7 @@ int QueryMiniQuestPoints(mixed pl) {
   if (!member(users_mq, spieler)) {
     int mqpoints;
     int p=-1;
-    string s = (MASTER->query_mq(spieler) || "");
+    string s = (({string})MASTER->query_mq(spieler) || "");
     while( (p=next_bit(s, p)) != -1) {
       mqpoints+=by_num[p][0];
     }
@@ -972,7 +972,7 @@ int HasMiniQuest(mixed pl, mixed name) {
   if (!member(miniquests,name))
     return MQ_KEY_INVALID;
 
-  mq = (MASTER->query_mq(spieler) || "");
+  mq = (({string})MASTER->query_mq(spieler) || "");
 
   return test_bit(mq, miniquests[name, MQ_DATA_QUESTNO]);
 }
@@ -989,13 +989,13 @@ int SetPlayerMiniQuest(string pl, string name) {
   if (!member(miniquests,name))
     return MQ_KEY_INVALID;
 
-  string mq = (MASTER->query_mq(pl) || "");
+  string mq = (({string})MASTER->query_mq(pl) || "");
 
   if (test_bit(mq, miniquests[name,MQ_DATA_QUESTNO]))
     return MQ_ALREADY_SET;
 
   catch (mq = set_bit(mq, miniquests[name, MQ_DATA_QUESTNO]);publish);
-  MASTER->update_mq(pl, mq);
+  ({int})MASTER->update_mq(pl, mq);
 
   MQMLOG(sprintf("SetPlayerMiniQuest: %s %s (%s)",
                  pl, name, getuid(this_interactive())));
@@ -1015,13 +1015,13 @@ int ClearPlayerMiniQuest(string pl, string name) {
   if (!member(miniquests,name))
     return MQ_KEY_INVALID;
 
-  string mq = (MASTER->query_mq(pl) || "");
+  string mq = (({string})MASTER->query_mq(pl) || "");
 
   if (!test_bit(mq, miniquests[name, MQ_DATA_QUESTNO]))
     return MQ_ALREADY_SET;
 
   catch (mq = clear_bit(mq, miniquests[name, MQ_DATA_QUESTNO]);publish);
-  MASTER->update_mq(pl, mq);
+  ({int})MASTER->update_mq(pl, mq);
 
   MQMLOG(sprintf("ClearPlayerMiniQuest: %s %s (%s)",
                  pl, name, getuid(this_interactive())));

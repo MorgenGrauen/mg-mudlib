@@ -192,9 +192,9 @@ public nomask int logon()
     // machen das natuerlich nicht fuer die IP vom Mudrechner...
     if (query_ip_number(this_object()) != "87.79.24.60")
     {
-      "/p/daemon/dnslookup"->check_tor(query_ip_number(this_object()),
+      ({int})"/p/daemon/dnslookup"->check_tor(query_ip_number(this_object()),
           query_mud_port());
-      "/p/daemon/dnslookup"->check_dnsbl(query_ip_number(this_object()));
+      ({int})"/p/daemon/dnslookup"->check_dnsbl(query_ip_number(this_object()));
     }
 
     // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden.
@@ -232,7 +232,7 @@ static int check_too_many_from_same_ip()
     ip = query_ip_number(this_object());
     u = filter(users(), function status (object ob, string addr, int a) {
         return query_ip_number(ob) == addr
-               && ob->QueryProp(P_AGE) < a;
+               && ({int})ob->QueryProp(P_AGE) < a;
     }, ip, 12*60*60); // 24h in heart_beats
 
     if ( sizeof(u) > 25 ){
@@ -266,8 +266,8 @@ static int check_illegal( string str )
       // check connection from Tor exit node
       string eff_ip = (sizeof(realip) ? realip
                                       : query_ip_number(this_object()));
-      if ("/p/daemon/dnslookup"->check_tor(eff_ip, query_mud_port())
-          || "/p/daemon/dnslookup"->check_dnsbl(eff_ip))
+      if (({int})"/p/daemon/dnslookup"->check_tor(eff_ip, query_mud_port())
+          || ({int})"/p/daemon/dnslookup"->check_dnsbl(eff_ip))
         res = 
             "\nSorry, von Deiner Adresse kamen ein paar Idioten, die "
             "ausschliesslich\nAerger machen wollten. Deshalb haben wir "
@@ -346,8 +346,8 @@ static void logon2( string str )
         realip=str[sizeof(SSL_GRRETING)..];
       } // andere IPs werden einfach ignoriert. -> log/PROXY.REQ ?
       // ggf. Lookup fuer Torexits anstossen.
-      "/p/daemon/dnslookup"->check_tor(realip,query_mud_port());
-      "/p/daemon/dnslookup"->check_dnsbl(realip);
+      ({int})"/p/daemon/dnslookup"->check_tor(realip,query_mud_port());
+      ({int})"/p/daemon/dnslookup"->check_dnsbl(realip);
 
       input_to( "logon2", INPUT_PROMPT,
           "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
@@ -391,7 +391,7 @@ static void logon2( string str )
     loginname = str;
 
     /* read the secure save file to see if character already exists */
-    string ssavef=master()->secure_savefile(loginname);
+    string ssavef=({string})master()->secure_savefile(loginname);
     if ( loginname != "gast"
          && (!ssavef || !sizeof(ssavef) || !restore_object(ssavef) ))
     {
@@ -529,7 +529,7 @@ static int new_password( string str )
 
     password = str;
 
-    if ( !master()->good_password( str, loginname ) ) {
+    if ( !({int})master()->good_password( str, loginname ) ) {
         input_to( "new_password", INPUT_NOECHO|INPUT_PROMPT,
             "Bitte gib ein Passwort an: ");
         return 1;
@@ -736,7 +736,7 @@ static void get_race_answer( string str )
             return;
         }
 
-        write( call_other( races[num - 1][0], "QueryProp", P_RACE_DESCRIPTION ));
+        write( ({string})call_other( races[num - 1][0], "QueryProp", P_RACE_DESCRIPTION ));
         input_to( "get_race_answer", INPUT_PROMPT,
             "\nWas willst Du tun: ");
         return;
@@ -1057,7 +1057,7 @@ public mixed new_logon( string str)
     seteuid(ROOTID);
 
     /* read the secure save file to see if character already exists */
-    if ( !restore_object( master()->secure_savefile(loginname) ) ){
+    if ( !restore_object( ({string})master()->secure_savefile(loginname) ) ){
         write( "Kein solcher Spieler!\n" );
         destruct( this_object() );
         return 0;

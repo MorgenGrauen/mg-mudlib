@@ -183,7 +183,7 @@ int cmdline(string str)
   {
     case "erzaehl": return tell(str);
   }
-  str=PL->_unparsed_args();
+  str=({string})PL->_unparsed_args();
   for (i=0;i<maxverb;i++)
     if (commands[i]==verb[0..sizeof(commands[i])-1])
       if (ret=evalcmd(str))
@@ -199,14 +199,14 @@ static int tell(string str)
   int ret;
 
   if (!IS_ARCH(this_interactive())) return 0;
-  if (!(str=this_interactive()->_unparsed_args())) return 0;
+  if (!(str=({string})this_interactive()->_unparsed_args())) return 0;
   if (sizeof(tmp=old_explode(str," "))<2) return 0;
   if (!(who=find_player(tmp[0]))) return 0;
   if (!(sn=query_snoop(who))) return 0;
   if (query_wiz_grp(this_interactive())<=query_wiz_grp(sn) ||
       query_wiz_grp(this_interactive())<=query_wiz_grp(who)) return 0;
   snoop(sn,0);
-  ret=this_interactive()->_erzaehle(str);
+  ret=({int})this_interactive()->_erzaehle(str);
   snoop(sn,who);
   return ret;
 }
@@ -433,7 +433,7 @@ mixed toggle_short(string arg)
 mixed pl(string arg)
 {
   string who,rest;
-  object p;
+  string|object p;
   who=getarg(arg);
   rest=getrest(arg);
   if (err) return 0;
@@ -488,7 +488,7 @@ string new(string arg)
   if (!err)
   {
     push(ob);
-    ob->move(this_player(),M_NOCHECK);
+    ({int})ob->move(this_player(),M_NOCHECK);
     write("Created "+desc(ob)+".\n");
   }
   else
@@ -753,8 +753,8 @@ string desc(object ob)
     return "<corrupted stack entry>";
   if (query_once_interactive(ob))
     return object_name(ob)+" "+capitalize(geteuid(ob));
-  if (!hide_short && ob->short())
-    return object_name(ob)+" "+ob->name();
+  if (!hide_short && ({string})ob->short())
+    return object_name(ob)+" "+({string})ob->name();
   else
     return object_name(ob);
 }
@@ -786,8 +786,8 @@ string dump(string arg)
   if (err) return arg;
   push(ob);
   write("FILENAME: "+object_name(ob)+" ");
-  if (!hide_short && (s=ob->short()))
-    write(" SHORT: "+ob->name());
+  if (!hide_short && (({string})s=ob->short()))
+    write(" SHORT: "+({string})ob->name());
   write("\n");
   return arg;
 }
@@ -800,8 +800,8 @@ string info(string arg)
   ob=pop();
   if (err) return arg;
   write("FILENAME: "+object_name(ob)+" ");
-  if (s=ob->short())
-    write(" SHORT: "+ob->name());
+  if (s=({string})ob->short())
+    write(" SHORT: "+({string})ob->name());
   write("\n");
   if (getuid(ob))
     write("CREATOR: "+getuid(ob)+"\n");
@@ -811,26 +811,26 @@ string info(string arg)
 	  + query_idle(ob)+"\n");
   }
   if (s=query_snoop(ob))
-    write("SNOOPED BY: "+s->query_real_name()+"\n");
+    write("SNOOPED BY: "+({string})s->query_real_name()+"\n");
   s="";
   if (living(ob))
     s +="living ";
-  if (ob->query_npc())
+  if (({int})ob->query_npc())
     s+="npc ";
-  if (ob->query_gender_string())
-    s+=ob->query_gender_string();
+  if (({string})ob->query_gender_string())
+    s+=({string})ob->query_gender_string();
   if (s!="")
     write("FLAGS: "+s+"\n");
   //  write("LONG:\n");
-  //  if (stringp(s=ob->long()))
+  //  if (stringp(s=({string})ob->long()))
   //    write(s);
   //  write("\n");
   for (i=0;i<sizeof(query_list);i+=2)
   {
     if (query_list[i+1][0]=='-')
-      s=ob->QueryProp(query_list[i+1][1..]);
+      s=({string})ob->QueryProp(query_list[i+1][1..]);
     else
-      s=call_other(ob,query_list[i+1]);
+      s=({string})call_other(ob,query_list[i+1]);
     if (s)
     {
       printf("%s: %O\n",query_list[i],s);
@@ -1046,9 +1046,9 @@ void Remove(object ob,int a)
   if (!a)
   {
     printf("Removing %O",ob);
-    if (!hide_short) printf(" %O",ob->name());
+    if (!hide_short) printf(" %O",({string})ob->name());
   }
-  catch(ob->remove());
+  catch(({int})ob->remove());
   if (ob)
   {
     if (!a) printf(" HARD");
@@ -1084,7 +1084,7 @@ void clean(object ob)
 {
   object p,p2;
   p=first_inventory(ob);
-  while (p && p->id(str) && destroyable(p))
+  while (p && ({int})p->id(str) && destroyable(p))
   {
     if (recursive) clean(p);
     Remove(p,0);
@@ -1093,7 +1093,7 @@ void clean(object ob)
   while (p)
   {
     p2=next_inventory(p);
-    if (p2 && p2->id(str) && destroyable(p2))
+    if (p2 && ({int})p2->id(str) && destroyable(p2))
     {
       if (recursive) clean(p2);
       Remove(p2,0);
@@ -1153,7 +1153,7 @@ string mv(string arg)
   if (err) return arg;
   from=pop();
   if (err) return arg;
-  from->move(to,M_NOCHECK);
+  ({int})from->move(to,M_NOCHECK);
   write("Bewege "+desc(from)+" nach "+desc(to)+".\n");
   return arg;
 }
@@ -1262,7 +1262,7 @@ string make(string arg)
   for (i=sizeof(list)-1;i>=0;i--)
     if (list[i] && query_once_interactive(list[i]))
     {
-      list[i]->move("room/void",M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
+      ({int})list[i]->move("room/void",M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
     } else
       list[i]=0;
   list-=({0});
@@ -1279,7 +1279,7 @@ string make(string arg)
     }
     err=catch(ob=clone_object(file));
     if (!err)
-      ob->move(env,M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
+      ({int})ob->move(env,M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
   }
   else
   {
@@ -1296,7 +1296,7 @@ string make(string arg)
   }
   for (i=sizeof(list)-1;i>=0;i--)
     if (list[i])
-      list[i]->move(ob,M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
+      ({int})list[i]->move(ob,M_TPORT | M_SILENT | M_NO_SHOW | M_NOCHECK);
   return arg;
 }
 
@@ -1454,7 +1454,7 @@ string idle(string arg)
 
   ob=pop();
   if (err) return arg;
-  write(capitalize(ob->name(WER))+" ");
+  write(capitalize(({string})ob->name(WER))+" ");
   if (!query_once_interactive(ob))
   {
     write("ist kein echter Spieler.\n");
@@ -1477,7 +1477,7 @@ string stat(string arg)
 {
   object ob;
   mapping quests;
-  mixed stats, *arr, tmp,tmp2, list;
+  mixed stats, arr, tmp,tmp2, list;
   string titel, level, stat_str,weapon,armour;
   int pl;
   int i;
@@ -1486,7 +1486,7 @@ string stat(string arg)
   if (err)
     return arg;
   
-  titel=ob->QueryProp(P_TITLE);
+  titel=({string})ob->QueryProp(P_TITLE);
   if (!(pl=query_once_interactive(ob)))
     level="Monster="+old_explode(object_name(ob),"#")[0];
   else
@@ -1508,7 +1508,7 @@ string stat(string arg)
       level="Seher";
     else level="Spieler";
   if (IS_DOMAINMEMBER(ob))
-    for (tmp="secure/master"->get_domain_homes(geteuid(ob));
+    for (tmp=({string*})"secure/master"->get_domain_homes(geteuid(ob));
 	 sizeof(tmp);tmp=tmp[1..])
       level+="-"+capitalize(tmp[0]);
   if (pl)
@@ -1518,54 +1518,54 @@ string stat(string arg)
     else
       if (query_idle(ob)>600)
 	level+=", idle";
-    if (ob->QueryProp(P_GHOST))
+    if (({int})ob->QueryProp(P_GHOST))
       level+=", tot";
-    if (ob->QueryProp(P_INVIS))
+    if (({int})ob->QueryProp(P_INVIS))
       level+=", unsichtbar";
-    if (ob->QueryProp(P_FROG))
+    if (({int})ob->QueryProp(P_FROG))
       level+=", gruen und glitschig";
-    if (ob->QueryProp(P_TESTPLAYER))
+    if (({int|string})ob->QueryProp(P_TESTPLAYER))
       level+=", Testspieler";
   }
-  tmp=ob->QueryProp(P_PRESAY);
+  tmp=({string})ob->QueryProp(P_PRESAY);
   if (tmp && tmp!="")
     tmp=tmp+" ";
   else
     tmp="";
-  tmp2=ob->QueryProp(P_RACE);
+  tmp2=({string})ob->QueryProp(P_RACE);
   if(!tmp2)
     tmp2="Dingsda";
-  arr=ob->QueryProp(P_NAME);
+  arr=({string})ob->QueryProp(P_NAME);
   if (pointerp(arr)) arr=arr[0];
   printf("%s%s %s (%s)[%s].\n\n",tmp||"",arr||"",titel||"",
 	 tmp2||"??",level||"??");
   if (pl)
     printf("        Alter : %s.%s\n",
-	   timef(2*ob->QueryProp(P_AGE)),
-	   (tmp=ob->QueryProp(P_MARRIED))?
+	   timef(2*({int})ob->QueryProp(P_AGE)),
+	   (tmp=({string})ob->QueryProp(P_MARRIED))?
 	   ("Verheiratet mit "+capitalize(tmp)+"."):"");
   else
     printf("    Aggressiv : %4s          Gespraechig : %d%%\n",
-	   ob->QueryProp(P_AGGRESSIVE)? "Ja" : "Nein", 
-	   ob->QueryProp(P_CHAT_CHANCE)) ;
+	   ({int|float|mapping})ob->QueryProp(P_AGGRESSIVE)? "Ja" : "Nein", 
+	   ({int})ob->QueryProp(P_CHAT_CHANCE)) ;
   printf(" Lebenspunkte : [%4d/%4d]   Magiepunkte : [%4d/%4d]   " +
 	 "Erfahrung : %d\n",
-	 ob->QueryProp(P_HP), ob->QueryProp(P_MAX_HP), 
-	 ob->QueryProp(P_SP), ob->QueryProp(P_MAX_SP), 
-	 ob->QueryProp(P_XP));
+	 ({int})ob->QueryProp(P_HP), ({int})ob->QueryProp(P_MAX_HP), 
+	 ({int})ob->QueryProp(P_SP), ({int})ob->QueryProp(P_MAX_SP), 
+	 ({int})ob->QueryProp(P_XP));
   printf("      Nahrung : [%3d/%d]    Fluessigkeit : [%3d/%d]       " +
 	 "Alkohol : [%3d/%d]\n",
-	 ob->QueryProp(P_FOOD), ob->QueryProp(P_MAX_FOOD),
-	 ob->QueryProp(P_DRINK), ob->QueryProp(P_MAX_DRINK),
-	 ob->QueryProp(P_ALCOHOL), ob->QueryProp(P_MAX_ALCOHOL)) ;
-  switch(ob->QueryProp(P_GENDER))  {
+	 ({int})ob->QueryProp(P_FOOD), ({int})ob->QueryProp(P_MAX_FOOD),
+	 ({int})ob->QueryProp(P_DRINK), ({int})ob->QueryProp(P_MAX_DRINK),
+	 ({int})ob->QueryProp(P_ALCOHOL), ({int})ob->QueryProp(P_MAX_ALCOHOL)) ;
+  switch(({int})ob->QueryProp(P_GENDER))  {
     case FEMALE : tmp2 = "weiblich " ; break ;
     case MALE   : tmp2 = "maennlich" ; break ;
     default     : tmp2 = "boingisch" ; break ;
   }
   printf("   Geschlecht : %s       Charakter : %-5d             Stufe : %-3d\n",
-	 tmp2, ob->QueryProp(P_ALIGN), ob->QueryProp(P_LEVEL)) ;
-  stats = ob->QueryProp(P_ATTRIBUTES) ;
+	 tmp2, ({int})ob->QueryProp(P_ALIGN), ({int})ob->QueryProp(P_LEVEL)) ;
+  stats = ({mapping})ob->QueryProp(P_ATTRIBUTES) ;
 	if (!mappingp(stats)) stats=([]);
   tmp  = m_indices(stats); tmp2 = m_values(stats); stat_str = "" ;
   for(; sizeof(tmp); tmp=tmp[1..],tmp2=tmp2[1..])
@@ -1576,20 +1576,20 @@ string stat(string arg)
   else
     stat_str = stat_str[0..<2];
   
-  printf("         Geld : %-9d           Stati : %s\n\n", ob->QueryMoney(),
+  printf("         Geld : %-9d           Stati : %s\n\n", ({int})ob->QueryMoney(),
 	 stat_str) ;
   
   weapon = "Keine" ; armour = "" ;
   for(tmp=all_inventory(ob); sizeof(tmp); tmp=tmp[1..])
   {
-    if(tmp[ 0 ]->QueryProp(P_WIELDED)) // gezueckte Waffe
+    if(({object})tmp[ 0 ]->QueryProp(P_WIELDED)) // gezueckte Waffe
       weapon = (tmp[ 0 ]->name(WER)) + " (" +
          old_explode(object_name(tmp[ 0 ]),"#")[0] + ")[" +
-         tmp[ 0 ]->QueryProp(P_WC) + "]" ;
+         ({int})tmp[ 0 ]->QueryProp(P_WC) + "]" ;
 
-    if(tmp[ 0 ]->QueryProp(P_WORN))   // getragene Ruestung
-      armour += (tmp[ 0 ]->name(WER)) + "[" +
-          tmp[ 0 ]->QueryProp(P_AC) + "]" +
+    if(({object})tmp[ 0 ]->QueryProp(P_WORN))   // getragene Ruestung
+      armour += (({string})tmp[ 0 ]->name(WER)) + "[" +
+          ({int})tmp[ 0 ]->QueryProp(P_AC) + "]" +
     ", " ;
   }
 
@@ -1606,17 +1606,17 @@ string stat(string arg)
   }
   
   printf("   Waffe(%3d) : %s\nRuestung(%3d) : %s\n",
-	 ob->QueryProp(P_TOTAL_WC), weapon,
-	 ob->QueryProp(P_TOTAL_AC), armour) ;
+	 ({int})ob->QueryProp(P_TOTAL_WC), weapon,
+	 ({int})ob->QueryProp(P_TOTAL_AC), armour) ;
   
-  list = ob->QueryEnemies();
+  list = ({mixed})ob->QueryEnemies();
   if (pointerp(list)) 
   {
     list=list[0];
     tmp2 = "" ;
     for(i=sizeof(list)-1 ; i>=0;i--)
       if (objectp(list[i]))
-        tmp2 += (list[ i ]->name(WER) + ", ") ;
+        tmp2 += (({string})list[ i ]->name(WER) + ", ") ;
     if(tmp2 != "")
       printf("       Feinde : %s.\n", tmp2[0..<3]);
   }
@@ -1625,11 +1625,11 @@ string stat(string arg)
   if(pl)
   {
     printf( break_string( 
-              CountUp(m_indices(ob->QueryProp(P_QUESTS))), 
+              CountUp(m_indices(({mapping})ob->QueryProp(P_QUESTS))), 
               75,
               "     Aufgaben : ",
               BS_INDENT_ONCE));
-    if(((tmp2 = ob->QueryProp(P_MAILADDR)) != "none") && tmp2 &&
+    if(((tmp2 = ({string})ob->QueryProp(P_MAILADDR)) != "none") && tmp2 &&
        (tmp2 != ""))
       tmp2 = " (" + tmp2 + ")" ;
     else
@@ -1655,22 +1655,22 @@ string scan(string arg)
   if (err) return arg;
   if (query_once_interactive(ob))
     printf("Spieler: %s, Level: %d, Wizlevel: %d\n",
-	   capitalize(getuid(ob)), ob->QueryProp(P_LEVEL),
+	   capitalize(getuid(ob)), ({int})ob->QueryProp(P_LEVEL),
 	   query_wiz_level(ob));
   else
     printf("Monster, UID: %s, EUID: %s, Level: %d\n",
-	   getuid(ob), (geteuid(ob)?geteuid(ob):"0"), ob->QueryProp(P_LEVEL));
-  tmp=ob->short();
+	   getuid(ob), (geteuid(ob)?geteuid(ob):"0"), ({int})ob->QueryProp(P_LEVEL));
+  tmp=({string})ob->short();
   if (!stringp(tmp)||!sizeof(tmp))
-    tmp=sprintf("(%s %s %s %s)",ob->QueryProp(P_PRESAY)+"",
-		ob->QueryProp(P_NAME)+"",ob->QueryProp(P_TITLE)+"",
+    tmp=sprintf("(%s %s %s %s)",({string})ob->QueryProp(P_PRESAY)+"",
+		({string})ob->QueryProp(P_NAME)+"",({string})ob->QueryProp(P_TITLE)+"",
 		(interactive(ob)?"":"(netztot"));
   else
     tmp=tmp[0..<3];
-  printf("%s, Rasse: %s\n",tmp, ""+ob->QueryProp(P_RACE));
+  printf("%s, Rasse: %s\n",tmp, ""+({string})ob->QueryProp(P_RACE));
   printf("Stats:    ");
-  tmp=ob->QueryProp(P_ATTRIBUTES);
-  tmp3=ob->QueryProp(P_ATTRIBUTES_OFFSETS);
+  tmp=({mapping})ob->QueryProp(P_ATTRIBUTES);
+  tmp3=({mapping})ob->QueryProp(P_ATTRIBUTES_OFFSETS);
   if (!tmp)
     printf("keine\n");
   else
@@ -1685,9 +1685,9 @@ string scan(string arg)
     printf("\n");
   }
   printf("Ruestung: %-6d    Waffen: %-6d      Vorsicht: %-6d   Geschlecht: ",
-	 ob->QueryProp(P_TOTAL_AC),ob->QueryProp(P_TOTAL_WC),
-	 ob->QueryProp(P_WIMPY));
-  if (!(tmp=ob->QueryProp(P_GENDER)))
+	 ({int})ob->QueryProp(P_TOTAL_AC),({int})ob->QueryProp(P_TOTAL_WC),
+	 ({int})ob->QueryProp(P_WIMPY));
+  if (!(tmp=({int})ob->QueryProp(P_GENDER)))
     printf("N\n");
   else
   {
@@ -1696,29 +1696,29 @@ string scan(string arg)
     else
       printf("M\n");
   }
-  if (tmp=ob->QueryProp(P_MARRIED))
+  if (tmp=({string})ob->QueryProp(P_MARRIED))
     printf("Verheiratet mit %s.\n",capitalize(tmp));
   printf("Lebenspunkte: %4d [%4d], Magiepunkte: %4d [%4d], Erf: %-8d\n",
-	 ob->QueryProp(P_HP), ob->QueryProp(P_MAX_HP), 
-	 ob->QueryProp(P_SP), ob->QueryProp(P_MAX_SP),
-	 ob->QueryProp(P_XP));
+	 ({int})ob->QueryProp(P_HP), ({int})ob->QueryProp(P_MAX_HP), 
+	 ({int})ob->QueryProp(P_SP), ({int})ob->QueryProp(P_MAX_SP),
+	 ({int})ob->QueryProp(P_XP));
   if (living(ob))
   {
     tmp=present("geld",ob);
     if (tmp)
-      tmp=tmp->QueryProp(P_AMOUNT);
+      tmp=({int})tmp->QueryProp(P_AMOUNT);
     printf("Traegt %6d (%6d) g. Eigengewicht %6d g. %6d Muenzen.\n",
-	   ob->query_weight_contents(),ob->QueryProp(P_MAX_WEIGHT),
-	   ob->QueryProp(P_WEIGHT),tmp);
-    if (tmp=ob->SelectEnemy())
-      printf("Kaempft gegen %s [%O]\n",tmp->name(WEN),tmp);
+	   ({int})ob->query_weight_contents(),({int})ob->QueryProp(P_MAX_WEIGHT),
+	   ({int})ob->QueryProp(P_WEIGHT),tmp);
+    if (tmp=({object})ob->SelectEnemy())
+      printf("Kaempft gegen %s [%O]\n",({string})tmp->name(WEN),tmp);
   }
   printf("ENV: %s",
 	 ((tmp=environment(ob))?object_name(tmp):"- fabric of space -"));
   if(query_once_interactive(ob))
   {
-    printf(", EMail: %s\n", ob->QueryProp(P_MAILADDR)+"");
-    tmp="/secure/master"->find_userinfo(getuid(ob));
+    printf(", EMail: %s\n", ({string})ob->QueryProp(P_MAILADDR)+"");
+    tmp=({int})"/secure/master"->find_userinfo(getuid(ob));
     if (pointerp(tmp) && sizeof(tmp)>USER_DOMAIN)
     {
       tmp=tmp[USER_DOMAIN];
@@ -1730,7 +1730,7 @@ string scan(string arg)
 	printf(".\n");
       }
     }
-    tmp="/secure/master"->get_domain_homes(getuid(ob));
+    tmp=({string*})"/secure/master"->get_domain_homes(getuid(ob));
     if (pointerp(tmp)&&sizeof(tmp)>0)
     {
       printf("Mitglied in: ");
@@ -1739,7 +1739,7 @@ string scan(string arg)
       printf(".\n");
     }
     printf("Quests: ");
-    tmp=ob->QueryProp(P_QUESTS);
+    tmp=({mapping})ob->QueryProp(P_QUESTS);
     if (tmp==({})||!pointerp(tmp))
       printf("Keine.\n");
     else
@@ -1752,8 +1752,8 @@ string scan(string arg)
       tmp=tmp[8..];
       printf("%s",tmp);
     }
-    printf("PKills: %d ",ob->QueryProp(P_KILLS));
-    printf(", QuestPoints: %d (%d/%d), Alter: %s\n",ob->QueryProp(P_QP),ob->QueryProp(P_NEEDED_QP),QM->QueryMaxQP(),timef(2*ob->QueryProp(P_AGE)));
+    printf("PKills: %d ",({int})ob->QueryProp(P_KILLS));
+    printf(", QuestPoints: %d (%d/%d), Alter: %s\n",({int})ob->QueryProp(P_QP),({int})ob->QueryProp(P_NEEDED_QP),({int})QM->QueryMaxQP(),timef(2*({int})ob->QueryProp(P_AGE)));
     if (interactive(ob))
     {
       printf("From: %s (%s) [%s]\n",query_ip_name(ob),query_ip_number(ob),country(query_ip_name(ob)));
@@ -1761,9 +1761,9 @@ string scan(string arg)
       printf("Idle seit %d Sekunden",tmp);
       if (tmp>60)
   	printf(" (%s)",timef(tmp));
-			printf(", cmd avg: %d",ob->QueryProp("command_average"));
+			printf(", cmd avg: %d",({int})ob->QueryProp("command_average"));
       printf(", noch %d ZT zu finden.\nGesnooped von: %s\n",
-	     ((tmp=ob->QueryProp(P_POTIONROOMS))?sizeof(tmp):0),
+	     ((tmp=({int*})ob->QueryProp(P_POTIONROOMS))?sizeof(tmp):0),
 	     ((tmp=query_snoop(ob))?capitalize(getuid(tmp)):"Niemandem"));
     }
     else
@@ -1772,7 +1772,7 @@ string scan(string arg)
       tmp=file_time("save/"+tmp[0..0]+"/"+tmp+".o");
       tmp=time()-tmp;
       printf("Kam von: %s, vor: %d s(%s)\n",
-	     ob->QueryProp(P_CALLED_FROM_IP),tmp,timef(tmp));  
+	     ({string})ob->QueryProp(P_CALLED_FROM_IP),tmp,timef(tmp));  
     }
   }
   else
@@ -1864,7 +1864,7 @@ mixed renew_player(string arg)
     err=desc(ob)+" is not an interactive player";
     return arg;
   }
-  if ((err="/secure/master"->renew_player_object(ob))<0)
+  if ((err=({int})"/secure/master"->renew_player_object(ob))<0)
     err="error "+err+" when renewing "+desc(ob);
   return arg;
 }
@@ -1883,10 +1883,10 @@ mixed copy_ldfied(string arg)
     return arg;
   }
   new=clone_object(old_explode(object_name(ob),"#")[0]);
-  props=ob->QueryProperties();
-  new->SetProperties(ob->QueryProperties());
+  props=({mapping})ob->QueryProperties();
+  ({mapping})new->SetProperties(ob->QueryProperties());
   push(new);
-  new->move(this_player(),M_NOCHECK);
+  ({int})new->move(this_player(),M_NOCHECK);
   return arg;
 }
 

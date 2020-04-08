@@ -97,7 +97,7 @@ private void stringenize(mixed obj, int flags, mixed objs, mixed info)
 {
   string id, tmp;
   int idx;
-  tmp = capitalize(obj->short()||"")[0..<2]
+  tmp = capitalize(({string})obj->short()||"")[0..<2]
       + (!(flags & 4) && (flags & 1) ? " ["+object_name(obj)+"]" : "");
   if(flags & 3 || living(obj)) id = object_name(obj);
   else
@@ -125,7 +125,7 @@ varargs mixed make_invlist(object viewer, mixed inv, int flags)
   mixed objs, info;
   string descr;
 
-  iswiz = IS_LEARNER( viewer ) && viewer->QueryProp(P_WANTS_TO_LEARN);
+  iswiz = IS_LEARNER( viewer ) && ({int})viewer->QueryProp(P_WANTS_TO_LEARN);
   descr = ""; objs = ({}); info = ({});
   map(inv, #'stringenize/*'*/, iswiz | (flags & 2) | (flags & 4), &objs, &info);
   if(flags & 1) return info;

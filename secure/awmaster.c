@@ -152,16 +152,16 @@ void RegisterArmour()
     {
       armours += ([ id : 
         ([
-            AWM_TYPE      : ob->QueryProp(P_ARMOUR_TYPE) ,
-            AWM_CLASS     : ob->QueryProp(P_AC) ,
-            AWM_EFF_CLASS : ob->QueryProp(P_EFFECTIVE_AC) ,
+            AWM_TYPE      : ({string})ob->QueryProp(P_ARMOUR_TYPE) ,
+            AWM_CLASS     : ({int})ob->QueryProp(P_AC) ,
+            AWM_EFF_CLASS : ({int})ob->QueryProp(P_EFFECTIVE_AC) ,
             AWM_FLAGS     : xflags(ob),
-            AWM_WEIGHT    : ob->QueryProp(P_WEIGHT) ,
-            AWM_VALUE     : ob->QueryProp(P_VALUE) ,
-            AWM_HANDS     : ob->QueryProp(P_NR_HANDS) , // Fuer Schilde
-            AWM_D_TYPE    : ob->QueryProp(P_DAM_TYPE) ,
-            AWM_X_CLASS   : ob->QueryProp(P_EFFECTIVE_WC) ||
-                            ob->QueryProp(P_WC),
+            AWM_WEIGHT    : ({int})ob->QueryProp(P_WEIGHT) ,
+            AWM_VALUE     : ({int})ob->QueryProp(P_VALUE) ,
+            AWM_HANDS     : ({int})ob->QueryProp(P_NR_HANDS) , // Fuer Schilde
+            AWM_D_TYPE    : ({string*})ob->QueryProp(P_DAM_TYPE) ,
+            AWM_X_CLASS   : ({int})ob->QueryProp(P_EFFECTIVE_WC) ||
+                            ({int})ob->QueryProp(P_WC),
             AWM_TIME      : time()
         ]) ]);
     }
@@ -206,16 +206,16 @@ void RegisterWeapon()
     {
       weapons += ([ id :
         ([
-            AWM_TYPE      : ob->QueryProp(P_WEAPON_TYPE) ,
-            AWM_CLASS     : ob->QueryProp(P_WC) ,
-            AWM_EFF_CLASS : ob->QueryProp(P_EFFECTIVE_WC) ,
+            AWM_TYPE      : ({string})ob->QueryProp(P_WEAPON_TYPE) ,
+            AWM_CLASS     : ({int})ob->QueryProp(P_WC) ,
+            AWM_EFF_CLASS : ({int})ob->QueryProp(P_EFFECTIVE_WC) ,
             AWM_FLAGS     : xflags(ob),
-            AWM_WEIGHT    : ob->QueryProp(P_WEIGHT) ,
-            AWM_VALUE     : ob->QueryProp(P_VALUE) ,
-            AWM_HANDS     : ob->QueryProp(P_NR_HANDS) ,
-            AWM_D_TYPE    : ob->QueryProp(P_DAM_TYPE) ,
-            AWM_X_CLASS   : ob->QueryProp(P_EFFECTIVE_AC) || 
-                            ob->QueryProp(P_AC),
+            AWM_WEIGHT    : ({int})ob->QueryProp(P_WEIGHT) ,
+            AWM_VALUE     : ({int})ob->QueryProp(P_VALUE) ,
+            AWM_HANDS     : ({int})ob->QueryProp(P_NR_HANDS) ,
+            AWM_D_TYPE    : ({string*})ob->QueryProp(P_DAM_TYPE) ,
+            AWM_X_CLASS   : ({int})ob->QueryProp(P_EFFECTIVE_AC) || 
+                            ({int})ob->QueryProp(P_AC),
             AWM_TIME      : time()
         ]) ]);
     }

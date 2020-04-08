@@ -57,10 +57,10 @@ public varargs void RemoveVItem(string key)
     // Es wird auch zerstoert, wenn das genommene Objekt gerade im Raum
     // rumliegt (weil Spieler es hat fallen lassen etc.)
     if (vitems[key, VI_OBJECT])
-        vitems[key, VI_OBJECT]->remove(1);
+        ({int})vitems[key, VI_OBJECT]->remove(1);
     if (vitems[key, VI_LAST_OBJ]
         && environment(vitems[key, VI_LAST_OBJ]) == this_object())
-        vitems[key, VI_LAST_OBJ]->remove(1);
+        ({int})vitems[key, VI_LAST_OBJ]->remove(1);
 
     m_delete(vitems, key);
     SetProp(P_VITEMS, vitems);
@@ -123,39 +123,39 @@ private void configure_object(object ob, mapping props)
     switch(k)
     {
       case P_READ_DETAILS:
-        if (reset_prop) ob->RemoveReadDetail(0);
+        if (reset_prop) ({void})ob->RemoveReadDetail(0);
         walk_mapping(v, "AddReadDetail", ob);
         break;
       case P_DETAILS:
-        if (reset_prop) ob->RemoveDetail(0);
+        if (reset_prop) ({void})ob->RemoveDetail(0);
         walk_mapping(v, "AddDetail", ob);
         break;
       case P_SMELLS:
-        if (reset_prop) ob->RemoveSmells(0);
+        if (reset_prop) ({void})ob->RemoveSmells(0);
         walk_mapping(v, "AddSmells", ob);
         break;
       case P_SOUNDS:
-        if (reset_prop) ob->RemoveSounds(0);
+        if (reset_prop) ({void})ob->RemoveSounds(0);
         walk_mapping(v, "AddSounds", ob);
         break;
       case P_TOUCH_DETAILS:
-        if (reset_prop) ob->RemoveTouchDetail(0);
+        if (reset_prop) ({void})ob->RemoveTouchDetail(0);
         walk_mapping(v, "AddTouchDetail", ob);
         break;
       case P_IDS:
-        if (reset_prop) ob->SetProp(P_IDS, v);
-        else ob->AddId(v);
+        if (reset_prop) ({string*})ob->SetProp(P_IDS, v);
+        else ({void})ob->AddId(v);
       case P_CLASS:
-        if (reset_prop) ob->SetProp(P_CLASS, v);
-        else ob->AddClass(v);
+        if (reset_prop) ({string*})ob->SetProp(P_CLASS, v);
+        else ({void})ob->AddClass(v);
       case P_ADJECTIVES:
-        if (reset_prop) ob->SetProp(P_ADJECTIVES, v);
-        else ob->AddAdjective(v);
+        if (reset_prop) ({string*})ob->SetProp(P_ADJECTIVES, v);
+        else ({void})ob->AddAdjective(v);
         break;
 
       // Alle anderen Properties stumpf setzen.
       default:
-        ob->SetProp(k, v);
+        ({mixed})ob->SetProp(k, v);
     }
   }
 }
@@ -188,13 +188,13 @@ private void check_vitem(string key, string path, int refresh,
     if (path)
     {
       obj=clone_object(path);
-      obj->SetAutoObject(1);
+      ({int})obj->SetAutoObject(1);
       if (mappingp(props))
         configure_object(obj, props);
       // Schatten erzeugen, welcher die Beschreibung des Objekts im Container nach
       // den Props in shadow_props abaendert.
       sh = clone_object("/obj/vitem_shadow");
-      sh->set_shadow(obj, shadow_props);
+      ({void})sh->set_shadow(obj, shadow_props);
     }
     else
     {
@@ -227,7 +227,7 @@ public object present_vitem(string complex_desc)
 {
   foreach(object o : GetVItemClones())
   {
-    if (o->id(complex_desc))
+    if (({int})o->id(complex_desc))
       return o;
   }
   return 0;
@@ -297,7 +297,7 @@ void reset()
         // wird es immer refresht...
         // Zu beachten: es soll auch nicht hier in diesem Container rumliegen
         // nach dem Heimbewegen, also zerstoeren!
-        last_obj->remove(1);
+        ({int})last_obj->remove(1);
         // Fallthrough
       case VI_REFRESH_REMOVE:
         // wenn nicht mehr als vItem hier ist (d.h. auch wenn es hier im Raum

@@ -123,7 +123,7 @@ bool light(string str)
       // Der Zweck heiligt ja bekanntlich die Mittel. ;-)
       //
       // Tiamak
-      env->_set_last_content_change();
+      ({int})env->_set_last_content_change();
   call_time = (fuel < CALL_OUT_TIME)? fuel : CALL_OUT_TIME ;
   call_out( "out_of_fuel", call_time ) ;
   if( ({int})PL->QueryProp(P_PLAYER_LIGHT) == 1 )
@@ -171,7 +171,7 @@ bool extinguish(string str)
       // Der Zweck heiligt ja bekanntlich die Mittel. ;-)
       //
       // Tiamak
-      env->_set_last_content_change();
+      ({int})env->_set_last_content_change();
   if ( ({int})this_player()->QueryProp(P_PLAYER_LIGHT) == 0 )
   {
     write( "Es wird dunkel.\n" ) ;
@@ -196,6 +196,7 @@ bool unlight()
   if( !lighted )
     return FALSE ;
 
+
   if( ( ti = remove_call_out( "out_of_fuel" ) ) == -1 )
     ti = 0 ;
 
@@ -204,7 +205,7 @@ bool unlight()
   env=this_object();
   while (objectp(env=environment(env)))
       // Kommentar siehe oben ;^)
-      env->_set_last_content_change();
+      ({int})env->_set_last_content_change();
   if( fuel <= 0 ) test_remove() ;
   return TRUE ;
 }
@@ -224,7 +225,7 @@ void out_of_fuel()
   env=this_object();
   while (objectp(env=environment(env)))
       // Immer noch nicht wirklich sauber. Aber Begruendung siehe oben.
-      env->_set_last_content_change();
+      ({int})env->_set_last_content_change();
 
   if (environment())
   {
@@ -232,11 +233,11 @@ void out_of_fuel()
     {
       inv=(users() & all_inventory(environment(environment())))-({ environment() });
       for (i=sizeof(inv)-1; i>=0; i--) 
-        if (inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
-          tell_object(inv[i], "Es wird dunkel, als " + environment()->name(WESSEN) +
+        if (({int})inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
+          tell_object(inv[i], "Es wird dunkel, als " + ({string})environment()->name(WESSEN) +
             " " + QueryProp(P_NAME) + " erlischt.\n" ) ;
         else tell_object(inv[i], CAP( name( WER, 0 ) ) + " erlischt.\n" ) ;
-      if (environment()->QueryProp(P_PLAYER_LIGHT)<=0)
+      if (({int})environment()->QueryProp(P_PLAYER_LIGHT)<=0)
         tell_object(environment(), 
           CAP( name( WER, 1 ) ) + " erlischt, und es wird dunkel.\n" ) ;
       else tell_object(environment(), CAP( name( WER, 1 ) ) + " erlischt.\n" ) ;    
@@ -245,7 +246,7 @@ void out_of_fuel()
     {
       inv=(users() & all_inventory(environment()));
       for (i=sizeof(inv)-1; i>=0; i--) 
-        if (inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
+        if (({int})inv[i]->QueryProp(P_PLAYER_LIGHT)<=0)
           tell_object(inv[i], "Es wird dunkel, als " + name(WER,1)
           + " erlischt.\n" ) ;
         else tell_object(inv[i], CAP( name( WER, 0 ) ) + " erlischt.\n" ) ;

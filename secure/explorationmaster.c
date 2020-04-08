@@ -28,7 +28,7 @@ inherit "/std/util/pl_iterator";
 
 #include <living/comm.h>
 #define ZDEBUG(x) if (find_player("zesstra")) \
-  find_player("zesstra")->ReceiveMsg(x,MT_DEBUG,0,object_name()+":",this_object())
+  ({int})find_player("zesstra")->ReceiveMsg(x,MT_DEBUG,0,object_name()+":",this_object())
 //#define ZDEBUG(x)
 
 // Struktur: ([ string filename : string* action, int number, int type ]) 
@@ -95,8 +95,8 @@ private void check_player(string pl, mixed extra)
   //ZDEBUG(sprintf("check %s...",pl));
   // Letzte Loginzeit ermitteln, wenn laenger als 90 Tage her und nicht
   // eingeloggt, wird der Spieler uebersprungen.
-  pldata->ReleasePlayer();
-  pldata->LoadPlayer(pl);
+  ({int})pldata->ReleasePlayer();
+  ({int})pldata->LoadPlayer(pl);
   // Testspieler ausnehmen, Spieler, die 90 Tage nicht da waren.
   if ( (({int})pldata->QueryProp(P_LAST_LOGIN) < time() - 7776000
         && !find_player(pl))
@@ -154,7 +154,7 @@ private void plcheck_finished(mixed extra)
   int avgspieler = extra[5];
 
   if (objectp(pldata))
-    pldata->remove(1);
+    ({int})pldata->remove(1);
 
   if (file_size(BY_EP) >= 0)
     rm(BY_EP);
@@ -524,7 +524,7 @@ nomask varargs void ShowEPObjects(string what, string magname)
       return;
     }
     if (!what || what == "") {
-      this_interactive()->More(DUMPFILE, 1);
+      ({void})this_interactive()->More(DUMPFILE, 1);
       log_file("ARCH/EPZugriffe", ctime(time())+": "+
         capitalize(getuid(this_interactive()))+" schaute sich das DUMPFILE an.\n");
       return;
@@ -538,13 +538,13 @@ nomask varargs void ShowEPObjects(string what, string magname)
       if (!what || what == "")
        what = "/"+getuid(this_interactive())+"/";
       else {
-       if (!master()->domain_master(getuid(this_interactive()), what)) {
+       if (!({int})master()->domain_master(getuid(this_interactive()), what)) {
          write("Sorry, Du kannst nur Objekte in Deiner eigenen Region abfragen!\n");
          return;
        }
        if (!magname || magname=="")
          magname = getuid(this_interactive());
-//        if (!master()->domain_member(magname, what)) {
+//        if (!({int})master()->domain_member(magname, what)) {
 //         write(capitalize(magname)+" ist gar kein Mitarbeiter in Deiner Region!\n");
 //          return;
 //       }
@@ -563,9 +563,9 @@ nomask varargs void ShowEPObjects(string what, string magname)
        what="/"+what+"/";
       }
   if (allowed())
-    this_interactive()->More(getMatchArch(what));
+    ({void})this_interactive()->More(getMatchArch(what));
   else
-    this_interactive()->More(getMatch(what));
+    ({void})this_interactive()->More(getMatch(what));
   log_file("ARCH/EPZugriffe", ctime(time())+": "+
     capitalize(getuid(this_interactive()))+" schaute sich "+what+" an.\n");
   return;
@@ -669,8 +669,8 @@ nomask int GiveExplorationPoint(string key)
 
   if (!previous_object() || !this_interactive() || !this_player() ||
        this_player() != this_interactive() ||
-       this_player()->QueryProp(P_KILLS) ||
-       this_player()->QueryGuest()       )
+       ({int})this_player()->QueryProp(P_KILLS) ||
+       ({int})this_player()->QueryGuest()       )
     return 0;
 
   fn = old_explode(object_name(previous_object()), "#")[0];
@@ -681,7 +681,7 @@ nomask int GiveExplorationPoint(string key)
   if (member(obs[fn],key) < 0)
     return 0;
 
-  ep = (MASTER->query_ep(getuid(this_interactive())) || "");
+  ep = (({string})MASTER->query_ep(getuid(this_interactive())) || "");
 
   gesetzt=test_bit(ep,obs[fn,1]);
   check_to_fast(getuid(this_player()),fn,gesetzt);
@@ -698,7 +698,7 @@ nomask int GiveExplorationPointObject(string key, object ob)
   string ep;
   int gesetzt;
   
-  if (!objectp(ob) || ob->QueryProp(P_KILLS ))
+  if (!objectp(ob) || ({int})ob->QueryProp(P_KILLS ))
     return 0;
 
   fn = old_explode(object_name(previous_object()), "#")[0];
@@ -709,7 +709,7 @@ nomask int GiveExplorationPointObject(string key, object ob)
   if (member(obs[fn],key) < 0)
     return 0;
 
-  ep = (MASTER->query_ep(getuid(ob)) || "");
+  ep = (({string})MASTER->query_ep(getuid(ob)) || "");
 
   gesetzt=test_bit(ep,obs[fn,1]);
   check_to_fast(getuid(this_player()),fn,gesetzt);
@@ -723,7 +723,7 @@ nomask int GiveExplorationPointObject(string key, object ob)
 
 private int QueryRealExplorationPoints(string pl)
 {
-  return count_bits(MASTER->query_ep(pl) || " ");
+  return count_bits(({string})MASTER->query_ep(pl) || " ");
 }
 
 nomask int QueryExplorationPoints(mixed pl)
@@ -753,7 +753,7 @@ private int remove_fp(int num, string pl)
 {
   int i,j,k,t,maxEP;
   string ep;
-  ep = (MASTER->query_ep(pl) || "");
+  ep = (({string})MASTER->query_ep(pl) || "");
 
   maxEP = QueryMaxEP();
   for( i=0; i<num; i++)
@@ -765,7 +765,7 @@ private int remove_fp(int num, string pl)
     if( j==maxEP ) break;
     ep = clear_bit(ep, k);
   }
-  MASTER->update_ep(pl,ep);
+  ({int})MASTER->update_ep(pl,ep);
   return i;
 }
 
@@ -794,13 +794,13 @@ nomask int RemoveFP(int num, string pl, string grund)
   if (!pl) return -2;
   i=remove_fp(num, pl);
   log_file("ARCH/fp_strafen", ctime(time())+": "
-    +this_interactive()->Name(WER)+" loescht "+pl+" "+i
+    +({string})this_interactive()->Name(WER)+" loescht "+pl+" "+i
     +" FPs\nGrund:"+grund+"\n");
   if( i>0 ) {
      text =
      "Hallo "+capitalize(pl)+",\n\n"+
      break_string(
-      this_interactive()->Name(WER)+" hat soeben veranlasst, dass Dir "+i
+      ({string})this_interactive()->Name(WER)+" hat soeben veranlasst, dass Dir "+i
       +" FPs abgezogen wurden.\nGrund:"+grund+"\n", 78 );
 
      mail = allocate(9);
@@ -814,7 +814,7 @@ nomask int RemoveFP(int num, string pl, string grund)
      mail[MSG_ID]=MUDNAME":"+time();
      mail[MSG_BODY]=text;
 
-     "/secure/mailer"->DeliverMail(mail,1);
+     ({string*})"/secure/mailer"->DeliverMail(mail,1);
   }
   return i;
 }
@@ -824,7 +824,7 @@ private int add_fp(int num, string pl)
 {
   int i,j,k,t,maxEP;
   string ep;
-  ep = (MASTER->query_ep(pl) || "");
+  ep = (({string})MASTER->query_ep(pl) || "");
 
   maxEP = QueryMaxEP();
   for( i=0; i<num; i++)
@@ -836,7 +836,7 @@ private int add_fp(int num, string pl)
     if( j==maxEP ) break;
     ep = set_bit(ep, k);
   }
-  MASTER->update_ep(pl,ep);
+  ({int})MASTER->update_ep(pl,ep);
   return i;
 }
 
@@ -848,7 +848,7 @@ nomask int AddFP(int num, string pl)
   if (!pl) return -2;
   i=add_fp(num, pl);
   log_file("ARCH/fp_strafen", ctime(time())+": "
-    +this_interactive()->Name(WER)+" gibt "+pl+" "+i
+    +({string})this_interactive()->Name(WER)+" gibt "+pl+" "+i
     +" FPs\n");
 
   return i;
@@ -861,12 +861,12 @@ nomask int SetFP(int num, string pl)
   if (!allowed()) return -1;
   if ( num<0 ) return -3;
   if (!pl) return -2;
-  ep = (MASTER->query_ep(pl) || "");
+  ep = (({string})MASTER->query_ep(pl) || "");
 
   maxEP = QueryMaxEP();
   if (num<0 || num>=maxEP) return -4;
   ep = set_bit(ep, num);
-  MASTER->update_ep(pl,ep);
+  ({int})MASTER->update_ep(pl,ep);
   return num;
 }
 
@@ -877,12 +877,12 @@ nomask int ClearFP(int num, string pl)
   if (!allowed()) return -1;
   if ( num<0 ) return -3;
   if (!pl) return -2;
-  ep = (MASTER->query_ep(pl) || "");
+  ep = (({string})MASTER->query_ep(pl) || "");
 
   maxEP = QueryMaxEP();
   if (num<0 || num>=maxEP) return -4;
   ep = clear_bit(ep, num);
-  MASTER->update_ep(pl,ep);
+  ({int})MASTER->update_ep(pl,ep);
   return num;
 }
 
@@ -896,7 +896,7 @@ nomask varargs int ShowPlayerEPs(string pl,string pattern)
 {
   string ep,teststring;
   if (!allowed()) return -1;
-  ep = (MASTER->query_ep(pl) || "");
+  ep = (({string})MASTER->query_ep(pl) || "");
 
   output="";
   if (!pattern || pattern=="")
@@ -908,7 +908,7 @@ nomask varargs int ShowPlayerEPs(string pl,string pattern)
         if ( test_bit(ep, v2) && sscanf(fn, teststring, unused, unused) )
           printep(v2, fn, v3, v1);
       });
-  this_interactive()->More(output);
+  ({void})this_interactive()->More(output);
   return 1;
 }
 

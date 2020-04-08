@@ -100,7 +100,7 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
   string|int transparency;
 
   flags &= 3;
-  if( IS_LEARNER(viewer) && viewer->QueryProp( P_WANTS_TO_LEARN ) )
+  if( IS_LEARNER(viewer) && ({int})viewer->QueryProp( P_WANTS_TO_LEARN ) )
     descr = "[" + object_name(ME) + "]\n";
   else
     descr = "";
@@ -115,7 +115,7 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
   }
   
   // ggf. Ausgaenge hinzufuegen.
-  if ( viewer->QueryProp(P_SHOW_EXITS) && (!QueryProp(P_HIDE_EXITS) 
+  if ( ({int})viewer->QueryProp(P_SHOW_EXITS) && (!QueryProp(P_HIDE_EXITS) 
 	|| pointerp(QueryProp(P_HIDE_EXITS))) )
     descr += GetExits(viewer) || "";
 
@@ -131,7 +131,7 @@ varargs string int_long(mixed viewer,mixed viewpoint,int flags)
     if(stringp(transparency)) descr += transparency;
     else                   descr += "Ausserhalb siehst Du:\n";
 
-    descr += environment()->int_short(viewer,ME);
+    descr += ({string})environment()->int_short(viewer,ME);
   }
 
   return descr;
@@ -158,8 +158,8 @@ string int_short(mixed viewer,mixed viewpoint)
   if(IS_LEARNING(viewer))
     descr[<1..<2]=" [" + object_name(ME) + "]";
 
-  if ( ( viewer->QueryProp(P_SHOW_EXITS)
-         || ( environment(viewer) == ME && !viewer->QueryProp(P_BRIEF) ) )
+  if ( ( ({int})viewer->QueryProp(P_SHOW_EXITS)
+         || ( environment(viewer) == ME && !({int})viewer->QueryProp(P_BRIEF) ) )
        && (!QueryProp(P_HIDE_EXITS) || pointerp(QueryProp(P_HIDE_EXITS))) )
     descr += GetExits(viewer) || "";
 

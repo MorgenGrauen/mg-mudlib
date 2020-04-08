@@ -14,7 +14,7 @@ protected mixed execute_anything(mixed fun, varargs mixed args)
     return apply(fun, args);
 
   if (stringp(fun))
-    return call_other(this_object(), fun, args...);
+    return ({mixed})call_other(this_object(), fun, args...);
 
   if ( pointerp(fun))
   {
@@ -30,7 +30,7 @@ protected mixed execute_anything(mixed fun, varargs mixed args)
     if ( !objectp(ob) || !stringp(fun[1]) )
       return 0;
 
-    return call_other(ob, fun[1], args...);
+    return ({mixed})call_other(ob, fun[1], args...);
   }
   return 0;
 }

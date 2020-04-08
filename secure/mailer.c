@@ -357,7 +357,7 @@ public string *DeliverMail( mixed msg, int expa )
             sender = regreplace( sender, "@", "%", 1 );
             // Zustellung via Intermud-Mail an andere Muds.
             if ( member( mud, '.' ) == -1 ) {
-                "/secure/udp_mail"->deliver_mail( rec, mud, sender,
+                ({void})"/secure/udp_mail"->deliver_mail( rec, mud, sender,
                                                   msg[MSG_SUBJECT],
                                                   msg[MSG_BODY] );
                 recok += ({ recipients[i] });
@@ -392,7 +392,7 @@ public string *DeliverMail( mixed msg, int expa )
 
         }
         else
-            if (master()->find_userinfo(recipients[i]) )
+            if (({int})master()->find_userinfo(recipients[i]) )
             {
                 save_msg( newmsg, recipients[i] );
                 recok += ({ recipients[i] });
@@ -603,13 +603,13 @@ public int MakeFolder( string folder, string user )
 public int query_recipient_ok( string name )
 {
 #if INTERNET_MAIL_ENABLED
-    return  (master()->find_userinfo(name)
+    return  (({int})master()->find_userinfo(name)
              || member( name, '%' ) > 0 || member( name, '@' ) > 0 );
 #else
     // es darf zwar ein @ in der Adresse vorkommen, dahinter aber kein . mehr
     // (dann ist es ne Mail via Intermud-Mail, nicht ins Internet).
     string *tmp;
-    return  (master()->find_userinfo(name)
+    return  (({int})master()->find_userinfo(name)
              || member( name, '%' ) > 0
              || (sizeof(tmp=explode(name,"@")) == 2 && strstr(tmp[1],".") == -1));
 #endif

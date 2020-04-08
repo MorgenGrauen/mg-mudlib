@@ -60,7 +60,7 @@ int Xcall(string str)
     {
       obj=find_object(LPC_FILE);
       ru1=rusage();
-      error=catch(res=obj->eval(callobj, cloner, ENV(cloner)));
+      error=catch(res=({mixed})obj->eval(callobj, cloner, ENV(cloner)));
       ru2=rusage();
       if(error)
 	W("Error: "+error[1..]);
@@ -183,7 +183,7 @@ int Xcd(string str)
   TK("Xcd: str: "+(str?str:"(NULL)"));
   if(!str)
   {
-    if(!(path=cloner->QueryProp("start_home")))
+    if(!(path=({string})cloner->QueryProp("start_home")))
       path="/";
   }
   else if((dest=XFindObj(str,1)))
@@ -233,7 +233,7 @@ int Xclone(string str)
     m_add(variable, "clone", obj);
     if(!MoveObj(obj, ENV(cloner), TRUE))
       WDLN("Cannot move object into this room");
-    else if(!obj->QueryNoGet())
+    else if(!({mixed})obj->QueryNoGet())
     {
       if(!MoveObj(obj, cloner, TRUE))
 	WDLN("Cannot move object into your inventory");
@@ -265,7 +265,7 @@ int Xuclone(string str)
     variable["clone"] = obj;
     if(!MoveObj(obj, ENV(cloner), TRUE))
       WDLN("Cannot move object into this room");
-    else if(!obj->QueryNoGet())
+    else if(!({mixed})obj->QueryNoGet())
     {
       if(!MoveObj(obj, cloner, TRUE))
 	WDLN("Cannot move object into your inventory");
@@ -487,7 +487,7 @@ int Xeval(string str)
   else
   {
     ru1=rusage();
-    error=catch(res=obj->eval(cloner, ENV(cloner)));
+    error=catch(res=({mixed})obj->eval(cloner, ENV(cloner)));
     ru2=rusage();
     if(error)
       W("Error: "+error[1..]);
@@ -928,7 +928,7 @@ int Xinventory(string str)
     return FALSE;
   PIPE_DELETE(pipe_of);
   if(!(pipe_out&&pipe_of))
-    WLN(who->name(WESSEN)+" Inventory:"+(short?" (short)":""));
+    WLN(({string})who->name(WESSEN)+" Inventory:"+(short?" (short)":""));
   if(!short)
     if(pipe_out&&pipe_of)
       FORALL(item, who) PrintShort(ARIGHT(++i+". ", 4, " "), item, pipe_of);
@@ -952,7 +952,7 @@ int Xlag(string str)
   if(!(daemon=load_object(LAG_O_DAEMON)))
     lag=({-1.0,-1.0,-1.0});
   else
-    lag=daemon->read_lag_data();
+    lag=({float*})daemon->read_lag_data();
   lags="Letzte 60 min: ";
   if(lag[0]>=0.0)
   {
@@ -998,7 +998,7 @@ int Xlight(string str)
     cloner->AddIntLight(addlight);
   }
   WDLN("Current light levels: "+TOOL_NAME+"="+xlight+", room="+
-       ENV(cloner)->QueryIntLight());
+       ({int})ENV(cloner)->QueryIntLight());
   return TRUE;
 }
 
@@ -1102,7 +1102,7 @@ int Xlpc(string str)
   else
   {
     ru1=rusage();
-    error=catch(res=obj->eval(cloner, ENV(cloner)));
+    error=catch(res=({mixed})obj->eval(cloner, ENV(cloner)));
     ru2=rusage();
     if(error)
       W("Error: "+error[1..]);
@@ -1266,12 +1266,12 @@ int Xmtp(string str)
     opt="";
   else
     opt=implode(strs[0..s-3], " ");
-  if(!(dir="/"+MASTER->valid_read(strs[s-2], geteuid(),
+  if(!(dir="/"+({int})MASTER->valid_read(strs[s-2], geteuid(),
 					  "get_dir", ME))) {
     WDLN("No permission to open directory for reading");
     return TRUE;
   }
-  if(!(file="/"+MASTER->valid_write(strs[s-1], geteuid(),
+  if(!(file="/"+({int})MASTER->valid_write(strs[s-1], geteuid(),
 					    "write_file", ME))) {
     WDLN("No permission to open script file for writing");
     return TRUE;
@@ -1380,7 +1380,7 @@ int Xprof(string str)
   }
   else if(obj=XFindObj(str))
   {
-    if(xpr=obj->__query_xprof_data__())
+    if(xpr=({mixed})obj->__query_xprof_data__())
     {
       funcs=m_indices(xpr);
       data=m_values(xpr);

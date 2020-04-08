@@ -257,7 +257,7 @@ varargs int DoWield(int silent)
     // gleich auf eine WieldFunc zurueckgreifen zu muessen.
     // Die Auswertung erfolgt ueber den RestrictionChecker
     if ( (res=QueryProp(P_RESTRICTIONS)) && mappingp(res) &&
-         (res=call_other("/std/restriction_checker","check_restrictions",
+         (res=({string})call_other("/std/restriction_checker","check_restrictions",
              PL,res)) && stringp(res) ) 
     {
         notify_fail(res);

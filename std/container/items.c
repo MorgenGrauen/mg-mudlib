@@ -44,7 +44,7 @@ protected void create()
   Set(P_ITEMS,({}));
   Set(P_ITEMS,SECURED,F_MODE_AS);
   
-  OBJECTD->QueryObject();  // querying general objects
+  ({void})OBJECTD->QueryObject();  // querying general objects
 }
 
 protected void create_super()
@@ -121,7 +121,7 @@ public varargs object AddItem(mixed filename, int refresh, mixed props)
   
   if(objectp(ob))
   {
-    ob->move(ME,M_NOCHECK|M_NO_ATTACK);
+    ({int})ob->move(ME,M_NOCHECK|M_NO_ATTACK);
     // mit Absicht keine Pruefung aufs Move, wenns nicht geht, solls 2s
     // spaeter auf der Ebene buggen, weil praktisch niemand im create() das
     // Ergebnis vom AddItem() prueft.
@@ -160,14 +160,14 @@ private void ri_rem_ob(object ob)
 
     foreach(object o : inv)
     {
-      o->remove(1);
+      ({int})o->remove(1);
       if(objectp(o))
       {
         destruct(o);
       }
     }
 
-    ob->remove(1);
+    ({int})ob->remove(1);
 
     if(ob)
     {
@@ -212,12 +212,12 @@ public void RemoveItem(string|string* filename)
   {
     foreach(string fn: &filename)
     {
-      fn=master()->make_path_absolute(fn);
+      fn=({string})master()->make_path_absolute(fn);
     }
   }
   else
   {
-    filename=master()->make_path_absolute( filename );
+    filename=({string})master()->make_path_absolute( filename );
   }
   
   SetProp(P_ITEMS,filter(items, #'ri_filter/*'*/,filename));
@@ -248,7 +248,7 @@ private mixed _do_refresh(mixed item)
       if(objectp(item[RITEM_OBJECT]) &&
         environment(item[RITEM_OBJECT])!=ME)
       {
-        item[RITEM_OBJECT]->move(ME,M_GO|M_NO_ATTACK);
+        ({int})item[RITEM_OBJECT]->move(ME,M_GO|M_NO_ATTACK);
         break;
       }
       
@@ -272,7 +272,7 @@ private mixed _do_refresh(mixed item)
         ob=clone_object(file);
       }
 
-      ob->move(ME,M_NOCHECK|M_NO_ATTACK);
+      ({int})ob->move(ME,M_NOCHECK|M_NO_ATTACK);
       break;
   }
   

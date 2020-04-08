@@ -80,7 +80,7 @@ static void udp_query( string query, string host, int port )
         if ( sizeof(mess) < 3 )
             data = ({ "Error: Wen soll ich fingern ?" });
         else
-            data = explode( "/p/daemon/finger"->
+            data = explode( ({string})"/p/daemon/finger"->
                             finger_single( lower_case(mess[2]), 0 ), "\n" );
         break;
 
@@ -147,13 +147,13 @@ void receive_udp(string host, bytes message, int port)
   // Die folgenden Services sind keine Intermud-Dienste
   if(strstr(msg_text, "IPLOOKUP\n") == 0)
   {
-    "/p/daemon/iplookup"->update( msg_text );
+    ({void})"/p/daemon/iplookup"->update( msg_text );
     return;
   }
 
   if( strstr(msg_text, "DNSLOOKUP\n") == 0)
   {
-    "/p/daemon/dnslookup"->update( msg_text );
+    ({void})"/p/daemon/dnslookup"->update( msg_text );
     return;
   }
 
@@ -162,7 +162,7 @@ void receive_udp(string host, bytes message, int port)
     return udp_query(msg_text[10..],host,port);
   }
   // Rest an inetd fuer Bearbeitung als Intermud-Nachricht.
-  "secure/inetd"->_receive_udp(host, msg_text);
+  ({void})"secure/inetd"->_receive_udp(host, msg_text);
 }
 
 

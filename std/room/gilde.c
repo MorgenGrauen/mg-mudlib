@@ -106,8 +106,8 @@ public varargs void init(object origin)
   int lvl;
 
   if (PL && query_once_interactive(PL)
-      && (lvl=PL->QueryProp(P_LEVEL)) <= 6
-      && LEPMASTER->QueryLevel(PL->QueryProp(P_LEP)) > lvl)
+      && (lvl=({int})PL->QueryProp(P_LEVEL)) <= 6
+      && ({int})LEPMASTER->QueryLevel(({int})PL->QueryProp(P_LEP)) > lvl)
   {
     tell_object(PL,
       "\nDu koenntest Deine Stufe mit \"erhoehe spieler\" hier in der Gilde "
@@ -160,10 +160,10 @@ int seer_cond(int silent)
 {
   int cond;
 
-  cond=LEPMASTER->QueryReadyForWiz(this_player());
+  cond=({int})LEPMASTER->QueryReadyForWiz(this_player());
 
   if (!silent)
-    write(break_string(LEPMASTER->QueryReadyForWizText(this_player()),
+    write(break_string(({string})LEPMASTER->QueryReadyForWizText(this_player()),
           78, 0, 1));
 
   return cond;
@@ -173,9 +173,9 @@ varargs int kosten(string str)
 {
   string tmp;
 
-  int lep = PL->QueryProp(P_LEP);
-  int lvl = PL->QueryProp(P_LEVEL);
-  int diff = LEPMASTER->QueryNextLevelLEP(lvl, lep);
+  int lep = ({int})PL->QueryProp(P_LEP);
+  int lvl = ({int})PL->QueryProp(P_LEVEL);
+  int diff = ({int})LEPMASTER->QueryNextLevelLEP(lvl, lep);
 
   switch ( diff ) {
     case 101..__INT_MAX__:
@@ -185,23 +185,23 @@ varargs int kosten(string str)
       break;
 
     case 81..100:
-      tmp=kosten_0[PL->QueryProp(P_GUILD)] || kosten_0[0];
+      tmp=kosten_0[({string})PL->QueryProp(P_GUILD)] || kosten_0[0];
       break;
 
     case 61..80:
-      tmp=kosten_20[PL->QueryProp(P_GUILD)] || kosten_20[0];
+      tmp=kosten_20[({string})PL->QueryProp(P_GUILD)] || kosten_20[0];
       break;
 
     case 41..60:
-      tmp=kosten_40[PL->QueryProp(P_GUILD)] || kosten_40[0];
+      tmp=kosten_40[({string})PL->QueryProp(P_GUILD)] || kosten_40[0];
       break;
 
     case 21..40:
-      tmp=kosten_60[PL->QueryProp(P_GUILD)] || kosten_60[0];
+      tmp=kosten_60[({string})PL->QueryProp(P_GUILD)] || kosten_60[0];
       break;
 
     case 1..20:
-      tmp=kosten_80[PL->QueryProp(P_GUILD)] || kosten_80[0];
+      tmp=kosten_80[({string})PL->QueryProp(P_GUILD)] || kosten_80[0];
       break;
 
     default:
@@ -216,7 +216,7 @@ varargs int kosten(string str)
 
   if (!IS_SEER(this_player()) 
       && ( (str == "lang") ||
-        (this_player()->QueryProp(P_LEVEL) > 12 && str != "kurz"))) {
+        (({int})this_player()->QueryProp(P_LEVEL) > 12 && str != "kurz"))) {
     seer_cond(0);
     write (break_string("\nMit 'kosten kurz' kannst Du die Angabe der "
           "Seher-Anforderungen unterdruecken.", 78,0,1));
@@ -236,7 +236,7 @@ string get_new_title(int lev, object pl)
 
   if (lev<0) lev=0;
 
-  if (pl->QueryProp(P_GENDER) == MALE)
+  if (({int})pl->QueryProp(P_GENDER) == MALE)
     titles=QueryProp(P_GUILD_MALE_TITLES);
   else
     titles=QueryProp(P_GUILD_FEMALE_TITLES);
@@ -256,32 +256,32 @@ string get_new_title(int lev, object pl)
 // drumrum, den advance() aus hysterischen Gruenden tut.
 int try_player_advance(object pl) {
 
-  if (PL->QueryProp(P_KILLS)>0)
+  if (({int})PL->QueryProp(P_KILLS)>0)
     return -1;
 
-  int level = pl->QueryProp( P_LEVEL );
+  int level = ({int})pl->QueryProp( P_LEVEL );
   if (level == -1) level = 0;
 
-  if (LEPMASTER->QueryNextLevelLEP(level, pl->QueryProp(P_LEP)) > 0)
+  if (({int})LEPMASTER->QueryNextLevelLEP(level, ({int})pl->QueryProp(P_LEP)) > 0)
       return 0;
   else
       ++level;
 
-  pl->SetProp( P_LEVEL, level );
+  ({int})pl->SetProp( P_LEVEL, level );
 
   // Aufstiegs-Event ausloesen
-  EVENTD->TriggerEvent(EVT_LIB_ADVANCE, ([
+  ({int})EVENTD->TriggerEvent(EVT_LIB_ADVANCE, ([
         E_OBJECT: PL, E_PLNAME: getuid(PL),
         E_ENVIRONMENT: environment(PL),
-        E_GUILDNAME: PL->QueryProp(P_GUILD),
-        P_LEVEL: PL->QueryProp(P_LEVEL),
+        E_GUILDNAME: ({string})PL->QueryProp(P_GUILD),
+        P_LEVEL: ({int})PL->QueryProp(P_LEVEL),
         ]) );
 
   // Falls die konkrete Gilde des Spielern irgedwas mit dem Titel in
   // ABhaengigkeit des Spielerlevels tun will. Ausnahmsweise per call_other,
   // die Funktion kommt eigentlich aus /std/gilden_ob.c.
   string gname=({string})pl->QueryProp(P_GUILD);
-  (GUILD_DIR+"/"+gname)->adjust_title(pl);
+  ({void})(GUILD_DIR+"/"+gname)->adjust_title(pl);
 
   return 1;
 }
@@ -307,18 +307,18 @@ int advance(string arg)
         "In diesem Fall kannst Du Deine Stufe nicht erhoehen.\n"+
         "Bitte wende Dich an den Sheriff (oder einen Erzmagier) und bring "
         "das in Ordnung.\n",78,BS_LEAVE_MY_LFS));
-    say(break_string(PL->Name(WER) 
+    say(break_string(({string})PL->Name(WER) 
           + " hat soeben auf schmerzliche Weise erfahren muessen, dass "
           "es wirklich nicht foerderlich ist, Mitspieler umzubringen.\n",
           78), PL);
     return 0;
   }
 
-  string name_of_player = PL->name(WER);
-  int level = PL->QueryProp(P_LEVEL);
+  string name_of_player = ({string})PL->name(WER);
+  int level = ({int})PL->QueryProp(P_LEVEL);
   say( name_of_player + " hat jetzt Stufe " + level + " erreicht.\n");
 
-  string title = PL->QueryProp(P_TITLE);
+  string title = ({string})PL->QueryProp(P_TITLE);
 
   switch(random(3)) {
     case 0:
@@ -357,9 +357,9 @@ varargs int liste(string arg)
       break;
   }
 
-  string str = QM->liste(this_player(), geloest_filter);
+  string str = ({string})QM->liste(this_player(), geloest_filter);
 
-  this_player()->More( str, 0 );
+  ({void})this_player()->More( str, 0 );
   return 1;
 }
 
@@ -369,11 +369,11 @@ int GotoMagierTreff()
   {
     write("Ein Zauberspruch zieht vor Deinem geistigen Auge vorbei und Du\n"
     "sprichst ihn nach.\n");
-    say(PL->name()+" murmelt einen geheimen Zauberspruch und schwebt langsam\n"
+    say(({string})PL->name()+" murmelt einen geheimen Zauberspruch und schwebt langsam\n"
     "zur Decke hinauf und verschwindet durch die Wand.\n");
     write("Du schwebst langsam zur Decke hinauf und als ob diese nicht da\n"
     "waere mitten hindurch in den Magiertreff.\n");
-    return (PL->move("/secure/merlin", M_TPORT | M_SILENT ) >= 0);
+    return (({int})PL->move("/secure/merlin", M_TPORT | M_SILENT ) >= 0);
   }
   write("Du springst zur Decke hinauf und nix passiert.\n");
   return 1;

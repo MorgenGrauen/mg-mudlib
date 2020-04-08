@@ -111,7 +111,7 @@ static int _query_total_objects()
 public int MayAddObject( object ob )
 {
     if (ob) {
-        if ( !ob->short() )
+        if ( !({string})ob->short() )
             return 1; // invis-Objekte duerfen immer
         
         if ( ob == ME || environment(ob) == ME)
@@ -162,7 +162,7 @@ public int MayAddWeight( int w )
         // Container kann Gewicht nicht mehr aufnehmen
         return -1;
     
-    if ( aw && ENV()->MayAddWeight(aw) < 0 )
+    if ( aw && ({int})ENV()->MayAddWeight(aw) < 0 )
         // Umgebung des Containers kann Gewicht nicht mehr aufnehmen
         return -2;
     
@@ -290,7 +290,7 @@ public object *present_objects( string complex_desc )
            case "eigenes":
            case "meins":
                if (objectp(haufen=present("\nhaufen "+
-                     this_player()->name(WEM)))) {
+                     ({string})this_player()->name(WEM)))) {
                   obs = all_inventory(haufen);
                }
                // kein break;, Fall-through!
@@ -384,7 +384,7 @@ public object *present_objects( string complex_desc )
            case "meins":
            case "alles eigene":
                if (objectp(haufen=present("\nhaufen "+
-                       this_player()->name(WEM)))) {
+                       ({string})this_player()->name(WEM)))) {
                   obs = all_inventory(haufen);
                }
                // kein break;, Fall-through!
@@ -449,7 +449,7 @@ public object *present_objects( string complex_desc )
                // bestimmten ID (im Gegensatz zu "alles", "jede waffe" etc.)
                // soll ein Item gefunden werden, auch wenn die Short 0 ist
                // (unsichtbar, aber interagierbar).
-               else if ( ob && ob != ME && !ob->QueryProp(P_INVIS) )
+               else if ( ob && ob != ME && !({int})ob->QueryProp(P_INVIS) )
                    erg += ({ ob });   //Normalfall: einzelne ID
 
                continue;

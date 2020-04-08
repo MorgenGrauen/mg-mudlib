@@ -35,12 +35,12 @@ protected void send_channel_msg(string channel,mixed sendername,string msg)
     {
       // sonst faken wir eins. *seufz*
       sender=clone_object("/p/daemon/namefake");
-      sender->SetProp(P_NAME, sendername); 
-      sender->SetProp(P_ARTICLE,0);
+      ({string})sender->SetProp(P_NAME, sendername); 
+      ({int})sender->SetProp(P_ARTICLE,0);
       // Dieses Objekt zerstoert sich nach 3s automatisch.
     }
   }
-  CHMASTER->send(channel, sender, msg);
+  ({int})CHMASTER->send(channel, sender, msg);
 }
 
 static string *explode_files(string file) {
@@ -180,7 +180,7 @@ varargs void BanishName( string name, string reason, int force )
       return;
   }
 
-/*  if (!("/secure/login"->valid_name(name))) return;*/
+/*  if (!(({int})"/secure/login"->valid_name(name))) return;*/
   if ( lower_case(reason) != "loeschen" ){
       names = ({ name + " " + reason });
 
@@ -416,8 +416,8 @@ static void CheckDeputyRights()
     // Lese- und Schreibberechtigungen fuer die Rubrik 'polizei' setzen
     ob = load_object("secure/news");
     ginfo = (({mixed*})ob->GetGroup("polizei"))[5..6];
-    ob->RemoveAllowed( "polizei", 0, ginfo[0], ginfo[1] );
-    ob->AddAllowed( "polizei", 0, deputies, deputies );
+    ({int})ob->RemoveAllowed( "polizei", 0, ginfo[0], ginfo[1] );
+    ({int})ob->AddAllowed( "polizei", 0, deputies, deputies );
     LoadDeputyFileList();
 }
 
@@ -471,7 +471,7 @@ static int create_home(string owner, int level)
     {
       tell_object(player, "Arbeitszimmer " + castle + " erzeugt.\n");
       // Arbeitszimmer als Home setzen
-      player->SetProp(P_START_HOME,castle[0..<3]);
+      ({string})player->SetProp(P_START_HOME,castle[0..<3]);
     }
     else
       tell_object(player, "Arbeitszimmer konnte nicht erzeugt werden !\n");
@@ -497,7 +497,7 @@ protected void SendWizardHelpMail(string name, int level) {
   mixed mail = ({"Merlin", "<Master>", name, 0, 0, subject,
                  call_sefun("dtime",time()),
                  MUDNAME+time(), text });
-  MAILDEMON->DeliverMail(mail, 0);
+  ({string*})MAILDEMON->DeliverMail(mail, 0);
 }
 
 int allowed_advance_wizlevel(mixed ob)
@@ -558,13 +558,12 @@ int advance_wizlevel(string name, int level)
 
 void restart_heart_beat(object heart_beat)
 {
-  if (heart_beat) heart_beat->_restart_beat();
+  if (heart_beat) ({void})heart_beat->_restart_beat();
 }
 
 int renew_player_object(string|object who)
 {
   object newob;
-  object *obs, *obs2;
   mixed err;
   string ob_name;
   object *armours, weapon;
@@ -585,7 +584,7 @@ int renew_player_object(string|object who)
     return -2;
   if (!object_info(who, OI_ONCE_INTERACTIVE))
     return -3;
-  if (who->QueryGuest())
+  if (({int})who->QueryGuest())
   {
     printf("Can't renew guests!\n");
     return -6;
@@ -604,11 +603,11 @@ int renew_player_object(string|object who)
   if (!newob)
     return -5;
   /* Ok, the object is here now ... lets go for it ... */
-  who->save_me(0);
+  ({void})who->save_me(0);
   /* SSL ip weiterreichen */
   if( call_sefun("query_ip_number", who) != efun::interactive_info(who,II_IP_NUMBER) )
   {
-    newob->set_realip( call_sefun("query_ip_number",who) );
+    ({string})newob->set_realip( call_sefun("query_ip_number",who) );
   }
   efun::configure_object(who, OC_COMMANDS_ENABLED, 0);
   efun::set_this_player(0);
@@ -634,7 +633,7 @@ int renew_player_object(string|object who)
     {
       send_channel_msg("Debug",previous_object(),
                        "ERROR: exec() during Renew unsuccessful.\n");
-      newob->remove();
+      ({int})newob->remove();
       return 0;
     }
   }
@@ -643,7 +642,7 @@ int renew_player_object(string|object who)
   {
     send_channel_msg("Debug",previous_object(),
                      "ERROR: still active !\n");
-    newob->remove();
+    ({int})newob->remove();
     return 0;
   }
   // newob->start_player(capitalize(getuid(who)),who->_query_my_ip());
@@ -657,65 +656,64 @@ int renew_player_object(string|object who)
                                              })
                                       ), who
                       ),
-          capitalize(getuid(who)), who->_query_my_ip() );
+          capitalize(getuid(who)), ({string})who->_query_my_ip() );
 
-  newob->move(environment(who),M_TPORT|M_NOCHECK|M_NO_SHOW|M_SILENT
+  ({int})newob->move(environment(who),M_TPORT|M_NOCHECK|M_NO_SHOW|M_SILENT
               |M_NO_ATTACK);
-  obs=all_inventory(who);
   foreach(object tob: all_inventory(who)) {
-    if (!tob->QueryProp(P_AUTOLOADOBJ))
+    if (!({mixed})tob->QueryProp(P_AUTOLOADOBJ))
     {
       // kein Autoloader...
       foreach(object ob: deep_inventory(tob))
       {
         // aber enthaltene Autoloader entsorgen...
-        if (ob->QueryProp(P_AUTOLOADOBJ))
+        if (({mixed})ob->QueryProp(P_AUTOLOADOBJ))
         {
-          catch(ob->remove();publish);
+          catch(({int})ob->remove();publish);
           if (ob) destruct(ob);
         }
       }
       // objekt ohne die AL bewegen.
-      catch(tob->move(newob,M_NOCHECK);publish);
+      catch(({int})tob->move(newob,M_NOCHECK);publish);
     }
     else {
       // Inhalt von Autoloadern retten.
       // neue instanz des ALs im neuen Objekt.
       object new_al_instance = present_clone(tob, newob);
       foreach(object ob: deep_inventory(tob)) {
-        if (ob->QueryProp(P_AUTOLOADOBJ)) {
+        if (({mixed})ob->QueryProp(P_AUTOLOADOBJ)) {
             // autoloader in Autoloadern zerstoeren...
-            catch(ob->remove(1);publish);
+            catch(({int})ob->remove(1);publish);
             if (ob) destruct(ob);
         }
         // alle nicht autoloader in die AL-Instanz im neuen Objekt oder
         // notfalls ins Inv.
         else {
           if (objectp(new_al_instance))
-            catch(ob->move(new_al_instance, M_NOCHECK);publish);
+            catch(({int})ob->move(new_al_instance, M_NOCHECK);publish);
           else
-            catch(ob->move(newob, M_NOCHECK);publish);
+            catch(({int})ob->move(newob, M_NOCHECK);publish);
         }
       }
       // Autoloader zerstoeren. Wird nicht vom Spielerobjekt im remove()
       // gemacht, wenn nicht NODROP.
-      catch(tob->remove(1);publish);
+      catch(({int})tob->remove(1);publish);
       if (tob) destruct(tob);
     }
   }
-  who->remove();
+  ({int})who->remove();
   if ( objectp(who) )
       destruct(who);
   rename_object(newob,ob_name);
-  newob->__reload_explore();
+  ({void})newob->__reload_explore();
   tp=this_player();
   efun::set_this_player(newob);
   if (objectp(weapon))
-    weapon->DoWield();
+    ({int})weapon->DoWield();
   if (pointerp(armours))
     for (i=sizeof(armours)-1;i>=0;i--)
       if (objectp(armours[i]))
-        armours[i]->do_wear("alles");
+        ({int})armours[i]->do_wear("alles");
   efun::set_this_player(tp);
   //Rueckgabewert noetig, weil Funktion vom Typ 'int'
   return(1);

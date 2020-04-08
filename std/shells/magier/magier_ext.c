@@ -154,7 +154,7 @@ static int _cd(string cmdline)
 static string _set_currentdir(string path)
 {
   Set(P_CURRENTDIR, path);
-  this_object()->modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
+  ({void})this_object()->modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
   return path;
 }
 
@@ -212,7 +212,7 @@ static int _prompt(string args)
 
 static string _set_prompt(string prompt) {
   Set(P_PROMPT, prompt, F_VALUE);
-  this_object()->modify_prompt(); // neuen Prompt setzen (telnetneg.c)
+  ({void})this_object()->modify_prompt(); // neuen Prompt setzen (telnetneg.c)
   return prompt;
 }
 
@@ -292,7 +292,7 @@ static int _exec(string filename)
            "nicht moeglich.\n");
     return 1;
   }
-  ob->start_player(capitalize(getuid(this_object())));
+  ({int})ob->start_player(capitalize(getuid(this_object())));
   remove();
   return 1;
 }
@@ -451,7 +451,7 @@ static int _invis(string inform)
             QueryProp(P_MMSGOUT)),({ this_object() }));
   if (inform=="e") {
     // Logout-event ausloesen
-    EVENTD->TriggerEvent(EVT_LIB_LOGOUT, ([
+    ({int})EVENTD->TriggerEvent(EVT_LIB_LOGOUT, ([
             E_OBJECT: this_object(),
             E_PLNAME: getuid(this_object()),
             E_ENVIRONMENT: environment() ]) );
@@ -473,7 +473,7 @@ static int _vis(string inform)
   SetProp(P_INVIS, 0);
   if (inform=="e") {
     // Login-event ausloesen
-    EVENTD->TriggerEvent(EVT_LIB_LOGIN, ([
+    ({int})EVENTD->TriggerEvent(EVT_LIB_LOGIN, ([
           E_OBJECT: this_object(),
           E_PLNAME: getuid(this_object()),
           E_ENVIRONMENT: environment() ]) );
