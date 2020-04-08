@@ -19,10 +19,6 @@ General Mud Communication Protocol im MorgenGrauen
    * Daten, die die Clientscripte nicht verarbeiten, stoeren nicht den
      Textfluss.
    * Der Client kann konfigurieren, welche Informationen er bekommen will.
-   * Im MG ist neben Dingen wie LP und KP die Uebertragung div. anderer Dinge
-     geplant, vor allem andere Informationen  ueber den Char oder den Raum
-     (z.B. eindeutige Raum-IDs (in den meisten Faellen)).
-
 
 1. Unterstuetzte Module
 
