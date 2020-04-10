@@ -42,5 +42,6 @@ protected void create()
   {
     load_object("/room/konstrukt");
   }
+  master()->clear_cache();
   remove();
 }
