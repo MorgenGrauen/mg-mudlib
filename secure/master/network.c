@@ -109,13 +109,29 @@ void receive_udp(string host, bytes message, int port)
   // gewesen. Davon geht auch aller hier gerufener Code aus. Daher wird jetzt
   // hier zentral die Bytesequenz als ASCII interpretiert und in string
   // gewandelt, der dann wie bislang auch verarbeitet wird.
+  // Fuer Nachrichten von unserem eigenen IP-Lookup-Dienst gibts aber eine
+  // Ausnahme.
   string msg_text;
-  if (catch(msg_text = to_text(message, "ASCII");publish))
+  
+  if (host=="127.0.0.1" && port==8711)
   {
-    msg_text = to_text(message, "ISO8859-1");
-    log_file("UDP_INVALID",sprintf(
-      "Nachricht von %s mit nicht-ASCII-Zeichen: %s\n",
-      host, msg_text));
+    if (catch(msg_text = to_text(message, "UTF-8");publish))
+    {
+      msg_text = to_text(message, "ISO8859-1");
+      log_file("UDP_INVALID",sprintf(
+        "Nachricht von %s:%d mit nicht-UTF8-Zeichen: %s\n",
+        host, port, msg_text));
+    }
+  }
+  else
+  {
+    if (catch(msg_text = to_text(message, "ASCII");publish))
+    {
+      msg_text = to_text(message, "ISO8859-1");
+      log_file("UDP_INVALID",sprintf(
+        "Nachricht von %s:%d mit nicht-ASCII-Zeichen: %s\n",
+        host, port, msg_text));
+    }
   }
 
   UDP_DEBUG(sprintf("%s %s:%d: %s\n",strftime(),host,port,msg_text));
