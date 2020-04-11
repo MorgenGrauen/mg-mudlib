@@ -492,6 +492,9 @@ varargs int DoUnwield(int silent)
 // Die Funktion, die das "zuecken"-Kommando auswertet
 varargs int wield(string str, int silent) 
 {
+    if ( QueryProp(P_INVIS) )
+        return 0;
+
     if ( !stringp(str) ||
          (query_verb()[0..3]=="zieh" && sscanf(str,"%s hervor",str)!=1) )
     {
@@ -509,7 +512,11 @@ varargs int wield(string str, int silent)
 
 // Die Funktion, die das "wegstecken"-Kommando auswertet
 int unwield(string str) 
-{   int    parry;
+{
+    if ( QueryProp(P_INVIS) )
+        return 0;
+
+    int    parry;
     string dummy;
 
     // Erstmal die Eingabe auswerten. Ist dies wirklich ein Kommando
