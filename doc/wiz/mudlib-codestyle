@@ -13,9 +13,13 @@ beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
 * Nach ifs, Loops & Co: umfasst der davon kontrollierte Code mehr als eine
   physische Zeile Code, einen Block mit { } formulieren.
 * keine return fun(), 0;
-* (type) Casts sollten vermieden werden (Ausnahme: (type)call_other).
-  (type) konvertieren nur, wenn die Typen zur Compilezeit bekannt und
-  unterschiedlich sind. Daher bei gewuenschten Konversionen to_type() nehmen.
+* (type) Casts sollten vermieden werden.
+  (type) konvertieren nur, wenn die Typen zur Compilezeit *bekannt* und
+  unterschiedlich sind. Eine Alternative sind to_type(), wenn noetig.
+* Bei Callother in Programmen mit #pragma strict_types muessen deklarative
+  Casts ({type})call_other(...) verwendet werden, um dem Compiler zu sagen,
+  Typ das Ergebnis haben sollte. Der Compiler fuegt an der Stelle im Code auch
+  eine Pruefung ein, welche zur Laufzeit ausgefuehrt wird.
 * Pfade, die absolut sind, sollen auch mit / beginnen, z.B. 
   inherit "/std/thing", nicht inherit "std/thing"
 
