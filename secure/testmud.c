@@ -29,7 +29,7 @@ protected void create()
   {
     mkdir("/players/jof");
   }
-  if(file_size("/players/jof/workroom") == FSIZE_NOFILE)
+  if(file_size("/players/jof/workroom.c") == FSIZE_NOFILE)
   {
     copy_file("/std/def_workroom.c","/players/jof/workroom.c");
   }
@@ -38,7 +38,7 @@ protected void create()
     save_object(SECURESAVEPATH+"j/jof");
   }
 
-  if(file_size("/room/konstrukt") > 0)
+  if(file_size("/room/konstrukt.c") > 0)
   {
     load_object("/room/konstrukt");
   }
