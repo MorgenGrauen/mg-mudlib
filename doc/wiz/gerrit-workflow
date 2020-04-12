@@ -1,10 +1,6 @@
 
-Git workflow
-************
-
-
 Typischer Arbeitsablauf
-=======================
+***********************
 
 (Es gibt andere Arbeitsweisen, aber dies hier ist eine, die sich
 bewaehrt
@@ -14,11 +10,7 @@ Nehmen wir an, ich moechte etwas neues einbauen, einen Bug fixen etc.
 Alle der folgenden Schritt werden auf eurem eigenen Rechner in eurem
 lokalen Clone des jeweiligen Repositories durchgefuehrt.
 
-1. Repository clonen und/oder updaten:
-
-      git clone ssh://mgg/dings/bums
-      git checkout master
-      git pull
+1. Repository clonen und/oder updaten
 
    Zuerst einmal wird ein checkout des Zweiges 'master' gemacht. Und
    in diesen Zweig hol ich mir erstmal den aktuellen Stand aus dem Mud
@@ -31,7 +23,7 @@ lokalen Clone des jeweiligen Repositories durchgefuehrt.
    schiefgelaufen ist... Ausserdem ist es dann einfacher,
    zwischenzeitliche Aenderungen aus dem Mud zu integrieren.
 
-2. Neuen Zweig erstellen:
+2. Neuen Zweig erstellen
 
       git checkout -b neue_kampftaktik
 
@@ -113,14 +105,16 @@ lokalen Clone des jeweiligen Repositories durchgefuehrt.
 
       git merge neue_kampftaktik
 
-6. Aenderungen in das MUD-Repository uebertragen Jetzt bin ich
-   bereit, die Aenderungen ins Mud zu uebertragen:
+6. Aenderungen in das MUD-Repository uebertragen
+
+   Jetzt bin ich bereit, die Aenderungen ins Mud zu uebertragen:
 
       git push origin <lokaler_zweigname>:<zweigname_im_mg>
 
    Job done! (Hinweis: nur der Branch "master" wird ins Mud selber
-   synchronisiert, alle anderen Zweige existieren nur in den git-
-   Repositories.)
+   synchronisiert, alle
+
+      anderen Zweige existieren nur in den git-Repositories.)
 
 
 Sonderfaelle und erweiterte Moeglichkeiten
@@ -128,34 +122,35 @@ Sonderfaelle und erweiterte Moeglichkeiten
 
 1. Zwischenzeitliche Aenderungen im MUD beruecksichtigen
 
-   Es koennte sein, dass man fuer den Branch ne ganze Weile gebraucht
-   hat - und dass waehrend meiner Arbeit jemand anders Aenderungen (im
-   Mud oder Repo) gemacht hat.
+      Es koennte sein, dass man fuer den Branch ne ganze Weile
+      gebraucht hat - und dass waehrend meiner Arbeit jemand anders
+      Aenderungen (im Mud oder Repo) gemacht hat.
 
-   Diese Aenderungen sollte man sich wie geschrieben als erstes nach
-   dem Umschalten zum master-Zweig holen:
+      Diese Aenderungen sollte man sich wie geschrieben als erstes
+      nach dem Umschalten zum master-Zweig holen:
 
-      git pull
+         git pull
 
-   Jetzt geh ich wieder in meinen Zweig (ohne -b):
+      Jetzt geh ich wieder in meinen Zweig (ohne -b):
 
-      git checkout neue_kampftaktik
+         git checkout neue_kampftaktik
 
-   und mache ein sog. Rebase. Damit verschiebe ich sozusagen, den
-   Punkt, an dem mein Zweig vom 'master' abzweigt und tue so, als ob
-   die eben geholten Aenderungen schon da gewesen waeren, als ich den
-   Zweig erstellte. (Andere Sichtweise: ich nehme meine Zweig und setz
-   ihn auf den aktuellen 'master' dran.):
+      und mache ein sog. Rebase. Damit verschiebe ich sozusagen, den
+      Punkt, an dem mein Zweig vom 'master' abzweigt und tue so, als
+      ob die eben geholten Aenderungen schon da gewesen waeren, als
+      ich den Zweig erstellte. (Andere Sichtweise: ich nehme meine
+      Zweig und setz ihn auf den aktuellen
 
-      git rebase master
+   'master' dran.):
 
-   Der Vorteil ist: wenn jetzt was kaputt gegangen ist, es also
-   Konflikte gibt, dann gibt es die nur in meinem Zweig
-   'neue_kampftaktik' und dort kann ich sie in aller Ruhe reparieren.
-   Sowohl der 'master' im MUD als auch mein lokaler 'master' sind
-   intakt.
+        git rebase master
 
-   Und jetzt geht es wie oben weiter.
+      Der Vorteil ist: wenn jetzt was kaputt gegangen ist, es also Konflikte gibt,
+      dann gibt es die nur in meinem Zweig 'neue_kampftaktik' und dort kann ich
+      sie in aller Ruhe reparieren. Sowohl der 'master' im MUD als auch mein
+      lokaler 'master' sind intakt.
+
+      Und jetzt geht es wie oben weiter.
 
 
 SIEHE AUCH
@@ -165,11 +160,10 @@ SIEHE AUCH
 
    * Doku von Gerrit:
 
-     * https://mg.mud.de/gerrit/Documentation/intro-user.html
+     * *https://mg.mud.de/gerrit/Documentation/intro-user.html*
 
-     * https://mg.mud.de/gerrit/Documentation/index.html#_tutorials
-
-   * *gerrit-upload*: Wie man Dinge in Gerrit hochlaedt
+     *
+       *https://mg.mud.de/gerrit/Documentation/index.html#_tutorials*
 
    * git-howto: Wie git benutzt wird
 

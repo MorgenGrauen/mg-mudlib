@@ -47,7 +47,7 @@ BEISPIEL
 ========
 
    if( QM->HasMiniQuest(getuid(this_player()), this_object())!=1 )
-     write("Du bist noch nicht reif genug.\n");
+     tell_object(this_player(), "Du bist noch nicht reif genug.\n");
 
 
 SIEHE AUCH
