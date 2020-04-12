@@ -38,11 +38,14 @@ BESCHREIBUNG
         Das Mapping muss folgenden Aufbau haben:
           ([0:        "Defaulttext",
             "rasse1": "r1text", ...]).
+        
+        Die Rassenstrings muessen hierbei klein geschrieben werden, anders
+        als in P_RACE und P_REAL_RACE.
 
-        Falls fuer die Rasse des das Detail untersuchenden Spielers ein
+        Falls fuer die Rasse des Spielers, der das Detail untersucht, ein
         Eintrag im Mapping existiert, wird der entsprechende Text
         zurueckgegeben, ansonsten der Defaulttext. Auf diese Weise sind
-        rassenabhaengige Details moeglich. Siehe auch die Beispiele.
+        rassenabhaengige Details moeglich.
       <desc> ist eine Closure.
         In diesem Fall wird die Closure ausgefuehrt und das Ergebnis
         zurueckgegeben. Die Closure bekommt dabei den Namen des Details
@@ -70,8 +73,8 @@ BEISPIELE
     Ein rassenabhaengiges Detail:
 
       AddDetail(({"bett","bettchen"}),
-        ([0      :"Eine kleines Bett.\n", // Der Defaulttext
-          "zwerg":                        // Die Rasse klein schreiben
+        ([0      :"Ein kleines Bett.\n", // Der Defaulttext
+          "zwerg":                       // Die Rasse klein schreiben
                 "Das Bett laedt geradezu zu einem Nickerchen ein.\n"]));
 
     Und nun ein Detail mit Closure (diese Version ersetzt das Verhalten
@@ -106,5 +109,5 @@ SIEHE AUCH
     Veraltet:  AddSpecialDetail(), RemoveSpecialDetail(), P_READ_MSG
     Sonstiges: GetDetail(), break_string()
 
-20.01.2015, Zesstra
+11.04.2020, Arathorn
 
