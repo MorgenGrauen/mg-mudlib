@@ -803,7 +803,7 @@ private int act_attr_flee_tport(int effekt)
     {
       case -499..0:
         dests = ({"/d/polar/bendeigid/rooms/neskaya/neskay12",
-                  "/players/ketos/gl/room/gl1x1",
+                  "/d/gebirge/ketos/gl/room/gl1x1",
                   "/d/inseln/zesstra/vulkanweg/room/r10",
                   "/d/vland/morgoth/room/kata/ktanke",
                   "/d/ebene/zardoz/burg/feuerrau",
