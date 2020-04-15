@@ -358,12 +358,14 @@ int Walk()
     return 0;
   }
 
-  // Ausgaenge ermitteln.
+  // Ausgaenge ermitteln, zunaechst aber keine Special Exits.
   mapping exits = (environment()->QueryProp(P_EXITS));
-  <string|closure> *rooms = m_values(exits);
+  string *rooms = m_values(exits);
   string *dirs  = m_indices(exits);
   string *ex = ({});
 
+  // Bei normalen Ausgaengen wird geprueft, ob wir in den Zielraum
+  // reinduerfen.
   for (int i=sizeof(rooms)-1; i>=0; i--)
   {
     if (!PreventEnter(rooms[i]))
@@ -399,7 +401,7 @@ int Walk()
   }
   else
   {
-    // Special Exits mitbenutzen.
+    // erst jetzt die special exits mitbenutzen.
     ex += m_indices(ENV()->QueryProp(P_SPECIAL_EXITS));
     if (sizeof(ex))
     {
