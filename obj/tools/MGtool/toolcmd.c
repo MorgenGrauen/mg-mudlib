@@ -480,8 +480,8 @@ int Xeval(string str)
 	     "#include <moving.h>\n"+
 	     "#include \"/secure/wizlevels.h\"\n"+
 	     (file_size(PRIVATE_HEADER)>=0?"#include \""+PRIVATE_HEADER+"\"\n":"")+
-	     "get(str){return previous_object()->XFindObj(str);}\n"+
-	     "eval(me,here){return "+str+";}");
+	     "mixed get(string str){return previous_object()->XFindObj(str);}\n"+
+	     "mixed eval(mixed me,mixed here){return "+str+";}");
   if(error=catch(obj=clone_object(file)))
     W("Error: "+error[1..]);
   else
