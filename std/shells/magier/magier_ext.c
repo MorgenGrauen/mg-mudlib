@@ -14,11 +14,11 @@ protected functions virtual inherit "/std/util/path";
 #define NEED_PROTOTYPES
 #include <player/telnetneg.h>
 #include <player/base.h>
+#include <player/comm.h>
 #undef NEED_PROTOTYPES
 #include <properties.h>
 #include <files.h>
 #include <events.h>
-#include <player/comm.h>
 
 inherit "/std/shells/magier/parsing";
 inherit "/std/shells/magier/upd";
@@ -154,7 +154,7 @@ static int _cd(string cmdline)
 static string _set_currentdir(string path)
 {
   Set(P_CURRENTDIR, path);
-  ({void})this_object()->modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
+  modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
   return path;
 }
 
@@ -212,7 +212,7 @@ static int _prompt(string args)
 
 static string _set_prompt(string prompt) {
   Set(P_PROMPT, prompt, F_VALUE);
-  ({void})this_object()->modify_prompt(); // neuen Prompt setzen (telnetneg.c)
+  modify_prompt(); // neuen Prompt setzen (telnetneg.c)
   return prompt;
 }
 

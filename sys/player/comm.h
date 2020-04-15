@@ -78,6 +78,7 @@ varargs int Message(string msg, int flag, string indent,
 
 protected void status_report(int type, mixed val);
 protected void _notify(string msg, string action);
+static void modify_prompt();
 
 #endif // __PLAYER_COMM_H_PROTO__
 
