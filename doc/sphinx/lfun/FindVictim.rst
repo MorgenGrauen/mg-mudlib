@@ -1,0 +1,46 @@
+FindVictim()
+============
+
+FUNKTION
+--------
+
+  varargs object FindVictim(string wen, object pl[, string msg])
+
+DEFINIERT IN
+------------
+
+  /std/spellbook.c
+  /sys/spellbook.h
+
+ARGUMENTE
+---------
+
+  wen
+   ID des gesuchten Objektes
+   
+  pl
+    Das suchende Lebewesen
+    
+  msg
+    Fehlermeldung
+
+BESCHREIBUNG
+------------
+
+  Sucht ein Objekt mit der ID wen. Zuerst im Environment von pl, dann im
+  Inventar von pl.
+
+  Wenn wen nicht gefunden wurde, wird msg an pl ausgegeben, sofern gesetzt.
+
+RUECKGABEWERT
+-------------
+
+  Das gefundene Objekt oder 0.
+
+SIEHE AUCH
+----------
+
+  :doc:`FindLivingVictim`, :doc:`FindEnemyVictim`, 
+  :doc:`FindNearEnemyVictim`, :doc:`FindDistantEnemyVictim`
+
+Letzte Aenderung: 18.04.2020, Bugfix

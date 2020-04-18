@@ -1,0 +1,49 @@
+FindLivingVictim()
+==================
+
+FUNKTION
+--------
+
+  varargs object FindLivingVictim(string wen, object pl, string msg)
+
+DEFINIERT IN
+------------
+
+  /std/spellbook.c
+  /sys/spellbook.h
+
+ARGUMENTE
+---------
+
+  wen
+    ID des gesuchten Objektes
+    
+  pl
+    Das suchende Lebewesen
+    
+  msg
+    Fehlermeldung
+
+BESCHREIBUNG
+------------
+
+  Sucht ein Living mit der ID wen. Zuerst im Environment von pl, dann im
+  Inventar von pl.
+
+  Wen wen nicht gefunden wurde, wird msg an pl ausgegeben, sofern gesetzt.
+
+  Wenn wen gefunden wurde, aber kein Living oder grade ein Geist ist, wird
+  "<Name> lebt doch nicht!" an pl ausgegeben.
+
+RUECKGABEWERT
+-------------
+
+  Das gefundene Living oder 0.
+
+SIEHE AUCH
+----------
+
+  :doc:`FindVictim`, :doc:`FindEnemyVictim`, :doc:`FindNearEnemyVictim`,
+  :doc:`FindDistantEnemyVictim`
+
+Letzte Aenderung: 18.04.2020, Bugfix
