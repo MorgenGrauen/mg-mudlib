@@ -1658,11 +1658,7 @@ static void modify_prompt() {
 
 // Prueft auf Ingoriereeintraege.
 // Rueckgabe: 0 (nicht ignoriert) oder MSG_IGNORED
-#ifdef __LPC_UNIONS__
 public int TestIgnore(string|string* srcnames)
-#else
-public int TestIgnore(mixed srcnames)
-#endif
 {
   mapping ign = Query(P_IGNORE, F_VALUE);
   if (stringp(srcnames))

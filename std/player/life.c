@@ -251,7 +251,7 @@ nomask public int do_damage( int dam, object enemy )
                     hit_point = 1;
                 else {
                     hit_point = 0;
-                    enemy->SetProp( P_KILLS, -1 );
+                    enemy->SetProp( P_KILLS, -1 ); // wert ist egal
                 }
 
                 log_file( "KILLER",
