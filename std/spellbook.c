@@ -682,7 +682,10 @@ FindLivingVictim(string wen, object pl, string msg) {
   if (!(vic=FindVictim(wen,pl,msg)))
     return 0;
   if (!living(vic) || ({int})vic->QueryProp(P_GHOST)) {
-    printf("%s lebt doch nicht!\n", capitalize(({string})vic->name()));
+    ({int})pl->ReceiveMsg(
+      ({string})vic->name()+" lebt doch nicht!",
+      MT_NOTIFICATION,
+      MA_SPELL);
     return 0;
   }
   return vic;
