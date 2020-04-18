@@ -13,7 +13,7 @@ DEFINIERT IN
 ::
 
      /p/daemon/pathd.c
-     <sys/path.d>
+     <sys/pathd.h>
 
 ARGUMENTE
 ---------
