@@ -30,6 +30,7 @@ inherit "/std/npc/comm.c";
 #include "/secure/config.h"
 #include "/secure/questmaster.h"
 #include "/secure/lepmaster.h"
+#include <userinfo.h>
 
 #ifndef DEBUG
 #define DEBUG(x) if (find_player("zook")) tell_object(find_player("zook"),x)
@@ -48,6 +49,7 @@ static int create_wizard(mixed who, mixed promoter);
 static int create_seer(object who);
 static void give_help(mixed who);
 int goto(mixed dest);
+public string wiztree_html();
 
 nosave string *whitespaces=({",",".","?",";",":","-","!","\n","\t"});
 nosave string prev_room;
@@ -861,6 +863,8 @@ static int create_wizard(mixed who, mixed promoter)
       write("MERLIN: konnte Magiershell nicht einstellen.\n");
     }
     ({int})"secure/master"->renew_player_object(who);
+    call_out(function ()
+        { write_data("/etc/SPONSOR.html",wiztree_html(), 1); }, 2);
     return 1;
   }
   write(" --RETURNVALUE IS "+ret+"\n");
@@ -1336,5 +1340,99 @@ void MBanishDelete(string name)
 string _query_noget()
 {
   return "Merlin mag das nicht!\n";
+}
+
+private mapping create_wizard_tree()
+{
+  // Jof als root-elemente des Baums wird per Hand angelegt. Erstes Element
+  // ist der Magierlevel, zweites das Mapping mit den Kindern (der Ast mit den
+  // Kindern)
+  mapping mtree = ([ "Jof": 111; m_allocate(100,2) ]);
+  // Der Cache dient nur dazu, das zu einem Magier gehoerende Mapping der
+  // Kinder schneller zu finden und verweist auf das Mapping im zweiten
+  // Value in mtree.
+  mapping cacheptr = m_allocate(500,1);
+  cacheptr["Jof"] = mtree["Jof",1];
+
+  // Dann Log lesen und parsen.
+  foreach(string line: explode(read_file("/data/etc/SPONSOR"),"\n"))
+  {
+    string parent, child;
+    if (sscanf(line,"%!s: %s macht %s zum Learner.",parent,child) != 2)
+      continue;
+
+    parent = capitalize(lower_case(parent));
+    child = capitalize(lower_case(child));
+
+    // Das Kind sollte noch nicht existieren... (Tut es aber leider
+    // gelegentlich.)
+    if (member(cacheptr, child))
+//      raise_error(sprintf("Neu berufene Magierin ist schon Magierin: "
+//                          "%s\n",child));
+      continue;
+    // Der Elter muss existieren...
+    if (!member(cacheptr, parent))
+      raise_error(sprintf("Sponsor ist keine Magierin: %s\n", parent));
+
+    // Mapping mit allen Kindern des Elter holen. Das Mapping in cacheptr ist
+    // dasselbe Mapping wie in mtree, d.h. wir muessen den Elter nicht im
+    // verschachtelten mtree suchen.
+    mapping parent_children = cacheptr[parent];
+    // neues Kind anlegen
+    m_add(parent_children, child,
+          master()->query_userlist(lower_case(child), USER_LEVEL),
+          m_allocate(2,2) );
+    // und im cacheptr das (noch leere) Mapping fuer die Kinder vom child hinterlegen
+    m_add(cacheptr, child, parent_children[child, 1]);
+  }
+  //printf("mtree: %O\n",mtree);
+  //printf("cache: %O\n",cacheptr);
+  return mtree;
+}
+
+// Starte mit dem Magier <node> in <mtree> und laeuft rekursiv durch den
+// ganzen (Sub-)Baum. Erzeugt eine geschachtelte Struktur von <ul>-Elementen,
+// bei denen Magier ein <li> sind und die jeweiligen Kinder wieder in ein
+// tiefer liegendes <ul> kommen. Letztendlich wieder eine Baumstruktur.
+private string print_mtree_node(mapping mtree, string node, int indent)
+{
+  mapping branch = mtree[node, 1];
+  if (!branch)
+    raise_error(sprintf("Magier %s existiert nicht.\n",node));
+
+  indent += 2;
+  string res;
+  // Geloeschte Magier werden durchgestrichen, Vollmagier kriegen ein
+  // "class=magier" Attribut, was dafuer sorgt, dass die fettgedruckt werden.
+  if (mtree[node, 0] == 0)
+    res = sprintf("%s<li><a href=\"/cgi-bin/mudwww.pl?REQ=finger&USER=%s\">"
+                       "<del>%s</del></a></li>\n", " "*indent, node, node);
+  else if (mtree[node, 0] < DOMAINMEMBER_LVL)
+    res = sprintf("%s<li><a href=\"/cgi-bin/mudwww.pl?REQ=finger&USER=%s\">"
+                       "%s</a></li>\n", " "*indent, node, node);
+  else
+    res = sprintf("%s<li><a href=\"/cgi-bin/mudwww.pl?REQ=finger&USER=%s\""
+                       " class=\"wiz\">%s</a></li>\n", " "*indent, node, node);
+
+  // Wenn ein Magier Kinder hat, kommt nun ein neues <ul> dran, welches wieder
+  // alle Kinder enthaelt.
+  if (sizeof(branch))
+  {
+    // Das root-ul von Jof bekommt das Attribute "id=jof", alle anderen nicht.
+    res += sprintf("%s<ul%s>\n", " "*indent,
+                   (node == "Jof" ? " id=\"jof\"" : ""));
+    foreach(string child, int lvl, mapping grandchildren : branch)
+    {
+      res += print_mtree_node(branch, child, indent);
+    }
+    res += sprintf("%s</ul>\n", " "*indent);
+  }
+  return res;
+}
+
+public string wiztree_html()
+{
+  mapping mtree = create_wizard_tree();
+  return sprintf("<ul>\n%s</ul>\n",print_mtree_node(mtree, "Jof", 2));
 }
 
