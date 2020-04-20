@@ -845,13 +845,15 @@ static int create_wizard(mixed who, mixed promoter)
   ret=({int})"secure/master"->advance_wizlevel(geteuid(who),15);
   if (ret>0)
   {
-    PostMagier(capitalize(getuid(who)),
-               capitalize(secure_euid()),
-               ({int})who->QueryProp(P_GENDER));
-    write_file("/log/SPONSOR",dtime(time())+": "+capitalize(getuid(promoter))+" macht "+
+    // Log ("Magierstammbuch") nach /data/etc loggen, weil SPONSOR ein
+    // langfristlog.
+    write_data("/etc/SPONSOR",dtime(time())+": "+capitalize(getuid(promoter))+" macht "+
              ({string})who->name(WER)+" zum Learner.\n");
     write(({string})who->name(WER)+" ist in den Kreis der Magier aufgenommen worden!\n");
     shout(({string})who->name(WER)+" ist in den Kreis der Magier aufgenommen worden!\n");
+    PostMagier(capitalize(getuid(who)),
+               capitalize(secure_euid()),
+               ({int})who->QueryProp(P_GENDER));
     if (({int})"secure/master"->set_player_object(geteuid(who),"/std/shells/magier")
             <=0)
     {
