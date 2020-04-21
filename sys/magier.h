@@ -7,8 +7,6 @@
 #ifndef _MAGIER_H_
 #define _MAGIER_H_
 
-#define SHELLDEBUGGER "zesstra"
-
 #define MAX_ARRAY_SIZE   3000 // MUSS EIGENTLICH NACH /sys/config.h oder so
 
 #define ERROR(msg, arg, res)   (printf(msg, arg),res)
@@ -202,8 +200,7 @@
 #ifdef DEBUG
 #undef DEBUG
 #endif
-#define DEBUG(x) if (find_player(SHELLDEBUGGER)) \
-                     tell_object(find_player(SHELLDEBUGGER),x+"\n")
+#define DEBUG(x) this_object()->ReceiveMsg(x, 536870912 /*MT_DEBUG*/, 0, "Shell: ")
 
 #endif // _MAGIER_H_
 
