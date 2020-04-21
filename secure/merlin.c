@@ -863,7 +863,7 @@ static int create_wizard(mixed who, mixed promoter)
       write("MERLIN: konnte Magiershell nicht einstellen.\n");
     }
     ({int})"secure/master"->renew_player_object(who);
-    call_out(function ()
+    call_out(function void ()
         { write_data("/etc/SPONSOR.html",wiztree_html(), 1); }, 2);
     return 1;
   }
