@@ -88,13 +88,13 @@ string sponsoring(string name)
   int i,w;
   string *s,s2,s3,s4;
   // Daten einlesen, wenn die daten aelter als 1 Tag sind oder sich
-  // /log/SPONSORS geaendert hat.
+  // /data/etc/SPONSOR geaendert hat.
   if ((time() > filetime+86400) ||
-      filetime!=file_time("/log/SPONSOR")) 
+      filetime!=file_time("/data/etc/SPONSOR")) 
   {
       relatives=m_allocate(0,2);
-      filetime=file_time("/log/SPONSOR");
-      s=explode(read_file("/log/SPONSOR"),"\n");
+      filetime=file_time("/data/etc/SPONSOR");
+      s=explode(read_file("/data/etc/SPONSOR"),"\n");
       foreach(string str: s) { 
 	  sscanf(str,"%s: %s macht %s zum Learner.",s2,s3,s4);
 	  if (IS_LEARNER(lower_case(s3)) && IS_LEARNER(lower_case(s4)))
