@@ -1380,7 +1380,7 @@ private mapping create_wizard_tree()
     mapping parent_children = cacheptr[parent];
     // neues Kind anlegen
     m_add(parent_children, child,
-          master()->query_userlist(lower_case(child), USER_LEVEL),
+          ({int})master()->query_userlist(lower_case(child), USER_LEVEL),
           m_allocate(2,2) );
     // und im cacheptr das (noch leere) Mapping fuer die Kinder vom child hinterlegen
     m_add(cacheptr, child, parent_children[child, 1]);
