@@ -433,7 +433,7 @@ UseSpell(object caster, string spell, mapping sinfo) {
   }
   else {
     // Spruch ausfuehren.
-    res=funcall(symbol_function(fname),caster,ski);
+    res=funcall(symbol_function(fname,ME),caster,ski);
   }
   if (!res || !caster)
     return 1;
