@@ -208,6 +208,11 @@ nomask varargs int snoop( object snooper, object snoopee )
      // soll jemand neues gesnoopt werden?
      if(snoopee)
      {
+#if __BOOT_TIME__ < 1588106971
+        // Diese Uptime duerfen nur EM+ und Sheriff snoopen.
+        if (!ARCH_SECURITY && !IS_DEPUTY(snooper))
+          return 0;
+#endif
         // Jemand mit niedrigerem Level kann keinen hoeherleveligen snoopen
         // lassen.
         if ( PO != snooper
