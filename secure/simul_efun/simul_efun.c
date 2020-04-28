@@ -191,18 +191,6 @@ varargs string country(mixed ip, string num) {
 
 // * Snoopen und was dazugehoert
 
-// Findet zu einem gegegeben eingeloggten, interaktivem User <who> den von ihr
-// gesnoopten Interactive.
-private object find_snoopee(object who)
-{
-  foreach (object u: users())
-  {
-    if (who == efun::interactive_info(u, II_SNOOP_NEXT))
-      return u;
-  }
-  return 0;
-}
-
 private string Lcut(string str) {
   return str[5..11]+str[18..];
 }
@@ -210,12 +198,13 @@ private string Lcut(string str) {
 nomask varargs int snoop( object snooper, object snoopee )
 {
     int ret;
-    object snooper0, snooper1, snooper2, snooper3;
+    object snooper1, snooper2, snooper3;
 
     if( !objectp(snooper) || snooper == snoopee || !PO )
        return 0;
 
-    snooper0 = find_snoopee(snooper);
+    // Evtl. gibt es bereits einen snoopee, der von snopper gesnoopt wird?
+    object orig_snoopee = efun::interactive_info(snooper, II_SNOOP_PREV);
 
      if(snoopee)
      {
@@ -267,12 +256,12 @@ nomask varargs int snoop( object snooper, object snoopee )
                                                snooper2,
                                                environment(snooper2) ),
                             100000 );
-                   if (snooper0)
+                   if (orig_snoopee)
                       CHMASTER->send( "Snoop", snooper1,
                                     sprintf( "%s *OFF* %s (%O)",
                                             capitalize(getuid(snooper1)),
-                                            capitalize(getuid(snooper0)),
-                                            environment(snooper0) ) );
+                                            capitalize(getuid(orig_snoopee)),
+                                            environment(orig_snoopee) ) );
 
                    CHMASTER->send( "Snoop", snooper1,
                                  sprintf("%s -> %s (%O)",
@@ -314,13 +303,13 @@ nomask varargs int snoop( object snooper, object snoopee )
                                          snooper, snoopee, environment(snoopee) ),
                      100000 );
 
-            if (snooper0)
+            if (orig_snoopee)
             {
                CHMASTER->send( "Snoop", snooper,
                              sprintf( "%s *OFF* %s (%O).",
                                      capitalize(getuid(snooper)),
-                                     capitalize(getuid(snooper0)),
-                                     environment(snooper0) ) );
+                                     capitalize(getuid(orig_snoopee)),
+                                     environment(orig_snoopee) ) );
             }
 
             CHMASTER->send( "Snoop", snooper, sprintf( "%s -> %s (%O).",
@@ -350,28 +339,28 @@ nomask varargs int snoop( object snooper, object snoopee )
         if ( (snooper == PO ||
               query_wiz_grp(geteuid(PO)) > query_wiz_grp(snooper) ||
               (query_wiz_grp(geteuid(PO)) == query_wiz_grp(snooper) &&
-              efun::interactive_info(PO, II_SNOOP_NEXT) == snooper)) && snooper0 )
+              efun::interactive_info(PO, II_SNOOP_NEXT) == snooper)) && orig_snoopee )
         {
             if ( !IS_DEPUTY(snooper) )
             {
                log_file( SNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
                                             Lcut(dtime(time())), snooper,
-                                            snooper0,
-                                            environment(snooper0) ),
+                                            orig_snoopee,
+                                            environment(orig_snoopee) ),
                         100000 );
 
                 CHMASTER->send( "Snoop", snooper,
                               sprintf( "%s *OFF* %s (%O).",
                                       capitalize(getuid(snooper)),
-                                      capitalize(getuid(snooper0)),
-                                      environment(snooper0) ) );
+                                      capitalize(getuid(orig_snoopee)),
+                                      environment(orig_snoopee) ) );
             }
             else
             {
                log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
                                              Lcut(dtime(time())), snooper,
-                                             snooper0,
-                                             environment(snooper0) ),
+                                             orig_snoopee,
+                                             environment(orig_snoopee) ),
                         100000 );
             }
             return efun::snoop(snooper);
