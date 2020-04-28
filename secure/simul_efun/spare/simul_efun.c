@@ -45,7 +45,7 @@ public int mkdirp(string dir);
 string dtime(int wann);
 varargs int log_file(string file, string txt, int size_to_break);
 int query_wiz_level(mixed player);
-nomask varargs int snoop(object me, object you);
+nomask varargs int snoop(object snooper, object snoopee);
 varargs string country(mixed ip, string num);
 int query_wiz_grp(mixed wiz);
 public varargs object deep_present(mixed what, object ob);
@@ -205,74 +205,76 @@ private string Lcut(string str) {
   return str[5..11]+str[18..];
 }
 
-nomask varargs int snoop( object me, object you )
+nomask varargs int snoop( object snooper, object snoopee )
 {
     int ret;
-    object snooper0, snooper, snooper2, snooper3;
+    object snooper0, snooper1, snooper2, snooper3;
 
-    if( !objectp(me) || me == you || !PO )
+    if( !objectp(snooper) || snooper == snoopee || !PO )
        return 0;
 
-    snooper0 = find_snooped(me);
+    snooper0 = find_snooped(snooper);
 
-     if(you){
-        if ( PO != me && query_wiz_grp(me) >= query_wiz_grp(geteuid(PO)) )
+     if(snoopee)
+     {
+        if ( PO != snooper
+             && query_wiz_grp(snooper) >= query_wiz_grp(geteuid(PO)) )
             return 0;
 
-        if ( query_wiz_grp(me) <= query_wiz_grp(you) &&
-             !(you->QueryAllowSnoop(me)) )
+        if ( query_wiz_grp(snooper) <= query_wiz_grp(snoopee) &&
+             !(snoopee->QueryAllowSnoop(snooper)) )
         {
-            if ( !IS_DEPUTY(me) || IS_ARCH(you) )
+            if ( !IS_DEPUTY(snooper) || IS_ARCH(snoopee) )
                return 0;
         }
 
-        if ( (snooper = efun::interactive_info(you, II_SNOOP_NEXT)) &&
-             query_wiz_grp(snooper) >= query_wiz_grp(me) )
+        if ( (snooper1 = efun::interactive_info(snoopee, II_SNOOP_NEXT)) &&
+             query_wiz_grp(snooper1) >= query_wiz_grp(snooper) )
         {
-            if ( snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
+            if ( snooper1->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
                return 0;
 
-            tell_object( snooper, sprintf( "%s snooped jetzt %s.\n",
-                                       me->name(WER), you->name(WER) ) );
+            tell_object( snooper1, sprintf( "%s snooped jetzt %s.\n",
+                                       snooper->name(WER), snoopee->name(WER) ) );
 
-            snooper2 = me;
+            snooper2 = snooper;
 
             while ( snooper3 = interactive_info(snooper2, II_SNOOP_NEXT) )
             {
-               tell_object( snooper,
+               tell_object( snooper1,
                            sprintf( "%s wird seinerseits von %s gesnooped.\n"
                                    ,snooper2->name(WER),
                                    snooper3->name(WEM) ) );
                snooper2 = snooper3;
             }
 
-            efun::snoop( snooper, snooper2 );
+            efun::snoop( snooper1, snooper2 );
 
-            if ( efun::interactive_info(snooper2, II_SNOOP_NEXT) != snooper )
-               tell_object( snooper, sprintf( "Du kannst %s nicht snoopen.\n",
+            if ( efun::interactive_info(snooper2, II_SNOOP_NEXT) != snooper1 )
+               tell_object( snooper1, sprintf( "Du kannst %s nicht snoopen.\n",
                                           snooper2->name(WEN) ) );
             else
             {
-               tell_object( snooper, sprintf( "Du snoopst jetzt %s.\n",
+               tell_object( snooper1, sprintf( "Du snoopst jetzt %s.\n",
                                           snooper2->name(WEN) ) );
-               if ( !IS_DEPUTY(snooper) )
+               if ( !IS_DEPUTY(snooper1) )
                {
                    log_file( SNOOPLOGFILE, sprintf("%s: %O %O %O\n",
                                                dtime(time()),
-                                               snooper,
+                                               snooper1,
                                                snooper2,
                                                environment(snooper2) ),
                             100000 );
                    if (snooper0)
-                      CHMASTER->send( "Snoop", snooper,
+                      CHMASTER->send( "Snoop", snooper1,
                                     sprintf( "%s *OFF* %s (%O)",
-                                            capitalize(getuid(snooper)),
+                                            capitalize(getuid(snooper1)),
                                             capitalize(getuid(snooper0)),
                                             environment(snooper0) ) );
 
-                   CHMASTER->send( "Snoop", snooper,
+                   CHMASTER->send( "Snoop", snooper1,
                                  sprintf("%s -> %s (%O)",
-                                        capitalize(getuid(snooper)),
+                                        capitalize(getuid(snooper1)),
                                         capitalize(getuid(snooper2)),
                                         environment(snooper2)));
                }
@@ -280,7 +282,7 @@ nomask varargs int snoop( object me, object you )
                {
                    log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O\n",
                                                  dtime(time()),
-                                                 snooper,
+                                                 snooper1,
                                                  snooper2,
                                                  environment(snooper2) )
                             ,100000 );
@@ -289,87 +291,88 @@ nomask varargs int snoop( object me, object you )
         }
         else
         {
-            if (snooper)
+            if (snooper1)
             {
-               if ( !me->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
+               if ( !snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
                {
                    printf( "%s wird bereits von %s gesnooped. Benutze das "
                           "\"f\"-Flag, wenn du dennoch snoopen willst.\n",
-                          you->name(WER), snooper->name(WEM) );
+                          snoopee->name(WER), snooper1->name(WEM) );
                    return 0;
                }
             }
         }
-        ret = efun::snoop( me, you );
+        ret = efun::snoop( snooper, snoopee );
 
-        if ( !IS_DEPUTY(me) && efun::interactive_info(you, II_SNOOP_NEXT) == me)
+        if ( !IS_DEPUTY(snooper)
+            && efun::interactive_info(snoopee, II_SNOOP_NEXT) == snooper)
         {
             log_file( SNOOPLOGFILE, sprintf( "%s: %O %O %O\n",
                                          Lcut(dtime(time())),
-                                         me, you, environment(you) ),
+                                         snooper, snoopee, environment(snoopee) ),
                      100000 );
 
             if (snooper0)
             {
-               CHMASTER->send( "Snoop", me,
+               CHMASTER->send( "Snoop", snooper,
                              sprintf( "%s *OFF* %s (%O).",
-                                     capitalize(getuid(me)),
+                                     capitalize(getuid(snooper)),
                                      capitalize(getuid(snooper0)),
                                      environment(snooper0) ) );
             }
 
-            CHMASTER->send( "Snoop", me, sprintf( "%s -> %s (%O).",
-                                             capitalize(getuid(me)),
-                                             capitalize(getuid(you)),
-                                             environment(you) ) );
+            CHMASTER->send( "Snoop", snooper, sprintf( "%s -> %s (%O).",
+                                             capitalize(getuid(snooper)),
+                                             capitalize(getuid(snoopee)),
+                                             environment(snoopee) ) );
         }
         else
         {
-            if ( efun::interactive_info(you, II_SNOOP_NEXT) == me )
+            if ( efun::interactive_info(snoopee, II_SNOOP_NEXT) == snooper )
             {
                log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O\n",
                                              Lcut(dtime(time())),
-                                             me, you, environment(you) ),
+                                             snooper, snoopee, environment(snoopee) ),
                         100000 );
             }
         }
 
-        if ( ret && query_wiz_grp(me) <= query_wiz_grp(you) &&
-             !IS_DEPUTY(me) )
-            tell_object( you, "*** " + NAME(me) + " snoopt Dich!\n" );
+        if ( ret && query_wiz_grp(snooper) <= query_wiz_grp(snoopee) &&
+             !IS_DEPUTY(snooper) )
+            tell_object( snoopee, "*** " + NAME(snooper) + " snoopt Dich!\n" );
 
         return ret;
      }
      else
      {
-        if ( (me == PO ||
-              query_wiz_grp(geteuid(PO)) > query_wiz_grp(me) ||
-              (query_wiz_grp(geteuid(PO)) == query_wiz_grp(me) &&
-              efun::interactive_info(PO, II_SNOOP_NEXT) == me)) && snooper0 )
+        if ( (snooper == PO ||
+              query_wiz_grp(geteuid(PO)) > query_wiz_grp(snooper) ||
+              (query_wiz_grp(geteuid(PO)) == query_wiz_grp(snooper) &&
+              efun::interactive_info(PO, II_SNOOP_NEXT) == snooper)) && snooper0 )
         {
-            if ( !IS_DEPUTY(me) )
+            if ( !IS_DEPUTY(snooper) )
             {
                log_file( SNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
-                                            Lcut(dtime(time())), me,
+                                            Lcut(dtime(time())), snooper,
                                             snooper0,
                                             environment(snooper0) ),
                         100000 );
 
-                CHMASTER->send( "Snoop", me,
+                CHMASTER->send( "Snoop", snooper,
                               sprintf( "%s *OFF* %s (%O).",
-                                      capitalize(getuid(me)),
+                                      capitalize(getuid(snooper)),
                                       capitalize(getuid(snooper0)),
                                       environment(snooper0) ) );
             }
             else
             {
                log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
-                                             Lcut(dtime(time())), me,
+                                             Lcut(dtime(time())), snooper,
                                              snooper0,
                                              environment(snooper0) ),
                         100000 );
             }
-            return efun::snoop(me);
+            return efun::snoop(snooper);
         }
      }
      return 0;
