@@ -344,6 +344,14 @@ static int _snoop(string cmdline)
   int flags;
   string *args;
 
+#if __BOOT_TIME__ < 1588106971
+  if (!IS_ARCH(this_object()) && !IS_DEPUTY(this_object()))
+  {
+    printf("Snoopen koennen bis auf Weiteres nur Erzmagier.\n");
+    return 1;
+  }
+#endif
+
   if (!sizeof(cmdline=_unparsed_args())||
       sizeof(args=parseargs(cmdline,&flags,SNOOP_OPTS,0))!=1||flags==-1)
   {
