@@ -37,7 +37,8 @@ static int _clone(string cmdline)
   mixed *tmp;
   int flags;
   object ob;
-  string *args,*args2,err;
+  string *args,*args2;
+  string|int err;
   
   cmdline=_unparsed_args();
   args=parseargs(cmdline,&flags,CLONE_OPTS,1);
