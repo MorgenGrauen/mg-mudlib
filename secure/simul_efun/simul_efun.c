@@ -198,97 +198,112 @@ private string Lcut(string str) {
 nomask varargs int snoop( object snooper, object snoopee )
 {
     int ret;
-    object snooper1, snooper2, snooper3;
 
     if( !objectp(snooper) || snooper == snoopee || !PO )
        return 0;
 
     // Evtl. gibt es bereits einen snoopee, der von snopper gesnoopt wird?
-    object orig_snoopee = efun::interactive_info(snooper, II_SNOOP_PREV);
+    object existing_snoopee = efun::interactive_info(snooper, II_SNOOP_PREV);
 
+     // soll jemand neues gesnoopt werden?
      if(snoopee)
      {
+        // Jemand mit niedrigerem Level kann keinen hoeherleveligen snoopen
+        // lassen.
         if ( PO != snooper
              && query_wiz_grp(snooper) >= query_wiz_grp(geteuid(PO)) )
             return 0;
 
-        if ( query_wiz_grp(snooper) <= query_wiz_grp(snoopee) &&
-             !(snoopee->QueryAllowSnoop(snooper)) )
+        // Niedriglevelige User koennen nur mit Einverstaendnis hoeherlevelige
+        // snoopen.
+        if ( query_wiz_grp(snooper) <= query_wiz_grp(snoopee)
+             && !(snoopee->QueryAllowSnoop(snooper)) )
         {
+            // es sei denn der snooper ist Sheriff und der snoopee ist kein
+            // EM+
             if ( !IS_DEPUTY(snooper) || IS_ARCH(snoopee) )
                return 0;
         }
-
-        if ( (snooper1 = efun::interactive_info(snoopee, II_SNOOP_NEXT)) &&
-             query_wiz_grp(snooper1) >= query_wiz_grp(snooper) )
+        // Wird der snoopee bereits gesnoopt? Dann darf sich der neue snooper
+        // nur unter Umstaenden in die Snoop-Kette einreihen...
+        object existing_snooper;
+        if ( (existing_snooper = efun::interactive_info(snoopee, II_SNOOP_NEXT))
+             && query_wiz_grp(existing_snooper) >= query_wiz_grp(snooper) )
         {
-            if ( snooper1->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
+            // ... naemlich nur dann, wenn der bestehende Snooper kein
+            // SF_LOCKED gesetzt hat.
+            if ( existing_snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
                return 0;
 
-            tell_object( snooper1, sprintf( "%s snooped jetzt %s.\n",
+            tell_object( existing_snooper, sprintf( "%s snooped jetzt %s.\n",
                                        snooper->name(WER), snoopee->name(WER) ) );
 
-            snooper2 = snooper;
-
-            while ( snooper3 = interactive_info(snooper2, II_SNOOP_NEXT) )
+            // Evtl. wird der neue snooper selber gesnoopt. Dafuer wird jetzt
+            // ggf. die Kette von *ihren* snoopern verfolgt.
+            object snooper_of_new_snooper = snooper;
+            object snooper_rover;
+            while ( snooper_rover = interactive_info(snooper_of_new_snooper, II_SNOOP_NEXT) )
             {
-               tell_object( snooper1,
+               tell_object( existing_snooper,
                            sprintf( "%s wird seinerseits von %s gesnooped.\n"
-                                   ,snooper2->name(WER),
-                                   snooper3->name(WEM) ) );
-               snooper2 = snooper3;
+                                   ,snooper_of_new_snooper->name(WER),
+                                   snooper_rover->name(WEM) ) );
+               snooper_of_new_snooper = snooper_rover;
             }
 
-            efun::snoop( snooper1, snooper2 );
+            // Der letzt snooper des hier anzumeldenden snoopers wird nun vom
+            // bestehenden snooper gesnoopt, falls moeglich.
+            efun::snoop( existing_snooper, snooper_of_new_snooper );
 
-            if ( efun::interactive_info(snooper2, II_SNOOP_NEXT) != snooper1 )
-               tell_object( snooper1, sprintf( "Du kannst %s nicht snoopen.\n",
-                                          snooper2->name(WEN) ) );
+            if ( efun::interactive_info(snooper_of_new_snooper, II_SNOOP_NEXT)
+                   != existing_snooper )
+               tell_object( existing_snooper, sprintf( "Du kannst %s nicht snoopen.\n",
+                                          snooper_of_new_snooper->name(WEN) ) );
             else
             {
-               tell_object( snooper1, sprintf( "Du snoopst jetzt %s.\n",
-                                          snooper2->name(WEN) ) );
-               if ( !IS_DEPUTY(snooper1) )
+               tell_object( existing_snooper, sprintf( "Du snoopst jetzt %s.\n",
+                                          snooper_of_new_snooper->name(WEN) ) );
+               if ( !IS_DEPUTY(existing_snooper) )
                {
                    log_file( SNOOPLOGFILE, sprintf("%s: %O %O %O\n",
                                                dtime(time()),
-                                               snooper1,
-                                               snooper2,
-                                               environment(snooper2) ),
+                                               existing_snooper,
+                                               snooper_of_new_snooper,
+                                               environment(snooper_of_new_snooper) ),
                             100000 );
-                   if (orig_snoopee)
-                      CHMASTER->send( "Snoop", snooper1,
+                   if (existing_snoopee)
+                      CHMASTER->send( "Snoop", existing_snooper,
                                     sprintf( "%s *OFF* %s (%O)",
-                                            capitalize(getuid(snooper1)),
-                                            capitalize(getuid(orig_snoopee)),
-                                            environment(orig_snoopee) ) );
+                                            capitalize(getuid(existing_snooper)),
+                                            capitalize(getuid(existing_snoopee)),
+                                            environment(existing_snoopee) ) );
 
-                   CHMASTER->send( "Snoop", snooper1,
+                   CHMASTER->send( "Snoop", existing_snooper,
                                  sprintf("%s -> %s (%O)",
-                                        capitalize(getuid(snooper1)),
-                                        capitalize(getuid(snooper2)),
-                                        environment(snooper2)));
+                                        capitalize(getuid(existing_snooper)),
+                                        capitalize(getuid(snooper_of_new_snooper)),
+                                        environment(snooper_of_new_snooper)));
                }
                else
                {
                    log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O\n",
                                                  dtime(time()),
-                                                 snooper1,
-                                                 snooper2,
-                                                 environment(snooper2) )
+                                                 existing_snooper,
+                                                 snooper_of_new_snooper,
+                                                 environment(snooper_of_new_snooper) )
                             ,100000 );
                }
             }
         }
         else
         {
-            if (snooper1)
+            if (existing_snooper)
             {
                if ( !snooper->QueryProp(P_SNOOPFLAGS) & SF_LOCKED )
                {
                    printf( "%s wird bereits von %s gesnooped. Benutze das "
                           "\"f\"-Flag, wenn du dennoch snoopen willst.\n",
-                          snoopee->name(WER), snooper1->name(WEM) );
+                          snoopee->name(WER), existing_snooper->name(WEM) );
                    return 0;
                }
             }
@@ -303,13 +318,13 @@ nomask varargs int snoop( object snooper, object snoopee )
                                          snooper, snoopee, environment(snoopee) ),
                      100000 );
 
-            if (orig_snoopee)
+            if (existing_snoopee)
             {
                CHMASTER->send( "Snoop", snooper,
                              sprintf( "%s *OFF* %s (%O).",
                                      capitalize(getuid(snooper)),
-                                     capitalize(getuid(orig_snoopee)),
-                                     environment(orig_snoopee) ) );
+                                     capitalize(getuid(existing_snoopee)),
+                                     environment(existing_snoopee) ) );
             }
 
             CHMASTER->send( "Snoop", snooper, sprintf( "%s -> %s (%O).",
@@ -334,33 +349,38 @@ nomask varargs int snoop( object snooper, object snoopee )
 
         return ret;
      }
+     // Ansonsten soll ein bestehender snoop beendet werden.
      else
      {
+        // Das beenden duerfen aber nur Aufrufer selber oder hoeherlevelige
+        // ausloesen oder gleichen levels, wenn sie selber gerade vom snooper
+        // gesnoopt werden.
         if ( (snooper == PO ||
               query_wiz_grp(geteuid(PO)) > query_wiz_grp(snooper) ||
               (query_wiz_grp(geteuid(PO)) == query_wiz_grp(snooper) &&
-              efun::interactive_info(PO, II_SNOOP_NEXT) == snooper)) && orig_snoopee )
+              efun::interactive_info(PO, II_SNOOP_NEXT) == snooper) )
+            && existing_snoopee )
         {
             if ( !IS_DEPUTY(snooper) )
             {
                log_file( SNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
                                             Lcut(dtime(time())), snooper,
-                                            orig_snoopee,
-                                            environment(orig_snoopee) ),
+                                            existing_snoopee,
+                                            environment(existing_snoopee) ),
                         100000 );
 
                 CHMASTER->send( "Snoop", snooper,
                               sprintf( "%s *OFF* %s (%O).",
                                       capitalize(getuid(snooper)),
-                                      capitalize(getuid(orig_snoopee)),
-                                      environment(orig_snoopee) ) );
+                                      capitalize(getuid(existing_snoopee)),
+                                      environment(existing_snoopee) ) );
             }
             else
             {
                log_file( ASNOOPLOGFILE, sprintf( "%s: %O %O %O *OFF*\n",
                                              Lcut(dtime(time())), snooper,
-                                             orig_snoopee,
-                                             environment(orig_snoopee) ),
+                                             existing_snoopee,
+                                             environment(existing_snoopee) ),
                         100000 );
             }
             return efun::snoop(snooper);
