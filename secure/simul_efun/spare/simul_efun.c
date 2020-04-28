@@ -190,14 +190,16 @@ varargs string country(mixed ip, string num) {
 
 
 // * Snoopen und was dazugehoert
-static object find_snooped(object who)
-{
-  object *u;
-  int i;
 
-  for (i=sizeof(u=users())-1;i>=0;i--)
-    if (who==efun::interactive_info(u[i], II_SNOOP_NEXT))
-      return u[i];
+// Findet zu einem gegegeben eingeloggten, interaktivem User <who> den von ihr
+// gesnoopten Interactive.
+private object find_snoopee(object who)
+{
+  foreach (object u: users())
+  {
+    if (who == efun::interactive_info(u, II_SNOOP_NEXT))
+      return u;
+  }
   return 0;
 }
 
@@ -213,7 +215,7 @@ nomask varargs int snoop( object snooper, object snoopee )
     if( !objectp(snooper) || snooper == snoopee || !PO )
        return 0;
 
-    snooper0 = find_snooped(snooper);
+    snooper0 = find_snoopee(snooper);
 
      if(snoopee)
      {
