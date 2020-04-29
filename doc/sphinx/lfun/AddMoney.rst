@@ -71,12 +71,18 @@ BEISPIELE
 ---------
 ::
 
+     #include <zentralbank.h>
+     
      // gib ihm Geld
-     this_player()->AddMoney(50);
+     int money = ZENTRALBANK->Withdraw(50);
+     this_player()->AddMoney(money);
 
      // nimm ihm Geld
      if(this_player()->AddMoney(-50)==1)
-      write("Der Ork beklaut dich!\n");
+     {
+       write("Der Ork beklaut dich!\n");
+       ZENTRALBANK->PayIn(50);
+     }
 
 SIEHE AUCH
 ----------
