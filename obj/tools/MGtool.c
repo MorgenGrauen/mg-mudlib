@@ -283,18 +283,10 @@ static void PrintObj(object obj, string file)
     str=capitalize(getuid(obj));
   else
   {
-    if(object_name(obj)[0..26]=="/d/unterwelt/objekte/teddy#" &&
-       IS_ARCH(this_interactive()))
-      str="Ein Teddy (stumm)";
+    if(str=({string})obj->QueryProp(P_INT_LONG));
+    else if(str=({string})obj->QueryProp(P_LONG));
     else
-    {
-      if(str=({string})obj->QueryProp(P_INT_LONG))
-	;
-      else if(str=({string})obj->QueryProp(P_LONG))
-	;
-      else
-	str="- no long description -\n";
-    }
+        str="- no long description -\n";
   }
   if(!file||file=="")
     W(str);
