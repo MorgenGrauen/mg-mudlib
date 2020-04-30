@@ -267,8 +267,8 @@ static string VarToPureFile(string str)
 
 static void PrintObj(object obj, string file)
 {
-  object item, tmp;
-  string str;
+  object item;
+  string|closure long_desc;
   int i;
 
   SECURE1();
@@ -280,18 +280,19 @@ static void PrintObj(object obj, string file)
   else
     write_file(file,"Long :\n");
   if(query_once_interactive(obj))
-    str=capitalize(getuid(obj));
+    long_desc=capitalize(getuid(obj));
   else
   {
-    if(str=({string})obj->QueryProp(P_INT_LONG));
-    else if(str=({string})obj->QueryProp(P_LONG));
-    else
-        str="- no long description -\n";
+    if( (long_desc=({string|closure})obj->QueryProp(P_INT_LONG))
+        || (long_desc=({string|closure})obj->QueryProp(P_LONG)) )
+      long_desc="- no long description -\n";
+    if (closurep(long_desc))
+      long_desc = funcall(long_desc);
   }
   if(!file||file=="")
-    W(str);
+    W(long_desc);
   else
-    write_file(file,str);
+    write_file(file,long_desc);
   FORALL(item, obj)
   {
     if(!i)
@@ -310,7 +311,7 @@ static string ObjFile(object obj)
 
 static varargs void PrintShort(string pre, object obj, string file)
 {
-  string str;
+  string|closure shrt;
 
   SECURE1();
   if(!obj)
@@ -318,31 +319,33 @@ static varargs void PrintShort(string pre, object obj, string file)
   if(MODE(MODE_SHORT))
   {
     if (query_once_interactive(obj))
-      str=capitalize(getuid(obj));
+      shrt=capitalize(getuid(obj));
     else
     {
-      if(!((str=({string})obj->QueryProp(P_INT_SHORT))||
-	   (str=({string})obj->QueryProp(P_SHORT))))
-	if(is_player(obj))
-	  str=CRNAME(obj)+" (invisible)";
-	else
-	  str="- no short description -";
+      if(!((shrt=({string|closure})obj->QueryProp(P_INT_SHORT))
+            || (shrt=({string|closure})obj->QueryProp(P_SHORT))))
+        if(is_player(obj))
+          shrt=CRNAME(obj)+" (invisible)";
+        else
+          shrt="- no short description -";
+      if (closurep(shrt))
+        shrt = funcall(shrt);
     }
-    str=ALEFT(sprintf("%O ",str), 34, ".")+" ";
+    shrt=ALEFT(sprintf("%O ",shrt), 34, ".")+" ";
   }
   else
-    str="";
+    shrt="";
   if(interactive(obj))
-    str+="i";
+    shrt+="i";
   else if(living(obj))
-    str+="l";
+    shrt+="l";
   else
-    str+=".";
-  str+=(shadow(obj, 0) ? "s" : ".");
+    shrt+=".";
+  shrt+=(shadow(obj, 0) ? "s" : ".");
   if(!file||file=="")
-    WLN((pre+CAP(str)+" "+ObjFile(obj))[0..79]);
+    WLN((pre+CAP(shrt)+" "+ObjFile(obj))[0..79]);
   else
-    write_file(file,(pre+CAP(str)+" "+ObjFile(obj))[0..79]+"\n");
+    write_file(file,(pre+CAP(shrt)+" "+ObjFile(obj))[0..79]+"\n");
 }
 
 static varargs void DeepPrintShort(object env, int indent, string pre, string file)
