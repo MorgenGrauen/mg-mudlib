@@ -132,14 +132,17 @@ o Sollte ein zur Abnahme anstehendes Projekt eine (grundsaetzlich
 o Sollte ein Objekt aus einer anderen Region bzw. allgemein aus einem
   anderen Verzeichnis (z.B. /players) in Deine Region verlegt werden
   muessen, sind VOR dem Umhaengen folgende Punkte zu beachten:
-  -- Forscherpunkte muessen umgetragen werden (EM ansprechen),
-  -- Erstkill-Stufenpunkte muessen umgetragen werden (EM ansprechen),
-  -- Zaubertraenke umtragen lassen (EM ansprechen),
-  -- Ruestungen in Padreics Ruestungsskill umtragen lassen (EM ansprechen),
+  -- Forscherpunkte muessen umgetragen werden
+  -- Quests und Minquests muessen umgetragen werden
+  -- Erstkill-Stufenpunkte muessen umgetragen werden
+  -- Zaubertraenke umtragen lassen
+  -- Seherportal(e) verlegen lassen
+  -- Ruestungen in Padreics Ruestungsskill umtragen lassen
   -- Waffen in der Liste legendaerer Waffen der Kaempfergilde umtragen
-     (GM Kaempfer oder EM ansprechen),
-  -- evtl. im Gebiete vorhandene Seherhaeuser umziehen,
-  -- evtl. im Gebiet vorhandene Kraeuterskill-Kraeuter beruecksichtigen,
+     (GM Kaempfer oder EM ansprechen)
+  -- im Gebiet vorhandene Seherhaeuser umziehen, an P_SEHERHAUS_ERLAUBT im
+     Zielraum denken
+  -- evtl. im Gebiet vorhandene Kraeuterskill-Kraeuter beruecksichtigen
   -- evtl. Briefempfaenger der Postquest beruecksichtigen,
   -- ueber die Mudlib greppen lassen, um eventuell in anderen Regionen
      verwendete Referenzen auf die alten Pfade des umziehenden Codes
@@ -147,6 +150,7 @@ o Sollte ein Objekt aus einer anderen Region bzw. allgemein aus einem
      fiesem Code auch in Spielersavefiles gespeicherte Pfade zu
      beruecksichtigen (*ARGL*).
 
+  Sofern nichts anderes angegeben ist, muss Dir dabei ein EM helfen.
 
 4) Seherhaeuser
 ===============

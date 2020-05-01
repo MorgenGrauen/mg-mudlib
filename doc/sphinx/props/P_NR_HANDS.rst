@@ -28,6 +28,8 @@ BESCHREIBUNG
      vierhaendige Schwert aus dem Friedhof genannt.
 
      Defaultmaessig sind alle Waffen Zweihaender.
+     In Ruestungen ist die Property nicht per Default gesetzt, d.h. in 
+     Schilden muss sie manuell gesetzt werden.
 
      Diese Property kann auch bei Zaubern benutzt werden, bei denen man eine
      oder mehrere Haende frei haben muss.
@@ -42,5 +44,5 @@ SIEHE AUCH
      /std/weapon.c, /std/spellbook.c
 
 
-Last modified: Sun May 19 15:00:02 1996 by Wargon
+Last modified: 2020-04-21, Arathorn
 
