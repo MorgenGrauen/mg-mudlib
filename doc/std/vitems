@@ -3,8 +3,13 @@ Virtuelle Items / Objekte
 
 Um ein Objekt genauer beschreiben zu koennen, gibt es einerseits Details an
 diesem Objekt.
+
 Andererseits gibt es sog. virtuelle Items (vItems), die detaillierter als
-einfache Details beschrieben werden koennen (z.B. mit Geschlecht, Material etc.), ohne wirklich als normales Objekt im Raum zu liegen. Sie koennen auch eigene Details (alle Sinne) haben und sogar selber vItems enthalten. Die vItems werden von untersuche behandelt wie normale Objekte und sind sogar als Referenzobjekt nutzbar.
+einfache Details beschrieben werden koennen (z.B. mit Geschlecht, Material
+etc.), ohne wirklich als normales Objekt im Raum zu liegen. Sie koennen auch
+eigene Details (alle Sinne) haben und sogar selber vItems enthalten. Die
+vItems werden von untersuche behandelt wie normale Objekte und sind sogar
+als Referenzobjekt nutzbar.
 
 Auf Wunsch koennen sie so konfiguriert werden, dass ein vItem nehmbar ist.
 Das vItem im Raum und das genommene im Spielerinventar koennen hierbei sogar
@@ -16,9 +21,13 @@ die man auch in normalen Objekten setzen kann. Allerdings werden diese Props
 nicht alle genutzt bzw. sind sind nicht alle sinnvoll. Beispielsweise sind
 kampfrelevante Props im Kontext von vItems bedeutungslos, ebenso solche, die
 von speziellem Code genutzt werden, der nicht in /std/container enthalten
-ist. (Allerdings kann beim Nehmen eines vItems durchaus ein nicht-standard Objekt (Waffe/Ruestung/etc.) erzeugt werden, welches im Kampf auch ganz normal genutzt werden kann.)
+ist. (Allerdings kann beim Nehmen eines vItems durchaus ein nicht-Standard-
+Objekt (Waffe/Ruestung/etc.) erzeugt werden, welches im Kampf auch ganz
+normal genutzt werden kann.)
 
-Wird in einem vItem eine Blueprint angegeben, dient diese auch als Vorlage (Templat), aus der ggf. Properties abgefragt werden, welche nicht im vItem selbst angegeben sind.
+Wird in einem vItem eine Blueprint angegeben, dient diese auch als Vorlage
+(Templat), aus der ggf. Properties abgefragt werden, welche nicht im vItem
+selbst angegeben sind.
 
 Das Nehmen von vItems ist moeglich, wenn eine Blueprint eingetragen ist,
 welche dann geclont werden kann. Hierbei muss man sich dann auch nicht mehr
@@ -27,7 +36,8 @@ wieder zerstoeren). Die Funktionen von put_and_get.c verarbeiten vItems,
 sofern es ein passendes gibt.
 Nach dem Nehmen eines vItems ist dieses standardmaessig bis zum naechsten
 Reset "weg", d.h. nicht mehr nehmbar (clonbar) und wird auch nicht mehr
-gefunden bei untersuche & Co. Fuer den Reset von vItems sind vergleichbare Einstellung wie bei AddItem() moeglich.
+gefunden bei untersuche & Co. Fuer den Reset von vItems sind vergleichbare
+Einstellung wie bei AddItem() moeglich.
 
 Interagiert Code mit einem vItem, welcher ein Objekt benoetigt, wird
 on-the-fly ein Objekt erzeugt. Ist es ein vItem mit Blueprint, wird diese
@@ -45,6 +55,7 @@ Interaktion mit bug/typo/etc.
 
 Hat das vitem ein Templat, wird wie gehabt an diesem der Eintrag vorgenommen,
 als waere dieses Objekt im Raum.
+
 Hat es kein Templat, wird der Eintrag an dem Objekt vorgenommen, der es
 geclont hat. Das wird in aller Regel der Raum/Container sein, der das vItem
 beinhaltet.
