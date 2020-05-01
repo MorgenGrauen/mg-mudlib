@@ -3,231 +3,378 @@ Das neue Hooksystem
 
 EINLEITUNG
 ==========
-Das neue Hooksystem baut nicht mehr auf der Eintragung eines Hooks in einer
-Property auf. Dadurch wird es moeglich, dass nicht nur ein Objekt sich als
-Hook eintraegt.
 
-Es gibt verschiedenen Arten von Hooks, die man eintragen kann:
-* Listener (H_LISTENER)
-            diese Hooks werden ueber ein Ereignis nur informiert,
-            koennen aber nicht eingreifen oder aendern.
-            max. Anzahl: 5
-* Data-Modifier (H_DATA_MODIFICATOR)
-            diese Hooks duerfen die Daten eines Ereignisses aendern.
-            max. Anzahl: 3
-* Hook-Modifier (H_HOOK_MODIFICATOR)
-            diese Hooks duerfen die Daten des Ereignisses aendern und
-            zusaetzlich das Ereignis auch abbrechen.
-            max. Anzahl: 2
-* Surveyor (H_HOOK_SURVEYOR)
-            diese Hooks duerfen alles oben beschriebene. Zusaetzlich werden
-            sie aber auch gefragt, wenn andere Objekte einen Hook eintragen
-            wollen, einen Hook abbrechen wollen oder Daten aendern wollen.
-            Oder anders: Surveyorhooks entscheiden, was andere duerfen.
-            Kein normales Objekte sollte diese Art von Hook eintragen. Der RM
-            muss die Verwendung eines Surveyors genehmigen.
-            max. Anzahl: 1
+Das Hook-System stellt folgende Funktionalitaet zur Verfuegung:
+Ein Objekt A kann sich von einem anderen Objekt B ueber den Eintritt von
+bestimmten, Objekt B betreffenden Ereignissen informieren lassen. Hierzu
+meldet Objekt A sich bei Objekt B fuer das interessierende Ereignis an,
+dies wird als "registrieren" bezeichnet. Bei der Registrierung gibt 
+Objekt A an, welche Funktion bei Eintritt des Ereignisses durch Objekt B
+gerufen werden soll.
 
-Ausserdem lassen sich Hooks noch mit unterschiedlicher Prioritaet eintragen,
-welche dann in der entsprechenden Reihenfolge abgearbeitet werden. Wenn ein
-neuer Hook eingetragen wird, aber eigentlich die max. Anzahl schon erreicht
-wird, wird der Konsument mit der niedrigsten Prioritaet geloescht. In diesem
-Fall wird die superseededHook() im verdraengten Konsumenten gerufen.
+Die Verbindung von Objekt A nach B nennen wir "Hook" (Objekt A "hakt" sich
+sozusagen bei B ein, um wie beim Angeln das Zappeln des Fisches am Haken
+mitzubekommen.) Der Funktionsaufruf von B bei Eintritt des Ereignisses 
+wird "Callback" genannt (Objekt B ruft gewissermassen bei A an, um ihm 
+mitzuteilen, dass das Ereignis eingetreten ist.)
 
-Um das neue Hook-System zu realisieren, gibt es zwei wesentliche Klassen.
-Die Objekte, die die Eintragung von Hooks erlauben, erben hierzu von
-hook_provider. Objekte, die einen Surveyor-Hook eintragen wollen, sollten von
-der Klasse hook_surveyor erben. Objekte mit normalen Hooks brauchen nichts zu
-erben.
+Das registrierende Objekt A heisst Consumer (Konsument), Objekt B heisst 
+Hook-Provider (Anbieter).
+
+Im Grunde funktionieren Hooks aehnlich wie Events, jedoch sind Hooks
+zusaetzlich dadurch gekennzeichnet, dass sie auch den Abbruch des Ereignisses
+oder die Veraenderung der ereignisrelevanten Daten bewirken koennen.
+Zudem sind Hooks in ihrer Anzahl pro Provider limitiert.
+
+Anmerkung: Das neue Hooksystem baut nicht mehr auf der Eintragung eines 
+Hooks in einer Property auf. Dadurch wird es moeglich, dass sich mehrere 
+Objekte als Consumer eintragen.
 
 
-Welche Hooks gibt es zur Zeit in der Basis-Mudlib?
-=================================================
-* H_HOOK_MOVE
-  Bei Bewegung eines Objektes ausgeloest. Kann Bewegung beeinflussen oder
-  abbrechen.
-* H_HOOK_DIE
-  Beim Tod eines Lebewesens ausgeloest. Kann den Tod abbrechen oder
-  <poisondeath> abaendern.
-* H_HOOK_DEFEND
-  Im Defend() eines Lebenwesens ausgeloest. Kann das Defend() abbrechen und
-  Daten des Defend() aendern.
-* H_HOOK_ATTACK
-  Im Attack() eines Lebenwesens ausgeloest. Kann das Attack() abbrechen.
-* H_HOOK_HP
-  Bei Veraenderung der HP (LP) eines Lebewesens gerufen. (Zur Zeit keine
-  Datenveraenderung moeglich)
-* H_HOOK_SP
-  Bei Veraenderung der SP (KP) eines Lebewesens gerufen. (Zur Zeit keine
-  Datenveraenderung moeglich)
-* H_HOOK_ATTACK_MOD
-  Wird im Attack() ausgeloest, nachdem die fuer den Angriff wichtigen Daten
-  ermittelt und berechnet wurden. Diese koennen dann vom Hookonsumenten
-  nochmal geaendert werden. Auch ein Abbruch des Attack() ist hier noch
-  moeglich.
-* H_HOOK_ALCOHOL
-  Bei Veraenderung von P_ALCOHOL im Lebewesens gerufen.
-* H_HOOK_FOOD
-  Bei Veraenderung von P_FOOD im Lebewesens gerufen.
-* H_HOOK_DRINK
-  Bei Veraenderung von P_DRINK im Lebewesens gerufen.
-* H_HOOK_POISON
-  Bei Veraenderung von P_POISON im Lebewesens gerufen.
-* H_HOOK_CONSUME
-  Beim Konsumieren von Speisen und Getraenken in Kneipen im Lebewesens
-  gerufen.
-* H_HOOK_TEAMROWCHANGE
-  Bei Teamreihenwechsel vom Lebewesen ausgeloest.
-* H_HOOK_INSERT
-  Wird von Spielerobjekten ausgeloest, wenn ein Objekt ins Spielerinventar
-  bewegt wird. (Keine Datenveraenderung moeglich)
-* H_HOOK_EXIT_USE
-  Wird von einem Raum ausgeloest, wenn ein Lebewesen einen Ausgang benutzt.
-  Abbruch und Aenderung der Daten des Ausgangs moeglich.
-* H_HOOK_INIT
-  Wird von einem Raum ausgeloest, wenn init() gerufen wird (d.h. ein Lebewesen
-  den Raum betritt). Hat keine Daten.
-  Abbruch moeglich.
-  ACHTUNG: bei Abbruch von init() sind schwere Bugs wahrscheinlich!
+Consumer-Typen
+--------------
+
+Hook-Consumer koennen sich fuer verschiedene Rollen beim Hook-Provider
+registrieren, die darueber entscheiden, was der Consumer innerhalb der
+Callback-Funktion tun darf. Es gibt reine Zuhoerer (Listener), 
+Datenmodifizierer (Data-Modifier), Hook-Modifizierer (Hook-Modifier) und
+sogenannte Surveyor-Hooks. Nachfolgend die Liste dieser Hook-Typen und
+die Moeglichkeiten, die ihnen zur Verfuegung stehen:
+
+  * Listener (H_LISTENER, max. Anzahl 5)
+      werden ueber ein Ereignis nur informiert, koennen aber nicht in den
+      Ablauf eingreifen oder Daten aendern.
+
+  * Data-Modifier (H_DATA_MODIFICATOR, max. Anzahl 3)
+      duerfen die Daten eines Ereignisses aendern.
+
+  * Hook-Modifier (H_HOOK_MODIFICATOR, max. Anzahl 2)
+      die Daten des Ereignisses aendern und zusaetzlich das Ereignis auch 
+      abbrechen.
+
+  * Surveyor (H_HOOK_SURVEYOR, max. Anzahl 1)
+      duerfen alles oben beschriebene. Zusaetzlich werden sie gefragt, wenn
+      andere Objekte einen Hook eintragen wollen, einen Hook abbrechen 
+      wollen oder Daten aendern wollen.
+      Anders ausgedrueck: Surveyorhooks entscheiden, was andere duerfen.
+      Kein normales Objekte sollte diese Art von Hook eintragen. Der RM
+      muss die Verwendung eines Surveyors genehmigen.
+
+  Die angegebene Limitierung bezieht sich auf die Anzahl der beim jeweiligen
+  Provider registrierten Hook-Objekte.
 
 
-HOOK-KONSUMENTEN
-================
-Der Hook-Provider ruft bei Ausloesen des Hooks in allen Konsumenten eine
-bestimmte Methode auf. Wenn bei der Registrierung eines Objekts keine Closure
-angeben wurde, die in diesem Fall gerufen werden, wird standardmaessig die
-lfun HookCallback() gerufen (gibt man eine Closure an, bekommt sie die
-gleichen Argumente und es werden die beschriebenen Rueckgabewerte erwartet):
+ANCELLED, hookData});
+----------
+
+Es koennen grundsaetzlich nur die Hooks registriert werden, die ein Objekt
+von sich aus aktiv anbietet. Ein Objekt, das Hooks zur Registrierung
+anbieten will, muss /std/hook_provider erben. Die meisten Mudlib-
+Basisobjekte tun dies bereits und bieten entsprechend die passenden Hooks 
+an. Objekte, die Surveyor-Hooks registrieren wollen, muessen 
+/std/hook_surveyor erben. 
+
+Zum Verstaendnis: Objekte, die sich bei einem Provider registrieren wollen,
+muessen keines dieser Objekte erben. Lediglich <hook.h> muss inkludiert
+werden, damit die Defines zur Verfuegung stehen.
+
+
+Folgende Hooks gibt es zur Zeit in der Basis-Mudlib:
+
+  * H_HOOK_MOVE
+    Vor Bewegung eines Lebewesens ausgeloest.
+    Datenveraenderung und Abbruch moeglich.
+    Daten: ({dest,method,direction,textout,textin}), siehe move()
+
+  * H_HOOK_DIE
+    Beim Tod eines Lebewesens ausgeloest. Kann den Tod abbrechen oder
+    <poisondeath> abaendern.
+    Daten: int poisondeath, siehe die()
+
+  * H_HOOK_DEFEND
+    Im Defend() eines Lebenwesens ausgeloest. Kann das Defend() abbrechen 
+    und Daten des Defend() aendern. Dieser Hook kommt nach einem eventuell
+    in P_TMP_DEFEND_HOOK registrierten Legacy-Hook zum Zuge. Dessen Daten
+    sind in den EINFO-Daten enthalten und werden durch die Rueckgabedaten
+    dieses Hooks ersetzt.
+    Daten: ({dam, dam_type, spell, enemy}), siehe Defend()
+
+  * H_HOOK_ATTACK
+    Im Attack() eines Lebenwesens ausgeloest. Kann das Attack() abbrechen.
+    Daten: object* enemy (enthaelt nur enemy als einziges Element)
+
+  * H_HOOK_ATTACK_MOD
+    Wird im Attack() ausgeloest, nachdem die fuer den Angriff wichtigen Daten
+    ermittelt und berechnet wurden. Diese koennen dann vom Hook-Consumer
+    nochmal geaendert werden. Auch ein Abbruch des Attack() ist moeglich.
+    Dieser Hook kommt nach Auswertung eines ggf. mittels P_TMP_ATTACK_HOOK
+    eingetragenen Legacy-Hooks zum Zuge.
+    Daten: deep_copy(ainfo), siehe Defendinfo, Abschnitt ORIGINAL_AINFO
+
+  * H_HOOK_HP
+  * H_HOOK_SP
+    Bei Veraenderung der Property eines Spielers gerufen. Falls eine 
+    Setmethode auf der Property liegt, wird der Hook wahrscheinlich meist
+    doch nicht gerufen. Wenn sich der Wert nicht geaendert hat, wird er auch
+    nicht gerufen: der Hook reagiert auf Veraenderung des Wertes, nicht
+    auf den Aufruf von SetProp().
+    Keine Datenveraenderung und kein Abbruch moeglich.
+    Daten: der neue Wert der Property
+
+  * H_HOOK_ALCOHOL
+  * H_HOOK_FOOD
+  * H_HOOK_DRINK
+  * H_HOOK_POISON
+    Bei Veraenderung der Property des Lebewesens gerufen. Falls eine 
+    Setmethode auf der Property liegt, wird der Hook wahrscheinlich meist
+    doch nicht gerufen. Wenn sich der Wert nicht geaendert hat, wird er auch
+    nicht gerufen: der Hook reagiert auf Veraenderung des Wertes, nicht
+    auf den Aufruf von SetProp().
+    Datenveraenderung und Abbruch moeglich.
+    Daten: neuer Wert der Property
+
+  * H_HOOK_CONSUME
+    Wird gerufen, wenn ein Lebewesen Speisen oder Getraenke in Kneipen 
+    konsumiert.
+    Datenveraenderung von <cinfo> und Abbruch moeglich. Aenderung von
+    <testonly> nicht moeglich.
+    Daten: ({cinfo, testonly}), siehe consume()
+
+  * H_HOOK_TEAMROWCHANGE
+    Bei Teamreihenwechsel eines Lebewesens ausgeloest.
+    Keine Datenveraenderung und kein Abbruch moeglich.
+    Daten: int* ({alteTeamreihe, neueTeamreihe})
+
+  * H_HOOK_INSERT
+    Wird von Spielerobjekten ausgeloest, nachdem ein Objekt ins 
+    Spielerinventar bewegt wurde. 
+    Keine Datenveraenderung und kein Abbruch moeglich.
+    Daten: object, das ins Inventar bewegte Objekt.
+
+  * H_HOOK_EXIT_USE
+    Wird von einem Raum ausgeloest, wenn ein Lebewesen einen Ausgang benutzt.
+    Datenveraenderung und Abbruch moeglich.
+    Daten: ({string verb, string|closure destroom, string message})
+
+  * H_HOOK_INIT
+    Wird von einem Raum ausgeloest, wenn init() gerufen wird (d.h. ein 
+    Lebewesen den Raum betritt).
+    Abbruch moeglich.
+    ACHTUNG: bei Abbruch von init() sind schwere Bugs wahrscheinlich!
+    Daten: keine.
+
+
+Hook-Prioritaeten
+-----------------
+
+Hooks lassen sich darueber hinaus noch mit unterschiedlicher Prioritaet 
+eintragen, so dass bei Registrierung mehrerer Hooks am selben Provider diese
+dann in der entsprechenden Reihenfolge abgearbeitet werden. Wenn ein neuer
+Hook eingetragen wird, aber die max. Anzahl vorher schon erreicht war, wird
+der Konsument mit der niedrigsten Prioritaet geloescht. In diesem Fall wird
+der verdraengte Consumer durch Aufruf von superseededHook() darueber 
+informiert, dass seine Verbindung getrennt wurde.
+
+
+HOOK-CONSUMER
+=============
+
+Um sich bei einem Provider zu registrieren, ruft man in diesem die Funktion 
+HRegisterToHook() auf (Beschreibung siehe unten bei den Hook-Providern).
+Wenn die Registrierung erfolgreich war, ruft der Hook-Provider bei Eintritt
+des Ereignisses in allen Konsumenten eine bestimmte Funktion auf. Wenn bei
+der Registrierung ein Hook-Objekt angegeben wurde, wird standardmaessig die
+Funktion HookCallback() gerufen. Registriert man stattdessen eine Closure,
+wird diese mit denselben Daten wie die Lfun gerufen. Nachfolgend ist die
+Lfun beschrieben, alles dort gesagte gilt aber genauso fuer Closures.
+
   * mixed HookCallback(object hookSource, int hookid, mixed hookData)
-  Diese Methode wird in jedem Hook-Konsumenten eines Hook-Providers
-  aufgerufen, solange die Verarbeitung nicht vorher abgebrochen wurde.
-  Die Reihenfolge der Abarbeitung wird nach Liste (Surveyor,
-  Hook-Modifikator, Data-Modifikator, Listener) und dort nach Prioritaet
-  durchgefuehrt.
-  Ein Surveyor-Hook kann verhindern, dass Hooks bestimmte Aenderungen
-  durchfuehren.
 
-  Rueckgabewert ist ein Array, das die folgenden Werte beinhaltet.
+    Diese Methode wird in jedem Hook-Konsumenten eines Hook-Providers
+    aufgerufen, solange die Verarbeitung nicht vorher abgebrochen wurde.
+    Die Reihenfolge des Aufrufs ist Surveyor, Hook-Modifikator, 
+    Data-Modifikator, Listener. Innerhalb der Gruppen wird nach Prioritaet
+    abgearbeitet.
+    Ein Surveyor-Hook kann verhindern, dass Hooks bestimmte Aenderungen
+    durchfuehren.
 
-  H_RETCODE Gibt an, welcher Hook-Typ verwendet wurde.
-      H_NO_MOD => Nichts wurde veraendert.
-      H_ALTERED => Daten wurden veraendert.
-      H_CANCELLED => Hook-Kette soll abgebrochen werden.
-                  => Ausserdem soll die Hook-ausloesende Stelle
-                     abgebrochen werden. Z.B. wird das Defend()
-                     abgebrochen, wenn ein H_HOOK_DEFEND
-                     mit cancelled beantwortet wird.
-  H_RETDATA Gibt die (evtl. geaenderten) Daten an.
-      mixed-Objekt, das wie der Parameter hookData aufgebaut ist.
+    Der Funktion wird der Hook-Provider als Objekt hookSource, der Hook-Typ
+    sowie dessen Daten uebergeben. Das bedeutet, man kann diese Funktion
+    fuer die Bearbeitung verschiedener Hook-Typen registrieren.
 
-Ein Objekt darf sich mehrfach fuer den gleichen Hook registrieren. Allerdings
-ist fuer jede Registrierung eine andere Closure noetig.
+    Als Rueckgabewert wird immer ein Array aus zwei Elementen erwartet, das
+    die folgenden Angaben beinhalten muss:
+
+    Element 0 (H_RETCODE) gibt an, welche Aktion die Callback-Funktion
+    ausgefuehrt hat:
+        H_NO_MOD     => keine Aenderungen
+        H_ALTERED    => Daten wurden veraendert
+        H_CANCELLED  => Hook-Kette soll abgebrochen werden, d.h. nach 
+          Prioritaet spaeter aufzurufende Hooks kommen nicht mehr zum Zuge.
+          => Ausserdem soll die Hook-ausloesende Stelle abgebrochen werden.
+             Beispielsweise wird das Defend() abgebrochen, wenn ein 
+             H_HOOK_DEFEND mit H_CANCELLED beantwortet wird.
+    
+    Element 1 (H_RETDATA) gibt die (evtl. geaenderten) Daten an
+        mixed-Objekt, das wie der Parameter hookData aufgebaut ist.
+
+    Hinweis: auch reine Listener-Objekte muessen ein Array zurueckgeben, das
+    dann als erstes Element H_NO_MOD enthaelt.
+
+    Ein Objekt darf sich mehrfach fuer den gleichen Hook registrieren.
+    Allerdings ist dann fuer jede Registrierung eine andere Closure noetig.
+
 
   * void superseededHook(int hookid, object hookprovider)
+
     Wird gerufen, wenn der Konsument von einem anderen mit hoeherer Prioritaet
     verdraengt wurde.
 
 
 HOOK-PROVIDER
 =============
-  Der Hook-Provider bietet eine Menge von Methoden an, die eine Konfiguration
-  ermoeglichen und die Eintragung von Hook-Konsumenten erlauben. Im
-  Normalfall sollte er geerbt und nicht modifiziert werden (ausser natuerlich,
-  die vom Objekte bereitgestellten Hooks einzutragen).
+
+Der Hook-Provider bietet eine Menge von Methoden an, die eine Konfiguration
+ermoeglichen und die Eintragung von Hook-Konsumenten erlauben. Im
+Normalfall sollte er geerbt und muss nicht modifiziert werden. Die einzige
+Konfiguration, die man typischerweise vornehmen muss, ist, die vom Objekt
+bereitgestellten Hooks zu benennen.
 
   * int* HListHooks();
-  Diese Methode liefert eine Liste von Hooktypen, fuer die das Objekt
-  Eintragungen annimmt. Hier koennte beispielsweise eine Liste mit den
-  Eintraegen fuer Attack-, Defend- und Move-Hooks stehen.
+
+    Diese Methode liefert eine Liste von Hooktypen, fuer die das Objekt
+    Registrierungen akzeptiert. Standardmaessig bieten die Mudlib-Basis-
+    objekte folgende Hooks an:
+    Spielerobjekte: H_HOOK_MOVE, H_HOOK_DIE, H_HOOK_DEFEND, H_HOOK_ATTACK,
+                    H_HOOK_HP, H_HOOK_SP, H_HOOK_ATTACK_MOD, H_HOOK_ALCOHOL 
+                    H_HOOK_FOOD, H_HOOK_DRINK, H_HOOK_POISON, H_HOOK_CONSUME,
+                    H_HOOK_TEAMROWCHANGE ,H_HOOK_INSERT
+    NPCs: H_HOOK_MOVE, H_HOOK_DIE, H_HOOK_DEFEND, H_HOOK_ATTACK, 
+          H_HOOK_ATTACK_MOD, H_HOOK_ALCOHOL, H_HOOK_FOOD, H_HOOK_DRINK, 
+          H_HOOK_POISON, H_HOOK_CONSUME, H_HOOK_TEAMROWCHANGE
+    Raeume: H_HOOK_EXIT_USE, H_HOOK_INIT
+    Dinge: keine
 
 
   * protected void offerHook(int hookid, int offerstate);
-  Diese Methode dient dazu, einen bestimmten Hook (z.B. H_HOOK_MOVE)
-  anzubieten. Nur Hooks, die hiermit angeboten wurden, stehen zur
-  Registrierung zur Verfuegung.
-  'offerstate': 0 (nicht verfuegbar), 1 (verfuegbar/angeboten)
+
+    Diese Methode dient dazu, einen bestimmten Hook anzubieten. Nur Hooks,
+    die hiermit angeboten wurden, stehen zur Registrierung zur Verfuegung
+    und werden im Rueckgabewert von HListHooks() aufgefuehrt.
+    
+    'offerstate': 0 (nicht verfuegbar), 1 (verfuegbar)
 
 
   * int HRegisterToHook(int hookid, mixed consumer, int hookprio,
-                       int consumertype, int timeInSeconds);
-  Registriert ein Objekt oder eine Closure als Hook-Konsument.
-  Parameter:
-  'hookid'        gibt den Hook-Typ an, z.B. den Defend-Hook.
-                  Man kann sich nur fuer Hooktypen eintragen, die die Methode
-                  HListHooks() angeboten hat.
-  'consumer'      Wenn ein Objekt, wird das Objekt eingetragen und spaeter
-                  HookCallback() gerufen.
-                  Wenn eine Closure, wird das Objekt der Closure eingetragen
-                  und spaeter diese Closure gerufen.
-  'hookprio'      Gibt die Prioritaet an, mit der der Hook laufen soll.
-                  Diese Angabe bestimmt die Reihenfolge, in der die Hooks
-                  in der Liste der Hooks eingetragen werden. Die Prioritaet
-                  ist H_HOOK_LIBPRIO(x), H_HOOK_GUILDPRIO(x) oder
-                  H_HOOK_OTHERPRIO(x). x darf 0, 1 oder 2 sein (je niedriger,
-                  desto hoeher die Prioritaet).
-  'consumertype'  Gibt an, um welche Art von Hook es sich handelt.
-                  Es gibt vier festgelegten Typen, die fuer alle Hooks
-                  existieren koennen. Die Methode HConsumerTypeIsAllowed()
-                  gibt Aufschluss darueber, welche Hook-Typen existieren.
-                  Die Hook-Typen sind in hook.h definiert.
-  'timeInSeconds' gibt die Laufzeit des Hooks an. Falls 0 eingetragen wird,
-                  laeuft der Hook ewig.
-  Rueckgabewerte:
-    1 - Registrierung erfolgreich
-  <=0 - Registrierung fehlgeschlagen:
-        -1 : Hook unbekannt
-        -2 : consumer ist keine closure und es konnte kein Callback auf
-             HookCallback im consumer erstellt werden.
-        -3 : consumer ist bereits registriert
-        -4 : consumertyp ist nicht erlaubt
-        -5 : hookprio ist nicht erlaubt
-        -6 : Surveyor hat Registrierung nicht erlaubt
-        -7 : zuviele Hooks registriert / kein Hookeintrag frei
+                        int consumertype, int timeInSeconds);
+    
+    Registriert ein Objekt oder eine Closure als Hook-Konsument.
+    Argumente:
+    'hookid'        gibt den Hook-Typ an, s.o.
+                    Man kann sich nur fuer Hooktypen eintragen, die die Methode
+                    HListHooks() angeboten hat.
+    'consumer'      Objekt oder Closure. Wenn ein Objekt uebergeben wird,
+                    wird dieses eingetragen und spaeter HookCallback() an 
+                    diesem Objekt gerufen.
+                    Wenn eine Closure uebergeben wird, wird das Objekt der
+                    Closure eingetragen und spaeter diese Closure gerufen.
+    'hookprio'      Gibt die Prioritaet an, mit der der Hook laufen soll.
+                    Diese Angabe bestimmt die Reihenfolge, in der die Hooks
+                    in der Liste der Hooks eingetragen werden. Die moeglichen
+                    Prioritaeten sind:
+                    - H_HOOK_LIBPRIO(x)
+                    - H_HOOK_GUILDPRIO(x) oder
+                    - H_HOOK_OTHERPRIO(x).
+                    x darf 0, 1 oder 2 sein (je niedriger, desto hoeher die
+                    Prioritaet).
+    'consumertype'  Gibt an, um welche Art von Consumer es sich handelt.
+                    Es gibt vier festgelegten Arten, die fuer alle Hooks
+                    existieren koennen, aber nicht muessen. Die Methode 
+                    HConsumerTypeIsAllowed() gibt Aufschluss darueber, welche
+                    Consumer-Typen tatsaechlich freigegeben sind (s.u.)
+    'timeInSeconds' gibt die Laufzeit des Hooks an. Falls 0 eingetragen wird,
+                    laeuft der Hook ewig.
+
+    Rueckgabewerte:
+      1 - Registrierung erfolgreich
+    <=0 - Registrierung fehlgeschlagen mit folgendem Ergebnis:
+          -1 : Hook unbekannt
+          -2 : consumer ist keine closure und es konnte kein Callback auf
+               HookCallback im consumer erstellt werden.
+          -3 : Consumer ist bereits registriert
+          -4 : Consumer-Typ ist nicht erlaubt
+          -5 : hookprio ist nicht erlaubt
+          -6 : Surveyor hat Registrierung nicht erlaubt
+          -7 : zuviele Hooks registriert / kein Hookeintrag frei
+
 
   * int HUnregisterFromHook(int hookid, mixed consumer);
-  Hebt die Registrierung von <consumer> fuer einen bestimmten Hook-Typ wieder
-  auf.
-  Parameter:
-  'hookid'    Die Kennung des Hook-Typs, z.B. die Kennung des Attack-Hooks.
-  'consumer'  Das Objekt oder die Closure, die/das nicht mehr registriert sein
-              soll. Bei einer Closure wird genau diese ausgetragen. Bei der
-              Angabe eines Objekts wird versucht, die Closure auf
-              HookCallback() in diesem Objekt auszutragen.
-  Rueckgabewerte:
-  0 - 'consumer' nicht als Konsument gefunden
-  1 - Austragen erfolgreich
+
+    Hebt die Registrierung von <consumer> fuer einen bestimmten Hook-Typ 
+    wieder auf.
+    Argumente:
+    'hookid'    der Hook-Typ (s.o.)
+    'consumer'  Das Objekt oder die Closure, dessen/deren Registrierung 
+                aufgehoben werden soll. Bei einer Closure wird genau diese
+                ausgetragen. Bei der Angabe eines Objekts wird versucht, die
+                Closure auf HookCallback() in diesem Objekt auszutragen.
+
+    Rueckgabewerte:
+    0 - 'consumer' nicht als Konsument gefunden
+    1 - Austragen erfolgreich
+
 
   * int HConsumerTypeIsAllowed(int type, object consumer);
-  Diese Methode liefert 1 zurueck, wenn ein bestimmter Konsumenten-Typ
-  (fuer diesen Konsumenten) erlaubt wird.
-  Die Standardmethode liefert immer 1 (true) zurueck. Erbende Objekte
-  koennen diese Methode ueberschreiben, wenn sie nicht alle Hooktypen
-  anbieten.
+    Diese Methode liefert 1 zurueck, wenn ein bestimmter Consumer-Typ
+    (fuer diesen Konsumenten) erlaubt wird.
+    Die Standardmethode liefert immer 1 (true) zurueck. Erbende Objekte
+    koennen diese Methode ueberschreiben, wenn sie nicht alle Consumer-Typen
+    anbieten.
+    Wenn man diese Methode in einem eigenen Hook-Provider ueberschreibt,
+    kann man Consumer-Typen nur global abschalten, aber nicht selektiv
+    pro Hook-Typ.
+    Alle Mudlib-Basisobjekte, die Hooks anbieten, geben hier zur Zeit immer
+    1 zurueck, auch wenn die Hook-Typen die gewuenschte Funktionalitaet nicht
+    auswerten. Beispielsweise kann man einen Hook-Modifikator fuer den
+    Insert-Hook registrieren, damit aber nicht verhindern, dass das Objekt
+    ins Spielerinventar bewegt wird.
 
 
   * int HPriorityIsAllowed(int prio, object consumer);
-  Diese Methode gibt an, ob eine bestimmte Prioritaet (fuer den angegebenen
-  Konsumenten) erlaubt ist. Die Standardmethode liefert immer 1 (true)
-  zurueck. Erbende Objekte koennen diese Methode ueberschreiben, wenn
-  sie die verfuegbaren Hook-Prioritaeten einschraenken wollen.
+    Diese Methode gibt an, ob eine bestimmte Prioritaet (fuer den angegebenen
+    Konsumenten) erlaubt ist. Die Standardmethode liefert immer 1 (true)
+    zurueck. Erbende Objekte koennen diese Methode ueberschreiben, wenn
+    sie die verfuegbaren Hook-Prioritaeten einschraenken wollen.
+    Wenn man diese Methode in einem eigenen Hook-Provider ueberschreibt,
+    kann man Prioritaeten nur global abschalten, aber nicht selektiv
+    pro Hook-Typ.
+    Alle Mudlib-Basisobjekte, die Hooks anbieten, geben hier zur Zeit immer
+    1 zurueck.
 
 
   * int HIsHookConsumer(int hookid, mixed consumer);
-  Ist <consumer> ein Objekt, liefert die Methode die Anzahl, wie oft dieses
-  Objekt (mit verschiedenen Closures) fuer den Hook <hookid> eingetragen ist.
-  Ist <consumer> eine Closure, liefert diese Methode 1, wenn diese
-  Closure fuer den Hook <hookid> eingetragen ist.
+    Ist <consumer> ein Objekt, liefert die Methode die Anzahl, wie oft dieses
+    Objekt (mit verschiedenen Closures) fuer den Hook <hookid> eingetragen 
+    ist.
+    Ist <consumer> eine Closure, liefert diese Methode 1, wenn diese
+    Closure fuer den Hook <hookid> eingetragen ist.
 
 
   * protected mapping HCopyHookMapping();
-  Diese Methode liefert eine Kopie des Hook-Mappings.
-  ACHTUNG: diese Daten sollten das Objekt NIEMALS verlassen. (Ausser fuer
-           Debugzwecke)
+    Diese Methode liefert eine Kopie des Hook-Mappings.
+    ACHTUNG: diese Daten sollten das Objekt ausser fuer Debugzwecke
+             NIEMALS verlassen.
 
+             
+  * protected mapping HCopyHookConsumers(int hookid);
+    Dieser Methode liefert eine Kopie der Hook-Consumer des Objektes.
+    ACHTUNG: diese Daten sollten das Objekt ausser fuer Debugzwecke
+             NIEMALS verlassen.
 
 
 HOOK-SURVEYOR
 =============
+
   Objekte mit Surveyorhooks muessen eine Menge von Methoden definieren, die
   der Hookprovider aufruft:
 
@@ -237,10 +384,11 @@ HOOK-SURVEYOR
                 object hookSource,
                 int registringObjectsPriority,
                 int registringObjectsType)
-  Diese Methode wird vom Hook-Provider aufgerufen, wenn der Hook-Konsument
-  als Surveyor eingetragen ist und ein weiterer Hook eingetragen werden soll.
-  Gibt diese Methode 0 zurueck, dann verbietet der Konsument, dass der
-  andere Konsument als Hook eingetragen wird.
+    Diese Methode wird vom Hook-Provider aufgerufen, wenn der Hook-Konsument
+    als Surveyor eingetragen ist und ein weiterer Hook eingetragen werden 
+    soll.
+    Gibt diese Methode 0 zurueck, dann verbietet der Surveyor, dass der
+    andere Konsument als Hook eingetragen wird.
 
   * int HookCancelAllowanceCallback(
                 object cancellingObject,
@@ -248,9 +396,11 @@ HOOK-SURVEYOR
                 object hookSource,
                 int cancellingObjectsPriority,
                 mixed hookData)
-  Diese Methode wird aufgerufen, um herauszufinden, ob ein bestimmter
-  anderer Hook die Ausfuehrung der Hook-Kette unterbrechen darf.
-  Nur Hooks im Bereich H_HOOK_MODIFICATOR werden der Methode uebergeben.
+    Diese Methode wird aufgerufen, um herauszufinden, ob ein bestimmter
+    anderer Hook die Ausfuehrung der Hook-Kette unterbrechen darf.
+    Nur Hooks des Consumer-Typs H_HOOK_MODIFICATOR werden der Methode 
+    uebergeben, weil nur diese neben dem Surveyor selbst ueberhaupt die
+    Berechtigung haben, die Hook-Kette abzubrechen.
 
   * int HookModificationAllowanceCallback(
                 object modifyingObject,
@@ -258,15 +408,16 @@ HOOK-SURVEYOR
                 object hookSource,
                 int modifyingObjectsPriority,
                 mixed hookData)
-  Diese Methode wird aufgerufen, um herauszufinden, ob ein bestimmter
-  anderer Hook die Daten des Hooks veraendern darf oder nicht.
-  Es werden die Hooks in den Bereichen H_HOOK_MODIFICATOR und
-  H_DATA_MODIFICATOR (in dieser Reihenfolge) aufgerufen.
+    Diese Methode wird aufgerufen, um herauszufinden, ob ein bestimmter
+    anderer Hook die Daten des Hooks veraendern darf oder nicht.
+    Es werden die Hooks der Consumer-Typen H_HOOK_MODIFICATOR und
+    H_DATA_MODIFICATOR (in dieser Reihenfolge) aufgerufen.
 
 
 WAS KOSTET DAS?
-  Das Ausloesen eines Hooks per HookFlow() kostet 111 Ticks und ca. 7 us, wenn
-  es gar keinen gibt, der drauf lauscht (sozusagen Fixkosten).
+
+  Das Ausloesen eines Hooks per HookFlow() kostet 111 Ticks und ca. 7 us, 
+  wenn es gar keinen gibt, der drauf lauscht (sozusagen Fixkosten).
   Pro H_LISTENER kommen dann 31 Ticks und ca. 2 us dazu.
 
   Gibts einen Surveyor-Hook (der wird dann gefragt, ob andere Objekte die
@@ -279,6 +430,6 @@ WAS KOSTET DAS?
   Und ein Hook-Modifier, der den Hook abbricht:
   76 Ticks, 4 us
 
-  (Macht der Surveyor natuerlich irgendwas anderes als 'return 1;', wirds
-  natuerlich entsprechend teurer.)
+  (Macht der Surveyor irgendwas anderes als 'return 1;', wirds natuerlich 
+   entsprechend teurer.)
 
