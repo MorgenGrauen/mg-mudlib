@@ -67,7 +67,6 @@ protected void create()
   functions=({});
   ncmds=0;
   add("Dest");
-  add("_goto");
   add("clnof");
   add("cln");
   add("clr");
