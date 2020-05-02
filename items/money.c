@@ -290,7 +290,7 @@ protected void create()
 
   ::create();
   SetProp(P_NAME,({"Muenze","Muenzen"}));
-  Set(P_LONG,#'current_long);
+  Set(P_LONG, #'current_long, F_QUERY_METHOD);
   SetProp(P_SHORT,"Geld");
   SetProp(P_INFO,"Du hast bei diesem Geld ein sicheres Gefuehl.\n");
   SetProp(P_MATERIAL,([MAT_GOLD:100]));
