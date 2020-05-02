@@ -283,8 +283,8 @@ static void PrintObj(object obj, string file)
     long_desc=capitalize(getuid(obj));
   else
   {
-    if( (long_desc=({string|closure})obj->QueryProp(P_INT_LONG))
-        || (long_desc=({string|closure})obj->QueryProp(P_LONG)) )
+    if( !((long_desc=({string|closure})obj->QueryProp(P_INT_LONG))
+          || (long_desc=({string|closure})obj->QueryProp(P_LONG))) )
       long_desc="- no long description -\n";
     if (closurep(long_desc))
       long_desc = funcall(long_desc);
