@@ -30,7 +30,6 @@ Anmerkung: Das neue Hooksystem baut nicht mehr auf der Eintragung eines
 Hooks in einer Property auf. Dadurch wird es moeglich, dass sich mehrere 
 Objekte als Consumer eintragen.
 
-
 Consumer-Typen
 --------------
 
@@ -49,8 +48,8 @@ die Moeglichkeiten, die ihnen zur Verfuegung stehen:
       duerfen die Daten eines Ereignisses aendern.
 
   * Hook-Modifier (H_HOOK_MODIFICATOR, max. Anzahl 2)
-      die Daten des Ereignisses aendern und zusaetzlich das Ereignis auch 
-      abbrechen.
+      duerfen die Daten des Ereignisses aendern und zusaetzlich das Ereignis
+      auch abbrechen.
 
   * Surveyor (H_HOOK_SURVEYOR, max. Anzahl 1)
       duerfen alles oben beschriebene. Zusaetzlich werden sie gefragt, wenn
@@ -64,7 +63,7 @@ die Moeglichkeiten, die ihnen zur Verfuegung stehen:
   Provider registrierten Hook-Objekte.
 
 
-ANCELLED, hookData});
+Hook-Typen
 ----------
 
 Es koennen grundsaetzlich nur die Hooks registriert werden, die ein Objekt
