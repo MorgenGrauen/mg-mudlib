@@ -82,7 +82,11 @@ protected int HConsumerTypeIsAllowed(int hookid, int type, object consumer)
   return 1;
 }
 
-int HPriorityIsAllowed(int prio, object consumer){
+// Prueft, ob <consumer> den Hooktyp <type> mit der Prioritaet <prio> im
+// Hook <hook> benutzen darf.
+protected int HPriorityIsAllowed(int hookid, int type, int prio,
+                                 object consumer)
+{
   return 1;
 }
 
@@ -289,7 +293,8 @@ int HRegisterToHook(int hookid, mixed consumer, int hookprio,
 
   // Prioritaet erlaubt?
   if (H_HOOK_VALIDPRIO(hookprio) == -1
-      || !HPriorityIsAllowed(hookprio, GET_OBJECT(consumer)))
+      || !HPriorityIsAllowed(hookid, consumertype, hookprio,
+                             GET_OBJECT(consumer)))
     return -5;
 
   struct hook_s hook = hookMapping[hookid];
