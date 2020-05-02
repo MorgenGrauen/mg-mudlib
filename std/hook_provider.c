@@ -76,7 +76,9 @@ protected mapping HCopyHookConsumers(int hookid){
 }
 
 // Ggf. zum Ueberschreiben.
-int HConsumerTypeIsAllowed(int type, object consumer){
+// Prueft, ob <consumer> den Hooktyp <type> im Hook <hook> benutzen darf.
+protected int HConsumerTypeIsAllowed(int hookid, int type, object consumer)
+{
   return 1;
 }
 
@@ -282,7 +284,7 @@ int HRegisterToHook(int hookid, mixed consumer, int hookprio,
 
   // Consumertyp erlaubt?
   if (H_CONSUMERCHECK(consumertype) == -1
-      || !HConsumerTypeIsAllowed(consumertype,GET_OBJECT(consumer)))
+      || !HConsumerTypeIsAllowed(hookid, consumertype,GET_OBJECT(consumer)))
     return -4;
 
   // Prioritaet erlaubt?
