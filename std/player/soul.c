@@ -2556,8 +2556,7 @@ SoulComm(string str, string _verb)  {
     if (ghost() && CheckLife(NOT_SELF,0,
       "Du kannst Dich als Geist nicht selber waermen."))
         return 1;
-    str1=who->QueryProp(P_NAME);
-    if(pointerp(str1))str1=(string)str1[0]; // Rumata
+    str1=who->name(WEN);
     str2=who->QueryPronoun(WEN);
     GHOSTCHECK("Du willst "+str1+" umarmen, aber Deine Arme gehen durch "
         +str2+" durch.\n",
