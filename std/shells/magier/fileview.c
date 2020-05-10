@@ -473,14 +473,47 @@ static int _man(string cmdline)
       oldman_result=m_allocate(i,2);
       while(i)
       {
-        tmp2[(i-1)]=sprintf("%d: ",i)+tmp[(i<<1)-2];
+        tmp2[(i-1)]=tmp[(i<<1)-2];
         oldman_result[i,0]=tmp[(i<<1)-2];
         oldman_result[i,1]=tmp[(i<<1)-1];
         i--;
       }
-      printf("Es wurden folgende potentiell passenden Seiten gefunden:\n"
-             "%'-'78.78s\n%s%'-'78.78s\n","",
-             break_string(implode(tmp2," "),78),"");
+
+      // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
+      tmp2 = sort_array(tmp2, function int (string t1, string t2) {
+               t1 = explode(t1, "/")[<1];
+               t2 = explode(t2, "/")[<1];
+               return lower_case(t1) > lower_case(t2);
+             });
+
+      // Numerierung ergaenzen
+      foreach(int j : sizeof(tmp2)) {
+        tmp2[j] = sprintf("%d: %s", j+1, tmp2[j]);
+      }
+
+      int tty_cols = QueryProp(P_TTY_COLS)-2;
+      string list = "Es wurden die folgenden, potentiell passenden Seiten "
+        "gefunden:\n";
+
+      // Wer keine Grafik sehen will, bekommt eine andere Anzeige.
+      if (QueryProp(P_NO_ASCII_ART)) {
+        // @ als geschuetztes Leerzeichen verwenden, um einen Umbruch
+        // nach den Nummern zu verhindern.
+        tmp2 = map(tmp2, #'regreplace, ": ", ":@", 1);
+        list += break_string(implode(tmp2, "  "), tty_cols);
+        list = regreplace(list, ":@", ": ", 1);
+      }
+      else {
+        // Anzahl Spalten ausrechnen: Terminalbreite / Laenge des laengsten
+        // Elements in <tmp2>. Kann der Spaltenmodus von sprintf() an sich
+        // selbst, das liefert aber nicht immer so guenstige Ergebnisse.
+        int maxwidth = max(map(tmp2, #'sizeof));
+        int tablecols = tty_cols/maxwidth;
+        list += "-"*tty_cols+"\n"+
+                sprintf("%#-*.*s", tty_cols, tablecols, implode(tmp2,"\n"))+
+                "-"*tty_cols+"\n";
+      }
+      printf(list);
       break;
   }
   return 1;
