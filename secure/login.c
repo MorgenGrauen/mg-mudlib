@@ -349,8 +349,7 @@ static void logon2( string str )
       ({int})"/p/daemon/dnslookup"->check_tor(realip,query_mud_port());
       ({int})"/p/daemon/dnslookup"->check_dnsbl(realip);
 
-      input_to( "logon2", INPUT_PROMPT,
-          "Wie heisst Du denn (\"neu\" fuer neuen Spieler)? ");
+      input_to("logon2");
       return;
     }
     
