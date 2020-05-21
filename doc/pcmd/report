@@ -25,6 +25,10 @@ BESCHREIBUNG:
         Vorsicht oder Fluchtrichtung eingetreten ist, dann aber werden beide
         Werte gemeinsam ausgegeben.
 
+        Bitte beachtet: wenn euer Client GMCP verwendet und eines der Module
+        MG.char, char oder Char aktiviert hat, wird der Report per GMCP
+        gesendet und *nicht* mehr als Text.
+
         "report senden" kann zum Testen verwendet werden oder wenn der
         Client nach dem Verbinden alle Daten einmal braucht. (Nutzt man
         GMCP, werden die Daten per GMCP gesendet.) 
