@@ -126,9 +126,9 @@ protected void updates_after_restore(int newflag) {
   }
 }
 
-static int set_report(string str) {
+static int set_report(string str)
+{
   int canflags = QueryProp(P_CAN_FLAGS);
-
   if(!str)
   {
     if (stat_reports)
@@ -151,7 +151,7 @@ static int set_report(string str) {
       {
         tell_object(ME,break_string(
             "Achtung: Dein Client laesst sich den Report per GMCP "
-            "s. 'hilfe GMCP') uebermitteln. Daher wird er Dir nicht "
+            "(s. 'hilfe GMCP') uebermitteln. Daher wird er Dir nicht "
             "in der Textausgabe des Spiels angezeigt! Moechtest Du "
             "dies nicht, schalte bitte in Deinem Client GMCP-Module mit "
             "Namen wie 'MG.char', 'char', 'Char' oder aehnliche aus."));
@@ -163,57 +163,72 @@ static int set_report(string str) {
 
     return 1;
   }
-  else if (str == "aus") {
-    if (stat_reports & DO_REPORT_HP || stat_reports & DO_REPORT_WIMPY) {
+  else if (str == "aus")
+  {
+    if (stat_reports & DO_REPORT_HP || stat_reports & DO_REPORT_WIMPY)
+    {
       string s="";
-      if (stat_reports & DO_REPORT_HP) {
+      if (stat_reports & DO_REPORT_HP)
+      {
         str="ebenfalls ";
         tell_object(ME, "Der Report wurde ausgeschaltet.\n");
       }
-      if ( stat_reports & DO_REPORT_WIMPY ) {
+      if ( stat_reports & DO_REPORT_WIMPY )
+      {
         tell_object(ME, "Der Vorsicht-Report wurde "+s+
           "ausgeschaltet.\n");
       }
       stat_reports=0;
     }
-    else {
+    else
+    {
       tell_object(ME, "Der Report ist bereits ausgeschaltet.\n");
     }
     return 1;
   }
-  else if (str == "ein") {
-    if ( stat_reports & DO_REPORT_HP ) {
+  else if (str == "ein")
+  {
+    if ( stat_reports & DO_REPORT_HP )
+    {
       tell_object(ME, "Der Report ist bereits eingeschaltet.\n");
       return 1;
     }
     tell_object(ME, "Der Report wurde eingeschaltet.\n");
     stat_reports |= DO_REPORT_HP;
-    if (!(canflags & CAN_REPORT_SP)) {
-      if (QueryQuest("Hilf den Gnarfen")==1) {
+    if (!(canflags & CAN_REPORT_SP))
+    {
+      if (QueryQuest("Hilf den Gnarfen")==1)
+      {
         SetProp(P_CAN_FLAGS, canflags | CAN_REPORT_SP);
         stat_reports |= DO_REPORT_SP;
       }
-      else {
+      else
+      {
         tell_object(ME, break_string(
           "Fuer den Statusreport Deiner Konzentration musst Du jedoch "
           "zunaechst die Quest \"Hilf den Gnarfen\" bestehen.",78));
       }
     }
-    else {
+    else
+    {
       stat_reports |= DO_REPORT_SP;
     }
-    if (!(canflags & CAN_REPORT_POISON)) {
-      if (QueryQuest("Katzenjammer")==1) {
+    if (!(canflags & CAN_REPORT_POISON))
+    {
+      if (QueryQuest("Katzenjammer")==1)
+      {
         SetProp(P_CAN_FLAGS, canflags | CAN_REPORT_POISON);
         stat_reports |= DO_REPORT_POISON;
       }
-      else {
+      else
+      {
         tell_object(ME, break_string(
           "Fuer den Statusreport Deiner Vergiftung musst Du jedoch "
           "zunaechst die Quest \"Katzenjammer\" bestehen.",78));
       }
     }
-    else {
+    else
+    {
       stat_reports |= DO_REPORT_POISON;
     }
     // Cache loeschen, damit beim naechsten Report-Event alle Daten neu
@@ -226,15 +241,20 @@ static int set_report(string str) {
     // Zeit nicht aktualisiert werden, wenn z.B. P_HP == P_MAX_HP, so dass
     // kein P_HP-Event mehr eingeht.
     report_cache=0;
+    // Fall-through fuer Statusausgabe
   }
-  else if (str == "vorsicht") {
-    if (!(canflags & CAN_REPORT_WIMPY)) {
-      if (QueryQuest("Schrat kann nicht einschlafen")==1) {
+  else if (str == "vorsicht")
+  {
+    if (!(canflags & CAN_REPORT_WIMPY))
+    {
+      if (QueryQuest("Schrat kann nicht einschlafen")==1)
+      {
         SetProp(P_CAN_FLAGS, canflags | CAN_REPORT_WIMPY);
         tell_object(ME, "Der Vorsicht-Report wurde eingeschaltet.\n");
         stat_reports |= DO_REPORT_WIMPY;
       }
-      else {
+      else
+      {
         tell_object(ME, break_string(
           "Fuer den Statusreport Deiner Vorsicht musst Du "
           "zunaechst die Quest \"Schrat kann nicht einschlafen\" "
@@ -250,8 +270,9 @@ static int set_report(string str) {
         && !(stat_reports & DO_REPORT_WIMPY_DIR)
         && ((canflags & CAN_REPORT_WIMPY) || IS_SEER(ME)))
     {
-      stat_reports |= DO_REPORT_WIMPY_DIR;        
+      stat_reports |= DO_REPORT_WIMPY_DIR;
     }
+    // Fall-through fuer Statusausgabe
   }
   // sendet einmalig genau jetzt den konfigurierten report. Kann zum testen
   // (von Triggern) oder beim Login benutzt werden, wenn man einen initialen
