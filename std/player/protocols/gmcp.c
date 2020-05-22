@@ -59,6 +59,21 @@ nosave mapping gmcpdata;
 
 // **************** API nach Aussen folgt ab hier ********************
 
+// Prueft, ob ein Modul aktiv ist. Falls ja, wird die Versionsnummer des
+// aktiven Moduls geliefert.
+// Wenn <module> 0 ist, wird das Modul "Core" geprueft, d.h. ob GMCP
+// grundsaetzlich aktiv ist.
+protected int GMCP_Status(string module)
+{
+  module ||= "Core";
+  if (mappingp(gmcpdata) && member(gmcpdata, module))
+  {
+    struct gmcp_mod_s mod = gmcpdata[module];
+    return mod->version;
+  }
+  return 0;
+}
+
 // Wird vom Spielerobjekt gerufen, wenn sich Daten am Charakter veraendert
 // haben, die gesendet werden sollten.
 // Dies ist eigentlich nur ein Wrapper, der die Daten an den Handler eines
