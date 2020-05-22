@@ -131,18 +131,19 @@ static int set_report(string str) {
 
   if(!str)
   {
-    if (stat_reports) {
-    string *res=({});
-    if (stat_reports & DO_REPORT_HP)
-      res+=({"Lebenspunkte"});
-    if (stat_reports & DO_REPORT_SP)
-      res+=({"Konzentrationspunkte"});
-    if (stat_reports & DO_REPORT_POISON)
-      res+=({"Vergiftungen"});
-    if (stat_reports & DO_REPORT_WIMPY)
-      res+=({"Vorsicht"});
+    if (stat_reports)
+    {
+      string *res=({});
+      if (stat_reports & DO_REPORT_HP)
+        res+=({"Lebenspunkte"});
+      if (stat_reports & DO_REPORT_SP)
+        res+=({"Konzentrationspunkte"});
+      if (stat_reports & DO_REPORT_POISON)
+        res+=({"Vergiftungen"});
+      if (stat_reports & DO_REPORT_WIMPY)
+        res+=({"Vorsicht"});
 
-    tell_object(ME,break_string(
+      tell_object(ME,break_string(
         "Dir werden jetzt Veraenderungen Deiner "
         +CountUp(res) + " berichtet.",78));
     }
