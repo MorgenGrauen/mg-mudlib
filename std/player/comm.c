@@ -146,6 +146,16 @@ static int set_report(string str) {
       tell_object(ME,break_string(
         "Dir werden jetzt Veraenderungen Deiner "
         +CountUp(res) + " berichtet.",78));
+      if (GMCP_Status("MG.char") || GMCP_Status("char")
+          || GMCP_Status("Char"))
+      {
+        tell_object(ME,break_string(
+            "Achtung: Dein Client laesst sich den Report per GMCP "
+            "s. 'hilfe GMCP') uebermitteln. Daher wird er Dir nicht "
+            "in der Textausgabe des Spiels angezeigt! Moechtest Du "
+            "dies nicht, schalte bitte in Deinem Client GMCP-Module mit "
+            "Namen wie 'MG.char', 'char', 'Char' oder aehnliche aus."));
+      }
     }
     else
       tell_object(ME,
