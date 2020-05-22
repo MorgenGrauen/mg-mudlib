@@ -216,6 +216,16 @@ static int set_report(string str) {
     else {
       stat_reports |= DO_REPORT_POISON;
     }
+    if (GMCP_Status("MG.char") || GMCP_Status("char")
+        || GMCP_Status("Char"))
+    {
+      tell_object(ME,break_string(
+          "Achtung: Dein Client laesst sich den Report per GMCP "
+          "s. 'hilfe GMCP') uebermitteln. Daher wird er Dir nicht "
+          "in der Textausgabe des Spiels angezeigt! Moechtest Du "
+          "dies nicht, schalte bitte in Deinem Client GMCP-Module mit "
+          "Namen wie 'MG.char', 'char', 'Char' oder aehnliche aus."));
+    }
     // Cache loeschen, damit beim naechsten Report-Event alle Daten neu
     // eingetragen werden muessen. Muss beim Einschalten des Reports
     // passieren, weil auch in der inaktiven Zeit weiterhin Aenderungen in
