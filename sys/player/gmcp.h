@@ -17,8 +17,9 @@
 #define __GMCP_H_PROTO__
 
 // prototypes
-/*protected*/ int GMCP_Char(mapping data);
-/*protected*/ int GMCP_Channel(string msg, string channel, string sender);
+protected int GMCP_Char(mapping data);
+protected int GMCP_Channel(string msg, string channel, string sender);
+protected int GMCP_Room();
 
 #endif // __GMCP_H_PROTO__
 

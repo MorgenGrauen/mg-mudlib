@@ -64,7 +64,7 @@ nosave mapping gmcpdata;
 // Dies ist eigentlich nur ein Wrapper, der die Daten an den Handler eines
 // Moduls weitergibt, welches vom Client aktiviert wurde. Hierzu kommen zur
 // Zeit 2 in Frage: MG.Char (bevorzugt) und Char (minimaler Support).
-/*protected*/ int GMCP_Char(mapping data) {
+protected int GMCP_Char(mapping data) {
 
   if (!mappingp(gmcpdata)) return 0;
 
@@ -96,7 +96,7 @@ nosave mapping gmcpdata;
   return 0;
 }
 
-/*protected*/ int GMCP_Channel(string msg, string channel, string sender) {
+protected int GMCP_Channel(string msg, string channel, string sender) {
   if (!mappingp(gmcpdata)) return 0;
   // comm.channel Modul aktiv?
   struct gmcp_mod_s mod = gmcpdata["comm.channel"];
@@ -109,7 +109,7 @@ nosave mapping gmcpdata;
   return 0;
 }
 
-/*protected*/ int GMCP_Room() {
+protected int GMCP_Room() {
   if (!mappingp(gmcpdata)) return 0;
   // MG.room Modul aktiv?
   struct gmcp_mod_s mod = gmcpdata["MG.room"];
