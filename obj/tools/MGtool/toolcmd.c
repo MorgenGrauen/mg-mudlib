@@ -954,11 +954,11 @@ int Xlag(string str)
   else
     lag=({float*})daemon->read_lag_data();
   lags="Letzte 60 min: ";
-  if(lag[0]>=0.0)
+  if(lag[2]>=0.0)
   {
-    for(i=round(lag[0])-1;i>=0;i--)
+    for(i=round(lag[2])-1;i>=0;i--)
       lags+="#";
-    lags+=" ("+sprintf("%.1f",lag[0])+"%)";
+    lags+=" ("+sprintf("%.1f",lag[2])+"%)";
   }
   else
     lags+="N/A";
@@ -972,11 +972,11 @@ int Xlag(string str)
   else
     lags+="N/A";
   lags+="\nLetzte Minute: ";
-  if(lag[2]>=0.0)
+  if(lag[0]>=0.0)
   {
-    for(i=round(lag[2])-1;i>=0;i--)
+    for(i=round(lag[0])-1;i>=0;i--)
       lags+="#";
-    lags+=" ("+sprintf("%.1f",lag[2])+"%)";
+    lags+=" ("+sprintf("%.1f",lag[0])+"%)";
   }
   else
     lags+="N/A";
