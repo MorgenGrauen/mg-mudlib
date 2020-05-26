@@ -112,9 +112,7 @@ static string FindRangedTarget(string str, mapping shoot)
 }
 
 static int cmd_shoot(string str)
-{   int    dam;
-    int|string no_at;
-    object quiver;
+{
     mapping shoot;
 
     if ( PL->QueryProp(P_GHOST) )
@@ -122,7 +120,7 @@ static int cmd_shoot(string str)
         write("Deine immateriellen Finger gleiten durch die Waffe hindurch.\n");
         return 1;
     }
-   
+
     if ( !QueryProp(P_NOGET) )
     {
         // Katapulte oder aehnliches die von Magiern aufgestellt werden
@@ -185,13 +183,8 @@ static int cmd_shoot(string str)
     if ( !(str=FindRangedTarget(str,shoot)) )
       return 1;
 
-    if ( shoot[SI_ENEMY]->QueryProp(P_GHOST) )
-    {
-        write(break_string("Aber "+(shoot[SI_ENEMY]->name(WER, 1))+
-                           " ist doch ein Geist!", 78));
-        return 1;
-    }
-    else if ( no_at=(shoot[SI_ENEMY]->QueryProp(P_NO_ATTACK)) )
+    int|string no_at = shoot[SI_ENEMY]->QueryProp(P_NO_ATTACK);
+    if (no_at)
     {
         if ( stringp(no_at) )
           write(no_at);
@@ -200,12 +193,18 @@ static int cmd_shoot(string str)
                              " nicht angreifen.", 78));
         return 1;
     }
+    else if ( shoot[SI_ENEMY]->QueryProp(P_GHOST) )
+    {
+        write(break_string("Aber "+(shoot[SI_ENEMY]->name(WER, 1))+
+                           " ist doch ein Geist!", 78));
+        return 1;
+    }
     else if ( shoot[SI_ENEMY]==PL )
     {
         write("Du kannst doch nicht auf Dich selbst schiessen!\n");
         return 1;
     }
-
+    object quiver;
     if ( !(shoot[P_AMMUNITION]=present(str, PL))
         && ( !objectp(quiver=PL->QueryArmourByType(AT_QUIVER))
             || !(shoot[P_AMMUNITION]=present(str, quiver)) ) )
@@ -235,7 +234,7 @@ static int cmd_shoot(string str)
 
     shoot[P_SHOOTING_WC]  = shoot[P_AMMUNITION]->QueryProp(P_SHOOTING_WC);
 
-    dam=shoot_dam(shoot);
+    int dam=shoot_dam(shoot);
 
     // Textausgabe
     if (shoot[SI_ENEMY])
