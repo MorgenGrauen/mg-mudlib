@@ -113,7 +113,7 @@ static string FindRangedTarget(string str, mapping shoot)
 
 static int cmd_shoot(string str)
 {   int    dam;
-    string no_at;
+    int|string no_at;
     object quiver;
     mapping shoot;
 
