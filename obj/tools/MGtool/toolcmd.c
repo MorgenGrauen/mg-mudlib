@@ -953,33 +953,11 @@ int Xlag(string str)
     lag=({-1.0,-1.0,-1.0});
   else
     lag=({float*})daemon->read_lag_data();
-  lags="Letzte 60 min: ";
-  if(lag[2]>=0.0)
-  {
-    for(i=round(lag[2])-1;i>=0;i--)
-      lags+="#";
-    lags+=" ("+sprintf("%.1f",lag[2])+"%)";
-  }
-  else
-    lags+="N/A";
-  lags+="\nLetzte 15 min: ";
-  if(lag[1]>=0.0)
-  {
-    for(i=round(lag[1])-1;i>=0;i--)
-      lags+="#";
-    lags+=" ("+sprintf("%.1f",lag[1])+"%)";
-  }
-  else
-    lags+="N/A";
-  lags+="\nLetzte Minute: ";
-  if(lag[0]>=0.0)
-  {
-    for(i=round(lag[0])-1;i>=0;i--)
-      lags+="#";
-    lags+=" ("+sprintf("%.1f",lag[0])+"%)";
-  }
-  else
-    lags+="N/A";
+
+  lags =sprintf("Letzte 60 min: %.1f%%\n",lag[2]);
+  lags+=sprintf("Letzte 15 min: %.1f%%\n",lag[1]);
+  lags+=sprintf("Letzte Minute: %.1f%%\n",lag[0]);
+
   WLN(lags);
   return TRUE;
 }
