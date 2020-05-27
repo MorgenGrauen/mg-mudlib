@@ -86,6 +86,7 @@ private void generiere_gilden()
         "protected void create()\n"
         "{\n"
         "  replace_program();\n"
+        "  ::create();\n"
         "}\n");
     }
   }
@@ -129,6 +130,7 @@ private void generiere_gilden()
         "protected void create()\n"
         "{\n"
         "  replace_program();\n"
+        "  ::create();\n"
         "}\n");
     }
   }
