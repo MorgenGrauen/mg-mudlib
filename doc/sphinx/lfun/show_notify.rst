@@ -1,7 +1,7 @@
 show_notify()
 =============
 
-give_notify()
+show_notify()
 
 FUNKTION
 --------
