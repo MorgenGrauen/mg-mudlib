@@ -114,7 +114,7 @@ static int get_edit_line(string str) {
     editor_used=0;
     str = implode(nedittext, "\n");
     nedittext = 0;
-    call_other(this_object(),nexitfunc,str);
+    ({mixed})call_other(this_object(),nexitfunc,str);
     return 1;
   }
   if (str[0..0]== "~" && sl >= 2) {
@@ -123,7 +123,7 @@ static int get_edit_line(string str) {
       // Abbruch:
       case "~q":
         editor_used = 0;
-        return call_other(this_object(), nexitfunc, 0);
+        return ({mixed})call_other(this_object(), nexitfunc, 0);
       // Temporaer rausgehen:
       case "~!":
         write("Mit ~r kannst Du weiterschreiben.\n");
@@ -418,7 +418,7 @@ protected string killctrl(string str)
 mixed RescueText() {
   if (!nedittext || !editor_used)
     return notify_fail("Du hast nix angefangen zu schreiben!\n"),0;
-  if (TP->query_real_name()!=editor_used)
+  if (({string})TP->query_real_name()!=editor_used)
     return notify_fail("Hier schreibt "+capitalize(editor_used)+"!\n"),0;
   if (query_input_pending(TP))
     return notify_fail("Du schreibst gerade schon irgendwas. Sorry...\n"),0;
@@ -468,12 +468,12 @@ static int ShowWritten(int f, int l, int num) {
 --------------------------\n\
 "+t+in+c+"\
 --------------------------";
-  this_player()->More(s,0,symbol_function("input_func",this_object()));
+  ({void})this_player()->More(s,0,symbol_function("input_func",this_object()));
   return 1;
 }
 
 static int ShowHelp() {
-  this_player()->More("\
+  ({void})this_player()->More("\
 --------------------------\n\
 Der Editor versteht folgende Befehle:\n\
 --- Dateikommandos:\n\
