@@ -1673,8 +1673,9 @@ private string *sorted_commpartners(int reversed) {
       } );
 }
 
-// Eigentlich nur in Magierobjekten gerufen. Gehoert aber thematisch hier
-// irgendwie hin.
+// Setzt den Prompt eines Interactives. Gerufen bei Objekterstellung,
+// Reconnect und bei Magiern, wenn diese ihren Prompt oder ihr aktuelles
+// Verzeichnis aendern.
 static void modify_prompt() {
     string text = Query(P_PROMPT, F_VALUE);
 
