@@ -358,7 +358,7 @@ private object get_ref_object(string *tokens, closure transparent_check,
       }
       // Wenn es nicht wir oder environment ist, darf das Referenzobjekt
       // nicht unsichtbar sein.
-      else if (!ref_object->short())
+      else if (ref_object->QueryProp(P_INVIS))
         ref_object = 0;
       // Und nur wenn das Ref-Objekt irgendwie in unserer Umgebung ist
       // (direkt, in uns, in einem Container etc.) kommt es in Frage. Es
@@ -379,7 +379,7 @@ private object get_ref_object(string *tokens, closure transparent_check,
             // Ist eine Umgebung Living oder intransparenter Container oder
             // unsichtbar?
             if (living(env) || !funcall(transparent_check, env)
-                || !env->short())
+                || env->QueryProp(P_INVIS))
             {
               // Kette zum Ref-Objekt unterbrochen. Wenn das unterbrechende
               // Env nicht dieses Living selber oder sein Env ist, wird das
@@ -582,7 +582,7 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
   }
   // Und in jedem Fall werden alle Objekt raussortiert, die unsichtbar sind.
   // ;-)
-  objs = filter_objects(objs, "short"); // nur sichtbare...
+  objs -= filter_objects(objs, "QueryProp", P_INVIS);
 
   // Wenn es sichtbare gibt, werden die ggf. angeguckt.
   if (sizeof(objs))
