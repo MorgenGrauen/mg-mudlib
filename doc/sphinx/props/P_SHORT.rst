@@ -24,13 +24,15 @@ BESCHREIBUNG
    Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
    Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
 
-     Setzt man diese Property auf 0, so ist das Objekt unsichtbar, allerdings
-     ansprechbar, wenn der Spieler eine ID des Objektes kennt. D.h. Objekte
-     koennen mitgenommen, weggeworfen oder ggf. auch angegriffen werden. Will
-     man dies nicht, sollte man das Objekt mit P_INVIS unsichtbar machen.
-
-     Diese Property bestimmt die Ansicht des Objektes von aussen. Fuer die
-     Innen(kurz)ansicht von Raeumen muss man P_INT_SHORT benutzen.
+   Setzt man diese Property auf 0, so wird das Objekt von Spielern nicht mehr
+   wahrgenommen (es wird in Inventaren nicht mehr angezeigt). Der Effekt ist
+   der eines "PAL-Feldes" ("Problem anderer Leute"). Es bleibt allerdings
+   ansprechbar, wenn Spieler eine ID des Objektes kennen. Diese koennen dann
+   damit alles anstellen, was sie sonst auch koennten. D.h. Objekte koennen
+   insb. mitgenommen, weggeworfen, untersucht oder ggf. auch angegriffen
+   werden und es kann angreifen.
+   Will man dies nicht, muss man das Objekt mit P_INVIS richtig unsichtbar
+   machen.
 
 BEMERKUNGEN
 -----------
@@ -57,7 +59,9 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-     Aehnliches: :doc:`P_LONG`, :doc:`../lfun/short`, :doc:`P_INT_SHORT`
+     Aehnliches
+       :doc:`P_LONG`, :doc:`P_INT_SHORT`, :doc:`P_INVIS`,
+       :doc:`../lfun/short`
 
 
 13.06.2020, Zesstra
