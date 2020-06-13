@@ -3,28 +3,26 @@ P_SHORT
 
 NAME
 ----
-::
 
-     P_SHORT				"short"
+   P_SHORT
+     "short"
 
 DEFINIERT IN
 ------------
-::
 
-     /sys/thing/description.h
+   /sys/thing/description.h
 
 BESCHREIBUNG
 ------------
-::
 
-     Diese Property enthaelt die Kurzbeschreibung des Objektes als String 
-     oder Closure (diese muss einen String zurueckgeben).
+   Diese Property enthaelt die Kurzbeschreibung eines Objektes bei Ansicht
+   *von aussen* als String. Fuer die Innen(kurz)ansicht von Raeumen muss man
+   P_INT_SHORT benutzen.
 
-     ACHTUNG: Die Kurzbeschreibung sollte dabei nicht mit einem "\n" 
-     abgeschlossen sein (dies wird von den zustaendigen Funktionen
-     erledigt).
-     Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
-     Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
+   Die Kurzbeschreibung darf *nicht* mit einem "\n" abgeschlossen sein (dies
+   wird von den zustaendigen Funktionen erledigt).
+   Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
+   Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
 
      Setzt man diese Property auf 0, so ist das Objekt unsichtbar, allerdings
      ansprechbar, wenn der Spieler eine ID des Objektes kennt. D.h. Objekte
@@ -36,28 +34,31 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
-::
 
-     Die Funktion, die die Kurzbeschreibung ausgibt (short()), filtert P_SHORT
-     durch process_string(). Von der Nutzung dieses Features wird in neuem
-     Code abgeraten.
-     Soll eine dyn. Kurzbeschreibung geschaffen werden, bitte eine
+   * In altem Code wird manchmal eine Closure als Wert (nicht als
+     Querymethode) eingetragen, welche einen String zurueckgibt. Dies ist
+     *deprecated* und sollte nicht mehr formuliert werden.
+
+   * Die Funktion, die die Kurzbeschreibung ausgibt (short()), filtert P_SHORT
+     durch process_string(). Dieses Feature ist *deprecated* und von der
+     Nutzung wird in neuem Code abgeraten.
+
+   * Soll eine dyn. Kurzbeschreibung geschaffen werden, bitte eine
      F_QUERY_METHOD einsetzen oder short() passend ueberschreiben.
 
 BEISPIELE
 ---------
-::
+
+.. code-block:: pike
 
      // eine Axt sieht natuerlich so aus:
      SetProp(P_SHORT, "Eine Axt");
 
 SIEHE AUCH
 ----------
-::
 
-     Aehnliches:	P_LONG, short()
-     Sonstiges:		P_INT_SHORT, process_string()
+     Aehnliches: :doc:`P_LONG`, :doc:`../lfun/short`, :doc:`P_INT_SHORT`
 
 
-27.05.2015, Zesstra
+13.06.2020, Zesstra
 
