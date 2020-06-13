@@ -15,10 +15,12 @@ DEFINIERT IN
 BESCHREIBUNG
 ------------
 
-     Die Property P_INVIS dient dazu, Objekte als unsichtbar zu kennzeichnen.
+     Die Property P_INVIS dient dazu, Objekte als nicht wahrnehmbar
+     ('unsichtbar') zu kennzeichnen. Diese Unsichtbarkeit erstreckt sich auch
+     auf andere Sinne als nur 'Sehen'.
      Hierbei versucht P_INVIS auch die moeglichen Interaktionen mit Spielern
      zu minimieren (im Gegensatz zu einer fehlenden P_SHORT, welche das
-     Objekt nur 'verschleiert').
+     Objekt nur 'verschleiert' bzw. nicht mehr in Inventaren anzeigt).
 
      Man sollte drei Arten von unsichtbaren Objekten unterscheiden:
 
