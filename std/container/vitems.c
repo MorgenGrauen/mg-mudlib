@@ -88,16 +88,16 @@ public varargs void AddVItem(string key, int refresh, mapping shadowprops,
   // irgendwie muss es ja ansprechbar sein. (Wenn es ein Objekt mit Templat
   // ist, hat es normalerweise die IDs aus dem Templat. Wenn man das nicht
   // will, muss man es mit gezielter Angabe von P_IDS in den Shadowprops
-  // ueberschreiben.) Gleiches fuer P_NAME (ohne ist ein "Ding") und P_SHORT
-  // (ohne P_SHORT ist es unsichtbar)
+  // ueberschreiben.) Gleiches fuer P_NAME (ohne ist ein "Ding") 
+  // P_SHORT wird *nicht* automatisch gesetzt - ohne ist es zwar nicht
+  // wahrnehmbar, aber untersuchbar und der Zustand ist gar nicht selten
+  // gewuenscht.
   if (!path)
   {
     if (!member(shadowprops, P_IDS))
       shadowprops[P_IDS] = ({key});
     if (!member(shadowprops, P_NAME))
       shadowprops[P_NAME] = capitalize(key);
-    if (!member(shadowprops, P_SHORT))
-      shadowprops[P_SHORT] = capitalize(key);
   }
   mixed vitems=QueryProp(P_VITEMS);
   if (!mappingp(vitems))
