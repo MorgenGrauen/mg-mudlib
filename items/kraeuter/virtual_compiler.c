@@ -162,8 +162,12 @@ varargs string CustomizeObject(string file)
         str=props[INGREDIENT_ADJ];
         if (stringp(str))
         {
-          str=DeclAdj(lowerstring(str), WEN, 0);
-          previous_object()->AddAdjective(str);
+          str = lowerstring(str);
+          string* adj = ({});
+          foreach(int casus : ({WER,WESSEN,WEM,WEN})) {
+            adj += ({ trim(previous_object()->DeclAdj(str, casus, 0)) });
+          }
+          previous_object()->AddAdjective(adj);
         }
       }  // Ende Konfiguration eines VC-erzeugten Objekts
       // Plant-ID wird fuer alle Objekte auf irgendwas gesetzt.
