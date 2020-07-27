@@ -72,7 +72,7 @@ protected int PreventMove(object dest, object oldenv, int method) {
 protected void NotifyMove(object dest, object oldenv, int method) {
     if( query_once_interactive(dest)) {
 	log_file( "PILE.log", dtime(time()) + ": pile in " 
-	    + dest->query_real_name() + " gelandet.\n" );
+	    + ({string})dest->query_real_name() + " gelandet.\n" );
     }
     if( living(dest) ) {
 	filter_objects( all_inventory(), "move", dest, M_SILENT | M_NOCHECK );
@@ -116,7 +116,7 @@ void reset() {
   ::reset();
   // wenn nur noch unsichtbare items im Haufen: aufloesen
   if (!sizeof(filter(all_inventory(), function int (object o)
-          { return stringp(o->short());} )))
+          { return stringp(({string})o->short());} )))
     remove(1);
 
 }

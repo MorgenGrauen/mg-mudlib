@@ -79,7 +79,7 @@ public void Eventhandler(string eid, object trigob, mixed data) {
     string uid;
     if (objectp(trigob)
         && strstr(load_name(trigob),"/std/shells/") == 0
-        && !trigob->QueryGuest()) {
+        && !({int})trigob->QueryGuest()) {
       // Bei Login und Logout den BBMode einschalten (weil der Loginevent ja
       // erst 1-2s nach Einloggen abgearbeitet wird.
       trigob->__set_bb(1);
@@ -186,7 +186,7 @@ public int query_bb()
         return 0;
 
     // in jedem Fall wird nun (temporaer) der BB-Modus aktiviert.
-    if (!previous_object()->QueryGuest())
+    if (!({int})previous_object()->QueryGuest())
       previous_object()->__set_bb(1);
 
     // nur fuer 'permanente' auch 1 zurueckgeben.
@@ -338,7 +338,7 @@ public varargs int remove(int silent) {
 // Alles ab hier nur zum Ueberwachen von FTP-Aktivitaeten.
 private int player_exists( string user )
 {
-  return master()->find_userinfo(user);
+  return ({int})master()->find_userinfo(user);
 }
 
 public int add( string user, int timeout )

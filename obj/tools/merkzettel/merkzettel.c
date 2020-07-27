@@ -723,25 +723,28 @@ int ZeigeZettel(string str) {
      return(0);
 
  ids=filter(m_indices(notizen),#'note_filter,NOTE_ACTIVE);
- tell_object(TI,BS("Du zeigst "+pl->Name(WEM)+" voller Stolz deinen vollen "
-       "Merkzettel."));
+ tell_object(TI,BS("Du zeigst "+({string})pl->Name(WEM)+
+       " voller Stolz deinen vollen Merkzettel."));
  tell_room(environment(environment()),BS(sprintf(
 	 "%s zeigt %s %s Merkzettel.",
-       TI->Name(WER),pl->Name(WEM),TI->QueryPossPronoun(MALE,WEN,SINGULAR))),
+       ({string})TI->Name(WER), ({string})pl->Name(WEM),
+       ({string})TI->QueryPossPronoun(MALE,WEN,SINGULAR))),
      ({TI,pl}));
  switch(sizeof(ids)) {
      case 0..10:
        tell_object(pl,BS(sprintf("%s zeigt Dir voller Stolz %s Merkzettel. Du "
 	       "wirfst einen schnellen Blick darueber und zaehlst %d "
 	       "Notizen. Na, soviel ist das ja zum Glueck noch nicht.",
-	       TI->Name(WER),TI->QueryPossPronoun(MALE,WEN,SINGULAR),
+	       ({string})TI->Name(WER),
+         ({string})TI->QueryPossPronoun(MALE,WEN,SINGULAR),
 	       sizeof(ids))));
        break;
     case 11..20:
         tell_object(pl,BS(sprintf("%s zeigt Dir voller Stolz %s Merkzettel. Du "
 	       "wirfst einen schnellen Blick darueber und zaehlst %d "
 	       "Notizen. Oh, das ist ja schon so einiges!",
-	       TI->Name(WER),TI->QueryPossPronoun(MALE,WEN,SINGULAR),
+	       ({string})TI->Name(WER),
+         ({string})TI->QueryPossPronoun(MALE,WEN,SINGULAR),
 	       sizeof(ids))));
        break;
     default:
@@ -749,8 +752,10 @@ int ZeigeZettel(string str) {
 	       "wirfst einen schnellen Blick darueber und zaehlst %d "
 	       "Notizen. Puuuh. %s hat ganz schoen viel zu tun! In "
 	       "Dir regt sich leises Mitleid.",
-	       TI->Name(WER),TI->QueryPossPronoun(MALE,WEN,SINGULAR),
-	       sizeof(ids),TI->Name(WER) )));
+	       ({string})TI->Name(WER),
+         ({string})TI->QueryPossPronoun(MALE,WEN,SINGULAR),
+	       sizeof(ids),
+         ({string})TI->Name(WER) )));
        break;
  }
  return(1);
@@ -775,17 +780,17 @@ int WedelZettel(string str) {
   if (!present(pl,environment(environment())))
     rwedel="aus der Ferne";
       
-  tell_object(PL,BS("Du wedelst "+pl->Name(WEM) 
-	+ (rwedel?" "+rwedel:"") 
-	+" heftig mit Deinem Merkzettel vor der Nase herum."));
-  tell_object(pl,BS(PL->Name(WER)+ " wedelt Dir " 
-	+ (rwedel?rwedel+" ":"") +"heftig mit "
-	+PL->QueryPossPronoun(MALE,WEM,SINGULAR)
-	+" Merkzettel vor der Nase herum."));
-  tell_room(environment(pl),BS(PL->Name(WER) + " wedelt "
-	+pl->Name(WEM) + (rwedel?" "+rwedel:"") + " heftig mit "
-       +PL->QueryPossPronoun(MALE,WEM,SINGULAR)
-       +" Merkzettel vor der Nase herum."),({PL,pl}));
+  tell_object(PL,BS("Du wedelst "+({string})pl->Name(WEM)+
+    (rwedel?" "+rwedel:"")+
+    " heftig mit Deinem Merkzettel vor der Nase herum."));
+  tell_object(pl,BS(({string})PL->Name(WER)+ " wedelt Dir " 
+    +(rwedel?rwedel+" ":"") +"heftig mit "
+    +({string})PL->QueryPossPronoun(MALE,WEM,SINGULAR)
+    +" Merkzettel vor der Nase herum."));
+  tell_room(environment(pl),BS(({string})PL->Name(WER) + " wedelt "
+    +({string})pl->Name(WEM) + (rwedel?" "+rwedel:"") + " heftig mit "
+    +({string})PL->QueryPossPronoun(MALE,WEM,SINGULAR)
+    +" Merkzettel vor der Nase herum."),({PL,pl}));
   return(1);
 }
 

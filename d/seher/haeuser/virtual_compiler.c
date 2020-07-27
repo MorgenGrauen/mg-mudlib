@@ -36,9 +36,9 @@ void create()
   seteuid(getuid());
 
   // Zeiger auf Cloneliste holen
-  if (call_other(MEMORY,"HaveRights")) {
+  if (({int})call_other(MEMORY,"HaveRights")) {
     // Objektpointer laden
-    objects = call_other(MEMORY,"Load","objects");
+    objects = ({mapping})call_other(MEMORY,"Load","objects");
 
     // Hats geklappt?
     if (!mappingp(objects)) 

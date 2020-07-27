@@ -47,7 +47,7 @@ public void create()
 void test_remove()
 {
   if (!sizeof(all_inventory(this_object())&users()))
-    if (!this_object()->remove()) destruct(this_object());
+    if (!({int})this_object()->remove()) destruct(this_object());
 }
 
 public void reset()
@@ -84,12 +84,12 @@ public varargs void init(object oldenv)
   if ( !(prayroom = (string) this_player()->QueryPrayRoom()) )
       prayroom = "/room/pray_room";
   
-  if ( !this_player()->QueryProp(P_GHOST) )
+  if ( !({int})this_player()->QueryProp(P_GHOST) )
     {
       if ( IS_WIZARD(this_player()) &&
-           this_player()->QueryProp(P_WANTS_TO_LEARN) )
+           ({int})this_player()->QueryProp(P_WANTS_TO_LEARN) )
 	{
-          if ( !this_player()->QueryProp(P_INVIS) )
+          if ( !({int})this_player()->QueryProp(P_INVIS) )
               tell_room( this_object(),
                          "Der Tod sagt: WAS WILLST DU HIER, "+
                          upperstring((string) this_player()->name())+"?\n"+

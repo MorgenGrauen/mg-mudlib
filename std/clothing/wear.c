@@ -427,7 +427,7 @@ varargs int DoUnwear(int silent, int all) {
     //Behinderung beim Wechsel nur fuer Spieler
     if (query_once_interactive(PL)) {
       ({int*})PL->SetProp(P_LAST_WEAR_ACTION,({WA_UNWEAR,time()}));
-      if (({int})PL->InFight()) { 
+      if (({int})PL->InFight()) {
         ({int})PL->SetProp(P_ATTACK_BUSY,1);
       }
     }
@@ -455,7 +455,7 @@ protected int _do_wear(string str, int silent, int all) {
   }
 
   // Vielleicht darf der Spieler ja gar nix mehr anziehen.
-  if (({int})PL->InFight()) {        
+  if (({object})PL->InFight()) {
     last=({int*})PL->QueryProp(P_LAST_WEAR_ACTION);
       if (pointerp(last) && (last[0]==WA_UNWEAR) && ((time()-last[1])<2)) {
         notify_fail("Du hast doch gerade erst etwas ausgezogen!\n"

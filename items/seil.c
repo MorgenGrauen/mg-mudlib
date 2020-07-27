@@ -115,7 +115,7 @@ int tie(string str)
 
    if (!ob)
    {
-    if (call_other(environment(this_player()), "id", t2))
+    if (({int})call_other(environment(this_player()), "id", t2))
     ob = environment(this_player());
    }
 		
@@ -127,7 +127,7 @@ int tie(string str)
    _notify_fail( "Soetwas findest Du hier nicht.\n" );
    if (!ob) return 0;
 
-   if (!(tied_name=call_other(ob, "tie", t2)))
+   if (!(tied_name=({string|int})call_other(ob, "tie", t2)))
    {
     if(({int})ob->QueryProp(P_INVIS)) return 0;
     
@@ -209,7 +209,7 @@ int tie(string str)
     return 1;
    }
 
-   if (!call_other(tied_to_ob, "untie"))
+   if (!({int})call_other(tied_to_ob, "untie"))
    {
     write("Das klappt leider nicht.\n");
     return 1;
