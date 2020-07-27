@@ -804,7 +804,7 @@ string info(string arg)
   write("\n");
   if (getuid(ob))
     write("CREATOR: "+getuid(ob)+"\n");
-  if (s=query_ip_number(ob))
+  if (interactive(ob) && (s=query_ip_number(ob)))
   {
     write("IP-NUMBER: "+s+" IP-NAME: "+query_ip_name(ob)+" IDLE: "
 	  + query_idle(ob)+"\n");
