@@ -196,11 +196,15 @@ Verzeichnis der dokumentierten lfuns
 
 * FindGroupP()
 
+* FindLivingVictim()
+
 * FindNearEnemyVictim()
 
 * FindPotion()
 
 * FindRangedTarget()
+
+* FindVictim()
 
 * Flee()
 
