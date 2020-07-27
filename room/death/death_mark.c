@@ -33,7 +33,7 @@ void reset()
 void start_death()
 {
   if ( !environment() || !query_once_interactive(environment())
-       || !environment()->QueryProp(P_GHOST) )
+       || !({int})environment()->QueryProp(P_GHOST) )
   {
       destruct(this_object());
       return;
@@ -59,9 +59,9 @@ protected int PreventMove(object dest, object oldenv, int method) {
 
 int _query_autoloadobj() { return 1; }
 
-void init()
+public varargs void init(object origin)
 {
-  ::init();
+  ::init(origin);
   if (this_player() == environment())
     start_death();
 }
