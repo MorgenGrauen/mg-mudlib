@@ -138,7 +138,7 @@ int MayAddObject(object ob) {
 
 int _query_total_weight() {
   int tw;
-  foreach(int w: all_inventory(ME)+({ME}))
+  foreach(object w: all_inventory(ME)+({ME}))
     tw += w->QueryProp(P_WEIGHT);
   return tw;
 }

@@ -281,12 +281,12 @@ static varargs int becomes_obj( mixed argv)
 		return objectp(argv[0]);
 }
 
-static isSubStr( pl, str, len )
+static int isSubStr( object pl, string str, int len )
 {
 	return getuid(pl)[0..len] == str;
 }
 
-static becomes_pl(argv)
+static mixed becomes_pl( mixed argv)
 {
 	object pl;
 	object* pllist;
@@ -318,7 +318,9 @@ static becomes_pl(argv)
 	return argv[0];
 }
 
-static DumpObj( ob )
+static mixed DumpMapp( mixed ob, int i);
+
+static mixed DumpObj( mixed ob )
 {
   string ans;
   int i,j;
@@ -347,7 +349,7 @@ static DumpObj( ob )
   }
 }
 
-static DumpMapp(ob,i)
+static mixed DumpMapp( mixed ob, int i)
 {
   int j,vz;
   string ans;

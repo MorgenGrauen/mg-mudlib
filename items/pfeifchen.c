@@ -123,7 +123,7 @@ static int cm_smoke(string str){
 int smoke2(object pl){
   object ob;
   if(!rauchen) return 0;
-  if(!ob=find_player(pl)) return 0;
+  if(!ob=find_player(getuid(pl))) return 0;
   if(environment()!=ob) return 0;
   tell_object(ob,"Genuesslich pustest Du ein paar Rauchkringel in die Luft.\n");
   tell_room(environment(ob),ob->Name()+" pustet genuesslich ein paar "
@@ -136,7 +136,7 @@ int smoke2(object pl){
 int smoke3(object pl){
   object ob;
   if(!rauchen) return 0;
-  if(!ob=find_player(pl)) return 0;
+  if(!ob=find_player(getuid(pl))) return 0;
   if(environment()!=ob) return 0;
   tell_object(ob,break_string("Genuesslich pustest Du ein paar Rauchkringel "
    "in die Luft, rauchst Dein Pfeifchen auf und klopfst es aus.",78));

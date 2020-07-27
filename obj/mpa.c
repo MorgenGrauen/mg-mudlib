@@ -450,7 +450,7 @@ static rubrik(str)
   return 1;
 }
 
-LiesArtikel(str) {
+int LiesArtikel(string str) {
   string s1;
   int i1;
   if ( !str ) return 0;
@@ -460,6 +460,7 @@ LiesArtikel(str) {
     return lies(to_int(i1));
   if (sscanf(str,"artikel %s",s1))
     return lies(s1);
+  return 0;
 }
 
 

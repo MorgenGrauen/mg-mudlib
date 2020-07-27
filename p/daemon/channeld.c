@@ -611,7 +611,7 @@ mixed remove(string ch, object pl)
           function mixed (object listener) {
             string* chans = listener->QueryProp(P_CHANNELS);
             chans -= ({lower_case(ch)});
-            listener->SetProp(P_CHANNELS, chans);
+            ({string*})listener->SetProp(P_CHANNELS, chans);
           });
     channels = m_copy_delete(channels, lower_case(ch));
 
