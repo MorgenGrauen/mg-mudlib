@@ -5,7 +5,7 @@
 // $Id: death_room.c 9138 2015-02-03 21:46:56Z Zesstra $
 
 
-#pragma strict_types
+#pragma strong_types,rtt_checks
 
 #include <defines.h>
 #include <properties.h>
@@ -147,7 +147,7 @@ parseText( string msg, object pl )
           }
           else
               if ( todo[<1] == "A" ){
-                  STOS(done) += expand(TOS(done), (int) pl->QueryProp(P_ALIGN));
+                  STOS(done) += expand(TOS(done), ({int}) pl->QueryProp(P_ALIGN));
                   done = done[0..<2];
                   todo = todo[0..<2];
               }
@@ -160,7 +160,7 @@ parseText( string msg, object pl )
           }
           else
               if ( todo[<1] == "D" ){
-                  STOS(done) += expand(TOS(done), (int) pl->QueryProp(P_DEADS));
+                  STOS(done) += expand(TOS(done), ({int}) pl->QueryProp(P_DEADS));
                   POP(done);
                   POP(todo);
               }
@@ -173,7 +173,7 @@ parseText( string msg, object pl )
           }
           else
               if ( todo[<1] == "L" ){
-                  STOS(done) += expand(TOS(done), (int) pl->QueryProp(P_LEVEL));
+                  STOS(done) += expand(TOS(done), ({int}) pl->QueryProp(P_LEVEL));
                   POP(done);
                   POP(todo);
               }
@@ -218,7 +218,7 @@ parseText( string msg, object pl )
           }
           else{
               if( sizeof( texte = regexplode(TOS(done), ":") ) == 3 )
-                  STOS(done) += texte[2*((int) pl->QueryProp(P_GENDER)
+                  STOS(done) += texte[2*(({int}) pl->QueryProp(P_GENDER)
                                          == FEMALE)];
               POP(done);
               POP(todo);
@@ -236,7 +236,7 @@ parseText( string msg, object pl )
               texte = regexplode( TOS(done), "\\|" );
               race = 2 * (member( ({ "Mensch", "Elf", "Zwerg", "Hobbit",
                                          "Feline", "Dunkelelf" }),
-                                  (string) pl->QueryProp(P_RACE) ) + 1);
+                                  ({string}) pl->QueryProp(P_RACE) ) + 1);
               
               if ( race >= sizeof(texte) )
                   race = 0;
@@ -248,11 +248,11 @@ parseText( string msg, object pl )
           break;
 
       case 'n': /*** Name, normal geschrieben ***/
-          TOS(done) += (string) (pl->name(RAW));
+          TOS(done) += (string) (({string})pl->name(RAW));
           break;
 
       case 'N': /*** Name, in Grossbuchstaben ***/
-          TOS(done) += upperstring(pl->name(RAW));
+          TOS(done) += upperstring(({string})pl->name(RAW));
           break;
       }
   }
@@ -407,46 +407,46 @@ void add_player( object pl )
 
     object pre = (object) pl->QueryProp(P_KILLER);
     if ( objectp(pre) ) {
-        dseq = (mixed) pre->QueryProp(P_ENEMY_DEATH_SEQUENCE);
+        dseq = pre->QueryProp(P_ENEMY_DEATH_SEQUENCE);
 
-        if( !(killer_name = (mixed) pre->QueryProp(P_KILL_NAME)) ){
-            killer_name = (mixed) pre->QueryProp(P_NAME);
+        if( !(killer_name = pre->QueryProp(P_KILL_NAME)) ){
+            killer_name = pre->QueryProp(P_NAME);
             kart = (int) pre->QueryProp(P_ARTICLE);
             kgen = (int) pre->QueryProp(P_GENDER);
         }
 
-        killer_msg = (mixed)pre->QueryProp(P_KILL_MSG);  
+        killer_msg = pre->QueryProp(P_KILL_MSG);  
     }
 
     if ( !killer_name && kill_liv && function_exists( "QueryProp", kill_liv ) ){
-        dseq = (mixed) kill_liv->QueryProp(P_ENEMY_DEATH_SEQUENCE);
+        dseq = kill_liv->QueryProp(P_ENEMY_DEATH_SEQUENCE);
 
-        if( !(killer_name = (mixed) kill_liv->QueryProp(P_KILL_NAME)) ){
-            killer_name = (mixed) kill_liv->QueryProp(P_NAME);
+        if( !(killer_name = kill_liv->QueryProp(P_KILL_NAME)) ){
+            killer_name = kill_liv->QueryProp(P_NAME);
             kart = (int) kill_liv->QueryProp(P_ARTICLE);
             kgen = (int) kill_liv->QueryProp(P_GENDER);
         }
 
-        killer_msg = (mixed) kill_liv->QueryProp(P_KILL_MSG);
+        killer_msg = kill_liv->QueryProp(P_KILL_MSG);
         pre = kill_liv;
     }
 
     if ( !killer_name && kill_ob && function_exists( "QueryProp", kill_ob ) ){
-        dseq = (mixed) kill_ob->QueryProp(P_ENEMY_DEATH_SEQUENCE);
+        dseq = kill_ob->QueryProp(P_ENEMY_DEATH_SEQUENCE);
 
-        if( !(killer_name = (mixed) kill_ob->QueryProp(P_KILL_NAME)) ){
-            killer_name = (mixed) kill_ob->QueryProp(P_NAME);
+        if( !(killer_name = kill_ob->QueryProp(P_KILL_NAME)) ){
+            killer_name = kill_ob->QueryProp(P_NAME);
             kart = (int) kill_ob->QueryProp(P_ARTICLE);
             kgen = (int) kill_ob->QueryProp(P_GENDER);
         }
 
-        killer_msg = (mixed) kill_ob->QueryProp(P_KILL_MSG);
+        killer_msg = kill_ob->QueryProp(P_KILL_MSG);
         pre = kill_ob;
     }
     
     // falls keine Sequenz gesetzt, eventuelle eigene Todessequenz nehmen
     if (!dseq)
-      dseq = (mixed)pl->QueryProp(P_NEXT_DEATH_SEQUENCE);
+      dseq = ({<string|mapping|mixed*>})pl->QueryProp(P_NEXT_DEATH_SEQUENCE);
 
     act_seq = 0;
 
@@ -457,7 +457,7 @@ void add_player( object pl )
     else if ( stringp(dseq) )
         act_seq = get_sequence(dseq);
 
-    if(pl->query_hc_play()>1)
+    if(({int})pl->query_hc_play()>1)
     {
         act_seq=({({22,([1:"Du faellst und faellst...\n",
                         5:"und faellst...\n",
@@ -580,12 +580,12 @@ void add_player( object pl )
             }
         }
 
-        if ( pointerp(killer_msg = (mixed) pl->QueryProp(P_DEATH_MSG)) &&
+        if ( pointerp(killer_msg = pl->QueryProp(P_DEATH_MSG)) &&
              sizeof(killer_msg) == 2 && stringp(killer_msg[0]) &&
              intp(killer_msg[1]) ){
             SetProp( P_NAME, capitalize(getuid(pl)) );
             SetProp( P_ARTICLE, 0 );
-            SetProp( P_GENDER, pl->QueryProp(P_GENDER) );
+            SetProp( P_GENDER, ({int})pl->QueryProp(P_GENDER) );
             CHMASTER->send( kanal, this_object(), killer_msg[0],
                             killer_msg[1] );
             SetProp( P_NAME, "Lars" );
@@ -593,7 +593,7 @@ void add_player( object pl )
             SetProp( P_GENDER, MALE );
         }
 
-        if (pl->query_hc_play()>1){
+        if (({int})pl->query_hc_play()>1){
             SetProp( P_NAME, "Tod" );
             CHMASTER->send( kanal, this_object(),"NUN GEHOERST DU FUER EWIG MIR!" );
             SetProp( P_NAME, "Lars" );
