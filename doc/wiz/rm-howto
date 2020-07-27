@@ -143,6 +143,9 @@ o Sollte ein Objekt aus einer anderen Region bzw. allgemein aus einem
   -- im Gebiet vorhandene Seherhaeuser umziehen, an P_SEHERHAUS_ERLAUBT im
      Zielraum denken
   -- evtl. im Gebiet vorhandene Kraeuterskill-Kraeuter beruecksichtigen
+  -- evtl. vorhandene Autoload-Objekte pruefen; in einfachen Faellen kann
+     man ein Wrapper-Objekt erstellen, das das alte beim Clonen durch das
+     neue ersetzt.
   -- evtl. Briefempfaenger der Postquest beruecksichtigen,
   -- ueber die Mudlib greppen lassen, um eventuell in anderen Regionen
      verwendete Referenzen auf die alten Pfade des umziehenden Codes

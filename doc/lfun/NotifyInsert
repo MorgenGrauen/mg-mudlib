@@ -35,7 +35,7 @@ BEMERKUNGEN
 ===========
 
    Diese Funktion wird nur im Falle unbelebter Objekte gerufen. Fuer
-   Lebewesen s. bitte. init().
+   Lebewesen siehe init().
 
 
 SIEHE AUCH

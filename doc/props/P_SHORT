@@ -6,7 +6,8 @@ P_SHORT
 NAME
 ====
 
-   P_SHORT                            "short"
+   P_SHORT
+      "short"
 
 
 DEFINIERT IN
@@ -18,32 +19,39 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Diese Property enthaelt die Kurzbeschreibung des Objektes als String
-   oder Closure (diese muss einen String zurueckgeben).
+   Diese Property enthaelt die Kurzbeschreibung eines Objektes bei
+   Ansicht *von aussen* als String. Fuer die Innen(kurz)ansicht von
+   Raeumen muss man P_INT_SHORT benutzen.
 
-   ACHTUNG: Die Kurzbeschreibung sollte dabei nicht mit einem "\n"
-   abgeschlossen sein (dies wird von den zustaendigen Funktionen
-   erledigt).
-   Aus historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
+   Die Kurzbeschreibung darf *nicht* mit einem "n" abgeschlossen sein
+   (dies wird von den zustaendigen Funktionen erledigt). Aus
+   historischen Gruenden wird ein Punkt ergaenzt, wenn das letzte
    Zeichen kein Punkt, Ausrufezeichen oder Fragezeichen ist.
 
-   Setzt man diese Property auf 0, so ist das Objekt unsichtbar, allerdings
-   ansprechbar, wenn der Spieler eine ID des Objektes kennt. D.h. Objekte
-   koennen mitgenommen, weggeworfen oder ggf. auch angegriffen werden. Will
-   man dies nicht, sollte man das Objekt mit P_INVIS unsichtbar machen.
-
-   Diese Property bestimmt die Ansicht des Objektes von aussen. Fuer die
-   Innen(kurz)ansicht von Raeumen muss man P_INT_SHORT benutzen.
+   Setzt man diese Property auf 0, so wird das Objekt von Spielern
+   nicht mehr wahrgenommen (es wird in Inventaren nicht mehr
+   angezeigt). Der Effekt ist der eines "PAL-Feldes" ("Problem anderer
+   Leute"). Es bleibt allerdings ansprechbar, wenn Spieler eine ID des
+   Objektes kennen. Diese koennen dann damit alles anstellen, was sie
+   sonst auch koennten. D.h. Objekte koennen insb. mitgenommen,
+   weggeworfen, untersucht oder ggf. auch angegriffen werden und es
+   kann angreifen. Will man dies nicht, muss man das Objekt mit
+   P_INVIS richtig unsichtbar machen.
 
 
 BEMERKUNGEN
 ===========
 
-   Die Funktion, die die Kurzbeschreibung ausgibt (short()), filtert P_SHORT
-   durch process_string(). Von der Nutzung dieses Features wird in neuem
-   Code abgeraten.
-   Soll eine dyn. Kurzbeschreibung geschaffen werden, bitte eine
-   F_QUERY_METHOD einsetzen oder short() passend ueberschreiben.
+   * In altem Code wird manchmal eine Closure als Wert (nicht als
+     Querymethode) eingetragen, welche einen String zurueckgibt. Dies
+     ist *deprecated* und sollte nicht mehr formuliert werden.
+
+   * Die Funktion, die die Kurzbeschreibung ausgibt (short()),
+     filtert P_SHORT durch process_string(). Dieses Feature ist
+     *deprecated* und von der Nutzung wird in neuem Code abgeraten.
+
+   * Soll eine dyn. Kurzbeschreibung geschaffen werden, bitte eine
+     F_QUERY_METHOD einsetzen oder short() passend ueberschreiben.
 
 
 BEISPIELE
@@ -56,7 +64,7 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   Aehnliches:        P_LONG, short()
-   Sonstiges:         P_INT_SHORT, process_string()
+   Aehnliches
+      P_LONG, P_INT_SHORT, P_INVIS, short()
 
-27.05.2015, Zesstra
+13.06.2020, Zesstra

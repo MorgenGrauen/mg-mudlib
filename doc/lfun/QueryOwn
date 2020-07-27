@@ -39,7 +39,7 @@ BEISPIELE
 =========
 
    printf("%s %s loest sich auf.\n",
-         capitalize(obj->QueryOwn(WER)),obj->name(WER));
+         capitalize(obj->QueryOwn(WER)),obj->name(RAW));
 
    (In den meisten Faellen kann man hier auch direkt "Dein" oder "Deine"
     einsetzen.)

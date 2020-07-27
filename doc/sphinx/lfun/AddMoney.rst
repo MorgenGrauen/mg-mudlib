@@ -3,17 +3,14 @@ AddMoney()
 
 AddMoney(L)
 -----------
-::
 
 FUNKTION
 --------
-::
 
      public int AddMoney(int amount);
 
 DEFINIERT IN
 ------------
-::
 
      /std/container/moneyhandler.c
      /std/living/moneyhandler.c
@@ -21,21 +18,18 @@ DEFINIERT IN
 
 ARGUMENTE
 ---------
-::
 
      int amount
          Die zufuehrende oder abziehende Geldmenge
 
 BESCHREIBUNG
 ------------
-::
 
      Dem Spieler wird die in <amount> festgelegte Geldmenge abgezogen oder
      zugefuehrt.
 
 RUeCKGABEWERT
 -------------
-::
 
      Technisch gesehen wird Geld mit entsprechendem <amount> erzeugt
      ("/items/money.c") und mittels "move" in den Spieler bewegt.  Das Ergebnis
@@ -45,7 +39,6 @@ RUeCKGABEWERT
 
 BEMERKUNGEN
 -----------
-::
 
      <amount> kann sowohl positiv als auch negativ sein. Welche Auswirkungen
      beide Faelle haben, sollte klar sein. Doch sollte bei einem negativen
@@ -69,7 +62,8 @@ BEMERKUNGEN
 
 BEISPIELE
 ---------
-::
+
+.. code-block:: pike
 
      #include <zentralbank.h>
      
@@ -86,13 +80,12 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
      Geldhandling:	QueryMoney(L)
      Zentralbank:	PayIn(L), WithDraw(L)
      Sonstiges:		move(L),
-			/items/money.c, /sys/moving.h, /sys/money.h, /sys/bank.h
-			/std/container/moneyhandler.c
+     /items/money.c, /sys/moving.h, /sys/money.h, /sys/bank.h
+     /std/container/moneyhandler.c
 
 18.02.2013, Zesstra
 
