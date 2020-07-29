@@ -1136,7 +1136,6 @@ static void ListAliases() {
   string s;
   a=sort_array(m_indices(aliases),#'>); // ');
   s=( "Definierte Aliase:\n"
-      "d.xyz        = Alle Mitarbeiter der Domain xyz\n"
       "freunde      = Deine Freunde (entsprechend Freundschaftsband)\n"
       "me           = "+(this_player()->QueryProp(P_MAILADDR))+"\n");
   for (i=0;i<sizeof(a);i++)
@@ -1372,38 +1371,32 @@ static mixed process_names(mixed s) {
 
 //  printf("DEBUG ANFANG: %O\n",a2);
 
-  foreach(string str: a2) {
-      if( !sizeof(str) ) continue;
-      if (sscanf(str,"d.%s",domain)) {
-	  h=(get_dir("/d/"+domain+"/*")||({}))-({".",".."});
-	  // h immer ein Array
-	  h=filter(h,#'query_wiz_level);
-	  if (sizeof(h))
-	    a1+=h;
-	  else
-	    a1+=({"d."+domain});
-      }
-      else if (str=="freunde")
-	a1+=("/p/service/tiamak/obj/fbmaster"->get_friends(getuid(this_player()), 8));
-      else if (str=="me")
-	a1+=({this_player()->QueryProp(P_MAILADDR)});
-      else if (aliases[str])
-	a1+=GetAlias(str);
+  foreach(string str: a2)
+  {
+    if (str=="freunde")
+      a1 += ("/p/service/tiamak/obj/fbmaster"->get_friends(
+                   getuid(this_player()), 8));
+    else if (str=="me")
+      a1+=({this_player()->QueryProp(P_MAILADDR)});
+    else if (aliases[str])
+      a1+=GetAlias(str);
 #ifdef MAIL_SUPPORT_BCC
     else if (str[0]=='-')
-	a1+=map(RecurseProcessNames(str[1..]), function string (string x) {
-	    return("-"+x);});
+      a1+=map(RecurseProcessNames(str[1..]), function string (string x) {
+                                               return("-"+x);
+                                             });
 #endif
-    else if ( (str[0]>='a' && str[0]<='z')
-	|| (sscanf(str,"%s@%s",domain,domain))
-	|| str[0]=='\\')
-	a1+=({str});
+    else if ( (str[0]>='a' && str[0]<='z') ||
+              sscanf(str,"%s@%s",domain,domain) ||
+              str[0]=='\\')
+      a1+=({str});
   }
 
 //  printf("DEBUG ENDE: %O\n",a1);
 
-  a1=filter(a1,function int (string x)
-      { return(sizeof(x)>1); } );
+  a1=filter(a1, function int (string x) {
+                  return(sizeof(x)>1);
+                });
 
   return(map(a1,#'lower_case));
 }
