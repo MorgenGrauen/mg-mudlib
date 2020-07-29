@@ -495,11 +495,11 @@ int Unbebaubar(object ob)
     return 1;
 
   // Innenraum
-  if (ob->QueryProp(P_INDOORS))
+  if (({int})ob->QueryProp(P_INDOORS))
     return 2;
 
   // Bauplatz-Property nicht gesetzt
-  if (!(ob->QueryProp(P_HAUS_ERLAUBT)))
+  if (!(({int})ob->QueryProp(P_HAUS_ERLAUBT)))
     return 3;
 
   return 0;
