@@ -45,7 +45,7 @@ int _normalfunction()
   int i;
   z=this_player()->QueryProp(AUSGANG);
   this_player()->SetProp(AUSGANG, query_verb());
-  i=(int)::_normalfunction();
+  i=::_normalfunction();
   if (!i) this_player()->SetProp(AUSGANG, z);
   return i;
 }
