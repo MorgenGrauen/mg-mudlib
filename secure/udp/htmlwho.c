@@ -23,10 +23,10 @@ string adjust(string str,int wid)
 udp_htmlwho(data)
 {
   int i,num;
-  string *mdata;
   string wholiste,tmp,tmp2;
- 
-  mdata="/obj/werliste"->QueryWhoListe(0,0,1);
+
+  <object|string>** mdata="/obj/werliste"->QueryWhoListe(0,0,1);
+
   num=sizeof(mdata);
   for (i=num-1;i>=0;i--)
   {

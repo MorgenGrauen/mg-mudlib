@@ -295,7 +295,7 @@ varargs int DoWear(int silent, int all) {
     // Aktion noch setzen, Spieler hat ja was angezogen
     ({int*})PL->SetProp(P_LAST_WEAR_ACTION,({WA_WEAR,time()}));
     // Im Kampf verliert der Spieler durch Kleidungswechsel eine Runde.
-    if (({int})PL->InFight()) {
+    if (({object})PL->InFight()) {
       ({int})PL->SetProp(P_ATTACK_BUSY,1);
     }
   }
@@ -427,7 +427,7 @@ varargs int DoUnwear(int silent, int all) {
     //Behinderung beim Wechsel nur fuer Spieler
     if (query_once_interactive(PL)) {
       ({int*})PL->SetProp(P_LAST_WEAR_ACTION,({WA_UNWEAR,time()}));
-      if (({int})PL->InFight()) {
+      if (({object})PL->InFight()) {
         ({int})PL->SetProp(P_ATTACK_BUSY,1);
       }
     }
@@ -505,7 +505,7 @@ protected int _do_unwear(string str, int silent, int all) {
   }
 
   // Vielleicht darf der Spieler ja gar nichts mehr ausziehen.
-  if (({int})PL->InFight()) {
+  if (({object})PL->InFight()) {
     last=({int*})PL->QueryProp(P_LAST_WEAR_ACTION);
     if (pointerp(last) && (last[0]==WA_WEAR) && ((time()-last[1])<2)) {
       notify_fail("Du hast doch gerade erst etwas angezogen!\n"              

@@ -405,7 +405,7 @@ void add_player( object pl )
         kill_ob = prev; // killendes Objekt
     }
 
-    object pre = (object) pl->QueryProp(P_KILLER);
+    string|object pre = pl->QueryProp(P_KILLER);
     if ( objectp(pre) ) {
         dseq = pre->QueryProp(P_ENEMY_DEATH_SEQUENCE);
 
