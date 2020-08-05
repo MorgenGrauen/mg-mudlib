@@ -521,7 +521,7 @@ protected void create()
   if (call_other(MEMORY, "HaveRights"))
   {
     // Objektpointer laden
-    channelH = (mapping) call_other(MEMORY, "Load", "History");
+    channelH = ({mapping}) call_other(MEMORY, "Load", "History");
 
     // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger, dann
     if (!mappingp(channelH))
