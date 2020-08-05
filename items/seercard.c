@@ -337,7 +337,7 @@ public void MergeMoney(object geld)
       && load_name(geld) == GELD
       && BESITZER_GUELTIG)
   {
-    int fremdamount = geld->QueryProp(P_AMOUNT);
+    int fremdamount = ({int})geld->QueryProp(P_AMOUNT);
     int meinamount = _query_amount();
     ZDEBUG(sprintf("MergeMoney: meinamount: %d, fremdamount: %d\n",
           meinamount,fremdamount));
@@ -348,7 +348,7 @@ public void MergeMoney(object geld)
       geld->SetProp(P_AMOUNT, fremdamount + amount_to_merge);
     }
     ZDEBUG(sprintf("MergeMoney: Final: meinamount: %d, fremdamount: %d\n",
-          _query_amount(),geld->QueryProp(P_AMOUNT)));
+          _query_amount(),({int})geld->QueryProp(P_AMOUNT)));
   }
 }
 

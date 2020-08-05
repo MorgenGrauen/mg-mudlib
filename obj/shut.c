@@ -117,7 +117,7 @@ public varargs void die(int poisondeath,int extern)
     else 
       tell_room(room,
         "Armageddon sagt: Ich weigere mich, einfach so zu sterben, "+
-        (tp->Name())+".\n");
+        (({string})tp->Name())+".\n");
   return;
 }
 
