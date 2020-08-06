@@ -126,7 +126,7 @@ private nosave mapping admin = m_allocate(0, 3);
 // Wenn RECV_LVL oder SEND_LVL auf -1 gesetzt ist, sind die Aktionen der
 // jeweiligen Gruppen komplett geblockt.
 
-private int check_ch_access(string ch, object pl, string cmd)
+public int check_ch_access(string ch, object pl, string cmd)
 {
   // <pl> ist Gast, es sind aber keine Gaeste zugelassen? Koennen wir
   // direkt ablehnen.
@@ -276,7 +276,7 @@ public void ChannelMessage(<string|object|int>* msg)
   float* lag;
   int max, rekord;
   string ret;
-  string mesg = lower_case(msg[CH_MSG]);
+  string mesg = msg[CH_MSG];
 
   if (IsValidChannelCommand(mesg, "hilfe"))
   {
@@ -459,13 +459,13 @@ private void setup(string* chinfo)
         desc = chinfo[4];
 
     case 4:
-      admin[chinfo[0], FLAG] = to_int(chinfo[3]);
+      admin[lower_case(chinfo[0]), FLAG] = to_int(chinfo[3]);
 
     case 3:
-      admin[chinfo[0], SEND] = to_int(chinfo[2]);
+      admin[lower_case(chinfo[0]), SEND] = to_int(chinfo[2]);
 
     case 2:
-      admin[chinfo[0], RECV] = to_int(chinfo[1]);
+      admin[lower_case(chinfo[0]), RECV] = to_int(chinfo[1]);
       break;
 
     case 0:
@@ -599,22 +599,19 @@ string Name()
 varargs private int access(string ch, object|string pl, string cmd,
                            string txt)
 {
-  if (!sizeof(ch) || !pointerp(channels[ch]))
+  if (!sizeof(ch))
     return 0;
 
-  if (!ACC_CLOSURE(ch) || !previous_object(1) || !extern_call() ||
-      previous_object(1) == this_object() ||
-      (stringp(MASTER_OB(ch)) &&
-       previous_object(1) == find_object(MASTER_OB(ch))) ||
-      getuid(previous_object(1)) == ROOTID)
+  ch = lower_case(ch);
+  if(!pointerp(channels[ch]))
+    return 0;
+
+  if ( !previous_object(1) || !extern_call() ||
+       previous_object(1) == this_object() ||
+       (stringp(MASTER_OB(ch)) &&
+        previous_object(1) == find_object(MASTER_OB(ch))) ||
+        getuid(previous_object(1)) == ROOTID)
     return 2;
-
-  if (!objectp(pl) ||
-      ((previous_object(1) != pl) && (previous_object(1) != this_object())))
-    return 0;
-
-  if (IsBanned(pl, cmd))
-    return 0;
 
   // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
   if (!closurep(ACC_CLOSURE(ch)))
@@ -631,12 +628,9 @@ varargs private int access(string ch, object|string pl, string cmd,
       /* Wenn sich die Closure fehlerfrei erstellen liess, dann wird sie als
          neue Zugriffskontrolle eingetragen und auch der Ebenenbesitzer neu
          gesetzt. */
-      // TODO: Ist das noetig, obwohl der neue Master ja weiter unten auch
-      // gleich beitritt?
       if (!err)
       {
         ACC_CLOSURE(ch) = new_acc_cl;
-        MASTER_OB(ch) = to_string(to_object(new_acc_cl));
       }
       else
       {
@@ -659,7 +653,18 @@ varargs private int access(string ch, object|string pl, string cmd,
     // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
     this_object()->join(ch, find_object(MASTER_OB(ch)));
   }
-  return funcall(ACC_CLOSURE(ch), CHAN_NAME(ch), pl, cmd, &txt);
+
+  if (!objectp(pl) ||
+      ((previous_object(1) != pl) && (previous_object(1) != this_object())))
+    return 0;
+
+  if (IsBanned(pl, cmd))
+    return 0;
+
+  if (!ACC_CLOSURE(ch))
+    return 1;
+
+  return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
 }
 
 // Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
@@ -762,7 +767,11 @@ public varargs int new(string ch_name, object owner, string|closure info)
 public int join(string ch, object pl)
 {
   ch = lower_case(ch);
-  if (!access(ch, pl, C_JOIN))
+  /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
+     zu erzeugen, weil access() mit extern_call() und previous_object()
+     arbeitet und sichergestellt sein muss, dass das in jedem Fall das
+     richtige ist. */
+  if (!funcall(#'access, ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
 
   if (IsChannelMember(ch, pl))
@@ -782,7 +791,11 @@ public int join(string ch, object pl)
 public int leave(string ch, object pl)
 {
   ch = lower_case(ch);
-  if (!access(ch, pl, C_LEAVE))
+  /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
+     zu erzeugen, weil access() mit extern_call() und previous_object()
+     arbeitet und sichergestellt sein muss, dass das in jedem Fall das
+     richtige ist. */
+  if (!funcall(#'access, ch, pl, C_LEAVE))
     return E_ACCESS_DENIED;
 
   channels[ch][I_MEMBER] -= ({0}); // kaputte Objekte erstmal raus
@@ -852,7 +865,11 @@ public int leave(string ch, object pl)
 public varargs int send(string ch, object pl, string msg, int type)
 {
   ch = lower_case(ch);
-  int a = access(ch, pl, C_SEND, msg);
+  /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
+     zu erzeugen, weil access() mit extern_call() und previous_object()
+     arbeitet und sichergestellt sein muss, dass das in jedem Fall das
+     richtige ist. */
+  int a = funcall(#'access, ch, pl, C_SEND, msg);
   if (!a)
     return E_ACCESS_DENIED;
 
@@ -901,7 +918,11 @@ public int|mapping list(object pl)
   mapping chs = ([]);
   foreach(string chname, <object*|closure|string|object>* chdata : channels)
   {
-    if(access(chname, pl, C_LIST))
+    /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
+       zu erzeugen, weil access() mit extern_call() und previous_object()
+       arbeitet und sichergestellt sein muss, dass das in jedem Fall das
+       richtige ist. */
+    if(funcall(#'access, chname, pl, C_LIST))
     {
       m_add(chs, chname, chdata);
       chs[chname][I_MEMBER] = filter(chs[chname][I_MEMBER], #'objectp);
@@ -934,8 +955,13 @@ public string|string* find(string ch, object pl)
   // Objekt <pl> muss auf dieser Ebene senden duerfen, damit der Ebenenname
   // in das Suchergebnis aufgenommen wird.
   string* chs = filter(m_indices(channels), function int (string chname) {
+                 /* funcall() auf Closure-Operator, um einen neuen Eintrag
+                    im Caller Stack zu erzeugen, weil access() mit
+                    extern_call() und previous_object() arbeitet und
+                    sichergestellt sein muss, dass das in jedem Fall das
+                    richtige ist. */
                   return ( stringp(regmatch(chname, "^"+ch)) &&
-                           access(chname, pl, C_SEND) );
+                           funcall(#'access, chname, pl, C_SEND) );
                 });
 
   int num_channels = sizeof(chs);
@@ -951,7 +977,11 @@ public string|string* find(string ch, object pl)
 public int|<int|string>** history(string ch, object pl)
 {
   ch = lower_case(ch);
-  if (!access(ch, pl, C_JOIN))
+  /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
+     zu erzeugen, weil access() mit extern_call() und previous_object()
+     arbeitet und sichergestellt sein muss, dass das in jedem Fall das
+     richtige ist. */
+  if (!funcall(#'access, ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
   else
     return channelH[ch];
