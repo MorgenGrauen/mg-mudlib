@@ -286,7 +286,7 @@ static int isSubStr( object pl, string str, int len )
 	return getuid(pl)[0..len] == str;
 }
 
-static mixed becomes_pl( mixed argv)
+static varargs mixed becomes_pl( mixed argv)
 {
 	object pl;
 	object* pllist;
