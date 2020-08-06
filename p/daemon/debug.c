@@ -16,9 +16,11 @@ int check_ch_access( string ch, object pl, string cmd, string txt )
 {
     mixed tmp;
     
-    if ( ch != "Debug" && ch != "Entwicklung" && ch != "Warnungen" )
+    if ( ch != "debug" && ch != "entwicklung" && ch != "warnungen" )
         return 0;
     
+    ch = capitalize(ch);
+
     if( objectp(pl) && query_once_interactive(pl) && query_wiz_level(pl) > 15 )
         switch(cmd){
         case C_FIND:
@@ -106,7 +108,7 @@ void ChannelMessage( mixed a )
     fs = file_size(__DEBUG_LOG__);
     
     switch( a[0] ){
-    case "Debug":
+    case "debug":
         if (  fs > d_end && fs > e_end ){
 	    d_start = max((d_end > e_end ? d_end : e_end),0);
             d_end = fs;
@@ -117,7 +119,7 @@ void ChannelMessage( mixed a )
 	}
         break;
         
-    case "Entwicklung":
+    case "entwicklung":
         if (  fs > d_end && fs > e_end ){
 	    e_start = max((e_end > d_end ? e_end : d_end),0);
             e_end = fs;
