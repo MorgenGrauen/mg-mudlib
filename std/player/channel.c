@@ -381,7 +381,7 @@ int ChannelParser(string args)
               "           -<Ebene>[+|-|?|!|*]\n"
               "           -?\n");
 
-  args = _unparsed_args(1);
+  args = _unparsed_args();
   string|string* cmd = query_verb();
   if (!cmd && !args)
     return 0;
