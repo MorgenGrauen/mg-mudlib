@@ -458,7 +458,8 @@ private void setup(string* chinfo)
     case 5:
       if (stringp(chinfo[4]) || closurep(chinfo[4]))
         desc = chinfo[4];
-
+    // Die admin-Daten sind nicht fuer die Ebene wichtig, nur fuer die
+    // check_ch_access().
     case 4:
       admin[lower_case(chinfo[0]), FLAG] = to_int(chinfo[3]);
 
@@ -512,6 +513,8 @@ protected void create()
   seteuid(getuid());
   restore_object(CHANNEL_SAVE);
 
+  //TODO: weitere Mappings im MEMORY speichern, Savefile ersetzen.
+
   /* Die Channel-History wird nicht nur lokal sondern auch noch im Memory
      gespeichert, dadurch bleibt sie auch ueber ein Reload erhalten.
      Der folgende Code versucht, den Zeiger aus dem Memory zu holen. Falls
@@ -563,7 +566,12 @@ protected void create()
 
 varargs void reset()
 {
-  // Cache bereinigen entsprechend dessen Timeout-Zeit (12 h).
+  //TODO reset nur 1-2mal am Tag mit etwas random.
+
+  // Cache bereinigen entsprechend dessen Timeout-Zeit (12 h)
+  // TODO: Zeit auf 2-3 Tage erhoehen.
+  // TODO 2: Zeit dynamisch machen und nur expiren, wenn mehr als n Eintraege.
+  // Zeit reduzieren, bis nur noch n/2 Eintraege verbleiben.
   channelC = filter_indices(channelC, function int (string ch_name)
   {
     return (channelC[ch_name][2] + 43200 > time());
@@ -596,6 +604,9 @@ string Name()
 // SEE: new, join, leave, send, list, users
 // Note: <pl> is usually an object, only the master supplies a string during
 //       runtime error handling.
+// Wertebereich: 0 fuer Zugriff verweigert, 1 fuer Zugriff erlaubt, 2 fuer
+// Zugriff erlaubt fuer privilegierte Objekte, die senden duerfen ohne
+// Zuhoerer zu sein.
 varargs private int access(string ch, object|string pl, string cmd,
                            string txt)
 {
@@ -873,9 +884,11 @@ public varargs int send(string ch, object pl, string msg, int type)
   if (!a)
     return E_ACCESS_DENIED;
 
-  // TODO: Wertebereich von <a> klaeren.
-  // a<2 bedeutet effektiv a==1, was dem Rueckgabewert von check_ch_access()
-  // entspricht, wenn die Aktion zugelassen wird.
+  // a<2 bedeutet effektiv a==1 (weil a==0 oben rausfaellt), was dem
+  // Rueckgabewert von check_ch_access() entspricht, wenn die Aktion zugelassen
+  // wird. access() allerdings 2 fuer "privilegierte" Objekte (z.B.
+  // ROOT-Objekte oder den channeld selber). Der Effekt ist, dass diese
+  // Objekte auf Ebenen senden duerfen, auf denen sie nicht zuhoeren.
   if (a < 2 && !IsChannelMember(ch, pl))
     return E_NOT_MEMBER;
 
@@ -990,6 +1003,7 @@ public int|<int|string>** history(string ch, object pl)
 // Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
 public int remove_channel(string ch, object pl)
 {
+  //TODO: integrieren in access()?
   if (previous_object() != this_object())
   {
     if (!stringp(ch) ||
@@ -1037,6 +1051,7 @@ public int remove_channel(string ch, object pl)
 // Wird aus der Shell aufgerufen, fuer das Erzmagier-Kommando "clear".
 public int clear_history(string ch)
 {
+  //TODO: mit access() vereinigen?
   // Sicherheitsabfragen
   if (previous_object() != this_object())
   {
@@ -1047,7 +1062,8 @@ public int clear_history(string ch)
       return E_ACCESS_DENIED;
   }
 
-  // History des Channels loeschen
+  // History des Channels loeschen (ohne die ebene als ganzes, daher Key nicht
+  // aus dem mapping loeschen.)
   if (pointerp(channelH[lower_case(ch)]))
     channelH[lower_case(ch)] = ({});
 
