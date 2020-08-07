@@ -565,8 +565,7 @@ varargs void reset()
   // Cache bereinigen entsprechend dessen Timeout-Zeit (12 h).
   channelC = filter_indices(channelC, function int (string ch_name)
   {
-    return (!pointerp(channelC[ch_name]) ||
-            channelC[ch_name][2] + 43200 > time());
+    return (channelC[ch_name][2] + 43200 > time());
   });
 
   if (save_me_soon)
