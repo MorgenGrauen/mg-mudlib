@@ -572,10 +572,15 @@ varargs void reset()
   // TODO: Zeit auf 2-3 Tage erhoehen.
   // TODO 2: Zeit dynamisch machen und nur expiren, wenn mehr als n Eintraege.
   // Zeit reduzieren, bis nur noch n/2 Eintraege verbleiben.
-  channelC = filter_indices(channelC, function int (string ch_name)
-  {
-    return (channelC[ch_name][2] + 43200 > time());
-  });
+  channelC = filter(channelC,
+      function int (string ch_name, <string|int>* data)
+      {
+        if (channelC[ch_name][2] + 43200 > time())
+          return 1;
+        // Ebenendaten koennen weg, inkl. History, die also auch loeschen
+        m_delete(channelH, ch_name);
+        return 0;
+      });
 
   if (save_me_soon)
   {
@@ -860,10 +865,9 @@ public int leave(string ch, object pl)
 
     // Ebene loeschen
     m_delete(channels, lower_case(ch));
-    // History wird ebenfalls geloescht
-    // TODO: History cachen und wiederherstellen, wenn eine namensgleiche
-    // Ebene neu erstellt wird.
-    m_delete(channelH, lower_case(ch));
+    // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
+    // Ebene spaeter nochmal neu erstellt wird. Sie wird dann bereinigt, wenn
+    // channelC bereinigt wird.
 
     stats["dispose"]++;
     save_me_soon = 1;
@@ -1034,15 +1038,14 @@ public int remove_channel(string ch, object pl)
     // Anschliessend werden die Ebenendaten geloescht.
     m_delete(channels, lower_case(ch));
 
-    // Wird eine Ebene entfernt, kann auch ihre History weg.
-    m_delete(channelH, lower_case(ch));
-
     // Zaehler fuer zerstoerte Ebenen in der Statistik erhoehen.
     stats["dispose"]++;
   }
-
-  if (channelC[lower_case(ch)])
-    m_delete(channelC, lower_case(ch));
+  // Dies auuserhalb des Blocks oben ermoeglicht es, inaktive Ebenen bzw.
+  // deren Daten zu entfernen.
+  m_delete(channelC, lower_case(ch));
+  // In diesem Fall der gezielten Loeschung wird auch die History geloescht.
+  m_delete(channelH, lower_case(ch));
 
   save_me_soon = 1;
   return (0);
