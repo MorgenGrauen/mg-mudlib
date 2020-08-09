@@ -616,9 +616,11 @@ private int add_member(string ch, object m)
 #define MASTER_OB(x) channels[x][I_MASTER]
 #define ACC_CLOSURE(x) channels[x][I_ACCESS]
 
-// Stellt sicher, dass einen Ebenen-Supervisor gibt.
-// Wenn dies nicht moeglich ist (z.b. leere Ebene), dann wird die Ebene
-// geloescht und 0 zurueckgegeben.
+// Stellt sicher, dass einen Ebenen-Supervisor gibt. Wenn dies nicht moeglich
+// ist (z.b. leere Ebene), dann wird die Ebene geloescht und 0
+// zurueckgegeben. Allerdings kann nach dieser Funktion sehr wohl die I_ACCESS
+// closure 0 sein, wenn der SV keine oeffentliche definiert! In diesem Fall
+// wird access() den Zugriff immer erlauben.
 private int assert_supervisor(string ch)
 {
   // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
@@ -633,9 +635,11 @@ private int assert_supervisor(string ch)
       string err = catch(new_acc_cl=
                           symbol_function("check_ch_access", MASTER_OB(ch));
                           publish);
-      /* Wenn sich die Closure fehlerfrei erstellen liess, dann wird sie als
-         neue Zugriffskontrolle eingetragen und auch der Ebenenbesitzer neu
-         gesetzt. */
+      /* Wenn das SV-Objekt neu geladen werden konnte, wird es als Mitglied
+       * eingetragen. Auch die Closure wird neu eingetragen, allerdings kann
+       * sie 0 sein, wenn das SV-Objekt keine oeffentliche check_ch_access()
+       * mehr definiert. In diesem Fall gibt es zwar ein SV-Objekt, aber keine
+       * Zugriffrechte(pruefung) mehr. */
       if (!err)
       {
         ACC_CLOSURE(ch) = new_acc_cl;
@@ -644,6 +648,7 @@ private int assert_supervisor(string ch)
         // er sich ja selber genehmigen koennte), und auch um eine Rekursion
         // zu vermeiden.
         add_member(ch, find_object(MASTER_OB(ch)));
+        // Rueckgabewert ist 1, ein neues SV-Objekt ist eingetragen.
       }
       else
       {
@@ -653,8 +658,13 @@ private int assert_supervisor(string ch)
         return 0;
       }
     }
-    // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
-    // dieser nicht mehr existiert.
+    else
+    {
+      // In diesem Fall muss ein neues SV-Objekt gesucht und ggf. eingetragen
+      // werden. Wir nehmen das aelteste Mitglied der Ebene.
+      // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
+      // dieser nicht mehr existiert.
+    }
   }
   return 1;
 }
@@ -678,6 +688,10 @@ varargs private int access(string ch, object|string pl, string cmd,
   if(!pointerp(channels[ch]))
     return 0;
 
+  // Dieses Objekt, Supervisor-Objekt und Root-Objekte duerfen auf der Ebene
+  // senden, ohne Mitglied zu sein. Das ist die Folge der zurueckgegebenen 2.
+  // TODO: Im Falle des SV-Objekts ist das aber IMHO quatsch und sollte
+  // entfernt werden.
   if ( !previous_object(1) || !extern_call() ||
        previous_object(1) == this_object() ||
        (stringp(MASTER_OB(ch)) &&
@@ -685,6 +699,8 @@ varargs private int access(string ch, object|string pl, string cmd,
         getuid(previous_object(1)) == ROOTID)
     return 2;
 
+  // Nur dieses Objekt darf Meldungen im Namen anderer Objekte faken,
+  // ansonsten muss <pl> der Aufrufer sein.
   if (!objectp(pl) ||
       ((previous_object(1) != pl) && (previous_object(1) != this_object())))
     return 0;
@@ -692,7 +708,12 @@ varargs private int access(string ch, object|string pl, string cmd,
   if (IsBanned(pl, cmd))
     return 0;
 
+  // Wenn kein SV-Objekt mehr existiert und kein neues bestimmt werden konnte,
+  // wurde die Ebene ausfgeloest. In diesem Fall auch den Zugriff verweigern.
   if (!assert_supervisor(ch))
+    return 0;
+  // Wenn closure jetzt dennoch 0, wird der Zugriff erlaubt.
+  if (!ACC_CLOSURE(ch))
     return 1;
 
   return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
