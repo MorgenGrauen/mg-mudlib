@@ -602,6 +602,16 @@ string Name()
   return CMNAME;
 }
 
+// Low-level function for adding members without access checks
+private int add_member(string ch, object m)
+{
+  if (IsChannelMember(ch, m))
+    return E_ALREADY_JOINED;
+
+  channels[ch][I_MEMBER] += ({ m });
+  return 0;
+}
+
 #define CHAN_NAME(x) channels[x][I_NAME]
 #define MASTER_OB(x) channels[x][I_MASTER]
 #define ACC_CLOSURE(x) channels[x][I_ACCESS]
@@ -629,15 +639,11 @@ private int assert_supervisor(string ch)
       if (!err)
       {
         ACC_CLOSURE(ch) = new_acc_cl;
-        // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
-        // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
-        // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
-        // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
-        // explizites call_other() auf this_object() gemacht, damit der
-        // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
-        // einem externen.
-        //TODO: Rekursion ok...?
-        this_object()->join(ch, find_object(MASTER_OB(ch)));
+        // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei. Hierbei
+        // erfolgt keine Pruefung des Zugriffsrechtes (ist ja unsinnig, weil
+        // er sich ja selber genehmigen koennte), und auch um eine Rekursion
+        // zu vermeiden.
+        add_member(ch, find_object(MASTER_OB(ch)));
       }
       else
       {
@@ -799,11 +805,7 @@ public int join(string ch, object pl)
   if (!funcall(#'access, ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
 
-  if (IsChannelMember(ch, pl))
-    return E_ALREADY_JOINED;
-
-  channels[ch][I_MEMBER] += ({ pl });
-  return (0);
+  return add_member(ch, pl);
 }
 
 // Objekt <pl> verlaesst Ebene <ch>.
