@@ -33,7 +33,9 @@
                                           closure access_rights,
                                           string channel_desc,
                                           string|object master_object,
-                                          string readable_channelname }) ]) */
+                                          string readable_channelname }) ])
+ The master_object is also called the supervisor.
+ */
 private nosave mapping channels = ([]);
 //private nosave mapping lowerch; // unused
 
@@ -604,31 +606,11 @@ string Name()
 #define MASTER_OB(x) channels[x][I_MASTER]
 #define ACC_CLOSURE(x) channels[x][I_ACCESS]
 
-// access() - check access by looking for the right argument types and
-//            calling access closures respectively
-// SEE: new, join, leave, send, list, users
-// Note: <pl> is usually an object, only the master supplies a string during
-//       runtime error handling.
-// Wertebereich: 0 fuer Zugriff verweigert, 1 fuer Zugriff erlaubt, 2 fuer
-// Zugriff erlaubt fuer privilegierte Objekte, die senden duerfen ohne
-// Zuhoerer zu sein.
-varargs private int access(string ch, object|string pl, string cmd,
-                           string txt)
+// Stellt sicher, dass einen Ebenen-Supervisor gibt.
+// Wenn dies nicht moeglich ist (z.b. leere Ebene), dann wird die Ebene
+// geloescht und 0 zurueckgegeben.
+private int assert_supervisor(string ch)
 {
-  if (!sizeof(ch))
-    return 0;
-
-  ch = lower_case(ch);
-  if(!pointerp(channels[ch]))
-    return 0;
-
-  if ( !previous_object(1) || !extern_call() ||
-       previous_object(1) == this_object() ||
-       (stringp(MASTER_OB(ch)) &&
-        previous_object(1) == find_object(MASTER_OB(ch))) ||
-        getuid(previous_object(1)) == ROOTID)
-    return 2;
-
   // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
   if (!closurep(ACC_CLOSURE(ch)))
   {
@@ -669,6 +651,34 @@ varargs private int access(string ch, object|string pl, string cmd,
     // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
     this_object()->join(ch, find_object(MASTER_OB(ch)));
   }
+  return 1;
+}
+
+// access() - check access by looking for the right argument types and
+//            calling access closures respectively
+// SEE: new, join, leave, send, list, users
+// Note: <pl> is usually an object, only the master supplies a string during
+//       runtime error handling.
+// Wertebereich: 0 fuer Zugriff verweigert, 1 fuer Zugriff erlaubt, 2 fuer
+// Zugriff erlaubt fuer privilegierte Objekte, die senden duerfen ohne
+// Zuhoerer zu sein. (Die Aufrufer akzeptieren aber auch alle negativen Werte
+// als Erfolg und alles ueber >2 als privilegiert.)
+varargs private int access(string ch, object|string pl, string cmd,
+                           string txt)
+{
+  if (!sizeof(ch))
+    return 0;
+
+  ch = lower_case(ch);
+  if(!pointerp(channels[ch]))
+    return 0;
+
+  if ( !previous_object(1) || !extern_call() ||
+       previous_object(1) == this_object() ||
+       (stringp(MASTER_OB(ch)) &&
+        previous_object(1) == find_object(MASTER_OB(ch))) ||
+        getuid(previous_object(1)) == ROOTID)
+    return 2;
 
   if (!objectp(pl) ||
       ((previous_object(1) != pl) && (previous_object(1) != this_object())))
@@ -677,7 +687,7 @@ varargs private int access(string ch, object|string pl, string cmd,
   if (IsBanned(pl, cmd))
     return 0;
 
-  if (!ACC_CLOSURE(ch))
+  if (!assert_supervisor(ch))
     return 1;
 
   return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
