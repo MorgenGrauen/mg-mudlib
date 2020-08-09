@@ -37,7 +37,7 @@
 #define I_MEMBER          0
 #define I_ACCESS          1
 #define I_INFO            2
-#define I_MASTER          3
+#define I_SUPERVISOR      3
 #define I_NAME            4
 
 #endif //__DAEMON_CHANNEL_H__

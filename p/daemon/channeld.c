@@ -32,7 +32,7 @@
    channels = ([string channelname : ({ ({object* members}),
                                           closure access_rights,
                                           string channel_desc,
-                                          string|object master_object,
+                                          string|object supervisor,
                                           string readable_channelname }) ])
  The master_object is also called the supervisor.
  */
@@ -439,11 +439,11 @@ public void ChannelMessage(<string|object|int>* msg)
 // setup() -- set up a channel and register it
 //            arguments are stored in the following order:
 //            string* chinfo = ({ channel_name, receive_level, send_level,
-//                                flags, description, masterobj })
+//                                flags, description, supervisor })
 private void setup(string* chinfo)
 {
   string desc = "- Keine Beschreibung -";
-  object chmaster = this_object();
+  object supervisor = this_object();
 
   if (sizeof(chinfo) && sizeof(chinfo[0]) > 1 && chinfo[0][0] == '\\')
     chinfo[0] = chinfo[0][1..];
@@ -453,9 +453,9 @@ private void setup(string* chinfo)
     // Alle Fallthroughs in dem switch() sind Absicht.
     case 6:
       if (stringp(chinfo[5]) && sizeof(chinfo[5]))
-        catch(chmaster = load_object(chinfo[5]); publish);
-      if (!objectp(chmaster))
-        chmaster = this_object();
+        catch(supervisor = load_object(chinfo[5]); publish);
+      if (!objectp(supervisor))
+        supervisor = this_object();
 
     case 5:
       if (stringp(chinfo[4]) || closurep(chinfo[4]))
@@ -477,10 +477,10 @@ private void setup(string* chinfo)
       return;
   }
 
-  if (new(chinfo[0], chmaster, desc) == E_ACCESS_DENIED)
+  if (new(chinfo[0], supervisor, desc) == E_ACCESS_DENIED)
   {
     log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
-      dtime(time()), chinfo[0], chmaster));
+      dtime(time()), chinfo[0], supervisor));
   }
   return;
 }
@@ -613,7 +613,7 @@ private int add_member(string ch, object m)
 }
 
 #define CHAN_NAME(x) channels[x][I_NAME]
-#define MASTER_OB(x) channels[x][I_MASTER]
+#define SVISOR_OB(x) channels[x][I_SUPERVISOR]
 #define ACC_CLOSURE(x) channels[x][I_ACCESS]
 
 // Stellt sicher, dass einen Ebenen-Supervisor gibt. Wenn dies nicht moeglich
@@ -628,12 +628,12 @@ private int assert_supervisor(string ch)
   {
     // Wenn der Ebenenbesitzer als String eingetragen ist, versuchen wir,
     // die Closure wiederherzustellen. Dabei wird das Objekt gleichzeitig
-    // neugeladen.
-    if (stringp(MASTER_OB(ch)))
+    // neugeladen und eingetragen.
+    if (stringp(SVISOR_OB(ch)))
     {
       closure new_acc_cl;
       string err = catch(new_acc_cl=
-                          symbol_function("check_ch_access", MASTER_OB(ch));
+                          symbol_function("check_ch_access", SVISOR_OB(ch));
                           publish);
       /* Wenn das SV-Objekt neu geladen werden konnte, wird es als Mitglied
        * eingetragen. Auch die Closure wird neu eingetragen, allerdings kann
@@ -647,13 +647,13 @@ private int assert_supervisor(string ch)
         // erfolgt keine Pruefung des Zugriffsrechtes (ist ja unsinnig, weil
         // er sich ja selber genehmigen koennte), und auch um eine Rekursion
         // zu vermeiden.
-        add_member(ch, find_object(MASTER_OB(ch)));
+        add_member(ch, find_object(SVISOR_OB(ch)));
         // Rueckgabewert ist 1, ein neues SV-Objekt ist eingetragen.
       }
       else
       {
         log_file("CHANNEL", sprintf("[%s] Channel deleted. %O -> %O\n",
-                  dtime(time()), MASTER_OB(ch), err));
+                  dtime(time()), SVISOR_OB(ch), err));
         m_delete(channels, ch);
         return 0;
       }
@@ -664,6 +664,7 @@ private int assert_supervisor(string ch)
       // werden. Wir nehmen das aelteste Mitglied der Ebene.
       // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
       // dieser nicht mehr existiert.
+
     }
   }
   return 1;
@@ -717,7 +718,7 @@ varargs private int access(string ch, object|string pl, string cmd,
   // nicht beliebige SV-Objekt EMs den Zugriff verweigern koennen. Ebenen mit
   // CHANNELD als SV koennen aber natuerlich auch EM+ Zugriff verweigern.
   if (IS_ARCH(previous_object(1))
-      && find_object(MASTER_OB(ch)) != this_object())
+      && find_object(SVISOR_OB(ch)) != this_object())
     return 1;
 
   return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
@@ -857,9 +858,9 @@ public int leave(string ch, object pl)
 
   // Kontrolle an jemand anderen uebergeben, wenn der Ebenenbesitzer diese
   // verlaesst.
-  if (pl == channels[ch][I_MASTER] && sizeof(channels[ch][I_MEMBER]) > 1)
+  if (pl == channels[ch][I_SUPERVISOR] && sizeof(channels[ch][I_MEMBER]) > 1)
   {
-    channels[ch][I_MASTER] = channels[ch][I_MEMBER][1];
+    channels[ch][I_SUPERVISOR] = channels[ch][I_MEMBER][1];
 
     if (!pl->QueryProp(P_INVIS))
     {
@@ -870,7 +871,7 @@ public int leave(string ch, object pl)
       // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
       // einem externen.
       this_object()->send(ch, pl, "uebergibt die Ebene an " +
-        channels[ch][I_MASTER]->name(WEN) + ".", MSG_EMOTE);
+        channels[ch][I_SUPERVISOR]->name(WEN) + ".", MSG_EMOTE);
     }
   }
   channels[ch][I_MEMBER] -= ({pl});
@@ -879,7 +880,7 @@ public int leave(string ch, object pl)
   // existiert.
   // Wenn Spieler, NPC, Clone oder Channeld als letztes die Ebene verlassen,
   // wird diese zerstoert, mit Meldung.
-  if (!sizeof(channels[ch][I_MEMBER]) && !stringp(channels[ch][I_MASTER]))
+  if (!sizeof(channels[ch][I_MEMBER]) && !stringp(channels[ch][I_SUPERVISOR]))
   {
     // Der Letzte macht das Licht aus, aber nur, wenn er nicht unsichtbar ist.
     if (!pl->QueryProp(P_INVIS))

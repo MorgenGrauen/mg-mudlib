@@ -1,3 +1,7 @@
+# CHANNEL MASTER INIT FILE
+# To create a new channel:
+# <name>:<recv>:<send>:<accessflags>:<info>:<supervisor>
+#
 # Debug-Ebenen initialisieren.
 Debug:      20:60: 1:Debug und Fehlermeldungen:		/p/daemon/debug
 Entwicklung: 20:60:1:Fehler rund um Eigenentwicklungen: /p/daemon/debug
