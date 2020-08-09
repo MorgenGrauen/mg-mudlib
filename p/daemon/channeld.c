@@ -629,10 +629,19 @@ private int assert_supervisor(string ch)
       if (!err)
       {
         ACC_CLOSURE(ch) = new_acc_cl;
+        // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
+        // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+        // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+        // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+        // explizites call_other() auf this_object() gemacht, damit der
+        // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+        // einem externen.
+        //TODO: Rekursion ok...?
+        this_object()->join(ch, find_object(MASTER_OB(ch)));
       }
       else
       {
-        log_file("CHANNEL", sprintf("[%s] %O -> %O\n",
+        log_file("CHANNEL", sprintf("[%s] Channel deleted. %O -> %O\n",
                   dtime(time()), MASTER_OB(ch), err));
         m_delete(channels, ch);
         return 0;
@@ -640,16 +649,6 @@ private int assert_supervisor(string ch)
     }
     // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
     // dieser nicht mehr existiert.
-
-    // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
-    // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
-    // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
-    // explizites call_other() auf this_object() gemacht, damit der
-    // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
-    // einem externen.
-
-    // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei.
-    this_object()->join(ch, find_object(MASTER_OB(ch)));
   }
   return 1;
 }
