@@ -856,11 +856,14 @@ public int leave(string ch, object pl)
   if (!IsChannelMember(ch, pl))
     return E_NOT_MEMBER;
 
+  // Erstmal den Zuhoerer raus.
+  channels[ch][I_MEMBER] -= ({pl});
+
   // Kontrolle an jemand anderen uebergeben, wenn der Ebenenbesitzer diese
   // verlaesst.
-  if (pl == channels[ch][I_SUPERVISOR] && sizeof(channels[ch][I_MEMBER]) > 1)
+  if (pl == channels[ch][I_SUPERVISOR] && sizeof(channels[ch][I_MEMBER]))
   {
-    channels[ch][I_SUPERVISOR] = channels[ch][I_MEMBER][1];
+    channels[ch][I_SUPERVISOR] = channels[ch][I_MEMBER][0];
 
     if (!pl->QueryProp(P_INVIS))
     {
@@ -874,7 +877,6 @@ public int leave(string ch, object pl)
         channels[ch][I_SUPERVISOR]->name(WEN) + ".", MSG_EMOTE);
     }
   }
-  channels[ch][I_MEMBER] -= ({pl});
 
   // Ebene loeschen, wenn keiner zuhoert und auch kein Masterobjekt
   // existiert.
