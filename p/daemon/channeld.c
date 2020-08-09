@@ -716,6 +716,14 @@ varargs private int access(string ch, object|string pl, string cmd,
   if (!ACC_CLOSURE(ch))
     return 1;
 
+  // Das SV-Objekt wird gefragt, ob der Zugriff erlaubt ist. Dieses erfolgt
+  // fuer EM+ aber nur, wenn der CHANNELD selber das SV-Objekt ist, damit
+  // nicht beliebige SV-Objekt EMs den Zugriff verweigern koennen. Ebenen mit
+  // CHANNELD als SV koennen aber natuerlich auch EM+ Zugriff verweigern.
+  if (IS_ARCH(previous_object(1))
+      && find_object(MASTER_OB(ch)) != this_object())
+    return 1;
+
   return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
 }
 
