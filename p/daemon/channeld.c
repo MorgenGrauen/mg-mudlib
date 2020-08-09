@@ -688,15 +688,11 @@ varargs private int access(string ch, object|string pl, string cmd,
   if(!pointerp(channels[ch]))
     return 0;
 
-  // Dieses Objekt, Supervisor-Objekt und Root-Objekte duerfen auf der Ebene
-  // senden, ohne Mitglied zu sein. Das ist die Folge der zurueckgegebenen 2.
-  // TODO: Im Falle des SV-Objekts ist das aber IMHO quatsch und sollte
-  // entfernt werden.
+  // Dieses Objekt  und Root-Objekte duerfen auf der Ebene senden, ohne
+  // Mitglied zu sein. Das ist die Folge der zurueckgegebenen 2.
   if ( !previous_object(1) || !extern_call() ||
        previous_object(1) == this_object() ||
-       (stringp(MASTER_OB(ch)) &&
-        previous_object(1) == find_object(MASTER_OB(ch))) ||
-        getuid(previous_object(1)) == ROOTID)
+       getuid(previous_object(1)) == ROOTID)
     return 2;
 
   // Nur dieses Objekt darf Meldungen im Namen anderer Objekte faken,
