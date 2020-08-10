@@ -908,7 +908,8 @@ public int leave(string ch, object pl)
     // Kontrolle an jemand anderen uebergeben, wenn der Ebenensupervisor
     // diese verlassen hat. change_sv_object() waehlt per Default den
     // aeltesten Zuhoerer.
-    if (pl == channels[ch][I_SUPERVISOR])
+    if (pl == channels[ch][I_SUPERVISOR]
+        || object_name(pl) == channels[ch][I_SUPERVISOR])
     {
       change_sv_object(ch, pl, 0);
     }
