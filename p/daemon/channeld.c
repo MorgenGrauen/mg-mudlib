@@ -612,9 +612,50 @@ private int add_member(string ch, object m)
   return 0;
 }
 
+
 #define CHAN_NAME(x) channels[x][I_NAME]
 #define SVISOR_OB(x) channels[x][I_SUPERVISOR]
 #define ACC_CLOSURE(x) channels[x][I_ACCESS]
+
+// Aendert das Supervisor-Objekt einer Ebene, ggf. mit Meldung.
+// Wenn kein neuer SV angegeben, wird der aelteste Zuhoerer gewaehlt.
+private int change_sv_object(string ch, object old_sv, object new_sv)
+{
+  if (!new_sv)
+  {
+    channels[ch][I_MEMBER] -= ({0});
+    if (sizeof(channels[ch][I_MEMBER]))
+      new_sv = channels[ch][I_MEMBER][0];
+    else
+      return 0; // kein neuer SV moeglich.
+  }
+  SVISOR_OB(ch) = new_sv;
+  if (old_sv && new_sv
+      && !old_sv->QueryProp(P_INVIS)
+      && !new_sv->QueryProp(P_INVIS))
+  {
+    // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+    // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+    // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+    // explizites call_other() auf this_object() gemacht, damit der
+    // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+    // einem externen.
+    this_object()->send(ch, old_sv,
+        sprintf("uebergibt die Ebene an %s.",new_sv->name(WEN)),
+        MSG_EMOTE);
+  }
+  else if (old_svn && !old_sv->QueryProp(P_INVIS))
+  {
+    this_object()->send(ch, old_sv,
+        "uebergibt die Ebene an jemand anderen.", MSG_EMOTE);
+  }
+  else if (new_sv && !new_sv->QueryProp(P_INVIS))
+  {
+    this_object()->send(ch, new_sv,
+        "uebernimmt die Ebene von jemand anderem.", MSG_EMOTE);
+  }
+  return 1;
+}
 
 // Stellt sicher, dass einen Ebenen-Supervisor gibt. Wenn dies nicht moeglich
 // ist (z.b. leere Ebene), dann wird die Ebene geloescht und 0
@@ -859,22 +900,16 @@ public int leave(string ch, object pl)
   // Erstmal den Zuhoerer raus.
   channels[ch][I_MEMBER] -= ({pl});
 
-  // Kontrolle an jemand anderen uebergeben, wenn der Ebenenbesitzer diese
-  // verlaesst.
-  if (pl == channels[ch][I_SUPERVISOR] && sizeof(channels[ch][I_MEMBER]))
+  // Wenn auf der Ebene jetzt noch Objekte zuhoeren, muss ggf. der SV
+  // wechseln.
+  if (sizeof(channels[ch][I_MEMBER]))
   {
-    channels[ch][I_SUPERVISOR] = channels[ch][I_MEMBER][0];
-
-    if (!pl->QueryProp(P_INVIS))
+    // Kontrolle an jemand anderen uebergeben, wenn der Ebenensupervisor
+    // diese verlassen hat. change_sv_object() waehlt per Default den
+    // aeltesten Zuhoerer.
+    if (pl == channels[ch][I_SUPERVISOR])
     {
-      // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
-      // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
-      // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
-      // explizites call_other() auf this_object() gemacht, damit der
-      // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
-      // einem externen.
-      this_object()->send(ch, pl, "uebergibt die Ebene an " +
-        channels[ch][I_SUPERVISOR]->name(WEN) + ".", MSG_EMOTE);
+      change_sv_object(ch, pl, 0);
     }
   }
 
