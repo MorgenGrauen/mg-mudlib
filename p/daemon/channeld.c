@@ -913,14 +913,14 @@ public int leave(string ch, object pl)
       change_sv_object(ch, pl, 0);
     }
   }
-
-  // Ebene loeschen, wenn keiner zuhoert und auch kein Masterobjekt
-  // existiert.
-  // Wenn Spieler, NPC, Clone oder Channeld als letztes die Ebene verlassen,
-  // wird diese zerstoert, mit Meldung.
-  if (!sizeof(channels[ch][I_MEMBER]) && !stringp(channels[ch][I_SUPERVISOR]))
+  // ansonsten Ebene loeschen, wenn keiner zuhoert.
+  // Kommentar: Supervisoren sind auch Zuhoerer auf der Ebene. Wenn keine
+  // Zuhoerer mehr, folglich auch kein Supervisor mehr da.
+  else
   {
     // Der Letzte macht das Licht aus, aber nur, wenn er nicht unsichtbar ist.
+    // Wenn Spieler, NPC, Clone oder Channeld als letztes die Ebene verlassen,
+    // wird diese zerstoert, mit Meldung.
     if (!pl->QueryProp(P_INVIS))
     {
       // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
@@ -935,10 +935,12 @@ public int leave(string ch, object pl)
         " die Ebene '"+channels[ch][I_NAME]+"', worauf diese sich in "
         "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
     }
+    // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
+    // einloggt, der die Ebene abonniert hat.
     channelC[lower_case(ch)] =
       ({ channels[ch][I_NAME], channels[ch][I_INFO], time() });
 
-    // Ebene loeschen
+    // Ebene loeschen bzw. deaktivieren.
     m_delete(channels, lower_case(ch));
     // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
     // Ebene spaeter nochmal neu erstellt wird. Sie wird dann bereinigt, wenn
