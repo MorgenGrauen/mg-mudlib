@@ -612,6 +612,50 @@ private int add_member(string ch, object m)
   return 0;
 }
 
+// Deaktiviert eine Ebene, behaelt aber einige Stammdaten in channelC und die
+// History, so dass sie spaeter reaktiviert werden kann.
+private void deactivate_channel(string ch)
+{
+  ch = lower_case(ch);
+  if (!member(channels, ch))
+    return;
+  // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
+  // einloggt, der die Ebene abonniert hat.
+  channelC[lower_case(ch)] =
+    ({ channels[ch][I_NAME], channels[ch][I_INFO], time() });
+
+  // Ebene loeschen bzw. deaktivieren.
+  m_delete(channels, lower_case(ch));
+  // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
+  // Ebene spaeter nochmal neu erstellt wird. Sie wird dann bereinigt, wenn
+  // channelC bereinigt wird.
+
+  stats["dispose"]++;
+  save_me_soon = 1;
+}
+
+// Loescht eine Ebene vollstaendig inkl. Stammdaten und History.
+private void delete_channel(string ch)
+{
+  ch = lower_case(ch);
+  if (member(channels, ch))
+  {
+    // nur Ebenen ohne Zuhoerer loeschen. (Wenn der Aufrufer auch andere
+    // loeschen will, muss er vorher selber die Ebene leer raeumen, s.
+    // Kommandofunktion remove_channel().
+    if (sizeof(channels[ch][I_MEMBER]))
+      raise_error(
+          sprintf("[%s] Attempt to delete channel %s with listeners.\n",
+                  dtime(), ch));
+    stats["dispose"]++;
+  }
+  // Ab hier das gleiche fuer aktive und inaktive Ebenen.
+  m_delete(channels, ch);
+  m_delete(channelsC, ch);
+  m_delete(channelsH, ch);
+  save_me_soon = 1;
+}
+
 
 #define CHAN_NAME(x) channels[x][I_NAME]
 #define SVISOR_OB(x) channels[x][I_SUPERVISOR]
@@ -700,7 +744,9 @@ private int assert_supervisor(string ch)
         log_file("CHANNEL",
             sprintf("[%s] Channel %s deleted. SV-Fehler: %O -> %O\n",
                   dtime(time()), ch, SVISOR_OB(ch), err));
-        m_delete(channels, ch);
+        // Dies ist ein richtiges Loeschen, weil nicht-ladbare SV koennen bei
+        // Deaktivierung zu einer lesbaren History fuehren.
+        delete_channel(ch);
         return 0;
       }
     }
@@ -712,9 +758,9 @@ private int assert_supervisor(string ch)
       {
         // wenn das nicht klappt, Ebene aufloesen
         log_file("CHANNEL",
-            sprintf("[%s] Deleting channel %s without SV.\n",
+            sprintf("[%s] Deactivating channel %s without SV.\n",
                   dtime(time()), ch));
-        m_delete(channels, ch);
+        deactivate_channel(ch);
         return 0;
       }
     }
@@ -947,19 +993,7 @@ public int leave(string ch, object pl)
         " die Ebene '"+channels[ch][I_NAME]+"', worauf diese sich in "
         "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
     }
-    // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
-    // einloggt, der die Ebene abonniert hat.
-    channelC[lower_case(ch)] =
-      ({ channels[ch][I_NAME], channels[ch][I_INFO], time() });
-
-    // Ebene loeschen bzw. deaktivieren.
-    m_delete(channels, lower_case(ch));
-    // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
-    // Ebene spaeter nochmal neu erstellt wird. Sie wird dann bereinigt, wenn
-    // channelC bereinigt wird.
-
-    stats["dispose"]++;
-    save_me_soon = 1;
+    deactivate_channel(ch);
   }
   return (0);
 }
@@ -1106,6 +1140,8 @@ public int remove_channel(string ch, object pl)
       return E_ACCESS_DENIED;
   }
 
+  // Wenn die Ebene aktiv ist (d.h. Zuhoerer hat), muessen die erst
+  // runtergeworfen werden.
   if (member(channels, lower_case(ch)))
   {
     // Einer geloeschten Ebene kann man nicht zuhoeren: Ebenenname aus der
@@ -1124,19 +1160,11 @@ public int remove_channel(string ch, object pl)
         listener->SetProp(P_SWAP_CHANNELS, pl_chans-({lower_case(ch)}));
       }
     }
-    // Anschliessend werden die Ebenendaten geloescht.
-    m_delete(channels, lower_case(ch));
-
-    // Zaehler fuer zerstoerte Ebenen in der Statistik erhoehen.
-    stats["dispose"]++;
   }
-  // Dies auuserhalb des Blocks oben ermoeglicht es, inaktive Ebenen bzw.
+  // Dies auserhalb des Blocks oben ermoeglicht es, inaktive Ebenen bzw.
   // deren Daten zu entfernen.
-  m_delete(channelC, lower_case(ch));
-  // In diesem Fall der gezielten Loeschung wird auch die History geloescht.
-  m_delete(channelH, lower_case(ch));
+  delete_channel(ch);
 
-  save_me_soon = 1;
   return (0);
 }
 
