@@ -667,6 +667,8 @@ private int change_sv_object(string ch, object old_sv, object new_sv)
 private int assert_supervisor(string ch)
 {
   // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
+  //TODO: es ist nicht so selten, dass die Closure 0 ist, d.h. der Code laeuft
+  //haeufig unnoetig!
   if (!closurep(ACC_CLOSURE(ch)))
   {
     // Wenn der Ebenenbesitzer als String eingetragen ist, versuchen wir,
@@ -695,19 +697,26 @@ private int assert_supervisor(string ch)
       }
       else
       {
-        log_file("CHANNEL", sprintf("[%s] Channel deleted. %O -> %O\n",
-                  dtime(time()), SVISOR_OB(ch), err));
+        log_file("CHANNEL",
+            sprintf("[%s] Channel %s deleted. SV-Fehler: %O -> %O\n",
+                  dtime(time()), ch, SVISOR_OB(ch), err));
         m_delete(channels, ch);
         return 0;
       }
     }
-    else
+    else if (!objectp(SVISOR_OB(ch)))
     {
       // In diesem Fall muss ein neues SV-Objekt gesucht und ggf. eingetragen
-      // werden. Wir nehmen das aelteste Mitglied der Ebene.
-      // TODO: kaputte Objekte raussortieren, neuen Master bestimmen, wenn
-      // dieser nicht mehr existiert.
-
+      // werden. change_sv_object nimmt das aelteste Mitglied der Ebene.
+      if (!change_sv_object(ch, pl, 0))
+      {
+        // wenn das nicht klappt, Ebene aufloesen
+        log_file("CHANNEL",
+            sprintf("[%s] Deleting channel %s without SV.\n",
+                  dtime(time()), ch));
+        m_delete(channels, ch);
+        return 0;
+      }
     }
   }
   return 1;
@@ -840,7 +849,7 @@ public varargs int new(string ch_name, object owner, string|closure info)
 
   // Erstellen neuer Ebenen loggen, wenn wir nicht selbst der Ersteller sind.
   if (owner != this_object())
-    log_file("CHANNEL.new", sprintf("[%s] %O: %O %O\n",
+    log_file("CHANNEL.new", sprintf("[%s] Neue Ebene %s: %O %O\n",
         dtime(time()), ch_name, owner, info));
 
   // Erfolgsmeldung ausgeben, ausser bei unsichtbarem Ebenenbesitzer.
