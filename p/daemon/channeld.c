@@ -630,6 +630,8 @@ private int change_sv_object(string ch, object old_sv, object new_sv)
       return 0; // kein neuer SV moeglich.
   }
   SVISOR_OB(ch) = new_sv;
+  ACC_CLOSURE(ch) = symbol_function("check_ch_access", new_sv);
+
   if (old_sv && new_sv
       && !old_sv->QueryProp(P_INVIS)
       && !new_sv->QueryProp(P_INVIS))
