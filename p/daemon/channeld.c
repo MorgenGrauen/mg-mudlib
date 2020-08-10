@@ -885,17 +885,18 @@ public int join(string ch, object pl)
 public int leave(string ch, object pl)
 {
   ch = lower_case(ch);
+
+  channels[ch][I_MEMBER] -= ({0}); // kaputte Objekte erstmal raus
+
+  if (!IsChannelMember(ch, pl))
+    return E_NOT_MEMBER;
+
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
      richtige ist. */
   if (!funcall(#'access, ch, pl, C_LEAVE))
     return E_ACCESS_DENIED;
-
-  channels[ch][I_MEMBER] -= ({0}); // kaputte Objekte erstmal raus
-
-  if (!IsChannelMember(ch, pl))
-    return E_NOT_MEMBER;
 
   // Erstmal den Zuhoerer raus.
   channels[ch][I_MEMBER] -= ({pl});
