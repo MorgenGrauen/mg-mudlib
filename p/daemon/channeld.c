@@ -838,7 +838,7 @@ varargs private int access(string ch, object|string pl, string cmd,
 // TODO: KOMMENTAR
 //check may contain a closure
 //         called when a join/leave/send/list/users message is received
-public varargs int new(string ch_name, object owner, string|closure info)
+public varargs int new(string ch_name, object owner, string|closure desc)
 {
   // Kein Channelmaster angegeben, oder wir sind es selbst, aber der Aufruf
   // kam von ausserhalb. (Nur der channeld selbst darf sich als Channelmaster
@@ -860,13 +860,13 @@ public varargs int new(string ch_name, object owner, string|closure info)
   if (IsBanned(owner,C_NEW) || regmatch(object_name(owner), IGNORE))
     return E_ACCESS_DENIED;
 
-  // Keine Infos mitgeliefert? Dann holen wir sie aus dem Cache.
-  if (!info)
+  // Keine Beschreibung mitgeliefert? Dann holen wir sie aus dem Cache.
+  if (!desc)
   {
     if (channelC[lower_case(ch_name)])
     {
       ch_name = channelC[lower_case(ch_name)][0];
-      info = channelC[lower_case(ch_name)][1];
+      desc = channelC[lower_case(ch_name)][1];
     }
     else
     {
@@ -875,14 +875,14 @@ public varargs int new(string ch_name, object owner, string|closure info)
   }
   else
   {
-    channelC[lower_case(ch_name)] = ({ ch_name, info, time() });
+    channelC[lower_case(ch_name)] = ({ ch_name, desc, time() });
   }
 
   object* pls = ({ owner });
   m_add(channels, lower_case(ch_name),
            ({ pls,
               symbol_function("check_ch_access", owner) || #'check_ch_access,
-              info,
+              desc,
               (!living(owner) && !clonep(owner) && owner != this_object()
                   ? object_name(owner)
                   : owner),
@@ -896,7 +896,7 @@ public varargs int new(string ch_name, object owner, string|closure info)
   // Erstellen neuer Ebenen loggen, wenn wir nicht selbst der Ersteller sind.
   if (owner != this_object())
     log_file("CHANNEL.new", sprintf("[%s] Neue Ebene %s: %O %O\n",
-        dtime(time()), ch_name, owner, info));
+        dtime(time()), ch_name, owner, desc));
 
   // Erfolgsmeldung ausgeben, ausser bei unsichtbarem Ebenenbesitzer.
   if (!owner->QueryProp(P_INVIS))
