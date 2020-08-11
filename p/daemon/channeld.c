@@ -81,7 +81,7 @@ private mapping Tcmd = ([]);
 /* Flag, das anzeigt, dass Daten veraendert wurden und beim naechsten
    Speicherevent das Savefile geschrieben werden soll.
    Wird auf 0 oder 1 gesetzt. */
-private int save_me_soon;
+private nosave int save_me_soon;
 
 
 // BEGIN OF THE CHANNEL MASTER ADMINISTRATIVE PART
@@ -374,6 +374,7 @@ public void ChannelMessage(<string|object|int>* msg)
           if (!sizeof(channelB[pl]))
             m_delete(channelB, pl);
 
+          //TODO: save_me_soon=1 sollte auch reichen...
           save_object(CHANNEL_SAVE);
         }
         else
