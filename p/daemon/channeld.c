@@ -844,22 +844,37 @@ public varargs int new(string ch_name, object owner, string|closure desc,
   if (IsBanned(owner,C_NEW) || regmatch(object_name(owner), IGNORE))
     return E_ACCESS_DENIED;
 
+  // Zunaechst pruefen, ob eine alte, inaktive Ebene mit dem Namen noch
+  // existiert.
+  struct channel_base_s cbase = channelC[lower_case(ch_name)];
   struct channel_s ch;
-  // Keine Beschreibung mitgeliefert? Dann holen wir sie aus dem Cache.
-  if (!desc)
+  if (cbase)
   {
-    struct channel_base_s cbase = channelC[lower_case(ch_name)];
-    if (cbase)
-    {
-      ch = to_struct(cbase, (<channel_s>));
-    }
-    else
-    {
+    // Wenn bei Reaktivierung von Ebenen (auch mit neuer Beschreibung *g*) der
+    // neue owner != dem urspruenglichen Ersteller der Ebene ist und das Flag
+    // CHF_FIXED_SUPERVISOR gesetzt ist, wird die Reaktivierung abgebrochen,
+    // damit niemand inaktive Ebenen und deren History auf diesem Wege
+    // uebernehmen kann, d.h. den Supervisor ersetzen kann.
+    if ((cbase.flags & CHF_FIXED_SUPERVISOR)
+        && object_name(owner) != cbase.creator)
       return E_ACCESS_DENIED;
-    }
+    // Alte Daten der Ebene uebernehmen
+    ch = to_struct(cbase, (<channel_s>));
+    // Wenn eine Beschreibung uebergeben, dann ersetzt sie jetzt die alte
+    if (desc)
+      ch.desc = desc;
+    // creator bleibt natuerlich bestehen. Die Flags auch. Wir behalten auch
+    // die Schreibweise (Gross-/Kleinschreibung) des Namens aus
+    // Konsistenzgruenden bei.
   }
   else
   {
+    // Wenn keine Beschreibung und keine inaktive Ebene da ist, wirds nen
+    // Fehler...
+    if (!desc)
+      return E_ACCESS_DENIED;
+    // prima, alles da. Dann wird ein ganz frische neue Ebenenstruktur
+    // erzeugt.
     ch = (<channel_s> name: ch_name, desc: desc, creator: object_name(owner),
           flags: channel_flags);
   }
@@ -884,6 +899,11 @@ public varargs int new(string ch_name, object owner, string|closure desc,
   // nicht gibt.
   if (!pointerp(channelH[ch_name]))
     channelH[ch_name] = ({});
+
+  // Datenstruktur einer ggf. inaktiven Ebene mit dem Namen in channelC kann
+  // jetzt auch weg.
+  if (cbase)
+    m_delete(channelC, ch_name);
 
   // Erstellen neuer Ebenen loggen, wenn wir nicht selbst der Ersteller sind.
   if (owner != this_object())
