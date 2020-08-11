@@ -655,7 +655,7 @@ private void delete_channel(string chname, int force)
 
 // Aendert das Supervisor-Objekt einer Ebene, ggf. mit Meldung.
 // Wenn kein neuer SV angegeben, wird der aelteste Zuhoerer gewaehlt.
-private int change_sv_object(struct channel_s ch, object old_sv, object new_sv)
+private int change_sv_object(struct channel_s ch, object new_sv)
 {
   if (!new_sv)
   {
@@ -665,6 +665,8 @@ private int change_sv_object(struct channel_s ch, object old_sv, object new_sv)
     else
       return 0; // kein neuer SV moeglich.
   }
+  object old_sv = ch.supervisor;
+
   ch.supervisor = new_sv;
   //TODO angleichen an new() !
   ch.access_cl = symbol_function("check_ch_access", new_sv);
@@ -683,7 +685,7 @@ private int change_sv_object(struct channel_s ch, object old_sv, object new_sv)
         sprintf("uebergibt die Ebene an %s.",new_sv->name(WEN)),
         MSG_EMOTE);
   }
-  else if (old_svn && !old_sv->QueryProp(P_INVIS))
+  else if (old_sv && !old_sv->QueryProp(P_INVIS))
   {
     this_object()->send(ch.name, old_sv,
         "uebergibt die Ebene an jemand anderen.", MSG_EMOTE);
@@ -748,7 +750,7 @@ private int assert_supervisor(struct channel_s ch)
     {
       // In diesem Fall muss ein neues SV-Objekt gesucht und ggf. eingetragen
       // werden. change_sv_object nimmt das aelteste Mitglied der Ebene.
-      if (!change_sv_object(ch, pl, 0))
+      if (!change_sv_object(ch, 0))
       {
         // wenn das nicht klappt, Ebene aufloesen
         log_file("CHANNEL",
@@ -962,7 +964,7 @@ public int leave(string chname, object pl)
     if (pl == ch.supervisor
         || object_name(pl) == ch.supervisor)
     {
-      change_sv_object(ch, pl, 0);
+      change_sv_object(ch, 0);
     }
   }
   // ansonsten Ebene loeschen, wenn keiner zuhoert.
