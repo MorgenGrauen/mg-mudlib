@@ -925,6 +925,11 @@ public int join(string chname, object pl)
   if (res != 1)
     return res;
 
+  // Wenn der <pl> der urspruengliche Ersteller der Ebene und kein Spieler
+  // ist, wird er automatisch wieder zum Supervisor.
+  if (!query_once_interactive(pl) && object_name(pl) == ch.creator)
+    change_sv_object(ch, pl);
+
   return 0;
 }
 
