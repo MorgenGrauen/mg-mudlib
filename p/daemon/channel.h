@@ -33,13 +33,6 @@
 #define C_LIST            "list"
 #define C_FIND            "find"
 
-// Defines fuer den Zugriff auf die Channeldaten in <channels>.
-#define I_MEMBER          0
-#define I_ACCESS          1
-#define I_INFO            2
-#define I_SUPERVISOR      3
-#define I_NAME            4
-
 #endif //__DAEMON_CHANNEL_H__
 
 // prototypes
@@ -48,7 +41,7 @@
 #ifndef __CHANNEL_H_PROTO__
 #define __CHANNEL_H_PROTO__
 public varargs int new(string ch_name, object owner, string|closure info);
-public varargs int send(string ch, object pl, string msg, int type);
+public varargs int send(string chname, object pl, string msg, int type);
 
 #endif //__CHANNEL_H_PROTO__
 

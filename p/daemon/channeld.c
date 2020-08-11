@@ -28,16 +28,26 @@
 #define CMDS          ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
 
 
-/* Ebenenliste und die zugehoerigen Daten, z.B. Mitglieder oder Beschreibung
-   channels = ([string channelname : ({ ({object* members}),
-                                          closure access_rights,
-                                          string channel_desc,
-                                          string|object supervisor,
-                                          string readable_channelname }) ])
- The master_object is also called the supervisor.
+// Datenstrukturen fuer die Ebenen.
+// Basisdaten, welche auch inaktive Ebenen in channelC haben
+struct channel_base_s {
+  string          name;    // readable channelname, case-sensitive
+  string|closure  desc;    // stat. oder dyn. Beschreibung
+  string          creator; // Ersteller der Ebene (Objektname)
+//  int             flags;   // Flags, die weiteres Verhalten steuern.
+};
+
+// Basisdaten + die von aktiven Ebenen
+struct channel_s (channel_base_s) {
+  object|string supervisor;      // aktueller Supervisor der Ebene
+  closure       access_cl;       // Closure fuer Zugriffsrechtepruefung
+  object        *members;        // Zuhoerer der Ebene
+};
+
+/* Ebenenliste und die zugehoerigen Daten in struct (<channel>).
+   channels = ([string channelname : (<channel_s>) ])
  */
 private nosave mapping channels = ([]);
-//private nosave mapping lowerch; // unused
 
 /* Ebenenhistory
    mapping channelH = ([ string channelname : ({ ({string channelname,
@@ -62,10 +72,12 @@ private nosave mapping channelH;
 private nosave mapping stats;
 
 /* Ebenen-Cache, enthaelt Daten zu inaktiven Ebenen.
-   mapping channelC = ([ string channelname : ({ string I_NAME,
-                                                 string I_INFO,
-                                                 int time() }) ]) */
-private mapping channelC = ([]);
+   mapping channelC = ([ string channelname : (<channel_base_s>);
+                                              int time() ])
+   Der Zeitstempel ist die letzte Aenderung, d.h. in der Regel des Ablegens in
+   channelC.
+ */
+private mapping channelC = ([:2]);
 
 /* Liste von Spielern, fuer die ein Bann besteht, mit den verbotenen Kommandos
    mapping channelB = ([ string playername : string* banned_command ]) */
@@ -100,8 +112,12 @@ private nosave int save_me_soon;
 #define F_NOGUEST 2
 
 /* Speichert Sende- und Empfangslevel sowie Flags zu den einzelnen Channeln.
-   Wird beim Laden des Masters via create() -> initalize() -> setup() mit den
-   Daten aus dem Init-File ./channeld.init befuellt.
+ * Diese werden aber nur ausgewertet, wenn der Channeld die Rechtepruefung
+ * fuer die jeweilige Ebene macht, d.h. in der Praxis bei Ebenen, bei denen
+ * der CHANNELD der Supervisor ist.
+ * Deswegen sind diese Daten auch nicht in der struct (<channel_s>) drin.
+ * Wird beim Laden des Masters via create() -> initalize() -> setup() mit den
+ * Daten aus dem Init-File ./channeld.init befuellt.
    mapping admin = ([ string channel_name : int RECV_LVL,
                                             int SEND_LVL,
                                             int FLAG ]) */
@@ -179,18 +195,18 @@ public int check_ch_access(string ch, object pl, string cmd)
 private int CountUsers()
 {
   object* userlist = ({});
-  foreach(string ch_name, mixed* ch_data : channels)
+  foreach(string ch_name, struct channel_s ch : channels)
   {
-    userlist += ch_data[I_MEMBER];
+    userlist += ch.members;
   }
   // Das Mapping dient dazu, dass jeder Eintrag nur einmal vorkommt.
   return sizeof(mkmapping(userlist));
 }
 
 // Ist das Objekt <sender> Abonnent der Ebene <ch>?
-private int IsChannelMember(string ch, object sender)
+private int IsChannelMember(struct channel_s ch, object sender)
 {
-  return (member(channels[ch][I_MEMBER], sender) != -1);
+  return (member(ch.members, sender) != -1);
 }
 
 // Besteht fuer das Objekt <ob> ein Bann fuer die Ebenenfunktion <command>?
@@ -263,7 +279,7 @@ private int IsValidChannelCommand(string cmd, string check) {
 // Gibt die Channelmeldungen fuer die Kommandos up, stat, lag und bann des
 // <MasteR>-Channels aus. Auszugebende Informationen werden in <ret> gesammelt
 // und dieses per Callout an send() uebergeben.
-// Argument: ({string channels[ch][I_NAME], object pl, string msg, int type})
+// Argument: ({channel.name, object pl, string msg, int type})
 // Funktion muss public sein, auch wenn der erste Check im Code das Gegenteil
 // nahezulegen scheint, weil sie von send() per call_other() gerufen wird,
 // was aber bei einer private oder protected Funktion nicht moeglich waere.
@@ -515,6 +531,19 @@ protected void create()
   seteuid(getuid());
   restore_object(CHANNEL_SAVE);
 
+  // Altes channelC aus Savefiles konvertieren...
+  if (widthof(channelC) == 1)
+  {
+    mapping new = m_allocate(sizeof(channelC), 2);
+    foreach(string chname, mixed arr: channelC)
+    {
+      struct channel_base_s ch = (<channel_base_s> name: arr[0],
+          desc: arr[1]);
+      // die anderen beiden Werte bleiben 0
+      m_add(new, chname, ch, arr[2]);
+    }
+    channelC = new;
+  }
   //TODO: weitere Mappings im MEMORY speichern, Savefile ersetzen.
 
   /* Die Channel-History wird nicht nur lokal sondern auch noch im Memory
@@ -575,9 +604,9 @@ varargs void reset()
   // TODO 2: Zeit dynamisch machen und nur expiren, wenn mehr als n Eintraege.
   // Zeit reduzieren, bis nur noch n/2 Eintraege verbleiben.
   channelC = filter(channelC,
-      function int (string ch_name, <string|int>* data)
+      function int (string ch_name, struct channel_base_s data, int ts)
       {
-        if (channelC[ch_name][2] + 43200 > time())
+        if (ts + 43200 > time())
           return 1;
         // Ebenendaten koennen weg, inkl. History, die also auch loeschen
         m_delete(channelH, ch_name);
@@ -603,29 +632,38 @@ string Name()
 }
 
 // Low-level function for adding members without access checks
-private int add_member(string ch, object m)
+private int add_member(struct channel_s ch, object m)
 {
   if (IsChannelMember(ch, m))
     return E_ALREADY_JOINED;
 
-  channels[ch][I_MEMBER] += ({ m });
+  ch.members += ({ m });
   return 0;
 }
 
 // Deaktiviert eine Ebene, behaelt aber einige Stammdaten in channelC und die
 // History, so dass sie spaeter reaktiviert werden kann.
-private void deactivate_channel(string ch)
+private void deactivate_channel(string chname)
 {
-  ch = lower_case(ch);
-  if (!member(channels, ch))
+  chname = lower_case(chname);
+  struct channel_s ch = channels[chname];
+  if (!structp(ch))
     return;
+
+  // nur Ebenen ohne Zuhoerer deaktivieren.
+  if (sizeof(ch.members))
+  {
+    raise_error(
+        sprintf("[%s] Attempt to deactivate channel %s with listeners.\n",
+                dtime(), ch.name));
+  }
   // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
   // einloggt, der die Ebene abonniert hat.
-  channelC[lower_case(ch)] =
-    ({ channels[ch][I_NAME], channels[ch][I_INFO], time() });
+  m_add(channelC, chname, to_struct(channels[chname], (<channel_base_s>)),
+        time());
 
-  // Ebene loeschen bzw. deaktivieren.
-  m_delete(channels, lower_case(ch));
+  // aktive Ebene loeschen bzw. deaktivieren.
+  m_delete(channels, chname);
   // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
   // Ebene spaeter nochmal neu erstellt wird. Sie wird dann bereinigt, wenn
   // channelC bereinigt wird.
@@ -635,46 +673,43 @@ private void deactivate_channel(string ch)
 }
 
 // Loescht eine Ebene vollstaendig inkl. Stammdaten und History.
-private void delete_channel(string ch)
+private void delete_channel(string chname)
 {
-  ch = lower_case(ch);
-  if (member(channels, ch))
+  chname = lower_case(chname);
+  struct channel_s ch = channels[chname];
+  if (ch)
   {
     // nur Ebenen ohne Zuhoerer loeschen. (Wenn der Aufrufer auch andere
     // loeschen will, muss er vorher selber die Ebene leer raeumen, s.
     // Kommandofunktion remove_channel().
-    if (sizeof(channels[ch][I_MEMBER]))
+    if (sizeof(ch.members))
       raise_error(
           sprintf("[%s] Attempt to delete channel %s with listeners.\n",
-                  dtime(), ch));
+                  dtime(), ch.name));
     stats["dispose"]++;
+    m_delete(channels, chname);
   }
   // Ab hier das gleiche fuer aktive und inaktive Ebenen.
-  m_delete(channels, ch);
-  m_delete(channelsC, ch);
-  m_delete(channelsH, ch);
+  m_delete(channelsC, chname);
+  m_delete(channelsH, chname);
   save_me_soon = 1;
 }
 
-
-#define CHAN_NAME(x) channels[x][I_NAME]
-#define SVISOR_OB(x) channels[x][I_SUPERVISOR]
-#define ACC_CLOSURE(x) channels[x][I_ACCESS]
-
 // Aendert das Supervisor-Objekt einer Ebene, ggf. mit Meldung.
 // Wenn kein neuer SV angegeben, wird der aelteste Zuhoerer gewaehlt.
-private int change_sv_object(string ch, object old_sv, object new_sv)
+private int change_sv_object(struct channel_s ch, object old_sv, object new_sv)
 {
   if (!new_sv)
   {
-    channels[ch][I_MEMBER] -= ({0});
-    if (sizeof(channels[ch][I_MEMBER]))
-      new_sv = channels[ch][I_MEMBER][0];
+    ch.members -= ({0});
+    if (sizeof(ch.members))
+      new_sv = ch.members[0];
     else
       return 0; // kein neuer SV moeglich.
   }
-  SVISOR_OB(ch) = new_sv;
-  ACC_CLOSURE(ch) = symbol_function("check_ch_access", new_sv);
+  ch.supervisor = new_sv;
+  //TODO angleichen an new() !
+  ch.access_cl = symbol_function("check_ch_access", new_sv);
 
   if (old_sv && new_sv
       && !old_sv->QueryProp(P_INVIS)
@@ -686,18 +721,18 @@ private int change_sv_object(string ch, object old_sv, object new_sv)
     // explizites call_other() auf this_object() gemacht, damit der
     // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
     // einem externen.
-    this_object()->send(ch, old_sv,
+    this_object()->send(ch.name, old_sv,
         sprintf("uebergibt die Ebene an %s.",new_sv->name(WEN)),
         MSG_EMOTE);
   }
   else if (old_svn && !old_sv->QueryProp(P_INVIS))
   {
-    this_object()->send(ch, old_sv,
+    this_object()->send(ch.name, old_sv,
         "uebergibt die Ebene an jemand anderen.", MSG_EMOTE);
   }
   else if (new_sv && !new_sv->QueryProp(P_INVIS))
   {
-    this_object()->send(ch, new_sv,
+    this_object()->send(ch.name, new_sv,
         "uebernimmt die Ebene von jemand anderem.", MSG_EMOTE);
   }
   return 1;
@@ -705,24 +740,25 @@ private int change_sv_object(string ch, object old_sv, object new_sv)
 
 // Stellt sicher, dass einen Ebenen-Supervisor gibt. Wenn dies nicht moeglich
 // ist (z.b. leere Ebene), dann wird die Ebene geloescht und 0
-// zurueckgegeben. Allerdings kann nach dieser Funktion sehr wohl die I_ACCESS
-// closure 0 sein, wenn der SV keine oeffentliche definiert! In diesem Fall
+// zurueckgegeben. Allerdings kann nach dieser Funktion sehr wohl die
+// access_cl 0 sein, wenn der SV keine oeffentliche definiert! In diesem Fall
 // wird access() den Zugriff immer erlauben.
-private int assert_supervisor(string ch)
+private int assert_supervisor(struct channel_s ch)
 {
-  // Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
+  //Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
   //TODO: es ist nicht so selten, dass die Closure 0 ist, d.h. der Code laeuft
   //haeufig unnoetig!
-  if (!closurep(ACC_CLOSURE(ch)))
+  if (!closurep(ch.access_cl))
   {
     // Wenn der Ebenenbesitzer als String eingetragen ist, versuchen wir,
     // die Closure wiederherzustellen. Dabei wird das Objekt gleichzeitig
     // neugeladen und eingetragen.
-    if (stringp(SVISOR_OB(ch)))
+    if (stringp(ch.supervisor))
     {
       closure new_acc_cl;
+      // TODO: angleichen an new()!
       string err = catch(new_acc_cl=
-                          symbol_function("check_ch_access", SVISOR_OB(ch));
+                          symbol_function("check_ch_access", ch->supervisor);
                           publish);
       /* Wenn das SV-Objekt neu geladen werden konnte, wird es als Mitglied
        * eingetragen. Auch die Closure wird neu eingetragen, allerdings kann
@@ -731,26 +767,26 @@ private int assert_supervisor(string ch)
        * Zugriffrechte(pruefung) mehr. */
       if (!err)
       {
-        ACC_CLOSURE(ch) = new_acc_cl;
+        ch.access_cl = new_acc_cl;
         // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei. Hierbei
         // erfolgt keine Pruefung des Zugriffsrechtes (ist ja unsinnig, weil
         // er sich ja selber genehmigen koennte), und auch um eine Rekursion
         // zu vermeiden.
-        add_member(ch, find_object(SVISOR_OB(ch)));
+        add_member(ch, find_object(ch.supervisor));
         // Rueckgabewert ist 1, ein neues SV-Objekt ist eingetragen.
       }
       else
       {
         log_file("CHANNEL",
             sprintf("[%s] Channel %s deleted. SV-Fehler: %O -> %O\n",
-                  dtime(time()), ch, SVISOR_OB(ch), err));
+                  dtime(time()), ch.name, ch.supervisor, err));
         // Dies ist ein richtiges Loeschen, weil nicht-ladbare SV koennen bei
         // Deaktivierung zu einer lesbaren History fuehren.
-        delete_channel(ch);
+        delete_channel(ch.name);
         return 0;
       }
     }
-    else if (!objectp(SVISOR_OB(ch)))
+    else if (!objectp(ch.supervisor))
     {
       // In diesem Fall muss ein neues SV-Objekt gesucht und ggf. eingetragen
       // werden. change_sv_object nimmt das aelteste Mitglied der Ebene.
@@ -759,8 +795,8 @@ private int assert_supervisor(string ch)
         // wenn das nicht klappt, Ebene aufloesen
         log_file("CHANNEL",
             sprintf("[%s] Deactivating channel %s without SV.\n",
-                  dtime(time()), ch));
-        deactivate_channel(ch);
+                  dtime(time()), ch.name));
+        deactivate_channel(ch.name);
         return 0;
       }
     }
@@ -777,14 +813,10 @@ private int assert_supervisor(string ch)
 // Zugriff erlaubt fuer privilegierte Objekte, die senden duerfen ohne
 // Zuhoerer zu sein. (Die Aufrufer akzeptieren aber auch alle negativen Werte
 // als Erfolg und alles ueber >2 als privilegiert.)
-varargs private int access(string ch, object|string pl, string cmd,
+varargs private int access(struct channel_s ch, object|string pl, string cmd,
                            string txt)
 {
-  if (!sizeof(ch))
-    return 0;
-
-  ch = lower_case(ch);
-  if(!pointerp(channels[ch]))
+  if (!ch)
     return 0;
 
   // Dieses Objekt  und Root-Objekte duerfen auf der Ebene senden, ohne
@@ -808,7 +840,7 @@ varargs private int access(string ch, object|string pl, string cmd,
   if (!assert_supervisor(ch))
     return 0;
   // Wenn closure jetzt dennoch 0, wird der Zugriff erlaubt.
-  if (!ACC_CLOSURE(ch))
+  if (!ch.access_cl)
     return 1;
 
   // Das SV-Objekt wird gefragt, ob der Zugriff erlaubt ist. Dieses erfolgt
@@ -816,23 +848,20 @@ varargs private int access(string ch, object|string pl, string cmd,
   // nicht beliebige SV-Objekt EMs den Zugriff verweigern koennen. Ebenen mit
   // CHANNELD als SV koennen aber natuerlich auch EM+ Zugriff verweigern.
   if (IS_ARCH(previous_object(1))
-      && find_object(SVISOR_OB(ch)) != this_object())
+      && find_object(ch.supervisor) != this_object())
     return 1;
 
-  return funcall(ACC_CLOSURE(ch), ch, pl, cmd, &txt);
+  return funcall(ch.access_cl, lower_case(ch.name), pl, cmd, &txt);
 }
 
 // Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
-// <info> kann die statische Beschreibung der Ebene sein oder eine Closure,
+// <desc> kann die statische Beschreibung der Ebene sein oder eine Closure,
 // die dynamisch aktualisierte Infos ausgibt.
 // Das Objekt <owner> kann eine Funktion check_ch_access() definieren, die
 // gerufen wird, wenn eine Ebenenaktion vom Typ join/leave/send/list/users
 // eingeht.
 // check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
 // Nachricht gesendet werden darf oder nicht.
-
-// Ist keine Closure angegeben, wird die in diesem Objekt (Channeld)
-// definierte Funktion gleichen Namens verwendet.
 #define IGNORE  "^/xx"
 
 // TODO: KOMMENTAR
@@ -860,13 +889,14 @@ public varargs int new(string ch_name, object owner, string|closure desc)
   if (IsBanned(owner,C_NEW) || regmatch(object_name(owner), IGNORE))
     return E_ACCESS_DENIED;
 
+  struct channel_s ch;
   // Keine Beschreibung mitgeliefert? Dann holen wir sie aus dem Cache.
   if (!desc)
   {
-    if (channelC[lower_case(ch_name)])
+    struct channel_base_s cbase = channelC[lower_case(ch_name)];
+    if (cbase)
     {
-      ch_name = channelC[lower_case(ch_name)][0];
-      desc = channelC[lower_case(ch_name)][1];
+      ch = to_struct(cbase, (<channel_s>));
     }
     else
     {
@@ -875,28 +905,33 @@ public varargs int new(string ch_name, object owner, string|closure desc)
   }
   else
   {
-    channelC[lower_case(ch_name)] = ({ ch_name, desc, time() });
+    ch = (<channel_s> name: ch_name, desc: desc, creator: object_name(owner)
+         );
   }
 
-  object* pls = ({ owner });
-  m_add(channels, lower_case(ch_name),
-           ({ pls,
-              symbol_function("check_ch_access", owner) || #'check_ch_access,
-              desc,
-              (!living(owner) && !clonep(owner) && owner != this_object()
+  ch_name = lower_case(ch_name);
+
+  ch.members = ({ owner });
+  ch.supervisor = (!living(owner) && !clonep(owner) && owner != this_object())
                   ? object_name(owner)
-                  : owner),
-              ch_name }));
+                  : owner;
+  //TODO: Ist das wirklich eine gute Idee, eine Access-Closure zu
+  //bauen, die *nicht* im Supervisor liegt? IMHO nein! Es ist ein
+  //merkwuerdiges Konzept, dass der channeld Rechte fuer ne Ebene
+  //pruefen soll, die nen anderes Objekt als Supervisor haben.
+  ch.access_cl = symbol_function("check_ch_access", owner) || #'check_ch_access;
+
+  m_add(channels, ch_name, ch);
 
   // History fuer eine Ebene nur dann initialisieren, wenn es sie noch
   // nicht gibt.
-  if (!pointerp(channelH[lower_case(ch_name)]))
-    channelH[lower_case(ch_name)] = ({});
+  if (!pointerp(channelH[ch_name]))
+    channelH[ch_name] = ({});
 
   // Erstellen neuer Ebenen loggen, wenn wir nicht selbst der Ersteller sind.
   if (owner != this_object())
     log_file("CHANNEL.new", sprintf("[%s] Neue Ebene %s: %O %O\n",
-        dtime(time()), ch_name, owner, desc));
+        dtime(time()), ch.name, owner, desc));
 
   // Erfolgsmeldung ausgeben, ausser bei unsichtbarem Ebenenbesitzer.
   if (!owner->QueryProp(P_INVIS))
@@ -908,7 +943,7 @@ public varargs int new(string ch_name, object owner, string|closure desc)
     // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
     // einem externen.
     this_object()->send(CMNAME, owner,
-      "laesst die Ebene '" + ch_name + "' entstehen.", MSG_EMOTE);
+      "laesst die Ebene '" + ch.name + "' entstehen.", MSG_EMOTE);
   }
 
   stats["new"]++;
@@ -919,9 +954,9 @@ public varargs int new(string ch_name, object owner, string|closure desc)
 // Objekt <pl> betritt Ebene <ch>. Dies wird zugelassen, wenn <pl> die
 // Berechtigung hat und noch nicht Mitglied ist. (Man kann einer Ebene nicht
 // zweimal beitreten.)
-public int join(string ch, object pl)
+public int join(string chname, object pl)
 {
-  ch = lower_case(ch);
+  struct channel_s ch = channels[lower_case(chname)];
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
@@ -939,11 +974,11 @@ public int join(string ch, object pl)
 // <pl> das Verlassen auf Grund eines Banns verboten sein.
 // Wenn kein Spieler mehr auf der Ebene ist, loest sie sich auf, sofern nicht
 // noch ein Ebenenbesitzer eingetragen ist.
-public int leave(string ch, object pl)
+public int leave(string chname, object pl)
 {
-  ch = lower_case(ch);
+  struct channel_s ch = channels[lower_case(chname)];
 
-  channels[ch][I_MEMBER] -= ({0}); // kaputte Objekte erstmal raus
+  ch.members -= ({0}); // kaputte Objekte erstmal raus
 
   if (!IsChannelMember(ch, pl))
     return E_NOT_MEMBER;
@@ -955,18 +990,18 @@ public int leave(string ch, object pl)
   if (!funcall(#'access, ch, pl, C_LEAVE))
     return E_ACCESS_DENIED;
 
-  // Erstmal den Zuhoerer raus.
-  channels[ch][I_MEMBER] -= ({pl});
+  // Dann mal den Zuhoerer raus.
+  ch.members -= ({pl});
 
   // Wenn auf der Ebene jetzt noch Objekte zuhoeren, muss ggf. der SV
   // wechseln.
-  if (sizeof(channels[ch][I_MEMBER]))
+  if (sizeof(ch.members))
   {
     // Kontrolle an jemand anderen uebergeben, wenn der Ebenensupervisor
     // diese verlassen hat. change_sv_object() waehlt per Default den
     // aeltesten Zuhoerer.
-    if (pl == channels[ch][I_SUPERVISOR]
-        || object_name(pl) == channels[ch][I_SUPERVISOR])
+    if (pl == ch.supervisor
+        || object_name(pl) == ch.supervisor)
     {
       change_sv_object(ch, pl, 0);
     }
@@ -990,19 +1025,20 @@ public int leave(string ch, object pl)
       this_object()->send(CMNAME, pl,
         "verlaesst als "+
         (pl->QueryProp(P_GENDER) == 1 ? "Letzter" : "Letzte")+
-        " die Ebene '"+channels[ch][I_NAME]+"', worauf diese sich in "
+        " die Ebene '" + ch.name + "', worauf diese sich in "
         "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
     }
-    deactivate_channel(ch);
+    deactivate_channel(lower_case(ch.name));
   }
   return (0);
 }
 
 // Nachricht <msg> vom Typ <type> mit Absender <pl> auf der Ebene <ch> posten,
 // sofern <pl> dort senden darf.
-public varargs int send(string ch, object pl, string msg, int type)
+public varargs int send(string chname, object pl, string msg, int type)
 {
-  ch = lower_case(ch);
+  chname = lower_case(chname);
+  struct channel_s ch = channels[chname];
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
@@ -1032,14 +1068,14 @@ public varargs int send(string ch, object pl, string msg, int type)
   // erzeugt und der Channeld als Besitzer angegeben.
   // Die Aufrufkette ist dann wie folgt:
   // Eingabe "-< xyz" => pl::ChannelParser() => send() => ChannelMessage()
-  channels[ch][I_MEMBER]->ChannelMessage(
-                            ({ channels[ch][I_NAME], pl, msg, type}));
+  (ch.members)->ChannelMessage(
+                            ({ ch.name, pl, msg, type}));
 
-  if (sizeof(channelH[ch]) > MAX_HIST_SIZE)
-    channelH[ch] = channelH[ch][1..];
+  if (sizeof(channelH[chname]) > MAX_HIST_SIZE)
+    channelH[chname] = channelH[chname][1..];
 
-  channelH[ch] +=
-    ({ ({ channels[ch][I_NAME],
+  channelH[chname] +=
+    ({ ({ ch.name,
           (stringp(pl)
               ? pl
               : (pl->QueryProp(P_INVIS)
@@ -1056,16 +1092,17 @@ public varargs int send(string ch, object pl, string msg, int type)
 public int|mapping list(object pl)
 {
   mapping chs = ([]);
-  foreach(string chname, <object*|closure|string|object>* chdata : channels)
+  foreach(string chname, struct channel_s ch : channels)
   {
     /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
        zu erzeugen, weil access() mit extern_call() und previous_object()
        arbeitet und sichergestellt sein muss, dass das in jedem Fall das
        richtige ist. */
-    if(funcall(#'access, chname, pl, C_LIST))
+    if(funcall(#'access, ch, pl, C_LIST))
     {
-      m_add(chs, chname, chdata);
-      chs[chname][I_MEMBER] = filter(chs[chname][I_MEMBER], #'objectp);
+      ch.members = filter(ch.members, #'objectp);
+      m_add(chs, chname, ({ch.members, ch.access_cl, ch.desc,
+                           ch.supervisor, ch.name }) );
     }
   }
 
@@ -1079,44 +1116,44 @@ public int|mapping list(object pl)
 // - den gefundenen Namen als String
 // - String-Array, wenn es mehrere Treffer gibt
 // - 0, wenn es keinen Treffer gibt
-public string|string* find(string ch, object pl)
+public string|string* find(string chname, object pl)
 {
-  ch = lower_case(ch);
+  chname = lower_case(chname);
 
   // Suchstring <ch> muss Formatanforderung erfuellen;
   // TODO: soll das ein Check auf gueltigen Ebenennamen als Input sein?
   // Wenn ja, muesste laut Manpage mehr geprueft werden:
   // "Gueltige Namen setzen sich zusammen aus den Buchstaben a-z, A-Z sowie
   // #$%&@<>-." Es wuerden also $%&@ fehlen.
-  if (!regmatch(ch, "^[<>a-z0-9#-]+$"))
+  if (!regmatch(chname, "^[<>a-z0-9#-]+$"))
     return 0;
 
   // Der Anfang des Ebenennamens muss dem Suchstring entsprechen und das
   // Objekt <pl> muss auf dieser Ebene senden duerfen, damit der Ebenenname
   // in das Suchergebnis aufgenommen wird.
-  string* chs = filter(m_indices(channels), function int (string chname) {
+  string* chs = filter(m_indices(channels), function int (string ch_n) {
                  /* funcall() auf Closure-Operator, um einen neuen Eintrag
                     im Caller Stack zu erzeugen, weil access() mit
                     extern_call() und previous_object() arbeitet und
                     sichergestellt sein muss, dass das in jedem Fall das
                     richtige ist. */
-                  return ( stringp(regmatch(chname, "^"+ch)) &&
-                           funcall(#'access, chname, pl, C_SEND) );
+                  return ( stringp(regmatch(ch_n, "^"+chname)) &&
+                           funcall(#'access, channels[ch_n], pl, C_SEND) );
                 });
 
   int num_channels = sizeof(chs);
   if (num_channels > 1)
     return chs;
   else if (num_channels == 1)
-    return channels[chs[0]][I_NAME];
+    return chs[0];
   else
     return 0;
 }
 
 // Ebenen-History abfragen.
-public int|<int|string>** history(string ch, object pl)
+public int|<int|string>** history(string chname, object pl)
 {
-  ch = lower_case(ch);
+  struct channel_s ch = channels[lower_case(chname)];
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
@@ -1124,68 +1161,70 @@ public int|<int|string>** history(string ch, object pl)
   if (!funcall(#'access, ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
   else
-    return channelH[ch];
+    return channelH[chname];
 }
 
 // Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
-public int remove_channel(string ch, object pl)
+public int remove_channel(string chname, object pl)
 {
+  chname = lower_case(chname);
+  struct channel_s ch = channels[chname];
+
   //TODO: integrieren in access()?
   if (previous_object() != this_object())
   {
-    if (!stringp(ch) ||
+    if (!stringp(chname) ||
         pl != this_player() || this_player() != this_interactive() ||
         this_interactive() != previous_object() ||
         !IS_ARCH(this_interactive()))
       return E_ACCESS_DENIED;
   }
-
   // Wenn die Ebene aktiv ist (d.h. Zuhoerer hat), muessen die erst
   // runtergeworfen werden.
-  if (member(channels, lower_case(ch)))
+  if (ch)
   {
     // Einer geloeschten Ebene kann man nicht zuhoeren: Ebenenname aus der
     // Ebenenliste aller Mitglieder austragen. Dabei werden sowohl ein-, als
     // auch temporaer ausgeschaltete Ebenen beruecksichtigt.
-    foreach(object listener : channels[lower_case(ch)][I_MEMBER])
+    foreach(object listener : ch.members)
     {
       string* pl_chans = listener->QueryProp(P_CHANNELS);
       if (pointerp(pl_chans))
       {
-        listener->SetProp(P_CHANNELS, pl_chans-({lower_case(ch)}));
+        listener->SetProp(P_CHANNELS, pl_chans-({chname}));
       }
       pl_chans = listener->QueryProp(P_SWAP_CHANNELS);
       if (pointerp(pl_chans))
       {
-        listener->SetProp(P_SWAP_CHANNELS, pl_chans-({lower_case(ch)}));
+        listener->SetProp(P_SWAP_CHANNELS, pl_chans-({chname}));
       }
     }
   }
   // Dies auserhalb des Blocks oben ermoeglicht es, inaktive Ebenen bzw.
   // deren Daten zu entfernen.
-  delete_channel(ch);
+  delete_channel(chname);
 
   return (0);
 }
 
 // Wird aus der Shell aufgerufen, fuer das Erzmagier-Kommando "clear".
-public int clear_history(string ch)
+public int clear_history(string chname)
 {
   //TODO: mit access() vereinigen?
   // Sicherheitsabfragen
   if (previous_object() != this_object())
   {
-    if (!stringp(ch) ||
+    if (!stringp(chname) ||
         this_player() != this_interactive() ||
         this_interactive() != previous_object() ||
         !IS_ARCH(this_interactive()))
       return E_ACCESS_DENIED;
   }
-
+  chname=lower_case(chname);
   // History des Channels loeschen (ohne die ebene als ganzes, daher Key nicht
   // aus dem mapping loeschen.)
-  if (pointerp(channelH[lower_case(ch)]))
-    channelH[lower_case(ch)] = ({});
+  if (pointerp(channelH[chname]))
+    channelH[chname] = ({});
 
   return 0;
 }
