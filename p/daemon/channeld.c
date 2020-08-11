@@ -27,6 +27,9 @@
 #define MAX_CHANNELS  90
 #define CMDS          ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
 
+// Standard-Ebenen-Supervisor erben, Variablen nosave, die sollen hier nicht
+// gespeichert werden.
+nosave variables inherit "/std/channel_supervisor";
 
 // Datenstrukturen fuer die Ebenen.
 // Basisdaten, welche auch inaktive Ebenen in channelC haben
@@ -97,98 +100,7 @@ private mapping Tcmd = ([]);
    Wird auf 0 oder 1 gesetzt. */
 private nosave int save_me_soon;
 
-
 // BEGIN OF THE CHANNEL MASTER ADMINISTRATIVE PART
-
-// Indizes fuer Zugriffe auf das Mapping <admin>.
-#define RECV    0
-#define SEND    1
-#define FLAG    2
-
-// Ebenenflags, gespeichert in admin[ch, FLAG]
-// F_WIZARD kennzeichnet reine Magierebenen
-#define F_WIZARD 1
-// Ebenen, auf denen keine Gaeste erlaubt sind, sind mit F_NOGUEST markiert.
-#define F_NOGUEST 2
-
-/* Speichert Sende- und Empfangslevel sowie Flags zu den einzelnen Channeln.
- * Diese werden aber nur ausgewertet, wenn der Channeld die Rechtepruefung
- * fuer die jeweilige Ebene macht, d.h. in der Praxis bei Ebenen, bei denen
- * der CHANNELD der Supervisor ist.
- * Deswegen sind diese Daten auch nicht in der struct (<channel_s>) drin.
- * Wird beim Laden des Masters via create() -> initalize() -> setup() mit den
- * Daten aus dem Init-File ./channeld.init befuellt.
-   mapping admin = ([ string channel_name : int RECV_LVL,
-                                            int SEND_LVL,
-                                            int FLAG ]) */
-private nosave mapping admin = m_allocate(0, 3);
-
-// check_ch_access() prueft die Zugriffsberechtigungen auf Ebenen.
-//
-// Gibt 1 zurueck, wenn Aktion erlaubt, 0 sonst.
-// Wird von access() gerufen; access() gibt das Ergebnis von
-// check_ch_access() zurueck.
-//
-// Verlassen (C_LEAVE) ist immer erlaubt. Die anderen Aktionen sind in zwei
-// Gruppen eingeteilt:
-// 1) RECV. Die Aktionen dieser Gruppe sind Suchen (C_FIND), Auflisten
-//          (C_LIST) und Betreten (C_JOIN).
-// 2) SEND. Die Aktion dieser Gruppe ist zur Zeit nur Senden (C_SEND).
-//
-// Aktionen werden zugelassen, wenn Spieler/MagierLevel groesser ist als die
-// fuer die jeweilige Aktionsgruppe RECV oder SEND festgelegte Stufe.
-// Handelt es sich um eine Magierebene (F_WIZARD), muss die Magierstufe
-// des Spielers groesser sein als die Mindeststufe der Ebene. Ansonsten
-// wird gegen den Spielerlevel geprueft.
-//
-// Wenn RECV_LVL oder SEND_LVL auf -1 gesetzt ist, sind die Aktionen der
-// jeweiligen Gruppen komplett geblockt.
-
-public int check_ch_access(string ch, object pl, string cmd)
-{
-  // <pl> ist Gast, es sind aber keine Gaeste zugelassen? Koennen wir
-  // direkt ablehnen.
-  if ((admin[ch, FLAG] & F_NOGUEST) && pl->QueryGuest())
-    return 0;
-
-  // Ebenso auf Magier- oder Seherebenen, wenn ein Spieler anfragt, der
-  // noch kein Seher ist.
-  if ((admin[ch, FLAG] & F_WIZARD) && query_wiz_level(pl) < SEER_LVL)
-    return 0;
-
-  // Ebene ist Magierebene? Dann werden alle Stufenlimits gegen Magierlevel
-  // geprueft, ansonsten gegen Spielerlevel.
-  int level = (admin[ch, FLAG] & F_WIZARD
-                  ? query_wiz_level(pl)
-                  : pl->QueryProp(P_LEVEL));
-
-  switch (cmd)
-  {
-    case C_FIND:
-    case C_LIST:
-    case C_JOIN:
-      if (admin[ch, RECV] == -1)
-        return 0;
-      if (admin[ch, RECV] <= level)
-        return 1;
-      break;
-
-    case C_SEND:
-      if (admin[ch, SEND] == -1)
-        return 0;
-      if (admin[ch, SEND] <= level)
-        return 1;
-      break;
-
-    // Verlassen ist immer erlaubt
-    case C_LEAVE:
-      return 1;
-
-    default:
-      break;
-  }
-  return (0);
-}
 
 /* CountUsers() zaehlt die Anzahl Abonnenten aller Ebenen. */
 // TODO: Mapping- und Arrayvarianten bzgl. der Effizienz vergleichen
@@ -455,11 +367,12 @@ public void ChannelMessage(<string|object|int>* msg)
 // setup() -- set up a channel and register it
 //            arguments are stored in the following order:
 //            string* chinfo = ({ channel_name, receive_level, send_level,
-//                                flags, description, supervisor })
+//                                adminflags, description, supervisor })
 private void setup(string* chinfo)
 {
   string desc = "- Keine Beschreibung -";
   object supervisor = this_object();
+  int sv_recv, sv_send, sv_flags; // an den Supervisor weiterreichen
 
   if (sizeof(chinfo) && sizeof(chinfo[0]) > 1 && chinfo[0][0] == '\\')
     chinfo[0] = chinfo[0][1..];
@@ -467,31 +380,30 @@ private void setup(string* chinfo)
   switch (sizeof(chinfo))
   {
     // Alle Fallthroughs in dem switch() sind Absicht.
-    case 6:
+    default:
       if (stringp(chinfo[5]) && sizeof(chinfo[5]))
         catch(supervisor = load_object(chinfo[5]); publish);
       if (!objectp(supervisor))
         supervisor = this_object();
-
     case 5:
       if (stringp(chinfo[4]) || closurep(chinfo[4]))
         desc = chinfo[4];
-    // Die admin-Daten sind nicht fuer die Ebene wichtig, nur fuer die
-    // check_ch_access().
     case 4:
-      admin[lower_case(chinfo[0]), FLAG] = to_int(chinfo[3]);
-
+      sv_flags = to_int(chinfo[3]);
     case 3:
-      admin[lower_case(chinfo[0]), SEND] = to_int(chinfo[2]);
-
+      sv_send = to_int(chinfo[2]);
     case 2:
-      admin[lower_case(chinfo[0]), RECV] = to_int(chinfo[1]);
+      sv_recv = to_int(chinfo[1]);
       break;
 
     case 0:
-    default:
+    case 1:
       return;
   }
+  // Zugriffsrechte im channel_supervisor konfigurieren. (Kann auch dieses
+  // Objekt selber sein...)
+  supervisor->ch_supervisor_setup(lower_case(chinfo[0]), sv_recv,
+                                  sv_send, sv_flags);
 
   if (new(chinfo[0], supervisor, desc) == E_ACCESS_DENIED)
   {
