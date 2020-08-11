@@ -641,21 +641,52 @@ private int add_member(struct channel_s ch, object m)
   return 0;
 }
 
+private void remove_all_members(struct channel_s ch)
+{
+  // Einer geloeschten/inaktiven Ebene kann man nicht zuhoeren: Ebenenname
+  // aus der Ebenenliste aller Mitglieder austragen. Dabei werden sowohl ein-,
+  // als auch temporaer ausgeschaltete Ebenen beruecksichtigt.
+  string chname = lower_case(ch.name);
+  foreach(object listener : ch.members)
+  {
+    string* pl_chans = listener->QueryProp(P_CHANNELS);
+    if (pointerp(pl_chans))
+    {
+      listener->SetProp(P_CHANNELS, pl_chans-({chname}));
+    }
+    pl_chans = listener->QueryProp(P_SWAP_CHANNELS);
+    if (pointerp(pl_chans))
+    {
+      listener->SetProp(P_SWAP_CHANNELS, pl_chans-({chname}));
+    }
+  }
+}
+
 // Deaktiviert eine Ebene, behaelt aber einige Stammdaten in channelC und die
 // History, so dass sie spaeter reaktiviert werden kann.
-private void deactivate_channel(string chname)
+// Wenn <force>, dann wird wie Ebene sogar deaktiviert, wenn noch Zuhoerer
+// anwesend sind.
+private void deactivate_channel(string chname, int force)
 {
   chname = lower_case(chname);
   struct channel_s ch = channels[chname];
+  // Deaktivieren kann man nur aktive Ebenen.
   if (!structp(ch))
     return;
-
-  // nur Ebenen ohne Zuhoerer deaktivieren.
+  // Falls sie noch Zuhoerer hat, muss man sich erstmal um die kuemmern.
   if (sizeof(ch.members))
   {
-    raise_error(
-        sprintf("[%s] Attempt to deactivate channel %s with listeners.\n",
-                dtime(), ch.name));
+    // ohne <force> nur Ebenen ohne Zuhoerer deaktivieren.
+    if (!force)
+    {
+      raise_error(
+          sprintf("Attempt to deactivate channel %s with listeners.\n",
+                  ch.name));
+    }
+    else
+    {
+      remove_all_members(ch);
+    }
   }
   // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
   // einloggt, der die Ebene abonniert hat.
@@ -673,19 +704,30 @@ private void deactivate_channel(string chname)
 }
 
 // Loescht eine Ebene vollstaendig inkl. Stammdaten und History.
-private void delete_channel(string chname)
+// Wenn <force>, dann wird wie Ebene sogar deaktiviert, wenn noch Zuhoerer
+// anwesend sind.
+private void delete_channel(string chname, int force)
 {
   chname = lower_case(chname);
   struct channel_s ch = channels[chname];
+  // Ist die Ebene noch aktiv?
   if (ch)
   {
-    // nur Ebenen ohne Zuhoerer loeschen. (Wenn der Aufrufer auch andere
-    // loeschen will, muss er vorher selber die Ebene leer raeumen, s.
-    // Kommandofunktion remove_channel().
+    // Und hat sie Zuhoerer?
     if (sizeof(ch.members))
-      raise_error(
-          sprintf("[%s] Attempt to delete channel %s with listeners.\n",
-                  dtime(), ch.name));
+    {
+      // ohne <force> nur Ebenen ohne Zuhoerer loeschen.
+      if (!force)
+      {
+        raise_error(
+            sprintf("Attempt to delete channel %s with listeners.\n",
+                    ch.name));
+      }
+      else
+      {
+        remove_all_members(ch);
+      }
+    }
     stats["dispose"]++;
     m_delete(channels, chname);
   }
@@ -1028,7 +1070,7 @@ public int leave(string chname, object pl)
         " die Ebene '" + ch.name + "', worauf diese sich in "
         "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
     }
-    deactivate_channel(lower_case(ch.name));
+    deactivate_channel(lower_case(ch.name),0);
   }
   return (0);
 }
@@ -1167,9 +1209,6 @@ public int|<int|string>** history(string chname, object pl)
 // Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
 public int remove_channel(string chname, object pl)
 {
-  chname = lower_case(chname);
-  struct channel_s ch = channels[chname];
-
   //TODO: integrieren in access()?
   if (previous_object() != this_object())
   {
@@ -1179,30 +1218,8 @@ public int remove_channel(string chname, object pl)
         !IS_ARCH(this_interactive()))
       return E_ACCESS_DENIED;
   }
-  // Wenn die Ebene aktiv ist (d.h. Zuhoerer hat), muessen die erst
-  // runtergeworfen werden.
-  if (ch)
-  {
-    // Einer geloeschten Ebene kann man nicht zuhoeren: Ebenenname aus der
-    // Ebenenliste aller Mitglieder austragen. Dabei werden sowohl ein-, als
-    // auch temporaer ausgeschaltete Ebenen beruecksichtigt.
-    foreach(object listener : ch.members)
-    {
-      string* pl_chans = listener->QueryProp(P_CHANNELS);
-      if (pointerp(pl_chans))
-      {
-        listener->SetProp(P_CHANNELS, pl_chans-({chname}));
-      }
-      pl_chans = listener->QueryProp(P_SWAP_CHANNELS);
-      if (pointerp(pl_chans))
-      {
-        listener->SetProp(P_SWAP_CHANNELS, pl_chans-({chname}));
-      }
-    }
-  }
-  // Dies auserhalb des Blocks oben ermoeglicht es, inaktive Ebenen bzw.
-  // deren Daten zu entfernen.
-  delete_channel(chname);
+
+  delete_channel(lower_case(chname), 1);
 
   return (0);
 }
