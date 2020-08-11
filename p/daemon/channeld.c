@@ -547,13 +547,14 @@ string Name()
 }
 
 // Low-level function for adding members without access checks
+// return values < 0 are errors, success is 1.
 private int add_member(struct channel_s ch, object m)
 {
   if (IsChannelMember(ch, m))
     return E_ALREADY_JOINED;
 
   ch.members += ({ m });
-  return 0;
+  return 1;
 }
 
 private void remove_all_members(struct channel_s ch)
@@ -918,7 +919,11 @@ public int join(string chname, object pl)
   if (!funcall(#'access, ch, pl, C_JOIN))
     return E_ACCESS_DENIED;
 
-  return add_member(ch, pl);
+  int res = add_member(ch, pl);
+  if (res != 1)
+    return res;
+
+  return 0;
 }
 
 // Objekt <pl> verlaesst Ebene <ch>.
