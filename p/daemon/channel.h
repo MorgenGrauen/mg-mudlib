@@ -33,6 +33,9 @@
 #define C_LIST            "list"
 #define C_FIND            "find"
 
+// Flags
+#define CHF_FIXED_SUPERVISOR 1   // Kein Wechsel des SV erlaubt
+
 #endif //__DAEMON_CHANNEL_H__
 
 // prototypes
@@ -40,7 +43,8 @@
 
 #ifndef __CHANNEL_H_PROTO__
 #define __CHANNEL_H_PROTO__
-public varargs int new(string ch_name, object owner, string|closure info);
+public varargs int new(string ch_name, object owner, string|closure desc,
+                       int channel_flags);
 public varargs int send(string chname, object pl, string msg, int type);
 
 #endif //__CHANNEL_H_PROTO__

@@ -36,8 +36,8 @@ nosave variables inherit "/std/channel_supervisor";
 struct channel_base_s {
   string          name;    // readable channelname, case-sensitive
   string|closure  desc;    // stat. oder dyn. Beschreibung
-  string          creator; // Ersteller der Ebene (Objektname)
-//  int             flags;   // Flags, die weiteres Verhalten steuern.
+  string          creator; // Ersteller der Ebene (Objektname), Original-SV
+  int             flags;   // Flags, die bestimmtes Verhalten steuern.
 };
 
 // Basisdaten + die von aktiven Ebenen
@@ -367,12 +367,13 @@ public void ChannelMessage(<string|object|int>* msg)
 // setup() -- set up a channel and register it
 //            arguments are stored in the following order:
 //            string* chinfo = ({ channel_name, receive_level, send_level,
-//                                adminflags, description, supervisor })
+//                                adminflags, channelflags, description,supervisor })
 private void setup(string* chinfo)
 {
   string desc = "- Keine Beschreibung -";
   object supervisor = this_object();
   int sv_recv, sv_send, sv_flags; // an den Supervisor weiterreichen
+  int chflags;
 
   if (sizeof(chinfo) && sizeof(chinfo[0]) > 1 && chinfo[0][0] == '\\')
     chinfo[0] = chinfo[0][1..];
@@ -381,13 +382,15 @@ private void setup(string* chinfo)
   {
     // Alle Fallthroughs in dem switch() sind Absicht.
     default:
-      if (stringp(chinfo[5]) && sizeof(chinfo[5]))
-        catch(supervisor = load_object(chinfo[5]); publish);
+      if (stringp(chinfo[6]) && sizeof(chinfo[6]))
+        catch(supervisor = load_object(chinfo[6]); publish);
       if (!objectp(supervisor))
         supervisor = this_object();
+    case 6:
+      if (stringp(chinfo[5]))
+        desc = chinfo[5];
     case 5:
-      if (stringp(chinfo[4]) || closurep(chinfo[4]))
-        desc = chinfo[4];
+        chflags = to_int(chinfo[4]);
     case 4:
       sv_flags = to_int(chinfo[3]);
     case 3:
@@ -405,7 +408,7 @@ private void setup(string* chinfo)
   supervisor->ch_supervisor_setup(lower_case(chinfo[0]), sv_recv,
                                   sv_send, sv_flags);
 
-  if (new(chinfo[0], supervisor, desc) == E_ACCESS_DENIED)
+  if (new(chinfo[0], supervisor, desc, chflags) == E_ACCESS_DENIED)
   {
     log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
       dtime(time()), chinfo[0], supervisor));
@@ -814,14 +817,9 @@ varargs private int access(struct channel_s ch, object|string pl, string cmd,
 // Das Objekt <owner> kann eine Funktion check_ch_access() definieren, die
 // gerufen wird, wenn eine Ebenenaktion vom Typ join/leave/send/list/users
 // eingeht.
-// check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
-// Nachricht gesendet werden darf oder nicht.
 #define IGNORE  "^/xx"
-
-// TODO: KOMMENTAR
-//check may contain a closure
-//         called when a join/leave/send/list/users message is received
-public varargs int new(string ch_name, object owner, string|closure desc)
+public varargs int new(string ch_name, object owner, string|closure desc,
+                       int channel_flags)
 {
   // Kein Channelmaster angegeben, oder wir sind es selbst, aber der Aufruf
   // kam von ausserhalb. (Nur der channeld selbst darf sich als Channelmaster
@@ -859,8 +857,8 @@ public varargs int new(string ch_name, object owner, string|closure desc)
   }
   else
   {
-    ch = (<channel_s> name: ch_name, desc: desc, creator: object_name(owner)
-         );
+    ch = (<channel_s> name: ch_name, desc: desc, creator: object_name(owner),
+          flags: channel_flags);
   }
 
   ch_name = lower_case(ch_name);
@@ -873,6 +871,8 @@ public varargs int new(string ch_name, object owner, string|closure desc)
   //bauen, die *nicht* im Supervisor liegt? IMHO nein! Es ist ein
   //merkwuerdiges Konzept, dass der channeld Rechte fuer ne Ebene
   //pruefen soll, die nen anderes Objekt als Supervisor haben.
+  // check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
+  // Nachricht gesendet werden darf oder nicht.
   ch.access_cl = symbol_function("check_ch_access", owner) || #'check_ch_access;
 
   m_add(channels, ch_name, ch);
