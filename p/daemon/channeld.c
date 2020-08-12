@@ -668,7 +668,6 @@ private int change_sv_object(struct channel_s ch, object new_sv)
   object old_sv = ch.supervisor;
 
   ch.supervisor = new_sv;
-  //TODO angleichen an new() !
   ch.access_cl = symbol_function("check_ch_access", new_sv);
 
   if (old_sv && new_sv
@@ -885,13 +884,9 @@ public varargs int new(string ch_name, object owner, string|closure desc,
   ch.supervisor = (!living(owner) && !clonep(owner) && owner != this_object())
                   ? object_name(owner)
                   : owner;
-  //TODO: Ist das wirklich eine gute Idee, eine Access-Closure zu
-  //bauen, die *nicht* im Supervisor liegt? IMHO nein! Es ist ein
-  //merkwuerdiges Konzept, dass der channeld Rechte fuer ne Ebene
-  //pruefen soll, die nen anderes Objekt als Supervisor haben.
   // check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
   // Nachricht gesendet werden darf oder nicht.
-  ch.access_cl = symbol_function("check_ch_access", owner) || #'check_ch_access;
+  ch.access_cl = symbol_function("check_ch_access", owner);
 
   m_add(channels, ch_name, ch);
 
