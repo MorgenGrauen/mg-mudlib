@@ -554,6 +554,23 @@ varargs void reset()
   }
 }
 
+varargs int remove(int silent)
+{
+  if (save_me_soon)
+  {
+    save_me_soon = 0;
+    save_object(CHANNEL_SAVE);
+  }
+  if (!silent)
+  {
+    this_object()->send(CMNAME, this_object(),
+      sprintf("remove() durch %O gerufen. Speichern und Ende.\n",
+              previous_object()));
+  }
+  destruct(this_object());
+  return 1;
+}
+
 // name() - define the name of this object.
 string name()
 {
