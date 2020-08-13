@@ -42,9 +42,9 @@ struct channel_base_s {
 
 // Basisdaten + die von aktiven Ebenen
 struct channel_s (channel_base_s) {
-  object|string supervisor;      // aktueller Supervisor der Ebene
-  closure       access_cl;       // Closure fuer Zugriffsrechtepruefung
-  object        *members;        // Zuhoerer der Ebene
+  object  supervisor;      // aktueller Supervisor der Ebene
+  closure access_cl;       // Closure fuer Zugriffsrechtepruefung
+  object  *members;        // Zuhoerer der Ebene
 };
 
 /* Ebenenliste und die zugehoerigen Daten in struct (<channel>).
@@ -665,6 +665,15 @@ private int change_sv_object(struct channel_s ch, object new_sv)
     else
       return 0; // kein neuer SV moeglich.
   }
+  // evtl. darf der supervisor aber nicht zu was anderes als dem creator
+  // wechseln. Ausserdem darf niemand supervisor werden, der nicht auf der
+  // Ebene ist.
+  if ( ((ch.flags & CHF_FIXED_SUPERVISOR)
+         && new_sv != find_object(ch.creator))
+      || !IsChannelMember(ch, new_sv)
+      )
+    return 0;
+
   object old_sv = ch.supervisor;
 
   ch.supervisor = new_sv;
@@ -704,58 +713,58 @@ private int change_sv_object(struct channel_s ch, object new_sv)
 // wird access() den Zugriff immer erlauben.
 private int assert_supervisor(struct channel_s ch)
 {
-  //Es ist keine Closure vorhanden, d.h. der Ebenenbesitzer wurde zerstoert.
-  //TODO: es ist nicht so selten, dass die Closure 0 ist, d.h. der Code laeuft
-  //haeufig unnoetig!
-  if (!closurep(ch.access_cl))
+  // Wenn der supervisor nicht mehr existiert, muss ein neuer gesucht werden.
+  if (!ch.supervisor)
   {
-    // Wenn der Ebenenbesitzer als String eingetragen ist, versuchen wir,
-    // die Closure wiederherzustellen. Dabei wird das Objekt gleichzeitig
-    // neugeladen und eingetragen.
-    if (stringp(ch.supervisor))
+    // Wenn der Wechsel des SV verboten ist, wird versucht, den
+    // urspruenglichen Ersteller neuzuladen und zum neuen, alten Supervisor zu
+    // machen.
+    if (ch.flags & CHF_FIXED_SUPERVISOR)
     {
-      closure new_acc_cl;
-      // TODO: angleichen an new()!
-      string err = catch(new_acc_cl=
-                          symbol_function("check_ch_access", ch->supervisor);
-                          publish);
-      /* Wenn das SV-Objekt neu geladen werden konnte, wird es als Mitglied
-       * eingetragen. Auch die Closure wird neu eingetragen, allerdings kann
-       * sie 0 sein, wenn das SV-Objekt keine oeffentliche check_ch_access()
-       * mehr definiert. In diesem Fall gibt es zwar ein SV-Objekt, aber keine
-       * Zugriffrechte(pruefung) mehr. */
+      object sv;
+      string err=catch(sv=load_object(ch.creator);publish);
       if (!err)
       {
-        ch.access_cl = new_acc_cl;
-        // Der neue Ebenenbesitzer tritt auch gleich der Ebene bei. Hierbei
-        // erfolgt keine Pruefung des Zugriffsrechtes (ist ja unsinnig, weil
-        // er sich ja selber genehmigen koennte), und auch um eine Rekursion
-        // zu vermeiden.
-        add_member(ch, find_object(ch.supervisor));
-        // Rueckgabewert ist 1, ein neues SV-Objekt ist eingetragen.
+        // Juchu, die richtige SV ist wieder da. Sie muss noch auf die Ebene
+        // und kann dann wieder SV werden.
+        add_member(ch, sv);
+        if (!change_sv_object(ch, sv))
+        {
+          // ich wuesste nicht, was in change_sv_object in diesem Fall
+          // schiefgehen kann, daher einfach ein raise_error.
+          raise_error(sprintf("Supervisor von Channel %s konnte nicht "
+                "reaktiviert werden: %O\n",ch.name,sv));
+        }
       }
+      // wenns nicht geklappt hat, wird die Ebene deaktiviert.
       else
       {
+        // Die inaktive Ebene kann wegen CHF_FIXED_SUPERVISOR nur vom
+        // urspruenglichen Ersteller reaktiviert/neu erstellt werden. Und
+        // solange der das nicht tut, ist weder die History zugaenglich, noch
+        // kann jemand sonst was damit machen. Wenn die inaktive Ebene
+        // irgendwann inkl. History  expired wird, kann jemand anderes dann
+        // den Namen wieder verwenden und ein komplett neue Ebene erstellen.
+        deactivate_channel(lower_case(ch.name), 1);
         log_file("CHANNEL",
-            sprintf("[%s] Channel %s deleted. SV-Fehler: %O -> %O\n",
+            sprintf("[%s] Channel %s deaktiviert. SV-Fehler: %O -> %O\n",
                   dtime(time()), ch.name, ch.supervisor, err));
-        // Dies ist ein richtiges Loeschen, weil nicht-ladbare SV koennen bei
-        // Deaktivierung zu einer lesbaren History fuehren.
-        delete_channel(ch.name);
         return 0;
       }
     }
-    else if (!objectp(ch.supervisor))
+    // Der normalfall ist aber, dass wir einfach einen supervisor aus dem
+    // Kreise der Zuhoerer bestimmen und zwar den aeltesten. Das macht
+    // change_sv_object().
+    else
     {
-      // In diesem Fall muss ein neues SV-Objekt gesucht und ggf. eingetragen
-      // werden. change_sv_object nimmt das aelteste Mitglied der Ebene.
       if (!change_sv_object(ch, 0))
       {
-        // wenn das nicht klappt, Ebene aufloesen
+        // wenn das nicht klappt, Ebene deaktivieren, vermutlich hat sie keine
+        // Zuhoerer.
+        deactivate_channel(lower_case(ch.name), 1);
         log_file("CHANNEL",
-            sprintf("[%s] Deactivating channel %s without SV.\n",
+            sprintf("[%s] Kein SV, deaktiviere channel %s.\n",
                   dtime(time()), ch.name));
-        deactivate_channel(ch.name);
         return 0;
       }
     }
@@ -806,8 +815,7 @@ varargs private int access(struct channel_s ch, object|string pl, string cmd,
   // fuer EM+ aber nur, wenn der CHANNELD selber das SV-Objekt ist, damit
   // nicht beliebige SV-Objekt EMs den Zugriff verweigern koennen. Ebenen mit
   // CHANNELD als SV koennen aber natuerlich auch EM+ Zugriff verweigern.
-  if (IS_ARCH(previous_object(1))
-      && find_object(ch.supervisor) != this_object())
+  if (IS_ARCH(previous_object(1)) && ch.supervisor != this_object())
     return 1;
 
   return funcall(ch.access_cl, lower_case(ch.name), pl, cmd, &txt);
@@ -881,9 +889,7 @@ public varargs int new(string ch_name, object owner, string|closure desc,
   ch_name = lower_case(ch_name);
 
   ch.members = ({ owner });
-  ch.supervisor = (!living(owner) && !clonep(owner) && owner != this_object())
-                  ? object_name(owner)
-                  : owner;
+  ch.supervisor = owner;
   // check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
   // Nachricht gesendet werden darf oder nicht.
   ch.access_cl = symbol_function("check_ch_access", owner);
@@ -981,8 +987,7 @@ public int leave(string chname, object pl)
     // Kontrolle an jemand anderen uebergeben, wenn der Ebenensupervisor
     // diese verlassen hat. change_sv_object() waehlt per Default den
     // aeltesten Zuhoerer.
-    if (pl == ch.supervisor
-        || object_name(pl) == ch.supervisor)
+    if (pl == ch.supervisor)
     {
       change_sv_object(ch, 0);
     }
