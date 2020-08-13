@@ -313,8 +313,7 @@ public void ChannelMessage(<string|object|int>* msg)
           if (!sizeof(channelB[pl]))
             m_delete(channelB, pl);
 
-          //TODO: save_me_soon=1 sollte auch reichen...
-          save_object(CHANNEL_SAVE);
+          save_me_soon = 1;
         }
         else
         {
