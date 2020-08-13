@@ -25,6 +25,15 @@
 #define MEMORY        "/secure/memory"
 #define MAX_HIST_SIZE 200
 #define MAX_CHANNELS  90
+// Default-Zeit (in Sekunden), die eine Ebene und ihr History inaktiv sein darf,
+// bevor sie expired wird. Das reduziert sich jedoch, falls es zuviele
+// inaktive Ebenen gibt. Entspricht 30 Tagen.
+#define INACTIVE_EXPIRE 2592000
+// Aber eine Ebene darf min. solange inaktiv sein, bevor sie geloescht wird
+#define MIN_INACTIVE_LIFETIME 3600
+// max. Anzahl der inaktiven Ebenen. Wenn die Haelfte davon ueberschritten
+// wird, wird mit zunehmend kleinerem CHANNEL_EXPIRE gearbeitet.
+#define MAX_INACTIVE_CHANNELS 500
 #define CMDS          ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
 
 // Standard-Ebenen-Supervisor erben, Variablen nosave, die sollen hier nicht
@@ -512,22 +521,34 @@ protected void create()
 
 varargs void reset()
 {
-  //TODO reset nur 1-2mal am Tag mit etwas random.
+  // Im Durchschnitt 1 Tag: 21.6h + random(4.8h), d.h. naechster reset ist
+  // zwischen 21.6h und 26.4h von jetzt.
+  set_next_reset(77760 + random(17280));
 
-  // Cache bereinigen entsprechend dessen Timeout-Zeit (12 h)
-  // TODO: Zeit auf 2-3 Tage erhoehen.
-  // TODO 2: Zeit dynamisch machen und nur expiren, wenn mehr als n Eintraege.
-  // Zeit reduzieren, bis nur noch n/2 Eintraege verbleiben.
-  channelC = filter(channelC,
-      function int (string ch_name, struct channel_base_s data, int ts)
+  // inaktive Ebenen bereinigen 
+  int timeout = INACTIVE_EXPIRE;
+  // Wir behalten immer ungefaehr die Haelfte von MAX_INACTIVE_CHANNELS
+  // inaktive Ebenen. In  jeder Iteration wird das erlaubte Timeout reduziert,
+  // bis genug inaktive Ebenen weg sind, aber MIN_INACTIVE_LIFETIME bleiben
+  // Ebenen min. inaktiv bestehen.
+  while (sizeof(channelC) > MAX_INACTIVE_CHANNELS/2
+         && timeout > MIN_INACTIVE_LIFETIME)
+  {
+    channelC = filter(channelC,
+      function int (string ch_name, mixed values)
       {
-        if (ts + 43200 > time())
+        struct channel_base_s data = values[0];
+        int ts = values[1];
+        if (ts + timeout > time())
           return 1;
         // Ebenendaten koennen weg, inkl. History, die also auch loeschen
         m_delete(channelH, ch_name);
         return 0;
       });
-
+    // timeout halbieren und neu versuchen wenn noetig.
+    timeout /= 2;
+  }
+  // achja, speichern sollten wir uns ggf. auch noch.
   if (save_me_soon)
   {
     save_me_soon = 0;
@@ -578,12 +599,26 @@ private void remove_all_members(struct channel_s ch)
   }
 }
 
+private void delete_channel(string chname, int force);
+
 // Deaktiviert eine Ebene, behaelt aber einige Stammdaten in channelC und die
 // History, so dass sie spaeter reaktiviert werden kann.
 // Wenn <force>, dann wird wie Ebene sogar deaktiviert, wenn noch Zuhoerer
 // anwesend sind.
 private void deactivate_channel(string chname, int force)
 {
+  // Wenn zuviele inaktive Ebenen, wird sie geloescht statt deaktiviert.
+  if (sizeof(channelC) > MAX_INACTIVE_CHANNELS)
+  {
+    log_file("CHANNEL",
+        sprintf("[%s] Zuviele inaktive Ebenen. Channel %s geloescht statt "
+                "deaktiviert.\n", dtime(time()), chname));
+    this_object()->send(CMNAME, this_object(),
+        sprintf("Zuviele inaktive Ebenen. Ebene %s geloescht statt "
+                "deaktiviert.\n", chname));
+    delete_channel(chname, force);
+    return;
+  }
   chname = lower_case(chname);
   struct channel_s ch = channels[chname];
   // Deaktivieren kann man nur aktive Ebenen.
@@ -648,8 +683,8 @@ private void delete_channel(string chname, int force)
     m_delete(channels, chname);
   }
   // Ab hier das gleiche fuer aktive und inaktive Ebenen.
-  m_delete(channelsC, chname);
-  m_delete(channelsH, chname);
+  m_delete(channelC, chname);
+  m_delete(channelH, chname);
   save_me_soon = 1;
 }
 
