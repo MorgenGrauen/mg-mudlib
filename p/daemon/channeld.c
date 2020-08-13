@@ -58,8 +58,13 @@ struct channel_s (channel_base_s) {
 
 /* Ebenenliste und die zugehoerigen Daten in struct (<channel>).
    channels = ([string channelname : (<channel_s>) ])
+// HINWEIS: Bitte beachten, dass channels immer nur so manipuliert werden
+// darf, dass keine Kopie erstellt wird, weder direkt noch implizit. Die
+// History wird via Referenz in /secure/memory hinterlegt, damit sie einen
+// Reload des Channeld ueberlebt. Das funktioniert aber nur, wenn die Mapping-
+// Referenz in Memory und Channeld dieselbe ist.
  */
-private nosave mapping channels = ([]);
+private nosave mapping channels;
 
 /* Ebenenhistory
    mapping channelH = ([ string channelname : ({ ({string channelname,
@@ -73,15 +78,6 @@ private nosave mapping channels = ([]);
 // Reload des Channeld ueberlebt. Das funktioniert aber nur, wenn die Mapping-
 // Referenz in Memory und Channeld dieselbe ist.
 private nosave mapping channelH;
-
-/* Globale channeld-Stats (Startzeit, geladen von, Anzahl erstellte und
-   zerstoerte Ebenen.
-   mapping stats = ([ "time" : int object_time(),
-                      "boot" : string getuid(previous_object()),
-                      "new"  : int total_channels_created,
-                      "disposed" : int total_channels_removed ]) */
-// stats wird in create() geeignet initialisiert
-private nosave mapping stats;
 
 /* Ebenen-Cache, enthaelt Daten zu inaktiven Ebenen.
    mapping channelC = ([ string channelname : (<channel_base_s>);
@@ -103,6 +99,15 @@ private mapping channelB = ([]);
                      "uptime":  int timestamp,
                      "statistik":  int timestamp]) */
 private mapping Tcmd = ([]);
+
+/* Globale channeld-Stats (Startzeit, geladen von, Anzahl erstellte und
+   zerstoerte Ebenen.
+   mapping stats = ([ "time" : int object_time(),
+                      "boot" : string getuid(previous_object()),
+                      "new"  : int total_channels_created,
+                      "disposed" : int total_channels_removed ]) */
+// stats wird in create() geeignet initialisiert
+private nosave mapping stats;
 
 /* Flag, das anzeigt, dass Daten veraendert wurden und beim naechsten
    Speicherevent das Savefile geschrieben werden soll.
@@ -414,11 +419,16 @@ private void setup(string* chinfo)
   // Objekt selber sein...)
   supervisor->ch_supervisor_setup(lower_case(chinfo[0]), sv_recv,
                                   sv_send, sv_flags);
-
-  if (new(chinfo[0], supervisor, desc, chflags) == E_ACCESS_DENIED)
+  // Wenn der channeld nur neugeladen wurde, aber das Mud nicht neugestartet,
+  // sind alle Ebenen noch da, weil sie im MEMORY liegen. Dann muessen wir das
+  // new() natuerlich ueberspringen.
+  if (!member(channels, lower_case(chinfo[0])))
   {
-    log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
-      dtime(time()), chinfo[0], supervisor));
+    if (new(chinfo[0], supervisor, desc, chflags) == E_ACCESS_DENIED)
+    {
+      log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
+        dtime(time()), chinfo[0], supervisor));
+    }
   }
   return;
 }
@@ -450,6 +460,8 @@ private void initialize()
 // BEGIN OF THE CHANNEL MASTER IMPLEMENTATION
 protected void create()
 {
+  int do_complete_init;
+
   seteuid(getuid());
   restore_object(CHANNEL_SAVE);
 
@@ -466,55 +478,91 @@ protected void create()
     }
     channelC = new;
   }
-  //TODO: weitere Mappings im MEMORY speichern, Savefile ersetzen.
 
-  /* Die Channel-History wird nicht nur lokal sondern auch noch im Memory
-     gespeichert, dadurch bleibt sie auch ueber ein Reload erhalten.
-     Der folgende Code versucht, den Zeiger aus dem Memory zu holen. Falls
-     das nicht moeglich ist, wird ein neuer erzeugt und gegebenenfalls im
-     Memory abgelegt. */
-
+  /* Die aktiven Ebenen und die Channel-History wird nicht nur lokal sondern
+   * auch noch im Memory gespeichert, dadurch bleibt sie auch ueber ein Reload
+   * erhalten.
+     Der folgende Code versucht, den Zeiger auf die alten Mappings aus dem
+     Memory zu holen. Falls das nicht moeglich ist, wird ein neuer erzeugt und
+     gegebenenfalls fuer spaeter im Memory abgelegt. */
   // Hab ich die noetigen Rechte im Memory?
-  if (call_other(MEMORY, "HaveRights"))
+  if (MEMORY->HaveRights())
   {
-    // Objektpointer laden
-    channelH = ({mapping}) call_other(MEMORY, "Load", "History");
-
-    // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger, dann
+    // channelH und channels laden
+    channels = ({mapping}) MEMORY->Load("Channels");
+    // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger
+    if (!mappingp(channels))
+    {
+      // Mapping erzeugen
+      channels = ([]);
+      // und Zeiger auf das Mapping in den Memory schreiben
+      MEMORY->Save("Channels", channels);
+      do_complete_init = 1;
+    }
+    // Und das gleiche fuer die History
+    channelH = ({mapping}) MEMORY->Load("History");
+    // Wenns nich geklappt hat, hat der Memory noch keinen Zeiger
     if (!mappingp(channelH))
     {
-      // Zeiger erzeugen
+      // Mapping erzeugen
       channelH = ([]);
-      // und in den Memory schreiben
-      call_other(MEMORY, "Save", "History", channelH);
+      // und Zeiger auf das Mapping in den Memory schreiben
+      MEMORY->Save("History", channelH);
+      // In diesem Fall muessen die Ebenenhistories auch erzeugt werden, falls
+      // es aktive Ebenen gibt.
+      foreach(string chname: channels)
+        channelH[chname] = ({});
     }
   }
   else
   {
-    // Keine Rechte im Memory, dann wird mit einem lokalen Zeiger gearbeitet.
+    // Keine Rechte im Memory, dann liegt das nur lokal und ist bei
+    // remove/destruct weg.
     channelH = ([]);
+    channels = ([]);
+    do_complete_init = 1;
   }
 
   stats = (["time": time(),
             "boot": capitalize(getuid(previous_object()) || "<Unbekannt>")]);
 
-  // <MasteR>-Ebene erstellen. Channeld wird Ebenenbesitzer und somit auch
-  // Zuhoerer, damit er auf Kommandos auf dieser Ebene reagieren kann.
-  new(CMNAME, this_object(), "Zentrale Informationen zu den Ebenen");
-
+  // Das muss auch laufen, wenn wir die alten Ebenen aus dem MEMORY bekommen
+  // haben, weil es dafuer sorgt, dass das Mapping <admin> aus
+  // channel_supervisor wieder mit den Informationen aus .init befuellt wird,
+  // weil das nicht in MEMORY liegt (weil das vermutlich ein Grund ist, den
+  // channeld neuzuladen: zum neuen Einlesen der Ebenenrechte).
+  // initialize() und setup() koennen aber mit Ebenen umgehen, die es schon
+  // gibt 
   initialize();
-  users()->RegisterChannels();
 
-  // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
-  // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
-  // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
-  // explizites call_other() auf this_object() gemacht, damit der
-  // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
-  // einem externen.
-  this_object()->send(CMNAME, this_object(),
-    sprintf("%d Ebenen mit %d Teilnehmern initialisiert.",
-      sizeof(channels),
-      CountUsers()));
+  // Wenn wir die alten Ebenen nicht aus MEMORY hatten, gibts noch Dinge zu
+  // erledigen.
+  if (do_complete_init)
+  {
+    // <MasteR>-Ebene erstellen. Channeld wird Ebenenbesitzer und somit auch
+    // Zuhoerer, damit er auf Kommandos auf dieser Ebene reagieren kann.
+    new(CMNAME, this_object(), "Zentrale Informationen zu den Ebenen");
+    // Spieler muessen die Ebenen abonnieren. NPC und andere Objekte haben
+    // leider Pech gehabt.
+    users()->RegisterChannels();
+    // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
+    // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
+    // interne Aufrufe aus diesem Objekt vorkommen koennen, wird hier ein
+    // explizites call_other() auf this_object() gemacht, damit der
+    // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
+    // einem externen.
+    this_object()->send(CMNAME, this_object(),
+      sprintf("%d Ebenen mit %d Teilnehmern initialisiert.",
+        sizeof(channels),
+        CountUsers()));
+  }
+  else
+  {
+    this_object()->send(CMNAME, this_object(),
+      sprintf(CMNAME " neugeladen. %d Ebenen mit %d Teilnehmern sind aktiv.",
+        sizeof(channels),
+        CountUsers()));
+  }
 }
 
 varargs void reset()
