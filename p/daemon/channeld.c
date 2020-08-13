@@ -305,8 +305,7 @@ public void ChannelMessage(<string|object|int>* msg)
 
           ret = "Fuer '" + capitalize(pl) + "' besteht " +
                 (sizeof(channelB[pl])
-                  // TODO: implode() -> CountUp()?
-                  ? "folgender Bann: " + implode(channelB[pl], ", ") + "."
+                  ? "folgender Bann: " + CountUp(channelB[pl]) + "."
                   : "kein Bann mehr.");
 
           // Liste der gebannten Kommandos leer? Dann <pl> komplett austragen.
