@@ -960,7 +960,6 @@ public varargs int new(string ch_name, object owner, string|closure desc,
   }
 
   stats["new"]++;
-  save_me_soon = 1;
   return (0);
 }
 
