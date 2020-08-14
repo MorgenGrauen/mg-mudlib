@@ -346,18 +346,24 @@ protected int _check_unwear_restrictions(object worn_by, int silent,
 
   // Eine verfluchte Ruestung kann man natuerlich nicht ausziehen
   res=QueryProp(P_CURSED);
-  if (res ) {
-    if (stringp(res)) {
-      // Stand in P_CURSED ein String? Dann diesen ausgeben
-      tell_object(worn_by,      
-          (res[<1]=='\n' ? res : break_string(res,78,
-            (all?(Name(WER)+": "):0))));
-    }
-    else {
-      // Sonst eine Standard-Meldung ausgeben
-      tell_object(worn_by,break_string(
-          "Du kannst " + name(WEN) + " nicht ausziehen, " + QueryPronoun(WER)
-          + " ist verflucht worden.\n",78,(all?(Name(WER)+": "):0)));
+  if (res)
+  {
+    if (!(silent&M_SILENT))
+    {
+      if (stringp(res))
+      {
+        // Stand in P_CURSED ein String? Dann diesen ausgeben
+        tell_object(worn_by,
+            (res[<1]=='\n' ? res : break_string(res,78,
+              (all?(Name(WER)+": "):0))));
+      }
+      else
+      {
+        // Sonst eine Standard-Meldung ausgeben
+        tell_object(worn_by,break_string(
+            "Du kannst "+name(WEN)+" nicht ausziehen, "+QueryPronoun(WER)+
+            " ist verflucht worden.\n",78,(all?(Name(WER)+": "):0)));
+      }
     }
     return(-2);
   }
