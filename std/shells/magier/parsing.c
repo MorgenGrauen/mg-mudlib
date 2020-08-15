@@ -302,8 +302,9 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
     object *vrooms = ({});
     if (vcompiler)
       vrooms = ({object*})vcompiler->QueryObjects();
-    
-    map(vrooms,#'_vc_map,&data);
+
+    // Nicht alle VCs liefern ihre Objektliste aus.
+    map(vrooms||({}), #'_vc_map, &data);
   }
   mixed *files=({});
   if (sizeof(data)) // passende files
