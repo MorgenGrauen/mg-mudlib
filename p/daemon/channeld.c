@@ -1159,12 +1159,10 @@ public varargs int send(string chname, object sender, string msg, int type)
 
   channelH[chname] +=
     ({ ({ ch.name,
-          (stringp(sender)
-              ? sender
-              : (sender->QueryProp(P_INVIS)
+          (sender->QueryProp(P_INVIS)
                     ? "/(" + capitalize(getuid(sender)) + ")$"
                     : "")
-                  + (sender->Name(WER, 2) || "<Unbekannt>")),
+                  + (sender->Name(WER, 2) || "<Unbekannt>"),
           msg + " <" + strftime("%a, %H:%M:%S") + ">\n",
           type }) });
   return (0);
