@@ -45,7 +45,7 @@
 #define __CHANNEL_H_PROTO__
 public varargs int new(string ch_name, object owner, string|closure desc,
                        int channel_flags);
-public varargs int send(string chname, object pl, string msg, int type);
+public varargs int send(string chname, object sender, string msg, int type);
 
 #endif //__CHANNEL_H_PROTO__
 

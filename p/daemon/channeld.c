@@ -1028,24 +1028,25 @@ public varargs int new(string ch_name, object owner, string|closure desc,
 // Objekt <pl> betritt Ebene <ch>. Dies wird zugelassen, wenn <pl> die
 // Berechtigung hat und noch nicht Mitglied ist. (Man kann einer Ebene nicht
 // zweimal beitreten.)
-public int join(string chname, object pl)
+public int join(string chname, object joining)
 {
   struct channel_s ch = channels[lower_case(chname)];
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
      richtige ist. */
-  if (!funcall(#'access, ch, pl, C_JOIN))
+  if (!funcall(#'access, ch, joining, C_JOIN))
     return E_ACCESS_DENIED;
 
-  int res = add_member(ch, pl);
+  int res = add_member(ch, joining);
   if (res != 1)
     return res;
 
   // Wenn der <pl> der urspruengliche Ersteller der Ebene und kein Spieler
   // ist, wird er automatisch wieder zum Supervisor.
-  if (!query_once_interactive(pl) && object_name(pl) == ch.creator)
-    change_sv_object(ch, pl);
+  if (!query_once_interactive(joining)
+      && object_name(joining) == ch.creator)
+    change_sv_object(ch, joining);
 
   return 0;
 }
@@ -1057,24 +1058,24 @@ public int join(string chname, object pl)
 // <pl> das Verlassen auf Grund eines Banns verboten sein.
 // Wenn kein Spieler mehr auf der Ebene ist, loest sie sich auf, sofern nicht
 // noch ein Ebenenbesitzer eingetragen ist.
-public int leave(string chname, object pl)
+public int leave(string chname, object leaving)
 {
   struct channel_s ch = channels[lower_case(chname)];
 
   ch.members -= ({0}); // kaputte Objekte erstmal raus
 
-  if (!IsChannelMember(ch, pl))
+  if (!IsChannelMember(ch, leaving))
     return E_NOT_MEMBER;
 
   /* funcall() auf Closure-Operator, um einen neuen Eintrag im Caller Stack
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
      richtige ist. */
-  if (!funcall(#'access, ch, pl, C_LEAVE))
+  if (!funcall(#'access, ch, leaving, C_LEAVE))
     return E_ACCESS_DENIED;
 
   // Dann mal den Zuhoerer raus.
-  ch.members -= ({pl});
+  ch.members -= ({leaving});
 
   // Wenn auf der Ebene jetzt noch Objekte zuhoeren, muss ggf. der SV
   // wechseln.
@@ -1083,7 +1084,7 @@ public int leave(string chname, object pl)
     // Kontrolle an jemand anderen uebergeben, wenn der Ebenensupervisor
     // diese verlassen hat. change_sv_object() waehlt per Default den
     // aeltesten Zuhoerer.
-    if (pl == ch.supervisor)
+    if (leaving == ch.supervisor)
     {
       change_sv_object(ch, 0);
     }
@@ -1096,7 +1097,7 @@ public int leave(string chname, object pl)
     // Der Letzte macht das Licht aus, aber nur, wenn er nicht unsichtbar ist.
     // Wenn Spieler, NPC, Clone oder Channeld als letztes die Ebene verlassen,
     // wird diese zerstoert, mit Meldung.
-    if (!pl->QueryProp(P_INVIS))
+    if (!leaving->QueryProp(P_INVIS))
     {
       // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
       // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
@@ -1104,9 +1105,9 @@ public int leave(string chname, object pl)
       // explizites call_other() auf this_object() gemacht, damit der
       // Caller-Stack bei dem internen Aufruf denselben Aufbau hat wie bei
       // einem externen.
-      this_object()->send(CMNAME, pl,
+      this_object()->send(CMNAME, leaving,
         "verlaesst als "+
-        (pl->QueryProp(P_GENDER) == 1 ? "Letzter" : "Letzte")+
+        (leaving->QueryProp(P_GENDER) == 1 ? "Letzter" : "Letzte")+
         " die Ebene '" + ch.name + "', worauf diese sich in "
         "einem Blitz oktarinen Lichts aufloest.", MSG_EMOTE);
     }
@@ -1117,7 +1118,7 @@ public int leave(string chname, object pl)
 
 // Nachricht <msg> vom Typ <type> mit Absender <pl> auf der Ebene <ch> posten,
 // sofern <pl> dort senden darf.
-public varargs int send(string chname, object pl, string msg, int type)
+public varargs int send(string chname, object sender, string msg, int type)
 {
   chname = lower_case(chname);
   struct channel_s ch = channels[chname];
@@ -1125,7 +1126,7 @@ public varargs int send(string chname, object pl, string msg, int type)
      zu erzeugen, weil access() mit extern_call() und previous_object()
      arbeitet und sichergestellt sein muss, dass das in jedem Fall das
      richtige ist. */
-  int a = funcall(#'access, ch, pl, C_SEND, msg);
+  int a = funcall(#'access, ch, sender, C_SEND, msg);
   if (!a)
     return E_ACCESS_DENIED;
 
@@ -1134,7 +1135,7 @@ public varargs int send(string chname, object pl, string msg, int type)
   // wird. access() allerdings 2 fuer "privilegierte" Objekte (z.B.
   // ROOT-Objekte oder den channeld selber). Der Effekt ist, dass diese
   // Objekte auf Ebenen senden duerfen, auf denen sie nicht zuhoeren.
-  if (a < 2 && !IsChannelMember(ch, pl))
+  if (a < 2 && !IsChannelMember(ch, sender))
     return E_NOT_MEMBER;
 
   if (!msg || !stringp(msg) || !sizeof(msg))
@@ -1151,19 +1152,19 @@ public varargs int send(string chname, object pl, string msg, int type)
   // Die Aufrufkette ist dann wie folgt:
   // Eingabe "-< xyz" => pl::ChannelParser() => send() => ChannelMessage()
   (ch.members)->ChannelMessage(
-                            ({ ch.name, pl, msg, type}));
+                            ({ ch.name, sender, msg, type}));
 
   if (sizeof(channelH[chname]) > MAX_HIST_SIZE)
     channelH[chname] = channelH[chname][1..];
 
   channelH[chname] +=
     ({ ({ ch.name,
-          (stringp(pl)
-              ? pl
-              : (pl->QueryProp(P_INVIS)
-                    ? "/(" + capitalize(getuid(pl)) + ")$"
+          (stringp(sender)
+              ? sender
+              : (sender->QueryProp(P_INVIS)
+                    ? "/(" + capitalize(getuid(sender)) + ")$"
                     : "")
-                  + (pl->Name(WER, 2) || "<Unbekannt>")),
+                  + (sender->Name(WER, 2) || "<Unbekannt>")),
           msg + " <" + strftime("%a, %H:%M:%S") + ">\n",
           type }) });
   return (0);
