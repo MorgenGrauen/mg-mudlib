@@ -873,13 +873,11 @@ private int assert_supervisor(struct channel_s ch)
 // access() - check access by looking for the right argument types and
 //            calling access closures respectively
 // SEE: new, join, leave, send, list, users
-// Note: <pl> is usually an object, only the master supplies a string during
-//       runtime error handling.
 // Wertebereich: 0 fuer Zugriff verweigert, 1 fuer Zugriff erlaubt, 2 fuer
 // Zugriff erlaubt fuer privilegierte Objekte, die senden duerfen ohne
 // Zuhoerer zu sein. (Die Aufrufer akzeptieren aber auch alle negativen Werte
 // als Erfolg und alles ueber >2 als privilegiert.)
-varargs private int access(struct channel_s ch, object|string pl, string cmd,
+varargs private int access(struct channel_s ch, object user, string cmd,
                            string txt)
 {
   if (!ch)
@@ -894,11 +892,12 @@ varargs private int access(struct channel_s ch, object|string pl, string cmd,
 
   // Nur dieses Objekt darf Meldungen im Namen anderer Objekte faken,
   // ansonsten muss <pl> der Aufrufer sein.
-  if (!objectp(pl) ||
-      ((previous_object(1) != pl) && (previous_object(1) != this_object())))
+  if (!objectp(user) ||
+      ((previous_object(1) != user) &&
+       (previous_object(1) != this_object())))
     return 0;
 
-  if (IsBanned(pl, cmd))
+  if (IsBanned(user, cmd))
     return 0;
 
   // Wenn kein SV-Objekt mehr existiert und kein neues bestimmt werden konnte,
@@ -916,7 +915,7 @@ varargs private int access(struct channel_s ch, object|string pl, string cmd,
   if (IS_ARCH(previous_object(1)) && ch.supervisor != this_object())
     return 1;
 
-  return funcall(ch.access_cl, lower_case(ch.name), pl, cmd, &txt);
+  return funcall(ch.access_cl, lower_case(ch.name), user, cmd, &txt);
 }
 
 // Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
