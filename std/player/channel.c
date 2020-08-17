@@ -247,6 +247,13 @@ string ChannelMessage(<string|object|int>* msg, int nonint)
   return 0;
 }
 
+// Defines fuer den Zugriff auf die Channeldaten in der vom CHANNELD
+// erhaltenen Kanalliste.
+#define I_MEMBER          0
+#define I_ACCESS          1
+#define I_INFO            2
+#define I_SUPERVISOR      3
+#define I_NAME            4
 
 private void createList(mapping ch_list, string* p_channels,
                            int show_only_subscribed) {
@@ -277,7 +284,7 @@ private void createList(mapping ch_list, string* p_channels,
       continue;
 
     ch_members =   chdata[I_MEMBER];
-    ch_master =    chdata[I_MASTER];
+    ch_master =    chdata[I_SUPERVISOR];
     ch_access =    chdata[I_ACCESS];
     ch_real_name = chdata[I_NAME];
     ch_info =      chdata[I_INFO];
@@ -446,10 +453,8 @@ int ChannelParser(string args)
               tell_object(ME,
                 chdata[I_NAME]+", "+funcall(chdata[I_INFO])+".\n" +
                 "Du siehst "+wen+" auf der Ebene '"+chdata[I_NAME]+"':\n"+
-                break_string(CountUp(m), 78) +
-                (chdata[I_MASTER] ? getName(chdata[I_MASTER])
-                                  : getName(chdata[I_ACCESS], WER))+
-                 " hat das Sagen auf dieser Ebene.\n");
+                break_string(CountUp(m), 78) + getName(chdata[I_SUPERVISOR])
+                + " hat das Sagen auf dieser Ebene.\n");
             }
             // kein Channel angegeben, dann Gesamtliste erzeugen
             else
@@ -670,7 +675,7 @@ int ChannelAdmin(string args)
     mapping ch = CHMASTER->list(ME);
     notify_fail("Du bist nicht berechtigt, die Beschreibung der Ebene"
       " '"+target_channel+"' zu aendern.\n");
-    if (ch[lower_case(chans)][I_MASTER] != ME)
+    if (ch[lower_case(chans)][I_SUPERVISOR] != ME)
       return 0;
 
     ch[lower_case(target_channel)][I_INFO] = descr;
