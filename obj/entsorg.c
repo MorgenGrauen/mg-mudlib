@@ -62,7 +62,7 @@ int haps(string str)
     write("Das ist zu wertvoll, das vertraegt der Muellschlucker nicht.\n");
     return 1;
   }
-  if (({int})ob->QueryProp(P_CURSED)) {
+  if (({int|string})ob->QueryProp(P_CURSED)) {
     write("Verfluchte Dinge bekommen dem Muellschlucker nicht!\n");
     return 1;
   }
