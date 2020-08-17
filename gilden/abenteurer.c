@@ -31,6 +31,7 @@ void create() {
   SetProp(P_GUILD_DEFAULT_SPELLBOOK,"ab_spells");
   SetProp(P_LIGHT,20);
   SetProp(P_INDOORS,1);
+  SetProp(P_DOMAIN, "Ebene");
 
   SetProp(P_NAME, "Owen");
   SetProp(P_ARTICLE, 0);
