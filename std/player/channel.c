@@ -247,39 +247,6 @@ string ChannelMessage(<string|object|int>* msg, int nonint)
   return 0;
 }
 
-// string n: Channelname
-// <object*|closure|string|object>* a: Channeldaten
-// string* m: P_CHANNELS
-// string* l: Ausgabeliste.
-private void OLDcreateList(string n, <object*|closure|string|object>* a,
-             string* m, string* l)
-{
-  // Wir suchen das vom Spieler festgelegte Kuerzel fuer die aktuell
-  // bearbeitete Ebene, falls vorhanden.
-  string sh = "";
-  foreach(string sc, string chan : shortcut) {
-    if ( lower_case(chan) == n ) {
-      sh = sc;
-      break;
-    }
-  }
-
-  l += ({ sprintf("%-12.12'.'s %c[%-1.1s] %|12.12' 's (%-|3' 'd) %-42.42s\n",
-          a[I_NAME],
-          (member(m, n) != -1
-              ? '*'
-              : ' '),
-          sh,
-          a[I_MASTER]
-              ? getName(a[I_MASTER])
-              : getName(a[I_ACCESS]),
-          sizeof(a[I_MEMBER] - ({ find_object(CHMASTER) })),
-          (closurep(a[I_INFO]) && objectp(query_closure_object(a[I_INFO])))
-              ? funcall(a[I_INFO]) || "- Keine Beschreibung -"
-              : (stringp(a[I_INFO])
-                    ? a[I_INFO]
-                    : "- Keine Beschreibung -")) });
-}
 
 private void createList(mapping ch_list, string* p_channels,
                            int show_only_subscribed) {
