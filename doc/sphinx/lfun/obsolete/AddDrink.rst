@@ -1,5 +1,15 @@
 AddDrink()
 ==========
+
+OBSOLETE LFUN
+-------------
+
+    Diese Efun existiert nicht mehr. Bitte stattdessen den Hook
+    H_HOOK_INSERT benutzen. (s. /doc/std/hooks)
+
+FUNKTION
+--------
+
 ::
 
     void AddDrink(string nameOfDrink, mixed ids, int price, int heal,

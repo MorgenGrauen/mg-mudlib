@@ -187,7 +187,7 @@ varargs string AddToMenu(string menuetext, mixed ids, mapping minfo,
 
 // Diese Methode ist nur noch aus Kompatibilitaetsgruenden vorhanden und darf
 // nicht mehr verwendet werden!!!
-void AddFood(string nameOfFood, mixed ids, int price, int heal,
+deprecated void AddFood(string nameOfFood, mixed ids, int price, int heal,
              mixed myFunction)
 {
   if ( !nameOfFood || !ids || !price)
@@ -200,7 +200,7 @@ void AddFood(string nameOfFood, mixed ids, int price, int heal,
 
 // Diese Methode ist nur noch aus Kompatibilitaetsgruenden vorhanden und darf
 // nicht mehr verwendet werden!!!
-void AddDrink(string nameOfDrink, mixed ids, int price, int heal,
+deprecated void AddDrink(string nameOfDrink, mixed ids, int price, int heal,
               int strength, int soak, mixed myFunction)
 {
   if ( !nameOfDrink || !ids || !price )
