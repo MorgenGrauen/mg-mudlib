@@ -200,8 +200,6 @@ BEISPIEL
 
         4) Heilung pro Heartbeat (in diesem Beispiel je 5 KP/LP).
 
-    
-
            5,
 
         5) Meldungen fuer Spieler und Umstehende die bei Genuss ausgege-
@@ -214,8 +212,6 @@ BEISPIEL
            als Objekt an replace_personal() uebergeben. Fuer die
            moeglichen Platzhalter siehe dort.
 
-          
-
         6) Die Speise ist in ihrer Anzahl begrenzt. Fuer jeden Spieler
            sind 4 Keulen pro reset() da. Ausserdem gibt es noch einen
            "Notvorrat" von 20 Keulen, der alle 3 reset()s aufgefuellt
@@ -224,22 +220,17 @@ BEISPIEL
 
            ([ PR_USER : 4; 1 , PR_ALL : 20; 3 ]),
 
-           
-
            HINWEIS: bei Benutzung des Mappings muss <pub.h> inkludiert 
            werden!
 
-           
-
            Wenn man keine reset-abhaengigen Speisen haben moechte, traegt
            man hier eine 0 ein.
+
 
         7) Die Zahl ist die Wartezeit in Sekunden, die der Wirt z.B. fuer
            die Zubereitung und Auslieferung an den Spieler braucht.
 
            9,
-
-         
 
         8) Letztendlich die Meldungen an Spieler und Umstehende, die bei Be-
            stellung (hier 'kaufe keule') ausgegeben werden.
@@ -250,9 +241,11 @@ BEISPIEL
            "Der unsichtbare Kneipier schneidet einem hilflosen Opa ein "
            "Stueck aus dessen Keule und braet diese fuer @WEN1."}));
 
+
 LISTE DER ALTEN PLATZHALTER (DEPRECATED):
 -----------------------------------------
 ::
+
            &&  - pl->name(WER,2)
            &1& - pl->name(WER,2)
            &2& - pl->name(WESSEN,2)

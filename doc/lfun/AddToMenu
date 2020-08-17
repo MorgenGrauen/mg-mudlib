@@ -199,8 +199,6 @@ BEISPIEL
 
    4) Heilung pro Heartbeat (in diesem Beispiel je 5 KP/LP).
 
-
-
       5,
 
    5) Meldungen fuer Spieler und Umstehende die bei Genuss ausgege-
@@ -213,8 +211,6 @@ BEISPIEL
       als Objekt an replace_personal() uebergeben. Fuer die
       moeglichen Platzhalter siehe dort.
 
-
-
    6) Die Speise ist in ihrer Anzahl begrenzt. Fuer jeden Spieler
       sind 4 Keulen pro reset() da. Ausserdem gibt es noch einen
       "Notvorrat" von 20 Keulen, der alle 3 reset()s aufgefuellt
@@ -223,22 +219,17 @@ BEISPIEL
 
       ([ PR_USER : 4; 1 , PR_ALL : 20; 3 ]),
 
-
-
       HINWEIS: bei Benutzung des Mappings muss <pub.h> inkludiert
       werden!
 
-
-
       Wenn man keine reset-abhaengigen Speisen haben moechte, traegt
       man hier eine 0 ein.
+
 
    7) Die Zahl ist die Wartezeit in Sekunden, die der Wirt z.B. fuer
       die Zubereitung und Auslieferung an den Spieler braucht.
 
       9,
-
-
 
    8) Letztendlich die Meldungen an Spieler und Umstehende, die bei Be-
       stellung (hier 'kaufe keule') ausgegeben werden.
@@ -253,17 +244,24 @@ BEISPIEL
 LISTE DER ALTEN PLATZHALTER (DEPRECATED):
 =========================================
 
-::
-   &&  - pl->name(WER,2) &1& - pl->name(WER,2) &2& -
-   pl->name(WESSEN,2) &3& - pl->name(WEM,2) &4& - pl->name(WEN,2) &1#
-   - capitalize(pl->name(WER,2)) &2# - capitalize(pl->name(WESSEN,2))
-   &3# - capitalize(pl->name(WEM,2)) &4# - capitalize(pl->name(WEN,2))
-   &!  - pl->QueryPronoun(WER) &5& - pl->QueryPronoun(WE); &6& -
-   pl->QueryPronoun(WESSEN) &7& - pl->QueryPronoun(WEM) &8& -
-   pl->QueryPronoun(WEN) &5# - capitalize(pl->QueryPronoun(WER)) &6# -
-   capitalize(pl->QueryPronoun(WESSEN)) &7# -
-   capitalize(pl->QueryPronoun(WEM)) &8# -
-   capitalize(pl->QueryPronoun(WEN))
+   &&  - pl->name(WER,2)
+   &1& - pl->name(WER,2)
+   &2& - pl->name(WESSEN,2)
+   &3& - pl->name(WEM,2)
+   &4& - pl->name(WEN,2)
+   &1# - capitalize(pl->name(WER,2))
+   &2# - capitalize(pl->name(WESSEN,2))
+   &3# - capitalize(pl->name(WEM,2))
+   &4# - capitalize(pl->name(WEN,2))
+   &!  - pl->QueryPronoun(WER)
+   &5& - pl->QueryPronoun(WE);
+   &6& - pl->QueryPronoun(WESSEN)
+   &7& - pl->QueryPronoun(WEM)
+   &8& - pl->QueryPronoun(WEN)
+   &5# - capitalize(pl->QueryPronoun(WER))
+   &6# - capitalize(pl->QueryPronoun(WESSEN))
+   &7# - capitalize(pl->QueryPronoun(WEM))
+   &8# - capitalize(pl->QueryPronoun(WEN))
 
 
 SIEHE AUCH
