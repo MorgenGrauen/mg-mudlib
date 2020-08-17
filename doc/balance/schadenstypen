@@ -41,7 +41,7 @@ immer mindestens 34%. Solche Waffen sind generell genehmigungs-
 pflichtig.
 
 Genehmigungspflichtig sind auch generell Waffen, die als Schadens-
-typ DT_TERROR, DT_SOUND, DT_AIR oder DT_SQUEEZE enthalten.
+typ DT_TERROR, DT_SOUND oder DT_SQUEEZE enthalten.
 
 Der Schadenstyp DT_EXPLOSION wird nicht mehr genehmigt.
 
