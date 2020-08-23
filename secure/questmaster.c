@@ -572,6 +572,8 @@ void HandleQuestSolved(string eid, object trigob, mixed data) {
   DEBUG(sprintf("%s: %f (%d)\n",qname,
         quests[qname][Q_AVERAGE][0],
         quests[qname][Q_AVERAGE][1]));
+
+  save_info();
 }
 
 /*
