@@ -100,7 +100,7 @@ protected void create() {
   }
 
   RebuildMQCache();
-  set_next_reset(43200); // Reset alle 12 Stunden.
+
   ({int})EVENTD->RegisterEvent(EVT_LIB_QUEST_SOLVED,"HandleQuestSolved",
       ME);
 }
@@ -119,11 +119,6 @@ private int allowed_write_access() {
   if (ARCH_SECURITY)  // prueft auch this_interactive() mit.
     return 1;
   return 0;
-}
-
-void reset() {
-  RebuildMQCache();
-  set_next_reset(43200);
 }
 
 /*
@@ -1056,9 +1051,11 @@ int MoveMiniQuest(string old_mqob, string new_mqob) {
   // flatten-Operator "..." uebergibt dessen Elemente als einzelne Parameter.
   m_add(miniquests, new_mqob, m_entry(miniquests, old_mqob)...);
   m_delete(miniquests, old_mqob);
-  // Nummern-Index auch umtragen, sonst koennen Funktionen wie zB
-  // QueryMiniQuestByNumber() die neue nicht finden.
-  by_num[miniquests[new_mqob,MQ_DATA_QUESTNO]][1] = new_mqob;
+  // Nummer-index und Cache fuer Abfrageobjekte neu erstellen. Das by_num
+  // koennte effizient mitgeaendert werden, aber das Mapping
+  // mq_query_permitted ist unschoen zu bereinigen, weil man eh ueber alle
+  // Keys laufen muss. Also einmal alles komplett neu.
+  RebuildMQCache();
   return 1;
 }
 
