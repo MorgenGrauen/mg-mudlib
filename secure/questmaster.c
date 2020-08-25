@@ -815,8 +815,17 @@ int ChangeMiniQuest(mixed mq_obj, int param, mixed newvalue) {
   MQMLOG(sprintf("ChangeMiniQuest: %s from %O to %O (%s)", mq_obj,
     altemq, m_entry(miniquests, mq_obj), getuid(this_interactive())));
 
-  ClearUsersMQCache();
-  RebuildMQCache();
+  // nur bei einigen Aenderungen muessen die Caches angefasst werden.
+  switch(param) {
+    case MQ_DATA_POINTS:
+      ClearUsersMQCache();
+      // Fallthrough - in diesem Fall muss auch der MQ-Cache neu erstellt
+      // werden.
+    case MQ_DATA_QUERY_PERMITTED:
+      RebuildMQCache();
+      break;
+  }
+
   if (find_call_out(#'DumpMiniQuests) == -1)
     call_out(#'DumpMiniQuests, 60, this_interactive());
   return 1;
