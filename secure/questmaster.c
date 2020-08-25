@@ -706,7 +706,7 @@ public int AddMiniQuest(int mquestpoints, string allowedobj, string descr,
   // und nummer als last_num merken.
   last_num = nummer;
   save_info();
-  m_add(by_num, nummer, ({mquestpoints, allowedobj}));
+
   MQMLOG(sprintf("AddMiniQuest: %s %O (%s)", allowedobj, miniquests[allowedobj],
                  getuid(this_interactive())));
 
@@ -726,8 +726,6 @@ int RemoveMiniQuest(string name) {
   MQMLOG(sprintf("RemoveMiniQuest: %s %O (%s)",
     name, m_entry(miniquests, name), getuid(this_interactive())));
 
-  // MQ aus dem MQ-Indexnummern-Cache loeschen.
-  m_delete(by_num, miniquests[name,MQ_DATA_QUESTNO]);
   // MQ aus der Miniquestliste austragen.
   m_delete(miniquests, name);
   save_info();
@@ -810,7 +808,7 @@ int ChangeMiniQuest(mixed mq_obj, int param, mixed newvalue) {
   mixed *altemq = m_entry(miniquests, mq_obj);
   int nummer = miniquests[mq_obj,MQ_DATA_QUESTNO];
   miniquests[mq_obj, param] = newvalue;
-  by_num[nummer] = ({miniquests[mq_obj,MQ_DATA_POINTS], mq_obj});
+
   save_info();
 
   MQMLOG(sprintf("ChangeMiniQuest: %s from %O to %O (%s)", mq_obj,
