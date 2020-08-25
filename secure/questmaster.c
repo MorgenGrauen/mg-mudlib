@@ -93,7 +93,7 @@ private void RebuildMQCache() {
   walk_mapping(miniquests, #'make_num /*'*/ );
 }
 
-void create() {
+protected void create() {
   seteuid(getuid(ME));
   if (!restore_object(QUESTS)) {
     save_info();
@@ -122,8 +122,6 @@ private int allowed_write_access() {
 }
 
 void reset() {
-  by_num = ([]);
-  mq_query_permitted = ([]);
   RebuildMQCache();
   set_next_reset(43200);
 }
