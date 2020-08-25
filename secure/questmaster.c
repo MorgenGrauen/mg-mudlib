@@ -578,7 +578,6 @@ int ClearUsersMQCache() {
     return 0;
 
   users_mq = ([]);
-  RebuildMQCache();
 
   return 1;
 }
@@ -711,6 +710,7 @@ public int AddMiniQuest(int mquestpoints, string allowedobj, string descr,
                  getuid(this_interactive())));
 
   ClearUsersMQCache();
+  RebuildMQCache();
   if (find_call_out(#'DumpMiniQuests) == -1)
     call_out(#'DumpMiniQuests, 60, this_interactive());
   return 1;
@@ -733,6 +733,7 @@ int RemoveMiniQuest(string name) {
   // MQ-Punkte-Cache loeschen, da nicht feststellbar ist, welcher der
   // dort eingetragenen Spieler die gerade ausgetragene MQ geloest hatte.
   ClearUsersMQCache();
+  RebuildMQCache();
   if (find_call_out(#'DumpMiniQuests) == -1)
     call_out(#'DumpMiniQuests, 60, this_interactive());
   return 1;
@@ -815,6 +816,7 @@ int ChangeMiniQuest(mixed mq_obj, int param, mixed newvalue) {
     altemq, m_entry(miniquests, mq_obj), getuid(this_interactive())));
 
   ClearUsersMQCache();
+  RebuildMQCache();
   if (find_call_out(#'DumpMiniQuests) == -1)
     call_out(#'DumpMiniQuests, 60, this_interactive());
   return 1;
