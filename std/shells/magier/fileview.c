@@ -510,7 +510,7 @@ static int _man(string cmdline)
         int maxwidth = max(map(tmp2, #'sizeof));
         int tablecols = tty_cols/maxwidth;
         list += "-"*tty_cols+"\n"+
-                sprintf("%#-*.*s", tty_cols, tablecols, implode(tmp2,"\n"))+
+                sprintf("%#-*.*s\n", tty_cols, tablecols, implode(tmp2,"\n"))+
                 "-"*tty_cols+"\n";
       }
       printf(list);
