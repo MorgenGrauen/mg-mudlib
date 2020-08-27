@@ -411,12 +411,11 @@ static int _cat(string cmdline)
 
 static int _man(string cmdline)
 {
-  mixed *args;
   int i, flags;
   string *tmp, *tmp2;
+  string* args = parseargs(cmdline, &flags, MAN_OPTS, 0);
 
   cmdline=_unparsed_args();
-  args=parseargs(cmdline,&flags,MAN_OPTS,0);
   
   if (flags==-1 ||
       (sizeof(args)!=1 &&
