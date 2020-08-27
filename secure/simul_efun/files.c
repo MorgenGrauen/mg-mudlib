@@ -84,49 +84,5 @@ varargs int log_file(string file, string txt, int size_to_break)
     return(write_file(file,txt));
 }
 
-#if !__EFUN_DEFINED__(copy_file)
-#define MAXLEN 50000
-public nomask int copy_file(string source, string dest)
-{
-
-    int ptr;
-    bytes byte_seq;
-
-    set_this_object(previous_object());
-    if (!sizeof(source) || !sizeof(dest) || source==dest
-        || (file_size(source) < 0) // kein File?
-        || !master()->valid_read(source,
-                       getuid(this_interactive()||previous_object()),
-                       "read_file",previous_object())
-        || !master()->valid_write(dest,
-                       getuid(this_interactive()||previous_object()),
-                       "write_file",previous_object())
-       )
-      return 1;
-
-    switch (file_size(dest))
-    {
-    case -1:
-      break;
-    case -2:
-      if (dest[<1]!='/') dest+="/";
-      dest+=efun::explode(source,"/")[<1];
-      if (file_size(dest)==-2) return 1;
-      if (file_size(dest)!=-1) break;
-    default:
-      if (!rm(dest)) return 1;
-      break;
-    }
-    do
-    {
-      byte_seq = read_bytes(source, ptr, MAXLEN); ptr += MAXLEN;
-      if (!byte_seq) byte_seq="";
-      write_file(dest, byte_seq);
-    }
-    while(sizeof(byte_seq) == MAXLEN);
-    return 0;
-}
-#endif //!__EFUN_DEFINED__(copy_file)
-
 #undef PO
 
