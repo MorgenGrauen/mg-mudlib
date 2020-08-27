@@ -93,14 +93,17 @@ public nomask int copy_file(string source, string dest)
     bytes byte_seq;
 
     set_this_object(previous_object());
-    if (!sizeof(source)||!sizeof(dest)||source==dest||(file_size(source)==-1)||
-        (!call_other(master(),"valid_read",source,
-                     getuid(this_interactive()||
-                   previous_object()),"read_file",previous_object()))||
-        (!call_other(master(),"valid_read",source,
-                     getuid(this_interactive()||
-                   previous_object()),"write_file",previous_object())))
+    if (!sizeof(source) || !sizeof(dest) || source==dest
+        || (file_size(source) < 0) // kein File?
+        || !master()->valid_read(source,
+                       getuid(this_interactive()||previous_object()),
+                       "read_file",previous_object())
+        || !master()->valid_write(dest,
+                       getuid(this_interactive()||previous_object()),
+                       "write_file",previous_object())
+       )
       return 1;
+
     switch (file_size(dest))
     {
     case -1:
