@@ -453,8 +453,8 @@ static int _man(string cmdline)
 
   oldman_result = 0;
 
-  if(i && sizeof(input)>2 && sizeof(input) >= (i<<1))
-    input = input[((i<<1)-2)..((i<<1)-1)];
+  if(i && sizeof(input)>2 && sizeof(input) >= i*2)
+    input = input[(i*2-2)..(i*2-1)];
 
   switch (sizeof(input))
   {
@@ -474,14 +474,14 @@ static int _man(string cmdline)
       More(MAND_DOCDIR+input[1], 1);
       return 1;
     default:
-      i = sizeof(input)>>1;
+      i = sizeof(input)/2;
       string* output = allocate(i);
       oldman_result = m_allocate(i, 2);
       while (i)
       {
-        output[(i-1)] = input[(i<<1)-2];
-        oldman_result[i,0] = input[(i<<1)-2];
-        oldman_result[i,1] = input[(i<<1)-1];
+        output[i-1] = input[i*2-2];
+        oldman_result[i,0] = input[i*2-2];
+        oldman_result[i,1] = input[i*2-1];
         i--;
       }
 
