@@ -521,8 +521,7 @@ static int _man(string cmdline)
       while (i)
       {
         output[i-1] = input[i*2-2];
-        oldman_result[i,0] = input[i*2-2];
-        oldman_result[i,1] = input[i*2-1];
+        m_add(oldman_result, i, input[i*2-2], input[i*2-1]);
         i--;
       }
 
