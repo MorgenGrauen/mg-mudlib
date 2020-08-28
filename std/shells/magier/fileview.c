@@ -412,7 +412,7 @@ static int _cat(string cmdline)
 static int _man(string cmdline)
 {
   int i, flags;
-  string *input, *tmp2;
+  string *input;
 
   string* args = parseargs(_unparsed_args(), &flags, MAN_OPTS, 0);
 
@@ -475,18 +475,18 @@ static int _man(string cmdline)
       return 1;
     default:
       i = sizeof(input)>>1;
-      tmp2 = allocate(i);
+      string* output = allocate(i);
       oldman_result = m_allocate(i, 2);
       while (i)
       {
-        tmp2[(i-1)] = input[(i<<1)-2];
+        output[(i-1)] = input[(i<<1)-2];
         oldman_result[i,0] = input[(i<<1)-2];
         oldman_result[i,1] = input[(i<<1)-1];
         i--;
       }
 
       // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
-      tmp2 = sort_array(tmp2, function int (string t1, string t2)
+      output = sort_array(output, function int (string t1, string t2)
              {
                t1 = explode(t1, "/")[<1];
                t2 = explode(t2, "/")[<1];
@@ -494,9 +494,9 @@ static int _man(string cmdline)
              });
 
       // Numerierung ergaenzen
-      foreach(int j : sizeof(tmp2))
+      foreach(int j : sizeof(output))
       {
-        tmp2[j] = sprintf("%d: %s", j+1, tmp2[j]);
+        output[j] = sprintf("%d: %s", j+1, output[j]);
       }
 
       int tty_cols = QueryProp(P_TTY_COLS)-2;
@@ -508,19 +508,19 @@ static int _man(string cmdline)
       {
         // @ als geschuetztes Leerzeichen verwenden, um einen Umbruch
         // nach den Nummern zu verhindern.
-        tmp2 = map(tmp2, #'regreplace, ": ", ":@", 1);
-        list += break_string(implode(tmp2, "  "), tty_cols);
+        output = map(output, #'regreplace, ": ", ":@", 1);
+        list += break_string(implode(output, "  "), tty_cols);
         list = regreplace(list, ":@", ": ", 1);
       }
       else
       {
         // Anzahl Spalten ausrechnen: Terminalbreite / Laenge des laengsten
-        // Elements in <tmp2>. Kann der Spaltenmodus von sprintf() an sich
+        // Elements in <output>. Kann der Spaltenmodus von sprintf() an sich
         // selbst, das liefert aber nicht immer so guenstige Ergebnisse.
-        int maxwidth = max(map(tmp2, #'sizeof));
+        int maxwidth = max(map(output, #'sizeof));
         int tablecols = tty_cols/maxwidth;
         list += "-"*tty_cols+"\n"+
-                sprintf("%#-*.*s\n", tty_cols, tablecols, implode(tmp2,"\n"))+
+                sprintf("%#-*.*s\n", tty_cols, tablecols, implode(output,"\n"))+
                 "-"*tty_cols+"\n";
       }
       printf(list);
