@@ -412,7 +412,7 @@ static int _cat(string cmdline)
 static int _man(string cmdline)
 {
   int i, flags;
-  string *tmp, *tmp2;
+  string *input, *tmp2;
 
   string* args = parseargs(_unparsed_args(), &flags, MAN_OPTS, 0);
 
@@ -420,19 +420,21 @@ static int _man(string cmdline)
       (sizeof(args)!=1 &&
        (sizeof(args)<2 || sizeof(args[1])>1 || !(i=to_int(args[1])))))
     return USAGE("man [-" MAN_OPTS "] <hilfeseite>");
-  tmp=explode(args[0],"/");
 
-  if (oldman_result && sizeof(tmp)==1 && sizeof(args)==1 &&
-      sizeof(tmp[0])==1 && (i=to_int(tmp[0])) && member(oldman_result,i)) {
-   tmp=({oldman_result[i,0],oldman_result[i,1]});
+  input = explode(args[0], "/");
+
+  if (oldman_result && sizeof(input)==1 && sizeof(args)==1 &&
+      sizeof(input[0])==1 && (i=to_int(input[0])) &&
+      member(oldman_result,i)) {
+    input = ({oldman_result[i,0], oldman_result[i,1]});
    i=0;
   }
-  else if (!(flags&(MAN_M|MAN_R))&&sizeof(tmp)>1)
+  else if (!(flags&(MAN_M|MAN_R)) && sizeof(input)>1)
   {
     if (file_size(MAND_DOCDIR+args[0])>=0)
-      tmp=({tmp[<1],args[0]});
+      input = ({input[<1], args[0]});
     else
-      tmp=({});
+      input = ({});
   }
   else
   {
@@ -443,13 +445,13 @@ static int _man(string cmdline)
           !regexp(({""}),args[0]))
         return printf("man: Ungueltiger Ausdruck in Maske.\n"),1;
     }
-    tmp=({string *})call_other(MAND,"locate",args[0],flags&(MAN_M|MAN_R));
+    input = ({string *})MAND->locate(args[0], flags&(MAN_M|MAN_R));
   }
 
   oldman_result=0;
-  if(i && sizeof(tmp)>2 && sizeof(tmp)>=(i<<1))
-    tmp=tmp[((i<<1)-2)..((i<<1)-1)];
-  switch(sizeof(tmp))
+  if(i && sizeof(input)>2 && sizeof(input) >= (i<<1))
+    input = input[((i<<1)-2)..((i<<1)-1)];
+  switch (sizeof(input))
   {
     case 0:
       printf("Keine Hilfeseite gefunden fuer '%s'.\n",args[0]);
@@ -462,18 +464,18 @@ static int _man(string cmdline)
          return 1;
          }
        */
-      printf("Folgende Hilfeseite wurde gefunden: %s\n",tmp[1]);
-      More(MAND_DOCDIR+tmp[1],1);
+      printf("Folgende Hilfeseite wurde gefunden: %s\n", input[1]);
+      More(MAND_DOCDIR+input[1], 1);
       return 1;
     default:
-      i=sizeof(tmp)>>1;
+      i = sizeof(input)>>1;
       tmp2=allocate(i);
       oldman_result=m_allocate(i,2);
       while(i)
       {
-        tmp2[(i-1)]=tmp[(i<<1)-2];
-        oldman_result[i,0]=tmp[(i<<1)-2];
-        oldman_result[i,1]=tmp[(i<<1)-1];
+        tmp2[(i-1)] = input[(i<<1)-2];
+        oldman_result[i,0] = input[(i<<1)-2];
+        oldman_result[i,1] = input[(i<<1)-1];
         i--;
       }
 
