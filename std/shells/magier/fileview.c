@@ -409,6 +409,35 @@ static int _cat(string cmdline)
 //############################### MAN ###################################
 //                              #######
 
+/* Sortiert ein Array paarweise, wobei von jedem Wertepaar der erste Wert
+   fuer die Sortierung herangezogen wird. */
+private string* SortInPairs(string* arr) {
+  if (!sizeof(arr))
+    return arr;
+
+  string** helper = ({});
+
+  /* In Sub-Arrays zerlegen, die jeweils ein Wertepaart enthalten:
+     ({s0, s1, s2, s3}) => ({({s0,s1}), ({s2,s3})}) */
+  int listsize = sizeof(arr);
+  for(int i ; i<listsize ; i+=2) {
+    helper += ({ arr[i..i+1] });
+  }
+
+  // Nach dem ersten Element jedes Sub-Arrays sortieren.
+  helper = sort_array(helper, function int (string* h1, string* h2) {
+              return lower_case(h1[0]) > lower_case(h2[0]);
+            });
+
+  // Eingabe-Array loeschen und aus den sortierten Wertepaaren neu aufbauen.
+  arr = ({});
+  foreach(string* h : helper) {
+    arr += h;
+  }
+
+  return arr;
+}
+
 static int _man(string cmdline)
 {
   int i, flags;
@@ -465,12 +494,7 @@ static int _man(string cmdline)
     input = ({string *})MAND->locate(args[0], flags&(MAN_M|MAN_R));
     // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
     // Wird fuer die spaetere Ausgabe der Liste benoetigt.
-    input = sort_array(input, function int (string t1, string t2)
-            {
-              t1 = explode(t1, "/")[<1];
-              t2 = explode(t2, "/")[<1];
-              return lower_case(t1) > lower_case(t2);
-            });
+    input = SortInPairs(input);
   }
 
   /* Alte Such-Treffer werden entsorgt. */
