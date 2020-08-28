@@ -324,6 +324,7 @@ protected void GMCPmod_Core_v1_send(mapping data)
 protected void GMCPmod_MG_char_v1_send(mapping data)
 {
   mapping squeue = m_allocate(5,0);
+  int can = QueryProp(P_CAN_FLAGS);
   struct gmcp_mod_s mod = gmcpdata["MG.char"];
   // mod->data fungiert hier auch als Cache der Daten. Die muss man naemlich
   // leider immer alle senden, nicht nur die geaenderten.
@@ -331,6 +332,7 @@ protected void GMCPmod_MG_char_v1_send(mapping data)
   {
     // Alle verfuegbaren Informationen senden...
     mod->data = m_allocate(6);
+    
     m_add(mod->data, "MG.char.base",
               ([P_NAME: Name(WER),
                 P_GUILD: QueryProp(P_GUILD),
@@ -338,14 +340,18 @@ protected void GMCPmod_MG_char_v1_send(mapping data)
                 P_TITLE: QueryProp(P_TITLE),
                 "wizlevel": query_wiz_level(this_object()),
                 P_RACE: QueryProp(P_RACE)]) );  // TODO
-    m_add(mod->data,"MG.char.vitals", 
-              ([P_HP: QueryProp(P_HP),
-                P_SP: QueryProp(P_SP),
-                P_POISON: QueryProp(P_POISON) ]) );
     m_add(mod->data,"MG.char.maxvitals",
               ([P_MAX_HP: QueryProp(P_MAX_HP),
                 P_MAX_SP: QueryProp(P_MAX_SP),
                 P_MAX_POISON: QueryProp(P_MAX_POISON) ]) );
+    // aktuelle Werte fuer LP/KP/Gift
+    mapping d = m_allocate(3);
+    d[P_HP] = QueryProp(P_HP);
+    if (can & CAN_REPORT_SP)
+      d[P_SP] = QueryProp(P_SP);
+    if (can & CAN_REPORT_POISON)
+      d[P_POISON] = QueryProp(P_POISON);
+    m_add(mod->data,"MG.char.vitals", d );
     m_add(mod->data,"MG.char.attributes",
               ([ A_STR: QueryAttribute(A_STR),
                  A_INT: QueryAttribute(A_INT),
@@ -355,15 +361,20 @@ protected void GMCPmod_MG_char_v1_send(mapping data)
               ([P_LEVEL: QueryProp(P_LEVEL),
                 P_GUILD_LEVEL: QueryProp(P_GUILD_LEVEL),
                 P_GUILD_TITLE: QueryProp(P_GUILD_TITLE) ]) );
-    m_add(mod->data,"MG.char.wimpy",
-              ([P_WIMPY: QueryProp(P_WIMPY),
-                P_WIMPY_DIRECTION: QueryProp(P_WIMPY_DIRECTION) ]) );
+    // Und die Vorsicht
+    d = m_allocate(2);
+    if (can & CAN_REPORT_WIMPY)
+      d[P_WIMPY] = QueryProp(P_WIMPY);
+    if (can & CAN_REPORT_WIMPY_DIR)
+      d[P_WIMPY_DIRECTION] = QueryProp(P_WIMPY_DIRECTION);
+    m_add(mod->data,"MG.char.wimpy", d );
+    if (sizeof(d))
+      m_add(squeue,"MG.char.wimpy");
     m_add(squeue,"MG.char.base");
     m_add(squeue,"MG.char.vitals");
     m_add(squeue,"MG.char.maxvitals");
     m_add(squeue,"MG.char.attributes");
     m_add(squeue,"MG.char.info");
-    m_add(squeue,"MG.char.wimpy");
     // dies wird direkt gesendet, weil es nicht gespeichert werden muss. (wird
     // nur beim Start des Moduls gesendet).
     GMCP_send("MG.char.infoVars", ([
@@ -493,7 +504,7 @@ protected void GMCPmod_MG_room_v1_send(mapping data)
   if (!environment())
     return;
 
-  // Blind gibt es auch per GMCP nix.
+  // Blind gibt es auch per GMCP keine Short oder weitere Infos.
   if (CannotSee(1))
     return;
 
@@ -563,12 +574,16 @@ protected void GMCPmod_char_v1_send(mapping data)
   // leider immer alle senden, nicht nur die geaenderten.
   if (!mappingp(data))
   {
+    int can = QueryProp(P_CAN_FLAGS);
     // Alle verfuegbaren Informationen senden...
     mod->data = m_allocate(4);
     m_add(mod->data, "char.base", (["name": query_real_name(),
                                  "race": QueryProp(P_RACE)]) );
-    m_add(mod->data,"char.vitals", (["hp": QueryProp(P_HP),
-                                  "mana": QueryProp(P_SP)]) );
+    mapping d = m_allocate(2);
+    d["hp"] = QueryProp(P_HP);
+    if (can & CAN_REPORT_SP)
+      d["mana"] = QueryProp(P_SP);
+    m_add(mod->data,"char.vitals", d );
     m_add(mod->data,"char.stats", ([ "str": QueryAttribute(A_STR),
                                "int": QueryAttribute(A_INT),
                                "dex": QueryAttribute(A_DEX),
@@ -644,12 +659,16 @@ protected void GMCPmod_Char_v1_send(mapping data)
   // leider immer alle senden, nicht nur die geaenderten.
   if (!mappingp(data))
   {
+    int can = QueryProp(P_CAN_FLAGS);
     // Alle verfuegbaren Informationen senden...
     mod->data = m_allocate(4);
-    m_add(mod->data,"Char.Vitals", (["hp": QueryProp(P_HP),
-                                     "mp": QueryProp(P_SP),
-                                     "maxhp": QueryProp(P_MAX_HP),
-                                     "maxmp": QueryProp(P_MAX_SP) ]) );
+    mapping d = m_allocate(4);
+    d["hp"] = QueryProp(P_HP);
+    d["maxhp"] = QueryProp(P_MAX_HP);
+    d["maxmp"] = QueryProp(P_MAX_SP);
+    if (can & CAN_REPORT_SP)
+      d["mp"] = QueryProp(P_SP);
+    m_add(mod->data,"Char.Vitals", d );
     m_add(mod->data,"Char.Status", (["level": QueryProp(P_LEVEL),
                                      "guild": QueryProp(P_GUILD) ]) );
     m_add(squeue,"Char.Vitals");
@@ -702,7 +721,7 @@ protected void GMCPmod_Char_v1_send(mapping data)
   }
 }
 
-// Handler fuer das "char" Modul von GMCP (Modul von Aardwolf)
+// Handler fuer das "Char" Modul von GMCP (Modul von IRE)
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_Char_v1_recv(string cmd, mixed args)
 {
