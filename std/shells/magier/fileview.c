@@ -413,10 +413,9 @@ static int _man(string cmdline)
 {
   int i, flags;
   string *tmp, *tmp2;
-  string* args = parseargs(cmdline, &flags, MAN_OPTS, 0);
 
-  cmdline=_unparsed_args();
-  
+  string* args = parseargs(_unparsed_args(), &flags, MAN_OPTS, 0);
+
   if (flags==-1 ||
       (sizeof(args)!=1 &&
        (sizeof(args)<2 || sizeof(args[1])>1 || !(i=to_int(args[1])))))
