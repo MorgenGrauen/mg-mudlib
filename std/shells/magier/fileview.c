@@ -423,6 +423,12 @@ static int _man(string cmdline)
 
   input = explode(args[0], "/");
 
+  /* Wenn das Ergebnis einer vorherigen Suche noch vorliegt und die aktuelle
+     Eingabe als einziges eine einstellige Zahl enthaelt, und diese dann in
+     dem alten Suchergebnis enthalten ist, wird die Eingabe durch das alte
+     Ergebnis ersetzt. <i> wird in dem Fall geloescht.
+     Wenn kein altes Ergebnis gefunden wurde, enthaelt <i> die eingegebene
+     Nummer. */
   if (oldman_result && sizeof(input)==1 && sizeof(args)==1 &&
       sizeof(input[0])==1 && (i=to_int(input[0])) &&
       member(oldman_result,i))
@@ -430,6 +436,8 @@ static int _man(string cmdline)
     input = ({oldman_result[i,0], oldman_result[i,1]});
     i = 0;
   }
+  /* Ansonsten wenn weder -m, noch -r gesetzt sind und es eine Manpage gibt,
+     die genau der Eingabe entspricht, wird diese verwendet. */
   else if (!(flags&(MAN_M|MAN_R)) && sizeof(input)>1)
   {
     if (file_size(MAND_DOCDIR+args[0]) >= 0)
@@ -439,6 +447,8 @@ static int _man(string cmdline)
   }
   else
   {
+    /* Soll eine Regexp-Suche durchgefuehrt werden? Dann erstmal den Ausdruck
+       auf Gueltigkeit pruefen. */
     if (flags&MAN_R)
     {
       flags &= (~MAN_M);
@@ -448,6 +458,10 @@ static int _man(string cmdline)
         return 1;
       }
     }
+    /* Die Ausgabe von locate() liefert ein String-Array, das abwechselnd den
+       Dateinamen der gefundenen Manpage und den vollen Pfad dieser Manpage
+       unterhalb von /doc enthaelt. Beispielsweise ({"Defend","lfun/Defend"})
+     */
     input = ({string *})MAND->locate(args[0], flags&(MAN_M|MAN_R));
     // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
     // Wird fuer die spaetere Ausgabe der Liste benoetigt.
@@ -459,17 +473,31 @@ static int _man(string cmdline)
             });
   }
 
+  /* Alte Such-Treffer werden entsorgt. */
   oldman_result = 0;
 
+  /* <i> kann maximal eine einstellige Zahl sein, 1-9, wenn eine solche als
+     einziges Argument eingegeben wurde und kein passendes Ergebnis in einer
+     vorigen Suchanfrage gefunden wurde.
+
+     <input> kann nur genau dann mehr als 2 Elemente haben, wenn das Ergebnis
+     des Aufrufs MAND->locate() drinsteht. Und nur dann muss ueberhaupt ein
+     hoeheres Wertepaar rausgeschnitten werden, denn wenn <input> bis zu 2
+     Elemente hat, kann damit direkt weitergearbeitet werden.
+
+     Beispiel: bei einer Eingabe von "4" wird hier aus <input> das 7. und
+     8. Element entnommen (Indizes [6..7]). */
   if(i && sizeof(input)>2 && sizeof(input) >= i*2)
     input = input[(i*2-2)..(i*2-1)];
 
   switch (sizeof(input))
   {
+    /* <input> leer, nichts brauchbares gefunden. */
     case 0:
       printf("Keine Hilfeseite gefunden fuer '%s'.\n", args[0]);
       break;
 
+    /* Genau 2 Elemente enthalten? Dann kann das direkt ausgegeben werden. */
     case 2:
        /*
          if (flags&MAN_I)
@@ -481,10 +509,15 @@ static int _man(string cmdline)
       printf("Folgende Hilfeseite wurde gefunden: %s\n", input[1]);
       More(MAND_DOCDIR+input[1], 1);
       return 1;
+
+    /* Alles andere: */
     default:
       i = sizeof(input)/2;
       string* output = allocate(i);
+
+      // Inhalt: ([ int nummer : string manpage; string manpage_pfad ])
       oldman_result = m_allocate(i, 2);
+
       while (i)
       {
         output[i-1] = input[i*2-2];
