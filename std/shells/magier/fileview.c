@@ -449,6 +449,14 @@ static int _man(string cmdline)
       }
     }
     input = ({string *})MAND->locate(args[0], flags&(MAN_M|MAN_R));
+    // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
+    // Wird fuer die spaetere Ausgabe der Liste benoetigt.
+    input = sort_array(input, function int (string t1, string t2)
+            {
+              t1 = explode(t1, "/")[<1];
+              t2 = explode(t2, "/")[<1];
+              return lower_case(t1) > lower_case(t2);
+            });
   }
 
   oldman_result = 0;
@@ -484,14 +492,6 @@ static int _man(string cmdline)
         oldman_result[i,1] = input[i*2-1];
         i--;
       }
-
-      // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
-      output = sort_array(output, function int (string t1, string t2)
-             {
-               t1 = explode(t1, "/")[<1];
-               t2 = explode(t2, "/")[<1];
-               return lower_case(t1) > lower_case(t2);
-             });
 
       // Numerierung ergaenzen
       foreach(int j : sizeof(output))
