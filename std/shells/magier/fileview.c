@@ -425,13 +425,14 @@ static int _man(string cmdline)
 
   if (oldman_result && sizeof(input)==1 && sizeof(args)==1 &&
       sizeof(input[0])==1 && (i=to_int(input[0])) &&
-      member(oldman_result,i)) {
+      member(oldman_result,i))
+  {
     input = ({oldman_result[i,0], oldman_result[i,1]});
-   i=0;
+    i = 0;
   }
   else if (!(flags&(MAN_M|MAN_R)) && sizeof(input)>1)
   {
-    if (file_size(MAND_DOCDIR+args[0])>=0)
+    if (file_size(MAND_DOCDIR+args[0]) >= 0)
       input = ({input[<1], args[0]});
     else
       input = ({});
@@ -440,22 +441,27 @@ static int _man(string cmdline)
   {
     if (flags&MAN_R)
     {
-      flags&=(~MAN_M);
-      if (catch(regexp(({""}),args[0]))||
-          !regexp(({""}),args[0]))
-        return printf("man: Ungueltiger Ausdruck in Maske.\n"),1;
+      flags &= (~MAN_M);
+      if (catch(regexp(({""}), args[0])) || !regexp(({""}), args[0]))
+      {
+        printf("man: Ungueltiger Ausdruck in Maske.\n");
+        return 1;
+      }
     }
     input = ({string *})MAND->locate(args[0], flags&(MAN_M|MAN_R));
   }
 
-  oldman_result=0;
+  oldman_result = 0;
+
   if(i && sizeof(input)>2 && sizeof(input) >= (i<<1))
     input = input[((i<<1)-2)..((i<<1)-1)];
+
   switch (sizeof(input))
   {
     case 0:
-      printf("Keine Hilfeseite gefunden fuer '%s'.\n",args[0]);
+      printf("Keine Hilfeseite gefunden fuer '%s'.\n", args[0]);
       break;
+
     case 2:
        /*
          if (flags&MAN_I)
@@ -469,9 +475,9 @@ static int _man(string cmdline)
       return 1;
     default:
       i = sizeof(input)>>1;
-      tmp2=allocate(i);
-      oldman_result=m_allocate(i,2);
-      while(i)
+      tmp2 = allocate(i);
+      oldman_result = m_allocate(i, 2);
+      while (i)
       {
         tmp2[(i-1)] = input[(i<<1)-2];
         oldman_result[i,0] = input[(i<<1)-2];
@@ -480,14 +486,16 @@ static int _man(string cmdline)
       }
 
       // Sortierung case-insensitive, ggf. vorhandene Pfade dabei ignorieren
-      tmp2 = sort_array(tmp2, function int (string t1, string t2) {
+      tmp2 = sort_array(tmp2, function int (string t1, string t2)
+             {
                t1 = explode(t1, "/")[<1];
                t2 = explode(t2, "/")[<1];
                return lower_case(t1) > lower_case(t2);
              });
 
       // Numerierung ergaenzen
-      foreach(int j : sizeof(tmp2)) {
+      foreach(int j : sizeof(tmp2))
+      {
         tmp2[j] = sprintf("%d: %s", j+1, tmp2[j]);
       }
 
@@ -496,14 +504,16 @@ static int _man(string cmdline)
         "gefunden:\n";
 
       // Wer keine Grafik sehen will, bekommt eine andere Anzeige.
-      if (QueryProp(P_NO_ASCII_ART)) {
+      if (QueryProp(P_NO_ASCII_ART))
+      {
         // @ als geschuetztes Leerzeichen verwenden, um einen Umbruch
         // nach den Nummern zu verhindern.
         tmp2 = map(tmp2, #'regreplace, ": ", ":@", 1);
         list += break_string(implode(tmp2, "  "), tty_cols);
         list = regreplace(list, ":@", ": ", 1);
       }
-      else {
+      else
+      {
         // Anzahl Spalten ausrechnen: Terminalbreite / Laenge des laengsten
         // Elements in <tmp2>. Kann der Spaltenmodus von sprintf() an sich
         // selbst, das liefert aber nicht immer so guenstige Ergebnisse.
