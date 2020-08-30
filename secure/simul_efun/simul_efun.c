@@ -433,7 +433,7 @@ int file_time(string path) {
 }
 
 // * Magier-Level abfragen
-int query_wiz_level(mixed player) {
+int query_wiz_level(object|string player) {
   return "/secure/master"->query_wiz_level(player);
 }
 
@@ -1036,7 +1036,7 @@ int set_object_heart_beat(object ob, int flag)
 }
 
 // * Magierlevelgruppen ermitteln
-int query_wiz_grp(mixed wiz)
+int query_wiz_grp(object|string wiz)
 {
   int lev;
 

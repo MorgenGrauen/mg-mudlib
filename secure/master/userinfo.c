@@ -579,7 +579,7 @@ public int get_wiz_level(string user) {
 }
 
 // Wizlevel fuer eine UID ermitteln.
-public int query_wiz_level( mixed player )
+public int query_wiz_level( object|string player )
 {
     if ( objectp(player) && efun::object_info(player, OI_ONCE_INTERACTIVE) )
         return get_wiz_level( getuid(player) );
@@ -588,7 +588,7 @@ public int query_wiz_level( mixed player )
         //if (objectp(player))
         //    player=getuid(player);
         if ( stringp(player) ) {
-            if( player[0..1]==DOMAINDIR"." ) return 25;
+            if( player[0..1]==DOMAINDIR"." ) return DOMAINMEMBER_LVL;
             if( player[0..5]==GUILDID"." ) 
                 return WIZLVLS[GUILDID];
             if( player[0..1]==PROJECTDIR"." ) return 21;
