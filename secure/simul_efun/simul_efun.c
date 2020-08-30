@@ -780,10 +780,26 @@ private nomask string _process_string(string str,object po) {
               return(efun::process_string(str));
 }
 
-nomask string process_string( mixed str )
+nomask string process_string( string|closure str )
 {
   string tmp, err;
   int flag; 
+
+  // process_string() wird nur noch ausgewertet, wenn der Aufrufer einen
+  // Level von maximal 25 hat. Das schliesst alle Objekten in /d/, /p/ und den
+  // Gilden ein, aber verhindert es fuer alle hochstufigen Magier und ihre
+  // Objekte. Ausserdem erlauben wir keine Auswertung mehr fuer
+  // Spielerobjekte, wenn sie mehr als Seher sind.
+  // TODO: aus Spielershells ausbauen
+  // TODO 2: ganz ausbauen.
+  if ( (query_once_interactive(previous_object())
+        && query_wiz_level(previous_object()) > SEER_LVL
+        )
+      || query_wiz_level(getuid(previous_object())) > DOMAINMEMBER_LVL)
+  {
+    raise_error("Illegale Benutzung von process_string(). Aufrufer "
+        "ist Magiershell oder Objekt mit Level > 25.\n");
+  }
 
   if ( closurep(str) ) {
       set_this_object( previous_object() );
