@@ -101,7 +101,7 @@ protected mixed *get_full_userinfo(string user);
 public mixed    *get_userinfo(string user);
 public int       get_wiz_level(string user);
 public mixed     query_userlist(string user, int prop);
-public int       query_wiz_level(mixed player);
+public int       query_wiz_level(object|string player);
 int              update_wiz_level(string user,int lev);
 protected void   set_guilds(string player, string *guilds);
 protected void   set_domains(string player, string *domains);

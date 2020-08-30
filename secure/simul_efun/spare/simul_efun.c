@@ -44,10 +44,10 @@ public int mkdirp(string dir);
  */
 string dtime(int wann);
 varargs int log_file(string file, string txt, int size_to_break);
-int query_wiz_level(mixed player);
+int query_wiz_level(object|string player);
 nomask varargs int snoop(object snooper, object snoopee);
 varargs string country(mixed ip, string num);
-int query_wiz_grp(mixed wiz);
+int query_wiz_grp(object|string wiz);
 public varargs object deep_present(mixed what, object ob);
 nomask int secure_level();
 nomask string secure_euid();
@@ -433,7 +433,7 @@ int file_time(string path) {
 }
 
 // * Magier-Level abfragen
-int query_wiz_level(mixed player) {
+int query_wiz_level(object|string player) {
   return "/secure/master"->query_wiz_level(player);
 }
 
@@ -1036,7 +1036,7 @@ int set_object_heart_beat(object ob, int flag)
 }
 
 // * Magierlevelgruppen ermitteln
-int query_wiz_grp(mixed wiz)
+int query_wiz_grp(object|string wiz)
 {
   int lev;
 
