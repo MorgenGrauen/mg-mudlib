@@ -795,8 +795,9 @@ nomask string process_string( string|closure str )
   if ( (query_once_interactive(previous_object())
         && query_wiz_level(previous_object()) > SEER_LVL
         )
-      || query_wiz_level(getuid(previous_object())) > DOMAINMEMBER_LVL)
+      || query_wiz_level(getuid(previous_object())) > SPECIAL_LVL)
   {
+    set_this_object(previous_object());
     raise_error("Illegale Benutzung von process_string(). Aufrufer "
         "ist Magiershell oder Objekt mit Level > 25.\n");
   }
