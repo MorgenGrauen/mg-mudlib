@@ -780,17 +780,42 @@ private nomask string _process_string(string str,object po) {
               return(efun::process_string(str));
 }
 
+private nomask int _illegal_ps_call(string s)
+{
+  int i_arg = strstr(s,"|"); // erst arg-trenner suchen
+  // dann ggf. von dort rueckwaerts den obj-trenner suchen
+  int i_ob = i_arg!=-1 ? strrstr(s, ":", i_arg)
+                       : strstr(s,":");
+  // Wenn kein ":" vorkommt, ists max. ein objektinterner Call und erlaubt
+  if (i_ob == -1)
+    return 0;
+  string obname = (i_arg != -1) ? s[i_ob+1..i_arg-1]
+                                : s[i_ob+1..];
+  // Wenn es das nicht gibt, ist es auch OK - process_string laedt keine
+  // nicht-geladenen Objekte. Das hier ist auch der Fall, wenn in
+  // dem Substring nen : vorkommt, es aber gar kein process_call ist...
+  object ob = find_object(obname);
+  if (!ob)
+    return 0;
+  // Es gibt ein Objekt. Jetzt wird es spannend. Erlaubt sind calls zwischen
+  // Objekten, welche vom gleichen Magier stammen.
+  if (REAL_UID(ob) == REAL_UID(previous_object()))
+    return 0;
+  // Alles andere ist nicht erlaubt
+  return 1;
+}
+
 nomask string process_string( string|closure str )
 {
   string tmp, err;
   int flag; 
 
   // process_string() wird nur noch ausgewertet, wenn der Aufrufer einen
-  // Level von maximal 25 hat. Das schliesst alle Objekten in /d/, /p/ und den
+  // Level von maximal 30 hat. Das schliesst alle Objekten in /d/, /p/ und den
   // Gilden ein, aber verhindert es fuer alle hochstufigen Magier und ihre
   // Objekte. Ausserdem erlauben wir keine Auswertung mehr fuer
   // Spielerobjekte, wenn sie mehr als Seher sind.
-    // TODO: aus Spielershells ausbauen
+  // TODO: aus Spielershells ausbauen
   // TODO 2: ganz ausbauen.
   if ( (query_once_interactive(previous_object())
         && query_wiz_level(previous_object()) > SEER_LVL
@@ -806,6 +831,16 @@ nomask string process_string( string|closure str )
       set_this_object(previous_object());
       raise_error("Illegale Benutzung von process_string(). Aufrufer "
           "ist Magiershell oder Objekt mit Level > 30.\n");
+    }
+  }
+  // Kein Aufruf von Funktionen in Objekten anderer Magier erlaubt.
+  foreach(string s: explode(str, "@@"))
+  {
+    if (sizeof(s) && _illegal_ps_call(s))
+    {
+      set_this_object(previous_object());
+      raise_error("Illegale Benutzung von process_string(). Aufruf in "
+          "in fremder UID nicht erlaubt.\n");
     }
   }
 
