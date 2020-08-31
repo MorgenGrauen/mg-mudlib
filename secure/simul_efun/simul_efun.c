@@ -790,16 +790,23 @@ nomask string process_string( string|closure str )
   // Gilden ein, aber verhindert es fuer alle hochstufigen Magier und ihre
   // Objekte. Ausserdem erlauben wir keine Auswertung mehr fuer
   // Spielerobjekte, wenn sie mehr als Seher sind.
-  // TODO: aus Spielershells ausbauen
+    // TODO: aus Spielershells ausbauen
   // TODO 2: ganz ausbauen.
   if ( (query_once_interactive(previous_object())
         && query_wiz_level(previous_object()) > SEER_LVL
         )
       || query_wiz_level(getuid(previous_object())) > SPECIAL_LVL)
   {
-    set_this_object(previous_object());
-    raise_error("Illegale Benutzung von process_string(). Aufrufer "
-        "ist Magiershell oder Objekt mit Level > 25.\n");
+    // Ein Fehler wird aber nur ausgeloest, falls der String ein @@ enthaelt,
+    // ansonsten koennen wir den ohne Fehler returnieren.
+    if (stringp(str) && strstr(str, "@@") == -1)
+      return str;
+    else
+    {
+      set_this_object(previous_object());
+      raise_error("Illegale Benutzung von process_string(). Aufrufer "
+          "ist Magiershell oder Objekt mit Level > 30.\n");
+    }
   }
 
   if ( closurep(str) ) {
