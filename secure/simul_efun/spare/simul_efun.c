@@ -797,7 +797,7 @@ nomask string process_string( string|closure str )
         )
       || query_wiz_level(getuid(previous_object())) > SPECIAL_LVL)
   {
-    // Ein Fehler wird aber nur ausgeloest, falls der String ein @@ enthaelt,
+    // Ein Fehler wird aber nur ausgeloest, falls der String ein @@ enthaelt,
     // ansonsten koennen wir den ohne Fehler returnieren.
     if (stringp(str) && strstr(str, "@@") == -1)
       return str;
