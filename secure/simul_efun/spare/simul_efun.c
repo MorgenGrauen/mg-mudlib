@@ -808,7 +808,11 @@ private nomask int _illegal_ps_call(string s)
 nomask string process_string( string|closure str )
 {
   string tmp, err;
-  int flag; 
+  int flag;
+
+  // Hmpf, es wird tatsaechlich reihenweise mit 0 gerufen.
+  if (!str)
+    return 0;
 
   // process_string() wird nur noch ausgewertet, wenn der Aufrufer einen
   // Level von maximal 30 hat. Das schliesst alle Objekten in /d/, /p/ und den
