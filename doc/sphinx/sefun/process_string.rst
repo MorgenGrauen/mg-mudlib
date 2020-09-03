@@ -5,47 +5,40 @@ process_string(E)
 
 FUNKTION
 --------
-::
 
      string process_string(string str)
      string process_string(closure cl)
 
 BESCHREIBUNG
 ------------
-::
 
-     Durchsucht den String str nach Vorkommnissen von Substrings, die "Wert
-     durch Funktionsaufruf zu ersetzen" andeuten. Die Form ist: @@, gefolgt
-     durch einen impliziten Funktionsaufruf.
+     Beschreibung s. efun/process_string.
 
-     Der zu ersetzenden Substring hat die Form:
-     @@function[:filename][|argument1|argument2]@@
+     Abweichend zu der Beschreibung gibt es im MG folgende wichtige Punkte:
+     
+     * nicht in neuem Code nutzen, aus altem Code ausbauen
+     * nicht nutzbar fuer Objekte mit einer UID mit einem Level > 30.
+     * nicht rufbar durch Magiershells
+     * kann Funktionen in anderen Objekten nur rufen, wenn diese zum gleichen
+       Magier gehoeren.
 
-     Die entsprechende Funktion muss einen String zurueckgeben, oder der
-     process_string() uebergebene String str wird nicht modifiziert.
+     Folgendes Properties und Details werden bei der Abfrage ueber
+     process_string() gefiltert:
+       
+     * P_LONG
+     * P_SHORT
+     * Details
+     * NPC-Chats
+     * P_INT_LONG
+     * P_INT_SHORT
 
-     process_string() arbeitet nicht rekursiv, object_name und argument sind
-     optionale Werte.
-
-     Falls eine Closure angegeben wurde, wird diese lediglich gerufen
-     und nicht gefiltert.
-
-ANMERKUNGEN
------------
-::
-
-     - Die Funktion, die gerufen werden soll, _muss_ mit einem Buchstaben
-		   anfangen, '_' ist nicht moeglich!
-     - folgendes Properties und Details werden bei der Abfrage ueber
-       process_string() gefiltert:
-       P_LONG, P_SHORT, P_READ_MSG, AddReadDetail()-Details und NPC-Chats
-       P_INT_LONG ueber int_long(), P_INT_SHORT ueber int_short()
-     - die Nutzung kann zu Sicherheitsproblemen fuehren, siehe auch
-       process_call()
+     Die Nutzung kann zu Sicherheitsproblemen fuehren, siehe auch
+     process_call().
 
 BEISPIEL
 --------
-::
+
+.. code-block:: pike
 
      // komplette Ersetzung ...
      SetProp(P_LONG,"@@current_long@@");
@@ -57,7 +50,6 @@ BEISPIEL
 
      -> bei Abfrage: "Die Beschreibung." oder "Die andere Beschreibung."
 
-
      // Teilersetzung
      SetProp(P_SHORT, "Ein @@farbenfun|huebsch@@ Ding");
      ...
@@ -67,11 +59,11 @@ BEISPIEL
 
      -> bei Abfrage: "Ein huebsch gelbes Ding."
 
+
 SIEHE AUCH
 ----------
-::
 
-     notify_fail(E), process_call(E), replace_personal(E)
+     :doc:`process_call`, :doc:`replace_personal`
 
-22. Nov. 2006 Arathorn
+02.09.2020 Zesstra
 
