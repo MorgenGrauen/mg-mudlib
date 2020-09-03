@@ -798,8 +798,9 @@ private nomask int _illegal_ps_call(string s)
   if (!ob)
     return 0;
   // Es gibt ein Objekt. Jetzt wird es spannend. Erlaubt sind calls zwischen
-  // Objekten, welche vom gleichen Magier stammen.
-  if (REAL_UID(ob) == REAL_UID(previous_object()))
+  // Objekten, welche dieselbe UID haben oder vom gleichen Magier stammen.
+  if (getuid(ob) == getuid(previous_object()) ||
+      REAL_UID(ob) == REAL_UID(previous_object()))
     return 0;
   // Alles andere ist nicht erlaubt
   return 1;
