@@ -839,24 +839,21 @@ nomask string process_string( string|closure str )
     }
   }
   // Kein Aufruf von Funktionen in Objekten anderer Magier erlaubt.
-  foreach(string s: explode(str, "@@"))
+  if (stringp(str))
   {
-    if (sizeof(s) && _illegal_ps_call(s))
+    foreach(string s: explode(str, "@@"))
     {
-      set_this_object(previous_object());
-      raise_error("Illegale Benutzung von process_string(). Aufruf in "
-          "in fremder UID nicht erlaubt.\n");
+      if (sizeof(s) && _illegal_ps_call(s))
+      {
+        set_this_object(previous_object());
+        raise_error("Illegale Benutzung von process_string(). Aufruf in "
+            "in fremder UID nicht erlaubt.\n");
+      }
     }
   }
-
-  if ( closurep(str) ) {
+  else if ( closurep(str) ) {
       set_this_object( previous_object() );
       return funcall(str);
-  }
-  else if (str==0)
-      return(str);
-  else if ( !stringp(str) ) {
-      return to_string(str);
   }
 
   if ( !(flag = process_flag > time() - 60))                     
