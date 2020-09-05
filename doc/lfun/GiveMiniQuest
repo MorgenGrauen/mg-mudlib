@@ -54,7 +54,7 @@ BEISPIEL
 SIEHE AUCH
 ==========
 
-   HasMiniQuest
+   HasMiniQuest(), AddMiniQuest()
    /secure/questmaster.h, /secure/questmaster.c
 
 

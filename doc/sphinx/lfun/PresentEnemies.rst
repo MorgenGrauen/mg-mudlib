@@ -23,7 +23,8 @@ RUeCKGABEWERT
 -------------
 ::
 
-	anwesende Feinde
+  Array mit anwesenden Feinden. Wenn keine Feinde anwesend sind, ist 
+  das Array leer, es wird jedoch immer ein Array zurueckgegeben.
 
 BESCHREIBUNG
 ------------

@@ -18,8 +18,13 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Array mit zwei Meldungen, eine fuer den Raum, den der Spieler
-   verlaesst, und eine fuer den Transporter, in den er geht.
+   String-Array mit zwei Meldungen, die als Argumente 4 und 5 an move()
+   uebergeben werden, d.h. die erste ist fuer den Raum, den der Spieler
+   verlaesst, und die zweite fuer den Transporter, in den er geht.
+
+   Hat das Array keine zwei Elemente, werden Standardmeldungen ausgegeben,
+   so als waere die Property auf ({"betritt", "kommt herein"}) gesetzt.
+   Die Property hat jedoch keinen Default-Wert.
 
 
 BEISPIEL
@@ -37,4 +42,4 @@ SIEHE AUCH
 LETZTER AENDERUNG
 =================
 
-   Don, 24.01.2002, 10:15:07h von Tilly
+   2020-09-01 Arathorn

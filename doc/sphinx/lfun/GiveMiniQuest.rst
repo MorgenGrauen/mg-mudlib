@@ -37,13 +37,11 @@ BESCHREIBUNG
 ------------
 ::
 
-	Mit dieser Funktion wird nach dem erfolgreichen Loesen einer 
-        MiniQuest die Quest im Spieler eingetragen. Dabei muss der
-        Aufruf in dem Objekt erfolgen, welches im Questmaster 
-        eingetragen ist. Als Argument muss das Spielerobjekt 
-	angegeben werden, welches die Quest bestanden hat.
-
-        
+    Mit dieser Funktion wird nach dem erfolgreichen Loesen einer 
+    MiniQuest die Quest im Spieler eingetragen. Dabei muss der
+    Aufruf in dem Objekt erfolgen, welches im Questmaster 
+    eingetragen ist. Als Argument muss das Spielerobjekt 
+    angegeben werden, welches die Quest bestanden hat.
 
 BEISPIEL
 --------
@@ -55,7 +53,7 @@ SIEHE AUCH
 ----------
 ::
 
-        HasMiniQuest
+        HasMiniQuest(), AddMiniQuest()
         /secure/questmaster.h, /secure/questmaster.c
 
 HINWEIS

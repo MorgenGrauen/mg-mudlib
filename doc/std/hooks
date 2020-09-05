@@ -226,8 +226,8 @@ Lfun beschrieben, alles dort gesagte gilt aber genauso fuer Closures.
 
   * void superseededHook(int hookid, object hookprovider)
 
-    Wird gerufen, wenn der Konsument von einem anderen mit hoeherer Prioritaet
-    verdraengt wurde.
+    Wird einmalig gerufen, um dem Konsumenten zu signalisieren, dass er von
+    einem anderen mit hoeherer Prioritaet verdraengt wurde.
 
 
 HOOK-PROVIDER

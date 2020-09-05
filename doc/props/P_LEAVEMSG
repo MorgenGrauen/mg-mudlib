@@ -18,8 +18,13 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Array mit zwei Meldungen. Der erste Eintrag wird an den Transporter
-   ausgegeben, der zweite an den Raum in den der Spieler kommt.
+   String-Array mit zwei Meldungen, die als Argumente 4 und 5 an move()
+   uebergeben werden, d.h. die erste ist fuer den Transporter, den der
+   Spieler verlaesst, und die zweite fuer den Raum, in den er geht.
+
+   Hat das Array keine zwei Elemente, werden Standardmeldungen ausgegeben,
+   so als waere die Property auf ({"verlaesst", "kommt herein"}) gesetzt.
+   Die Property hat jedoch keinen Default-Wert.
 
 
 BEISPIEL
@@ -28,11 +33,16 @@ BEISPIEL
    SetProp(P_LEAVEMSG, ({ "klettert vom Ruecken der Wildgans",
                           "kommt vom Ruecken einer Wildgans herunter" }) );
 
-SIEHE AUCH:
+
+SIEHE AUCH
+==========
+
+::
    P_ENTERMSG, P_LEAVEFAIL, P_ENTERFAIL, transporter
 
 
 LETZTE AENDERUNG
 ================
 
-   Don, 24.01.2002, 10:15:07h von Tilly
+::
+   2020-09-01 Arathorn
