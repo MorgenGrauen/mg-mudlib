@@ -44,8 +44,8 @@ protected void create() {
 }
 
 varargs int GiveQuest(string questname, string message) {
-  mixed *quest = QM->QueryQuest(questname);
 
+  mixed *quest = QM->QueryQuest(questname);
   // Questname ungueltig
   if (!quest||!pointerp(quest)||quest==({}))
     return GQ_KEY_INVALID;
@@ -56,6 +56,9 @@ varargs int GiveQuest(string questname, string message) {
   if (member(quest[2], load_name(previous_object()))==-1 &&
       !IS_ARCH(this_interactive()))
     return GQ_ILLEGAL_OBJ;
+  // Gaeste haben keine Quests.
+  if(QueryGuest())
+    return QQ_GUEST;
 
   // Gilde wird in jedem Fall informiert.
   string guild=GUILD_DIR+QueryProp(P_GUILD);
@@ -113,14 +116,6 @@ int DeleteQuest(string questname) {
 }
 
 int QueryQuest(string questname) {
-  int dummy;
-
-  // Gaeste haben keine Quests.
-  if( sscanf( getuid(), "gast%d", dummy ) == 1 )
-    return QQ_GUEST;
-  // Uebergebener Parameter "questname" ungueltig oder leer?
-  if(!questname || !stringp(questname) || questname == "")
-    return QQ_KEY_INVALID;
   // Questname ist tatsaechlich in der Questliste enthalten? Alles klar!
   if ( member(quests, questname) )
     return OK;
