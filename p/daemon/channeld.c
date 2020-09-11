@@ -114,7 +114,9 @@ private nosave mapping stats;
    Wird auf 0 oder 1 gesetzt. */
 private nosave int save_me_soon;
 
-// BEGIN OF THE CHANNEL MASTER ADMINISTRATIVE PART
+// Private Prototypen
+public int join(string chname, object joining);
+
 
 /* CountUsers() zaehlt die Anzahl Abonnenten aller Ebenen. */
 // TODO: Mapping- und Arrayvarianten bzgl. der Effizienz vergleichen
@@ -430,6 +432,17 @@ private void setup(string* chinfo)
         dtime(time()), chinfo[0], supervisor));
     }
   }
+  else
+  {
+    // aber auch falls die Ebene (noch) existiert: wenn der channeld
+    // Supervisor sein soll, muss er die Ebene in jedem Fall
+    // (neu) betreten. Dabei wird er dann wieder Supervisor.
+    // Das Recht hat er immer und access() erlaubt das sogar vor dem Pruefen,
+    // ob es einen Supervisor gibt (den es jetzt gerade nicht gibt fuer
+    // Ebenen, in denen der CHANNELD supervisor war).
+    if (supervisor == this_object())
+      join(chinfo[0], this_object());
+  }
   return;
 }
 
@@ -531,6 +544,9 @@ protected void create()
   // channel_supervisor wieder mit den Informationen aus .init befuellt wird,
   // weil das nicht in MEMORY liegt (weil das vermutlich ein Grund ist, den
   // channeld neuzuladen: zum neuen Einlesen der Ebenenrechte).
+  // Ausserdem ist der channeld selber ja ein neues Objekt und trotz MEMORY
+  // nirgendwo mehr als Listener/Supervisor eingetragen, wo er eingetragen
+  // sein sollte...
   // initialize() und setup() koennen aber mit Ebenen umgehen, die es schon
   // gibt 
   initialize();
@@ -883,18 +899,22 @@ varargs private int access(struct channel_s ch, object user, string cmd,
   if (!ch)
     return 0;
 
-  // Dieses Objekt  und Root-Objekte duerfen auf der Ebene senden, ohne
+  // Dieses Objekt und Root-Objekte duerfen auf der Ebene senden, ohne
   // Mitglied zu sein. Das ist die Folge der zurueckgegebenen 2.
+  // Ausserdem duerfen sie auch alles andere machen unter Umgehung aller
+  // Supervisoren. (z.B. kann dieses Objekt sogar Meldungen im Namen anderer
+  // Objekte faken)
+  // Die Pruefung erfolgt absichtlich vor assert_supervisor(), damit der
+  // CHANNELD z.b. Ebenen re-joinen kann und dort wieder supervisor werden
+  // kann.
   if ( !previous_object(1) || !extern_call() ||
        previous_object(1) == this_object() ||
        getuid(previous_object(1)) == ROOTID)
     return 2;
 
-  // Nur dieses Objekt darf Meldungen im Namen anderer Objekte faken,
-  // ansonsten muss <pl> der Aufrufer sein.
-  if (!objectp(user) ||
-      ((previous_object(1) != user) &&
-       (previous_object(1) != this_object())))
+  // Objekte duerfen keine Meldungen im Namen anderer Objekte faken, d.h. der
+  // vermeintliche <user> muss auch der Aufrufer sein.
+  if (!objectp(user) || previous_object(1) != user)
     return 0;
 
   if (IsBanned(user, cmd))
@@ -1042,8 +1062,8 @@ public int join(string chname, object joining)
   if (res != 1)
     return res;
 
-  // Wenn der <pl> der urspruengliche Ersteller der Ebene und kein Spieler
-  // ist, wird er automatisch wieder zum Supervisor.
+  // Wenn <joining> der urspruengliche Ersteller der Ebene und kein
+  // Spieler ist, wird es automatisch wieder zum Supervisor.
   if (!query_once_interactive(joining)
       && object_name(joining) == ch.creator)
     change_sv_object(ch, joining);
