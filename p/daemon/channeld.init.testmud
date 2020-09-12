@@ -3,6 +3,7 @@
 # <name>:<recv>:<send>:<accessflags>:<channelflags>:<desc>:<supervisor>
 #
 # Debug-Ebenen initialisieren.
+<MasteR>:    0: 0: 0: 1:Zentrale Informationen zu den Ebenen
 Debug:       20:60:1:1:Debug und Fehlermeldungen:/p/daemon/debug
 Entwicklung: 20:60:1:1:Fehler rund um Eigenentwicklungen:/p/daemon/debug
 Warnungen:   20:60:1:1:Laufzeit-Warnungen:/p/daemon/debug

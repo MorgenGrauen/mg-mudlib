@@ -36,9 +36,6 @@
 #define MAX_INACTIVE_CHANNELS 500
 #define CMDS          ({C_FIND, C_LIST, C_JOIN, C_LEAVE, C_SEND, C_NEW})
 
-// Standard-Ebenen-Supervisor erben, Variablen nosave, die sollen hier nicht
-// gespeichert werden.
-nosave variables inherit "/std/channel_supervisor";
 
 // Datenstrukturen fuer die Ebenen.
 // Basisdaten, welche auch inaktive Ebenen in channelC haben
@@ -385,63 +382,40 @@ public void ChannelMessage(<string|object|int>* msg)
 private void setup(string* chinfo)
 {
   string desc = "- Keine Beschreibung -";
-  object supervisor = this_object();
-  int sv_recv, sv_send, sv_flags; // an den Supervisor weiterreichen
+  object supervisor;
   int chflags;
 
   if (sizeof(chinfo) && sizeof(chinfo[0]) > 1 && chinfo[0][0] == '\\')
     chinfo[0] = chinfo[0][1..];
 
-  switch (sizeof(chinfo))
-  {
-    // Alle Fallthroughs in dem switch() sind Absicht.
-    default:
-      if (stringp(chinfo[6]) && sizeof(chinfo[6]))
-        catch(supervisor = load_object(chinfo[6]); publish);
-      if (!objectp(supervisor))
-        supervisor = this_object();
-    case 6:
-      if (stringp(chinfo[5]))
-        desc = chinfo[5];
-    case 5:
-        chflags = to_int(chinfo[4]);
-    case 4:
-      sv_flags = to_int(chinfo[3]);
-    case 3:
-      sv_send = to_int(chinfo[2]);
-    case 2:
-      sv_recv = to_int(chinfo[1]);
-      break;
-
-    case 0:
-    case 1:
-      return;
-  }
-  // Zugriffsrechte im channel_supervisor konfigurieren. (Kann auch dieses
-  // Objekt selber sein...)
-  supervisor->ch_supervisor_setup(lower_case(chinfo[0]), sv_recv,
-                                  sv_send, sv_flags);
   // Wenn der channeld nur neugeladen wurde, aber das Mud nicht neugestartet,
-  // sind alle Ebenen noch da, weil sie im MEMORY liegen. Dann muessen wir das
-  // new() natuerlich ueberspringen.
-  if (!member(channels, lower_case(chinfo[0])))
+  // sind alle Ebenen noch da, weil sie im MEMORY liegen. D.h. ist die Ebene
+  // noch bekannt, muss nichts gemacht werden.
+  if (member(channels, lower_case(chinfo[0])))
+    return;
+
+  // Nur die Angabe des SV (Index 6) im initfile ist optional, alle Elemente
+  // davor muessen da sein.
+  if (sizeof(chinfo) < 6)
+    return;
+  // Bei genug Elementen schauen, ob der SV ladbar ist.
+  if (sizeof(chinfo) >= 7)
   {
-    if (new(chinfo[0], supervisor, desc, chflags) == E_ACCESS_DENIED)
-    {
-      log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
-        dtime(time()), chinfo[0], supervisor));
-    }
+    if (stringp(chinfo[6]) && sizeof(chinfo[6]))
+      catch(supervisor = load_object(chinfo[6]); publish);
   }
-  else
+  // Aber falls kein SV angegeben wird oder das Objekt nicht ladbar war, wird
+  // ein Default-SV genutzt.
+  if (!supervisor)
+    supervisor = load_object(DEFAULTSV);
+
+  desc = chinfo[5];
+  chflags = to_int(chinfo[4]);
+
+  if (new(chinfo[0], supervisor, desc, chflags) == E_ACCESS_DENIED)
   {
-    // aber auch falls die Ebene (noch) existiert: wenn der channeld
-    // Supervisor sein soll, muss er die Ebene in jedem Fall
-    // (neu) betreten. Dabei wird er dann wieder Supervisor.
-    // Das Recht hat er immer und access() erlaubt das sogar vor dem Pruefen,
-    // ob es einen Supervisor gibt (den es jetzt gerade nicht gibt fuer
-    // Ebenen, in denen der CHANNELD supervisor war).
-    if (supervisor == this_object())
-      join(chinfo[0], this_object());
+    log_file("CHANNEL", sprintf("[%s] %s: %O: error, access denied\n",
+      dtime(time()), chinfo[0], supervisor));
   }
   return;
 }
@@ -540,26 +514,19 @@ protected void create()
             "boot": capitalize(getuid(previous_object()) || "<Unbekannt>")]);
 
   // Das muss auch laufen, wenn wir die alten Ebenen aus dem MEMORY bekommen
-  // haben, weil es dafuer sorgt, dass das Mapping <admin> aus
-  // channel_supervisor wieder mit den Informationen aus .init befuellt wird,
-  // weil das nicht in MEMORY liegt (weil das vermutlich ein Grund ist, den
-  // channeld neuzuladen: zum neuen Einlesen der Ebenenrechte).
-  // Ausserdem ist der channeld selber ja ein neues Objekt und trotz MEMORY
-  // nirgendwo mehr als Listener/Supervisor eingetragen, wo er eingetragen
-  // sein sollte...
-  // initialize() und setup() koennen aber mit Ebenen umgehen, die es schon
-  // gibt 
+  // haben, weil es ja neue Ebenen geben koennte, die dann erstellt werden
+  // muessen (verschwundete werden aber nicht aufgeraeumt!)
   initialize();
+  // <MasteR>-Ebene betreten, damit der channeld auf seine Kommandos auf
+  // dieser Ebene reagieren kann.
+  this_object()->join(CMNAME, this_object());
 
   // Wenn wir die alten Ebenen nicht aus MEMORY hatten, gibts noch Dinge zu
   // erledigen.
   if (do_complete_init)
   {
-    // <MasteR>-Ebene erstellen. Channeld wird Ebenenbesitzer und somit auch
-    // Zuhoerer, damit er auf Kommandos auf dieser Ebene reagieren kann.
-    new(CMNAME, this_object(), "Zentrale Informationen zu den Ebenen");
     // Spieler muessen die Ebenen abonnieren. NPC und andere Objekte haben
-    // leider Pech gehabt.
+    // leider Pech gehabt, falls das nicht das erste Laden nach Reboot war.
     users()->RegisterChannels();
     // Die Zugriffskontrolle auf die Ebenen wird von der Funktion access()
     // erledigt. Weil sowohl externe Aufrufe aus dem Spielerobjekt, als auch
@@ -636,14 +603,14 @@ varargs int remove(int silent)
 }
 
 // name() - define the name of this object.
-string name()
+public varargs string name(int casus,int demon)
 {
   return CMNAME;
 }
 
-string Name()
+public varargs string Name(int casus, int demon)
 {
-  return CMNAME;
+  return capitalize(CMNAME);
 }
 
 // Low-level function for adding members without access checks
@@ -791,7 +758,7 @@ private int change_sv_object(struct channel_s ch, object new_sv)
   object old_sv = ch.supervisor;
 
   ch.supervisor = new_sv;
-  ch.access_cl = symbol_function("check_ch_access", new_sv);
+  ch.access_cl = symbol_function("ch_check_access", new_sv);
 
   if (old_sv && new_sv
       && !old_sv->QueryProp(P_INVIS)
@@ -896,7 +863,7 @@ private int assert_supervisor(struct channel_s ch)
 varargs private int access(struct channel_s ch, object user, string cmd,
                            string txt)
 {
-  if (!ch)
+  if (!ch || !user)
     return 0;
 
   // Dieses Objekt und Root-Objekte duerfen auf der Ebene senden, ohne
@@ -905,16 +872,17 @@ varargs private int access(struct channel_s ch, object user, string cmd,
   // Supervisoren. (z.B. kann dieses Objekt sogar Meldungen im Namen anderer
   // Objekte faken)
   // Die Pruefung erfolgt absichtlich vor assert_supervisor(), damit der
-  // CHANNELD z.b. Ebenen re-joinen kann und dort wieder supervisor werden
-  // kann.
+  // CHANNELD auch in temporaeren SV-losen Zustaenden was machen kann.
   if ( !previous_object(1) || !extern_call() ||
        previous_object(1) == this_object() ||
        getuid(previous_object(1)) == ROOTID)
     return 2;
 
   // Objekte duerfen keine Meldungen im Namen anderer Objekte faken, d.h. der
-  // vermeintliche <user> muss auch der Aufrufer sein.
-  if (!objectp(user) || previous_object(1) != user)
+  // vermeintliche <user> muss auch der Aufrufer sein. Ausser darf auch sonst
+  // kein Objekt was fuer ein anderes Objekt duerfen, sonst kann jemand z.B.
+  // eine History abfragen indem einfach ein anderes Objekt uebergeben wird.
+  if (previous_object(1) != user)
     return 0;
 
   if (IsBanned(user, cmd))
@@ -929,10 +897,11 @@ varargs private int access(struct channel_s ch, object user, string cmd,
     return 1;
 
   // Das SV-Objekt wird gefragt, ob der Zugriff erlaubt ist. Dieses erfolgt
-  // fuer EM+ aber nur, wenn der CHANNELD selber das SV-Objekt ist, damit
+  // fuer EM+ aber nur, wenn es das Default-SV-Objekt ist, damit
   // nicht beliebige SV-Objekt EMs den Zugriff verweigern koennen. Ebenen mit
-  // CHANNELD als SV koennen aber natuerlich auch EM+ Zugriff verweigern.
-  if (IS_ARCH(previous_object(1)) && ch.supervisor != this_object())
+  // Default-SV koennen aber auch EM+ Zugriff verweigern.
+  if (IS_ARCH(previous_object(1))
+      && ch.supervisor != find_object(DEFAULTSV))
     return 1;
 
   return funcall(ch.access_cl, lower_case(ch.name), user, cmd, &txt);
@@ -941,7 +910,7 @@ varargs private int access(struct channel_s ch, object user, string cmd,
 // Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
 // <desc> kann die statische Beschreibung der Ebene sein oder eine Closure,
 // die dynamisch aktualisierte Infos ausgibt.
-// Das Objekt <owner> kann eine Funktion check_ch_access() definieren, die
+// Das Objekt <owner> sollte eine Funktion ch_check_access() definieren, die
 // gerufen wird, wenn eine Ebenenaktion vom Typ join/leave/send/list/users
 // eingeht.
 #define IGNORE  "^/xx"
@@ -1007,9 +976,9 @@ public varargs int new(string ch_name, object owner, string|closure desc,
 
   ch.members = ({ owner });
   ch.supervisor = owner;
-  // check_ch_access() dient der Zugriffskontrolle und entscheidet, ob die
+  // ch_check_access() dient der Zugriffskontrolle und entscheidet, ob die
   // Nachricht gesendet werden darf oder nicht.
-  ch.access_cl = symbol_function("check_ch_access", owner);
+  ch.access_cl = symbol_function("ch_check_access", owner);
 
   m_add(channels, ch_name, ch);
 
@@ -1057,7 +1026,8 @@ public int join(string chname, object joining)
      richtige ist. */
   if (!funcall(#'access, ch, joining, C_JOIN))
     return E_ACCESS_DENIED;
-
+  //TODO: Sollte der creator das Recht auf join haben, auch wenn der aktuelle
+  //SV es verweigert? (s.u.)
   int res = add_member(ch, joining);
   if (res != 1)
     return res;
@@ -1074,10 +1044,9 @@ public int join(string chname, object joining)
 // Objekt <pl> verlaesst Ebene <ch>.
 // Zugriffsrechte werden nur der Vollstaendigkeit halber geprueft; es duerfte
 // normalerweise keinen Grund geben, das Verlassen einer Ebene zu verbieten.
-// Dies ist in check_ch_access() so geregelt, allerdings koennte dem Objekt
+// Dies ist in ch_check_access() so geregelt, allerdings koennte dem Objekt
 // <pl> das Verlassen auf Grund eines Banns verboten sein.
-// Wenn kein Spieler mehr auf der Ebene ist, loest sie sich auf, sofern nicht
-// noch ein Ebenenbesitzer eingetragen ist.
+// Wenn kein Zuhoerer mehr auf der Ebene ist, loest sie sich auf.
 public int leave(string chname, object leaving)
 {
   struct channel_s ch = channels[lower_case(chname)];
@@ -1155,8 +1124,8 @@ public varargs int send(string chname, object sender, string msg, int type)
     return E_ACCESS_DENIED;
 
   // a<2 bedeutet effektiv a==1 (weil a==0 oben rausfaellt), was dem
-  // Rueckgabewert von check_ch_access() entspricht, wenn die Aktion zugelassen
-  // wird. access() allerdings 2 fuer "privilegierte" Objekte (z.B.
+  // Rueckgabewert von ch_check_access() entspricht, wenn die Aktion zugelassen
+  // wird. access() liefert allerdings 2 fuer "privilegierte" Objekte (z.B.
   // ROOT-Objekte oder den channeld selber). Der Effekt ist, dass diese
   // Objekte auf Ebenen senden duerfen, auf denen sie nicht zuhoeren.
   if (a < 2 && !IsChannelMember(ch, sender))

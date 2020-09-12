@@ -1,6 +1,7 @@
 # CHANNEL MASTER INIT FILE
 # To create a new channel:
 # <name>:<recv>:<send>:<accessflags>:<channelflags>:<desc>:<supervisor>
+<MasteR>:    0: 0: 0: 1:Zentrale Informationen zu den Ebenen
 Allgemein:   0: 0: 0: 0:Allgemeine Unterhaltungsebene
 Abenteuer:   0: 0: 0: 0:Fragen die Abenteuer betreffen:/secure/questmaster
 Grats:       0: 0: 0: 0:Gratulationen zu geloesten Abenteuern etc

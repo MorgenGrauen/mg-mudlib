@@ -11,6 +11,8 @@
 
 #define CHMASTER          "/p/daemon/channeld"
 #define CMNAME            "<MasteR>"
+#define DEFAULTSV         "/p/daemon/channel-sv"
+#define DEFAULTSVNAME     "Merlin"
 
 // Message types
 #define MSG_SAY           0
@@ -33,8 +35,14 @@
 #define C_LIST            "list"
 #define C_FIND            "find"
 
-// Flags
+// Ebenen-Flags, die Verhalten von Ebenen steuern (vom CHANNELD verwendet)
 #define CHF_FIXED_SUPERVISOR 1   // Kein Wechsel des SV erlaubt
+
+// Flags fuer Zugriffsverwaltung, nur benutzt von den Ebenen-Supervisoren
+// F_WIZARD kennzeichnet reine Magierebenen
+#define CH_ACCESS_WIZARD 1
+// Ebenen, auf denen keine Gaeste erlaubt sind, sind mit F_NOGUEST markiert.
+#define CH_ACCESS_NOGUEST 2
 
 #endif //__DAEMON_CHANNEL_H__
 
