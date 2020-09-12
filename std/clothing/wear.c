@@ -499,7 +499,7 @@ protected int _do_unwear(string str, int silent, int all) {
       notify_fail("Alles ausgezogen, was ging.\n");
       return 0;
     }
-    if (!Query(P_ARTICLE) || QueryProp(P_PLURAL)) {
+    if (!Query(P_ARTICLE) && !QueryProp(P_PLURAL)) {
       notify_fail( break_string(
             "Du traegst k"+name(WEN,0)+".",78) );
     }
