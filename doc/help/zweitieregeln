@@ -1,0 +1,91 @@
+Leitfaden zum Spiel im Morgengrauen
+===================================
+
+Regel 2: Zweitspieler sind erlaubt, mit Einschraenkungen
+--------
+
+    Hat man mit seinem Charakter eine Zeit lang gespielt, so entsteht
+    oft der Wunsch, einmal eine andere Rasse, Gilde oder einfach einen
+    anderen Rollenspielcharakter zu spielen.
+    Seinen bisherigen Charakter kann oder moechte man dazu allerdings
+    nicht benutzen.
+    Daher kann jeder Spieler weitere Charaktere anlegen.
+
+
+2.1: Zweitspieler muessen markiert sein
+
+    Diese muessen dann jedoch als sogenannter Zweitspieler des ersten
+    Charakters markiert werden.
+    Diese Markierung kann man zum Beispiel beim Schmied in der
+    Zwergenstadt oder beim Dorfschreiber im Elfendorf erhalten.
+    Diese Markierung kann man auch vor anderen Spielern verbergen.
+
+
+2.2: Nur zwei Spieler einer Person duerfen gleichzeitig aktiv spielen
+
+    Man kann beliebig viele seiner Charaktere gleichzeitig einloggen,
+    doch ist hierbei darauf zu achten, dass nur zwei dieser Charaktere
+    aktiv am Spielgeschehen, das ist alles was ueber reine
+    Kommunikation hinausgeht, teilnehmen.
+    Die anderen Charaktere muessen sich auf die Kommunikation
+    beschraenken.
+
+    Weitere Einschraenkungen existieren fuer Magier.
+
+    Ein Magier darf nicht gleichzeitig mit seinen Spielercharakteren
+    eingeloggt sein, diese manipulieren oder fuer seine Zweitspieler
+    fremden Code analysieren.
+
+    Dazu gibt es nur ein Ausnahme: Zum Zwecke der Zweitiemarkierung
+    darf der Magier sich gleichzeitig mit dem Spielercharakter
+    einloggen.
+
+    Der Magier-Zweitspieler sollte darauf achten, anderen Spielern
+    nicht durch seinen eventuellen Wissensvorteil bei Questen zu
+    helfen.
+
+    Ein Magier-Zweitspieler sollte weiterhin darauf achten, andere
+    Spieler nicht in ihrem Spiel zu behindern. Dies koennte zum
+    Beispiel durch Blockieren von Quests oder bestimmter limitierter
+    Gildenraenge geschehen.
+    Den Programmierern von Quests oder Gilden steht es natuerlich frei,
+    hier eine eigene Vorsorge zu treffen.
+
+
+2.3: Verleihen von Spielern
+
+    Wer im MorgenGrauen spielt, der ist des oefteren auf die Hilfe
+    Anderer angewiesen. Eine Form der Hilfe ist es, einen Charakter
+    auszuleihen oder ausgeliehen zu bekommen.
+    Um sprachlich begruendete Missverstaendnisse im weiteren zu
+    vermeiden, hier kurz folgende Nomenklatur:
+
+      Ein Spieler, der einem anderen Spieler einen Charakter zur
+      Verfuegung stellt, wird als Verleiher bezeichnet.
+
+      Ein Spieler, der einen Charakter eines anderen Spielers nutzt,
+      wird als Nutzer bezeichnet.
+
+    Das Ausleihen von Charakteren ist mit gewissen Randbedingungen
+    erlaubt.
+
+    Ein ausgeliehener Charakter wird als aktiver Zweitspieler des
+    Nutzers betrachtet und ist somit den Regelungen fuer Zweitspieler
+    unterworfen.
+
+    Besonders zu beachten ist, dass der ausgeliehene Charakter nicht
+    mit dem Nutzer, oder einem Zweitspieler des Nutzers, in ein Team
+    darf.
+
+    Sowohl der Nutzer des ausgeliehenen Spielers als auch Verleiher,
+    koennen fuer die Handlungen des ausgeliehen Charakters
+    verantwortlich gemacht werden.
+
+
+
+ SIEHE AUCH:
+    pvp, zweitspieler, zweitiemarkierung, kl, skripte, fehlerausnutzung,
+    fehler, karten, videos, sheriff
+
+ LETZTE AeNDERUNG:
+    2020-09-18, Arathorn.

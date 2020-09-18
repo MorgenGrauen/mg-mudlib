@@ -1,0 +1,50 @@
+Leitfaden zum Spiel im Morgengrauen
+===================================
+
+Regel 4: Skripte sind eingeschraenkt erlaubt
+--------
+
+    Um das Spielen von Muds zu vereinfachen und komfortabler zu
+    gestalten, gibt es eine Reihe sogenannter Mud-Clients.
+
+    Diese Clienten bieten oftmals die Moeglichkeit, mehrere Kommandos
+    im Mud auf eine einzige Aktion hin auszufuehren oder auf Ausgaben
+    mit solchen Kommandoketten zu reagieren.
+
+    Man spricht hier von Skripten oder Triggern.
+
+    Zusammen mit einer internen Programmiersprache der Clienten lassen
+    sich vielfach bestimmte Aktionen im Mud automatisieren.
+
+    Die Verwendung solcher Skripte ist mit einigen Auflagen jedem
+    Spieler freigestellt.
+
+    Sogenannte Untersucheskripte, die selbstaendig eine oder mehrere
+    Detailtiefen von Raeumen, Monstern oder anderen Gegenstaenden
+    abfragen, sind nicht erlaubt.
+
+    Jeder Charakter sollte individuell gesteuert werden, daher sind
+    Skripte, die mehrere Charaktere auf einmal steuern untersagt.
+
+    Skripte, welche einen Charakter im Sinne einer Komplettloesung
+    durch eine Quest fuehren oder eine Forscherpunktliste abarbeiten
+    sind nicht erlaubt.
+
+    Grundsaetzlich duerfen andere Spieler durch Skripte nicht in ihrem
+    Spiel behindert oder belaestigt werden.
+
+    Alle anderen Skripte sind erlaubt, soweit der Spieler innerhalb
+    einer Minute im Rahmen seiner Moeglichkeiten ansprechbar bleibt.
+
+    Als unerlaubtes Skript zaehlt auch der Kampf mit einem Monster,
+    wenn der Spieler dabei laengere Zeit keine Tastatureingaben
+    vornimmt und dabei nicht ansprechbar ist(totidlen). Dies gilt vor
+    allem wenn der Tod des Monsters nicht absehbar ist.
+
+
+ SIEHE AUCH:
+    pvp, zweitspieler, zweitiemarkierung, zweitieregeln, kl,
+    fehlerausnutzung, fehler, karten, videos, sheriff
+
+ LETZTE AeNDERUNG:
+    2020-09-18, Arathorn.
