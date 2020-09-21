@@ -68,7 +68,16 @@ protected mixed prepare_destruct(object ob)
       return sprintf("%O verweigert die Zerstoerung mittels destruct(). "
           "Fehlende Rechte von %O?\n",ob, previous_object());
   }
-  
+
+#if (__VERSION_MICRO__*100 + __VERSION_MINOR__ *10000 + __VERSION_MAJOR__ \
+     * 1000000) <= 3060300
+  // Workaround fuer Driver-Speicherleck in 3.6.2 und 3.6.3: vor dem
+  // Zerstoeren das Encoding wechseln, damit der driver das Handle auf iconv
+  // schliesst.
+  if(interactive(ob))
+    configure_interactive(ob, IC_ENCODING, "UTF-8");
+#endif
+
   env = environment(ob);
 
   // Objekt hat kein Env: Alles zerstoeren, Spieler ins Void
