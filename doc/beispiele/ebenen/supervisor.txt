@@ -39,7 +39,7 @@ moeglich, indem man die lfun
   public int ch_check_access(string ch, object user, string cmd)
 ueberschreibt. Diese wird vom CHANNELD im SV gerufen. Gibt sie eine 1 zurueck,
 darf das Objekt <user> auf der Ebene <ch> die Aktion <cmd> ausfuehren.
-Anderendfalls mus 0 zurueckgeben werden.
+Anderenfalls muss 0 zurueckgeben werden.
 <cmd> ist hierbei eine der in /p/daemon/channel.h definierten Kommandos.
 
 Die Ebene <ch> wird immer kleingeschrieben uebergeben. Auch wenn der Name
@@ -67,18 +67,18 @@ Gruppen eingeteilt:
            (C_LIST) und Betreten (C_JOIN).
   2) SEND. Die Aktion dieser Gruppe ist zur Zeit nur Senden (C_SEND).
 
-Aktionen werden zugelassen, wenn Spieler/MagierLevel groesser ist als die
-fuer die jeweilige Aktionsgruppe RECV oder SEND festgelegte Stufe.
+Aktionen werden zugelassen, wenn Spieler/MagierLevel groesser oder gleich ist
+wie die fuer die jeweilige Aktionsgruppe RECV oder SEND festgelegte Stufe.
 
 Handelt es sich um eine Magierebene (<accessflags> enthaelt das Flag
-CH_ACCESS_WIZARD), muss die Magierstufe des Spielers groesser sein als die
-Mindeststufe der Ebene. Ansonsten wird gegen den Spielerlevel geprueft.
+CH_ACCESS_WIZARD), muss die Magierstufe des Spielers groesser oder gleich sein
+wie die Mindeststufe der Ebene. Ansonsten wird gegen den Spielerlevel geprueft.
 Enthaelt <accessflags> das Flag CH_ACCESS_NOGUEST, darf die Ebene nicht von
-Gaesten benutzt werden.
+Gaesten benutzt werden (weder Empfangen noch Senden).
 
 Wenn RECV_LVL oder SEND_LVL auf -1 gesetzt ist, sind die Aktionen der
 jeweiligen Gruppen komplett geblockt.
 
-Bemerkung: Im Initfile sollten SVs nur Blueprints verwendet werden - aber SVs
-koennen im Allgemeinen auch Clones sein!
+Bemerkung: Im Initfile sollten nur Blueprints als SVs verwendet werden - aber
+im Allgemeinen koennen SVs auch Clones sein!
 
