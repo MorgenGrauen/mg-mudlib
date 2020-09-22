@@ -1574,22 +1574,18 @@ nomask varargs void garbage_collection(string str)
     return efun::garbage_collection();
 }
 
-varargs void notify_fail(mixed nf, int prio) {
+varargs void notify_fail(string|closure nf, int prio)
+{
   object po,oldo;
   int oldprio;
-  
-  if (!PL || !objectp(po=previous_object())) return;
-  if (!stringp(nf) && !closurep(nf)) {
-      set_this_object(po);
-      raise_error(sprintf(
-         "Only strings and closures allowed for notify_fail! "
-         "Argument was: %.50O...\n",nf));
-  }
+
+  if (!PL || !objectp(po=previous_object()))
+    return;
 
   // falls ein Objekt bereits nen notify_fail() setzte, Prioritaeten abschaetzen
   // und vergleichen.
   if (objectp(oldo=query_notify_fail(1)) && po!=oldo) {
-    if (!prio) {       
+    if (!prio) {
       //Prioritaet dieses notify_fail() 'abschaetzen'
       if (po==PL) // Spieler-interne (soul-cmds)
         prio=NF_NL_OWN;
@@ -1614,7 +1610,7 @@ varargs void notify_fail(mixed nf, int prio) {
     oldprio=NF_NL_NONE;
 
   //vergleichen und ggf. setzen
-  if (prio >= oldprio) { 
+  if (prio >= oldprio) {
     set_this_object(po);
     efun::notify_fail(nf);
   }
@@ -1622,7 +1618,7 @@ varargs void notify_fail(mixed nf, int prio) {
   return;
 }
 
-void _notify_fail(string str)
+void _notify_fail(string|closure str)
 {
   //query_notify_fail() benutzen, um das Objekt
   //des letzten notify_fail() zu ermitteln
