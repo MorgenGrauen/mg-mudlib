@@ -1623,15 +1623,7 @@ varargs void notify_fail(string|closure nf, int prio)
 
 void _notify_fail(string|closure str)
 {
-  //query_notify_fail() benutzen, um das Objekt
-  //des letzten notify_fail() zu ermitteln
-  object o;
-  if ((o=query_notify_fail(1)) && o!=previous_object())
-    return;
-  //noch kein notify_fail() fuer dieses Kommando gesetzt, auf gehts.
-  set_this_object(previous_object());
-  efun::notify_fail(str);
-  return;
+  notify_fail(str, NF_NL_NONE);
 }
 
 string time2string( string format, int zeit )
