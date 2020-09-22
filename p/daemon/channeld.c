@@ -1061,6 +1061,10 @@ public int join(string chname, object joining)
 public int leave(string chname, object leaving)
 {
   struct channel_s ch = channels[lower_case(chname)];
+  // Nicht-existierenden Ebenen soll das Spielerobjekt austragen, also tun wir
+  // so, als sei das erfolgreich gewesen.
+  if (!ch)
+    return 0;
 
   ch.members -= ({0}); // kaputte Objekte erstmal raus
 
