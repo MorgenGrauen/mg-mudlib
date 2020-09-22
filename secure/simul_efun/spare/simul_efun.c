@@ -1576,22 +1576,24 @@ nomask varargs void garbage_collection(string str)
 
 varargs void notify_fail(string|closure nf, int prio)
 {
-  object po,oldo;
   int oldprio;
 
-  if (!PL || !objectp(po=previous_object()))
+  if (!PL || !previous_object())
     return;
 
   // falls ein Objekt bereits nen notify_fail() setzte, Prioritaeten abschaetzen
   // und vergleichen.
-  if (objectp(oldo=query_notify_fail(1)) && po!=oldo) {
-    if (!prio) {
+  object oldo = query_notify_fail(1);
+  if (oldo && previous_object()!=oldo)
+  {
+    if (!prio)
+    {
       //Prioritaet dieses notify_fail() 'abschaetzen'
-      if (po==PL) // Spieler-interne (soul-cmds)
+      if (previous_object()==PL) // Spieler-interne (soul-cmds)
         prio=NF_NL_OWN;
-      else if (living(po))
+      else if (living(previous_object()))
         prio=NF_NL_LIVING;
-      else if (po->IsRoom())
+      else if (previous_object()->IsRoom())
         prio=NF_NL_ROOM;
       else
         prio=NF_NL_THING;
@@ -1609,9 +1611,10 @@ varargs void notify_fail(string|closure nf, int prio)
   else // wenn es noch kein Notify_fail gibt:
     oldprio=NF_NL_NONE;
 
-  //vergleichen und ggf. setzen
-  if (prio >= oldprio) {
-    set_this_object(po);
+  // vergleichen und ggf. setzen
+  if (prio >= oldprio)
+  {
+    set_this_object(previous_object());
     efun::notify_fail(nf);
   }
 
