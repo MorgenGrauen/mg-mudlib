@@ -324,7 +324,7 @@ private void createList(mapping ch_list, string* p_channels,
           is_subscribed ? '*' : ' ',
           sh,
           ch_master ? getName(ch_master) : getName(ch_access),
-          sizeof(ch_members - ({ find_object(CHMASTER) })),
+          sizeof(ch_members),
           ch_description
       ) });
   }
@@ -438,8 +438,7 @@ int ChannelParser(string args)
             {
               <object*|closure|string|object>* chdata = l[ch];
               string* m =
-                sort_array(map(chdata[I_MEMBER], #'getName, WER), #'>) -
-                ({ CMNAME });
+                sort_array(map(chdata[I_MEMBER], #'getName, WER), #'>);
 
               string wen;
               switch(sizeof(m)) {
