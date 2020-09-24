@@ -45,10 +45,10 @@
 #ifndef _NPC_H_PROTOTYPES_
 #define _NPC_H_PROTOTYPES_
 // aus npc/info.c
-public varargs void    AddInfo(mixed key, mixed info, string indent, 
-                               mixed silent, mixed casebased);
-public varargs void    AddSpecialInfo(mixed keys, string functionname, 
-                          string indent, mixed silent, mixed casebased );
+public varargs void AddInfo(string|string* key, string|closure info,
+               string indent, int|string silent, string|closure casebased);
+public varargs void AddSpecialInfo(string|string* keys, string functionname,
+               string indent, int|string silent, string|closure  casebased);
 public int             frage(string str);
 public int             do_frage(string text);
 public void            RemoveInfo( string key );
