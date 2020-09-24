@@ -284,8 +284,9 @@ public int do_frage(string text)
  *---------------------------------------------------------------------------
  */
 
-public varargs void AddInfo(mixed key, mixed info, string indent,
-                            mixed silent, mixed casebased ) {
+public varargs void AddInfo(string|string* key, string|closure info,
+               string indent, int|string silent, string|closure casebased)
+{
 
   if (stringp(casebased))
     casebased=symbol_function(casebased,this_object());
@@ -303,14 +304,14 @@ public varargs void AddInfo(mixed key, mixed info, string indent,
     infos += ([ key: info; indent; silent; casebased ]);
 }
 
-public varargs void AddSpecialInfo(mixed keys, string functionname, 
-                      string indent, mixed silent, mixed casebased )
+public varargs void AddSpecialInfo(string|string* key, string functionname,
+               string indent, int|string silent, string|closure casebased)
 {
-  int i;
-  closure cl;
+  closure cl = symbol_function(functionname,this_object());
 
-  if(!(cl=symbol_function(functionname,this_object()))) return;
-  return AddInfo(keys,cl,indent,silent,casebased);
+  if (!cl)
+    return;
+  return AddInfo(keys, cl, indent, silent, casebased);
 }
 
 
