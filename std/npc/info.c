@@ -76,7 +76,8 @@ protected void create()
         AddInfo(DEFAULT_INFO, "schaut Dich fragend an.\n", 0,
                               "schaut @WEN1 fragend an.\n", 0);
         AddInfo(DEFAULT_NOINFO, "moechte Dir nicht antworten.\n", 0,
-                                "verweigert @WEM1 die Antwort.\n", 1);
+                                "verweigert @WEM1 die Antwort.\n",
+                                function int () { return 1; });
     }
 }
 
