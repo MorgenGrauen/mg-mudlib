@@ -42,7 +42,7 @@
 struct channel_base_s {
   string          name;    // readable channelname, case-sensitive
   string|closure  desc;    // stat. oder dyn. Beschreibung
-  string          creator; // Ersteller der Ebene (Objektname), Original-SV
+  string          creator; // Ersteller der Ebene (Objektname), Besitzer
   int             flags;   // Flags, die bestimmtes Verhalten steuern.
 };
 
@@ -1241,6 +1241,8 @@ public int|<int|string>** history(string chname, object pl)
 // Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
 public int remove_channel(string chname, object pl)
 {
+  if (!member(channels, chname))
+    return E_ACCESS_DENIED;
   //TODO: integrieren in access()?
   if (previous_object() != this_object())
   {
@@ -1259,6 +1261,8 @@ public int remove_channel(string chname, object pl)
 // Wird aus der Shell aufgerufen, fuer das Erzmagier-Kommando "clear".
 public int clear_history(string chname)
 {
+  if (!member(channelH, chname))
+    return E_ACCESS_DENIED;
   //TODO: mit access() vereinigen?
   // Sicherheitsabfragen
   if (previous_object() != this_object())
@@ -1277,3 +1281,36 @@ public int clear_history(string chname)
 
   return 0;
 }
+
+// Aendert den Ersteller/Besitzer der Ebene.
+// Achtung: das ist nicht das gleiche wie der aktuelle Supervisor!
+public int transfer_ownership(string chname, object new_owner)
+{
+  struct channel_s ch = channels[lower_case(chname)];
+  if (!ch)
+    return E_ACCESS_DENIED;
+  // Nur der aktuelle Besitzer oder EM+ darf die Ebene verschenken
+  if (ch.creator != object_name(previous_object())
+      && !IS_ARCH(previous_object()))
+    return E_ACCESS_DENIED;
+
+  ch.creator = object_name(new_owner);
+  return 1;
+}
+
+// Aendert den Flags der Ebene.
+public int change_channel_flags(string chname, int newflags)
+{
+  struct channel_s ch = channels[lower_case(chname)];
+  if (!ch)
+    return E_ACCESS_DENIED;
+  // Nur der aktuelle Besitzer, Supervisor oder EM+ darf die Flags aendern.
+  if (ch.supervisor != previous_object()
+      && ch.creator != object_name(previous_object())
+      && !IS_ARCH(previous_object()))
+    return E_ACCESS_DENIED;
+
+  ch.flags = newflags;
+  return 1;
+}
+

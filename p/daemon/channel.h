@@ -21,6 +21,10 @@
 #define MSG_EMPTY         3
 
 // Errors
+// Kommentar zu E_ACCESS_DENIED: das umfasst auch eine nicht-existierende
+// Ebene. Das muss so sein, damit man nicht pruefen kann, ob eine Ebene
+// existiert, obwohl man die nicht sehen darf. Also: kein E_NO_CHANNEL
+// einfuehren und nachruesten.
 #define E_ACCESS_DENIED  -1
 #define E_ALREADY_JOINED -2
 #define E_NOT_MEMBER     -3
