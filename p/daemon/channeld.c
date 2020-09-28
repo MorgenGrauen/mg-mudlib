@@ -687,9 +687,16 @@ private void deactivate_channel(string chname, int force)
   }
   // Einige Daten merken, damit sie reaktiviert werden kann, wenn jemand
   // einloggt, der die Ebene abonniert hat.
+#if __VERSION_MINOR__ == 6 && __VERSION_MICRO__ < 4
+  // Workaround fuer Bug in to_struct: erst in array wandeln, dann in die
+  // richtige struct.
+  m_add(channelC, chname, to_struct(to_array(channels[chname])[0..3],
+                                    (<channel_base_s>)),
+        time());
+#else
   m_add(channelC, chname, to_struct(channels[chname], (<channel_base_s>)),
         time());
-
+#endif
   // aktive Ebene loeschen bzw. deaktivieren.
   m_delete(channels, chname);
   // History wird nicht geloescht, damit sie noch verfuegbar ist, wenn die
@@ -952,7 +959,13 @@ public varargs int new(string ch_name, object owner, string|closure desc,
         && object_name(owner) != cbase.creator)
       return E_ACCESS_DENIED;
     // Alte Daten der Ebene uebernehmen
+#if __VERSION_MINOR__ == 6 && __VERSION_MICRO__ < 4
+    // Workaround fuer Bug in to_struct: erst in array wandeln, dann in die
+    // richtige struct.
+    ch = to_struct(to_array(cbase), (<channel_s>));
+#else
     ch = to_struct(cbase, (<channel_s>));
+#endif
     // Wenn eine Beschreibung uebergeben, dann ersetzt sie jetzt die alte
     if (desc)
       ch.desc = desc;
