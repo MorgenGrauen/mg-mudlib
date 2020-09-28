@@ -113,7 +113,7 @@ private nosave int save_me_soon;
 
 // Private Prototypen
 public int join(string chname, object joining);
-
+private int assert_supervisor(struct channel_s ch);
 
 /* CountUsers() zaehlt die Anzahl Abonnenten aller Ebenen. */
 // TODO: Mapping- und Arrayvarianten bzgl. der Effizienz vergleichen
@@ -517,6 +517,16 @@ protected void create()
   // haben, weil es ja neue Ebenen geben koennte, die dann erstellt werden
   // muessen (verschwundete werden aber nicht aufgeraeumt!)
   create_default_channels();
+  // Es muss fuer alle existierenden Ebenen die access_cl neu erstellt
+  // werden, die durch Neuladen des channeld verloren gingen, auch wenn die
+  // Ebenen im MEMORY lagen.
+  foreach(string chname, struct channel_s ch : channels)
+  {
+    if (ch.access_cl || !assert_supervisor(ch))
+      continue;
+    ch.access_cl = symbol_function("ch_check_access", ch.supervisor);
+  }
+
   // <MasteR>-Ebene betreten, damit der channeld auf seine Kommandos auf
   // dieser Ebene reagieren kann.
   this_object()->join(CMNAME, this_object());
