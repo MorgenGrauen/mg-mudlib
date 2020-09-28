@@ -592,12 +592,9 @@ varargs int remove(int silent)
     save_me_soon = 0;
     save_object(CHANNEL_SAVE);
   }
-  if (!silent)
-  {
-    this_object()->send(CMNAME, this_object(),
-      sprintf("remove() durch %O gerufen. Speichern und Ende.\n",
-              previous_object()));
-  }
+  log_file("CHANNEL", sprintf("[%s] remove() durch %O gerufen. Speichern und "
+           "Ende.\n", dtime(time()),
+            this_interactive()||this_player()||previous_object()));
   destruct(this_object());
   return 1;
 }
