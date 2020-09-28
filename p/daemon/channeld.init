@@ -37,8 +37,8 @@ LPC:        15 :15: 1: 1:Fragen zur Programmierung und LPC
 Debug:      20:60: 1: 1:Debug und Fehlermeldungen:/p/daemon/debug
 Entwicklung:20:60: 1: 1:Fehler rund um Eigenentwicklungen:/p/daemon/debug
 Warnungen:  20:60: 1: 1:Laufzeit-Warnungen:/p/daemon/debug
-Snoop:      60:-1: 1: 1:Wer snoopt denn hier?:/secure/simul_efun/simul_efun
-FTP:        60:-1: 1: 1:Wer macht denn FTP?:/secure/bbmaster
+Snoop:      60:-1: 1: 1:Wer snoopt denn hier?
+FTP:        60:-1: 1: 1:Wer macht denn FTP?
 #
 # Intermud channels
 #
