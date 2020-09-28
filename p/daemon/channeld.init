@@ -9,7 +9,7 @@ Beileid:     0: 0: 0: 0:Beileidsbekundungen jeglicher Art
 Fraternitas: 0: 0: 0: 0:Fraternitas dono Archmagorum
 Tod:         0:-1: 0: 1:Wer stirbt wann?:/room/death/death_room
 TdT:         15:15:1: 1:Tod den Testies!:/room/death/death_room
-Moerder:     0:-1: 0: 0:Guck mal wer da spricht...:/std/corpse
+Moerder:     0:-1: 0: 1:Guck mal wer da spricht...:/std/corpse
 Seher:       1: 1: 1: 1:Diskussionsebene fuer Seher
 ZT:          0: 0: 0: 0:Nuetzliche Tips fuer die Zaubertranksuche
 #
