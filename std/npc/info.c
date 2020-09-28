@@ -312,7 +312,7 @@ public varargs void AddSpecialInfo(string|string* key, string functionname,
 
   if (!cl)
     return;
-  return AddInfo(keys, cl, indent, silent, casebased);
+  return AddInfo(key, cl, indent, silent, casebased);
 }
 
 
