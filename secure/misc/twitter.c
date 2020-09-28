@@ -17,8 +17,12 @@
 
 #define DEBUG(x) tell_object(find_player("rumata"),x+"\n")
 
-void create() {
-	seteuid(getuid());
+nosave variables inherit "/std/channel_supervisor";
+
+protected void create() {
+  ::create();
+	ch_read_init_file();
+  seteuid(getuid());
   CHMASTER->join("twitter",this_object());
 }
 
@@ -127,6 +131,10 @@ void NetDead() {
 
 string query_real_name() {
 	return "(Twitter)";
+}
+
+varargs string name( int casus, int demon ) {
+	return "twitter";
 }
 
 varargs string Name( int casus, int demon ) {

@@ -20,7 +20,8 @@
 
 //#define NEED_PROTOTYPES
 
-inherit "std/container";
+inherit "/std/container";
+nosave variables inherit "/std/channel_supervisor";
 
 #include <properties.h>
 #include <language.h>
@@ -51,7 +52,7 @@ void ChannelMessageJeer( mixed sender, string text, int flag );
 object _channel( object ob );
 void transform_into_pile();
 
-void create()
+protected void create()
 {
   if (object_name(ME) == __FILE__[0..<3]) {
     set_next_reset(-1);
@@ -70,7 +71,26 @@ void create()
     SetProp(P_ARTICLE, 1);
   }
   else
+  {
     SetProp( P_ARTICLE, 0 );
+    ch_read_init_file();
+    ch_set_sv_name("Lars");
+    CHMASTER->join("moerder",this_object());
+  }
+}
+
+public varargs string name(int casus,int demon)
+{
+  if (!clonep() && object_name(previous_object()) == CHMASTER)
+    return channel_supervisor::name(casus,demon);
+  return container::name(casus, demon);
+}
+
+public varargs string Name(int casus, int demon)
+{
+  if (!clonep() && object_name(previous_object()) == CHMASTER)
+    return channel_supervisor::name(casus,demon);
+  return container::Name(casus, demon);
 }
 
 /* Damit die Leiche nicht voll wird... */

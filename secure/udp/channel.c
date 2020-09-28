@@ -16,7 +16,16 @@ inherit "/sys/format";
 #define COMMAND                "cmd"
 #define CHANNEL                "channel"
 
+inherit "/std/channel_supervisor";
+
 private nosave mixed _name_;
+
+protected void create()
+{
+  ::create();
+  ch_set_sv_name("<Intermud>");
+  ch_read_init_file();
+}
 
 int filter_listeners(object ob, string channel) {
     return ob->QueryProp(P_INTERMUD);
@@ -81,8 +90,14 @@ int udp_channel(mapping data) {
   return 1;
 }
 
-string name() { return _name_ || "<Intermud>"; }
-string Name() {return capitalize(_name_ || "<Intermud>");}
+public varargs string name()
+{
+  return _name_ || "<Intermud>";
+}
+public varargs string Name()
+{
+  return capitalize(_name_ || "<Intermud>");
+}
 
 private void _send(string mud, mixed data, mapping request)
 {

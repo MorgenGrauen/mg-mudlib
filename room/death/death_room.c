@@ -16,6 +16,7 @@
 #include <new_skills.h>
 
 inherit "/std/room";
+nosave variables inherit "/std/channel_supervisor";
 
 mixed *players;
 mapping msgCache;
@@ -41,9 +42,10 @@ public varargs void init(object oldenv)
 
 public void create()
 {
-  if (IS_CLONE(this_object())) return;
+    if (IS_CLONE(this_object())) return;
     ::create();
-    
+    ch_read_init_file();
+
     players = ({});
     flush(0);
 
@@ -65,6 +67,15 @@ public void create()
              "von denen geheimnisvolle Runen leuchten.\nTod.", 78, 0, 1 ) );
 }
 
+public varargs string name(int casus,int demon)
+{
+    return room::name(casus, demon);
+}
+
+public varargs string Name(int casus, int demon)
+{
+    return room::Name(casus, demon);
+}
 
 public void reset()
 {

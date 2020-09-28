@@ -12,7 +12,7 @@ protected void create()
     d_end = d_start = e_end = e_start = file_size(__DEBUG_LOG__);
 }
 
-int check_ch_access( string ch, object pl, string cmd, string txt )
+int ch_check_access( string ch, object pl, string cmd, string txt )
 {
     mixed tmp;
     
