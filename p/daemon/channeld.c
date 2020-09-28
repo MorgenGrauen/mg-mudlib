@@ -420,7 +420,7 @@ private void setup(string* chinfo)
   return;
 }
 
-private void initialize()
+private void create_default_channels()
 {
   string ch_list;
 #if !defined(__TESTMUD__) && MUDNAME=="MorgenGrauen"
@@ -516,7 +516,7 @@ protected void create()
   // Das muss auch laufen, wenn wir die alten Ebenen aus dem MEMORY bekommen
   // haben, weil es ja neue Ebenen geben koennte, die dann erstellt werden
   // muessen (verschwundete werden aber nicht aufgeraeumt!)
-  initialize();
+  create_default_channels();
   // <MasteR>-Ebene betreten, damit der channeld auf seine Kommandos auf
   // dieser Ebene reagieren kann.
   this_object()->join(CMNAME, this_object());
