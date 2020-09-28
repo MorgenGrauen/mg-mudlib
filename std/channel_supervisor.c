@@ -82,6 +82,13 @@ public varargs string Name(int casus, int demon)
 public int ch_check_access(string ch, object user, string cmd)
 {
   struct ch_access access = ch_access_data[ch];
+  // Wenn keine Information verfuegbar, ist der SV zwar als SV eingetragen,
+  // hat aber keine Daten. In dem Fall ist alles erlaubt. Das kann z.B.
+  // passieren, wenn der im .init angegeben SV nicht ladbar ist beim Laden des
+  // Channeld oder wenn beim Erstellen der Ebene explizit ein SV angegeben
+  // wird, der nix weiss.
+  if (!access)
+    return 1;
   // <user> ist Gast, es sind aber keine Gaeste zugelassen? Koennen wir
   // direkt ablehnen.
   if ((access.flags & CH_ACCESS_NOGUEST) && ({int})user->QueryGuest())
