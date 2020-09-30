@@ -190,8 +190,8 @@ ucFilter(string str)
  *  @RE
  *  Text, der ausgegeben wird, wenn der Ausfuehrende ein Elf
  *  ist. Ebenso gibt es @RD fuer Dunkelelfen, @RF fuer Felinen,
- *  @RH fuer Hobbits, @RM fuer Menschen, @RG fuer Goblins  und @RZ 
- *  fuer Zwerge.
+ *  @RH fuer Hobbits, @RM fuer Menschen, @RG fuer Goblins, @RO fuer Orks
+ *  und @RZ fuer Zwerge.
  *  ------ schnapp ------
  *
  *  Der Default-Text muss immer am Anfang stehen. Die anderen Bloecke
@@ -199,7 +199,7 @@ ucFilter(string str)
  *  die Bloecke betrachtet werden, ist dabei folgende:
  *  - zuerst werden @NAME-Bloecke untersucht
  *  - dann wird @RA (Erlaube-Liste) getestet
- *  - danach wird die Rasse ueberprueft (@RD/@RE/@RF/@RH/@RM/@RZ/@RG)
+ *  - danach wird die Rasse ueberprueft (@RD/@RE/@RF/@RH/@RM/@RZ/@RG/@RO)
  *  - zuletzt wird der Default-Text betrachtet
  *
  *  Innerhalb jedes der Bloecke kann man noch mit @G zwischen

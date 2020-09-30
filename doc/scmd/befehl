@@ -62,9 +62,9 @@ befehl
     Ausgaben.
  
     Als Trenner dienen @G fuer geschlechtsspezifische Ausgaben und @RE (fuer
-    Elfen), @RH (fuer Hobbits), @RM (fuer Menschen), @RZ (fuer Zwerge), 
-    @RF (fuer Felinen), @RD (fuer Dunkelelfen) sowie @RG (fuer Goblins) fuer 
-    rassenspezifische Ausgaben.
+    Elfen), @RH (fuer Hobbits), @RM (fuer Menschen), @RZ (fuer Zwerge),
+    @RF (fuer Felinen), @RD (fuer Dunkelelfen), @RG (fuer Goblins) sowie
+    @RO (fuer Orks) fuer rassenspezifische Ausgaben.
 
     Als spezielle "Rasse" gibt es darueberhinaus noch @RA fuer Ausgaben, die
     nur die Spieler gehen, die im Haus besondere Rechte haben (siehe erlaube).
@@ -204,4 +204,4 @@ befehl
     aendere, beschreibe
 
  LETZTE AeNDERUNG:
-    Sun, 03.12.2000, 18:30:00 von Wargon
+    30.09.2020, Zesstra
