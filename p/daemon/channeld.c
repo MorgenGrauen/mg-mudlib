@@ -897,8 +897,18 @@ varargs private int access(struct channel_s ch, object user, string cmd,
   // kein Objekt was fuer ein anderes Objekt duerfen, sonst kann jemand z.B.
   // eine History abfragen indem einfach ein anderes Objekt uebergeben wird.
   if (previous_object(1) != user)
-    return 0;
-
+  {
+    // Kurzfristiger Workaround: Whitelist fuer bestimmte Objekte, die im
+    // Namen von Spielern senden mit dem Spieler als Absender, z.B. die Leiche
+    // beim verspotten.
+    switch(object_name(previous_object(1)))
+    {
+      case "/std/corpse":
+        break;
+      default:
+        return 0;
+    }
+  }
   if (IsBanned(user, cmd))
     return 0;
 
