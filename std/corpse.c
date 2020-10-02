@@ -301,8 +301,8 @@ static int mampf( string str )
 
     if (({int})this_player()->QueryProp(P_GHOST))
     {
-	_notify_fail("Das wuerde durch Dich hindurch fallen.\n");
-	return 0;
+        _notify_fail("Das wuerde durch Dich hindurch fallen.\n");
+        return 0;
     }
 
     // Das folgende ist nicht ganz sauber, da die Staerke bei eat_food nicht
@@ -330,7 +330,7 @@ static int mampf( string str )
       // Auch teilweise Verspeisung ist moeglich, nahrung_aktuell anpassen
       ({int})this_player()->eat_food(gegessen);
       if (objectp(this_player())) {
-	write(mampf_heilung(gegessen)+"Leider bist Du nicht in der Lage,"
+        write(mampf_heilung(gegessen)+"Leider bist Du nicht in der Lage,"
                " alles aufzuessen.\n");
       say( sprintf("%s knabbert an %s herum.\n",
                    ({string})this_player()->name(),
@@ -685,68 +685,67 @@ object _channel( object ob )
   object rueck;
 
   if (member(inherit_list(previous_object()),CORPSE_OBJ)>-1)
+  {
+    string killer;
+    int i, x, y, z, nr;
+    closure m_q, s_q;
+
+    while( previous_object(i) &&
+           !query_once_interactive(previous_object(i)) )
+        i++;
+
+    if( !previous_object(i) || IS_LEARNER(previous_object(i)) )
+        return rueck;
+
+    killer = ({string}) previous_object(i)->name();
+
+    if ( lower_case(killer) != getuid(previous_object(i)) )
+        killer = capitalize(getuid(previous_object(i)));
+
+    m_q = symbol_function( "QueryProp", ob ); // Monster
+    s_q = symbol_function( "QueryProp", previous_object(i) ); // Spieler
+
+    if ( (m_FMM = ({int}) funcall( m_q, P_FORCE_MURDER_MSG )) >= 0 )
+      if ( (object_name(ob) == "/obj/shut") ||
+           (m_FMM > 0) ||
+           (nr = (random(100) >= 99) ? 1 : 0 ) || 
+           (nr = ((x = (m_HP = ({int}) funcall( m_q, P_MAX_HP )) * 
+                   ((m_WC = ({int}) funcall( m_q, P_TOTAL_WC )) +
+                    (m_AC = ({int}) funcall( m_q, P_TOTAL_AC ))))
+                  > 200000) ? 2 : 0) ||
+           (nr = (((y = m_HP * (m_WC + m_AC)) >
+                   (z = 5 * (s_HP = ({int}) funcall( s_q, P_MAX_HP )) *
+                    ((s_WC = ({int}) funcall( s_q, P_TOTAL_WC )) +
+                     (s_AC = ({int}) funcall( s_q, P_TOTAL_AC )))))
+                  ? 3 : 0)))
       {
-          string killer;
-          int i, x, y, z, nr;
-          closure m_q, s_q;
-    
-          while( previous_object(i) &&
-                 !query_once_interactive(previous_object(i)) )
-              i++;
-          
-          if( !previous_object(i) || IS_LEARNER(previous_object(i)) )
-              return rueck;
+        SetProp( P_NAME, "Geist "+({string}) ob->name(WESSEN, 0) );
 
-          killer = ({string}) previous_object(i)->name();
-          
-          if ( lower_case(killer) != getuid(previous_object(i)) )
-              killer = capitalize(getuid(previous_object(i)));
-          
-          m_q = symbol_function( "QueryProp", ob ); // Monster
-          s_q = symbol_function( "QueryProp", previous_object(i) ); // Spieler
-          
-          if ( (m_FMM = ({int}) funcall( m_q, P_FORCE_MURDER_MSG )) >= 0 )
-              if ( (object_name(ob) == "/obj/shut") ||
-                   (m_FMM > 0) ||
-                   (nr = (random(100) >= 99) ? 1 : 0 ) || 
-                   (nr = ((x = (m_HP = ({int}) funcall( m_q, P_MAX_HP )) * 
-                           ((m_WC = ({int}) funcall( m_q, P_TOTAL_WC )) +
-                            (m_AC = ({int}) funcall( m_q, P_TOTAL_AC ))))
-                          > 200000) ? 2 : 0) ||
-                   (nr = (((y = m_HP * (m_WC + m_AC)) >
-                           (z = 5 * (s_HP = ({int}) funcall( s_q, P_MAX_HP )) *
-                            ((s_WC = ({int}) funcall( s_q, P_TOTAL_WC )) +
-                             (s_AC = ({int}) funcall( s_q, P_TOTAL_AC )))))
-                          ? 3 : 0)))
-                  {
-                      SetProp( P_NAME, "Geist "+({string}) ob->name(WESSEN, 0) );
+        if( !(msg = ({string|closure}) ob->QueryProp(P_MURDER_MSG)) )
+            msg = moerder_msgs[random(sizeof(moerder_msgs))]; 
 
-                      if( !(msg = ({string|closure}) ob->QueryProp(P_MURDER_MSG)) )
-                          msg = moerder_msgs[random(sizeof(moerder_msgs))]; 
+        if ( stringp(msg) )
+            msg = sprintf( msg, killer || "Moerder" );
 
-		      if ( stringp(msg) )
-			  msg = sprintf( msg, killer || "Moerder" );
+        ({int})CHMASTER->send( "Moerder", this_object(), funcall(msg) );
 
-                      ({int})CHMASTER->send( "Moerder", this_object(), funcall(msg) );
-
-                      rueck = previous_object(i);
-                  }
-          
-          log_file( "moerder.log",
-                    sprintf( "MON(%O) COND(%d) NPC(%d), DIFF(%d,%d)\n",
-                             ob, nr, x, y, z) );
+        rueck = previous_object(i);
       }
-
+      log_file( "moerder.log",
+            sprintf("MON(%O) COND(%d) NPC(%d), DIFF(%d,%d)\n",
+                     ob, nr, x, y, z) );
+  }
   return rueck;
 }
 
-void transform_into_pile() {
-	if( ({int})environment()->QueryProp(P_PREVENT_PILE) ) return;
-	object* inv = all_inventory();
-	if( sizeof(inv)<2 ) return;
-	object p = clone_object(PILE_OBJ);
-	filter_objects( inv, "move", p, M_SILENT | M_NOCHECK );
-	({int})p->move( environment(), M_SILENT | M_NOCHECK );
+void transform_into_pile()
+{
+  if( ({int})environment()->QueryProp(P_PREVENT_PILE) ) return;
+  object* inv = all_inventory();
+  if( sizeof(inv)<2 ) return;
+  object p = clone_object(PILE_OBJ);
+  filter_objects( inv, "move", p, M_SILENT | M_NOCHECK );
+  ({int})p->move( environment(), M_SILENT | M_NOCHECK );
 }
 
 // Verhindert die Zerstoerung im reset() von Containern, die mit
