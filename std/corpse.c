@@ -30,6 +30,7 @@ nosave variables inherit "/std/channel_supervisor";
 #include <wizlevels.h>
 #include <living/life.h>
 #include "/secure/scoremaster.h"
+#include "/p/daemon/channel.h"
 
 #define CORPSE_OBJ "/std/corpse.c"
 #define PILE_OBJ "/std/pile.c"
@@ -79,12 +80,18 @@ protected void create()
   }
 }
 
+// Gerufen vom CHANNELD, um festzustellen, wer was auf -moerder tun darf.
 public int ch_check_access(string ch, object user, string cmd)
 {
-  // sich selber fuer alles erlauben
+  // sich selber fuer alles erlauben (und dieses Objekt wird
+  // nur fuer -moerder gefragt).
   if (user==this_object())
     return 1;
-
+  // Der Moerder darf einmal verspotten, d.h. eine Meldunge auf der Ebene
+  // senden (das Kommando setzt gespottet dabei).
+  if (user==moerder && !gespottet && cmd == C_SEND)
+    return 1;
+  // Rest soll der Standard-SV entscheiden
   return channel_supervisor::ch_check_access(ch, user, cmd);
 }
 
