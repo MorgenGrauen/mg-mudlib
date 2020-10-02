@@ -918,7 +918,7 @@ varargs private int access(struct channel_s ch, object user, string cmd,
       && ch.supervisor != find_object(DEFAULTSV))
     return 1;
 
-  return funcall(ch.access_cl, lower_case(ch.name), user, cmd, &txt);
+  return funcall(ch.access_cl, lower_case(ch.name), user, cmd, txt);
 }
 
 // Neue Ebene <ch> erstellen mit <owner> als Ebenenbesitzer.
