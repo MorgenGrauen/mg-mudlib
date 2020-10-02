@@ -706,10 +706,9 @@ object _channel( object ob )
     s_q = symbol_function( "QueryProp", previous_object(i) ); // Spieler
 
     if ( (m_FMM = ({int}) funcall( m_q, P_FORCE_MURDER_MSG )) >= 0 )
-      if ( (object_name(ob) == "/obj/shut") ||
-           (m_FMM > 0) ||
-           (nr = (random(100) >= 99) ? 1 : 0 ) || 
-           (nr = ((x = (m_HP = ({int}) funcall( m_q, P_MAX_HP )) * 
+      if ( (m_FMM > 0) ||
+           (nr = (random(100) >= 99) ? 1 : 0 ) ||
+           (nr = ((x = (m_HP = ({int}) funcall( m_q, P_MAX_HP )) *
                    ((m_WC = ({int}) funcall( m_q, P_TOTAL_WC )) +
                     (m_AC = ({int}) funcall( m_q, P_TOTAL_AC ))))
                   > 200000) ? 2 : 0) ||
