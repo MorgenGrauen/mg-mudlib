@@ -81,15 +81,11 @@ protected void create()
 
 public varargs string name(int casus,int demon)
 {
-  if (!clonep() && object_name(previous_object()) == CHMASTER)
-    return channel_supervisor::name(casus,demon);
   return container::name(casus, demon);
 }
 
 public varargs string Name(int casus, int demon)
 {
-  if (!clonep() && object_name(previous_object()) == CHMASTER)
-    return channel_supervisor::name(casus,demon);
   return container::Name(casus, demon);
 }
 
@@ -672,7 +668,6 @@ private string *moerder_msgs = ({KILL_MESSAGES, KILL_MESSAGES2, KILL_MESSAGES3,
 
 
 int _query_kma() { return sizeof(moerder_msgs); }
-
 
 object _channel( object ob )
 {
