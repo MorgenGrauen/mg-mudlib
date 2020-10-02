@@ -727,7 +727,8 @@ object _channel( object ob )
             msg = sprintf( msg, killer || "Moerder" );
 
         ({int})CHMASTER->send( "Moerder", this_object(), funcall(msg) );
-
+        // Name wieder auf Lars stellen fuer SV-Funktionalitaet.
+        SetProp(P_NAME, "Lars");
         rueck = previous_object(i);
       }
       log_file( "moerder.log",
