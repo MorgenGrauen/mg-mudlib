@@ -74,7 +74,7 @@ protected void create()
   {
     SetProp( P_ARTICLE, 0 );
     ch_read_init_file();
-    ch_set_sv_name("Lars");
+    SetProp(P_NAME, "Lars");
     CHMASTER->join("moerder",this_object());
   }
 }
