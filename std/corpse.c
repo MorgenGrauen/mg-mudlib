@@ -79,6 +79,15 @@ protected void create()
   }
 }
 
+public int ch_check_access(string ch, object user, string cmd)
+{
+  // sich selber fuer alles erlauben
+  if (user==this_object())
+    return 1;
+
+  return channel_supervisor::ch_check_access(ch, user, cmd);
+}
+
 public varargs string name(int casus,int demon)
 {
   return container::name(casus, demon);
