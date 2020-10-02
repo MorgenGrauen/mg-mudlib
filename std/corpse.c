@@ -370,35 +370,39 @@ static int spott( string str )
             , 0;
 
     str = ({string})PL->_unparsed_args();
-    
+
     switch ( str[0] )
-        {
-        case ':':
-            ({void})"/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_EMOTE );
-            break;
-          
-        case ';':
-            ({void})"/std/corpse"->ChannelMessageJeer( PL, str[1..], MSG_GEMOTE );
-            break;
-          
-        default:
-            ({void})"/std/corpse"->ChannelMessageJeer( PL, str, MSG_SAY );
-            break;
-        }
-  
+    {
+      case ':':
+        ({void})"/std/corpse"->ChannelMessageJeer(PL, str[1..], MSG_EMOTE);
+        break;
+      case ';':
+        ({void})"/std/corpse"->ChannelMessageJeer(PL, str[1..], MSG_GEMOTE);
+        break;
+      default:
+        ({void})"/std/corpse"->ChannelMessageJeer(PL, str, MSG_SAY);
+        break;
+     }
+
   gespottet = 1;
   write( "Du verspottest Dein totes Opfer.\n" );
-  
+
   return 1;
 }
 
-
+// Wird in der Blueprint von den Clones (oder erbenden Objekten) gerufen, um
+// die Spott-Meldung von einem Spieler zu senden.
 void ChannelMessageJeer( mixed sender, string text, int flag )
 {
   if (member(inherit_list(previous_object()),CORPSE_OBJ)>-1)
-      ({int})CHMASTER->send( "Moerder", sender, text, flag );
+  {
+    // Der Aufrufer hat, wenn es das originale spott() ist, geprueft, ob PL ==
+    // moerder ist. D.h. wir merken uns jetzt in moerder den PL. (wenn das
+    // jemand missbraucht, um beliebig auf -moerder zu senden, gibts Aerger)
+    moerder = PL;
+    ({int})CHMASTER->send( "Moerder", sender, text, flag );
+  }
 }
-
 
 // _channel() --
 #define KILL_MESSAGES \
