@@ -69,10 +69,10 @@ BEMERKUNGEN
 BEISPIELE
 =========
 
-   #include <zentralbank.h>
+   #include <bank.h>
 
    // gib ihm Geld
-   int money = ZENTRALBANK->Withdraw(50);
+   int money = ZENTRALBANK->WithDraw(50);
    this_player()->AddMoney(money);
 
    // nimm ihm Geld
@@ -86,9 +86,11 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   Geldhandling:      QueryMoney(L) Zentralbank:       PayIn(L),
-   WithDraw(L) Sonstiges:         move(L), /items/money.c,
-   /sys/moving.h, /sys/money.h, /sys/bank.h
-   /std/container/moneyhandler.c
+   Geldhandling:  QueryMoney(L)
+   Zentralbank:   PayIn(L), WithDraw(L)
+   Sonstiges:     move(L),
+   /items/money.c
+   /sys/moving.h, /std/container/moneyhandler.c
+   /sys/money.h, /sys/bank.h
 
 18.02.2013, Zesstra

@@ -36,7 +36,7 @@ BEISPIELE
      // Goblins
      SetProp(P_MAGIC_RESISTANCE_OFFSET,
                ([MT_ANGRIFF:600,         // 6% Resistenz gegen Angriff
-	         MT_ILLUSION:500,        // 6% Resistenz gegen Illusionen
+	         MT_ILLUSION:500,        // 5% Resistenz gegen Illusionen
                  MT_VERWANDLUNG:-300,    // 3% Empfindlichkeit
 		 MT_HELLSICHT:-750,      // 7.5% Empfindlichkeit
 		 MT_BEHERRSCHUNG:250])); // 2.5% Resistenz

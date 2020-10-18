@@ -9,7 +9,7 @@ FUNKTION
 --------
 ::
 
-     mixed QueryArmourByType(string type)
+     object|object*|mapping QueryArmourByType(string type)
 
 DEFINIERT IN
 ------------
@@ -30,17 +30,28 @@ BESCHREIBUNG
 
      Abfrage, ob das Lebewesen eine Ruestung des angegebenen Typs traegt.
 
-     Zurueckgegeben wird je nach Tragestatus und <type>:
-     * 0, falls das Lebewesen die gesuchte Ruestungsart nicht traegt
-     * im Erfolgsfall das Ruestungsobjekt
-     * falls <type> AT_MISC ist:
-       * ({}), wenn es keine AT_MISC-Ruestung traegt
-       * ein Array von AT_MISC-Ruestungen
-     * falls <type> 0 ist: ein Mapping, das diese Informationen mit dem
-       Ruestungstypen als Schluessel enthaelt:
-       ([AT_MISC: ({[object], ...}),
-         AT_...: <object>,
-         ... ])
+
+RUECKGABEWERTE
+--------------
+::
+    
+    Zurueckgegeben wird abhaengig vom Argument <type> folgendes:
+
+    1) Ist <type> ein Typ, von dem man nur eine Ruestung tragen kann:
+       *  0, falls das Lebewesen die gesuchte Ruestungsart nicht traegt,
+       *  ansonsten das Ruestungsobjekt
+
+    2) Ist <type> AT_MISC:
+       *   ein Array mit allen AT_MISC-Ruestungen
+       *   ({}), wenn das Lebewesen keine AT_MISC-Ruestung traegt
+
+    3) Ist <type> 0:
+       * Ein Mapping mit den Ruestungstypen als Schluessel der folgenden 
+       Form:
+          ([AT_MISC:  ({object misc1, ... }),
+            AT_CLOAK: object cloak,
+            AT_...:   object ...,
+            ... ])
 
 BEMERKUNG
 ---------

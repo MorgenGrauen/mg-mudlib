@@ -19,6 +19,13 @@ BESCHREIBUNG
 
      Maximale Anzahl der Magiepunkte.
 
+HINWEIS
+-------
+:: 
+
+      Beim Setzen der Property wird gleichzeitig P_SP auf denselben Wert
+      gesetzt.
+
 SIEHE AUCH
 ----------
 ::

@@ -50,6 +50,7 @@ BEMERKUNGEN
 
 BEISPIELE
 ---------
+:: 
 
      Eine Ruestung, die bei Angriffen mit Feuer ihre volle Staerke entfaltet
      und bei Angriffen durch Geister geschwaecht wird:
@@ -81,12 +82,13 @@ BEISPIELE
            enemy->is_class_member(CL_GHOST))
          prot -= random(10);
 
-       // Der Rueckgabewert wird auf den aus P_AC errechneten Wert draufgeschlagen
+       // Der Rueckgabewert wird auf den aus P_AC errechneten Wert 
+       // draufgeschlagen
        return prot;
      }
 
 SIEHE AUCH
 ----------
 
-     :doc:`../props/P_DEFEND_FUNC`, :doc:`QueryDefendd`
+     :doc:`../props/P_DEFEND_FUNC`, :doc:`QueryDefend`
      /std/armour/combat.c

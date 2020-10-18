@@ -5,7 +5,7 @@ FUNKTION
 --------
 ::
 
-	CheckRessistance(string* dam_type_list)
+	public float CheckResistance(string* dam_type_list)
 
 ARGUMENTE
 ---------
@@ -33,5 +33,5 @@ SIEHE AUCH
 ----------
 ::
 
-	"Defend"
+	Defend(), P_RESISTANCE_STRENGTHS
 

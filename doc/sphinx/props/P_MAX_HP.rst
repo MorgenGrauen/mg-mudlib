@@ -19,6 +19,13 @@ BESCHREIBUNG
 
      Maximale Anzahl der Lebenspunkte.
 
+HINWEIS
+-------
+:: 
+
+     Beim Setzen der Property wird gleichzeitig P_HP auf denselben Wert 
+     gesetzt.
+
 SIEHE AUCH
 ----------
 ::

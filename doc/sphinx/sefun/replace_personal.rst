@@ -46,8 +46,6 @@ BEMERKUNGEN
 
      x steht fuer die Position des Objekts/Strings in *obs, beginnend bei 1.
 
-     
-
      Besonderheiten beim Possessivpronomen (@WERQPPGNx):
      G muss durch das Geschlecht (M, F oder N) und N durch den Numerus (S 
      oder P) ersetzt werden. 
@@ -66,27 +64,19 @@ RUeCKGABEWERT
      
 
 Beispiele
-
-     replace_personal("@WER1", ({find_player("gloinson")}))
-     == "Gloinson"
------------------------------------------------------------------------------------------
+---------
 ::
 
+     replace_personal("@WER1", ({find_player("gloinson")})) ==> "Gloinson"
      
-
-     replace_personal("@WEMQP1", ({find_player("gloinson")}))
-     == "ihm"     
-
-     
+     replace_personal("@WEMQP1", ({find_player("gloinson")})) ==> "ihm"     
 
      // unbestimmter und bestimmter Artikel:
      replace_personal("@WER1 zueckt @WENU2 und verhaut @WEN3.", 
                       ({find_player("gloinson"),
                         find_object("/obj/mpa"), 
                         find_object("/obj/wanderer")}))
-     == "Gloinson zueckt eine Zeitung und verhaut den Wanderer."
-
-     
+     ==> "Gloinson zueckt eine Zeitung und verhaut den Wanderer."
 
      // Beim Possessivpronomen beziehen sich WEN, F und P (Akkusativ,
      // Femininum, Plural) auf die Taschen, nicht auf Kessa:
@@ -94,7 +84,7 @@ Beispiele
                       "Taschen.", 
                       ({find_player("kessa"), 
                         find_player("gloinson")}))
-     == "Kessa steckt Gloinsons Turnschuhe in ihre Taschen."
+     ==> "Kessa steckt Gloinsons Turnschuhe in ihre Taschen."
 
      // Ein Beispiel mit laengerem *obs:
      replace_personal("@WER1 zieht @WENQPPMP1 neuen Turnschuhe an. @WER2 ist "
@@ -108,10 +98,10 @@ Beispiele
                         "Birne",
                         find_object("/obj/wanderer"),
                         find_netdead("jof")}),1)
-     == "Gloinson zieht seine neuen Turnschuhe an. Kessa ist so beeindruckt, "
-        "dass sie ihm eine Zeitung auf die Birne haut und die Schuhe in ihrer "
-        "Tasche verschwinden laesst. Ein Wanderer schaut zu und kichert "
-        "irre. Wenn das Jof gesehen haette!"
+     ==> "Gloinson zieht seine neuen Turnschuhe an. Kessa ist so "
+         "beeindruckt, dass sie ihm eine Zeitung auf die Birne haut und die "
+         "Schuhe in ihrer Tasche verschwinden laesst. Ein Wanderer schaut "
+         "zu und kichert irre. Wenn das Jof gesehen haette!"
 
 SIEHE AUCH
 ----------

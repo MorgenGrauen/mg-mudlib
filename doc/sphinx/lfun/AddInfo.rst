@@ -3,9 +3,10 @@ AddInfo()
 
 FUNKTION
 --------
+:: 
 
-     varargs void AddInfo( frage, meldung
-               [, indent [, [silent [, casebased] ] ] );
+  public varargs void AddInfo(string|string* key, string|closure info,
+                 string indent, int|string silent, string|closure casebased);
 
 DEFINIERT IN
 ------------
@@ -15,18 +16,23 @@ DEFINIERT IN
 ARGUMENTE
 ---------
 
-     string/string* frage
-       Schluesseltext(e) auf die Informationen gegeben werden sollen.
-     string/closure meldung
+     string|string* frage
+       Schluesselwoerter, fuer die der NPC eine Antwort geben soll, wenn
+       man ihn danach fragt
+
+     string|closure meldung
        Information, die gegeben werden soll; wenn 'meldung' eine Closure 
        ist, wird der gerufenen Funktion nichts uebergeben.
-     string indent
+
+     string indent    (optional)
        Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
-     int/string silent
+
+     int|string silent    (optional)
        Ist silent gesetzt, so erfolgt Antwort nur an Fragenden. 
-     string/closure casebased
+
+     string|closure casebased   (optional)
        Closure mit Returnwert string oder int.
-       Bekommt nichts uebergeben.
+       Der Funktion werden keine Argumente uebergeben.
 
 BESCHREIBUNG
 ------------
@@ -69,7 +75,7 @@ BESCHREIBUNG
 
      Die Strings von 'silent' und 'meldung' werden geparsed.
      Dabei koennen die @[...]-Tags von replace_personal() verwendet werden,
-     Objekt 1 ist this_player(). Ersetzte String am Satzanfang werden
+     Objekt 1 ist this_player(). Ersetzte Strings am Satzanfang werden
      automatisch gross geschrieben.
      AddInfo() konvertiert die alten Schluesselworte @WER, @WESSEN, @WEM,
      @WEN zu denen von replace_personal(), jedoch nicht in den Rueckgabe-
@@ -259,4 +265,4 @@ SIEHE AUCH
      Interna:
        :doc:`GetInfoArr` , :doc:`do_frage`
 
-7. Mar 2017 Gloinson
+24.09.2020, Arathorn

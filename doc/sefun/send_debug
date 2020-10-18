@@ -1,0 +1,45 @@
+
+send_debug()
+************
+
+
+FUNKTION
+========
+
+   varargs void send_debug(object|string wiz, string msg, string
+   msg_prefix)
+
+
+BESCHREIBUNG
+============
+
+   Sendet <msg> via ReceiveMsg() an das Spielerobjekt <wiz> (wenn es
+   als string angegeben wird, wird es per find_player gesucht).
+   Hierbei wird mit dem Nachrichtentyp MT_DEBUG gesendet, d.h. die
+   Meldung wird nur angezeigt, wenn das Spielerobjekt Magier oder
+   Testspieler mit aktiviertem P_WIZ_DEBUG ist.
+
+   Magier koennen P_WIZ_DEBUG mit dem Kommando 'mschau' umschalten,
+   Testspieler benoetigen hierfuer einen Magier.
+
+   Diese Debugmeldungen koennten sehr praktisch sein, aber man sollte
+   es in produktivem Code auch nicht uebertreiben, auch wenn keine
+   Ausgabe an Spieler erfolgt, wird die Zustellung jedoch bei jedem
+   Aufruf zumindest geprueft.
+
+
+BEISPIEL
+========
+
+      send_debug("zesstra", "Verbrauchte evalcosts: 42");
+
+      send_debug(this_player(), "Verbrauchte evalcost: 42",
+                 "Unit-Debug: ");
+
+
+SIEHE AUCH
+==========
+
+   ReceiveMsg()
+
+14.10.2020, Zesstra

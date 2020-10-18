@@ -46,7 +46,10 @@ BEMERKUNG
      wurden, werden durch die neuen Werte ersetzt.
 
      Ab einem Aufruf mit Level 20 werden P_XP = 202000 gesetzt, also ein
-     Kill-Stup vergeben (siehe P_XP).
+     Kill-Stups vergeben (siehe P_XP).
+
+     P_HP und P_SP werden auf dieselben Werte wie P_MAX_HP bzw. P_MAX_SP 
+     eingestellt.
 
 BEISPIEL
 --------

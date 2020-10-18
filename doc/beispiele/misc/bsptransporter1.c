@@ -26,23 +26,24 @@ create()
   SetProp(P_LIGHT, 1 );
   SetProp(P_TRANSPARENT,1);
   // Man soll auf(in) die Wolke und von ihr herunter schauen koennen.
-    
+
   /*** Meldungen, die Transporter geben koennen ***/
-  
+
   SetProp( P_DEPARTMSG, ({
-    "Die Wolke steigt in die Luft.\n", 
+    "Die Wolke steigt in die Luft.\n",
     "Die Wolke fliegt davon.\n"
   }) );
   // Die erste Meldung ist fuer Leute auf der Wolke.
   // Die zweite fuer Leute in dem Raum, in dem die Wolke ankommt.
-      
-  SetProp( P_ARRIVEMSG, ({
-    "Die Wolke naehert sich dem Boden von @@QueryArrived@@.\n",
-    "Eine kleine Wolke schwebt herab.\n"
-  }) );
+
+  Set( P_ARRIVEMSG, function string* () {
+    return ({
+      sprintf("Die Wolke naehert sich dem Boden von %s.\n",QueryArrived()),
+      "Eine kleine Wolke schwebt herab.\n"});
+  }, F_QUERY_METHOD);
   // Die erste Meldung ist fuer Leute auf der Wolke.
   // Die zweite fuer Leute in dem Raum, aus dem die Wolke abreist.
-    
+
   SetProp( P_ENTERMSG, ({
     "steigt auf die Wolke",
     "kommt auf die Wolke"
@@ -50,7 +51,7 @@ create()
   // Die erste Meldung ist fuer den Raum, aus dem der Spieler kommt.
   // (=Raum). Die zweite Meldung ist fuer Spieler in dem Raum, in
   // den der Spieler geht (=Transporter).
-	
+
   SetProp( P_LEAVEMSG, ({
     "steigt von der Wolke",
     "steigt von der Wolke"
@@ -58,7 +59,7 @@ create()
   // Die erste Meldung ist fuer den Raum, aus dem der Spieler kommt.
   // (=Transporter). Die zweite Meldung ist fuer Spieler in dem Raum,
   // in den der Spieler geht (=Raum).
-      
+
   SetProp( P_LEAVEFAIL, "Die Wolke schwebt viel zu hoch" );
   // Meldung, die kommt, wenn ein Spieler den Transporter verlassen
   // will, aber dieser an keinem Raum angelegt hat.
@@ -108,7 +109,7 @@ create()
   AddMsg( "Die Wolke beginnt zu sinken.\n", 10 );
   // Nach dem Letzten Haltepunkt wird der Kurs wieder von vorn
   // befahren.
- 	
+
   Start();
   // Lasse den Transporter am ersten dieser Haltepunkte starten.
 }
@@ -116,7 +117,7 @@ create()
 steige(str)
 {
   string arg, arg2;
-  
+
   if (sscanf( str, "auf %s", arg ) > 0 && id(old_explode(arg," ")[0]))
     return Enter();
   // Wenn sicher ist, dass der Spieler die Wolke BEsteigen will,
@@ -128,5 +129,3 @@ steige(str)
   // Verben sollten nach Enter() oder Leave() keine weiteren Befehle
   // enthalten.
 }
-
-

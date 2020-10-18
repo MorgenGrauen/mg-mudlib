@@ -61,46 +61,43 @@ BEMERKUNGEN
 BEISPIELE
 =========
 
-   Eine Ruestung, die bei Angriffen mit Feuer ihre volle Staerke
-   entfaltet und bei Angriffen durch Geister geschwaecht wird:
+   Eine Ruestung, die bei Angriffen mit Feuer ihre volle Staerke entfaltet
+   und bei Angriffen durch Geister geschwaecht wird:
 
-   protected void create() {
+   protected void create()
+   {
+     ::create();
 
-      ::create();
-
-      SetProp(P_ARMOUR_TYPE, AT_ARMOUR); SetProp(P_AC, 20); ... // Die
-      DefendFunc() ist in der Ruestung selbst definiert
-      SetProp(P_DEFEND_FUNC, this_object());
-
+     SetProp(P_ARMOUR_TYPE, AT_ARMOUR);
+     SetProp(P_AC, 20);
+     ...
+     // Die DefendFunc() ist in der Ruestung selbst definiert
+     SetProp(P_DEFEND_FUNC, this_object());
    }
 
-   public int DefendFunc(string* dtyp, mapping spell, object enemy) {
+   public int DefendFunc(string* dtyp, mapping spell, object enemy)
+   {
+     int prot;
 
-      int prot;
+     // Zuerst fragen wir den Angriff durch Feuer ab:
+     if (member(dtyp, DT_FIRE) >= 0)  // Feuer gehoert zu den Schadenstypen
+       prot = 5 + random(10); // Das ergibt maximal 14. Zusammen mit P_AC
+                              // kommt man also maximal auf 14+20 = 34,
+                              // liegt also unter der fuer AT_ARMOUR
+                              // geltenden Obergrenze
 
-      // Zuerst fragen wir den Angriff durch Feuer ab: if
-      (member(dtyp, DT_FIRE) >= 0)  // Feuer gehoert zu den
-      Schadenstypen
+     // Und jetzt der Geistertest
+     if (enemy->QueryProp(P_RACE) == "Geist" ||
+         enemy->is_class_member(CL_GHOST))
+       prot -= random(10);
 
-         prot = 5 + random(10); // Das ergibt maximal 14. Zusammen mit
-         P_AC
-            // kommt man also maximal auf 14+20 = 34, // liegt also
-            unter der fuer AT_ARMOUR // geltenden Obergrenze
-
-      // Und jetzt der Geistertest if (enemy->QueryProp(P_RACE) ==
-      "Geist" ||
-
-            enemy->is_class_member(CL_GHOST))
-
-         prot -= random(10);
-
-      // Der Rueckgabewert wird auf den aus P_AC errechneten Wert
-      draufgeschlagen return prot;
-
+     // Der Rueckgabewert wird auf den aus P_AC errechneten Wert
+     // draufgeschlagen
+     return prot;
    }
 
 
 SIEHE AUCH
 ==========
 
-   P_DEFEND_FUNC, *QueryDefendd* /std/armour/combat.c
+   P_DEFEND_FUNC, QueryDefend() /std/armour/combat.c

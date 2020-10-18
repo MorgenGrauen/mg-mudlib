@@ -5,23 +5,32 @@ FUNKTION
 --------
 ::
 
-     varargs void AddSpecialInfo( frage, meldung
-			   [, indent [, [silent [, casebased] ] ] );
+  public varargs void AddSpecialInfo(string|string* keys, string functionname,
+                 string indent, int|string silent, string|closure  casebased);
+
 
 ARGUMENTE
 ---------
 ::
 
-     string/string* frage
-	Schluesseltext(e) auf die Informationen gegeben werden sollen.
-     string/closure function
-	Methodenname im NPC/Closure
-     string indent
-	Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
-     int/string silent
-	Ist silent gesetzt, so erfolgt Antwort nur an Fragenden.
-     string/closure casebased
-	Funktionsname oder Closure mit Returnwert string oder int.
+     string|string* frage
+       Schluesselwoerter, fuer die der NPC eine Antwort geben soll, wenn
+       man ihn danach fragt
+
+     string functionname
+       Name der Funktion, die gerufen werden soll, um den Informationstext
+       des NPCs zu ermitteln. Der gerufenen Funktion werden keine Argumente
+       uebergeben.
+
+     string indent    (optional)
+       Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
+
+     int|string silent    (optional)
+       Ist silent gesetzt, so erfolgt Antwort nur an Fragenden. 
+
+     string|closure casebased   (optional)
+       Closure mit Returnwert string oder int.
+       Der Funktion werden keine Argumente uebergeben.
 
 DEFINIERT IN
 ------------
@@ -80,9 +89,17 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-     AddInfo(L), RemoveInfo(L)
+     Verwandt:
+       :doc:`AddInfo`, :doc:`RemoveInfo`
+     Props:
+       :doc:`../props/P_PRE_INFO`
+     Files:
+       /std/npc/info.c
+     Loggen:
+       :doc:`../props/P_LOG_INFO`
+     Interna:
+       :doc:`GetInfoArr` , :doc:`do_frage`
 
-7.Apr 2004 Gloinson
+24.09.2020, Arathorn
 

@@ -44,7 +44,9 @@ o  Wirf bitte nach Abschluss der Arbeiten Platzhalter-Code raus (z.B. leere
    Dateien aus den Verzeichnissen.
 
 o  Speicherung von Daten in secure-Verzeichnissen soll bitte nur sehr
-   sparsam erfolgen und nur in Abstimmung mit dem RM.
+   sparsam erfolgen und nur in Abstimmung mit dem RM. Denkt dabei daran,
+   dass Secure-Verzeichnisse im Zusammenspiel mit Git/Gerrit zusaetzliche
+   Probleme aufwerfen.
 
 o  save_object() bitte sehr sparsam verwenden (nicht bei jeder Daten-
    aenderung, bei Bedarf in reset/remove).

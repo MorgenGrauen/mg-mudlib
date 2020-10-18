@@ -53,7 +53,7 @@ BEMERKUNGEN
 
        * passiert automatisch nur, wenn alle Spieler den Raum verlassen haben
        * ist manuell nur ueber Loeschen der Nachrichten umsetzbar, also mit
-         ``AddRoomMessage((string)0, 0, (string)0);``
+         ``AddRoomMessage(0, 0, 0);``
 
      In Funktionen, die durch AddRoomMessage() ausgeloest werden, darf
      this_player() nicht verwendet werden, da die call_out()-Kette den
@@ -122,7 +122,7 @@ BEISPIELE
      }
 
      public int action_laerm(string str) {
-       AddRoomMessage((string)0, 0, (string)0);
+       AddRoomMessage(0, 0, 0);
 
        this_player()->ReceiveMsg(
          "Du schreist dir kurz die Seele aus dem Leib. Alle Tiere "
