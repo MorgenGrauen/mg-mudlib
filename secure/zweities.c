@@ -315,7 +315,7 @@ public varargs int AddOrReplaceFamilyAlias(string verb, <string|int>* alias,
   if (!familie || !sizeof(familie))
     return -1;
 
-  // max. 100 Familienaliase fuer den Moment.
+  // max. 250 Familienaliase fuer den Moment.
   mixed* tmp = sl_exec("SELECT COUNT(*) FROM aliases WHERE "
                        "familie=?1",familie);
   if (tmp[0][0] > 250)
