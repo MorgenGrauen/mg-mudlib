@@ -495,7 +495,7 @@ static int alias(string str)
   }
   else
   {
-    if ((!aliases[commandverb]) && (sizeof(aliases)>2000))
+    if ((!aliases[commandverb]) && (sizeof(aliases)>1500))
       printf("Du hast schon genuegend Aliase definiert!\n");
     else
     {
@@ -505,7 +505,11 @@ static int alias(string str)
       aliases[commandverb] = tmp;
       active_aliases[commandverb] = tmp;
       printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
-    }
+      if (sizeof(aliases)>1000)
+      {
+        printf("Du hast bereits %d Aliase definiert. Bitte raeume auf!\n");
+      }
+    } 
   }
   return 1;
 }
