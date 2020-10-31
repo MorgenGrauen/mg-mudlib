@@ -102,6 +102,13 @@ void create_super()
   set_next_reset(-1);
 }
 
+// called from base.c in Reconnect()
+protected void reconnect() {
+  // Cache fuer den report zuruecksetzen, der koennte veraltet sein (insb.
+  // falls in der letzten Session GMCP benutzt wurde und jetzt nicht).
+  report_cache = 0;
+}
+
 // uebermittelt eine MT_NOTIFICATION an this_object(), welche nicht ignoriert
 // werden kann und auch nicht gespeichert wird.
 protected void _notify(string msg, string action) {

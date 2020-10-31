@@ -606,8 +606,8 @@ varargs void Reconnect( int silent )
     update_hunt_times((time()-QueryProp(P_LAST_LOGOUT)) /__HEART_BEAT_INTERVAL__);
     // Heartbeats in Objekten im Inv reaktiveren.
     restart_heart_beats();
-    // life.c will ggf. was aufraeumen
-    life::reconnect();
+    // einige geerbte Module wollen ggf. was aufraeumen, neu initialisieren...
+    "*"::reconnect();
 
     log_file( "syslog/shell/REENTER", sprintf( "%-11s %s, %-15s (%s).\n",
                                   capitalize(getuid(ME)), ctime(time())[4..15],
