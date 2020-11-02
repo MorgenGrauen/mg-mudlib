@@ -34,6 +34,13 @@ RUECKGABEWERT
 
   keiner
 
+BEMERKUNGEN
+-----------
+
+  RemoveItem() loest im Gegensatz zu AddItem() bei NPCs keine Meldung aus, da
+  diese nur zerstoert und nicht bewegt werden. Wird hier eine Meldung
+  gewuenscht, muss diese selbst ausgegeben werden.
+
 BEISPIELE
 ---------
 
@@ -58,3 +65,4 @@ SIEHE AUCH
 
   :doc:`AddItem`, /std/room/items.c
 
+Letzte Aenderung: 02.11.2020, Bugfix
