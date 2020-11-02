@@ -4,12 +4,12 @@ RemoveItem()
 FUNKTION
 --------
 
-  void RemoveItem(mixed file);
+  void RemoveItem(<string|string*> file);
 
 DEFINIERT IN
 ------------
 
-  /std/room/items.c
+  /std/container/items.c
 
 ARGUMENTE
 ---------
@@ -25,8 +25,9 @@ BESCHREIBUNG
   der Liste der Objekte entfernt.
   Wurde bei AddItem() ein Array von Dateinamen uebergeben, so muss das
   selbe Array auch bei RemoveItem() uebergeben werden!
-  Falls das Objekt, das durch den AddItem()-Aufruf erzeugt wurde, sich
-  noch im Raum befindet, wird es durch den RemoveItem()-Aufruf zerstoert.
+  Falls das Objekt, das durch den AddItem()-Aufruf erzeugt wurde, sich noch
+  innerhalb des Objektes befindet, an dem RemoveItem() aufgerufen wird, wird
+  es dadurch zerstoert.
 
 RUECKGABEWERT
 -------------
@@ -43,7 +44,7 @@ BEISPIELE
   inherit "/std/laden";
   #include <properties.h>
 
-  create()
+  protected void create()
   {
     ::create();  // Hier wird u.a. der Muellschlucker erzeugt
 
