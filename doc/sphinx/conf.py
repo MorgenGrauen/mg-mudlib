@@ -95,7 +95,7 @@ add_function_parentheses = True
 #keep_warnings = False
 
 # The default language to highlight source code in.
-#highlight_language = 'pike'
+highlight_language = 'pike'
 # A dictionary of options that modify how the lexer specified by
 # highlight_language generates highlighted source code.
 highlight_options = {'tabsize':4 }
