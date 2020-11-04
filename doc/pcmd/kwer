@@ -3,12 +3,13 @@ kwer
 ----
 
  KOMMANDO:
-    kwer [[alle] [in <stadt>] [region <region>] [bei <spieler>] [spieler]
-         [seher] [magier] [erzmagier] [goetter] [mensch] [zwerg] [elf]
-         [feline] [hobbit] [regionsmitarbeiter|mitarbeiter <region>]
+    kwer [[alle] [in <stadt>] [region <region>] [bei <spieler>] 
+         [spieler] [seher] [magier] [erzmagier] [goetter] [mensch] 
+         [zwerg] [elf] [feline] [hobbit] [dunkelelf] [goblin] [ork] 
+         [regionsmitarbeiter|mitarbeiter <region>]
          [regionsmagier <region>] [testies] [zweities] [magierzweities]
          [erwartete] [gilde <gilde>] [gildenmagier <gilde>]
-	 [frosch] [idle] [idlezeit <min>] [icq] [cicerone]
+         [frosch] [idle] [idlezeit <min>] [icq] [cicerone]
          [www|url] [ssl|stunnel] [und|oder|ausser] ...]
 
  ARGUMENTE:
