@@ -52,8 +52,10 @@ hp leben
 intelligenz attribute
 jof gott
 kaempfen kampf
+karte karten
 kneipe heilung
 kneipen heilung
+komplettloesung kl
 konzentrationspunkte zauberei
 konzentration zauberei
 kraft attribute
@@ -111,6 +113,7 @@ speisen essen_trinken
 spielerloeschen loeschskript
 spielerloeschung loeschskript
 spielertestie spielertesties
+spoiler kl
 staerke attribute
 tablut spiele
 tanke heilung
@@ -130,6 +133,7 @@ twitter sozialmedien
 umlaute syntax
 verbindung client
 vergiftung gift
+video videos
 waffenskills waffenfertigkeiten
 waffenskill waffenfertigkeiten
 waffen waffenfertigkeiten
