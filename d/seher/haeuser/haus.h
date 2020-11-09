@@ -28,8 +28,8 @@
 #define SAVEFILE	HAUSSAVEPATH+"haeuser"
 #define HAUSNAME(x)	(HAEUSERPFAD+x+"haus")
 #define RAUMNAME(x,n)	(HAEUSERPFAD+x+"raum"+to_string(n))
-#define REPFILE(x)	(HAEUSERPFAD+"rep/"+x+".rep")
-#define HLOG(f,x) write_file(HAEUSERPFAD+"log/"+(f), dtime(time())+" - "+(x))
+#define REPFILE(x)	("/data"+HAEUSERPFAD+"rep/"+x+".rep")
+#define HLOG(f,x) write_file("/log/seher/haeuser/"+(f), dtime(time())+" - "+(x))
 
 /* PATH bitte nicht mehr benutzen!
  * Dieser #define existiert nur noch aus Kompatibilitaetsgruenden.
