@@ -1,0 +1,24 @@
+
+uebersicht
+----------
+
+ SEHERHAUSKOMMANDO:
+    uebersicht
+
+ ARGUMENTE:
+    keine
+
+ BESCHREIBUNG:
+    Dieses Kommando zeigt, in welchem Raum seines Hauses man sich gerade
+    befindet, welche Details und lesbaren Details man hier beschrieben hat,
+    und welche Ausgaenge wohin fuehren.
+
+    Steht man im Eingangsraum seines Hauses, wird zusaetzlich die Liste
+    derjenigen Leute ausgegeben, die das Haus und die Truhe oeffnen bzw.
+    (ab)schliessen duerfen.
+
+ SIEHE AUCH:
+    beschreibe, loesche, kopiere, ausgang, sperre, erlaube, verbiete
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

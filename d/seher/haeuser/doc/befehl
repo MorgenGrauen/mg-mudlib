@@ -1,0 +1,207 @@
+
+befehl
+------
+
+ SEHERHAUSKOMMANDO:
+    beschreibe befehl <bef>
+
+ ARGUMENTE:
+
+     <bef>
+        Liste der zu beschreibenden Befehle. Bei mehreren Befehlen muessen
+        diese durch Kommata voneinander getrennt sein. Es duerfen nur Verben
+        angegeben werden, ohne Parameter!
+
+ BESCHREIBUNG:
+    Beginnt mit der Beschreibung des Befehles <bef> (oder mehrere, falls es
+    sich bei <bef> um eine Liste von Verben handelt).
+
+    Die Standard-Hauskommandos (beschreibe, loesche, etc.) duerfen NICHT
+    beschrieben werden! Einzige Ausnahmen: "oeffne", "schliesse" und
+    "schliess".
+
+    Ausgangsbefehle (Himmelsrichtungen, "oben", "unten" und "raus") koennen
+    beschrieben werden; aber nur dann, wenn es auch einen entsprechenden
+    Ausgang gibt. Sperrt man hinterher einen Ausgang, zu dem es einen Befehl
+    gibt, so wird der Befehl wieder geloescht!
+
+    Anschliessend wird man nach den Parametern fuer den Befehl gefragt. Auch
+    hier koennen mehrere Parameter durch Kommata voneinander getrennt werden;
+    ausserdem kann man hier mehrere Woerter benutzen (siehe dazu auch das
+    Beispiel unten). Man kann allerdings auch ganz auf Parameter verzichten
+    und einfach <RETURN> druecken.
+
+    Schliesslich wird man nach dem Text gefragt, der als Reaktion auf den
+    Befehl ausgegeben werden soll. Dazu steht wieder der Editor zur
+    Verfuegung. Man gibt in einem Rutsch sowohl den Text fuer denjenigen ein,
+    der den Befehl ausfuehrt, als auch den Text fuer die Leute, die sich im
+    gleichen Raum befinden. Die Texte werden durch eine Zeile mit einem @@
+    voneinander getrennt.
+
+    In den Texten sind verschiedene Platzhalter moeglich, um in den einzelnen
+    Befehlen differenziertere Aktionen zuzulassen:
+
+     * Der Name des/der Ausfuehrenden laesst sich mit @WER, @WESSEN, @WEM und
+       @WEN einbauen (jeweils im entsprechenden Fall).
+     * Personalpronomina sind mit @PWER, ... moeglich. Es ist dabei jedoch zu
+       beachten, dass sie *kleingeschrieben* eingefuegt werden! Man sollte sie
+       also nicht unbedingt am Satzanfang benutzen.
+     * Possessivpronomina: Das ist etwas komplizierter, denn hier muessen noch
+       Geschlecht und Anzahl des Objektes angegeben werden, auf das sich das
+       Possessivpronomen bezieht. Der Aufbau des Platzhalters:
+       @B, gefolgt von M, F oder N fuer das Geschlecht des Bezugsobjektes
+       (Maskulinum, Femininum oder Neutrum), S oder P fuer die Anzahl
+       (Singular oder Plural) und schliesslich WER, WESSEN, WEM oder WEN fuer
+       den Fall des Pronomens an sich.
+       Das fuehrt dann zu Konstruktionen wie @BMSWER oder @BFPWEN. Am besten,
+       man probiert es einfach mal aus (siehe aber auch die Beispiele).
+       Auch hier gilt uebrigens wieder: Die Pronomina werden kleingeschrieben
+       eingefuegt!
+
+    Weitere Moeglichkeiten sind rassen-, namens- und geschlechtsspezifische
+    Ausgaben.
+ 
+    Als Trenner dienen @G fuer geschlechtsspezifische Ausgaben und @RE (fuer
+    Elfen), @RH (fuer Hobbits), @RM (fuer Menschen), @RZ (fuer Zwerge), 
+    @RF (fuer Felinen), @RD (fuer Dunkelelfen) sowie @RO (fuer Orks) fuer 
+    rassenspezifische Ausgaben.
+
+    Als spezielle "Rasse" gibt es darueberhinaus noch @RA fuer Ausgaben, die
+    nur die Spieler gehen, die im Haus besondere Rechte haben (siehe erlaube).
+
+    Darueberhinaus kann man Ausgaben fuer bestimmte Spieler vorsehen. Der
+    Trenner hierfuer ist @NAME:spieler, wobei 'spieler' fuer den Namen des
+    entsprechenden Spielers steht.
+
+    Aehnlich wie bei der Trennung zwischen dem Text fuer den Ausfuehrenden und
+    dem Text fuer die Umstehenden muessen die Trenner in einer Extrazeile
+    stehen.
+
+    Bei @G wird der Text ueber dem Trenner bei maennlichen und der Text unter
+    dem Trenner bei weiblichen Befehlsausfuehrern ausgegeben.
+
+    Bei den Rassen- und Namenstrennern wird der Text unterhalb des Trenners
+    ausgegeben, der der Rasse bzw. dem Namen des Ausfuehrenden entspricht.
+
+    Wenn fuer eine Rasse kein eigener Text angegeben ist, wird der Text vor
+    dem ersten Rassen- bzw. Namenstrenner ausgegeben (und wenn gar kein
+    Rassentrenner angegeben wurde, wird der Text fuer alle Rassen
+    ausgegeben ;)
+
+    Innerhalb der rassenspezifischen Texte kann wieder mit @G
+    geschlechtsspezifisch unterschieden werden.
+
+    Um eine etwas andere Meldung als "Wie bitte?" zu bekommen, wenn ein Befehl
+    mit einem ungueltigen Parameter eingegeben wurde, kann man den speziellen
+    Parameter @nf@ angeben. In den Text kann der ungueltige Parameter mit dem
+    Platzhalter @PARA integriert werden.
+
+    Wenn die Umstehenden keine Meldung bekommen sollen, kann man den @@ und
+    den zweiten Text einfach weglassen.
+
+ BEISPIELE:
+    Zunaechst ein ganz einfacher Text:
+
+      beschreibe befehl drueck, druecke
+      => Bitte Parameter eingeben.
+      ]knopf, auf knopf
+      => Bitte Text eingeben, der fuer diesen Befehl ausgegeben werden soll.
+      ]Du drueckst auf den Knopf, aber nichts passiert.
+      ].
+
+    (Wenn jemand nun "druecke knopf" eingibt, erhaelt er die Meldung "Du
+    drueckst auf den Knopf, aber nichts passiert." Andere Spieler, die sich im
+    gleichen Raum aufhalten, bekommen keine Meldung)
+
+    Jetzt ein Befehl mit Ausgabe an die Umstehenden:
+
+      beschreibe befehl zieh, ziehe
+      => Bitte Parameter eingeben.
+      ]faden, an faden
+      => Bitte Text eingeben, der fuer diesen Befehl ausgegeben werden soll.
+      ]Du ziehst an dem Faden. Es gibt einen lauten Knall, und Du siehst nur
+      ]noch wirbelnde Punkte.
+      ]@@
+      ]Es gibt einen lauten Knall, und die Konfettikanone huellt @WEN in
+      ]eine wirbelnde Konfettiwolke.
+      ].
+
+    (Wenn Wargon an dem Faden zieht, bekommt er die obere Meldung, und die
+    Umstehenden bekommen "Es gibt einen lauten Knall, und die Konfettikanone
+    huellt Wargon in eine wirbelnde Konfettiwolke.")
+
+    Hier jetzt ein Beispiel mit Geschlechtertrennung:
+
+      beschreibe befehl schau
+      => Bitte Parameter eingeben.
+      ]in spiegel
+      => Bitte Text eingeben...
+      ]Hm, Du muesstest Dich mal wieder rasieren.
+      ]@G
+      ]Dein MakeUp ist ziemlich verschmiert.
+      ].
+
+    (Schaut ein Spieler in den Spiegel, wird er auf seine Rasur hingewiesen;
+    eine Spielerin dagegen auf ihr MakeUp.)
+
+    Etwas komplexer: Rassentrenner und Possessivpronomen:
+
+      beschreibe befehl schau
+      => Bitte Parameter eingeben.
+      ]auf tisch
+      => Bitte Text eingeben...
+      ]Du siehst einen Haufen Papiere auf dem Tisch liegen.
+      ]@RZ
+      ]Der Tisch ist zu hoch fuer Dich.
+      ]@@
+      ]@WER untersucht den Tisch.
+      ]@RZ
+      ]@WER versucht verzweifelt, einen Blick auf den Tisch zu werfen,
+      ]aber @BMSWER kleiner Koerperbau laesst das nicht zu.
+      ].
+
+    (Keine Chance fuer Zwerge! ;) @BMSWER wird bei maennlichen Zwergen durch
+    "sein" und bei weiblichen Zwergen durch "ihr" ersetzt.)
+
+    Das gleiche Beispiel wie gerade, diesmal jedoch zusaetzlich mit speziellen
+    Texten fuer Wargon und Saphis:
+
+      beschreibe befehl schau
+      => Bitte Parameter eingeben.
+      ]auf tisch
+      => Bitte Text eingeben...
+      ]Du siehst einen Haufen Papiere auf dem Tisch liegen.
+      ]@NAME:Wargon
+      ]Ein Haufen Papier. Schaff doch mal wieder Ordnung!
+      ]@NAME:Saphis
+      ]Ein Haufen Papier. Sag Deinem Chef mal, er soll hier wieder Ordnung
+      ]schaffen!
+      ]@RZ
+      ]Der Tisch ist zu hoch fuer Dich.
+      ]@@
+      ]@WER untersucht den Tisch.
+      ]@NAME:Wargon
+      ]Wargon untersucht den Tisch und seufzt.
+      ]@RZ
+      ]@WER versucht verzweifelt, einen Blick auf den Tisch zu werfen,
+      ]aber @BMSWER kleiner Koerperbau laesst das nicht zu.
+      ].
+
+    Und zum Schluss ein Beispiel fuer ein geaendertes "Wie bitte?"
+
+      beschreibe befehl drueck,druecke
+      => Bitte Parameter eingeben.
+      ]@nf@
+      => Bitte Text eingeben...
+      ]Wieso willst Du denn @PARA druecken?
+      ].
+
+    (Wenn man jetzt zB. "druecke hand" eingibt, und dieser Befehl noch nicht
+    beschrieben wurde, kommt als Meldung: "Wieso willst Du denn Hand
+    druecken?")
+
+ SIEHE AUCH:
+    aendere, beschreibe
+
+ LETZTE AeNDERUNG:
+    Sun, 03.12.2000, 18:30:00 von Wargon

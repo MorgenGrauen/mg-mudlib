@@ -1,0 +1,31 @@
+
+Allgemeines zum Instanthaus
+===========================
+
+ ALLGEMEIN:
+    Das Instanthaus ist die Keimzelle Deines Seherhauses. Wenn Du meinst, eine
+    geeignete Stelle gefunden zu haben, kannst Du es fallenlassen und giessen,
+    damit es zu einem richtigen Haus wird.
+
+    Wenn die Stelle nicht als Bauplatz gekennzeichnet ist, bekommst Du eine
+    Meldung, an welchen Magier Du Dich wenden kannst. Dieser entscheidet dann,
+    ob Du dort bauen darfst oder ob Du Dir besser eine andere Stelle suchen
+    solltest.
+
+ KOMMANDOS:
+    Das Instanthaus stellt folgende zwei Befehle zur Verfuegung:
+
+     lass haus fallen
+        Du laesst das Haus fallen. Das geht allerdings nur "draussen" und nur,
+        wenn Deine Umgebung als Bauplatz gekennzeichnet ist. Du kannst es
+        probehalber fallenlassen, um herauszufinden, an wen Du Dich fuer die
+        Kennzeichnung wenden musst.
+     giesse haus
+        Wenn Du das Haus erfolgreich abgestellt hast, kannst Du es durch das
+        Giessen zu einem "richtigen" Haus erwecken.
+
+ SIEHE AUCH:
+    hausbau, seherhaus, regionen
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

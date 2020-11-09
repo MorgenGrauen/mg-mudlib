@@ -1,0 +1,31 @@
+
+notiz
+-----
+
+ SEHERHAUSKOMMANDO:
+    notiz <text>
+
+ ARGUMENTE:
+
+     <text>
+        Eine kurze Mitteilung
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kannst Du eine kurze Notiz an der Haustuer anbringen.
+    Aus diesem Grund funktioniert dieser Befeh auch nur aussen!
+
+    Ohne Parameter wird die aktuelle Notiz geloescht.
+
+    Die Notiz wird in der Form
+
+    An der Tuer befindet sich eine Notiz: '<text>'.
+
+    an die Langbeschreibung des Hauses angehaengt.
+
+    Die Notiz wird uebrigens nicht mit gespeichert.
+
+ SIEHE AUCH:
+    beschreibe
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

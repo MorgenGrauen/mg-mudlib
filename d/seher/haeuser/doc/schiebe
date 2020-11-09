@@ -1,0 +1,27 @@
+
+schiebe
+-------
+
+ SEHERHAUSKOMMANDO:
+    schiebe <truhe> nach <richtung>
+
+ ARGUMENTE:
+
+     <truhe>
+        Ein gueltiger Bezeichner der Truhe
+     <richtung>
+        Die Richtung, in die die Truhe geschoben werden soll.
+
+ BESCHREIBUNG:
+    Mit diesem Befehl kann man seine Truhe innerhalb seines Hauses frei
+    verschieben.
+
+    Der Zielraum muss zum eigenen Haus gehoeren; auch wenn man ein
+    benachbartes Seherhaus mitnutzt, kann die Truhe dort nicht hingeschoben
+    werden!
+
+ SIEHE AUCH:
+    beschreibe
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

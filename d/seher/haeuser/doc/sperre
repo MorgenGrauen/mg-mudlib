@@ -1,0 +1,22 @@
+
+sperre
+------
+
+ SEHERHAUSKOMMANDO:
+    sperre <richtung>
+
+ ARGUMENTE:
+
+     <richtung>
+        Eine der acht Himmelsrichtungen, "oben" oder "unten".
+
+ BESCHREIBUNG:
+    Der Ausgang, der in die angegebene Richtung fuehrt, wird entfernt. Der
+    entsprechende Ausgang vom Zielraum zurueck verschwindet dabei automatisch
+    mit.
+
+ SIEHE AUCH:
+    ausgang, uebersicht
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

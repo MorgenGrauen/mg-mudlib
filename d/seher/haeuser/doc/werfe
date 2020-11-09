@@ -1,0 +1,33 @@
+
+werfe
+-----
+
+ SEHERHAUSKOMMANDO:
+    werfe <was> raus
+    werfe alle raus
+    werfe alles raus
+
+ ARGUMENTE:
+
+     <was>
+        Das aus dem Haus zu werfende Objekt.
+
+ BESCHREIBUNG:
+    Wenn Dir in Deinem Haus jemand fuerchterlich auf die Nerven geht, kannst
+    Du ihn mit diesem Kommando vor die Haustuer komplimentieren.
+
+    Falls Dir alle Anwesenden auf die Nerven gehen, kannst Du sie auch alle
+    auf einen Schlag entsorgen.
+
+    Die dritte Alternative dagegen dient dazu, saemtliche leblosen
+    Gegenstaende aus dem Haus zu werfen (obwohl das Anlegen wilder Muellkippen
+    vor dem Haus nicht gerade zum guten Ton gehoert ;)
+
+    Das Kommando wirkt uebrigens nur in dem Raum, in dem es angewendet wird,
+    und nicht etwa im ganzen Haus.
+
+ SIEHE AUCH:
+    seherhaus
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

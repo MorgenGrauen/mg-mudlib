@@ -1,0 +1,31 @@
+
+erlaube
+-------
+
+ SEHERHAUSKOMMANDO:
+    erlaube <name>
+
+ ARGUMENTE:
+
+     <name>
+        Ein oder mehrere Namen (durch Kommata getrennt).
+
+ BESCHREIBUNG:
+    Der Spieler <name> erhaelt die Erlaubnis, Dein Haus auf- und abschliessen
+    zu duerfen. Weiterhin darf dieser Spieler auch die Truhe in Deinem Haus
+    oeffnen.
+
+    Auch wenn ein Nachbar sein Haus mit Deinem verbinden will, muss ihm das
+    mit diesem Kommando erlaubt werden.
+
+    Dieser Befehl funktioniert nur im Eingangsraum des Hauses, und die Liste
+    der Leute mit erteilter Erlaubnis wird auch nur im Eingangsraum bei dem
+    Befehl uebersicht mit ausgegeben; die Liste gilt bei Ausgaengen jedoch
+    fuer das gesamte Haus (man kann also nicht selektiv Raeume zur Verbindung
+    freigeben).
+
+ SIEHE AUCH:
+    verbiete, uebersicht, ausgang
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon

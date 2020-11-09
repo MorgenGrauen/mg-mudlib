@@ -1,0 +1,72 @@
+
+kopiere
+-------
+
+ SEHERHAUSKOMMANDO:
+    kopiere detail <det1> nach <det2>
+    kopiere lesbares detail <det1> nach <det2>
+    kopiere befehl <bef1> nach <bef2>
+    kopiere befehl <bef1> <para1> nach <bef2>
+    kopiere befehl <bef1> <para1> nach <bef2> <para2>
+
+ ARGUMENTE:
+
+     <det1>
+        (lesbares) Detail, dessen Text kopiert werden soll
+     <det2>
+        Liste der zu kopierenden (lesbaren) Details. Bei mehreren Details
+        muessen diese durch Kommata voneinander getrennt sein!
+     <bef1>
+        Zu kopierender Befehl. Dies darf nur ein einzelnes Verb sein!
+     <bef2>
+        Verb oder Liste von Verben fuer den Zielbefehl.
+     <para1>
+        Parameter, die den zu kopierenden Befehl genauer angeben.
+     <para2>
+        Parameter, die den Zielbefehl genauer angeben.
+
+ BESCHREIBUNG:
+
+     kopiere detail <det1> nach <det2>
+     kopiere lesbares detail <det1> nach <det2>
+        Dieser Befehl beschreibt das (lesbare) Detail <det2> mit dem Text von
+        <det1>. Sehr nuetzlich, wenn man nachtraeglich ein Detail mit einem
+        weiteren Namen ansprechbar machen will und keine Lust hat, den Text
+        nochmal zu tippen.
+
+     kopiere befehl <bef1> nach <bef2>
+        Kopiert den Befehl <bef1> zu dem Befehl <bef2> mit allen Parametern.
+        Wenn es <bef2> schon gab, so wird dessen Parameterliste um neue
+        Parameter ergaenzt.
+
+     kopiere befehl <bef1> <para1> nach <bef2>
+        Kopiert nur den angegebenen Parameter von <bef1> nach <bef2>.
+
+     kopiere befehl <bef1> <para1> nach <bef2> <para2>
+        Wie oben, allerdings kann der Parameter auch geaendert werden.
+
+ BEISPIELE:
+    Das Detail "wand" soll sich auch als "waende" ansprechen lassen:
+
+    > kopiere detail wand nach waende
+
+    Alle "drueck"-Befehle sollen sich auch mit "druecke" ansprechen lassen:
+
+    > kopiere befehl drueck nach druecke
+
+    Statt "druecke hebel" soll man jetzt auch "ziehe hebel" verwenden koennen.
+    "druecke knopf" soll jedoch nicht durch "ziehe knopf" ergaenzt werden:
+
+    > kopiere befehl druecke hebel nach ziehe
+        oder
+    > kopiere befehl druecke hebel nach ziehe hebel
+
+    Der Text von "druecke hebel" wird jetzt auch bei "ziehe faden" ausgegeben:
+
+    > kopiere befehl druecke hebel nach ziehe faden
+
+ SIEHE AUCH:
+    aendere, beschreibe, loesche, uebersicht
+
+ LETZTE AeNDERUNG:
+    Thu, 24.07.1997, 09:00:00 von Wargon
