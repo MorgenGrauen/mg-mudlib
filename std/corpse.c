@@ -692,7 +692,6 @@ int _query_kma() { return sizeof(moerder_msgs); }
 object _channel( object ob )
 {
   int m_FMM, m_HP, m_WC, m_AC, s_HP, s_WC, s_AC;
-  string msg;
   object rueck;
 
   if (member(inherit_list(previous_object()),CORPSE_OBJ)>-1)
@@ -731,7 +730,8 @@ object _channel( object ob )
       {
         SetProp( P_NAME, "Geist "+({string}) ob->name(WESSEN, 0) );
 
-        if( !(msg = ({string|closure}) ob->QueryProp(P_MURDER_MSG)) )
+        string|closure msg = ({string|closure}) ob->QueryProp(P_MURDER_MSG);
+        if (!msg)
             msg = moerder_msgs[random(sizeof(moerder_msgs))]; 
 
         if ( stringp(msg) )
