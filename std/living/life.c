@@ -1255,17 +1255,6 @@ static int _set_hp( int hp )
 
 static int _set_sp( int sp )
 {
-    //einige Leute schreiben floats in die P_HP. :-(
-    if (!intp(sp)) {
-	sp=to_int(sp);
-	//ja, es ist teuer. Aber ich will wissen, wers ist. Kann vor
-	//naechstem Reboot wieder raus.
-	log_file("ILLEGAL_TYPE.log",sprintf(
-	      "Versuch, einen nicht-int in P_SP in %O zu schreiben: \n%O\n",
-	      this_object(),
-	      debug_info(DINFO_TRACE,DIT_STR_CURRENT)));
-    }
-
     if ( QueryProp(P_GHOST) )
         QueryProp(P_SP);
 
@@ -1280,10 +1269,6 @@ static int _set_sp( int sp )
 
 static int _set_alcohol(int n)
 {
-  if(!intp(n))
-      raise_error(sprintf(
-        "_set_alcohol(): expected <int>, got %.50O\n", n));
-
   if (QueryProp(P_GHOST))
     return Query(P_ALCOHOL, F_VALUE);
 
@@ -1316,10 +1301,6 @@ static int _set_alcohol(int n)
 
 static int _set_drink(int n)
 {
-  if(!intp(n))
-      raise_error(sprintf(
-        "_set_drink(): expected <int>, got %.50O\n", n));
-
   if (QueryProp(P_GHOST))
     return Query(P_DRINK, F_VALUE);
 
@@ -1352,10 +1333,6 @@ static int _set_drink(int n)
 
 static int _set_food(int n)
 {
-  if(!intp(n))
-      raise_error(sprintf(
-        "_set_food(): expected <int>, got %.50O\n", n));
-
   if (QueryProp(P_GHOST))
     return Query(P_FOOD, F_VALUE);
 
@@ -1388,10 +1365,6 @@ static int _set_food(int n)
 
 static int _set_poison(int n)
 {
-    if(!intp(n))
-      raise_error(sprintf(
-        "_set_poison(): expected <int>, got %.50O\n", n));
-
   if (QueryProp(P_GHOST))
     return Query(P_POISON, F_VALUE);
 
