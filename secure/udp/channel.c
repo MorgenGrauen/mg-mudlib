@@ -16,7 +16,7 @@ inherit "/sys/format";
 #define COMMAND                "cmd"
 #define CHANNEL                "channel"
 
-inherit "/std/channel_supervisor";
+nosave variables inherit "/std/channel_supervisor";
 
 private nosave mixed _name_;
 

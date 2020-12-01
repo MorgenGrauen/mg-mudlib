@@ -564,3 +564,30 @@ mixed* GetGroup(string name)
 #define gl(x) grouplist[name,x]
   return ({name,gl(1),gl(2),gl(3),gl(4),gl(5),gl(6),gl(7),gl(8),gl(9),gl(10),load_group(name)});
 }
+
+public varargs void AllGroups(int details) {
+  if (!ARCH_SECURITY || process_call()) return; // Darf nicht
+
+  string* gnames = sort_array(m_indices(grouplist), #'>);
+
+  printf("%-25s %-11s %12s %3s %3s %3s %3s\n",
+         "Name","Owner","Expire","Max","Rea","Wri","Del");
+  printf("-"*78 + "\n");
+  foreach (string g : gnames)
+  {
+    printf("%-25s %-11s %12s %3d %3d %3d %3d\n",
+      g, grouplist[g,1], time2string("%dd %02h:%02m", grouplist[g,3]),
+      grouplist[g,10], grouplist[g,9], grouplist[g,8], grouplist[g,7]);
+    if (details) {
+      if (sizeof(grouplist[g,6])) // readers
+        printf(break_string(implode(grouplist[g,6], " "), 78, "  Rea: ",
+          BS_INDENT_ONCE));
+      if (sizeof(grouplist[g,5])) // writers
+        printf(break_string(implode(grouplist[g,5], " "), 78, "  Wri: ",
+          BS_INDENT_ONCE));
+      if (sizeof(grouplist[g,4])) // deleters
+        printf(break_string(implode(grouplist[g,5], " "), 78, "  Del: ",
+          BS_INDENT_ONCE));
+    }
+  }
+}
