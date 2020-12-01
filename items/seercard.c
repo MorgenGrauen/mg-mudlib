@@ -36,7 +36,7 @@ static int _query_amount()
 
     // Wenn die Karte im Inv des Besitzers ist, Kontostand liefern
     if ( BESITZER_GUELTIG && IS_SEER(environment()) ){
-        res = (int) environment()->Query(KONTO);
+        res = ({int})environment()->Query(KONTO);
 
         // ... allerdings nur, wenn er gueltig ist ;-)
         if ( !intp(res) || res < 0 || res > 100000 )
@@ -290,7 +290,7 @@ static int _abheben( string str )
         return 0;
     }
 
-    if ( (int) this_player()->AddMoney(summe) != 1 ){
+    if ( ({int})this_player()->AddMoney(summe) != 1 ){
         write( "Soviel Geld koenntest Du gar nicht mehr tragen.\n" );
         return 1;
     }

@@ -70,8 +70,8 @@ public string ListSins(string who)
     if ( !member(sins,who) || !pointerp(sins[who]) || ((j=sizeof(sins[who]))<1) )
       return sprintf("Es liegen keine Eintraege fuer '%s' vor.\n",CAP(who));
 
-    for ( i=1, re = ((string)sins[who][0]+"\n") ; i<j ; i++ )
-      re += sprintf("%3d: %s\n",i,(string)sins[who][i]);
+    for ( i=1, re = ({string})sins[who][0]+"\n" ; i<j ; i++ )
+      re += sprintf("%3d: %s\n",i,({string})sins[who][i]);
 
     return re;
 }
@@ -80,7 +80,7 @@ static void _add_entry(string who, string entry, object pl)
 {   string *add;
 
     if ( member(sins,who) && pointerp(sins[who]) && (sizeof(sins[who])>0) )
-        add = (string*)sins[who];
+        add = ({string*})sins[who];
     else
         add = ({ sprintf("Eintraege fuer '%s':",CAP(who)) });
 
@@ -108,7 +108,7 @@ public string AddSin(string who, string text)
 
     if ( text[0..2]=="-f " )
       text=text[3..];
-    else if ( !master()->find_userinfo(who))
+    else if ( !({int})master()->find_userinfo(who))
       return sprintf("Es gibt keinen Spieler namens '%s'\n",who);
 
     text = dtime(time()) + " ("+CAP(getuid(RPL))+")\n" 
@@ -118,7 +118,7 @@ public string AddSin(string who, string text)
 
     if ( objectp(pl=(find_player(who)||find_netdead(who)))
         && !IS_WIZARD(pl) // Magier haben manchmal komische Ersties ...
-        && stringp(ersti=(string)pl->QueryProp(P_SECOND)) )
+        && stringp(ersti=({string})pl->QueryProp(P_SECOND)) )
     {
         return ( sprintf("Ok.\nFuege Eintrag bei Ersti '%s' hinzu.\n",ersti)
                 + AddSin( lower_case(ersti), ("-f siehe "+who) ) );
@@ -140,7 +140,7 @@ public string RemoveSin(string who, int nr)
       return sprintf("FEHLER: Keine Eintraege fuer '%s' vorhanden.\n",
                      CAP(who));
 
-    rem = (string*)sins[who];
+    rem = ({string*})sins[who];
 
     if ( sizeof(rem)<=nr )
       return "FEHLER: Diesen Eintrag gibt es nicht.\n";

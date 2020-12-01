@@ -237,14 +237,14 @@ void ReadNewQuest (string str)
 	allowed = old_explode(implode(old_explode(str,".c"),""),",");
       counter++;
       write ( sprintf("Info %s:\n", (do_change?
-				     "["+break_string("\b\b\b\b\b\b"+(string)
+				     "["+break_string("\b\b\b\b\b\b"+({string})
 						      savequest[3]+"]",78,6)
 				     :"")) ); 
       input_to ( "ReadNewQuest" );
       break;
     case INFO:
       if((!str||!sizeof(str)) && do_change)
-	info = (string) savequest[Q_HINT];
+	info = ({string}) savequest[Q_HINT];
       else
 	info = str;
       counter++;
@@ -255,7 +255,7 @@ void ReadNewQuest (string str)
     case LEVEL:
       if((!str||!sizeof(str)))
 	if(do_change)
-	  level = (int) savequest[Q_DIFF];
+	  level = ({int}) savequest[Q_DIFF];
 	else
 	  level = 0;
 	sscanf ( str, "%d", level );
@@ -298,7 +298,7 @@ void ReadNewQuest (string str)
       wizard = lower_case(wizard);
       counter++;
       write ( sprintf("Wartender Magier %s:\n",
-		      (do_change?"["+(string)savequest[8]+"]":"")) );
+		      (do_change?"["+({string})savequest[8]+"]":"")) );
       input_to ( "ReadNewQuest" );
       break;
     case SCNDWIZ:

@@ -646,7 +646,7 @@ protected void SetBesitzer(string unused, string newuuid) {
   
   // Daten fuer den Benutzer aus der Blueprint holen (BP liefert KEINE Kopie
   // und es darf KEINE gemacht werden!):
-  autoloader=(mapping)load_name()->GetData(uuid);
+  autoloader=({mapping})load_name()->GetData(uuid);
   
   // keine Daten gekriegt? -> Fehler loggen
   if (!mappingp(autoloader))
@@ -685,9 +685,9 @@ protected void save_me() {
   else
   {
     if (objectp(blueprint(ME)))
-      res=(int)blueprint(ME)->StoreData(uuid,autoloader);
+      res=({int})blueprint(ME)->StoreData(uuid,autoloader);
     else
-      res=(int)load_object(load_name(ME))->StoreData(uuid,autoloader);
+      res=({int})load_object(load_name(ME))->StoreData(uuid,autoloader);
 
     if (res!=1)
       EmergencyStore(res); // Daten in einem Notfall-Logfile ablegen.
