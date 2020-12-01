@@ -1,0 +1,158 @@
+
+Magierinfos zur Zauberergilde
+*****************************
+
+
+Behinderung von Zaubern durch Ruestungen
+========================================
+
+Ruestungen mit hoher P_AC (typischerweise 50% des fuer die Ruestungsklasse 
+zugelassenen Max-Wertes) wirken sich aufs Zaubern aus, sie stoeren bei allen 
+Zaubern und verursachen zusaetzlich im Kampf eine mehr oder weniger lange, 
+vollstaendige Zauberblockade. Die meisten Waffen wirken abhaengig von P_WC 
+genauso. Zweihandwaffen sind nie erlaubt; je hoeher der Gildenlevel des 
+Zauberers ist, desto niedriger ist die erlaubte Waffenklasse. Die 
+Zauberblockade durch Waffen haelt P_WC Sekunden lang an, d.h. eine Maxwaffe 
+blockiert gute 3 Minuten. Amulette, Ringe, Umhaenge und AT_MISC-Ruestungen 
+behindern nie.
+
+Zusaetzlich gibt es verbotene Ruestungen (s.u.), diese behindern beim Zaubern.
+Eine behindernde Ruestung verhindert "nur" das Gelingen des jeweiligen 
+Zaubers, fuehrt aber nicht zur Zauberblockade.
+
+Um nun eine Ruestung oder Waffe fuer Zauberer nutzbar zu machen, benoetigt 
+man die Defines aus /p/zauberer/zauberer.h. In Ruestungen setzt man die ID 
+GILDEN_ROBEN_ID, in Waffen die ID Z_ALLOWED_WEAPON.
+
+Diese IDs beseitigen _saemtliche_ oben genannten Einschraenkungen, selbst 
+ansonsten verbotene Ruestungen koennen dann benutzt werden.  Daher ist die 
+Verwendung jeder dieser beiden IDs zwingend mit dem Gildenmagier abzustimmen,
+ggf. ist auch eine Genehmigung der Balance erforderlich. Richtet euch aber 
+besser schonmal darauf ein, dass Z_ALLOWED_WEAPON so gut wie nie genehmigt 
+werden wird.
+
+
+Zauberunterstuetzungen auf Ruestungen
+=====================================
+
+Darueber hinaus koennen Ruestungen die Zaubersprueche der Gilde unterstuetzen.
+Technisch handelt es sich hierbei um einen Bonus auf den Spell-Success. Die
+Werte hierfuer bewegen sich im Bereich zwischen -5000 und +7000.
+
+AT_ARMOUR   : Abwehr
+AT_RING     : Beherrschung, Angriff
+AT_HELMET   : Hellsicht
+AT_CLOAK    : Illusionen
+AT_TROUSERS : kein Zweig, unterstuetzt nur den entkraefte-Zauber
+AT_AMULET   : Verwandlung
+
+Die Genehmigung erfolgt durch den Gildenmagier. Schickt ihm oder ihr einfach 
+eine Mail mit dem Pfad des Objekts und ggf. einem Vorschlag fuer den Wert 
+der Unterstuetzung.
+
+
+Welche Zauber es gibt und wann man sie lernt
+============================================
+
+Hier sind nur die Gildenlevel angegeben. Es gibt darueber hinaus weitere 
+Lernanforderungen, beispielsweise bei den Magisterspells, von denen man den 
+zweiten erst lernt, wenn man den ersten hinreichend gut beherrscht. Die
+Nutzbarkeit einiger Zauber ist von P_ALIGN abhaengig.
+
+   Angriff        Abwehr          Illusionen        Beherrschung
+   -------        ------          ----------        ------------
+
+2  -              -               Stimme            -
+3  Hand           Schutz          -                 - 
+4  -              -               -                 Zwingtanz 
+5  Giftpfeil      Wille           Rausch            Erzwinge 
+6  Blitz          Schutzhuelle    Erschaffe         Stille 
+7  Feuerball      Rueste          Illusion          Befriede 
+8  Verletze       Teleport        Schattenkaempfer  Schmerzen 
+9  Erdbeben       Zauberschild    Gefaehrte         Bezaubere 
+9  Feuerwalze     Schutzzone      Daemonenfratze    Irritiere
+
+   Hellsicht      Verwandlung         ohne Zweig 
+   ---------       -----------        ----------
+
+2  Werte          -                   - 
+3  -              Licht               - 
+4  -              -                   - 
+5  Identifiziere  Wasserwandlung      -
+6  Finde          Extrahand           -
+7  Schaetz        Anpassung           Frosche 
+8  Nachtsicht     Schnell             - 
+9  Vorahnung      Selbstverwandlung   Entkraefte 
+9  Wahrsagen      Wandlung            -
+
+verbotene Ruestungen:
+   alle Zauber:       AT_SHIELD
+   Befriede:          AT_HELMET
+   Beschwoere:        AT_BOOT
+   Bezaubere:         AT_HELMET
+   Erdbeben:          AT_BOOT 
+   Erschaffe:         AT_GLOVE 
+   Extrahand:         AT_GLOVE 
+   Feuerball:         AT_GLOVE 
+   Hand:              AT_GLOVE 
+   Selbstverwandlung: AT_ARMOUR, AT_TROUSERS 
+   Wille:             AT_HELMET
+
+
+Komponenten
+===========
+
+Fuer die meisten Zauber werden Komponenten benoetigt. Verwendung in eigenen 
+Gebieten ist mit dem Gildenmagier (oder vertretungshalber mit dem EM Gilden)
+abzustimmen. Um sie einzubauen, werden die Defines aus 
+/p/zauberer/zkomponenten.h benoetigt. Alle Komponenten sind Unit-Objekte, d.h.
+die gewuenschte Anzahl muss entweder ueber AddAmount() oder ueber das dritte 
+Argument von AddItem() konfiguriert werden.  Standardwert fuer P_AMOUNT ist 
+bei allen Komponenten 1.
+
+Um herauszufinden, welche Komponente fuer welchen Spruch verwendet wird, 
+bietet sich grep an, weil die Gesamtliste fuer den Zweck dieser Uebersicht 
+viel zu lang waere:
+
+   grep -ci <spruchname> /p/zauberer/text/komponenten/*
+
+Das Ergebnis listet die gefundenen Dateien auf, aus deren Dateinamen sich die
+entsprechende Komponente ergibt. Bei Unklarheiten bitte in die Dateien
+reinschauen oder den Gildenmagier fragen.
+
+
+Gildenlevel und Anforderungen
+=============================
+
+Zur besseren Einschaetzung, welche Basisanforderungen ein Spieler erfuellen 
+muss, um o.g. Zauber lernen zu koennen, hier die entsprechende Liste.
+
+Gilden-Level | Spieler-Level | Intelligenz | Geschicklichkeit | AP
+-------------+---------------+--------------------------------+-------------
+      1      |       2       |       5     |                  |  50
+      2      |       4       |       6     |                  | 100 
+      3      |       6       |       7     |                  | 150 
+      4      |       8       |       8     |                  | 200 
+      5      |      10       |      10     |                  | 250
+      6      |      20       |      12     |                  | 300 
+      7      |      30       |      14     |                  | 350 
+      8      |      40       |      16     |         9        | 400 
+      9      |      50       |      18     |        12        | 450
+
+Es sind nur Bedingungen aufgefuehrt, die den Spieler selbst betreffen. 
+Natuerlich gibt es darueber hinaus Anforderungen, die die Zauberfaehigkeiten 
+und die Zauberergildenquests betreffen.
+
+
+Weitere nuetzliche Properties
+=============================
+
+Alle Defines finden sich in /p/zauberer/zauberer.h, diese Datei ist daher
+hierfuer zu inkludieren.
+
+P_Z_NO_MATERIAL NPC benoetigt keine Komponenten.
+   NICHT IN SPIELERN SETZEN. Auch nicht in Objekten, die fuer Spieler
+   erreichbar sind.
+
+P_Z_NO_DISPOSE  Objekt kann nicht entsorgt werden 
+ZKOMP(x)        Pfad zu den Komponenten ("/p/zauberer/komponenten/"+x)

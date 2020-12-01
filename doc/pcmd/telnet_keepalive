@@ -30,6 +30,9 @@ telnet keepalive
     Habt ihr Verbindungsabbrueche, ohne Idle zu sein, wird euch dieses
     Keep-Alive nichts helfen.
 
+    Sollte das Einschalten der Funktion das Problem jedoch nicht beseitigen,
+    meldet euch bitte bei einem der Erzmagier.
+
     Ohne Argumente wird der aktuelle Zustand angezeigt.
 
  SIEHE AUCH:

@@ -97,7 +97,7 @@ Vorlaeufiges Inhaltsverzeichnis:
 1d) "Hygiene" in den Regionsverzeichnissen
 
   o Wenn Du nicht angeschlossene Objekte aus Deiner Region aussortieren
-    moechtest, ist sprich am besten einen EM an, der Dir dabei hilft:
+    moechtest, sprich am besten einen EM an, der Dir dabei hilft:
     Einerseits kann man auf der Shell bequemer herausfinden, ob ein Objekt
     tatsaechlich nicht verwendet wird. Andererseits soll der ungenutzte
     Code in das /players-Verzeichnis des Autors verschoben werden, was
@@ -141,8 +141,11 @@ o Vor Anschluss sollte man kontrollieren, dass der Magier alle wesentlichen
     Dies laesst sich mit dem Magierkommando "traenke" herausfinden.
   - Falls Sonder-EK-Stupse vorgesehen sind: sind diese genehmigt?
     Die Eintragung bzw. Anpassung der Stufenpunkte fuer den Kill wird
-    erledigt, sobald der NPC das erste Mal getoetet wurde, dies muss also nicht
-    ueberprueft werden.
+    erledigt, sobald der NPC das erste Mal getoetet wurde, dies muss also 
+    nicht gesondert ueberprueft werden.
+  - Gibt es Kollisionen zwischen NPC-Namen und Spielernamen? Falls noetig,
+    sollten die Namen von NPC gebanisht werden, sofern es sich um 
+    Personennamen handelt.
 
 o Alle NPCs sollten vor Anschluss einmal gekillt werden, um sie auf
   grundsaetzliche Kampf-Funktionsfaehigkeit zu pruefen.

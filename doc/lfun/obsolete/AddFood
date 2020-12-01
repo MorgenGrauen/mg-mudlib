@@ -2,6 +2,17 @@
 AddFood()
 *********
 
+
+OBSOLETE LFUN
+=============
+
+   Diese Efun existiert nicht mehr. Bitte stattdessen den Hook
+   H_HOOK_INSERT benutzen. (s. /doc/std/hooks)
+
+
+FUNKTION
+========
+
    void AddFood(string nameOfFood, mixed ids, int price, int heal,
                 mixed myFunction)
 
@@ -16,7 +27,7 @@ BEMERKUNGEN
 
    AddToMenu( nameOfFood,ids,
        ([ P_VALUE : price, P_FOOD : heal, P_HP : heal, P_SP : heal ]),
-       ( min(heal, 5), myFunction, 0,0,0);
+       min(heal, 5), myFunction, 0,0,0);
 
 
 SIEHE AUCH

@@ -28,8 +28,8 @@ stty
     darstellt. Bei ANSI wird das Ganze von einem lesbaren Text gefolgt. Sollte
     also der folgende Satz
 
-    Sollte dieser Text hier nicht richtig lesbar sein, benutze
-    das Kommando stty reset!
+      "Sollte dieser Text hier nicht richtig lesbar sein, benutze
+      das Kommando stty reset!"
 
     nicht erscheinen oder nur schwer lesbar sein, sollte man mit stty reset
     die Farben wiederherstellen oder ein anderes Terminal einstellen.
@@ -38,7 +38,7 @@ stty
     Manche Terminals sind u.U. nicht ganz ANSI kompatibel, was dazu fuehrt,
     dass die Farbe nicht ausgeschaltet wird. Sollte soetwas passieren bitte
     das Kommando stty reset benutzen, welches einen weissen Hintergrund und
-    schwarzen Vordergrund einstellt.
+    schwarzen Vordergrund einstellt und anschliessend einen Resetcode sendet.
 
  LETZTE AeNDERUNG:
     Thu, 24.07.1997, 09:00:00 von Wargon

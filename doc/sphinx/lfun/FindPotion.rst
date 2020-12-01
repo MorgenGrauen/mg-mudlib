@@ -26,8 +26,6 @@ BESCHREIBUNG
 
      Diese Funktion gibt einem aufrufenden Spieler eventuell diesen ZT.
 
-     
-
      Das aufrufende Spielerobjekt muss dafuer:
      * diesen ZT im Potionmaster in seiner Liste eingetragen haben
      * diesen ZT in der Liste der bekannten Traenke haben (durch
@@ -61,6 +59,21 @@ BEISPIELE
          return "Die Papiere sind alle unbeschriftet.\n";
      }
 
+HINWEISE
+--------
+::
+
+    Zaubertraenke duerfen nicht in Raeumen eingetragen werden, die in der
+    Parawelt liegen oder nur ueber Paraweltraeume zugaenglich sind.
+
+    Der Auswahldialog fuer die Attribute wird an this_interactive() 
+    ausgegeben, d.h. das Kommando, das zum Aufruf von FindPotion() fuehrt, 
+    muss von dem Spielerobjekt eingegeben werden, an dem FindPotion()
+    gerufen wird. Das bedeutet konkreter: Bei einem ZT, bei dem ein zweiter
+    Spieler ein Kommando eingibt, damit ein anderer Spieler einen ZT findet, 
+    funktioniert nicht.
+
+
 SIEHE AUCH
 ----------
 ::
@@ -70,5 +83,5 @@ SIEHE AUCH
      Props:     P_POTIONROOMS, P_KNOWN_POTIONROOMS
      Befehl:    traenke (fuer Magier zum Einschalten des Findens von ZTs)
 
-6.Feb 2016 Gloinson
+19 Nov 2020 Arathorn
 

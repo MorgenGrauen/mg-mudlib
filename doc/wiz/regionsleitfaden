@@ -10,16 +10,31 @@ moeglichst reibungslos zu gestalten, seien Dir die in dieser Hilfeseite
 genannten Dinge ans Herz gelegt. Diese lassen sich in folgende Kategorien
 einteilen:
 
+0) Grundsaetzliches
 1) Formales zum Codestil
 2) Inhaltliche Anforderungen
 3) Was nicht akzeptiert wird
 4) Was ist vor dem Anschluss zu beachten?
 
 
+0) Grundsaetzliches
+
+o  Frage den Regionsmagier, in dessen Region dein neues Gebiet angeschlossen
+   werden soll, ob du in deinem /players-Verzeichnis entwickeln sollst oder
+   in der Region arbeiten darfst. Selbst wenn er das gestattet, ist dennoch
+   dringend zu empfehlen, es nicht zu tun, primaer aus folgenden Gruenden:
+   - Fehler landen unnoetigerweise auch im Fehlerteufel des Regionsmagiers.
+   - Testweise getoetete NPCs werden als EKs eingetragen, der zustaendige
+     EM muss sich dann drum kuemmern.
+   - Es liegt nicht angeschlossener Code im Regionsverzeichnis.
+   - Wenn der RM wechseln sollte und der neue RM eine andere Festlegung
+     trifft, haben alle Beteiligten unnoetigen Mehraufwand.
+
+
 1) Formales zum Codestil
 
 o  #pragma strong_types,save_types soll in allen Files verwendet werden,
-   ab Driver-Version LD_3.5.x wird auch rrtt_checks dringend empfohlen.
+   ab Driver-Version LD_3.5.x wird auch rtt_checks dringend empfohlen.
 
 o  Der Code soll keine Zeilen mit mehr als 78 Zeichen enthalten.
 

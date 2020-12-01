@@ -2,10 +2,11 @@
 Zaubertraenke fuer Magier
 =========================
 
-Wie man die Traenke jetzt genau versteckt bleibt dem betreffenden Magier
-ueberlassen, es sollte halt insgesamt ein breites Spektrum von sehr leicht
+Wie man die Traenke jetzt genau versteckt, bleibt dem betreffenden Magier
+ueberlassen, es sollte nur insgesamt ein breites Spektrum von sehr leicht
 zu finden bis fast unmoeglich abgedeckt sein.
-Fuer das Orakel der Hochebene sollte dann ein entsprechender Spruch
+
+Fuer das Orakel der Hochebene muss dann ein entsprechender Spruch
 vorbereitet werden, nicht zu kryptisch aber doch orakelig. Wichtig ist auch,
 dass der Spruch nicht in Dateien oder Code festgehalten wird. Gerade im
 modernen Workflow mit Git ist darauf zu achten, da hier auch temporaere
@@ -21,19 +22,31 @@ sein), werden in 8 Listen eingeteilt, je nach Schwierigkeitsgrad. Der haengt
 natuerlich von der Lage (so ist ein Trank in einem monsterwimmelnden
 Labyrinth schwieriger zu erreichen, als einer auf der Hochebene), und von
 dem Versteck selbst ab.
+
 Questraeume, die nur im Rahmen der Quest erreichbar sind, sind ungeeignet.
 
-BEISPIEL:
-Mein Standardbeispiel fuer ein Versteck ist immer folgendes:
+Darueber hinaus muessen aufgrund eines EM-Beschlusses alle Zaubertraenke in
+der Normalwelt angeschlossen bzw. ueber diese erreichbar sein. Zaubertraenke,
+die nur ueber die Parawelt erreichbar sind, werden daher nicht genehmigt.
+
+
+BEISPIEL
+--------
+
+Ein Standardbeispiel fuer ein Versteck ist immer folgendes:
 
 > schaue
 blablablabla .... Ein Schreibtisch steht in der Ecke. ... blablabla
+
 > unt schreibtisch
 Er hat eine Schublade.
+
 > oeffne schublade
 Du oeffnest die Schublade.
+
 > unt schublade
 In der Schublade enteckst Du ein paar Papiere.
+
 > unt papiere
 Beim Rumwuehlen in den Papieren entdeckst Du einen kleinen Zaubertrank, den
 Du sofort trinkst.
@@ -101,4 +114,4 @@ SIEHE AUCH:
     traenke    - Magierbefehl zum Einschalten des Findens von ZTs
 
 LETZTE AeNDERUNG:
-  4. Januar 2018 durch Deaddy
+  19. Nov. 2020, Arathorn

@@ -19,8 +19,8 @@ hoffentlich erleichtern.
 
    Im Mud selbst kannst Du nur ueber den Zeilen-Texteditor "ed" etwas
    programmieren. Hilfe zu diesem Werkzeug bekommst Du ueber "man ed"
-   und "man ed0..ed5". Als sinnvolle Alternative steht Dir ein FTP-
-   Zugang zur Verfuegung, ueber den Du die auf Deinem eigenen Rechner
+   und "man ed0..ed5". Als modernere Alternative kann Dir ein git-Zugang 
+   eingerichtet werden, ueber den Du die auf Deinem eigenen Rechner
    geschriebenen Files ins Mud kopieren kannst. Hierbei kannst Du dann
    Deinen eigenen Editor verwenden. Bitte achte aber darauf, dass Du
    als Dateiformat das Unix-Format verwendest. Auch unter Windows 
@@ -40,7 +40,7 @@ hoffentlich erleichtern.
 
    Was formale und auch inhaltliche Anforderungen an Deinen Code angeht,
    lies Dir bitte "hilfe regionsleitfaden" durch, hier findest Du alles
-   wesentliche kompakt zusammengefasst. Wenn darueber hinaus spezielle
+   Wesentliche kompakt zusammengefasst. Wenn darueber hinaus spezielle
    Fragen zu der Region bestehen, die Dein Gesellenstueck spaeter aufnehmen
    soll, kannst Du gerne auch den Regionsmagier ansprechen. Du solltest 
    aber auf jeden Fall davon ausgehen, dass dieser Dir nur sehr geringe

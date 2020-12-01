@@ -27,7 +27,7 @@ BEMERKUNGEN
 
       AddToMenu( nameOfFood,ids,
           ([ P_VALUE : price, P_FOOD : heal, P_HP : heal, P_SP : heal ]),
-          ( min(heal, 5), myFunction, 0,0,0);
+          min(heal, 5), myFunction, 0,0,0);
 
 
 SIEHE AUCH
