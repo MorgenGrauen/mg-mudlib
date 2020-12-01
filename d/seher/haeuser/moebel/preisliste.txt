@@ -54,8 +54,8 @@ Art.-Nr.   Name             Beschreibung                                Preis
                             sind Ihre Wertsachen sicher.
 
  8         Zauberkiste      Sind Sie Zauberer? Oder einfach nur Sammler 7.999
-                            hier von Zauberer-Komponenten? Dann haben
-                            wir ein Moebelstueck fuer Sie, das Sie haben
+                            von Zauberer-Komponenten? Dann haben wir
+                            ein Moebelstueck fuer Sie, das Sie haben
                             muessen! Aus magischem Birnbaumholz gefertigt.
 
  9         Muellcontainer   Der Ersatz fuer den Muellschlucker.           999
@@ -93,6 +93,7 @@ Art.-Nr.   Name             Beschreibung                                Preis
                             Endlich koennen Sie, wenn er es denn dann
                             auch zufrieden ist, das Tagebuch hierauf
                             ablegen und in aller Ruhe blaettern.
+
 15         Aquarium         Ein wunderschoenes Aquarium, leider         3.000
                             koennen wir es nur ohne lebende Fische
                             auf Lager halten. Aber vielleicht angeln
@@ -100,7 +101,7 @@ Art.-Nr.   Name             Beschreibung                                Preis
 -----------------------------------------------------------------------------
 Anm. der Geschaeftsleitung:
 Wir bemuehen uns, Ihrem Geschmack und Ihren Beduerfnissen gerecht zu werden.
-Falls Sie Verbesserungsvorschlaege haben, oder falls Sie Moebelstuecke fuer Ihr
-Haus in unserem Angebot vermissen, so setzen Sie doch bitte eine entsprechende
-Idee im Laden ab.
+Falls Sie Verbesserungsvorschlaege haben, oder falls Sie Moebelstuecke fuer
+Ihr Haus in unserem Angebot vermissen, so setzen Sie doch bitte eine
+entsprechende Idee im Laden ab.
 -----------------------------------------------------------------------------
