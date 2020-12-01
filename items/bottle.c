@@ -149,9 +149,9 @@ protected void create()
   SetProp(P_WEIGHT,100);
 }
 
-void init()
+public varargs void init(object origin)
 {
-  ::init();
+  ::init(origin);
   
   add_action("DoDrink", "trinke");
   add_action("DoDrink", "trink");
