@@ -2896,13 +2896,6 @@ static void calculate_value()
   SetProp(P_CARRIED_VALUE, carried_value);
 }
 
-/* Called by command 'save' */
-int save_character() {
-  save_me(1);
-  write("Ok.\n");
-  return 1;
-}
-
 void save_me(mixed value_items)
 {
   // Gaeste werden nicht gespeichert
@@ -4078,8 +4071,6 @@ static mixed _query_localcmds()
            ({"ende","new_quit",0,0}),
            ({"disconnect","disconnect",0,0}),
            ({"schlaf","disconnect",1,0}),
-           ({"speichern","save_character",0,0}),
-           ({"save","save_character",0,0}),
            ({"toete","kill",0,0}),
            ({"angriffsmeldung","angriffsmeldung",0,0}),
            ({"passw","change_password",1,0}),
