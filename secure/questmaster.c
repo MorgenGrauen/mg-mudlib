@@ -701,7 +701,7 @@ public int AddMiniQuest(int mquestpoints, string allowedobj, string descr,
   // MQ-Nummer hochzaehlen
   int nummer = last_num + 1;
   m_add(miniquests, allowedobj, mquestpoints, nummer, descr, 1, active,
-    title, donedesc, restrictions, domain, permitted_objs);
+    title, donedesc, restrictions, lower_case(domain), permitted_objs);
   // und nummer als last_num merken.
   last_num = nummer;
   save_info();
@@ -778,6 +778,8 @@ int ChangeMiniQuest(mixed mq_obj, int param, mixed newvalue) {
     case MQ_DATA_ASSIGNED_DOMAIN:
       if ( !stringp(newvalue) || !sizeof(newvalue) ) 
         return MQ_KEY_INVALID;
+      if (param == MQ_DATA_ASSIGNED_DOMAIN)
+        newvalue = lower_case(newvalue);
       break;
     // das Sichtbarkeits- und das aktiv/inaktiv-Flag muessen 0/1 sein.
     case MQ_DATA_VISIBLE:
