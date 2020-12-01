@@ -13,7 +13,6 @@ create()
   if (!clonep(TO)) return;
   ::create();
   SetProp(P_SHORT, "Ein Gutschein");
-  SetProp(P_LONG, "@@longtext@@");
   AddId(({"gutschein"}));
   SetProp(P_NAME, "Gutschein");
   SetProp(P_GENDER, MALE);
@@ -25,7 +24,7 @@ create()
   SetProp(P_AUTOLOADOBJ, 1);
 }
 
-string longtext()
+string _query_long()
 {
   string str,aussteller,inhaber,text;
   int wert;
