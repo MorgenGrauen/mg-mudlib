@@ -51,10 +51,9 @@ Gildenuebersicht:
     klerus, tanjian, uruk-hai, werwoelfe, zauberer
 
 Andere Befehle:
-    ende, schlafe (ein), speichern, lang, kurz, ultrakurz, ausgaenge,
-    passwort, fehler, idee, typo, zeilen, selbstloeschung, spieldauer,
-    spielpause, uhrmeldung, zweitiemarkierung, telnegs, stty, grafik, 
-    telnet
+    ende, schlafe (ein), lang, kurz, ultrakurz, ausgaenge, passwort, fehler,
+    idee, typo, zeilen, selbstloeschung, spieldauer, spielpause, uhrmeldung,
+    zweitiemarkierung, telnegs, stty, grafik, telnet
 
 Sonstige Themen:
     verein, konzept, seher, magier, regionen, editor, buecher, faq,
