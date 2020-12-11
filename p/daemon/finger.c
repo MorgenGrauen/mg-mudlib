@@ -177,7 +177,7 @@ varargs string finger_single(string str,int local)
     properties[P_PRESAY]=(stringp(tmp) && sizeof(tmp)>1) ? tmp[0..<2] : 0;
   }
   else
-    restore_object("/save/"+str[0..0]+"/"+str);
+    restore_object(SAVEPATH+str[0..0]+"/"+str);
   if (!properties)
   {
     text+="Mist!!! Das Einlesen der Daten klappt nicht wie es soll :-(\n";
@@ -205,7 +205,7 @@ varargs string finger_single(string str,int local)
   }
 
    wizlevel=query_wiz_level(str);
-   if ( (tmp = file_time("/save/"+str[0..0]+"/"+str+".o")) <= 0 )
+   if ( (tmp = file_time(SAVEPATH+str[0..0]+"/"+str+".o")) <= 0 )
        // Hack, um bei ganz "frischen" Spielern (noch kein Savefile vorhanden)
        // die Ausgabe von 1.1.1970 zu verhindern
        tmp = time();
