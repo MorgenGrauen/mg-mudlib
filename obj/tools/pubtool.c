@@ -6,7 +6,7 @@
 
 inherit "/std/secure_thing";
 
-create()
+protected void create()
 {
     if (!clonep(ME))
         return;

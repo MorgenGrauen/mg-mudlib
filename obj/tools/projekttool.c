@@ -188,13 +188,13 @@ int watch_fun(string arg)
   return 1;
 }
 
-void init()
+public varargs void init(object origin)
 {
   if (!IS_LEARNER(TP)) {
     if (find_call_out("remove") == -1)
       call_out("remove",0);
   }
-  else ::init();
+  else ::init(origin);
   return;
 }
 
