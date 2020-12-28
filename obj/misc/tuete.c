@@ -27,9 +27,9 @@ void create()
 
 }
 
-void init()
+public varargs void init(object origin)
 {
-	::init();
+	::init(origin);
 	add_action("naschen","greife");
 	add_action("naschen","greif");
 }

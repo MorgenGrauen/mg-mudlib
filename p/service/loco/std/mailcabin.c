@@ -52,7 +52,7 @@ int besetzt() {
   return 0;
 }
 
-public varargs string long() {
+public varargs string long(int mode) {
   return "\
 Eine kleine Ein-Personen-Kabine, in der Du ungestoert Deine Post lesen und\n\
 schreiben kannst. Du kannst sie betreten. \n\

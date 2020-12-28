@@ -43,7 +43,7 @@ void create()
 }
  
  
-void init()
+public varargs void init(object origin)
 {
   if (!IS_LEARNER(this_player())) return;
   ::init();

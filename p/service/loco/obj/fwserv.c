@@ -24,13 +24,13 @@ static mixed forwarddata;
 mixed properties;
 
 
-create() {
+protected void create() {
   seteuid(getuid());
   forwarddata=([]);
 }
 
 
-LoadFile(s) {
+void LoadFile(string s) {
   if (!forwarddata[s])
     forwarddata[s]=FWSAVESERV->LoadData(s);
   if (!forwarddata[s])

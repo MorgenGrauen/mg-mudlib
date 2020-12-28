@@ -82,9 +82,9 @@ void create()
 }
 
 
-void init()
+public varargs void init(object origin)
 {
-	::init();
+	::init(origin);
 	add_action("essen","esse");
 	add_action("essen","iss");
 	add_action("essen","lutsche");
