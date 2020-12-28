@@ -81,7 +81,7 @@ public varargs void init(object oldenv)
       return;
   }
 
-  if ( !(prayroom = (string) this_player()->QueryPrayRoom()) )
+  if ( !(prayroom = ({string}) this_player()->QueryPrayRoom()) )
       prayroom = "/room/pray_room";
   
   if ( !({int})this_player()->QueryProp(P_GHOST) )
@@ -92,7 +92,7 @@ public varargs void init(object oldenv)
           if ( !({int})this_player()->QueryProp(P_INVIS) )
               tell_room( this_object(),
                          "Der Tod sagt: WAS WILLST DU HIER, "+
-                         upperstring((string) this_player()->name())+"?\n"+
+                         upperstring(({string})this_player()->name())+"?\n"+
                          "Der Tod sagt: DU BIST UNSTERBLICH, DU HAST HIER "
                          "NICHTS ZU SUCHEN!\n\n" );
 	}
@@ -101,7 +101,7 @@ public varargs void init(object oldenv)
           write("Der Tod sagt: WAS TUST DU HIER? DEINE ZEIT IST NOCH "
                 "NICHT REIF!\n\n");
           
-	  if ( catch(res = (int) this_player()->move( prayroom,M_GO|M_SILENT|M_NOCHECK ))
+	  if ( catch(res = ({int}) this_player()->move( prayroom,M_GO|M_SILENT|M_NOCHECK ))
                || res < 1 && environment(this_player()) == this_object() )
               this_player()->move( "/room/pray_room", M_GO|M_SILENT|M_NOCHECK );
 	}

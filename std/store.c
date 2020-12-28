@@ -63,7 +63,7 @@ static int _query_store_consume()
 static int _set_store_consume(int consum)     /* 1 <= consum <= 100 */
 {
   if (consum<1 || consum>100) return -1;
-  return (100-(int)Set(P_STORE_CONSUME, consum));
+  return (100-Set(P_STORE_CONSUME, consum));
 }
 
 static int _query_min_stock()

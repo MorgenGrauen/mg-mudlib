@@ -267,7 +267,7 @@ parseText( string msg, object pl )
           break;
 
       case 'n': /*** Name, normal geschrieben ***/
-          TOS(done) += (string) (({string})pl->name(RAW));
+          TOS(done) += ({string})pl->name(RAW);
           break;
 
       case 'N': /*** Name, in Grossbuchstaben ***/
@@ -329,7 +329,7 @@ do_remove()
             while ( plobj = present("\ndeath_mark", pl) )
                 plobj->remove();
             
-            if ( !(prayroom = (string) pl->QueryPrayRoom()) )
+            if ( !(prayroom = ({string}) pl->QueryPrayRoom()) )
                 prayroom="/room/pray_room";
 
             pl->Set( P_TMP_MOVE_HOOK, 0 );
@@ -340,7 +340,7 @@ do_remove()
             pl->Set( P_NEXT_DEATH_SEQUENCE, 0 );
             pl->Set( P_POISON, 0, F_QUERY_METHOD );
             
-            if ( catch( res = (int) pl->move(prayroom, M_GO|M_SILENT|M_NOCHECK) )
+            if ( catch( res = ({int}) pl->move(prayroom, M_GO|M_SILENT|M_NOCHECK) )
                  || res < 1 )
                 pl->move( "/room/pray_room", M_GO|M_NOCHECK );
 
@@ -430,8 +430,8 @@ void add_player( object pl )
 
         if( !(killer_name = pre->QueryProp(P_KILL_NAME)) ){
             killer_name = pre->QueryProp(P_NAME);
-            kart = (int) pre->QueryProp(P_ARTICLE);
-            kgen = (int) pre->QueryProp(P_GENDER);
+            kart = ({int}) pre->QueryProp(P_ARTICLE);
+            kgen = ({int}) pre->QueryProp(P_GENDER);
         }
 
         killer_msg = pre->QueryProp(P_KILL_MSG);  
@@ -442,8 +442,8 @@ void add_player( object pl )
 
         if( !(killer_name = kill_liv->QueryProp(P_KILL_NAME)) ){
             killer_name = kill_liv->QueryProp(P_NAME);
-            kart = (int) kill_liv->QueryProp(P_ARTICLE);
-            kgen = (int) kill_liv->QueryProp(P_GENDER);
+            kart = ({int}) kill_liv->QueryProp(P_ARTICLE);
+            kgen = ({int}) kill_liv->QueryProp(P_GENDER);
         }
 
         killer_msg = kill_liv->QueryProp(P_KILL_MSG);
@@ -455,8 +455,8 @@ void add_player( object pl )
 
         if( !(killer_name = kill_ob->QueryProp(P_KILL_NAME)) ){
             killer_name = kill_ob->QueryProp(P_NAME);
-            kart = (int) kill_ob->QueryProp(P_ARTICLE);
-            kgen = (int) kill_ob->QueryProp(P_GENDER);
+            kart = ({int}) kill_ob->QueryProp(P_ARTICLE);
+            kgen = ({int}) kill_ob->QueryProp(P_GENDER);
         }
 
         killer_msg = kill_ob->QueryProp(P_KILL_MSG);
@@ -508,11 +508,11 @@ void add_player( object pl )
             killer_name = "";
             killer_msg = upperstring(getuid(pl)) + " VERSUCHTE, MIR ZU "
                 "ENTKOMMEN - JETZT HABE ICH WIEDER EXTRA-ARBEIT MIT "+
-                ((int) pl->QueryProp(P_GENDER) != 2 ? "IHM" : "IHR") +
+                (({int}) pl->QueryProp(P_GENDER) != 2 ? "IHM" : "IHR") +
                 " ...";
         }
         else if ( !killer_name ) {
-                if ( (string) pl->QueryProp(P_KILLER) == "gift" ){
+                if ( ({string}) pl->QueryProp(P_KILLER) == "gift" ){
                     killer_name = "Vergiftung";
                     kgen = FEMALE;
                     kart = 1;
@@ -541,7 +541,7 @@ void add_player( object pl )
         SetProp( P_GENDER,MALE );
 
         int magiertestie;
-        string testplayer = (string) pl->QueryProp(P_TESTPLAYER);
+        string testplayer = ({string}) pl->QueryProp(P_TESTPLAYER);
         if (sizeof(testplayer))
         {
           if (testplayer[<5..<1]!="Gilde")
@@ -568,7 +568,7 @@ void add_player( object pl )
                                 capitalize(getuid(pl)) + " umgebracht." );
         }
 
-        i = (int) pl->QueryProp(P_DEADS);
+        i = ({int}) pl->QueryProp(P_DEADS);
         if ( i && (getuid(pl) == "key" || i%100 == 0 || i%250 == 0) ){
             SetProp( P_NAME, "Tod" );
             CHMASTER->send( kanal, this_object(),

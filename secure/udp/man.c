@@ -51,7 +51,7 @@ void udp_man(mapping data)
       tmp=({});
   }
   else
-    tmp=(string *)call_other(MAND,"locate",data[DATA],0);
+    tmp=({string *})call_other(MAND,"locate",data[DATA],0);
   pages=([]);
   index=sizeof(tmp);
   while(index--)
@@ -90,9 +90,9 @@ void udp_man(mapping data)
 
 string send_request(string mudname, string pagename)
 {
-  return (INETD->_send_udp(mudname,
-                             ([REQUEST: "man",
-                               DATA: pagename,
-                               SENDER: getuid(previous_object())]),1)||
-          sprintf(INETD_MAN_REQUESTED,pagename,mudname));
+  return (({string})INETD->_send_udp(
+        mudname, 
+        ([REQUEST: "man", DATA: pagename, SENDER: getuid(previous_object())]),
+        1) ||
+        sprintf(INETD_MAN_REQUESTED,pagename,mudname));
 }

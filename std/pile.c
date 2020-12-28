@@ -23,7 +23,7 @@ void create() {
 	}   
 	if( !clonep(this_object()) ) return;
 	::create();
-	von = (string)previous_object()->QueryProp(P_PILE_NAME);
+	von = ({string})previous_object()->QueryProp(P_PILE_NAME);
 	SetProp( P_PILE_NAME, "\nhaufen "+von );
 	spielerhaufen = (int)previous_object()->IsPlayerCorpse();
 

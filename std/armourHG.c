@@ -31,7 +31,7 @@ varargs void doWearMessage( int all ) {
   }
   if (objectp(environment()) && objectp(environment(environment())))
     tell_room(environment(environment()),
-	capitalize((string)PL->name(WER)) + " setzt " + name(WEN,0) + 
+	capitalize(({string})PL->name(WER)) + " setzt " + name(WEN,0) + 
 	" auf.\n");
 }
 
@@ -40,7 +40,7 @@ varargs void doUnwearMessage( object worn_by, int all ) {
     tell_object(worn_by,  "Du setzt " + name(WEN,1) + " ab.\n" );
   }
   tell_room(environment(worn_by), 
-	    (capitalize((string)worn_by->name(WER))) + " setzt " +
+	    (capitalize(({string})worn_by->name(WER))) + " setzt " +
 	    name(WEN,0) + " ab.\n", ({worn_by}));
 }
 
