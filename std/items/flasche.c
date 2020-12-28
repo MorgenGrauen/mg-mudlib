@@ -162,7 +162,7 @@ protected int fill_bottle(object src)
   {
     if(QueryProp(P_WATER)) {
       write(Name(WER,1)+" ist bereits voll!\n");
-      return 1;
+      return 0;
     }
     if(liquidtype&W_OTHER)
     {
