@@ -27,7 +27,7 @@ BEISPIELE
         Objekt1:
             void catch_tell(string str)
             {
-                wirte("Erhaltener Text: "+str+"\n");
+                write("Erhaltener Text: "+str+"\n");
             }
 
         Objekt2:

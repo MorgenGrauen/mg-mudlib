@@ -31,6 +31,6 @@ RUeckGABEWERT
 SIEHE AUCH
 ==========
 
-   AddvItem(), AddvItem(), AddItem(), RemoveItem() *../std/vitems*
+   AddVItem(), RemoveVItem(), AddItem(), RemoveItem() *../std/vitems*
 
 Last modified: 19.03.2019, Zesstra

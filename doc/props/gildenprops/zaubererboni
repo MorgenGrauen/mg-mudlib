@@ -150,9 +150,15 @@ Weitere nuetzliche Properties
 Alle Defines finden sich in /p/zauberer/zauberer.h, diese Datei ist daher
 hierfuer zu inkludieren.
 
-P_Z_NO_MATERIAL NPC benoetigt keine Komponenten.
+P_Z_NO_MATERIAL  NPC benoetigt keine Komponenten.
    NICHT IN SPIELERN SETZEN. Auch nicht in Objekten, die fuer Spieler
    erreichbar sind.
 
-P_Z_NO_DISPOSE  Objekt kann nicht entsorgt werden 
-ZKOMP(x)        Pfad zu den Komponenten ("/p/zauberer/komponenten/"+x)
+P_Z_NO_DISPOSE   Objekt kann nicht entsorgt werden (auch wenn die Prop nicht
+   gesetzt ist, koennen Lebewesen oder netztote Spieler nicht entsorgt
+   werden; gleiches gilt auch fuer Objekte mit P_NODROP, P_NOGET, P_NEVERDROP,
+   P_AUTOLOADOBJ oder P_CURSED sowie nicht-leere Container. P_KEEP_ON_SELL
+   ist ebenfalls ausgenommen, wie ueblich aber nur dann, wenn die UID des
+   Spielers in der Prop steht.)
+
+ZKOMP(x)         Pfad zu den Komponenten ("/p/zauberer/komponenten/"+x)

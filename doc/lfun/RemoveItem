@@ -6,38 +6,47 @@ RemoveItem()
 FUNKTION
 ========
 
-   void RemoveItem(mixed file);
+   void RemoveItem(<string|string*> file);
 
 
 DEFINIERT IN
 ============
 
-   /std/room/items.c
+   /std/container/items.c
 
 
 ARGUMENTE
 =========
 
    file
-        String oder Array von Strings mit dem Namen des zu entfernenden
-        Objekts.
+      String oder Array von Strings mit dem Namen des zu entfernenden
+      Objekts.
 
 
 BESCHREIBUNG
 ============
 
    Das mit AddItem(file) dem Raum hinzugefuegte Objekt wird wieder aus
-   der Liste der Objekte entfernt.
-   Wurde bei AddItem() ein Array von Dateinamen uebergeben, so muss das
-   selbe Array auch bei RemoveItem() uebergeben werden!
-   Falls das Objekt, das durch den AddItem()-Aufruf erzeugt wurde, sich
-   noch im Raum befindet, wird es durch den RemoveItem()-Aufruf zerstoert.
+   der Liste der Objekte entfernt. Wurde bei AddItem() ein Array von
+   Dateinamen uebergeben, so muss das selbe Array auch bei
+   RemoveItem() uebergeben werden! Falls das Objekt, das durch den
+   AddItem()-Aufruf erzeugt wurde, sich noch innerhalb des Objektes
+   befindet, an dem RemoveItem() aufgerufen wird, wird es dadurch
+   zerstoert.
 
 
 RUECKGABEWERT
 =============
 
    keiner
+
+
+BEMERKUNGEN
+===========
+
+   RemoveItem() loest im Gegensatz zu AddItem() bei NPCs keine Meldung
+   aus, da diese nur zerstoert und nicht bewegt werden. Wird hier eine
+   Meldung gewuenscht, muss diese selbst ausgegeben werden.
 
 
 BEISPIELE
@@ -48,7 +57,7 @@ BEISPIELE
    inherit "/std/laden";
    #include <properties.h>
 
-   create()
+   protected void create()
    {
      ::create();  // Hier wird u.a. der Muellschlucker erzeugt
 
@@ -62,3 +71,5 @@ SIEHE AUCH
 ==========
 
    AddItem(), /std/room/items.c
+
+Letzte Aenderung: 02.11.2020, Bugfix
