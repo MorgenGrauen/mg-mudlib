@@ -1235,8 +1235,10 @@ void create()
     return;
   if(!cloner&&!((cloner=TP)||(cloner=ENV(ME)))&&!interactive(cloner))
     destruct(ME);
-  if(!IS_LEARNER(cloner))
+  if(!IS_LEARNER(cloner)) {
     destruct(ME);
+    return;
+  }
   SetProp(P_NODROP,"Das waere zu gefaehrlich.\n");
   SetProp(P_NEVERDROP,1);
   SetProp(P_NOBUY,1);
