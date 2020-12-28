@@ -187,7 +187,7 @@ string GetDetail(string key,mixed race,int sense) {
           return BS("Schwer zu sagen, woraus die Faeden sind. Mithril? "
               "Mondsilber?");
   case "licht": case "mondsilber": case "mithril":
-          return BS("Du streckt schon Deine Hand aus, um Merlins Gewand naeher zu untersuchen, aber da trifft Dich sein strenger Blick. Schuechtern nimmst Du von Deinem Vorhaben Abstand.");
+          return BS("Du streckst schon Deine Hand aus, um Merlins Gewand naeher zu untersuchen, aber da trifft Dich sein strenger Blick. Schuechtern nimmst Du von Deinem Vorhaben Abstand.");
   case "abstand":
           return BS("Von so einem Magier sollte man aus Respekt einen Schritt Abstand halten.");
   case "respekt":

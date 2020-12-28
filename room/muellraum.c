@@ -11,7 +11,7 @@ void create()
   SetProp(P_NEVER_CLEAN, 1);
   SetProp(P_INT_LONG,break_string(
     "Dieser Raum ist vollkommen leer und anscheinend riiiiiiesig gross. "
-    "Du kannst seine Aussmasse nichtmals abschaetzen. Naja. Muss wohl auch "
+    "Du kannst seine Ausmasse nichtmals abschaetzen. Naja. Muss wohl auch "
     "so sein, denn hier kommen alle Clones rein, die einige Sekunden "
     "nach ihrer Erstellung noch kein Zuhause (Environment) gefunden haben. "
     "Wenn Du das magische Kommando 'welt' gibst, wirst Du wieder in Deine Welt\n"

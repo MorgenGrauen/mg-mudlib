@@ -43,7 +43,7 @@ protected void create()
   "   ausloesen\n"+
   "sloesch(e) waschbefehl\n"+
   "   Damit kann man einen Befehl aus der Liste loeschen\n"+
-  "waschbefehlslite, wbl"+
+  "waschbefehlsliste, wbl"+
   "   Zeigt eine Liste der Befehle an, die das Waschen ausloesen.\n");
 
   SetProp(P_SHORT,"Eine Duschkabine");
