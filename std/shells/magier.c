@@ -271,17 +271,30 @@ void notify_player_change(string who, int rein, int invis)
   if(Query(P_WAITFOR_FLAGS) & (0x01))return ;
 
   if (pointerp(list=Query(P_WAITFOR))&&sizeof(list))
-    if (member(list,who)!=-1)
-      delayed_write(
-         ({
-           ({sprintf("%s%s   I S T   J E T Z T   %s !!!\n",
-                     (QueryProp(P_VISUALBELL) ? "" : sprintf("%c",7)),
-                     name,
-                     (vis_change?
-                       (rein?"S I C H T B A R":"U N S I C H T B A R"):
-                       (rein?"D A":"N I C H T   M E H R   D A"))),
-           0})
-         }));
+    if (member(list,who)!=-1) {
+      if (QueryProp(P_NO_ASCII_ART))
+        delayed_write(
+           ({
+             ({sprintf("%s%s IST JETZT %s!!!\n",
+                       (QueryProp(P_VISUALBELL) ? "" : sprintf("%c",7)),
+                       name,
+                       (vis_change?
+                         (rein?"SICHTBAR":"UNSICHTBAR"):
+                         (rein?"DA":"NICHT MEHR DA"))),
+             0})
+           }));
+      else
+        delayed_write(
+           ({
+             ({sprintf("%s%s   I S T   J E T Z T   %s !!!\n",
+                       (QueryProp(P_VISUALBELL) ? "" : sprintf("%c",7)),
+                       name,
+                       (vis_change?
+                         (rein?"S I C H T B A R":"U N S I C H T B A R"):
+                         (rein?"D A":"N I C H T   M E H R   D A"))),
+             0})
+           }));
+    }
 
   if (rein && (sizeof(mlist=QueryProp(P_WAITFOR_REASON))) &&
      (mappingp(mlist)) && (mlist[who]))
