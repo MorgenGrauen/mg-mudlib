@@ -562,8 +562,10 @@ static int unalias(string str) {
         FALIASDB->DeleteFamilyAlias(key);
       else
         m_delete(aliases, key);
+
+      if (!familymode || !member(aliases,key))
       // auf jeden Fall noch deaktivieren
-      m_delete(active_aliases, key);
+        m_delete(active_aliases, key);
     }
     if (sizeof(to_delete) == 1)
       write("Du entfernst das Alias \""+ to_delete[0] +"\".\n");

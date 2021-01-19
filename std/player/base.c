@@ -621,7 +621,6 @@ varargs void Reconnect( int silent )
     if ( !silent && interactive(ME) )
         call_notify_player_change(1);
 
-    command::reconnect();
     if ( query_once_interactive(ME) )
         modify_prompt();
 
