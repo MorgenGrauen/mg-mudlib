@@ -17,20 +17,20 @@ BESCHREIBUNG
 ------------
 ::
 
-	Diese Funktion versucht, ein Lebewesen zu befrieden.
+  Diese Funktion versucht, ein Lebewesen zu befrieden.
   Will eine Gilde ein Lebewesen befrieden, muss sie hierfuer diese Funktion
   in dem Lebewesen aufrufen.
 
-  Ein immer befriedbarer NPC kann durch das Setzen von P_ACCEPT_PEACE in einem
-  Lebewesen realisiert werden.
+  Ein immer befriedbarer NPC kann durch das Setzen von P_ACCEPT_PEACE in 
+  einem Lebewesen realisiert werden.
 
-	Standardmaessig funktioniert die Funktion wie folgt:
+  Standardmaessig funktioniert die Funktion wie folgt:
+
   * Kommt der Versuch vom Spellcaster selbst, ist er immer erfolgreich.
   * Kommt der Versuch von einem Teamkollegen, ist er immer erfolgreich.
   * Hat das Lebewesen keine Gegner, ist der Versuch immer erfolglos.
-  In diesen Faellen erfolgt auch keine Erhoehung des Befriedezaehlers.
 
-  
+  In diesen Faellen erfolgt auch keine Erhoehung des Befriedezaehlers.
 
   In anderen Faellen wird die in P_PEACE_HISTORY fuer die Gilde des Casters
   abgelegte Zahl erfolgreicher Befriedungen (ANZ), die Intelligenz des
@@ -38,11 +38,7 @@ BESCHREIBUNG
   ermittelt.
   Anschliessend wird eine Wahrscheinlichkeit w ausgerechnet:
 
-  
-
     w = (INT_CASTER + 10 - ANZ*4) / (INT_ME + 10)
-
-  
 
   Hierbei gibt w die Chance auf eine erfolgreiche Befriedung an. Mittels einer
   Zufallszahl wird bestimmt, ob der aktuelle Versuch erfolgreich ist. Falls
@@ -53,9 +49,8 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
-::
 
-  *	Die Funktion kann auch ueberschrieben werden, um ein vom Magier
+  * Die Funktion kann auch ueberschrieben werden, um ein vom Magier
     gewuenschtes Verhalten zu realisieren. Ein komplettes Abhaengen von
     Befriedungen sollte dabei aber die Ausnahme sein!
   * Diese Funktion verwaltet auch das P_PEACE_HISTORY, speziell die Reduktion
@@ -68,17 +63,17 @@ RUECKGABEWERTE
 
     1 - das Lebewesen wurde erfolgreich befriedet..
     0 - der Befriedeversuch ist gescheitert.
-
     
 
 BEISPIELE
 ---------
 ::
 
-    Angenommen, der Caster hat eine Intelligenz von 22. Die folgende Tabelle
-    gibt dann die Wahrscheinlichkeiten fuer eine erfolgreiche Befriedung an:
-    (in Abhaengigkeit von eigener Intelligenz und vergangener erfolgreicher
-     Versuche)
+  Angenommen, der Caster hat eine Intelligenz von 22. Die folgende Tabelle
+  gibt dann die Wahrscheinlichkeiten fuer eine erfolgreiche Befriedung an:
+  (in Abhaengigkeit von NPC-Intelligenz INT_ME und vergangener erfolgreicher
+  Versuche).
+
  INT_ME  Erfolgswahrscheinlichkeiten je nach Anzahl erfolgreicher Versuche
               1       2       3       4       5       6       7       8
       0     280     240     200     160     120      80      40       0
@@ -142,7 +137,5 @@ SIEHE AUCH
 
 LETZTE AENDERUNG
 ----------------
-::
-
 07.06.2008, Zesstra
 

@@ -26,9 +26,16 @@ BEMERKUNGEN
 -----------
 ::
 
-	Der Wert muss von der Gilde ermittelt werden! Meist setzt er sich
-	aus den Faehigkeiten des Mitglieds zusammen und mitunter fliessen
-	auch Gildenquests oder aehnliches mit ein.
+  Der Wert muss von der Gilde ermittelt werden! Meist setzt er sich
+  aus den Faehigkeiten des Mitglieds zusammen und mitunter fliessen
+  auch Gildenquests oder aehnliches mit ein.
+
+  Spieler erhalten 1 Stufenpunkt fuer je 25 Punkte Gildenrating, d.h.
+  400 Stufenpunkte bei Max-Rating. Gildenmagier sollten sich daher gut
+  ueberlegen, ob sie bei der Berechnung des Ratings eine Formel zugrunde
+  legen wollen, die verhindert, dass Spieler ein Max-Rating erreichen
+  koennen.
+
 
 SIEHE AUCH
 ----------
@@ -37,5 +44,5 @@ SIEHE AUCH
     P_NEWSKILLS, GuildRating
 
 
-Last modified: Wed Jan 14 19:17:06 1998 by Patryn
+Last modified: 2021-01-10, Arathorn 
 
