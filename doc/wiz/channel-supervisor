@@ -1,0 +1,78 @@
+Supervisoren fuer Ebenen
+************************
+
+    Die Supervisoren (im Folgenden kurz SV) von Ebenen werden vom channeld
+    gefragt, ob ein Objekt eine bestimmte Aktion auf einer bestimmten Ebenen
+    ausfuehren darf, z.B. Betreten einer Ebene oder Senden auf einer Ebene.
+    Die SVs sind selbst ebenfalls immer Zuhoerer auf der Ebene.
+
+    Wird ein SV zerstoert, wird im Normalfall ein neuer SV aus dem Kreise der
+    aktuellen Zuhoerer bestimmt, ueblicherweise das am laengsten zuhoerende
+    Objekt.
+
+    Betritt ein Objekt, das eine Ebene erschaffen hat (der erste Supervisor), 
+    eine Ebene nach Verlassen erneut, uebernimmt es automatisch die SV-Rolle
+    wieder, sofern das Objekt *kein* Spieler oder Magier ist.
+
+
+Erstellen von Supervisoren
+==========================
+
+    Im einfachsten Fall wird /std/channel_supervisor geerbt, ein Name
+    konfiguriert und das systemweite Init-File fuer Ebenen eingelesen. 
+    Anschliessend erhaelt man das Standardverhalten, was im Init-File
+    konfiguriert ist. Ein Beispiel hierfuer findet sich 
+    /doc/beispiele/ebenen/supervisor.c.
+
+    Man kann die SV-Funktionalitaet in einem bestehenden Objekt ergaenzen,
+    indem man /std/channel_supervisor zusaetzlich erbt. Hierbei ist zu
+    beachten, dass channel_supervisor.c selbst bereits die Funktionen name()
+    und Name() definiert und dort (undekliniert) den Namen zurueckgibt, der
+    per ch_set_sv_name() eingestellt wurde.
+    
+    Wenn also das erbende Objekt deklinierte Namen ausgeben soll oder
+    einen anderen Namen als den SV-Namen, muss im erbenden Objekt name()
+    ueberschrieben werden. Dabei ist zu beachten, dass die ueberschreibende
+    Funktion explizit das Objekt angeben muss, in dem das geerbte name()
+    gerufen werden soll, d.h. beispielsweise   return thing::name();   statt
+    nur ::name();
+    
+    Alternativ kann man die Inherit-Reihenfolge geeignet waehlen, so dass
+    channel_supervisor::name() schon dadurch ueberschrieben wird.
+    Ein Beispiel hierfuer steht in /doc/beispiele/ebenen/supervisor-thing.c.
+
+    Will man einen SV fuer eine Ebene konfigurieren, die keine Standardebene
+    ist, kann man ein eigenes Init-File einlesen (Format siehe Manpage
+    "channeld.init"). In diesem Fall ist aber zu beachten, dass man
+    durch Aufruf von CHMASTER->new() selber Sorge dafuer tragen muss, dass
+    die Ebene erstellt wird. 
+    (Eine Standardebene ist eine Ebene, die in der globalen
+    Konfigurationsdatei /p/daemon/channeld.init aufgefuehrt ist und daher
+    vom Channeld automatisch erzeugt wird.)
+
+    Will man einen SV mit einem gaenzlich anderen Verhalten bauen, so ist
+    auch das moeglich, indem man die lfun
+
+      public int ch_check_access(string ch, object user, string cmd)
+
+    ueberschreibt. Diese wird vom channeld im SV gerufen. Gibt sie eine 1
+    zurueck, darf das Objekt <user> auf der Ebene <ch> die Aktion <cmd>
+    ausfuehren.  Anderenfalls muss 0 zurueckgeben werden. <cmd> ist hierbei
+    eines der in /p/daemon/channel.h definierten Kommandos.
+
+    Die Ebene <ch> wird immer kleingeschrieben uebergeben. Auch wenn der
+    Name Spielern case-sensitiv angezeigt wird, kann es keine zwei Ebenen
+    geben, welche sich nur in Gross-/Kleinschreibung unterscheiden und intern
+    erfolgt die Verwaltung *immer* kleingeschrieben - dies gilt auch fuer die
+    Rechtepruefung.
+
+
+Siehe auch:
+-----------
+    
+    Ebenen:     channels
+    Init-File:  channeld.init
+    Beispiele:  /doc/beispiele/ebenen/supervisor.c
+                /doc/beispiele/ebenen/supervisor-thing.c
+    lfuns:      ch_read_init_file()
+                ch_set_sv_name()

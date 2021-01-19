@@ -1,0 +1,81 @@
+Initialisierung der Ebenen
+--------------------------
+
+    Standardmaessig wird die Ebenenliste im Morgengrauen ueber die Datei
+    /p/daemon/channeld.init erzeugt. Diese wird vom channeld eingelesen und
+    aus den Angaben die Ebenenkonfiguration vorgenommen.
+
+    Im Homemud wird stattdessen die Datei /p/daemon/channeld.init.testmud
+    verwendet, die viele Standardebenen nicht enthaelt, weil in einem
+    "nackten" Homemud die meisten Ebenenbesitzer nicht existieren und daher
+    das Laden des channeld zu Fehlern fuehren wuerde.
+
+    Die Zugriffsrechte fuer die Ebenen werden von einem sogenannten
+    Supervisor (SV) verwaltet und durchgesetzt. Der channeld fragt den fuer
+    eine Ebene zustaendigen Supervisor, ob die angeforderte Aktion erlaubt
+    ist. Im Fall des channeld uebernitmm das Objekt /p/daemon/channel-sv
+    diese Aufgabe. 
+    
+    Jeder Supervisor liest die Rechte-Konfiguration aus der Init-Datei ein.
+    Standardmaessig ist dies die globale Datei, man kann aber auch eigene
+    festlegen.
+
+
+Struktur des Init-Files
+-----------------------
+
+    Das Init-File hat folgenden Aufbau:
+
+      <name>:<recv>:<send>:<accessflags>:<channelflags>:<desc>:<supervisor>
+    
+    z.B.
+
+      abgilde: 0: 0: 0: 0:Fuer Abenteurer:/gilden/abenteurer
+      Tod:     0:-1: 0: 1:Wer stirbt wann?:/room/death/death_room
+
+    Fuer SVs sind nur die Felder <name>, <recv>, <send> und <accessflags>
+    relevant. Das vordefinierte ch_check_access() entscheidet wie folgt
+    anhand der Angaben:
+
+    Verlassen (C_LEAVE) ist so gut wie immer erlaubt, siehe man channels. Die
+    anderen Aktionen sind in zwei Gruppen eingeteilt:
+
+      1) RECV. Die Aktionen dieser Gruppe sind Suchen (C_FIND), Auflisten
+               (C_LIST) und Betreten (C_JOIN).
+      2) SEND. Die Aktion dieser Gruppe ist zur Zeit nur Senden (C_SEND).
+
+    Aktionen werden zugelassen, wenn Spieler-/Magierlevel mindestens die fuer
+    die jeweilige Aktionsgruppe RECV oder SEND festgelegte Stufe ist.
+
+    Enthaelt <accessflags> das Flag CH_ACCESS_WIZARD, handelt es sich um eine
+    Magierebene, und die Magierstufe des Spielers muss mindestens die
+    Mindeststufe der Ebene sein. Ansonsten wird gegen den Spielerlevel
+    geprueft.
+    Enthaelt <accessflags> das Flag CH_ACCESS_NOGUEST, darf die Ebene nicht
+    von Gaesten benutzt werden (weder Empfangen noch Senden).
+
+    Wenn RECV_LVL oder SEND_LVL auf -1 gesetzt ist, sind die Aktionen der
+    jeweiligen Gruppen komplett geblockt.
+
+
+Hinweise:
+---------
+
+    Im Initfile sollten nur Blueprints als SVs verwendet werden -
+    aber im Allgemeinen koennen SVs auch Clones sein!
+
+    Das Initfile fuer Homemuds heisst /p/daemon/channeld.init.testmud. In
+    dieser Datei sind nicht alle Standardebenen vorkonfiguriert, die es im
+    echten Morgengrauen gibt.
+
+
+Siehe auch:
+-----------
+
+    Konzepte:  channels
+    Beispiele: /doc/beispiele/ebenen/supervisor.c
+               /doc/beispiele/ebenen/supervisor-thing.c
+               /doc/beispiele/ebenen/supervisor.txt
+    lfun:      ch_read_init_file()
+               ch_set_sv_name()
+

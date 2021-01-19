@@ -1,0 +1,33 @@
+ch_set_sv_name()
+****************
+
+
+FUNKTION
+========
+
+   protected void ch_set_sv_name(string new_sv_name)
+
+
+DEFINIERT IN
+============
+
+   /std/channel_supervisor.c
+
+
+BESCHREIBUNG
+============
+
+   Stellt <new_sv_name> als neuen Namen fuer dieses Ebenen-Supervisor-Objekt
+   ein.
+
+
+SIEHE AUCH
+==========
+
+   lfuns:      ch_read_init_file()
+   Ebenen:     channels
+   Init-File:  channeld.init
+   Beispiele:  /doc/beispiele/ebenen/supervisor.c
+               /doc/beispiele/ebenen/supervisor-thing.c
+
+

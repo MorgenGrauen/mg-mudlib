@@ -1,0 +1,46 @@
+ch_check_access()
+****************
+
+
+FUNKTION
+========
+
+   public int ch_check_access(string ch, object user, string cmd)
+
+
+DEFINIERT IN
+============
+
+   /std/channel_supervisor.c
+
+
+BESCHREIBUNG
+============
+
+   Verwaltet die Zugriffsrechte auf Ebenen. Kann ueberschrieben werden, wenn
+   man in einem eigenen Ebenen-Supervisor-Objekt ein anderes als das
+   Standardverhalten realisieren moechte.
+
+   Die Funktion wird als Closure in den Ebenendaten des Ebenenverwalters
+   abgelegt und vom Channeld im Supervisor ausgewertet.
+
+
+RUECKGABEWERTE
+==============
+
+   Gibt die Closure 1 zurueck, darf das Objekt <user> die Aktion <cmd> auf
+   der Ebene namens <ch> ausfuehren. Anderenfalls muss 0 zurueckgegeben
+   werden. <cmd> ist hierbei einer der in /p/daemon/channel.h definierten
+   Kommandotypen.
+
+
+SIEHE AUCH
+==========
+
+   lfuns:      ch_read_init_file()
+               ch_set_sv_name()
+   Ebenen:     channels
+   Init-File:  channeld.init
+   Beispiele:  /doc/beispiele/ebenen/supervisor.c
+               /doc/beispiele/ebenen/supervisor-thing.c
+

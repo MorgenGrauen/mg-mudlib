@@ -1,0 +1,41 @@
+ch_set_sv_name()
+****************
+
+
+FUNKTION
+========
+
+   protected varargs int ch_read_init_file(string fname)
+
+
+DEFINIERT IN
+============
+
+   /std/channel_supervisor.c
+
+
+BESCHREIBUNG
+============
+
+   Liest die Ebenenkonfiguration aus der Datei <fname> ein. Wenn dieses
+   Argument fehlt, wird der Mudstandard eingelesen, das ist derzeit
+   /p/daemon/channeld.init.
+
+
+RUECKGABEWERTE
+==============
+
+   -1     es konnten keine Daten aus der Datei gelesen werden
+   >= 0   Anzahl der Ebenen-Datensaetze, die eingelesen wurden
+
+
+SIEHE AUCH
+==========
+
+   lfuns:      ch_set_sv_name()
+   Ebenen:     channels
+   Init-File:  channeld.init
+   Beispiele:  /doc/beispiele/ebenen/supervisor.c
+               /doc/beispiele/ebenen/supervisor-thing.c
+
+

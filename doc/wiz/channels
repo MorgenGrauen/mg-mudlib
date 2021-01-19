@@ -1,0 +1,170 @@
+
+Der Ebenenverwalter channeld.
+-----------------------------
+
+Alle noetigen Defines sind in /p/daemon/channel.h definiert. Wenn man den
+channeld verwenden will, bitte dieses inkludieren.
+
+Typischer Aufruf: CHMASTER->join("Abenteuer", this_object());
+
+
+Oeffentliche Funktionen
+------------------------
+
+Zuerst die wohl am haeufigsten verwendeten Funktionen, beitreten, senden,
+verlassen.
+
+public int join(string chname, object joining)
+
+    Objekt <joining> betritt Ebene <chname>. Dies wird zugelassen, wenn es
+    die Berechtigung hat und noch nicht Mitglied ist.
+    (Man kann einer Ebene nicht zweimal beitreten.)
+    Wenn <joining> der urspruengliche Ersteller der Ebene ist, wird er
+    automatisch zum neuen Supervisor (SV).
+    Rueckgabewert: 0 bei Erfolg, E_ACCESS_DENIED (-1) sonst.
+    Hinweis: Das Objekt <joining> muss einen string bei Aufruf von name()
+    zurueckgeben.
+
+
+public varargs int send(string chname, object sender, string msg, int type)
+  
+    Nachricht <msg> vom Typ <type> mit Absender <pl> auf der Ebene <chname>
+    posten, sofern <pl> dort senden darf.
+    <type> ist einer der Nachrichtentypen aus "channel.h":
+        MSG_SAY     0     normale Nachricht
+        MSG_EMOTE   1     Emote
+        MSG_GEMOTE  2     Genitiv-Emote
+
+    Die Nachricht <msg> wird an die Funktion ChannelMessage() in den Ebenen-
+    Mitgliedern uebergeben und von dieser ausgegeben.
+    
+    Rueckgabewerte:
+    0                     Nachricht erfolgreich gesendet
+    E_ACCESS_DENIED  -1   Zugriff verweigert
+    E_NOT_MEMBER     -3   Objekt <sender> hat die Ebene nicht betreten
+    E_EMPTY_MESSAGE  -4   Die Nachricht hatte keinen Inhalt
+
+
+public int leave(string chname, object leaving)
+  
+    Objekt <leaving> verlaesst Ebene <chname>.
+    Wenn danach kein Zuhoerer mehr auf der Ebene ist, loest sie sich auf.
+
+    Zugriffsrechte werden dabei ueberprueft, obwohl es normalerweise keinen
+    Grund geben duerfte, das Verlassen einer Ebene zu verbieten. Es ist
+    allerdings technisch durchaus moeglich, dem Objekt <leaving> das
+    Verlassen zu verweigern, z.B. auf Grund eines Banns.
+    Rueckgabewerte:
+    0           erfolgreich verlassen
+    E_ACCESS_DENIED  -1  Zugriff verweigert
+    E_NOT_MEMBER     -2  Objekt <leaving> war gar nicht Mitglied
+
+
+public varargs int new(string ch_name, object owner, string|closure desc,
+                       int channel_flags)
+  
+    Erstellt eine neue Ebene <ch_name> mit <owner> als Ebenenbesitzer. Wird
+    auch vom channeld selbst verwendet, um die in channeld.init definierten
+    Ebenen zu erzeugen. Inaktive Ebenen werden ebenfalls ueber new()
+    reaktiviert, mitsamt ihrer bestehenden History.
+
+    <ch_name> Darf nicht 0 oder leer sein. Zur Anzeige wird der Name in der
+              angegebenen Schreibweise verwendet, fuer interne Zwecke wird
+              aber immer der kleingeschriebene Name genutzt. Das gilt auch
+              fuer die Pruefung von Zugriffsrechten.
+    <desc>    Kann die statische Beschreibung der Ebene sein oder eine 
+              Closure, die dynamisch aktualisierte Infos ausgibt.
+    <owner>   Besitzer des Channels, Supervisor (SV) genannt.
+              Sollte eine Funktion ch_check_access() definieren, die gerufen
+              wird, wenn eine Ebenenaktion vom Typ join/leave/send/list/users
+              eingeht.
+    <channel_flags> 
+
+    Rueckgabewerte:
+    0   Ebene erfolgreich erstellt.
+    E_ACCESS_DENIED  -1 
+      - Channelname existiert schon
+      - Maximalzahl Channels erreicht
+      - Channelname war Unsinn (leer oder 0)
+      - keine Beschreibung angegeben, und es existiert auch keine passende
+        inaktive Ebene
+      - kein Supervisor (SV) angegeben
+      - angegebener Supervisor darf keine Ebenen erstellen (Bann, oder
+        verbotener Name)
+      - bei Reaktivierung einer inaktiven Ebene wird ein neuer Supervisor
+        angegeben, aber die Ebene war mit unveraenderlichem Supervisor
+        (CHF_FIXED_SUPERVISOR) initialisiert worden; ein neuer Supervisor
+        wird dann abgelehnt, damit die Kontrolle ueber die Ebene nicht von
+        anderen Objekten uebernommen werden kann.
+
+    Fuer die Erstellung und Funktionsweise von Supervisor-Objekten wird
+    auf 
+
+
+public int|mapping list(object pl)
+  
+    Gibt ein Mapping mit allen Ebenen aus, die das Objekt <pl> lesen kann,
+    oder den Fehlercode E_ACCESS_DENIED (-1).
+    Struktur des Mappings:
+     ([ string chname, ({object* members, closure access_cl, string desc,
+                         object supervisor, string ch_name }) ])
+
+
+public string|string* find(string chname, object pl)
+  
+    Ebene suchen, deren Name <chname> enthaelt, und auf der Objekt <pl> 
+    senden darf.
+    Rueckgabewerte:
+    - den gefundenen Namen als String
+    - String-Array, wenn es mehrere Treffer gibt
+    - 0, wenn es keinen Treffer gibt
+
+
+public int|<int|string>** history(string chname, object pl)
+  
+    Ebenen-History abfragen. Objekt <pl> muss berechtigt sein, dem Channel
+    <chname> beizutreten.
+    Rueckgabewert: E_ACCESS_DENIED (-1) bei fehlender Berechtigung, ansonsten
+    ({string channelname, string sender, string msg, int msg_type})
+
+
+public int transfer_ownership(string chname, object new_owner)
+  
+    Aendert den Ersteller/Besitzer der Ebene.
+    Achtung: das ist nicht das gleiche wie der aktuelle Supervisor (SV)!
+    Nur der aktuelle Besitzer, Supervisor oder EM+ darf die Ebene
+    verschenken.
+
+
+public int change_channel_flags(string chname, int newflags)
+  
+    Aendert die Zugriffsflags der Ebene. Hierbei handelt es sich nicht um die
+    Stufenlimits fuer join() oder send().
+    Nur der aktuelle Supervisor (SV), der Ersteller, oder EM+ duerfen die
+    Flags aendern.
+    Die moeglichen Flags sind die, die auch in channeld.init verwendet werden
+    und in /p/daemon/channel.h definiert sind:
+    CHF_FIXED_SUPERVISOR 1    kein Wechsel des Supervisor erlaubt
+
+    Folgende Flags werden nur in Supervisor-Objekten verwendet:
+    CH_ACCESS_WIZARD  1       reine Magierebene
+    CH_ACCESS_NOGUEST 2       keine Gaeste erlaubt
+
+
+Funktionen fuer Erzmagierkommandos:
+
+public int remove_channel(string chname, object pl)
+  Wird aus der Shell gerufen, fuer das Erzmagier-Kommando "kill".
+
+public int clear_history(string chname)
+  Wird aus der Shell aufgerufen, fuer das Erzmagier-Kommando "clear".
+
+
+Siehe auch:
+-----------
+
+    Init-Datei:   channeld.init
+    Supervisor:   channel-supervisor
+    Beispiele:    /doc/beispiele/ebenen/supervisor.c
+                  /doc/beispiele/ebenen/supervisor-thing.c
+
