@@ -25,6 +25,8 @@ varargs int move(mixed dest, int method)
   DoUnwield( method & (M_SILENT|M_NOCHECK));
   if ((method & M_NOCHECK) || (!QueryProp(P_WIELDED)))
     return ::move(dest, method );
+  else
+    return ME_DONT_WANT_TO_BE_MOVED;
 }
 
 varargs int remove(int silent )
@@ -32,4 +34,6 @@ varargs int remove(int silent )
   DoUnwield( silent );
   if (!QueryProp(P_WIELDED))
     return ::remove( silent );
+  else
+    return 0;
 }
