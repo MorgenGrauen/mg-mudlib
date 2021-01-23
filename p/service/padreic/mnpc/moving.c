@@ -279,7 +279,7 @@ static int direct_move(mixed dest, int method, string direction)
 
       res = call_other(ME, "move", dest, M_NOCHECK);
 
-      if (oldenv==environment())
+      if (oldenv==environment() || living(this_object()))
         return res;
 
       // als erstes die Meldung fuer das Verlassen des Raumes...
