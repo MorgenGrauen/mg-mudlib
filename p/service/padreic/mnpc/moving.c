@@ -296,13 +296,15 @@ static int direct_move(mixed dest, int method, string direction)
          if ( !sizeof(direction) )
            direction = 0;
 
-         inv = all_inventory(oldenv) - ({ this_object() });
-         inv = filter( inv, #'living);
-         inv -= filter_objects( inv, "CannotSee", 1 );
-         filter( inv, #'tell_object,
+         send_room(oldenv,
                        Name( WER, 2 ) + " " + textout +
                        (direction ? " " + direction : "") +
-                       (sizeof(mout) > 1 ? mout[1] : "") + ".\n" );
+                       (sizeof(mout) > 1 ? mout[1] : "") + ".",
+                       MT_LOOK,
+                       MA_MOVE_OUT,
+                       0,
+                       ({}),
+                       this_object());
       }
 
       // nun die Meldung für das "Betreten" des Raumes...
@@ -314,11 +316,13 @@ static int direct_move(mixed dest, int method, string direction)
 
       if (stringp(textin))
       {
-         inv = all_inventory(environment()) - ({ this_object() });
-         inv = filter( inv, #'living);
-         inv -= filter_objects( inv, "CannotSee", 1 );
-         filter( inv, #'tell_object,
-                       capitalize(name( WER, 0 )) + " " + textin + ".\n" );
+         send_room(environment(this_object()),
+                       capitalize(name( WER, 0 )) + " " + textin + ".",
+                       MT_LOOK,
+                       MA_MOVE_IN,
+                       0,
+                       ({this_object()}),
+                       this_object());
       }
   }
   return res;
