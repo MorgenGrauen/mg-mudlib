@@ -14,6 +14,13 @@
 #include <thing/properties.h>
 #undef NEED_PROTOTYPES
 
+protected void create()
+{
+  Set(P_HELPER_OBJECTS,([
+    HELPER_TYPE_AQUATIC:({}),
+    HELPER_TYPE_AERIAL:({})]), F_VALUE);
+}
+
 public int RegisterHelperObject(object helper, int type, 
                                 string|closure callback) 
 {
@@ -51,14 +58,6 @@ public int RegisterHelperObject(object helper, int type,
 
   // Property auslesen und zwischenspeichern
   helpers = QueryProp(P_HELPER_OBJECTS);
-  // Wenn die Prop leer ist, hier initialisieren
-  if ( !helpers ) {
-    helpers = ([type:({})]);
-  }
-  // Wenn der Typ noch nicht existiert, hier nachtragen.
-  else if ( !pointerp(helpers[type]) ) {
-    helpers[type] = ({});
-  }
 
   // Closure eintragen, wenn noch nicht vorhanden
   if ( member(helpers[type], cb)==-1 ) {
@@ -79,12 +78,10 @@ public int UnregisterHelperObject(object helper, int type) {
 
   mapping helpers = Query(P_HELPER_OBJECTS, F_VALUE);
 
-  if ( mappingp(helpers) ) {
-    foreach(closure cl: helpers[type]) {
-      if ( get_type_info(cl,2) == helper ) {
-        helpers[type] = helpers[type]-({cl});
-        return HELPER_SUCCESS;
-      }
+  foreach(closure cl: helpers[type]) {
+    if ( get_type_info(cl,2) == helper ) {
+      helpers[type] = helpers[type]-({cl});
+      return HELPER_SUCCESS;
     }
   }
   return HELPER_NOTHING_TO_UNREGISTER;
@@ -94,11 +91,7 @@ public int UnregisterHelperObject(object helper, int type) {
 public mapping _query_lib_p_aquatic_helpers() {
   mapping ret = ([]);
   // eingetragene Callback-Closures auslesen
-  closure *helpers = 
-    ( Query(P_HELPER_OBJECTS, F_VALUE) || ([]) )[HELPER_TYPE_AQUATIC];
-  // Es sind gar keine Werte eingetragen? Dann gleich rausspringen.
-  if ( !pointerp(helpers) )
-    return ret;
+  closure *helpers = Query(P_HELPER_OBJECTS, F_VALUE)[HELPER_TYPE_AQUATIC];
 
   // Nullelement substrahieren
   helpers -= ({0});
@@ -119,13 +112,8 @@ public mapping _query_lib_p_aquatic_helpers() {
 public mapping _query_lib_p_aerial_helpers() {
   mapping ret = ([]);
   // eingetragene Callback-Closures auslesen
-  closure *helpers = 
-    ( Query(P_HELPER_OBJECTS, F_VALUE) || ([]) )[HELPER_TYPE_AERIAL];
+  closure *helpers = Query(P_HELPER_OBJECTS, F_VALUE)[HELPER_TYPE_AERIAL];
 
-  // Es sind gar keine Werte eingetragen? Dann gleich rausspringen.
-  if ( !pointerp(helpers) )
-    return ret;
-  
   // Nullelement substrahieren
   helpers -= ({0});
 

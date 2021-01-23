@@ -157,6 +157,7 @@ protected void create()
   moving::create();
   travel::create();
   skills::create();
+  helpers::create();
    
   SetProp(P_LEVEL, -1);
   Set(P_LEVEL, SAVE|SECURED, F_MODE_AS);

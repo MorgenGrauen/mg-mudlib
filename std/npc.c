@@ -68,6 +68,7 @@ protected void create()
   add_team_commands();
   items::create();
   envchk::create();
+  helpers::create();
   moving::create();
 
   add_action("UseSpell","",1);
