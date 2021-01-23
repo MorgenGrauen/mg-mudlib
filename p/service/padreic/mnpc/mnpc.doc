@@ -46,6 +46,10 @@ MNPC_WALK_TIME - Zeitangabe wie lange es dauert bis der NPC stehen bleibt
    seinen Startraum und wartet dort auf neue Spieler.
    Defaultmaessig 600 sek.
 
+MNPC_FUNC - Funktionsname, der per call_other() gerufen wird, nachdem der
+   MNPC neuen Raum betreten hat. Der Rueckgabewert dieser Funktion wird nicht
+   ausgewertet, und der Funktion werden keine Argumente uebergeben.
+
 MNPC_FLAGS - property mit einem oder mehreren gesetzten Flags
   MNPC_WALK  -  ueber dieses Flag kann das laufen ein- bzw. ausgeschaltet
      werden.
@@ -74,6 +78,15 @@ MNPC_FLAGS - property mit einem oder mehreren gesetzten Flags
      zuerstoert. Der Heimatraum des MNPC sollte dafuer vorsorgen (s. AddItem).
      Ebenso kann es passieren, dass der MNPC sehr sehr lange nicht mehr
      loslaeuft, sollte sein Standort einsam liegen.
+
+  MNPC_DIRECT_MOVE - Der MNPC benutzt nicht command(), sondern move() fuer
+     die Bewegung. Dies funktioniert nicht bei Special-Exits und ergibt
+     normalerweise nur bei Non-Livings Sinn, also Objekten, die so tun, als
+     waeren sie NPCs. Bitte darauf achten, dass P_MSGIN, P_MSGOUT, P_MMSGIN und
+     P_MMSGOUT gesetzt werden.
+     Es muss auch sichergestellt werden, dass die geerbten Funktionen
+     moving::mnpc_move(), moving::mnpc_reset() und moving::mnpc_init() auf
+     jeden Fall gerufen werden.
 
 /***************************************************************************/
 
