@@ -21,7 +21,7 @@ ARGUMENTE
     int duration:
 
       - > 0: Dauer der Gueltigkeit des Extralooks in Sekunden.
-      - 0:   Unbegrenzt gueltiger Eintrag. Rebootfest.
+      - 0:   Unbegrenzt gueltiger Eintrag. Rebootfest. (Kann nur von Blueprints registriert werden.)
       - < 0: Bis Ende/Reboot bestehender Eintrag.
 
     string key:
@@ -34,7 +34,7 @@ ARGUMENTE
     string lookende:
 
       - String, der an das Lebewesen (nur bei Spielern) ausgegeben wird,
-	wenn der eingetragene Extralook abgelaufen ist.
+        wenn der eingetragene Extralook abgelaufen ist.
       - zu rufender Funktionsname, wenn 'ob' angegeben ist
 
     object ob:
@@ -66,23 +66,26 @@ BEMERKUNGEN
     - Die Meldung von <lookende> bzw. der Funktionsaufruf erfolgt, wenn der
       Extralook der Lebewesen das erste Mal nach Ablauf der Gueltigkeit
       aufgerufen wird.
-    - Das uebergbene Objekt sollte fuer permanente Eintraege eine Blueprint
-      sein, da Clones irgendwann (spaetestens mit Reboot) zerstoert werden
-      und der Eintrag dann bei Abfrage automatisch geloescht wird.
+    - Im Fall von permanenten Eintraegen muss das uebergbene Objekt eine 
+      Blueprint sein, da Clones irgendwann (spaetestens mit Reboot) zerstoert
+      werden und der Eintrag dann bei Abfrage automatisch geloescht wird.
     - Folgerung: Clone-Objekte koennen fuer selbst beschraenkt temporaere
       Extralooks benutzt werden.
+    - Die Endemeldung wird nicht genau mit Ablauf der angegebenen Zeit
+      ausgegeben, sondern beim ersten Abruf der Langbeschreibung *nach*
+      Ablauf der Zeit.
 
 RUECKGABEWERTE
 --------------
     Siehe auch /sys/living/description.h fuer Konstanten.
 
-    - 1, falls der Eintrag erfolgreich registriert wurde.
-    - < 0 sonst.
+    - XL_OK: falls der Eintrag erfolgreich registriert wurde.
+    - ansonsten:
 
-      - -1: <key> war nicht gueltig und es konnte keiner ermittelt werden.
-      - -2: <look> war kein gueltiger String.
-      - -3: <duration> war kein Integer.
-      - -4: unter <key> gibt es schon einen Eintrag.
+      - XL_NOKEY: <key> war nicht gueltig und es konnte keiner ermittelt werden.
+      - XL_INVALIDEXTRALOOK: <look> war kein gueltiger String.
+      - XL_KEYDOESNOTEXIST: <duration> war kein Integer.
+      - XL_KEYEXISTS: unter <key> gibt es schon einen Eintrag.
 
 BEISPIELE
 ---------
@@ -90,71 +93,49 @@ BEISPIELE
 .. code-block:: pike
 
     // (1) einfacher Eintrag, "fuer die Ewigkeit"
+
     living->AddExtraLook("@WER1 hat den Drachengott der SSP besiegt.");
 
 .. code-block:: pike
 
     // (2) Eintrag der nach 1h automatisch weg ist.
+
     living->AddExtraLook("@WER1 ist ganz mit Marmelade bedeckt.", 3600);
 
 .. code-block:: pike
 
-    // (3) Eintrag mit bestimmten Schluessel, damit man ihn wieder entfernen kann
+    // (3) Eintrag mit bestimmtem Schluessel, damit man ihn wieder entfernen
+    // kann.
+
     living->AddExtraLook("@WER1 ist ganz mit Marmelade bedeckt.", 3600,
                          "humni_marmeladen_look");
 
 .. code-block:: pike
 
-    // (4) Mit "Ende"-Meldung, aber kein eigener Schluessel
+    // (4) Mit "Ende"-Meldung, aber kein eigener Schluessel.
+
     living->AddExtraLook("@WER1 ist patschnass.", 1200, 0,
                          "Du bist endlich wieder trocken. Puuh.");
 
 .. code-block:: pike
 
-    // (5) Mit Objekt, welches den Extralook dynamisch erzeugt
+    // (5) Mit Objekt, welches den Extralook dynamisch erzeugt.
+
     living->AddExtraLook("get_my_special_extralook", 3600, 0, 0,
                          this_object());
+
     // In diesem Fall muss this_object() natuerlich die Funktion
-    // "get_my_special_extralook()" definieren, die einen String zurueckgibt
+    // "get_my_special_extralook()" definieren, die einen String zurueckgibt.
 
 .. code-block:: pike
 
     // (6) Mit Objekt, welches den Extralook dynamisch erzeugt
     // Hier wird explizit die Blueprint uebergeben, der Extralook ist also
     // rebootfest.
+
     living->AddExtraLook("get_my_special_extralook", 3600, 0,
                          "extralookende", blueprint(this_object()));
 
-.. code-block:: pike
-
-    // Mit Objekt, was den Extralook und die Endemeldung dynamisch erzeugt
-    // und keine festgelegte Existenzdauer hat, sondern sich aufgrund
-    // eigener Konditionen entsorgt
-    void set_extra_look(object living) {
-      object dyntemplook = clone_object("/path/to/some/object");
-      if(living->AddExtraLook("get_my_special_extralook", 0,
-                              object_name(dyntemplook),
-                              0, dyntemplook) == XL_OK)
-        dyntemplook->SetProp(P_INTERNAL_EXTRA_LOOK, living);
-      else
-        dyntemplook->remove();
-    }
-
-    // entsprechendes Objekt:
-    varargs int remove(int silent) {
-      object ob = QueryProp(P_INTERNAL_EXTRA_LOOK);
-      // wenn der Spieler da ist, entfernen wir den Look regulaer
-      if(objectp(ob))
-        ob->RemoveExtraLook(object_name(this_object()));
-      return ::remove(silent);
-    }
-
-    void reset() {
-      if(!random(10))
-        remove();
-      else
-        ::reset();
-    }
 
 SIEHE AUCH
 ----------
@@ -166,4 +147,5 @@ SIEHE AUCH
    Fuer Spielerobjekte:
      :doc:`../props/P_EXTRA_LOOK`
 
-5. Juni 2017 Gloinson
+
+Letzte Aenderung: 2021-01-21, Arathorn

@@ -24,11 +24,12 @@ P_LIGHT_TRANSPARENCY - Wieviel Licht schluckt ein Container und wieviel
 
 Hinweis: Alle Objekte mit Lichtlevel <0 und >2 sowie alle Objekte, die
          P_LIGHT_MODIFIER oder Closures setzen sind genehmigungspflichtig!
-         Dafuer sind die Regionsmagier zustaendig.
-
+         Bei Raeumen sind dafuer die Regionsmagier, bei Gilden die 
+         Gildenbalance und bei sonstigen Spielerobjekten die Objektbalance
+         zustaendig.
 
 SIEHE AUCH: P_LIGHT
 
 ------------------------------------------------------------------------------
  LETZTE AeNDERUNG:
-    2002-11-21, 17.30 von Zook
+    2021-01-20, 22:24 von Humni

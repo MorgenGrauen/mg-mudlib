@@ -17,7 +17,12 @@ BESCHREIBUNG
 ------------
 ::
 
-     Spieler-Level (!= Magierlevel)
+     Level des Lebewesens (bei Spielern: NICHT der Magierlevel)
+
+     Wenn man diese Property in NPCs setzt, werden alle Attribute auf 
+     denselben Wert gesetzt, allerdings mittels SetAttr() und damit begrenzt
+     auf 20. Wer hoehere Attribute als 20 setzen will, muss P_ATTRIBUTES 
+     direkt modifizieren.
 
      In Krankheits- (CL_DISEASE) und Giftobjekten (CL_POISON) drueckt 
      P_LEVEL aus, wie schwer die Krankheit/das Gift ist. Je nachdem, wie 
@@ -40,9 +45,10 @@ SIEHE AUCH
 ----------
 ::
 
-     Properties:  P_GUILD_LEVEL
+     Properties:  P_GUILD_LEVEL, P_ATTRIBUTES
      Allgemeines: /doc/wiz/gift, /doc/help/gift
-     Funktionen:  AddClass(L), is_class_member(L)
+     Funktionen:  AddClass(L), is_class_member(L), create_default_npc(L), 
+                  SetAttr(L)
 
-Letzte Aenderung: 2015-Feb-02, Arathorn.
+Letzte Aenderung: 2021-Jan-23, Arathorn.
 

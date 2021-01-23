@@ -51,6 +51,11 @@ BEMERKUNG
      P_HP und P_SP werden auf dieselben Werte wie P_MAX_HP bzw. P_MAX_SP 
      eingestellt.
 
+     Die Attribute werden ueber SetAttr() gesetzt und damit auf 20 limitiert.
+     Sollen hoehere Attribute als 20 gesetzt werden, ist im Anschluss an
+     den Aufruf von create_default_npc() P_ATTRIBUTES direkt zu setzen.
+
+
 BEISPIEL
 --------
 ::
@@ -72,7 +77,7 @@ SIEHE AUCH
 
      Funktionen:  AddExp(), GiveKillScore()
      Properties:  P_XP
-                  P_LEVEL, P_MAX_HP, P_MAX_SP, P_HANDS, P_BODY
+                  P_LEVEL, P_MAX_HP, P_MAX_SP, P_HANDS, P_BODY, P_ATTRIBUTES
      Sonstiges:   npcs
 
 14.Feb 2007 Gloinson

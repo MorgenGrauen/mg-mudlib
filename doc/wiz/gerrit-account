@@ -2,25 +2,39 @@ Wie bekomme ich einen Account in gerrit?
 ----------------------------------------
 
 1) Ihr habt einen Github- oder Google-Account
-Dann geht ihr auf https://mg.mud.de/gerrit/ und benutzt oben rechts
-"Sign-in".
-Anschliessend geht ihr oben rechts in die Einstellungen eures Accounts oder
-hierhin: https://mg.mud.de/gerrit/#/settings/
-Dort koennt ihr euren SSH-Key hinterlegen und einige andere Einstellungen
-vornehmen. Im Falle des Login via Google koennt ihr (glaube ich) auch euren
-Usernamen einmalig festlegen. In jedem Fall koennt ihr einen Anzeigenamen
-(Full Name) hinterlegen.
-Der als Username bezeichnete ist der, den ihr fuer git+ssh braucht.
-Nach Accounterstellung sagt ihr bitte einem EM oder allen euren RMs Bescheid,
-damit diese euch in die richtigen Gruppen aufnehmen. ;-)
+
+  Dann geht ihr auf https://mg.mud.de/gerrit/ und benutzt oben rechts
+  "Sign-in" und waehlt die Methode aus, ueber die ihr euch einloggen
+  wollt.
+
+  Anschliessend geht ihr oben rechts in die Einstellungen eures Accounts oder
+  hierhin: https://mg.mud.de/gerrit/#/settings/
+  
+  Dort koennt ihr euren SSH-Key hinterlegen und einige andere Einstellungen
+  vornehmen. 
+  
+  WICHTIG: Bitte stellt sicher, dass ihr nach dem ersten Login dort auf
+  jeden Fall einen "User name" eintragt, ansonsten ist euer Account defekt
+  und fuer die Admins funktioniert die Admin-Konsole nicht richtig.
+
+  Bitte legt auch einen "Full name" fest, am besten auf euren Magiernamen;
+  alternativ tragt den Magiernamen unter "Display name" ein, wenn ihr unter
+  "Full name" etwas anderes wie z.B. euren RL-Namen verwenden wollt.
+
+  Der als "User name" bezeichnete ist der, den ihr fuer git+ssh braucht.
+  
+  Nach Accounterstellung sagt ihr bitte einem EM oder allen euren RMs 
+  Bescheid, damit diese euch in die richtigen Gruppen aufnehmen. ;-)
 
 
 2) Ihr habt weder einen Github- noch einen Google-Account
    (und wollt euch keinen)
-In dem Fall braucht ihr einen gerrit-Admin (zur zeit ich oder Arathorn).
-Dieser kann einen Benutzer anlegen. In diesem Fall koennt ihr gerrit aber
-NICHT ueber die Weboberflaeche benutzen, nur via git + ssh. Auch muss dann
-der Gerrit-Admin euren SSH-Key eintragen.
+
+  In dem Fall braucht ihr einen gerrit-Admin (zur zeit Zesstra, Zook, 
+  Arathorn und Humni).
+  Dieser kann einen Benutzer anlegen. In diesem Fall koennt ihr gerrit aber
+  NICHT ueber die Weboberflaeche benutzen, nur via git + ssh. Auch muss dann
+  der Gerrit-Admin euren SSH-Key eintragen.
 
 
 Abschnitt fuer Erzmagier / Admins
@@ -31,14 +45,14 @@ Abschnitt fuer Erzmagier / Admins
      create-account --group "" --ssh-key - <magiername>
 
 2) Account in Gruppen aufnehmen (Web):
-  Auf https://anonymizer.zesstra.de:8443/#/admin/groups/
-  Gruppe auswaehlen und unter "Member" hinzufuegen.
+  Auf https://mg.mud.de/gerrit/admin/groups Gruppe auswaehlen und unter
+  "Members" den Account hinzufuegen.
   (Vorsicht: nicht ohne weiteres eine andere Gruppe dort aufnehmen!)
   
 3) Account per Kommandozeile in Gruppen aufnehmen:
-  gerrit set-members \
-      -a alice@example.com -a bob@example.com \
-        -r eve@example.com <group1> <group2> ...
+  ssh mgg gerrit set-members \
+            -a alice@example.com -a bob@example.com \
+            -r eve@example.com <group1> <group2> ...
 
 4) Magier bittet euch, in passende Gruppen aufgenommen zu werden:
   Die folgenden Gruppen sollte er bekommen:

@@ -18,13 +18,13 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   * Objekte Das Gewicht eines Objetes in Gramm.
+   * Objekte: das Gewicht eines Objektes in Gramm
 
-   * Speisen Gewicht einer Portion der Speise.
+   * Speisen: Gewicht einer Portion der Speise
 
-   * Container Das Gewicht des Containers ohne Inhalt
+   * Container: das Gewicht des Containers ohne Inhalt
 
-   * Lebewesen Das Gewicht des Lebewesens ohne Inhalt
+   * Lebewesen: das Gewicht des Lebewesens ohne Inhalt
 
 
 BEMERKUNGEN
@@ -40,11 +40,22 @@ BEMERKUNGEN
    Behaelters. Das Gewicht des Behaelters wird dabei aus
    P_EMPTY_PROPS[P_WEIGHT] gelesen.
 
+   Wichtig fuer Gegenstaende, die von Spielern mitgenommen werden
+   koennen: Gibt man das Gewicht eines solchen Gegenstandes
+   ausschliesslich per Querymethode auf P_WEIGHT zurueck, ergibt sich
+   eine Diskrepanz zwischen P_WEIGHT und P_TOTAL_WEIGHT, da letzerer
+   Wert nur beim Setzen von P_WEIGHT per SetProp() mit eingestellt
+   wird. Daher ist bei diesen Objekten darauf zu achten, dass
+   zusaetzlich eine Querymethode auf P_TOTAL_WEIGHT gesetzt wird, die
+   denselben Wert zurueckgibt.
+
 
 SIEHE AUCH
 ==========
 
-   P_TOTAL_WEIGHT P_EMPTY_PROPS, P_WEIGHT_PERCENT, P_WEIGHT_PER_UNIT,
+   Properties: P_TOTAL_WEIGHT, P_EMPTY_PROPS, P_WEIGHT_PERCENT,
+   P_WEIGHT_PER_UNIT
+
    zu Speisen: wiz/food
 
-Last modified: 25.07.2018 by Zesstra
+Last modified: 2021-01-22, Arathorn

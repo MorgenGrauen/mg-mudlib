@@ -33,8 +33,10 @@ ANMERKUNG
 
    Um ein ungefaehres Gefuehl davon zu bekommen, was ein Lichtlevel in
    etwa bedeutet, hier einige allgemeine Beispiele von Gegenstaenden.
-   Grundsaetzlich sollten Lichtlevel <0 und >2 nur in Ruecksprache mit dem
-   Balanceteam benutzt werden.
+   Grundsaetzlich sind Objekte mit Lichtlevel <0 und >2
+   genehmigungspflichtig; zustaendig sind bei Raeumen der Regionsmagier,
+   bei Objekten die Objektbalance und bei Gildenfaehigkeiten die
+   Gildenbalance.
 
    Lichtlevel -1,  z.B. ein schwarzer Ring, von dem eine kleine dunkle Aura
                    ausgeht, die den Spieler umgibt.
@@ -79,3 +81,4 @@ SIEHE AUCH
 ==========
 
    P_TOTAL_LIGHT, P_INT_LIGHT, P_PLAYER_LIGHT, P_LIGHT_MODIFIER, CannotSee()
+   P_LIGHT_ABSORPTION, P_LIGHT_TRANSPARENCY
