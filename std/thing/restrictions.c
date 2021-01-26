@@ -23,12 +23,25 @@ protected void create()
 
 protected void create_super() {
   set_next_reset(-1);
-}     
+}
 
-// P_TOTAL_WEIGHT bei Nicht-Containern auf P_WEIGHT umleiten
-static int _set_weight(int weight) {
-  return SetProp(P_TOTAL_WEIGHT,
-	  Set(P_WEIGHT, weight, F_VALUE) );
+static int _set_weight(int weight)
+{
+  // Content-Cache invalidieren.
+  object env = this_object();
+  while ( objectp(env = environment(env)) )
+      // Ja. Man ruft die _set_xxx()-Funktionen eigentlich nicht direkt auf.
+      // Aber das Gewichtssystem ist schon *so* rechenintensiv und gerade der
+      // P_LAST_CONTENT_CHANGE-Cache wird *so* oft benoetigt, dass es mir
+      // da um jedes bisschen Rechenzeit geht.
+      // Der Zweck heiligt ja bekanntlich die Mittel. ;-)
+      //
+      // Tiamak
+      env->_set_last_content_change();
+
+  // P_TOTAL_WEIGHT bei Nicht-Containern auf P_WEIGHT umleiten
+  SetProp(P_TOTAL_WEIGHT, weight);
+  return Set(P_WEIGHT, weight, F_VALUE);
 }
 
 // P_X_ATTR_MOD aendern (Attributaenderungen durch Ausruestung)
