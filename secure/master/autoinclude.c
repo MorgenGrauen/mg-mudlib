@@ -7,7 +7,7 @@
 #define PRAGMA(x) "#pragma "x"\n"
 
 #define RTTCHECKS PRAGMA("rtt_checks")
-#define DEFAULTS PRAGMA("save_types")
+#define DEFAULTS PRAGMA("save_types,warn_unused_variables")
 
 // geschachteltes Mapping in toplevel.region.magier Hierarchie.
 // Wichtig: jede Hierarchiebene _muss_ ein Mapping sein, welches einen Eintrag
