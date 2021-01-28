@@ -1,7 +1,6 @@
 #pragma strong_types,save_types
 #pragma no_shadow
-// TODO: Morgoth erbt das Teamobjekt: klaeren warum und wieso eigentlich.
-//#pragma no_inherit
+#pragma no_inherit
 #pragma pedantic
 
 #include <living/team.h>
