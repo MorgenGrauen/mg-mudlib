@@ -99,7 +99,7 @@ public varargs string Name(int casus, int demon);
 public int is_class_member(string|string* str);
 
 // add object to a class
-void AddToClass(string str);
+void AddClass(string|string* str);
 
 // add a detail to object
 public void AddDetail( string|string* keys, string|string*|mapping|closure descr );
