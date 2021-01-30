@@ -7,11 +7,12 @@ FUNKTION
 
      varargs void create_default_npc( int level, int maxhp );
 
-BENUTZUNG
----------
+DEFINIERT IN
+------------
 ::
 
-     inherit "std/npc";
+     /std/npc.c
+     /sys/npc.h
 
 FUNKTION
 --------

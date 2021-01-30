@@ -44,6 +44,8 @@
 #ifdef NEED_PROTOTYPES
 #ifndef _NPC_H_PROTOTYPES_
 #define _NPC_H_PROTOTYPES_
+// aus npc.c
+varargs void create_default_npc(int level, int maxhp);
 // aus npc/info.c
 public varargs void AddInfo(string|string* key, string|closure info,
                string indent, int|string silent, string|closure casebased);
