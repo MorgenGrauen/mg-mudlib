@@ -57,6 +57,8 @@ public void            RemoveInfo( string key );
 public varargs mixed   GetInfo(string str);
 // aus npc/items.c
 public varargs object  AddItem(mixed filename, int refresh, mixed props);
+// aus npc/chat.c
+void SetAttackChats(int chance, mixed strs);
 #endif // _NPC_H_PROTOTYPES_
 #endif // NEED_PROTOTYPES
 
