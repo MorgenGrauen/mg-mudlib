@@ -85,7 +85,7 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   if (call_sefun("file_time", base_file) < __BOOT_TIME__)
 #endif
   {
-      res += PRAGMA("no_warn_missing_return");
+      res += PRAGMA("no_warn_missing_return,no_warn_unused_variables");
   }
   //DEBUG(res);
   return res;
