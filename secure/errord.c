@@ -1458,7 +1458,7 @@ private int versende_mail(struct fullissue_s issue)
     mail[MSG_ID]=sprintf(MUDNAME": %d.%d",time(),random(__INT_MAX__));
     mail[MSG_RECIPIENT] = issue->titp;
     mail[MSG_CC] = 0;
-    mail[MSG_SUBJECT] = sprintf("Fehler/Idee/Typo wurde von %s behoben",
+    mail[MSG_SUBJECT] = sprintf("Fehler/Idee/Typo wurde von %s bearbeitet",
                                 getuid(TI));
     mail[MSG_BODY] = text;
 
