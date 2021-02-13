@@ -1378,7 +1378,6 @@ static varargs int ReportError2(string player_input, string error_type)
       if (!objectp(obj) || !present(obj))
         obj = environment(this_interactive());
     }
-    _notify("Vielen Dank fuer die Hilfe.\n", MA_UNKNOWN);
     smart_log(error_type, player_input, obj);
   }
   else
@@ -1431,6 +1430,44 @@ static int ReportError(string player_input)
   return 1;
 }
 
+static void confirm_error(string answer, object obj, string str,
+                          string myname, string desc, mapping err)
+{
+  if (answer != "j" && answer != "ja")
+  {
+    _notify("Eingabe abgebrochen.\n", MA_UNKNOWN);
+    return;
+  }
+  if (!obj)
+  {
+    _notify(sprintf("Leider existiert das Objekt nicht mehr, an dem Du "
+            "D%s melden wolltest.", desc), MA_UNKNOWN);
+    return;
+  }
+
+  // ggf. will das Objekte selber loggen, dann wird nicht zentral geloggt.
+  if (obj->SmartLog(0, myname, str, strftime("%d. %b %Y")))
+  {
+    _notify(sprintf(
+       "Du hast an %s erfolgreich %s abgesetzt.\n"
+       "Hinweis: Das Objekt selber hat die Meldung protokolliert.",
+       (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc),
+       MA_UNKNOWN);
+  }
+  else
+  {
+    // Eintragung in die Fehler-DB
+    string hashkey = ({string})ERRORD->LogReportedError(err);
+    _notify(sprintf(
+          "Ein kleiner Fehlerteufel hat D%s an %s unter der ID %s "
+          "notiert.", desc,
+          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),
+          hashkey || "N/A"),
+        MA_UNKNOWN);
+  }
+  _notify("Vielen Dank fuer die Hilfe.\n", MA_UNKNOWN);
+}
+
 /** Loggt eine Spielermeldung an Magier.
   * Loggt die Spielermeldung in das passende File unter /log/report/ oder im
   * vom Magier gewuenschten File. Hierbei werden Fehler, Ideen, MDs und Typos
@@ -1470,29 +1507,12 @@ protected void smart_log(string myname, string str, object obj)
       err[F_TYPE]=T_REPORTED_SYNTAX;
       break;
   }
-
-  // ggf. will das Objekte selber loggen, dann wird nicht zentral geloggt.
-  if (obj->SmartLog(0, myname, str, strftime("%d. %b %Y")))
-  {
-    ReceiveMsg(sprintf(
-          "Du hast an %s erfolgreich %s abgesetzt.\n"
-          "Hinweis: Das Objekt selber hat die Meldung protokolliert.",
-          (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),desc),
-        MT_NOTIFICATION | MSG_BS_LEAVE_LFS | MSG_DONT_BUFFER |
-        MSG_DONT_STORE | MSG_DONT_IGNORE, MA_UNKNOWN, 0, ME);
-  }
-  else
-  {
-    // Eintragung in die Fehler-DB
-    string hashkey = ({string})ERRORD->LogReportedError(err);
-    ReceiveMsg(sprintf(
-          "Ein kleiner Fehlerteufel hat D%s an %s unter der ID %s "
-          "notiert.", desc,
+  _notify(sprintf(
+          "Du hast %s an %s mit der Beschreibung \"%s\" eingegeben. "
+          "Moechtest Du dieses speichern?", desc,
           (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),
-          hashkey || "N/A"),
-        MT_NOTIFICATION | MSG_DONT_BUFFER | MSG_DONT_STORE | MSG_DONT_IGNORE,
-        MA_UNKNOWN, 0, ME);
-  }
+          str), MA_UNKNOWN);
+  input_to("confirm_error", INPUT_PROMPT, "]", obj, str, myname, desc, err);
 }
 
 /** Speichert den Spieler und loggt ihn aus (Spielerkommando 'ende').
