@@ -639,6 +639,12 @@ public varargs void die( int poisondeath, int extern )
           // ... ansonsten vormerken
           remove_me = 1;
   }
+  else
+  {
+    // In Spielern den Reg-Buffer fuer HP/SP loeschen
+    hp_buffer=([]);
+    sp_buffer=([]);
+  }
 }
 
 public void heal_self(int h)
