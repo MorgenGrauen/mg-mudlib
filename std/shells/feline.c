@@ -41,8 +41,7 @@ void create()
     ([
         A_STR :  1,
         A_INT :  2,
-        A_DEX :  2,
-        A_CON : -1 
+        A_DEX :  2
     ]) );
     SetProp(P_AVERAGE_SIZE,200);
     SetProp(P_AVERAGE_WEIGHT,85000);
