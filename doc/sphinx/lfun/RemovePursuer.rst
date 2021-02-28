@@ -1,10 +1,6 @@
 RemovePursuer()
 ===============
 
-RemoveRursuer()
----------------
-::
-
 FUNKTION
 --------
 ::
@@ -23,7 +19,7 @@ FUNKTION
 ::
 
   Durch den Aufruf von RemovePursuer in einem Objekt, welches living() ist,
-  wird das Object, welches als Argument uebergeben wurde aus der Liste
+  wird das Object, welches als Argument uebergeben wurde, aus der Liste
   der Verfolger ausgetragen.
 
 RUECKGABEWERT
@@ -47,7 +43,7 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-  "AddPursuer", "PreventFollow"
+  - Lfuns:  :doc:`AddPursuer`, :doc:`PreventFollow`
+  - Properties: P_PURSUERS
 

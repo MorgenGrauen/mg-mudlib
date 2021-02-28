@@ -17,9 +17,11 @@ BESCHREIBUNG
 ------------
 ::
 
-	Objekte, welche diese Property gesetzt haben, werden beim Tod eines
-	Lebewesens nicht automatisch in die Leiche oder in den umgebenden
-	Raum (z.B. bei bei gesetztem P_NOCORPSE) transportiert.
+  Objekte, welche diese Property gesetzt haben, werden beim Tod eines
+  Lebewesens nicht automatisch in die Leiche oder in den umgebenden
+  Raum (z.B. bei bei gesetztem P_NOCORPSE) transportiert.
+  
+  Die Property darf nur die Werte 0 oder 1 enthalten.
 
 BEMERKUNGEN
 -----------

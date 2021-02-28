@@ -19,8 +19,8 @@ FUNKTION
 ::
 
   Durch den Aufruf von AddPursuer in einem Objekt, welches living() ist,
-  wird das Object, welches als Argument uebergeben wurde in die Liste
-  der Verfolger eingetragen. Alle Objekte, die in der Verfolgerliste stehen
+  wird das Object, welches als Argument uebergeben wurde, in die Liste
+  der Verfolger eingetragen. Alle Objekte, die in der Verfolgerliste stehen,
   werden bei Bewegungen des Verfolgten in dasselbe Environment bewegt.
 
 RUECKGABEWERT
@@ -46,7 +46,7 @@ BEISPIELE
 
 SIEHE AUCH
 ----------
-::
 
-  "RemovePursuer", "PreventFollow"
+  - Lfuns:       :doc:`RemovePursuer`, :doc:`PreventFollow`
+  - Properties:  P_PURSUERS
 

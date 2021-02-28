@@ -49,19 +49,29 @@ RUeCKGABEWERT
    gibt.
 
 
+HINWEIS
+=======
+
+   Fuer SENSE_VIEW und SENSE_READ wird die Funktion gar nicht erst
+   aufgerufen, wenn der Spieler nichts sehen kann. Das gleiche gilt fuer
+   SENSE_SOUND, wenn der Spieler taub ist.
+
+
 BEISPIEL
 ========
 
    Im folgenden wird ein kleines Testdetail generiert:
      AddDetail("test","Das ist ein Test!\n");
+
    Im folgenden wird das Detail entfernt, wenn es existiert. Dies ist
    eigentlich nicht noetig, da RemoveDetail() damit zurechtkommt, aber
    eventuell sind ja noch weitere Aktionen noetig.
-     if(GetDetail("test"))
-     { RemoveDetail("test");
+     if(GetDetail("test")) {
+       RemoveDetail("test");
        ...
      }
-   Ein Geruch kann man folgendermassen erzeugen:
+
+   Einen Geruch kann man folgendermassen erzeugen:
      AddSmells("gold",
        ([0      :"Gold kann man nicht riechen!\n",
          "zwerg":"Deine trainierte Nase riecht es muehelos!\n"]));

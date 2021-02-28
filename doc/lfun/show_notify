@@ -14,7 +14,7 @@ FUNKTION
 DEFINIERT IN
 ============
 
-   /std/living/put_and_get.c
+   beliebigen Objekten
 
 
 ARGUMENTE
@@ -34,6 +34,9 @@ BESCHREIBUNG
 
    Diese Funktion wird automatisch immer dann aufgerufen, wenn einem
    Lebewesen (welches kein Spielercharakter ist) ein Objekt gezeigt wird.
+   Will das Lebewesen auf so etwas reagieren, ist das Implementieren dieser
+   Funktion der einfachste Weg.
+
    Dies funktioniert nur dann, wenn der Standardbefehl der Spielershell
    verwendet wird ("zeige <name> <gegenstand>"). Selbstgebautes "zeige"
    funktioniert nicht.
@@ -70,4 +73,4 @@ SIEHE AUCH
 
    give_notify(), /std/npc/put_and_get.c, /std/living/put_and_get.c
 
-22. Oktober 2013 Arathorn
+04.02.2020 Zesstra
