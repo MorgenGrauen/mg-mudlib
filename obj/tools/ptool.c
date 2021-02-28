@@ -46,7 +46,7 @@ void create()
      "                  speichert diesen ab.\n\n");
   SetProp(P_NAME, "PTool");
   SetProp(P_GENDER, NEUTER);
-  AddId(({"tool", "ptool"}));
+  AddId(({"tool", "ptool","potiontool","potion-tool"}));
   SetProp(P_NODROP, 1);
   SetProp(P_AUTOLOADOBJ, 1);
   AddCmd("ptadd", "add");
