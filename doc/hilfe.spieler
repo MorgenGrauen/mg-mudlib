@@ -42,9 +42,10 @@ Eingaben und Ersetzungen:
     alias, unalias, ersetzungsanzeige, history
 
 Kampf:
-    toete, stop, vorsicht, zuecke, ziehe (hervor/aus), trage,
-    stecke (weg/zurueck), heilung, sterben, spruchermuedung
-    team, waffenfertigkeiten, gift/krankheiten/flueche
+    toete, stop, vorsicht, report
+    zuecke, stecke (weg/zurueck), ziehe (hervor/an/aus), trage
+    heilung, sterben, gift/krankheiten/flueche
+    team, waffenfertigkeiten, spruchermuedung
 
 Gildenuebersicht:
     abenteurer, bierschuettler, chaos, dunkelelfen, kaempfer, karate,

@@ -2,55 +2,83 @@
 Stufenpunkte
 ============
 
-    Die Stufenpunkte bilden die Grundlage des neuen Stufenkonzeptes im
-    MorgenGrauen. Anstatt wie frueher nur durch Erfahrungspunkte und in
-    gewissem Masse Abenteuerpunkte wird die Moeglichkeit zum Aufstieg nun auch
-    noch von einigen anderen Faktoren bestimmt, die insgesamt eine
-    ausgewogenere Einschaetzung des Charakters ermoeglichen sollen:
+    Die Stufenpunkte bilden die Grundlage des Stufenkonzeptes im
+    MorgenGrauen. Die Moeglichkeit zum Aufstieg wird von folgenden Faktoren
+    bestimmt:
 
-    Den wichtigsten Anteil bilden nun die Abenteuerpunkte. Sie gehen im
-    Verhaeltnis 1:1 in die Stufenpunkte ein.
+    1) bestandene Abenteuer (Abenteuerpunkte, AP)
+    2) Forscherpunkte (FP)
+    3) Zaubertraenke (ZT)
+    4) Gildenfaehigkeiten
+    5) Toeten von Monstern (Erstkillstufenpunkte, EKs)
+    6) Miniquests (MQ)
+    7) Erfahrungspunkte (XP oder EP)
 
-    Der zweitgroesste Anteil wird von den Forscherpunkten gestellt. Diese
-    Punkte werden einem zwar nicht direkt als Zahl bekannt gegeben; mit dem
-    Befehl `info' (auch als `score' oder `punkte' bekannt) kann man jedoch
-    eine Einschaetzung der Mud-Kenntnis abfragen.
+    Jeder Spieler startet mit einem Grundwert von 100 Stufenpunkten, dies
+    entspricht Stufe 1. Diese 100 Punkte und die Beitraege aus den genannten
+    sieben Einzelbereichen werden aufsummiert. Das Ergebnis sind die Gesamt-
+    Stufenpunkte. Mit Ausnahme der Stufen 2 bis 9 geben jeweils 100 
+    Stufenpunkte eine Stufe, siehe auch die Hilfeseite "stufen". Im Hauptraum
+    jeder Gilde laesst sich eine Einschaetzung ueber die Stufenpunkte
+    abfragen, die in 20er-Schritten abgestuft ist.
+    
+    1) Die Abenteuerpunkte gehen im Verhaeltnis 1:1 in die Stufenpunkte ein,
+       d.h. jeder AP gibt 1 Stufenpunkt. Diese Punkte werden in der 
+       Uebersicht des Befehls "info" angezeigt.
 
-    Den naechsten Anteil liefern gefundene Zaubertraenke und ein weiteres
-    Level die Heiltraenke (die letzten vier ZTs).
+    2) Die Forscherpunkte gehen im Verhaeltnis 1:6 in die Stufenpunkte ein, 
+       d.h. jeder FP gibt 6 Stufenpunkte. Die FP werden Spielern nicht direkt
+       als Zahl bekannt gegeben; mit dem Befehl 'info' (alternativ 'score'
+       oder 'punkte') kann man jedoch eine Einschaetzung der Mud-Kenntnis
+       abfragen.
 
-    Die Gilde, in der man sich befindet, liefert einen vierten Anteil. Hier
-    gehen in der Regel die Kenntnisse der einzelnen Sprueche und der
-    Faehigkeiten ein, die man in der Gilde erlernen kann (das ist aber jeder
-    Gilde selbst ueberlassen). Gilden, aus denen man ausgetreten ist, werden
-    dabei nicht beruecksichtigt! Manche Gilden vergeben sehr viele Stufen-
-    punkte schon bis Level 20. Dann verliert man beim Wechsel einige Stufen,
-    die man in der neuen Gilde aber mit der Zeit wieder erlangt.
+    3) Den naechsten Anteil liefern gefundene Zaubertraenke. Die ersten 76
+       Zaubertraenke geben je 5 Stufenpunkte, und die letzten vier ZTs (die
+       sogenannten Heiltraenke) zusammen 100, d.h. eine weitere Stufe.
 
-    Schliesslich gibt es noch Stufenpunkte fuer das Toeten von Monstern;
-    allerdings muss das Monster dafuer eine bestimmte minimale Menge von
-    Erfahrungspunkten geben. Diese Punkte werden nur fuer das erstmalige
-    Toeten des Monsters vergeben. Es nuetzt also nichts, den selben Ork 27 mal
-    zu toeten; wenn er ueberhaupt Stufenpunkte abwirft, dann nur beim ersten
-    Mal.
+    4) Die Gilde, in der man sich befindet, bringt bis zu 400 Stufenpunkte, 
+       wenn man alle Zauber oder sonstigen Faehigkeiten, die man in der
+       Gilde erlernen kann, bestmoeglich beherrscht. Hierbei ist es den
+       Gilden selbst ueberlassen, wie sie diese Kenntnisse bewerten.
+       Dies bedeutet auch, dass man bei einem Gildenwechsel haeufig
+       Stufenpunkte einbuesst. Diese kann man aber in der neuen Gilde wieder
+       dazuverdienen.
+    
+    5) Stufenpunkte fuer das erstmalige Toeten von Monstern und NPCs gibt
+       es dann, wenn das betreffende Wesen eine Mindestmenge an 
+       Erfahrungspunkten gibt. Diese sogenannten Erstkillstufenpunkte
+       werden, wie der Namen schon sagt, nur fuer das erstmalige Toeten des
+       Monsters oder NPCs vergeben. Es nuetzt also nichts, denselben Ork
+       27 mal zu toeten - die Kill-Stufenpunkte bekommt man nuer fuer das
+       erste Mal. Die Erfahrungspunkte fuer Kaempfe bekommt man jedoch immer.
 
-    (Ein erweiterter Hinweis zum Thema Erstkill-Stufenpunkte, insbesondere
-     in Zusammenhang mit Kerbholz und  Duesterwald-Plakette, ist in der
-     Hilfeseite "erstkillstufenpunkte" (oder "eks") zu finden.)
+       (Ein erweiterter Hinweis zum Thema Erstkill-Stufenpunkte, insbesondere
+       in Zusammenhang mit Kerbholz und Duesterwald-Plakette, ist in der
+       Hilfeseite "erstkillstufenpunkte" (oder "eks") zu finden.)
 
-    Auch "MiniQuests" koennen Stufenpunkte vergeben. (Miniquests sind kleine
-    Aufgaben, die keine Abenteuerpunkte geben).
+    6) Miniquests sind kleine Aufgaben, die keine Abenteuerpunkte geben,
+       aber dennoch eine kleine Belohnung bringen sollen. Diese Miniquest-
+       Punkte gehen im Verhaeltnis 1:1 in die Stufenpunkte ein, d.h. jeder
+       MQ-Punkt bringt 1 Stufenpunkt.
 
-    Und zum guten Schluss kommen auch die Erfahrungspunkte noch zu Ehren, wenn
-    auch nicht zu besonders grossen... ;-)
-    Fuer x Erfahrungspunkte erhaelt man x^0.32 Stufenpunkte, so dass im
-    unteren Erfahrungspunktebereich recht schnell Stufenpunkte erzielt
-    werden, nach oben hin jedoch immer weniger Stufenpunkte pro erzieltem
-    Erfahrungspunkt vergeben werden.
+    7) Die Erfahrungspunkte kommen als letztes zu Ehren, wenn auch nicht zu
+       besonders grossen...  Erfahrungspunkte verdient man vor allem durch
+       Kaempfe gegen NPCs und Monster, aber auch Abenteuer geben
+       Erfahrungspunkte. Man erhaelt fuer x Erfahrungspunkte x^0.32 
+       Stufenpunkte; x ist hierbei die Gesamtzahl an Erfahrungspunkten des
+       Spielers. Beispiel: 10.000 XP sind 19 Stufenpunkte, 20.000 XP bringen
+       rund 24 Stufenpunkte, d.h. die Verdopplung der XP bringt nur einen
+       Zugewinn von 5 Stufenpunkten. Im unteren Erfahrungspunktebereich
+       werden also recht schnell Stufenpunkte erzielt, nach oben hin werden
+       jedoch immer weniger Stufenpunkte pro hinzugewonnenem Erfahrungspunkt
+       vergeben. (In englischsprachigen Onlinespielen heisst ein solcher
+       Mechanismus oft "diminishing return".)
 
- SIEHE AUCH:
-    forscherpunkte, info, stufen, erstkillstufenpunkte, erzmagier
+SIEHE AUCH:
+    
+    Grundlagen:  abenteuerpunkte, forscherpunkte, info, stufen, miniquests
+                 zaubertraenke
+    Zusatzinfos: erstkillstufenpunkte, erzmagier
 
- LETZTE AeNDERUNG:
-    Wed, 09.05.01, 15:00:00 von Rikus
- 
+LETZTE AeNDERUNG:
+    24. Januar 2021, Arathorn 
