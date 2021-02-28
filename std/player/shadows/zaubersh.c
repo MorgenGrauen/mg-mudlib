@@ -3,7 +3,8 @@
 #include <properties.h>
 
 object caster;
-string*ids,name;
+string*ids;
+string|string* name;
 int gender,article,plural;
 string lgdesc;
 string min,mout,mmin,mmout;
@@ -11,7 +12,7 @@ mixed hands;
 
 void Initialize(object _caster,
                 string*_ids,
-                string _name,
+                string|string* _name,
                 int _gender,
                 int _article,
                 int _plural)
