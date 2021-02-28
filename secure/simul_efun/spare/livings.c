@@ -183,7 +183,7 @@ object *find_livings(string livname)
       r=({r});
   if (!pointerp(r)||!sizeof(r))
     return 0;
-  return r;
+  return copy(r);
 }
 
 object find_player(string uuid) {
