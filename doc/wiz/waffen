@@ -2,11 +2,10 @@
 
     a. Allgemeines
 
-    Alle (zumindest neuen!) Waffen sollten ueber eine vernuenftige
-    Beschreibung und auch Details verfuegen. Einfach "Ein Schwert" ist
-    ein bissel arg duerftig und rechtfertigt auf keinen Fall
-    irgendwelche hohen WCs oder gar HitFuncs! Darauf sollten schon die
-    RMs achten...
+    Alle Waffen sollten ueber eine vernuenftige Beschreibung und auch Details
+    verfuegen. Einfach "Ein Schwert" ist ein bissel arg duerftig und
+    rechtfertigt auf keinen Fall irgendwelche hohen WCs oder gar HitFuncs!
+    Darauf sollten schon die RMs achten...
 
     Nach Moeglichkeit auch P_INFO setzen, das ist fuer Spieler nicht so
     frustrierend und kann ja auch einen netten Spruch enthalten. P_INFO
@@ -23,19 +22,16 @@
     b. Bemerkungen zu einigen Properties:
 
      P_WC
-        Die WC sollte einigermassen "realistisch" gewaehlt werden. Die
-        Verantwortung hierfuer obliegt den jeweiligen RMs. Sie sollte
-        zwischen ca. 35 und 200 liegen. Auf jeden Fall sind die aktuellen
-        Genehmigungsgrenzen zu beachten. Sollte die WC diese Grenzen
-        ueberschreiten, unterliegt die Waffe ausser der Genehmigung durch
-        den RM der Beurteilung durch das Waffengremium.
-
      P_NR_HANDS
-        Waffen ueber einer effektiven WC von 150 muessen zweihaendig sein.
-        Ausnahmen koennen unter Umstaenden genehmigt werden, zum Beispiel
-        wenn die Waffe schwer erreichbar oder zahlenmaessig begrenzt, eine
-        Questbelohnung etc. ist. Alle einhaendigen Waffen ueber WC 140 sind
-        in jedem Fall genehmigen zu lassen.
+     P_DAM_TYPE
+        Diese drei Properties sind fuer die Frage entscheidend, ob eine
+        Waffe von der Balance genehmigt werden muss oder nicht, und ob sie
+        ueberhaupt angeschlossen werden darf. Bitte schaut immer in "man
+        grenzwerte" nach, was fuer die von euch geplante Kombination der
+        drei Properties zutrifft.
+
+        Allgemein gilt, dass die WC einigermassen realistisch gewaehlt
+        werden sollte. Die Verantwortung hierfuer obliegt den jeweiligen RMs.
 
         Messer muessen generell einhaendig sein!
 
@@ -58,33 +54,12 @@
 
      P_SIZE
         Die Laenge der Waffe in cm. Setzt man sie nicht, so gilt der
-        Default- wert fuer den jeweiligen Waffentyp, welcher in der Manpage
+        Defaultwert fuer den jeweiligen Waffentyp, welcher in der Manpage
         zu P_SIZE notiert ist.
 
      P_VALUE
         Wie bei P_WEIGHT sind die RMs gefragt: Augenmass zaehlt. Werte ueber
         10000 oder so sind zwar nett, aber sinnlos und unrealistisch.
-
-     P_DAM_TYPE
-        Jede Waffe, die aus physikalischem Material besteht (also faktisch
-        alles mit Hardware) *muss* einen physikalischen Schadenstyp haben.
-
-     ** Waffen mit mehr als einem nichtphysikalischen Schadenstyp oder   **
-     ** mehr als 50% nichtphysikalischen Anteilen sind generell zur      **
-     ** Genehmigung vorzulegen und als Besonderheit zu handhaben. Nicht  **
-     ** genehmigt und nur im Rahmen der Gildenbalance ermoeglicht werden **
-     ** a) Waffen mit mehr als 66% nichtphysikalischem Schaden im Array, **
-     ** b) Waffen mit einem nichtphysikalischen Schadenstyp ueber 50%    **
-
-    Weiterhin genehmigungspflichtig sind die Schadenstypen:
-
-    DT_TERROR, DT_SOUND, DT_SQUEEZE
-
-    Diese Schadenstypen werden in Waffen nur genehmigt, wenn sie gut
-    begruendet sind.
-
-    Der Schadenstyp DT_EXPLOSION wird in Waffen generell nicht mehr
-    genehmigt.
 
      P_WEAPON_TYPE
         Nur zur Erinnerung: es gibt im MG zu viele Schwerter und Speere.
@@ -92,7 +67,7 @@
         rar. Bitte angepasste WCs!)
 
      P_EFFECTIVE_WC
-        Hier kann die evtl durch eine HitFunc veraenderte WC angegeben
+        Hier kann die evtl. durch eine HitFunc veraenderte WC angegeben
         werden. Der Durchschnittswert soll da stehen. Die Kaempfergilde kann
         das in gewissen Grenzen abschaetzen.
 
@@ -100,31 +75,31 @@
         Fuer Paradewaffen setzen. Werte unbedingt mit Boing absprechen!
 
      P_NOBUY
-        Waffen ab WC 150 werden beim Verkauf im Laden zurueckbehalten. Es
-        sollte aber auch fuer Waffen, die HitFuncs enthalten, P_NOBUY
-        gesetzt werden.
-
+        Folgende Waffen werden beim Verkauf im Laden aus dem Verkehr gezogen
+        (d.h. zerstoert):
+        P_NR_HANDS >= 2 und P_WC > 150
+        P_NR_HANDS <= 1 und P_WC > 120
+        P_HIT_FUNC gesetzt, egal ob fuer Spieler wirksam oder nicht.
 
     c. Spezialwaffen/Waffen mit Sonderfunktion
 
-     ** ALLE Waffen mit HitFunc oder entsprechender Fkt. muessen   **
-     ** genehmigt werden!                                          **
+    ALLE Waffen mit HitFunc oder vergleichbarer Funktionalitaet muessen
+    genehmigt werden, wenn sie fuer Spieler wirken und den Schaden erhoehen!
+    Genaueres siehe man grenzwerte.
 
     Solche Waffen muessen ueber ein P_INFO verfuegen und irgendwo in
     ihrer Beschreibung oder im P_INFO mindestens eine Andeutung ueber
     die Herkunft oder den Grund ihrer besonderen Faehigkeit haben.
 
     Auch Spezialwaffen sollten nach Moeglichkeit nicht ueber eine
-    EFFECTIVE_WC von 200 hinausgehen. Der Return-Wert der HitFunc,
+    P_EFFECTIVE_WC von 200 hinausgehen. Der Return-Wert der HitFunc,
     sofern er von 0 abweicht, MUSS per random() zurueckgegeben werden,
     da er ohne weiteres random() auf die WC aufaddiert wird.
 
     Zu beachten ist, dass man bei Waffen, die nur fuer NPCs mehr Schaden
     machen sollen, nicht (nur) ueber P_RACE prueft, ob der Benutzer ein
     solcher ist. Es ist denkbar, dass Spieler ihre Rasse temporaer ver-
-    aendern koennen. Waffen die nur bei
-    !interactive(QueryProp(P_WIELDED)) besser zuschlagen, brauchen
-    natuerlich nicht genehmigt zu werden.
+    aendern koennen.
 
     Die Dichte solcher Waffen in einem Gebiet sollte ein vernuenftiges
     Mass nicht ueberschreiten. Fuer eine Sonderwaffe sollten auch
@@ -139,8 +114,9 @@
     Waffen, die Monster vergiften (also nicht nur P_DAM_TYPE DT_POISON
     haben) sind zwar nicht grundsaetzlich verboten, aber doch
     unerwuenscht. Sie sind auf jeden Fall genehmigungspflichtig.
-    Ausserdem sollte die Wahrscheinlichkeit einer Vergiftung pro
-    Kampfrunde max. bei 1% liegen.
+    Die genauen Modalitaeten sind mit der Objektbalance zu klaeren; als
+    Richtwert sollte die Wahrscheinlichkeit einer Vergiftung pro Kampfrunde
+    max. bei 1% liegen.
 
     Des weiteren muessen Waffen, die fuer bestimmte Gilden bestimmte
     Vorteile bringen (sich beim Kami der Tanjian nicht abnutzen zum
@@ -149,13 +125,8 @@
 
     d. Genehmigungsgrenzen
 
-    Einhaendige Waffen  :    ab P_WC >= 140
-    Zweihaendige Waffen :    ab P_WC >= 175
-
-    Fuer Waffen die einen nichtphysikalischen Schadenstyp enthalten:
-
-    Einhaendige Waffen  :    ab P_WC >= 120
-    Zweihaendige Waffen :    ab P_WC >= 150
+    Bitte Genehmigungsgrenzen immer in man grenzwerte nachschlagen, dort
+    sind die jeweils gueltigen Werte aufgefuehrt.
 
 
     e. Spezielle Properties fuer die Kaempfergilde
@@ -170,7 +141,7 @@
     Prinzipiell gilt:
 
      ** Alle Waffen, in denen eine solche Property gesetzt wird,  **
-     ** sind mit der Objektbalance abzuklaeren.                   **
+     ** sind von der Objektbalance zu genehmigen.                 **
 
 
     f. Parierwaffen
@@ -199,4 +170,4 @@
      attributsveraenderungen, resistenzen, kampfobjekte, kaempferboni
 
  LETZTE AeNDERUNG:
-     16. Januar 2014 Gloinson
+     2021-02-28 Arathorn

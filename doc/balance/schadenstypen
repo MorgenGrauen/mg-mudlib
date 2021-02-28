@@ -33,16 +33,5 @@ b) magische Schadenstypen
    Alle magischen Schadenstypen stehen auch in dem Mapping
    MAGICAL_DAMAGE_TYPES.
 
-Waffen duerfen maximal 50% homogenen magischen Schaden machen. 
-Die Summe der magischen Schaeden darf maximal 66% betragen. 
-Es _muss_ immer mindestens ein physikalischer Schaden gesetzt 
-sein. Der Anteil an physikalischem Schaden betraegt demzufolge
-immer mindestens 34%. Solche Waffen sind generell genehmigungs-
-pflichtig.
-
-Genehmigungspflichtig sind auch generell Waffen, die als Schadens-
-typ DT_TERROR, DT_SOUND oder DT_SQUEEZE enthalten.
-
-Der Schadenstyp DT_EXPLOSION wird nicht mehr genehmigt.
-
-
+Hinweise zu Grenzwerten von Schadenstypen in Waffen finden sich in der
+Manpage "grenzwerte".

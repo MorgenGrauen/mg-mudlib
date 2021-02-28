@@ -39,9 +39,9 @@ Array ALL_DAMAGE_TYPES.
 Alle Schadenstypen und zusammengefasste Gruppen sind definiert in
 <combat.h>
 
-Waffen duerfen maximal 50% mag. Schaden machen. Die Summe der mag.
-Schaeden darf maximal 66% betragen. Es _muss_ immer mind. ein phy.
-Schaden gesetzt sein.
+
+Hinweise zu Grenzwerten von Schadenstypen in Waffen finden sich in der
+Manpage "grenzwerte".
 
 ----------------------------------------------------------------------------
-Last modified: Mit, 03.01 12:00:54 2002 von Tilly
+Last modified: 2021-01-01 Arathorn

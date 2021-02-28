@@ -3,28 +3,47 @@
     Waffen:
    
       Maximalwerte fuer P_WC:
-      Einhaendige Waffen 150
+
+      Einhaendige Waffen  150
       Zweihaendige Waffen 200
 
-      Genehmigungspflichtig sind
+      Genehmigungspflichtig sind:
 
-      Einhaendige Waffen  :    ab P_WC >= 140
-      Zweihaendige Waffen :    ab P_WC >= 175
+      A) Waffen mit rein physikalischen Schadenstypen:
 
-      Fuer Waffen die einen nichtphysikalischen Schadenstyp enthalten:
+      Einhaendige Waffen  :    ab P_WC >= 144
+      Zweihaendige Waffen :    ab P_WC >= 191
 
-      Einhaendige Waffen  :    ab P_WC >= 120
-      Zweihaendige Waffen :    ab P_WC >= 150
+      Der Schadenstyp DT_EXPLOSION wird jedoch nicht mehr genehmigt.
 
-      Genehmigungspflichtig sind auch generell Waffen, die als Schadens-
-      typ DT_TERROR, DT_SOUND, DT_AIR oder DT_SQUEEZE enthalten, unabhaengig
+      B) Waffen, die einen nichtphysikalischen Schadenstypen enthalten:
+
+      Einhaendige Waffen  :    ab P_WC >= 136
+      Zweihaendige Waffen :    ab P_WC >= 181
+
+      Diese Waffen duerfen maximal 50% homogenen magischen Schaden machen.
+
+      C) Waffen, die mehr als einen nichtpysikalischen Schadentypen enthalten:
+
+      Solche Waffen sind grundsaetzlich genehmigungspflichtig, unabhaengig
       von der WC.
 
-      Der Schadenstyp DT_EXPLOSION wird nicht mehr genehmigt.
+      Der Anteil der magischen Schadenstypen darf in Summe maximal 67%
+      betragen. Es _muss_ daher in solchen Waffen immer mindestens ein
+      physikalischer Schadenstyp gesetzt sein. Der Anteil an physikalischen
+      Schadenstypen betraegt demzufolge immer mindestens 33%.
+
+      D) Waffen mit Schadenstypen DT_TERROR, DT_SOUND oder DT_SQUEEZE:
+
+      Solche Waffen sind grundsaetzlich genehmigungspflichtig, unabhaengig
+      von der WC.
+
 
       Alle Waffen mit HitFunc oder entsprechender Funktion muessen genehmigt
-      werden (Es sei denn diese wirken nur bei !interactive() oder erhoehen 
-      den Schaden nicht).
+      werden, wenn sie bei Spielern wirken und den Schaden erhoehen.
+      Das gilt auch fuer indirekte Effekt wie z.B. Vergiftung von NPCs im
+      Kampf.
+
 
     Ruestungen:
 
@@ -45,7 +64,7 @@
       | AT_MISC      |    0   |             --             |
       +--------------+--------+----------------------------+
 
-    Ruestungen mit DefendFunc o.ae. muessen generell genehmigt werden 
+    Ruestungen mit DefendFunc o.ae. muessen generell genehmigt werden
     (siehe Waffen).
 
     Ruestungen und Waffen vom Typ AT_MISC oder WT_MISC duerfen keiner-
@@ -58,7 +77,5 @@
      balance, ruestungen, fernwaffen, uniques, npcs, schadenstypen
      attributsveraenderungen, resistenzen, kampfobjekte
 
-
 ------------------------------------------------------------------------------
- LETZTE AeNDERUNG:
-    Don, 03.01.02, 12:00:00 von Tilly
+LETZTE AeNDERUNG: 2021-01-01 Arathorn.
