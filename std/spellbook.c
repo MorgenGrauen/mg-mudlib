@@ -683,7 +683,7 @@ FindLivingVictim(string wen, object pl, string msg) {
     return 0;
   if (!living(vic) || ({int})vic->QueryProp(P_GHOST)) {
     ({int})pl->ReceiveMsg(
-      ({string})vic->name()+" lebt doch nicht!",
+      ({string})vic->Name()+" lebt doch nicht!",
       MT_NOTIFICATION,
       MA_SPELL);
     return 0;

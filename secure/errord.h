@@ -101,7 +101,7 @@
 
 #define STANDARDMAILTEXT_ERRORHINT "Huhu %s,\n\n" \
     "ein von Dir abgesetzter Fehler (s.u.) wurde von %s bearbeitet und als " \
-    "erledigt markiert. Bei Fragen wende Dich Dich bitte an den " \
+    "erledigt markiert. Bei Fragen wende Dich bitte an den " \
     "bearbeitenden Magier.\n" \
     "Vielen Dank fuer Deine Mithilfe!\n\n" \
     "--- Fehler-Daten ---\n"
