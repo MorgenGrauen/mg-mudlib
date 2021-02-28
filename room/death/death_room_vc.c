@@ -144,8 +144,6 @@ public int filter_ldfied( string str )
 
 public int no_attack()
 {
-  int i;
-
   // Spieler haengt noch in der Todessequenz
   if( present(previous_object()) )
     return 1;
