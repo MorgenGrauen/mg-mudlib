@@ -66,8 +66,8 @@ public int check_tor(string ip, int localport)
   if (sizeof(arr)!=4)
     return 0;
   string req =
-    sprintf("%s.%s.%s.%s.%d.60.24.79.87.ip-port.exitlist.torproject.org",
-            arr[3],arr[2],arr[1],arr[0],localport);
+    sprintf("%s.%s.%s.%s.dnsel.torproject.org",
+            arr[3],arr[2],arr[1],arr[0]);
   
   return resolve(req) == "127.0.0.2";
 }
@@ -81,7 +81,7 @@ public int check_dnsbl(string ip)
   string req =
     sprintf("%s.%s.%s.%s.dnsbl.dronebl.org",
             arr[3],arr[2],arr[1],arr[0]);
-  
+ 
   return resolve(req) != 0;
 }
 
@@ -91,6 +91,7 @@ public int check_dnsbl(string ip)
 public void update( string udp_reply )
 {
   if( previous_object()!=master() ) return;
+ 
   string *reply = explode(udp_reply,"\n");
   if( sizeof(reply)<3 ) return;
 
