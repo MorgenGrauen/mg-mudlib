@@ -130,6 +130,8 @@ protected void create() {
      "Runen an den Seiten und auf dem Deckel.")
     +"@@cnt_status@@");
 
+  SetProp(P_LEVEL, 1000); // wehrt bestimmte Zauber ab
+
   AddId(({"autoloadertruhe", "holztruhe", "truhe"}));
 
   // den Rest vom Create braucht die BP nicht.
