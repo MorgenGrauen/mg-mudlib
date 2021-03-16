@@ -35,8 +35,7 @@ static string glob2regexp(string str)
 
 static string to_filename(string str)
 {
-  string *tmp,p,newfn;
-  int i;
+  string *tmp,p;
 // Testen ob .. in einem Filenamenabschnitt, falls Version <3.2.5
   tmp=explode(str,"/");
 // Testen auf Pfadvariable
@@ -107,7 +106,6 @@ private void _parseargs(string str, string *line,int flags,string opts,
 
 static string *parseargs(string cmdline,int flags, string opts,int build_fn)
 {
-  int i;
   string *line;
   line=({});
   if (!sizeof(cmdline)) return ({});
