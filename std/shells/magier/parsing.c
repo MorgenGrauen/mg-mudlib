@@ -142,11 +142,11 @@ private varargs mixed *_get_files(string dirname,string mask,int mode,
   //DEBUG("_GF: DIRNAME " + dirname);
   mixed *data=get_dir(dirname+"*",GETDIR_NAMES|GETDIR_SIZES|GETDIR_DATES);
   if(!sizeof(data)) return ({});
-  mixed *files=({});
+  < <int|string>* >* files=({});
 
   while(1)
   {
-    mixed *tmp=({});
+    < <int|string>* >* tmp=({});
     string base=data[BASENAME];
     string fullname=dirname+base;
     if (base!="." && base!=".."
@@ -376,7 +376,7 @@ static varargs mixed *get_files(string filename, int mode, int recursive,
 static varargs mixed *file_list(string *files, int mode, int recursive,
                                 string dest, string mask)
 {
-  string *list=({});
+  < <int|string>* >* list=({});
   if (mask) mask=glob2regexp(mask);
   // dest muss einmal normalisiert werden, dann muss es das in den gerufenen
   // (rekursiven) Funktionen nicht immer nochmal gemacht werden.
