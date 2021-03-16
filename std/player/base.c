@@ -373,8 +373,6 @@ varargs int remove(int silent)
 */
 varargs static void stop_heart_beats(mixed obs)
 {
-  int i;
-
   if (!obs)
   {
     hb_obs=({});
@@ -396,8 +394,6 @@ varargs static void stop_heart_beats(mixed obs)
 */
 static void restart_heart_beats()
 {
-  int i;
-
   if (pointerp(hb_obs))
   {
     foreach(object ob: hb_obs)
@@ -714,7 +710,6 @@ varargs void Reconnect( int silent )
 void NetDead()
 {
   object *inv;
-  int num;
 
   catch(RemoveChannels();publish);
 
@@ -894,8 +889,6 @@ static int set_homepage(string str)
   */
 static int set_location( string str )
 {
-    mixed ort;
-
     if ( str == "0" || str == "loeschen" ){
         Set( P_LOCATION, 0 );
         write( "Du loescht Deine Ortsangabe.\n" );
@@ -907,7 +900,7 @@ static int set_location( string str )
         printf( "Du aenderst Deine Ortsangabe auf \"%s\".\n",
                 Query(P_LOCATION) );
     }
-    else if ( stringp(ort = Query(P_LOCATION)) )
+    else if ( stringp(Query(P_LOCATION)) )
         printf( "Deine Ortsangabe lautet \"%s\".\n", Query(P_LOCATION) );
     else{
         Set( P_LOCATION, 0, F_VALUE );
@@ -1073,15 +1066,14 @@ int self_delete2(string str)
   */
 static int spieldauer(string str) {
   int min,day;
-  string foo;
 
   notify_fail("  spieldauer <x> minuten fuer %d tage\noder\n"+
               "  spieldauer <x> stunden fuer %d tage\n");
   if (!str)
     return 0;
-  if (sscanf(str,"%d stunde%s fuer %d tag%s",min,foo,day,foo)==4)
+  if (sscanf(str,"%d stunde%~s fuer %d tag%~s",min,day)==4)
     min*=60;
-  else if (sscanf(str,"%d minute%s fuer %d tag%s",min,foo,day,foo)!=4)
+  else if (sscanf(str,"%d minute%~s fuer %d tag%~s",min,day)!=4)
     return 0;
   if (min<5)
     min=5;
@@ -1523,7 +1515,6 @@ protected void smart_log(string myname, string str, object obj)
   */
 int quit()
 {
-  int arg;
   SetProp(P_LAST_QUIT,time());
   catch(RemoveChannels();publish);
   if(!QueryGuest())
@@ -1560,7 +1551,7 @@ static int new_quit() {
   * @see short_score()
   */
 static int score(string arg) {
-  int i,sz,val;
+  int val;
   mixed ind;
   object *enem1, *enem2, *inv;
 
@@ -1813,11 +1804,10 @@ static int help(string str) {
   */
 static mixed filter_who_options(string str)
 {
-  string* opt, *ans;
+  string* opt;
   int i,len,res;
 
   opt = explode(str," "); len=sizeof(opt);
-  ans = ({});
   res = 0;
   for(i=0;i<len;i++)
     switch(opt[i]){
@@ -1929,7 +1919,7 @@ static varargs int kkwho(string str) {
   * wird.
   */
 static int kill(string str) {
-  object eob,wob;
+  object eob;
 
   if (QueryProp(P_GHOST))
   {
@@ -2034,7 +2024,7 @@ int emote(string str,int genitiv)
 {
   string *commands,message,verb;
   object living;
-  int i,size;
+  int size;
 
   if (!(Query(P_CAN_FLAGS)&CAN_EMOTE)) return 0;
   if (query_verb()[0]==';') genitiv=1;
@@ -2906,7 +2896,7 @@ static int extralook(mixed str)
 
 static void calculate_value()
 {
-  int i, carried_value, value;
+  int carried_value, value;
 
   carried_value=0;
   foreach(object ob: deep_inventory(ME)) {
@@ -3116,7 +3106,6 @@ static int toggle_whimpy(string str)
 varargs nomask int query_prevent_shadow(object obj)
 {
   string what, allowed_shadow;
-  int    dummy;
 
 //  if ( Query(P_TESTPLAYER) )
 //      return 0;
@@ -3124,7 +3113,7 @@ varargs nomask int query_prevent_shadow(object obj)
   if (obj){
     what=object_name(obj);
     if (what && what != "" &&
-        sscanf(what,"/std/player/shadows/%s#%d",what,dummy)==2)
+        sscanf(what,"/std/player/shadows/%s#%~d",what)==2)
       return 0;
     
     // Einem Testspieler kann man P_ALLOWED_SHADOW auf einen zu testenden
@@ -3356,7 +3345,6 @@ static void ndead_revive()
   */
 static void ndead_move_me() {
   object team;
-  mixed amem;
 
   set_heart_beat(0);
   stop_heart_beats();
@@ -3398,8 +3386,7 @@ static void ndead_move_me() {
   */
 int QueryGuest()
 {
-  string dummy;
-  return sscanf(getuid(),"gast%d",dummy);
+  return sscanf(getuid(),"gast%~d");
 }
 
 /** Spielerkommando 'schlafe ein'.
@@ -3496,7 +3483,6 @@ private void format(mixed mud, mixed hosts, string output)
 
 static int muds() {
   mapping hosts;
-  int i;
   mixed muds, output;
 
   output = lalign("Mudname", 20) + "  Status   Last access";
