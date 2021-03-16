@@ -26,7 +26,7 @@ inherit "std/living/moving";
 #include <events.h>
 #include <pathd.h>
 
-private nosave string *connections;
+private nosave < <int|string>* >* connections = ({});
 
 public void create()
 {
@@ -38,7 +38,6 @@ public void create()
     Set( P_MSGOUT,  SAVE, F_MODE );
     Set( P_MMSGIN,  SAVE, F_MODE );
     Set( P_MMSGOUT, SAVE, F_MODE );
-    connections = ({});
 
     ::create();
 }
