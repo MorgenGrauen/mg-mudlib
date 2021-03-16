@@ -91,7 +91,7 @@ int _query_gender()
 int _query_article()
 { if(!special_verb())
     return article;
-  return caster->Query(P_ARTICLE);
+  return !caster->Query(P_ARTICLE);
 }
 
 int _query_plural()
