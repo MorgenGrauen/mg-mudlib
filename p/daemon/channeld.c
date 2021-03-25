@@ -887,8 +887,7 @@ varargs private int access(struct channel_s ch, object user, string cmd,
   // Objekte faken)
   // Die Pruefung erfolgt absichtlich vor assert_supervisor(), damit der
   // CHANNELD auch in temporaeren SV-losen Zustaenden was machen kann.
-  if ( !previous_object(1) || !extern_call() ||
-       previous_object(1) == this_object() ||
+  if ( !previous_object(1) || previous_object(1) == this_object() ||
        getuid(previous_object(1)) == ROOTID)
     return 2;
 
