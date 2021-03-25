@@ -1236,13 +1236,16 @@ public string|string* find(string chname, object pl)
   // Objekt <pl> muss auf dieser Ebene senden duerfen, damit der Ebenenname
   // in das Suchergebnis aufgenommen wird.
   string* chs = filter(m_indices(channels), function int (string ch_n) {
-                 /* funcall() auf Closure-Operator, um einen neuen Eintrag
-                    im Caller Stack zu erzeugen, weil access() mit
-                    extern_call() und previous_object() arbeitet und
-                    sichergestellt sein muss, dass das in jedem Fall das
-                    richtige ist. */
+                 /* Normalerweise benoetigen wir ein funcall() auf 
+                    Closure-Operator, um einen neuen Eintrag im Caller Stack
+                    zu erzeugen, weil access() mit extern_call() und
+                    previous_object() arbeitet und sichergestellt sein muss,
+                    dass das in jedem Fall das richtige ist.
+                    In diesem Fall gibt es schon durch filter() einen neuen
+                    Eintrag, daher muss access() direkt gerufen werden, sonst
+                    ist previous_object(1) == this_object(). */
                   return ( stringp(regmatch(ch_n, "^"+chname)) &&
-                           funcall(#'access, channels[ch_n], pl, C_SEND) );
+                           access(channels[ch_n], pl, C_SEND) );
                 });
 
   int num_channels = sizeof(chs);
