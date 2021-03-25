@@ -4453,7 +4453,7 @@ int behalte(string str)
       write("Ok!\n");
       return 1;
     }
-    if (!sizeof(obs=find_obs(str,PUT_GET_NONE)))
+    if (!sizeof(obs=find_obs(str,PUT_GET_DROP)))
     {
       _notify_fail("Aber sowas hast Du nicht dabei!\n");
       return 0;
