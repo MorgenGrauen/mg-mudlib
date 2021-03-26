@@ -1244,7 +1244,7 @@ public string|string* find(string chname, object pl)
                     Eintrag, daher muss access() direkt gerufen werden, sonst
                     ist previous_object(1) == this_object(). */
                   return ( stringp(regmatch(ch_n, "^"+chname)) &&
-                           access(channels[ch_n], pl, C_SEND) );
+                           access(channels[ch_n], pl, C_FIND) );
                 });
 
   int num_channels = sizeof(chs);
