@@ -1,0 +1,45 @@
+H_HOOK_TEAMROWCHANGE
+====================
+
+HOOK
+----
+
+  H_HOOK_TEAMROWCHANGE
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/team.c
+
+BESCHREIBUNG
+------------
+
+  Wird ausgeloest, wenn ein Lebewesen die Teamreihe wechselt. Es ist nicht
+  moeglich, diesen Hook abzubrechen oder die Daten zu veraendern.
+
+HOOK-DATEN
+----------
+
+  Es wird ein Array uebergeben:
+  ({int from, int to})
+
+  - from: Bisherige Teamreihe
+  - to: Neue Teamreihe
+
+RUECKGABEWERTE
+--------------
+
+  ({ H_NO_MOD, <daten> })
+  <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), consume()
+
+Letzte Aenderung: 28.03.2021, Bugfix
