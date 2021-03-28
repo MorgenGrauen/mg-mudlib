@@ -241,9 +241,8 @@ public void ChannelMessage(<string|object|int>* msg)
   {
     if (file_size("/etc/maxusers") > 0 && file_size("/etc/maxusers.ever"))
     {
-      string unused;
-      sscanf(read_file("/etc/maxusers"), "%d %s", max, unused);
-      sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, unused);
+      sscanf(read_file("/etc/maxusers"), "%d %~s", max);
+      sscanf(read_file("/etc/maxusers.ever"), "%d %~s", rekord);
       ret = sprintf("Das MUD laeuft jetzt %s. Es sind momentan %d Spieler "
               "eingeloggt; das Maximum lag heute bei %d und der Rekord "
               "bisher ist %d.", uptime(), sizeof(users()), max, rekord);
@@ -336,9 +335,8 @@ public void ChannelMessage(<string|object|int>* msg)
     lag = "/p/daemon/lag-o-daemon"->read_lag_data();
     if (file_size("/etc/maxusers") > 0 && file_size("/etc/maxusers.ever"))
     {
-      string unused;
-      sscanf(read_file("/etc/maxusers"), "%d %s", max, unused);
-      sscanf(read_file("/etc/maxusers.ever"), "%d %s", rekord, unused);
+      sscanf(read_file("/etc/maxusers"), "%d %~2s", max);
+      sscanf(read_file("/etc/maxusers.ever"), "%d %~s", rekord);
     }
 
     int t = time() - last_reboot_time();
@@ -576,7 +574,6 @@ varargs void reset()
     channelC = filter(channelC,
       function int (string ch_name, mixed values)
       {
-        struct channel_base_s data = values[0];
         int ts = values[1];
         if (ts + timeout > time())
           return 1;
