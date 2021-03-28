@@ -286,8 +286,6 @@ static int action_wurf(string str)
 
 protected void create()
 {
-  mixed plist, i;
-
   ::create();
   SetProp(P_NAME,({"Muenze","Muenzen"}));
   Set(P_LONG, #'current_long, F_QUERY_METHOD);
