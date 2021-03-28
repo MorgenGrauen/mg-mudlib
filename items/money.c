@@ -319,6 +319,10 @@ protected void create()
    "gezeigt, dass er hineingebissen hat, um es zu pruefen.",78));
   AddDetail(({"bild","konterfei","praegung"}),#'DetKonterfei);
   AddDetail("gold","Es glaenzt Dich verheissungsvoll an.\n");
+  AddTouchDetail(SENSE_DEFAULT, function string () {
+    return "Du zaehlst Deine Muenzen durch und ertastest "+
+      QueryProp(P_AMOUNT)+".\n";
+  });
 
   AddCmd(({"pruef","pruefe","beiss","beisse","test","teste"}),
          #'action_pruefe);
@@ -330,9 +334,9 @@ protected void create()
 
 varargs string GetDetail(mixed key,mixed race,int sense) {
  string m;
- if(stringp(m=::GetDetail(&key,&race,&sense)) && sizeof(m)) {
-  int r;
-  r=Query(U_REQ);
+ if(stringp(m=::GetDetail(&key,&race,&sense)) && sizeof(m) && 
+    sense == SENSE_VIEW) {
+  int r=Query(U_REQ);
   if(r!=1) m=sprintf("Du betrachtest eine der %d Muenzen genauer:\n",r)+m;
  }
  return m;
