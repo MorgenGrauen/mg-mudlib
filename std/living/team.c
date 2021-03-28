@@ -639,11 +639,5 @@ varargs void InformRowChange(int from, int to, object caster) {
 
   if (caster) return; // Fuer den Fall, dass Gildenobjekt==ME ist
   if (PO!=Query(P_TEAM)) return;
-#if __BOOT_TIME__ < 1281904437
-  mixed gilde = QueryProp(P_GUILD);
-  if (!stringp(gilde)) return;
-  if (!objectp(gilde=find_object("/gilden/"+gilde))) return;
-  gilde->InformRowChange(from,to,ME);
-#endif
   HookFlow(H_HOOK_TEAMROWCHANGE, ({from,to}) );
 }
