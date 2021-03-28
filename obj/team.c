@@ -166,7 +166,7 @@ int CompareHp(object a, object b) {
 
 // Aktualisiert act_row (->wer steht in welcher Reihe).
 private void UpdateActRow() {
-  int i,j,update_hp;
+  int i,update_hp;
   object *new;
   mixed aso;
 
@@ -639,7 +639,6 @@ varargs int FleeToRow(object ob) {
 static int ChangeFormation(string arg) {
   string *words;
   int i,min,max;
-  mapping old_row;
 
   if (arg=="aus")
     arg="1-6 0-6 0-6 0-6 0-6";
@@ -917,8 +916,6 @@ private void DoRemoveMember(object ob) {
 }
 
 int RemoveAssocMember(object caster, object npc) {
-  object *obs;
-
   if (extern_call() && PO!=caster)
     return 0;
   if (!IsMember(caster) || assoc_mem[npc]!=caster)
