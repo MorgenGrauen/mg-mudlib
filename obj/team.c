@@ -1,6 +1,8 @@
 #pragma strong_types,save_types
 #pragma no_shadow
-#pragma no_inherit
+// Teamobjekt muss leider noch geerbt werden koennen.
+// Arathorn, 2021-03-28
+//#pragma no_inherit
 #pragma pedantic
 
 #include <living/team.h>
