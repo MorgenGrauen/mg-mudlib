@@ -18,6 +18,9 @@ int ch_check_access( string ch, object pl, string cmd, string txt )
     
     if ( ch != "debug" && ch != "entwicklung" && ch != "warnungen" )
         return 0;
+
+    if (!stringp(txt) || !sizeof(txt))
+        return 0;
     
     ch = capitalize(ch);
 
