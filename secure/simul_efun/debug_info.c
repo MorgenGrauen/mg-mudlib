@@ -197,7 +197,8 @@ mixed debug_info(int what, varargs mixed* args)
                     raise_error(sprintf("Bad argument '%s' to debug_info(DINFO_DUMP).\n", args[0]));
                     return 0;
             }
-
+            // set object for valid_write() master apply...
+            set_this_object(previous_object());
             return efun::dump_driver_info(opt, args[1..1]...);
         }
 
