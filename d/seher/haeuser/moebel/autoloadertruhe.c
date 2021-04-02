@@ -456,7 +456,7 @@ void NotifyInsert(object ob, object oldenv) {
 // Autoloader beim erstellen des Spielerobjektes wird (dort wird erst bewegt,
 // dann konfiguriert).
 void NotifyLeave(object ob, object dest) {
-  string error, oname;
+  string oname;
  
   if (!objectp(ob))
     return;
@@ -469,22 +469,10 @@ void NotifyLeave(object ob, object dest) {
     return;
   }
 
-  // wenn kein Fehler: Objekt aus Liste loeschen. Sonst wird das Objekt
-  // zerstoert. Damit bleiben die Autoloader-Daten hier erhalten und der
-  // Spieler hat kein disfunktionales Objekt im Inventar.
-  if (error) {
-    ERRLOG(sprintf("Fehler beim Konfigurieren von %O. Fehlermeldung: %O."
-        "Daten: %O",ob,error,autoloader[oname,ALDATA]));
-    ob->remove(1);
-    if (objectp(ob))
-      destruct(ob);
-  }
-  else {
-    PICKLOG(sprintf("Objekt (%O) wurde entnommen.",ob));
-    m_delete(autoloader,oname);
-    // speichern
-    save_me();
-  }
+  PICKLOG(sprintf("Objekt (%O) wurde entnommen.",ob));
+  m_delete(autoloader,oname);
+  // speichern
+  save_me();
 }
 
 protected void check_content() {
