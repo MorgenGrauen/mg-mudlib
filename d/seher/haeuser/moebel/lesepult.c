@@ -539,16 +539,6 @@ mixed _query_noget()
  return 0;
 }
 
-string _query_autoloadobj()
-{
- return QueryOwner();
-}
-
-string _set_autoloadobj(string s)
-{
- return QueryOwner();
-}
-
 // Beim Kauf setzen wir erstmal nur den Eigentuemer.
 // Ist aus Swifts Container, der diese Funktion im
 // NotifyMove() aufruft.
