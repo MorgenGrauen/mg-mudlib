@@ -280,16 +280,16 @@ int DumpPubs()
             DUMPF(sprintf(
                 "  %-'.'30.30s %5d %3d %3d %3d %3d %3d %2d %2d %3d %3d\n",
                 itemlist[itemi],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_VALUE],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_HP],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_SP],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_DRINK],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_ALCOHOL],
-                (int)pubs[publist[pubi]][itemlist[itemi]][P_FOOD],
-                (int)pubs[publist[pubi]][itemlist[itemi]]["rate"],
-                (int)pubs[publist[pubi]][itemlist[itemi]]["maxrate"],
-                (int)pubs[publist[pubi]][itemlist[itemi]]["maxset"],
-                (int)pubs[publist[pubi]][itemlist[itemi]]["maxheal"] ));
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_VALUE],
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_HP],
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_SP],
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_DRINK],
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_ALCOHOL],
+                ({int})pubs[publist[pubi]][itemlist[itemi]][P_FOOD],
+                ({int})pubs[publist[pubi]][itemlist[itemi]]["rate"],
+                ({int})pubs[publist[pubi]][itemlist[itemi]]["maxrate"],
+                ({int})pubs[publist[pubi]][itemlist[itemi]]["maxset"],
+                ({int})pubs[publist[pubi]][itemlist[itemi]]["maxheal"] ));
         DUMPF("\n");
     }
     return sizeof(publist);

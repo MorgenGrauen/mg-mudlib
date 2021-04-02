@@ -108,7 +108,7 @@ int AddNotiz(string str) {
   }
   //ggf. nur Einlesen, Cache muss hier nicht aktualisiert werden ;-)
   checkStatus(1);
-  str=(string)PL->_unparsed_args(0);  //kein parsing
+  str=({string})PL->_unparsed_args(0);  //kein parsing
   if (!stringp(str) || !sizeof(str)) {
     tell_object(PL,
       "Was moechtest Du Dir denn notieren?\n");
@@ -147,8 +147,8 @@ int AddNotiz(string str) {
           "Es ist nun die %d. Notiz.",maxusedID)));
   tell_room(environment(TI),
     BS(sprintf("%s notiert sich etwas auf %s Merkzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -182,8 +182,8 @@ int LiesNotiz(string str) {
   tell_object(PL,sprintf("\nDu vertiefst Dich in Deinen Merkzettel und liest:\n%s\n",_LiesNotiz(id)));
   tell_room(environment(TI),
     BS(sprintf("%s liest etwas auf %s Merkzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -224,8 +224,8 @@ int RemoveNotiz(string str) {
            id));
   tell_room(environment(TI),
     BS(sprintf("%s radiert sorgfaeltig etwas von %s Merkzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -275,8 +275,8 @@ int FinishNotiz(string str) {
         "die Notiz Nr. %d. Hach - was bist Du nun zufrieden! :-)\n",id)));
   tell_room(environment(TI),
     BS(sprintf("%s hakt erfreut etwas auf %s Merkzettel ab.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -288,7 +288,7 @@ int ListNotizen(string str) {
   status invers;
   
   if(!objectp(TI)) return(0);
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if(!check_allowed()) {
     if(objectp(this_interactive()))
       tell_object(this_interactive(),
@@ -373,8 +373,8 @@ int ListNotizen(string str) {
   tell_object(PL,txt);
   tell_room(environment(TI),
     BS(sprintf("%s wirft einen Blick auf %s Merkzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihren" : "seinen") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihren" : "seinen") 
               )),({TI}));
   return(1);
 }
@@ -382,7 +382,6 @@ int ListNotizen(string str) {
 int ChangeDep(string str) {
   int id;
   string *arr;
-  int *deps;
   
   notify_fail("Bitte eine ID und eine min. eine Abhaengigkeit angeben!\n");
   if(!objectp(TI)) return(0);
@@ -392,7 +391,7 @@ int ChangeDep(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -423,8 +422,8 @@ int ChangeDep(string str) {
               id)));
   tell_room(environment(TI),
     BS(sprintf("%s kritzelt auf %s Merkzettel herum.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -441,7 +440,7 @@ int ChangePrio(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -476,8 +475,8 @@ int ChangePrio(string str) {
               id,notizen[id,NOTE_PRIO])));
   tell_room(environment(TI),
     BS(sprintf("%s kritzelt auf %s Merkzettel herum.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -494,7 +493,7 @@ int ChangeHelper(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -523,8 +522,8 @@ int ChangeHelper(string str) {
       sprintf("Mitarbeiter von Notiz %d geaendert.",id)));
   tell_room(environment(TI),
     BS(sprintf("%s kritzelt auf %s Merkzettel herum.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -544,7 +543,7 @@ int ChangeStatus(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   if (!checkStatus()) {
@@ -593,8 +592,8 @@ int ChangeStatus(string str) {
       sprintf("Status von Notiz %d geaendert.",id)));
   tell_room(environment(TI),
     BS(sprintf("%s kritzelt auf %s Notizzettel herum.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -612,7 +611,7 @@ int ErsetzeText(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -641,8 +640,8 @@ int ErsetzeText(string str) {
   tell_room(environment(TI),
     BS(sprintf("%s radiert zuerst etwas auf %s Notizzettel herum und "
         "schreibt anschliessend sorgfaeltig etwas neues auf.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -659,7 +658,7 @@ int ErgaenzeText(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -687,8 +686,8 @@ int ErgaenzeText(string str) {
       sprintf("Text von Notiz %d ergaenzt.",id)));
   tell_room(environment(TI),
     BS(sprintf("%s ergaenzt etwas auf %s Notizzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);
 }
@@ -696,7 +695,6 @@ int ErgaenzeText(string str) {
 int ZeigeZettel(string str) {
     //anderen zeigen, wie furchtbar viel man zu tun hat.
   object pl;
-  int count;
   int *ids;
   
   notify_fail("Wem willst Du Deinen Merkzettel zeigen?\n");
@@ -759,7 +757,7 @@ int ZeigeZettel(string str) {
        break;
  }
  return(1);
- }
+}
 
 int WedelZettel(string str) {
     object pl;
@@ -808,7 +806,7 @@ int LiesDeps(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   
@@ -849,8 +847,8 @@ int LiesDeps(string str) {
   }
   tell_room(environment(TI),
     BS(sprintf("%s liest etwas auf %s Merkzettel.\n",
-        capitalize((string)TI->name(WER)),
-        (((int)TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
+        capitalize(({string})TI->name(WER)),
+        ((({int})TI->QueryProp(P_GENDER))==FEMALE ? "ihrem" : "seinem") 
               )),({TI}));
   return(1);    
 }
@@ -869,7 +867,7 @@ int Expire(string str) {
         BS("Dieser Zugriff auf den Merkzettel wurde nicht erlaubt."));
     return(0);
   }
-  str=(string)PL->_unparsed_args(0);
+  str=({string})PL->_unparsed_args(0);
   if (!stringp(str) || !sizeof(str))
     return(0);
   age=to_float(str);
