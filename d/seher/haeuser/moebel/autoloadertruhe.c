@@ -293,7 +293,6 @@ protected int cmd_deponiere(string cmd, mixed args) {
 // haben.
 protected int cmd_entnehmen(string cmd) {
   int res;
-  mixed noget;
 
   if (!objectp(PL)) return 0;
 
@@ -311,7 +310,8 @@ protected int cmd_entnehmen(string cmd) {
   // NOGET ist hier bloed. So ist es zwar auch nicht richtig doll... *seufz*
   // Die hier ist/waere aber nen uebler Hack, erstmal auskommentiert lassen.
   // also, P_NOGET sichern.
-  /*if (!closurep(noget=ob->Query(P_NOGET,F_QUERY_METHOD))) {
+  /*mixed noget;
+    if (!closurep(noget=ob->Query(P_NOGET,F_QUERY_METHOD))) {
     noget=ob->Query(P_NOGET,F_VALUE);
     ob->Set(P_NOGET,0,F_VALUE);
   }
@@ -558,7 +558,6 @@ varargs mixed make_invlist(object viewer, mixed inv, int flags) {
 private object create_object(string oname) {
   string error;
   object ob;
-  mixed noget;
   if (!member(autoloader,oname)) return 0;
 
   //Blueprint finden (ja, das ist nicht unbedingt noetig, man koennte auch
