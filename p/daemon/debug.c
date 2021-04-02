@@ -19,9 +19,6 @@ int ch_check_access( string ch, object pl, string cmd, string txt )
     if ( ch != "debug" && ch != "entwicklung" && ch != "warnungen" )
         return 0;
 
-    if (!stringp(txt) || !sizeof(txt))
-        return 0;
-    
     ch = capitalize(ch);
 
     if( objectp(pl) && query_once_interactive(pl) && query_wiz_level(pl) > 15 )
@@ -40,7 +37,7 @@ int ch_check_access( string ch, object pl, string cmd, string txt )
                  member( tmp, lower_case(ch) ) == -1 )
                 return 1;
 
-            switch( lower_case(txt) ){
+            switch( lower_case(txt||"") ){
             case "backtrace":
                 {
                     string bt, log;
