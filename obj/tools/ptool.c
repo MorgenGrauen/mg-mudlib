@@ -60,7 +60,7 @@ void create()
 
 int add(string number)
 {
-  int nr, next, active;
+  int nr, next;
   string room;
   if (!secure())
   { printf("Fehler: -1\n"); return -1; }
@@ -80,15 +80,10 @@ int add(string number)
     printf("Raum konnte nicht eingetragen werden, Ergebnis: %d\n", next);
     return 1;
   }
-  // Nicht mehr noetig, Arathorn, 2013-Mai-30
-  //active = "/secure/potionmaster"->SetListNr(room, nr);
-  if (active>=0)
-  {
-    printf("Raum aktiviert in Liste %d\n", nr);
-    dump();
-  }
-  else
-    printf("Fehler beim Aktivieren, Ergebnis: %d\n", active);
+  
+  printf("Raum aktiviert in Liste %d\n", nr);
+  dump();
+
   return 1;
 }
 
@@ -123,7 +118,7 @@ int changepath(string number)
 
 int setlist(string number)
 {
-  int nr, next, active;
+  int nr, active;
   string room;
   if (!secure())
   { printf("Fehler: -1\n"); return -1; }
@@ -148,7 +143,7 @@ int setlist(string number)
 
 int activate()
 {
-  int nr, active;
+  int active;
   string room;
   
   if (!secure())

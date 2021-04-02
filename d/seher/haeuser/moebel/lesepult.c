@@ -413,7 +413,6 @@ int k;
 
 int cmd_eintragen(string str)
 {
-int i;
  if (!(MQTBMASTER->QueryTagebuchAufPult(this_player())))
  {
   notify_fail(BS(
