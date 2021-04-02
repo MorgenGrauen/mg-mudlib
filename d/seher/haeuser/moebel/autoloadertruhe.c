@@ -256,7 +256,18 @@ protected int cmd_deponiere(string cmd, mixed args) {
   if (!stringp(cmd) || !sizeof(cmd) 
       || !pointerp(args) || !sizeof(args)) return 0;
   object ob=args[0];
+
   if (!objectp(ob)) return 0;
+
+  // Nur Objekte aus dem Inventar deponieren. Absichtlich nicht ueber
+  // @PUT_GET_DROP in AddCmd() geloest, damit die beiden Fehlerfaelle zwei
+  // getrennte Meldungen bewirken.
+  if (environment(ob) != PL) {
+    tell_object(PL, BS("Du musst "+ob->name(WEN,1)+"schon bei Dir haben, um "+
+      ob->QueryPronoun(WEN)+" deponieren zu koennen."));
+    return 1;
+  }
+
   // wuerde die Truhe das Objekt ueberhaupt aufnehmen? Fehlerausgabe durch
   // PrevenInsert()
   if (PreventInsert(ob)) return 1;
