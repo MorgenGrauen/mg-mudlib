@@ -507,7 +507,8 @@ static int alias(string str)
       printf("Neues Alias: %s\t= %s\n",commandverb, present_alias(tmp));
       if (sizeof(aliases)>1000)
       {
-        printf("Du hast bereits %d Aliase definiert. Bitte raeume auf!\n");
+        printf("Du hast bereits %d Aliase definiert. Bitte raeume auf!\n",
+          sizeof(aliases));
       }
     } 
   }
