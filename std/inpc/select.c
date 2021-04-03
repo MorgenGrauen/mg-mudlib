@@ -26,7 +26,7 @@ mapping scan_objects(mixed src) {
   object *obs;
   mapping res;
   string x;
-  int i,cost,cost_limit;
+  int cost,cost_limit;
 
   if (mappingp(src))
     return src;
@@ -43,7 +43,7 @@ mapping scan_objects(mixed src) {
     {
       log_file("rochus/raeuber_eval",
         ctime()+"select::scan_objects(). Rest "+to_string(cost)+
-        ", i="+to_string(i)+", Size "+to_string(sizeof(src))+".\n");
+        ", i="+member(src, ob)+", Size "+to_string(sizeof(src))+".\n");
       return res;
       break;
     }
@@ -148,7 +148,7 @@ int eval_armour(object ob) {
 
 object find_best_armour(mixed from, mixed typ) {
   // Findet die beste Ruestung eines Typs
-  int i,ac,bac;
+  int ac,bac;
   object *res,bob;
   
   if (!pointerp(res=find_object_by_type(from, typ)))
@@ -196,7 +196,7 @@ varargs int wear_best_armours(mixed from) {
   // Sollte mit command("trage_beste_ruestungen") aufgerufen werden,
   // damit this_player() richtig gesetzt wird.
   object *na,*oa,*diff;
-  int i,cost,cost_limit;
+  int cost,cost_limit;
   
   if (!from)
     from=ME;
@@ -214,7 +214,7 @@ varargs int wear_best_armours(mixed from) {
     {
       log_file("rochus/raeuber_eval",
         ctime()+"Break 1 in select::wear_best_armours(). Rest "+
-	to_string(cost)+", i="+to_string(i)+", Size "+
+	to_string(cost)+", i="+member(diff, di)+", Size "+
 	to_string(sizeof(diff))+".\n");
       return 1; // zurueckgeben, was bisher drinsteht.
       break;
@@ -232,7 +232,7 @@ varargs int wear_best_armours(mixed from) {
      {
        log_file("rochus/raeuber_eval",
          ctime()+"Break 2 in select::wear_best_armours(). Rest "+
-	 to_string(cost)+", i="+to_string(i)+", Size "+
+	 to_string(cost)+", i="+member(diff, di)+", Size "+
 	 to_string(sizeof(diff))+".\n");
       return 1; // zurueckgeben, was bisher drinsteht.
       break;
@@ -249,10 +249,10 @@ varargs string
 find_best_combat_command(mixed from, object enemy, mapping pref) {
   // Sucht den guenstigsten Befehl zur Benutzung einer Sonderwaffe heraus
   object *obs;
-  mixed *ind,y,vul;
+  mixed *ind,y;
   mapping x;
   string best;
-  int i,j,max,val,mhp;
+  int j,max,val,mhp;
   
   if (!from)
     from=ME;
@@ -268,8 +268,10 @@ find_best_combat_command(mixed from, object enemy, mapping pref) {
   if (!pointerp(obs=find_object_by_type(from,OT_COMBAT_OBJECT)))
     return best;
   mhp=QueryProp(P_MAX_HP)-QueryProp(P_HP);
-  if (objectp(enemy))
-    vul=enemy->QueryProp(P_RESISTANCE_STRENGTHS);
+  // Auskommentiert, da Resistenzen bisher nicht verwendet werden.
+  //mixed vul;
+  //if (objectp(enemy))
+  //  vul=enemy->QueryProp(P_RESISTANCE_STRENGTHS);
   if (mhp<0) mhp=0;
   foreach(object ob: obs)
   {
@@ -304,7 +306,7 @@ find_best_combat_command(mixed from, object enemy, mapping pref) {
       {
 	val=1;
       }
-      val+=eval_combat_object(obs[i],y,enemy);
+      val+=eval_combat_object(ob,y,enemy);
       if (val<max) continue;
       max=val;
       if (mappingp(y) && y[C_HEAL]>0)
