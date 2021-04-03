@@ -605,7 +605,7 @@ static string _single_spaces(string str)
 
 static mixed _return_args(string str)
 {
-  string *t,*t2,verb,s2;
+  string *t,*t2,verb;
   int i,l,j,l2;
 
   t=explode(trim(str,TRIM_BOTH)," ");
