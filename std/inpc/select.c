@@ -25,7 +25,7 @@ mapping scan_objects(mixed src) {
   //               - Im Array, falls Array angegeben
   object *obs;
   mapping res;
-  mixed x;
+  string x;
   int i,cost,cost_limit;
 
   if (mappingp(src))
@@ -170,23 +170,22 @@ object find_best_armour(mixed from, mixed typ) {
 
 object *find_best_armours(mixed from) {
   // Findet die besten Ruestungen, die gleichzeitig getragen werden koennen
-  mapping ol;
-  object *res,ob;
-  mixed *types;
-  int i;
-  
-  if (!mappingp(ol=scan_objects(from)))
+  mapping ol = scan_objects(from);
+  if (!mappingp(ol))
     return ({});
-  if (!pointerp(res=ol[AT_MISC]))
-    res=({});
-  types=m_indices(ol);
-  foreach(object typ: types)
-  { 
+
+  object* res = ol[AT_MISC];
+  if (!pointerp(res))
+    res = ({});
+
+  object ob;
+  foreach(string typ: m_indices(ol))
+  {
     if (VALID_ARMOUR_CLASS[typ]) // anderer Armour-Typ ausser AT_MISC?
     {
-      ob=find_best_armour(from,typ);
+      ob = find_best_armour(from, typ);
       if (objectp(ob))
-	res+=({ob});
+        res += ({ob});
     }
   }
   return res;
