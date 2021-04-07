@@ -10,7 +10,7 @@ Abhaengigkeiten
    bauen, benoetigt man folgende Pakete (die Namen koennen je nach
    Distribution abweichen):
 
-   libjson0/json-c, libssl, libsqlite3, libpcre3, libxml2, libgcrypt,
+   libjson0/json-c, libgnutls30, libsqlite3, libpcre3, libxml2, libgcrypt,
    libpcre3, libiconv (diese ist bei neueren Distributionen in
    libc6-dev enthalten).
 
