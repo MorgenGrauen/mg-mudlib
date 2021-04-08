@@ -1,0 +1,38 @@
+VERALTET
+SYNOPSIS
+        string md5(string arg [, int iterations])
+        string md5(bytes  arg [, int iterations])
+        string md5(int *  arg [, int iterations])
+
+BESCHREIBUNG
+        Berechnet den MD5-Hashwert von <arg>.
+        Das Argument kann ein String, eine Bytefolge oder ein Array von
+        Zahlen sein (die als Folge von Bytes betrachtet wird, wobei
+        immer nur die untersten 8 Bits Verwendung finden). Falls ein String
+        uebergeben wurde, so wird dieser in eine UTF-8-Bytefolge konvertiert
+        und davon der Hash berechnet.
+
+        Das Ergebnis wird als 32-stelliger Hexadezimalwert geliefert.
+
+        Ist das <iterations> Argument eine Zahl groesser 0, berechnet der
+        Driver den Digest mit diese Anzahl an Wiederholungen. Fehlt die
+        Angabe, fuehrt der Driver die Digest-Berechnung einmal aus.
+        
+        Jede Iteration kostet 5 Evalution-Ticks.
+
+BEISPIELE
+        string s;
+
+        s = md5("Hallo");
+        s = md5( ({ 'H', 'e', 'l', 'l', 'o' }) )
+        s = md5( ({ 'H', 'e', 'l', 'l', 'o' }), 2 )
+
+GESCHICHTE
+        Eingefuehrt in LDMud 3.2.9.
+        LDMud 3.2.12 fuehrte Zaehlenarrays als Argument ein, also auch
+          die Anzahl der Wiederholungen.
+        LDMud 3.3.717 fuehrte die Iterations-basierte Evaluationskosten ein.
+        Seit LDMud 3.3.719 abgeloest durch hash().
+
+SIEHE AUCH
+        crypt(E), md5_crypt(E), sha1(E), hash(E), hmac(E)

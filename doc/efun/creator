@@ -1,0 +1,13 @@
+SYNOPSIS
+        string creator(object|lwobject ob)
+
+BESCHREIBUNG
+        Diese Funktion ist nur im COMPAT-Modus verfuegbar.
+
+        Resultat is der Name des Erzeugers des Objektes. Dies kann ein
+        Wizard sein, oder eine Domain.
+
+        Default fuer <ob> ist this_object().
+
+SIEHE AUCH
+        getuid(E), native(C), uids(C)
