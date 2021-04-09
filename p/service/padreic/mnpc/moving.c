@@ -46,8 +46,8 @@ protected void RegisterWalk()
   }
   else
   {
-    if (find_call_out("CheckWalk") == -1)
-      call_out("CheckWalk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
+    if (find_call_out("Walk") == -1)
+      call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
   }
 }
 
@@ -64,7 +64,7 @@ public int RestartWalk()
     // Falls MNPC noch registriert ist oder noch einen Callout auf Walk hat,
     // muss nichts weiter gemacht werden.
     if (WALK_MASTER->Registration()
-        || find_call_out("CheckWalk") > -1)
+        || find_call_out("Walk") > -1)
       return -1;
     // ansonsten MNPC registrieren, falls geeignet.
     if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))<MAX_MASTER_TIME)
@@ -72,7 +72,7 @@ public int RestartWalk()
     // und mit kurzer Verzoegerung einmal laufen. (ja, absicht, hier
     // MNPC_DELAY zu nutzen - denn solange dauert das Walk vom Master
     // mindestens.)
-    call_out("CheckWalk",1+random( min(QueryProp(MNPC_DELAY)-1,8) ));
+    call_out("Walk",1+random( min(QueryProp(MNPC_DELAY)-1,8) ));
     return 1;
   }
   return 0;
@@ -82,8 +82,8 @@ protected void Stop(int movehome)
 {
   if (WALK_MASTER->Registration())
     WALK_MASTER->RemoveWalker();
-  else if (find_call_out("CheckWalk")!=-1)
-    remove_call_out("CheckWalk");
+  else if (find_call_out("Walk")!=-1)
+    remove_call_out("Walk");
   if (movehome)
   {
     move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
@@ -328,10 +328,40 @@ static int direct_move(mixed dest, int method, string direction)
   return res;
 }
 
-// Koennte eigentlich auch void sein, aber fuer die Abwaertskompatibilitaet
-// wird int gebraucht.
 int Walk()
 {
+  if (!environment())
+  {
+    // darf eigentlich nicht vorkommen.
+    raise_error("MNPC ohne Environment.\n");
+  }
+
+  int flags=QueryProp(MNPC_FLAGS);
+  if (!(flags & MNPC_WALK))
+    return 0;
+
+  //ggf. neuen Callout eintragen, bevor irgendwas anderes gemacht wird.
+  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))>=MAX_MASTER_TIME)
+    call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
+
+  // Im Kampf ggf. nicht weitergehen.
+  if ((flags & MNPC_NO_WALK_IN_FIGHT) && InFight())
+  {
+    meet_last_player=time();
+    return 1;
+  }
+
+  // MNPC anhalten, wenn lange kein Spielerkontakt
+  if (QueryProp(MNPC_WALK_TIME)+meet_last_player < time()
+      && !sizeof(filter(all_inventory(environment()),
+                 #'query_once_interactive))
+      )
+  {
+    // anhalten und ggf. auch direkt nach Hause gehen.
+    Stop(flags & MNPC_GO_HOME_WHEN_STOPPED);
+    return 0;
+  }
+
   // Ausgaenge ermitteln, zunaechst aber keine Special Exits.
   mapping exits = (environment()->QueryProp(P_EXITS));
   string *rooms = m_values(exits);
@@ -346,7 +376,6 @@ int Walk()
       ex += ({ dirs[i] });
   }
   /* Hier muessen wir auf die Zuverlaessigkeit unserer Magier bauen ... */
-  int flags=QueryProp(MNPC_FLAGS);
   if (flags & MNPC_DIRECT_MOVE)
   {
     // im direct mode keine SEs benutzbar...
@@ -388,44 +417,6 @@ int Walk()
       move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
     }
   }
-  return 1;
-}
-
-int CheckWalk()
-{
-  if (!environment())
-  {
-    // darf eigentlich nicht vorkommen.
-    raise_error("MNPC ohne Environment.\n");
-  }
-
-  int flags=QueryProp(MNPC_FLAGS);
-  if (!(flags & MNPC_WALK))
-    return 0;
-
-  //ggf. neuen Callout eintragen, bevor irgendwas anderes gemacht wird.
-  if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))>=MAX_MASTER_TIME)
-    call_out("CheckWalk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
-
-  // Im Kampf ggf. nicht weitergehen.
-  if ((flags & MNPC_NO_WALK_IN_FIGHT) && InFight())
-  {
-    meet_last_player=time();
-    return 1;
-  }
-
-  // MNPC anhalten, wenn lange kein Spielerkontakt
-  if (QueryProp(MNPC_WALK_TIME)+meet_last_player < time()
-      && !sizeof(filter(all_inventory(environment()),
-                 #'query_once_interactive))
-      )
-  {
-    // anhalten und ggf. auch direkt nach Hause gehen.
-    Stop(flags & MNPC_GO_HOME_WHEN_STOPPED);
-    return 0;
-  }
-
-  Walk();
 
   return 1;
 }

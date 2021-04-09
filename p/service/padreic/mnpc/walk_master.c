@@ -78,7 +78,7 @@ public varargs void RegisterWalker(int time, int rand, closure walk_closure)
   closure func = walk_closure;
   if (!closurep(func))
   {
-    func=symbol_function("CheckWalk", previous_object());
+    func=symbol_function("Walk", previous_object());
     if (!func)
       raise_error("RegisterWalker() call from Object without Walk() function.\n");
   }
