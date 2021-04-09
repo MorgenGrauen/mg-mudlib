@@ -14,6 +14,13 @@ inherit "/std/living/moving";
 #define ENV    environment
 #define PO     previous_object()
 
+struct exit_s {
+    string cmd;             // Kommando fuer Benutzung
+    string|closure room;    // Pfad oder ausfzufuehrende Closure
+    string msg;             // Bewegungsrichtung beim Benutzen
+    int special;            // == 1 fuer special exits
+};
+
 // Letzter Spielerkontakt. -1, wenn der MNPC inaktiv zuhause rumsteht
 nosave int meet_last_player;
 
@@ -249,7 +256,7 @@ static int mnpc_PreventFollow(object dest)
 }
 
 // Bewegungssimulation (Bewegungsmeldung) fuer bewegende non-livings
-static int direct_move(mixed dest, int method, string direction)
+protected int direct_move(object|string dest, int method, string direction)
 {
    int res, para, tmp;
    string textout, textin, *mout, vc, fn;
@@ -328,6 +335,55 @@ static int direct_move(mixed dest, int method, string direction)
   return res;
 }
 
+// Sammelt verfuegbare und prinzipiell benutzbare Ausgaenge
+// Standardverhalten beruecktsichtigt P_EXITS und ob special Exits benutzt
+// werden duerfen.
+// Aber ueberladene Varianten koennten voellig andere Quellen fuer Ausgaenge
+// (z.B. eigene Props von Magiern) beruecksichtigen.
+struct exit_s *PresentExits(mapping exits=0)
+{
+    if (!mappingp(exits))
+        exits = (environment()->Query(P_EXITS, F_VALUE));
+    // Aufgrund der MNPC_FLAGS bestimmen ob nur normale Ausgaenge genutzt
+    // werden duerfen
+    int flags=QueryProp(MNPC_FLAGS);
+    flags = !(flags & MNPC_DIRECT_MOVE) && !(flags & MNPC_ONLY_EXITS);
+    // flags ist jetzt nur noch ja/nein bzgl. Special Exits
+
+    return m_values(map(exits,
+        function struct exit_s (string cmd, <string|closure>* arr)
+        {
+            if (flags || !closurep(arr[0]))
+              return (<exit_s> cmd:cmd, room:arr[0], msg:arr[1],
+                      special:closurep(arr[0]));
+            return 0;
+        }
+        )) - ({0}); // 0 aufgrund nicht benutzbarer SEs
+}
+
+// Prueft die Ausgaenge auf Benutzbarkeit durch diesen NPC - standardmaessig
+// durch Aufruf von PreventEnter() und liefert einen zufaelligen benutzbaren
+// Ausgang.
+// Kann Ueberladen werden, um eine andere Art der Auswahl zu bewerkstelligen.
+struct exit_s SelectExit(struct exit_s *exitlist=0)
+{
+    if (!exitlist)
+        exitlist = PresentExits();
+    // Bei normalen Ausgaengen per PreventEnter() pruefen, ob der Zielraum OK
+    // ist. Special Exits koennen nicht geprueft und sind OK. (In der Liste
+    // sind bei originalem PresentExits() nur special exits, wenn fuer den
+    // MNPC erlaubt.)
+    exitlist = filter(exitlist, function int (struct exit_s ex)
+    {
+        return ex.special || !PreventEnter(ex.room);
+    });
+
+    // Und zufaellig einen aussuchen
+    if (sizeof(exitlist))
+        return exitlist[random(sizeof(exitlist))];
+    return 0;
+}
+
 int Walk()
 {
   if (!environment())
@@ -340,18 +396,18 @@ int Walk()
   if (!(flags & MNPC_WALK))
     return 0;
 
-  //ggf. neuen Callout eintragen, bevor irgendwas anderes gemacht wird.
+  // ggf. neuen Callout eintragen, bevor irgendwas anderes gemacht wird.
   if ((QueryProp(MNPC_DELAY)+QueryProp(MNPC_RANDOM))>=MAX_MASTER_TIME)
     call_out("Walk", QueryProp(MNPC_DELAY)+random(QueryProp(MNPC_RANDOM)));
 
-  // Im Kampf ggf. nicht weitergehen.
+  // Im Kampf ggf. temporaer nicht weitergehen.
   if ((flags & MNPC_NO_WALK_IN_FIGHT) && InFight())
   {
     meet_last_player=time();
     return 1;
   }
 
-  // MNPC anhalten, wenn lange kein Spielerkontakt
+  // MNPC anhalten, wenn lange kein Spielerkontakt. Vom WALK_MASTER abmelden.
   if (QueryProp(MNPC_WALK_TIME)+meet_last_player < time()
       && !sizeof(filter(all_inventory(environment()),
                  #'query_once_interactive))
@@ -362,60 +418,35 @@ int Walk()
     return 0;
   }
 
-  // Ausgaenge ermitteln, zunaechst aber keine Special Exits.
-  mapping exits = (environment()->QueryProp(P_EXITS));
-  string *rooms = m_values(exits);
-  string *dirs  = m_indices(exits);
-  string *ex = ({});
+  // Zielausgang ermitteln
+  struct exit_s ex = SelectExit();
 
-  // Bei normalen Ausgaengen wird geprueft, ob wir in den Zielraum
-  // reinduerfen.
-  for (int i=sizeof(rooms)-1; i>=0; i--)
-  {
-    if (!PreventEnter(rooms[i]))
-      ex += ({ dirs[i] });
-  }
-  /* Hier muessen wir auf die Zuverlaessigkeit unserer Magier bauen ... */
+  // Im direct mode wird die Bewegung selbst implementiert -> YNMV!
   if (flags & MNPC_DIRECT_MOVE)
   {
-    // im direct mode keine SEs benutzbar...
-    if (sizeof(ex))
+    // in diesem Fall sind keine SEs benutzbar, aber die werden von
+    // PresentExit() dann auch nicht geliefert.
+    if (ex)
     {
-       string tmp=ex[random(sizeof(ex))];
-       direct_move(explode(exits[tmp], "#")[<1], M_GO, "nach "+capitalize(tmp));
+      direct_move(ex.room, M_GO, "nach "+capitalize(ex.msg));
     }
     else
     {
-       // Hngl. Nach Hause... Aber nicht anhalten.
-       direct_move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK, 0);
-     }
+      // Hngl. Ohne Ausgaenge nach Hause gehen... aber nicht anhalten, von
+      // dort gehts ja vielleicht weiter.
+      direct_move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK, 0);
+    }
   }
-  else if (flags & MNPC_ONLY_EXITS)
+  else if (ex)
   {
-    // logischerweise auch keine SEs benutzen...
-    if (sizeof(ex))
-    {
-      command(ex[random(sizeof(ex))]); /* Irgendwohin gehen */
-    }
-    else
-    {
-      // Hngl. Nach Hause... Aber nicht anhalten.
-      move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
-   }
+    // Dies ist der Normalfall: Ausgang per Kommando benutzen
+    command(ex.cmd);
   }
   else
   {
-    // erst jetzt die special exits mitbenutzen.
-    ex += m_indices(ENV()->QueryProp(P_SPECIAL_EXITS));
-    if (sizeof(ex))
-    {
-      command(ex[random(sizeof(ex))]); /* Irgendwohin gehen */
-    }
-    else
-    {
-      // Hngl. Gar keine Ausgaenge. Nach Hause... aber nicht anhalten.
-      move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
-    }
+    // Hngl. Ohne Ausgaenge nach Hause gehen... aber nicht anhalten, von
+    // dort gehts ja vielleicht weiter.
+    move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
   }
 
   return 1;
