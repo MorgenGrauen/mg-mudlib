@@ -38,9 +38,6 @@
 //static mixed _query_uid();
 //static mixed _query_euid();
 
-// Property-Initialisation
-protected void InitializeProperties();
-
 // direct property access
 public varargs mixed Set(string name, mixed Value, int Type, int extern);
 public varargs mixed Query(string name, int Type);

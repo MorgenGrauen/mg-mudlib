@@ -32,17 +32,8 @@ private mapping properties;
 // security-flag
 private nosave int closure_call;
 
-// Initialisierung der Props. Kann leider momentan nicht private sein, weil
-// Padreic son komisches Objekt hat, was die Funktion hier ruft.
-// TODO: irgendwann mal private machen.
-// TODO: Da props jetzt einfach bei der Deklaration initlisiert wird,
-// eruebrigt sich diese Funktion eigentlich. Bis auf Padreics Objekt...
-protected void InitializeProperties() {
-  prop = ({ ([]), ([]), ([]), ([]) });
-  return;
-}
 
-// Props nur dann initialisieren, wenn sie es noch nicht sind
+// Z.Zt. nur Abschalten des Resets noetig.
 protected void create() {
   // Blueprints in /std benoetigenkeinen Reset ....
   if (object_name()=="/std/thing/properties")
