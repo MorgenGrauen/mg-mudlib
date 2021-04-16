@@ -512,7 +512,7 @@ void add_player( object pl )
                 " ...";
         }
         else if ( !killer_name ) {
-                if ( ({string}) pl->QueryProp(P_KILLER) == "gift" ){
+                if ( ({object|string}) pl->QueryProp(P_KILLER) == "gift" ){
                     killer_name = "Vergiftung";
                     kgen = FEMALE;
                     kart = 1;
