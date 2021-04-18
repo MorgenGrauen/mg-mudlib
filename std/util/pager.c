@@ -48,18 +48,18 @@ mixed call(closure ctrl, mixed ctrlargs)
 }
 
  
-varargs int eval_command(mixed in, mixed pinfo)
+varargs int eval_command(mixed input, mixed pinfo)
 {
   string cprompt, tmp;
   cprompt = "";
-  if(in == "q" || in == "x")
+  if(input == "q" || input == "x")
   {
     if(closurep(pinfo[CTRL])) apply(pinfo[CTRL], pinfo[CARG]);
     return 1;
   }
   else
-    if(!in || (stringp(in) && !sizeof(in))) pinfo[CURL] += pinfo[PAGE];
-    else if(in != -1) return 0;
+    if(!input || (stringp(input) && !sizeof(input))) pinfo[CURL] += pinfo[PAGE];
+    else if(input != -1) return 0;
 
   if(pinfo[CURL] >= pinfo[MAXL]) 
     return (call(pinfo[CTRL], pinfo[CARG]), 1); 

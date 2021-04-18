@@ -426,21 +426,21 @@ mixed RescueText() {
 }
 
 static int ShowWritten(int f, int l, int num) {
-  string s, t, c, p, in;
+  string s, t, c, p, indent;
   int i;
 
   if (num) {
     if (l >= 100) {
       p = "%3d%s%s";
-      in = " ";
+      indent = " ";
     }
     else {
       p = "%2d%s%s";
-      in = "  ";
+      indent = "  ";
     }
   }
   else
-    in = "";
+    indent = "";
 
   for (t="", i=l-1; i>=f; i--) {
     if (i == cur)
@@ -464,9 +464,9 @@ static int ShowWritten(int f, int l, int num) {
   }
   else c= " ";
 
-  s="Das hast Du bisher geschrieben:\n"+in+" \
+  s="Das hast Du bisher geschrieben:\n"+indent+" \
 --------------------------\n\
-"+t+in+c+"\
+"+t+indent+c+"\
 --------------------------";
   ({void})this_player()->More(s,0,symbol_function("input_func",this_object()));
   return 1;
