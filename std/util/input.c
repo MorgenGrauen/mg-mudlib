@@ -21,10 +21,10 @@ varargs void input(mixed prompt, mixed pargs, mixed ctrl, mixed ctrlargs)
   input_to("done", INPUT_PROMPT, prompttext, prompt, pargs, ctrl, ctrlargs);
 }
 
-void done(string in, mixed prompt, mixed pargs, mixed ctrl, mixed ctrlargs)
+void done(string input, mixed prompt, mixed pargs, mixed ctrl, mixed ctrlargs)
 {
   if(closurep(ctrl) &&
-     apply(ctrl, ({ in }) + (pointerp(ctrlargs) ? ctrlargs : ({})))) 
+     apply(ctrl, ({ input }) + (pointerp(ctrlargs) ? ctrlargs : ({})))) 
     return;
   input(prompt, pargs, ctrl, ctrlargs);
 }

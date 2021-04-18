@@ -89,11 +89,11 @@ int search(mixed pinfo)
   return l;
 }
 
-varargs int eval_command(mixed in, mixed pinfo)
+varargs int eval_command(mixed input, mixed pinfo)
 {
   cprompt = "";
-  if(stringp(in))
-    switch(in)
+  if(stringp(input))
+    switch(input)
     {
     case "?":
       write(MSG_HELP+"\n");
@@ -117,26 +117,26 @@ varargs int eval_command(mixed in, mixed pinfo)
     default:
     {
       int l;
-      if(l = to_int(in))
+      if(l = to_int(input))
       {
         if(l > pinfo[MAXL] || l < 1) return (cprompt = MSG_ILLEGAL, 0);
         pinfo[CURL] = l;
         break;
       }
-      if(sizeof(in) && in[0] == '/')
+      if(sizeof(input) && input[0] == '/')
       {
-	if(sizeof(in) == 1)
+	if(sizeof(input) == 1)
 	{
 	  if(!pinfo[REGX]) return (cprompt = MSG_NO_REGX, 0);
 	}
-	else pinfo[REGX] = in[1..];
+	else pinfo[REGX] = input[1..];
 	if(l = search(pinfo)) pinfo[CURL] = l;
 	else return (cprompt = MSG_NOT_FOUND, 0);
       }
-      else return ::eval_command(in, pinfo);    
+      else return ::eval_command(input, pinfo);    
       break;
     }
     }
-  else return ::eval_command(in, pinfo);
+  else return ::eval_command(input, pinfo);
   return ::eval_command(-1, pinfo);
 }   

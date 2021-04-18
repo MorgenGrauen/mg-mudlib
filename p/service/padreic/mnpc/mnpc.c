@@ -36,10 +36,10 @@ int InsertEnemy(object enemy)
    return i;
 }
 
-varargs int move(object|string dest, int meth, string dir, string out,
-  string in)
+varargs int move(object|string dest, int meth, string dir, string textout,
+  string textin)
 {
-   int i=npc::move(dest, meth, dir, out, in);
+   int i=npc::move(dest, meth, dir, textout, textin);
    if (i!=1) return i;
    moving::mnpc_move();
    return 1;
