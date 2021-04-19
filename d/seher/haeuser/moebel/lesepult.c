@@ -16,8 +16,8 @@
 inherit LADEN("swift_std_container");
 
 static string owner;
-string le(string key);
-string in(string key);
+string rd_lettern(string key);
+string rd_inhalt(string key);
 int cmd_eintragen(string str);
 int cmd_lesen(string str);
 int take_page(string str);
@@ -237,8 +237,8 @@ void AddTheOldDetails()
  AddReadDetail("kapitel",BS(
  "Welches Kapitel willst Du denn lesen ? Sie sind sicher durchn"+
  "ummeriert, wenn man schon etwas im Buch niedergeschrieben hat.",78));
- AddReadDetail(({"name","namen","buchstaben","lettern"}),#'le);
- AddReadDetail(({"inhalt","inhaltsverzeichnis"}),#'in);
+ AddReadDetail(({"name","namen","buchstaben","lettern"}),#'rd_lettern);
+ AddReadDetail(({"inhalt","inhaltsverzeichnis"}),#'rd_inhalt);
  SetProp(P_MATERIAL,([MAT_LEATHER:10,MAT_PAPER:15,MAT_CEDAR:75]));
 }
 
@@ -471,14 +471,14 @@ int i,j;
  return res;
 }
 
-string le(string key)
+string rd_lettern(string key)
 {
  return "\n"+
  "    De Templum Os Hel\n\n"+
  calc_name()+"\n\n";
 }
 
-string in(string key)
+string rd_inhalt(string key)
 {
  if (owner!=getuid(this_player()))
  return "Dort steht allerdings nichts. Seltsam.\n";
