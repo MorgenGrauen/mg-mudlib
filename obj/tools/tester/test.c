@@ -750,7 +750,7 @@ int search_m(object r)
 */
 
 int search(string arg)
-{   string *in,dum;
+{   string *arg_array,dum;
     object targ;
     int    wo;
 
@@ -766,7 +766,7 @@ int search(string arg)
     notify_fail("OTEST-Syntax: otest [detail|smell|sound] "+
                  "{<objekt>[in mir|im raum]|hier}\n");
 
-    if (!arg || !stringp(arg) || sizeof(in=old_explode(arg," "))<1)
+    if (!arg || !stringp(arg) || sizeof(arg_array=old_explode(arg," "))<1)
     {
         output=PL;
         scanrun=0;
@@ -774,9 +774,9 @@ int search(string arg)
         return search_d(environment(PL));
     }
 
-    if (sizeof(in)>1)
+    if (sizeof(arg_array)>1)
     {
-        arg=implode(in[1..]," ");
+        arg=implode(arg_array[1..]," ");
         if (member(({"hier","raum",""}),arg)!=-1)
             targ=environment(PL);
         else
@@ -810,7 +810,7 @@ int search(string arg)
     scanrun=0;
     master=PL;
 
-    switch(in[0])
+    switch(arg_array[0])
     {
         case "de" :
         case "detail" :
