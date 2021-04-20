@@ -21,7 +21,11 @@
 #include <thing/properties.h>
 #include <player.h>
 
-private nosave mapping colorstrings;
+struct lsformats {
+    mapping templates;
+    mapping colormap;
+};
+private nosave struct lsformats lstemplates;
 private nosave mapping oldman_result;
 
 //                        ###################
@@ -51,58 +55,74 @@ mixed _query_localcmds()
 // cmdline: Kommandozeile
 //
 
-//
-// Funktionen zum Sortieren und fuer filter_ldfied/map_ldfied
-//
-
-
+// Helfer fuer map() zum extrahieren benutzerdefinierte Farben aus P_VARIABLES
 private string _get_color(string color)
 {
   return COLORS[lower_case(color)];
 }
 
-
+// Ermittelt Farbtags und Formattemplates mit Platzhaltern fuer ls-Ausgaben
+// und bereitet beides fuer die Nutzung durch terminal_colours() vor.
 private void SetColorstrings()
 {
-  string tmp,term;
-  mapping vars;
-  vars=QueryProp(P_VARIABLES);
-  colorstrings=m_allocate(0,2);
+  string term = QueryProp(P_TTY);
+  mapping vars = QueryProp(P_VARIABLES);
+  // 2nd value in templates is the additional amount of space the templates
+  // itself needs in addition to the value inserted later in place of %s.
+  lstemplates = (<lsformats> templates: m_allocate(3,2),
+                             colormap:m_allocate(4,1) );
+  // 0-Key ist der default, wenn ein Platzhalter nicht gefunden wird. Wird
+  // z.B. fuer Ende-Tags benutzt.
+  lstemplates.colormap[0]=ANSI_NORMAL;
+  // Template fuer die Ausgabe und die Defaults fuer die Farbplatzhalter je
+  // nach Terminal einstellen.
   switch(term=QueryProp(P_TTY))
   {
     case "vt100":
+      lstemplates.templates[DIR] = "%^LS_DIR_START%^%s/%^LS_DIR_END%^";
+      lstemplates.templates[DIR, 1] = 1;
+      lstemplates.templates[OBJ] = "%^LS_OBJ_START%^%s%^LS_OBJ_END%^";
+      lstemplates.templates[VC] = "%^LS_VC_START%^%s%^LS_VC_END%^";
+      lstemplates.colormap["LS_DIR_START"]=ANSI_BOLD;
+      lstemplates.colormap["LS_OBJ_START"]=ANSI_INVERS;
+      lstemplates.colormap["LS_VC_START"]=ANSI_INVERS;
+      // Die *_END Platzhalter sind nicht explizit aufgefuehrt, solange sie
+      // nur ANSI_NORMAL normal waeren - in dem Fall benutzt terminal_colour()
+      // spaeter den 0-Key in colormap
+      break;
     case "ansi":
-      if(stringp(vars["LS_DIR"]))
-        tmp=implode(map(explode(vars["LS_DIR"],"+"),#'_get_color),
-                    "");
-      else
-        tmp = (term == "ansi") ? ANSI_BLUE+ANSI_BOLD: ANSI_BOLD;
-      colorstrings[DIR] = tmp+"%s"+(term == "vt100"?"/":"")+ANSI_NORMAL;
-      if(term == "vt100") colorstrings[DIR, 1] = 1;
-      if(stringp(vars["LS_OBJ"]))
-        tmp=implode(map(explode(vars["LS_OBJ"],"+"),#'_get_color),
-                    "");
-      else
-        tmp = (term == "ansi") ? ANSI_RED : ANSI_INVERS;
-      colorstrings[OBJ] = tmp+"%s"+ANSI_NORMAL;
-      if(stringp(vars["LS_VC"]))
-        tmp=implode(map(explode(vars["LS_VC"],"+"),#'_get_color),
-                    "");
-      else
-        tmp = (term == "ansi") ? ANSI_PURPLE : ANSI_INVERS;
-      colorstrings[VC] = tmp+"%s"+ANSI_NORMAL;
+      lstemplates.templates[DIR] = "%^LS_DIR_START%^%s%^LS_DIR_END%^";
+      lstemplates.templates[OBJ] = "%^LS_OBJ_START%^%s%^LS_OBJ_END%^";
+      lstemplates.templates[VC] = "%^LS_VC_START%^%s%^LS_VC_END%^";
+      lstemplates.colormap["LS_DIR_START"]=ANSI_BLUE+ANSI_BOLD;
+      lstemplates.colormap["LS_OBJ_START"]=ANSI_RED;
+      lstemplates.colormap["LS_VC_START"]=ANSI_PURPLE;
+      // Die *_END Platzhalter sind nicht explizit aufgefuehrt, solange sie
+      // nur ANSI_NORMAL normal waeren - in dem Fall benutzt terminal_colour()
+      // spaeter den 0-Key in colormap
       break;
+    // In diesen Faellen keine Farbcodeplatzhalter, nur zeichenbasierte
+    // Markierungen anhaengen.
     case "dumb":
-      colorstrings[DIR] = "%s/"; colorstrings[DIR, 1] = 1;
-      colorstrings[OBJ] = "%s*"; colorstrings[OBJ, 1] = 1;
-      colorstrings[VC]  = "%s*"; colorstrings[VC , 1] = 1;
-      break;
     default:
-      colorstrings[DIR] = "%s";
-      colorstrings[OBJ] = "%s";
-      colorstrings[VC]  = "%s";
+      m_add(lstemplates.templates, DIR, "%s/", 1);
+      m_add(lstemplates.templates, OBJ, "%s*", 1);
+      m_add(lstemplates.templates, VC, "%s*", 1);
+      break;
   }
-  return;
+  // Die Defaults von oben koennen mit magierindividuellen Einstellungen
+  // ueberschrieben werden. Offensichtlich sind die nur wirksam fuer
+  // vt100/ansi und man koennte auch ANSI-Sequenzen einstellen, die ein vt100
+  // nicht versteht...
+  if(stringp(vars["LS_DIR"]))
+      lstemplates.colormap["LS_DIR_START"]=implode(map(
+            explode(vars["LS_DIR"],"+"), #'_get_color),"");
+  if(stringp(vars["LS_OBJ"]))
+      lstemplates.colormap["LS_OBJ_START"]=implode(map(
+            explode(vars["LS_OBJ"],"+"), #'_get_color),"");
+  if(stringp(vars["LS_VC"]))
+      lstemplates.colormap["LS_VC_START"]=implode(map(
+            explode(vars["LS_VC"],"+"), #'_get_color),"");
 }
 
 
@@ -114,19 +134,20 @@ private string _ls_output_short(mixed filedata,
   maxlen-=sizeof(tmp);
   switch(filedata[FILESIZE])
   {
-    case FSIZE_DIR: tmp=sprintf(colorstrings[DIR],tmp);
-             maxlen-=colorstrings[DIR,1]; break;
-    case FSIZE_NOFILE: tmp=sprintf(colorstrings[VC],tmp);
-             maxlen-=colorstrings[VC,1]; break;
+    case FSIZE_DIR: tmp=sprintf(lstemplates.templates[DIR],tmp);
+             maxlen-=lstemplates.templates[DIR,1]; break;
+    case FSIZE_NOFILE: tmp=sprintf(lstemplates.templates[VC],tmp);
+             maxlen-=lstemplates.templates[VC,1]; break;
     default: if (find_object(filedata[FULLNAME]))
              {
-               maxlen-=colorstrings[OBJ,1];
-               tmp=sprintf(colorstrings[OBJ],tmp); break;
+               maxlen-=lstemplates.templates[OBJ,1];
+               tmp=sprintf(lstemplates.templates[OBJ],tmp); break;
              }
   }
   if (!maxcount) return tmp+"\n";
-  return sprintf("%-*s%s",(maxlen+sizeof(tmp)),tmp,
-                 ((counter++)==maxcount?(counter=0,"\n"):"  "));
+  return terminal_colour(sprintf("%-*s%s",(maxlen+sizeof(tmp)),tmp,
+                 ((counter++)==maxcount?(counter=0,"\n"):"  ")),
+                 lstemplates.colormap);
 }
 
 private int _ls_maxlen(mixed filedata,int flags,int maxlen)
@@ -153,7 +174,7 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
   int ftime=filedata[FILEDATE];
   string date;
   if ((time()-ftime)>31536000) // ein Jahr
-    date=strftime("%b %e %Y", ftime);
+    date=strftime("%b %e  %Y", ftime);
   else
     date=strftime("%b %e %H:%M", ftime);
 
@@ -194,18 +215,19 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
     }
     else group="mud";
   }
-  if (dir) base=sprintf(colorstrings[DIR],base);
+  if (dir) base=sprintf(lstemplates.templates[DIR],base);
   else
   {
     if (ob)
     {
       if (size==FSIZE_NOFILE)
-        base=sprintf(colorstrings[VC],base);
+        base=sprintf(lstemplates.templates[VC],base);
       else
-        base=sprintf(colorstrings[OBJ],base);
+        base=sprintf(lstemplates.templates[OBJ],base);
     }
   }
-  return sprintf(("%c%c%c%c %3d" + ((flags&LS_U) ? " %-24.24s" : "%-0.1s")
+  return terminal_colour(
+           sprintf(("%c%c%c%c %3d" + ((flags&LS_U) ? " %-24.24s" : "%-0.1s")
                  +((flags&LS_G) ? " %-8.8s" : "%0.1s") + " %8s %s %s\n"),
                  (dir ? 'd' : '-'),
                  (!funcall(valid_read,full,getuid(),
@@ -216,7 +238,8 @@ private string _ls_output_long(mixed filedata, int flags,closure valid_read,
                  (dir ? (sizeof((get_dir(full+"/*")||({}))-({".",".."}))) : 0),
                  creator, group,
                  (dir ? "-" : size==FSIZE_NOFILE ? "<vc>" : to_string(size)),
-                 date, base);
+                 date, base),
+            lstemplates.colormap);
 }
 
 
