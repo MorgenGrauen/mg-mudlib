@@ -7,23 +7,30 @@
 #ifndef __THING_PROPERTIES_H__
 #define __THING_PROPERTIES_H__
 
-// special defines
-
+// Flags indexing <prop> and they are used as well for Set() calls
 #define F_VALUE         0
 #define F_MODE          1
 #define F_SET_METHOD    2
 #define F_QUERY_METHOD  3
+
+// Flags for Set() to modify/manipulate F_MODE of a property in bit-wise
+// manner
 #define F_MODE_AS       4
 #define F_MODE_AD       5
 
+// mode flags for Properties
 #define SAVE            64
 #define PROTECTED       128  // only this_object() can change the values
 #define SECURED         256  // like PROTECTED, but never resetable
 #define NOSETMETHOD     512  // Keine Set-Methode => Nicht mofifizierbar
-#define SETMNOTFOUND	1024 // Keine Set-Methode gefunden
-#define QUERYMNOTFOUND	2048 // Keine Query-Methode gefunden
-#define QUERYCACHED	4096
-#define SETCACHED	8192
+// Problem with the following: shadows, default methods etc. may change the
+// result at runtime and they do not save that much time (or even at all?)
+// because of the apply cache of the driver. Not used since 1995. But
+// be careful about re-using the values because of ancient (!) savefiles
+#define SETMNOTFOUND	1024 // Keine Set-Methode gefunden. Not used.
+#define QUERYMNOTFOUND	2048 // Keine Query-Methode gefunden. Not used.
+#define QUERYCACHED	4096 // Not used anymore
+#define SETCACHED	8192 // Not used anymore
 
 #endif // __THING_PROPERTIES_H__
 
@@ -33,10 +40,6 @@
 #define __THING_PROPERTIES_H_PROTO__
 
 // prototypes
-
-// (E)UID-Methods
-//static mixed _query_uid();
-//static mixed _query_euid();
 
 // direct property access
 public varargs mixed Set(string name, mixed Value, int Type, int extern);

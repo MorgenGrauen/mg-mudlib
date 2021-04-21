@@ -24,9 +24,16 @@
 
 
 // the mapping where the actual properties are stored. Direct initialization.
+// Indexed with F_VALUE, F_MODE, F_SET_METHOD and F_QUERY_METHOD
+// F_MODE, F_SET_METHOD and F_QUERY_METHOD are usually 'sparse' (i.e. there is
+// no entry for most properties), therefore it is more memory-efficient to
+// store them like this than in one mapping, although it requires more
+// mapping lookups.
 private nosave mapping *prop = ({ ([]), ([]), ([]), ([]) });
 
-// the mapping that is used for saving
+// the mapping that is used for saving. During save_object/restore_object it
+// contains the properties with SAVE flag. 
+// This is empty outside of a save_object() or restore_object() call!
 private mapping properties;
 
 // security-flag
@@ -171,8 +178,6 @@ public mixed SetProp( string name, mixed Value )
   }
 
   // _set_*-Methode vorhanden? falls ja, aufrufen.i
-  // TODO: Closurecache einfuehren und Funktionaufruf nur noch machen, wenn es
-  // die _set_* auch gibt?
   if (call_resolved(&result,this_object(),"_set_"+name,Value ))
         return result;
 
@@ -220,7 +225,6 @@ public mixed QueryProp( string name )
   }
   
   // _query_*-Methode vorhanden? falls ja, aufrufen.
-  // TODO: Closurecache und nur rufen, wenn es _query_* auch gibt?
   if (call_resolved(&result,this_object(),"_query_"+name))
     return result;
   
@@ -229,7 +233,10 @@ public mixed QueryProp( string name )
 }
 
 
-// Das gesamte Property-Mapping auf einen Schlag setzen
+// Viele Properties auf einen Schlag setzen.
+// genutzt von simul_efun zum Setzen aller Properties, welche im
+// restore_object() eingelesen wurden.
+// Andere objekt-externe Nutzung ausdruecklich **NICHT** supportet!
 public void SetProperties( mapping props )
 {
   string *names;
@@ -274,6 +281,9 @@ public void SetProperties( mapping props )
 
 
 // Ein Mapping mit allen Properties zurueckgeben
+// genutzt von simul_efun im save_object() zur Abfrage aller Properties, um
+// hieraus die gespeicherten zu bestimmen.
+// Andere objekt-externe Nutzung ausdruecklich **NICHT** supportet!
 public mapping QueryProperties()
 {
   mapping props;
@@ -306,9 +316,16 @@ public mixed *__query_properties()
 
 
 // mapping Properties setzen zum Speichern (per save_object())
-// Aufruf nur aus simul_efun heraus
+// Aufruf nur aus simul_efun heraus (sinnvoll). Diese fragt alle Properties
+// via QueryProperties() ab, filtert alle nicht-gespeicherten Properties aus
+// und setzt ueber diese Funktion die gespeicherten in der tatsaechlich von
+// save_object() gespeicherten Variable <properties>.
 public void  _set_save_data(mixed data) { properties = data; }
 
 // mapping Properties zum Restoren zurueckgeben
+// Aufruf nur aus simul_efun heraus (sinnvoll). Diese ruft nach dem
+// restore_object die restaurierten Properties hiermit ab und schreibt sie
+// nach Konditionierung via SetProperties() zurueck, damit die Daten (wieder)
+// in <prop> zur Verfuegung steheh.
 public mixed _get_save_data()           { return properties; }
 
