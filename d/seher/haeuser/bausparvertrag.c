@@ -63,15 +63,15 @@ protected void create()
 
 string _query_long()
 {
-  int max;
-
-  max = (Query(P_AUTOLOADOBJ)[1] & V_FAST) ? SUMME_S : SUMME_L;
+  int req_points = (Query(P_AUTOLOADOBJ)[1] & V_FAST) ? SUMME_S : SUMME_L;
+  
   if (Query(P_AUTOLOADOBJ)[1] & V_RAUM)
-    max = max * 4/10;
+    req_points = req_points * 4/10;
+
   return break_string(sprintf(
     "Dies ist ein Bausparvertrag. Du hast bisher %d (von %d) Punkten "
     "eingezahlt.\n",
-      QueryProp(P_AUTOLOADOBJ)[0], max));
+      QueryProp(P_AUTOLOADOBJ)[0], req_points));
 }
 
 #if 0
