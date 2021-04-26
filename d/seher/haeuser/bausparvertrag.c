@@ -68,9 +68,10 @@ string _query_long()
   max = (Query(P_AUTOLOADOBJ)[1] & V_FAST) ? SUMME_S : SUMME_L;
   if (Query(P_AUTOLOADOBJ)[1] & V_RAUM)
     max = max * 4/10;
-  return sprintf(
-      "Dies ist ein Bausparvertrag. Du hast bisher %d (von %d) Punkten eingezahlt.\n",
-      QueryProp(P_AUTOLOADOBJ)[0], max);
+  return break_string(sprintf(
+    "Dies ist ein Bausparvertrag. Du hast bisher %d (von %d) Punkten "
+    "eingezahlt.\n",
+      QueryProp(P_AUTOLOADOBJ)[0], max));
 }
 
 #if 0
