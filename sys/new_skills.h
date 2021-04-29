@@ -87,10 +87,16 @@
 #define SK_DEFEND_OTHER             "DefendOther"
 #define SK_FIGHT                    "Fight"
 #define SK_INFORM_DEFEND            "InformDefend"
+// SK_MAGIC_ATTACK ersetzt den waffenlosen Angriff auf "magische Art und
+// Weise"
 #define SK_MAGIC_ATTACK             "MagicAttack"
+// SK_MAGIC_DEFENSE wird im Defend ausgewertet und gibt einen
+// Verteidigungsbonus auf "magische Art und Weise"
 #define SK_MAGIC_DEFENSE            "MagicDefense"
 #define SK_NIGHTVISION              "Nightvision"
 #define SK_SHOOT                    "Shoot"
+// SK_SPELL_DEFEND wird als Spellabwehr bei Angriffen durch die Funktion
+// SpellDefend() im Living auswertet.
 #define SK_SPELL_DEFEND             "SpellDefend"
 #define SK_SWORDFIGHTING            FIGHT(WT_SWORD)
 #define SK_TWOHANDED                "Bihand"
