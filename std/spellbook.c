@@ -360,6 +360,8 @@ UseSpell(object caster, string spell, mapping sinfo) {
     }
   }
 
+  // Auf P_NO_ATTACK pruefen (Default), es sei denn, das ist im Skill nicht
+  // gewuenscht.
   if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY) &&
       ({int})caster->QueryProp(P_ATTACK_BUSY)) {
     if (txt=ski[SI_ATTACK_BUSY_MSG])
@@ -441,7 +443,9 @@ UseSpell(object caster, string spell, mapping sinfo) {
   if(res==NICHT_ZUSTAENDIG)
     return 0;
 
-  if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_QUERY))
+  // P_NO_ATTACK setzen (Default), es sei denn, das ist vom Skill nicht
+  // gewuenscht.
+  if (!(ski[SI_NO_ATTACK_BUSY]&NO_ATTACK_BUSY_SET))
   	{
 	if (!ski[SI_ATTACK_BUSY_AMOUNT])  
     		({int})caster->SetProp(P_ATTACK_BUSY,1);

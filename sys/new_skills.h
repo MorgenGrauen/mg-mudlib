@@ -386,9 +386,13 @@
   // Besonderheiten
 
 // ===== Fuer das Attack-Busy-Handling: =====
-
+// Die Werte stehen in SI_NO_ATTACK_BUSY von Skills, werden vom Spellbook
+// geprueft und haben folgende Bedeutung:
+// Nach Ausfuehrung des Skills kein P_ATTACK_BUSY setzen
 #define NO_ATTACK_BUSY_SET          0x001
+// Vor Ausfuehrung des Skills kein P_ATTACK_BUSY pruefen
 #define NO_ATTACK_BUSY_QUERY        0x002
+// Weder Pruefen noch Setzen.
 #define NO_ATTACK_BUSY              0x003
 
 // ===== Magie-Arten: =====
