@@ -1289,9 +1289,12 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
   object stat = find_object("/d/erzmagier/zesstra/pacstat"); // TODO: remove
   if ( spell[SP_PHYSICAL_ATTACK] )
   {
-    // Minimum ist auch hier 1.
+    // Schutz bestimmen, Minimum 1, aber nur wenn P_BODY > 0
+    // Um Rundungsverluste zu reduzieren, wird P_BODY anfangs mit 10000
+    // skaliert. Beim runterskalieren wird aufgerundet (Addition von
+    // 5000 vor Division).
     int body = QueryProp(P_BODY)+QueryAttribute(A_DEX);
-    res2 = (body/4 + random(body*3/4 + 1)) || 1;
+    res2 = ((body/4 + random(body*3/4 + 1) + 5000)/10000) || 1;
     if (stat)
       stat->bodystat(body, res2, random(body)+1);
 

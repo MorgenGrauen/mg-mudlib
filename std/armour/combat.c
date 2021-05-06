@@ -55,9 +55,12 @@ int QueryDefend(string|string* dam_type, int|mapping spell, object enemy)
             && sizeof(filter(dam_type,PHYSICAL_DAMAGE_TYPES)))
         { 
           // Schutz bestimmen, Minimum 1, aber nur wenn P_AC > 0
-          int pac = QueryProp(P_AC);
+          // Um Rundungsverluste zu reduzieren, wird P_AC anfangs mit 10000
+          // skaliert. Beim runterskalieren wird aufgerundet (Addition von
+          // 5000 vor Division).
+          int pac = QueryProp(P_AC) * 10000;
           if (pac > 0)
-            prot = (pac/4 + random(pac*3/4 + 1)) || 1 ;
+            prot = ((pac/4 + random(pac*3/4 + 1) + 5000)/10000) || 1;
           object stat = find_object("/d/erzmagier/zesstra/pacstat");
           if (stat)
             ({string})stat->acstat(QueryProp(P_ARMOUR_TYPE),prot,
