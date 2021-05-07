@@ -555,9 +555,12 @@ static int buy(string str)
 
   if (PL->QueryMoney() < val)
   {
-    write(break_string(capitalize(ob->QueryPronoun(WER))+" wuerde "+val+
-     " Muenzen kosten, und Du hast nur "+PL->QueryMoney()+".",78,
-     Name(WER)+" bedauert: "));
+    ;
+    write(break_string(sprintf(
+        "%s wuerde%s %d Muenzen kosten, und Du hast nur %d.",
+        capitalize(ob->QueryPronoun(WER)), 
+        ob->QueryProp(P_PLURAL) ? "n" : "", val, PL->QueryMoney()),
+      78, Name(WER)+" bedauert: "));
     return 1;
   }
 
