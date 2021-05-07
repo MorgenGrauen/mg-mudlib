@@ -651,7 +651,10 @@ public varargs int MoveScore(mixed oldkey, string newpath)
 
   if (stringp(oldkey)) {
     oldkey = load_name(oldkey); 
-    num=npcs[oldkey,NPC_NUMBER];
+    if (member(npcs, oldkey))
+      num=npcs[oldkey,NPC_NUMBER];
+    else
+      return SCORE_INVALID_ARG;
   }
   else if (intp(oldkey)) num=oldkey;
   else return SCORE_INVALID_ARG;
