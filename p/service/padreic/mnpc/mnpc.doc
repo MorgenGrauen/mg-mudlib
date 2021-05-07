@@ -155,7 +155,7 @@ struct exit_s SelectExit(struct exit_s *exitlist=0)
 }
 
 4)
-SelectExit() nutzen, um die Bewegungsrichtung zu aendern.
+SelectExit() nutzen, um die angezeigte Bewegungsrichtung zu aendern.
 
 struct exit_s SelectExit(struct exit_s *exitlist=0)
 {
