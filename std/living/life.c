@@ -209,7 +209,7 @@ private void DistributeExp(object enemy, int exp_to_give) {
  * Compare this function to reduce_hit_points(dam).
  */
 public int do_damage(int dam, object enemy)
-{ int hit_point,al,al2;
+{ int hit_point,al;
 
   if ( extern_call()
       && objectp(enemy)
@@ -765,7 +765,7 @@ public void restore_spell_points(int h)
 
 /* Reduce hitpoints. Log who is doing it. */
 public int reduce_hit_points(int dam)
-{ object o;
+{
   int i;
 
 #ifdef LOG_REDUCE_HP
