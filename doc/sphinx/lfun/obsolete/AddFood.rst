@@ -1,15 +1,16 @@
 AddFood()
 =========
 
-OBSOLETE LFUN
--------------
+VERALTETE LFUN
+--------------
+::
 
-    Diese Efun existiert nicht mehr. Bitte stattdessen den Hook
-    H_HOOK_INSERT benutzen. (s. /doc/std/hooks)
+    Diese Lfun ist als veraltet gekennzeichnet (deprecated); ihre Nutzung
+    loest daher eine Warnung aus. Bitte stattdessen AddToMenu() verwenden.
+
 
 FUNKTION
 --------
-
 ::
 
       void AddFood(string nameOfFood, mixed ids, int price, int heal,
@@ -36,5 +37,4 @@ SIEHE AUCH
 
         AddToMenu(), RemoveFromMenu(), AddDrink()
 
-Last modified: Fri Mar 03 13:23:00 2000 by Paracelsus
-
+Last modified: 2021-04-05, Arathorn
