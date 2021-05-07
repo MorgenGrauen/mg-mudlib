@@ -140,7 +140,7 @@ struct exit_s *PresentExits(mapping exits=0)
   // verarbeiten lassen
   return ::PresentExits(environment->QueryProp(MY_MNPC_DESTS));
   // oder:
-  return ::PresentExits(environment->QueryProp(get_my_mnpc_destinations()));
+  return ::PresentExits(environment->get_my_mnpc_destinations());
 }
 
 3)
