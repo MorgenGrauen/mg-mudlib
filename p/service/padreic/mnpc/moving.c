@@ -260,7 +260,7 @@ protected int direct_move(object|string dest, int method, string direction)
 {
    int res, para, tmp;
    string textout, textin, *mout, vc, fn;
-   object oldenv, *inv;
+   object oldenv;
 
    if (living(ME))
       return call_other(ME, "move", dest, method);
@@ -428,7 +428,7 @@ int Walk()
     // PresentExit() dann auch nicht geliefert.
     if (ex)
     {
-      direct_move(ex.room, M_GO, "nach "+capitalize(ex.msg));
+      direct_move(ex.room, M_GO, "nach "+capitalize(ex.msg||ex.cmd));
     }
     else
     {
