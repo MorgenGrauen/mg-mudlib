@@ -203,7 +203,9 @@ static scan_obj( object player, object obj )
 	string title, level, gender, room, testpl,
 		weapon, armour, quest, stat_str, *arr;
 	int i,ac;
-	object weaponobj, *list, *gegner;
+	object weaponobj, *list;
+  object** enemies;
+  object* gegner;
 	mixed *hands, *quests, *stats;
 
 	// 1.Zeile : Name Titel - Rasse - [ Wizlevel ]
@@ -354,10 +356,10 @@ static scan_obj( object player, object obj )
 		armour += "\n             " + arr[ i ] ;
   printf( "Waffe......: %s.\nRuestung...: %s.\n", weapon, armour ) ;
 
-	gegner = obj->QueryEnemies();
-	if( pointerp(gegner) )
+	enemies = obj->QueryEnemies();
+	if( pointerp(enemies) )
 	{
-		gegner = gegner[0];
+		gegner = enemies[0];
 		for( i=0; i<sizeof(gegner); i++ )
 		{
 			if( i==0 ) printf( "Gegner.....: "); else printf( "             " );
