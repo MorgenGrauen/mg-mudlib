@@ -104,11 +104,11 @@ Verzeichnis der dokumentierten sefuns im Morgengrauen:
 
 * save_object()
 
+* send_debug()
+
 * send_room()
 
 * set_heart_beat()
-
-* set_light()
 
 * set_living_name()
 

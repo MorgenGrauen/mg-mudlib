@@ -2,6 +2,10 @@
 Verzeichnis der veralteten lfuns
 ********************************
 
+* AddDrink()
+
+* AddFood()
+
 * AddHpHook()
 
 * AddInsertHook()
