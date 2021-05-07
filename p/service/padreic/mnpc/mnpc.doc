@@ -82,11 +82,15 @@ MNPC_FLAGS - property mit einem oder mehreren gesetzten Flags
   MNPC_DIRECT_MOVE - Der MNPC benutzt nicht command(), sondern move() fuer
      die Bewegung. Dies funktioniert nicht bei Special-Exits und ergibt
      normalerweise nur bei Non-Livings Sinn, also Objekten, die so tun, als
-     waeren sie NPCs. Bitte darauf achten, dass P_MSGIN, P_MSGOUT, P_MMSGIN und
-     P_MMSGOUT gesetzt werden.
+     waeren sie NPCs. Bitte darauf achten, dass P_MSGIN, P_MSGOUT, P_MMSGIN
+     und P_MMSGOUT gesetzt werden. Hierbei wird bei Non-Livings aber das
+     move() von Livings emuliert, was nicht zu ganz identischen Ergebnissen
+     fuehrt. Von der Nutzung wird *abgeraten* bzw. dringend empfohlen, vor
+     jeder Nutzung Ruecksprache mit dem EM Mudlib zu halten.
      Es muss auch sichergestellt werden, dass die geerbten Funktionen
      moving::mnpc_move(), moving::mnpc_reset() und moving::mnpc_init() auf
      jeden Fall gerufen werden.
+
 
 /***************************************************************************/
 
