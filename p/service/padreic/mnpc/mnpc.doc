@@ -94,7 +94,11 @@ MNPC_FLAGS - property mit einem oder mehreren gesetzten Flags
 
 /***************************************************************************/
 
-Nun noch ein Beispiel fuer einen Laufnpc im Glockenwald:
+Beispiele
+=========
+
+1.
+Ein Beispiel fuer einen Laufnpc im Glockenwald:
 
   create()
   {
@@ -112,7 +116,7 @@ Nun noch ein Beispiel fuer einen Laufnpc im Glockenwald:
   // komplexere Bedingungen zu implementieren.
   int PreventEnter(string file)
   {
-    call_other(file, "???");
+    load_object(file);
     if (::PreventEnter(file) || present("elster", find_object(file)))
       return 1;
     return 0;
@@ -123,3 +127,42 @@ verfolgt er diesen, bis zum Rande des Glockenwaldes. Wenn ein Spieler ihn
 angreift, bleibt er automatisch stehen. Die Spieler sind nur in Raeumen
 sicher, in denen sich eine Elster befindet, denn diese Raeume betritt der
 NPC nicht.
+
+
+2)
+Ein Beispiel fuer eine andere Zielfindung durch Ueberschreiben von
+PresentExits(). Diese Funktion sammelt verfuegbare Ausgaenge zusammen,
+normalerweise durch Abfrage von P_EXITS im Environment, wenn kein
+Mapping uebergeben wird.
+
+struct exit_s *PresentExits(mapping exits=0)
+{ // Einfach eine andere Prop mit der gleichen Datenstruktur wie P_EXITS
+  // verarbeiten lassen
+  return ::PresentExits(environment->QueryProp(MY_MNPC_DESTS));
+  // oder:
+  return ::PresentExits(environment->QueryProp(get_my_mnpc_destinations()));
+}
+
+3)
+Alternativ ein Beispiel fuer eine andere Zielfindung durch Ueberschreiben
+von SelectExit(). Diese Funktion prueft die von PresentExits() gelieferte
+Ausgangsliste auf Benutzbarkeit und waehlt normalerweise einen zufaelligen
+aus.
+
+struct exit_s SelectExit(struct exit_s *exitlist=0)
+{
+  return ::SelectExit(PresentExits(environment->QueryProp(MY_MNPC_DESTS)));
+}
+
+4)
+SelectExit() nutzen, um die Bewegungsrichtung zu aendern.
+
+struct exit_s SelectExit(struct exit_s *exitlist=0)
+{
+  struct exit_s ex = ::SelectExit(exitlist);
+  if (ex && ex.cmd="norden"
+      && object_name(environment())==KNEIPEN_PFAD)
+    ex.msg = "einen Saufen";
+  return ex;
+}
+
