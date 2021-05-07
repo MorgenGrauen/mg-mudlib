@@ -65,9 +65,8 @@ protected void create_super() {
 }
 
 static int spiessauf(string str) {
-  string haken,wurmname,*substr;
+  string haken,wurmname;
   object wurm;
-  int amount;
 
   notify_fail("Was willst Du denn aufspiessen?\n");
   if (!stringp(str) || !sizeof(str)) 
