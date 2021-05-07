@@ -129,8 +129,7 @@ static int cmd_laeute(string str, mixed *param) {
 }
 
 private int get_price() {
-  int preis, preis_von_diesem;
-  int gewicht;
+  int preis_von_diesem;
 
   good_price     = 0;
   bad_price      = 0;
