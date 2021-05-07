@@ -202,6 +202,9 @@ o Sollte ein Objekt aus einer anderen Region bzw. allgemein aus einem
      man ein Wrapper-Objekt erstellen, das das alte beim Clonen durch das
      neue ersetzt.
   -- evtl. Briefempfaenger der Postquest beruecksichtigen,
+  -- evtl. Fotomotive von Notstroms Miniquest im Wald umstellen,
+  -- bei Kneipen: Pfad im Bierschuettler-Gildenmaster umtragen lassen
+     (GM Bierschuettler oder EM ansprechen),
   -- ueber die Mudlib greppen lassen, um eventuell in anderen Regionen
      verwendete Referenzen auf die alten Pfade des umziehenden Codes
      zu finden und dort umzustellen. Hierbei sind in Ausnahmefaellen von
