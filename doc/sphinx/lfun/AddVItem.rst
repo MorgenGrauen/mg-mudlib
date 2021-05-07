@@ -4,7 +4,7 @@ AddVItem()
 FUNKTION
 --------
 
-  public varargs void AddvItem(string key, int refresh, mapping shadowprops, string path, mapping props)
+  public varargs void AddVItem(string key, int refresh, mapping shadowprops, string path, mapping props)
 
 
 DEFINIERT IN
@@ -84,6 +84,9 @@ BESCHREIBUNG
     - VI_REFRESH_INSTANT
       Es ist abweichend vom Normalverhalten sofort nach Mitnehmen wieder
       verfuegbar und mitnehmbar. **Vorsicht!**
+
+  Die Refresh-Konstanten sind in /sys/container/vitems.h definiert und nur
+  verfuegbar, wenn diese Datei inkludiert wird.
 
 
 BEMERKUNGEN
@@ -177,8 +180,8 @@ BEISPIELE
 SIEHE AUCH
 ----------
 
-  :doc:`RemoveVItem`, :doc:`AddItem`, :doc:`RemoveItem`
-  :doc:`../std/vitems`
+  :doc:`RemoveVItem`, :doc:`AddItem`, :doc:`RemoveItem`,
+  /doc/std/vitems
 
 Last modified: 03.04.2019, Zesstra
 
