@@ -130,6 +130,16 @@ public int frage(string str) {
     _notify_fail( "So jemanden findest Du hier nicht.\n" );
     return 0;
   }
+
+  if (this_player()->QueryProp(P_DEAF))
+  {
+    this_player()->ReceiveMsg(
+      "Warum jemanden etwas fragen, wenn Du die Antwort gar nicht hoeren "
+      "koenntest?",
+      MT_NOTIFICATION, "frage");
+    return 1;
+  }
+
   say( capitalize(this_player()->name(WER))+" fragt " +
     name(WEN,2)+" nach "+capitalize(text)+".\n",
       this_player() );
