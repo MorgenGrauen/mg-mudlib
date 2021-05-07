@@ -3,19 +3,32 @@ P_CONTAINER
 
 NAME
 ----
-::
 
-    P_CONTAINER                   "container"                   
+  P_CONTAINER                   "container"
 
 DEFINIERT IN
 ------------
-::
 
-    /sys/properties.h
+  /sys/container.h
 
 BESCHREIBUNG
 ------------
-::
 
-    *** KEINE BESCHREIBUNG VORHANDEN ***
+  Markiert Objekte als Container im spieltechnischen Sinn. Aktuell hat dies
+  nur den Effekt, dass Spieler in Objekte mit gesetztem P_CONTAINER Objekte
+  hereinstecken und herausnehmen koennen, was bei Objekten, die rein aus
+  technischer Sicht Container sind, wie Raeumen oder Livings, nicht moeglich
+  ist.
 
+ANMERKUNGEN
+-----------
+
+  Bei von :doc:`../std/container`, /std/armour_container und /std/clothing_container
+  geerbten Objekten wir die Property automatisch gesetzt.
+
+SIEHE AUCH
+----------
+
+  :doc:`../std/container`
+
+Letzte Aenderung: 07.05.2021, Bugfix
