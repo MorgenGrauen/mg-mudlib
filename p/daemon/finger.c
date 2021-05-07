@@ -85,7 +85,6 @@ string timediff(int time)
 
 string sponsoring(string name)
 {
-  int i,w;
   string *s,s2,s3,s4;
   // Daten einlesen, wenn die daten aelter als 1 Tag sind oder sich
   // /data/etc/SPONSOR geaendert hat.
@@ -118,7 +117,7 @@ string sponsoring(string name)
 varargs string finger_single(string str,int local)
 {
   string ip,text,ipnum,filename,away;
-  int wizlevel,playerlevel,idle,pos,flags,last;
+  int wizlevel,idle,flags,last;
   mixed h,data,tmp;
   object player,ob;
 
