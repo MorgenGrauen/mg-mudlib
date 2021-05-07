@@ -59,7 +59,7 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   //DEBUG(sprintf("AINC: File: %O, Pfad: %O\n",base_file, p_arr));
 
   if (sizeof(p_arr) && m_contains(&topleveldir, autoincludes, p_arr[0])) {
-    // p_arr[0]: d, p, std, etc. 
+    // p_arr[0]: d, p, std, etc.
     // erst wird der Defaulteintrag 0 genommen
     res += topleveldir[0];
     if (sizeof(p_arr) > 1 && m_contains(&region, topleveldir, p_arr[1])) {
@@ -74,19 +74,28 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   }
   // Fuer aeltere Files schalten wir einige Warnungen explizit aus. :-(
   // (1407179680 == "Mon,  4. Aug 2014, 21:14:40")
+  // (1609455600 == "Fre,  1. Jan 2021, 00:00:00")
   // Auf anderen Rechnern als dem Mudrechner werden die Warnungen nur
   // eingeschaltet, wenn die Files seit dem Mudstart geaendert wurden.
   // Hintergrund: bei kopierten Mudlibs werden oft die mtimes geaendert und
   // dann scrollt auf einmal alles. Aber wenn man nach dem Mudstart was
   // aendert, ist es vermutlich ne einzelne, gezielte Aenderung an einem File.
 #if MUDHOST == __HOST_NAME__
-  if (call_sefun("file_time", base_file) < 1407179680)
+  int ftime = call_sefun("file_time", base_file);
+  if (ftime < 1407179680)
+  {
+      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables");
+  }
+  else if (ftime < 1609455600)
+  {
+      res += PRAGMA("no_warn_unused_variables");
+  }
 #else
   if (call_sefun("file_time", base_file) < __BOOT_TIME__)
-#endif
   {
       res += PRAGMA("no_warn_missing_return,no_warn_unused_variables");
   }
+#endif
   //DEBUG(res);
   return res;
 }
