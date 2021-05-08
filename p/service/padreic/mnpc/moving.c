@@ -340,10 +340,9 @@ protected int direct_move(object|string dest, int method, string direction)
 // werden duerfen.
 // Aber ueberladene Varianten koennten voellig andere Quellen fuer Ausgaenge
 // (z.B. eigene Props von Magiern) beruecksichtigen.
-struct exit_s *PresentExits(mapping exits=0)
+struct exit_s *PresentExits(mapping exits=environment()->Query(P_EXITS,
+                              F_VALUE))
 {
-    if (!mappingp(exits))
-        exits = (environment()->Query(P_EXITS, F_VALUE));
     // Aufgrund der MNPC_FLAGS bestimmen ob nur normale Ausgaenge genutzt
     // werden duerfen
     int flags=QueryProp(MNPC_FLAGS);
@@ -365,10 +364,8 @@ struct exit_s *PresentExits(mapping exits=0)
 // durch Aufruf von PreventEnter() und liefert einen zufaelligen benutzbaren
 // Ausgang.
 // Kann Ueberladen werden, um eine andere Art der Auswahl zu bewerkstelligen.
-struct exit_s SelectExit(struct exit_s *exitlist=0)
+struct exit_s SelectExit(struct exit_s *exitlist=PresentExits())
 {
-    if (!exitlist)
-        exitlist = PresentExits();
     // Bei normalen Ausgaengen per PreventEnter() pruefen, ob der Zielraum OK
     // ist. Special Exits koennen nicht geprueft und sind OK. (In der Liste
     // sind bei originalem PresentExits() nur special exits, wenn fuer den
