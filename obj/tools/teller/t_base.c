@@ -262,12 +262,11 @@ static mixed top()
 {
 	if( sizeof(stack) )
 		return stack[0];
+  return 0;
 }
 
 static varargs int becomes_obj( mixed argv)
 {
-	object ob;
-
 	if( !pointerp(argv) ) // default ist der stack !
 		argv = stack;
 	if( !sizeof(argv) )
@@ -323,7 +322,7 @@ static mixed DumpMapp( mixed ob, int i);
 static mixed DumpObj( mixed ob )
 {
   string ans;
-  int i,j;
+  int i;
 
   if( intp(ob) )
     return ""+ob;

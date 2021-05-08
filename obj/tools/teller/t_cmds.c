@@ -163,7 +163,7 @@ static int WizLevel( object obj )
 
 static string IpName( object obj )
 {
-	string ip_name, ip_num, nm;
+	string ip_name, nm;
 
 	if( obj->Notlogged() )
 	{
@@ -201,12 +201,12 @@ string IdleTime( object obj )
 static scan_obj( object player, object obj )
 {
 	string title, level, gender, room, testpl,
-		weapon, armour, quest, stat_str, *arr;
+		weapon, armour, stat_str, *arr;
 	int i,ac;
 	object weaponobj, *list;
   object** enemies;
   object* gegner;
-	mixed *hands, *quests, *stats;
+	mixed *hands, *stats;
 
 	// 1.Zeile : Name Titel - Rasse - [ Wizlevel ]
 	title = obj->QueryProp(P_TITLE);
@@ -417,7 +417,6 @@ static void print_memory_line( string key, object data, int flag )
 	
 static int cmd_memory()
 {
-  int i;
   if( !sizeof(memory) )
     return memo( "Keine Variablen definiert" );
 
@@ -631,7 +630,6 @@ static int do_roomupdate( int destflag, int noitems )
 	object *inv;
 	string errmsg;
 	string *file;
-	object *items;
 	int i;
 
 	if( !becomes_obj() )
@@ -810,9 +808,6 @@ static void do_calloutinfo( mixed* call )
 static int cmd_callouts_bang()
 {
 	mixed *calls;
-	object obj;
-	string name;
-	int i,j;
 
 	calls = call_out_info();
 	if( !pointerp(calls) || !sizeof(calls) )
@@ -847,9 +842,7 @@ static void do_calloutinfo2( mixed* call, string str )
 static int cmd_callouts()
 {
 	mixed *calls;
-	object obj;
 	string str;
-	int i,j;
 
 	if( !stringp(top()) )
 		return error( "TOS ist kein String" );
