@@ -7,7 +7,8 @@
 #define PRAGMA(x) "#pragma "x"\n"
 
 #define RTTCHECKS PRAGMA("rtt_checks")
-#define DEFAULTS PRAGMA("save_types,warn_unused_variables")
+#define DEFAULTS PRAGMA("save_types,warn_unused_variables,\
+    warn_applied_functions,warn_dead_code")
 
 // geschachteltes Mapping in toplevel.region.magier Hierarchie.
 // Wichtig: jede Hierarchiebene _muss_ ein Mapping sein, welches einen Eintrag
@@ -84,16 +85,18 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   int ftime = call_sefun("file_time", base_file);
   if (ftime < 1407179680)
   {
-      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables");
+      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables\
+                     no_warn_dead_code");
   }
   else if (ftime < 1609455600)
   {
-      res += PRAGMA("no_warn_unused_variables");
+      res += PRAGMA("no_warn_unused_variables,no_warn_dead_code");
   }
 #else
   if (call_sefun("file_time", base_file) < __BOOT_TIME__)
   {
-      res += PRAGMA("no_warn_missing_return,no_warn_unused_variables");
+      res += PRAGMA("no_warn_missing_return,no_warn_unused_variables\
+                     no_warn_dead_code");
   }
 #endif
   //DEBUG(res);
