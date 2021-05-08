@@ -97,18 +97,19 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   int ftime = call_sefun("file_time", base_file);
   if (ftime < 1407179680)
   {
-      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables\
-                     no_warn_dead_code");
+      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables,\
+                     no_warn_dead_code,no_warn_applied_functions");
   }
   else if (ftime < 1609455600)
   {
-      res += PRAGMA("no_warn_unused_variables,no_warn_dead_code");
+      res += PRAGMA("no_warn_unused_variables,no_warn_dead_code,\
+                     no_warn_applied_functions");
   }
 #else
   if (call_sefun("file_time", base_file) < __BOOT_TIME__)
   {
-      res += PRAGMA("no_warn_missing_return,no_warn_unused_variables\
-                     no_warn_dead_code");
+      res += PRAGMA("no_warn_missing_return,no_warn_unused_variables,\
+                     no_warn_dead_code,no_warn_applied_functions");
   }
 #endif
   //DEBUG(res);
