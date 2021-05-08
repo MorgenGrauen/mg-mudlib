@@ -72,6 +72,18 @@ string autoincludehook(string base_file, string current_file, int sys_include)
         res += ainc_string;
       }
     }
+    // Fuer einige Top-Level-Verzeichnisse sollen explizit eingeschaltete
+    // Pragmas auch fuer alte Files nicht ausgeschaltet werden. In dem Fall
+    // direkt beenden.
+    switch(p_arr[0])
+    {
+      case "std":
+      case "secure":
+      case "room":
+      case "obj":
+      case "items":
+        return res;
+    }
   }
   // Fuer aeltere Files schalten wir einige Warnungen explizit aus. :-(
   // (1407179680 == "Mon,  4. Aug 2014, 21:14:40")
