@@ -94,16 +94,15 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   // dann scrollt auf einmal alles. Aber wenn man nach dem Mudstart was
   // aendert, ist es vermutlich ne einzelne, gezielte Aenderung an einem File.
 #if MUDHOST == __HOST_NAME__
-  int ftime = call_sefun("file_time", base_file);
-  if (ftime < 1407179680)
+  switch(call_sefun("file_time", base_file))
   {
-      res += PRAGMA("no_warn_missing_return, no_warn_unused_variables,\
-                     no_warn_dead_code,no_warn_applied_functions");
-  }
-  else if (ftime < 1609455600)
-  {
+    case 0 .. 1407179680:
+      res += PRAGMA("no_warn_missing_return");
+      // Fall-through, die naechsten kommen auch dazu
+    case 1407179681 .. 1609455600:
       res += PRAGMA("no_warn_unused_variables,no_warn_dead_code,\
                      no_warn_applied_functions");
+      // Fall-through
   }
 #else
   if (call_sefun("file_time", base_file) < __BOOT_TIME__)
