@@ -1293,10 +1293,10 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
     // Um Rundungsverluste zu reduzieren, wird P_BODY anfangs mit 10000
     // skaliert. Beim runterskalieren wird aufgerundet (Addition von
     // 5000 vor Division).
-    int body = QueryProp(P_BODY)+QueryAttribute(A_DEX);
+    int body = (QueryProp(P_BODY)+QueryAttribute(A_DEX)) * 10000;
     res2 = ((body/4 + random(body*3/4 + 1) + 5000)/10000) || 1;
     if (stat)
-      stat->bodystat(body, res2, random(body)+1);
+      stat->bodystat(body, res2, (random(body)+1)/10000);
 
     // Reduzierbare Wirksamkeit des Bodies?
     if ( member(spell[SP_REDUCE_ARMOUR], P_BODY)
