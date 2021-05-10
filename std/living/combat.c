@@ -44,14 +44,12 @@ private string _kill_alias( string str );
 
 // globale Variablen
 nosave mapping enemies;
-private nosave string magic_attack;
 private nosave int attack_busy;
 nosave int no_more_attacks;
 private nosave int remaining_heart_beats;
 private nosave int att2_time;
 private nosave string last_attack_msg;
 private nosave object *missing_attacks;
-private nosave mapping peace_tries;
 // Cache fuer QueryArmourByType()
 private nosave mapping QABTCache;
 
@@ -71,7 +69,6 @@ protected void create()
   attack_busy=100;
   att2_time=0;
   enemies=([]);
-  peace_tries=([]);
   team::create(); 
   offerHook(H_HOOK_DEFEND,1);
   offerHook(H_HOOK_ATTACK,1);
@@ -216,7 +213,7 @@ static mixed _set_vulnerability(mixed arg)
  * Fuegt ob der Feindesliste hinzu.
  */
 public int Kill(object ob)
-{ int   res, arena;
+{ int   res;
   int|string no_attack;
 
   if ( !objectp(ob) )
@@ -925,7 +922,7 @@ public void CheckWimpyAndFlee()
 
 protected string mess(string msg,object me,object enemy)
 { closure mname, ename;
-  string  *parts,x;
+  string  *parts;
   int     i;
 
   mname = symbol_function("name", me);
@@ -997,11 +994,11 @@ protected nomask void normalize_defend_args(int dam, string|string* dam_type,
 
 public int Defend(int dam, string|string* dam_type, int|mapping spell, object enemy)
 {
-  int     i,k;
   mixed   res,res2;
   object  *armours,tmp;
   mixed hookData;
   mixed hookRes;
+  int i;
 
   //  string  what, how;
   string enname, myname;
@@ -1629,7 +1626,6 @@ public float CheckResistance(string *dam_type) {
 
 public varargs mapping StopHuntingMode(int silent)
 { mapping save_enemy;
-  int     i;
 
   save_enemy=enemies;
   if ( !silent )
