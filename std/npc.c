@@ -187,5 +187,7 @@ public void NotifyLeave(object ob, object dest)
 
 string _query_race()
 {
-   if (stringp(Query(P_RACE))) return capitalize(Query(P_RACE));
+   if (stringp(Query(P_RACE,F_VALUE)))
+       return capitalize(Query(P_RACE));
+   return 0;
 }
