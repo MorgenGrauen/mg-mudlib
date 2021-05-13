@@ -593,13 +593,6 @@ protected object connect()
 
 // Was machen bei disconnect?
 protected void disconnect(object who, string remaining) {
-#if (__VERSION_MICRO__*100 + __VERSION_MINOR__ *10000 + __VERSION_MAJOR__ \
-     * 1000000) <= 3060300
-  // Workaround fuer Driver-Speicherleck in 3.6.2 und 3.6.3: vor dem
-  // Disconnect das Encoding wechseln, damit der driver das Handle auf iconv
-  // schliesst.
-  configure_interactive(who, IC_ENCODING, "UTF-8");
-#endif
   ({void})who->NetDead();
   return;
 }
