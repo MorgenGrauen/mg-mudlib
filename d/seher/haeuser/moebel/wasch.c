@@ -115,7 +115,7 @@ varargs int skommandos(string str)
   write("Aktuelle Version: "+QueryProp("cnt_version_std")+QueryProp("cnt_version_obj")+"\n");
   write( BS(Name(WER,1)+" kann nur in diesem Seherhaus verwendet werden, "
     "da "+QueryPronoun(WER)+" speziell dafuer gekauft wurde. "+CAP(QueryPronoun(WER))
-    " verfuegt ueber folgende Kommandos:")
+    +" verfuegt ueber folgende Kommandos:")+
     "-----------------------------------------------------------------------------\n"
     "serlaube [Objekt-Id] [Spielername|\"hausfreunde\"|\"zweities\"]\n"
     "  Erlaubt Personen, "+name(WEN,1)+" mitzubenutzen.\n"
