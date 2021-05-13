@@ -317,7 +317,8 @@ static int valid_name( string str )
         if ( str[i] < 'a' || str[i] > 'z' ) {
             write( "Unerlaubtes Zeichen '" + str[i..i] + "' im Namen: " + str
                             + "\n" );
-            write( "Benutze bitte nur Buchstaben ohne Umlaute.\n" );
+            write("Benutze bitte nur Buchstaben ohne Umlaute und keine "
+                  "Ziffern.\n");
             return 0;
         }
 
@@ -326,7 +327,7 @@ static int valid_name( string str )
 
 static void logon2( string str )
 {
-    int i, arg;
+    int i;
     mixed txt;
 
     // ggf. muss TLS (initiiert durch STARTTLS) noch ausverhandelt werden.
@@ -380,11 +381,6 @@ static void logon2( string str )
 
         input_to( "logon2", INPUT_PROMPT, pr );
         return;
-    }
-
-    if ( sscanf( str, "gast%d", arg ) == 1 ){
-        write( "Du meinst wohl 'Gast' ...\n" );
-        str = "gast";
     }
 
     loginname = str;
@@ -779,7 +775,6 @@ static void get_mud_played_answer (string str)
 static int load_player_object( int guestflag )
 {
     object ob;
-    string fname;
     int was_interactive;
 
     if ( sizeof(users()) >= 195 && !IS_WIZARD(loginname) ){
