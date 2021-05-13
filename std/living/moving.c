@@ -185,7 +185,7 @@ protected void NotifyMove(object dest, object oldenv, int method) {
 varargs public int move( object|string dest, int method, string direction,
                          string textout, string textin )
 {
-    int para, nightvis, invis, tmp;
+    int para, invis, tmp;
     object oldenv, *inv;
     string fn,vc;
     mixed res;
@@ -372,8 +372,9 @@ varargs public int move( object|string dest, int method, string direction,
       return(ME_WAS_DESTRUCTED);
 
     dest = environment();
-    
-    nightvis = UseSkill(SK_NIGHTVISION);
+
+    UseSkill(SK_NIGHTVISION);
+
     // Meldungen an nicht-Blinde ausgeben, falls keine 'stille' Bewegung
     if ( !(method & M_SILENT) ) {
       if ( !textin ) {        
@@ -415,7 +416,7 @@ varargs public int move( object|string dest, int method, string direction,
 public void TakeFollowers()
 {
   mixed *f,env;
-  int meth,i,r;
+  int meth,r;
 
   f=Query(P_PURSUERS);
   if (!pointerp(f))
