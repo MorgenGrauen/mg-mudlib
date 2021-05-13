@@ -124,7 +124,7 @@ nomask static mixed _query_property( string prop )
 //--------------------------------------------------------------------------
 int _query_article( /* void */ )
 {
-  return (int)_query_property( P_ARTICLE );
+  return _query_property( P_ARTICLE );
 }
 
 //--------------------------------------------------------------------------
@@ -136,7 +136,7 @@ int _query_article( /* void */ )
 //--------------------------------------------------------------------------
 int _query_average_size( /* void */ )
 {
-  return (int)_query_property( P_AVERAGE_SIZE );
+  return _query_property( P_AVERAGE_SIZE );
 }
 
 //--------------------------------------------------------------------------
@@ -148,7 +148,7 @@ int _query_average_size( /* void */ )
 //--------------------------------------------------------------------------
 int _query_average_weight( /* void */ )
 {
-  return (int)_query_property( P_AVERAGE_WEIGHT );
+  return _query_property( P_AVERAGE_WEIGHT );
 }
 
 //--------------------------------------------------------------------------
@@ -160,7 +160,7 @@ int _query_average_weight( /* void */ )
 //--------------------------------------------------------------------------
 int _query_body( /* void */ )
 {
-  return (int)_query_property( P_BODY );
+  return _query_property( P_BODY );
 }
 
 //--------------------------------------------------------------------------
@@ -172,7 +172,7 @@ int _query_body( /* void */ )
 //--------------------------------------------------------------------------
 int _query_gender( /* void */ )
 {
-  return (int)_query_property( P_GENDER );
+  return _query_property( P_GENDER );
 }
 
 //--------------------------------------------------------------------------
@@ -326,7 +326,7 @@ int _query_is_morphed( /* void */ )
 //--------------------------------------------------------------------------
 int _query_max_hands( /* void */ )
 {
-  return (int)_query_property( P_MAX_HANDS );
+  return _query_property( P_MAX_HANDS );
 }
 
 //--------------------------------------------------------------------------
@@ -338,7 +338,7 @@ int _query_max_hands( /* void */ )
 //--------------------------------------------------------------------------
 string _query_mmsgin( /* void */ )
 {
-  return (string)(_query_property( P_MMSGIN ) || "");
+  return (_query_property( P_MMSGIN ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -350,7 +350,7 @@ string _query_mmsgin( /* void */ )
 //--------------------------------------------------------------------------
 string _query_mmsgout( /* void */ )
 {
-  return (string)(_query_property( P_MMSGOUT ) || "");
+  return (_query_property( P_MMSGOUT ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -362,7 +362,7 @@ string _query_mmsgout( /* void */ )
 //--------------------------------------------------------------------------
 string _query_msgin( /* void */ )
 {
-  return (string)(_query_property( P_MSGIN ) || "");
+  return (_query_property( P_MSGIN ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -374,7 +374,7 @@ string _query_msgin( /* void */ )
 //--------------------------------------------------------------------------
 string _query_msgout( /* void */ )
 {
-  return (string)(_query_property( P_MSGOUT ) || "");
+  return (_query_property( P_MSGOUT ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -430,7 +430,7 @@ mixed _query_name_full( /* void */ )
 //--------------------------------------------------------------------------
 string _query_presay( /* void */ )
 {
-  return (string)(_query_property( P_PRESAY ) || "");
+  return (_query_property( P_PRESAY ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -442,7 +442,7 @@ string _query_presay( /* void */ )
 //--------------------------------------------------------------------------
 string _query_race( /* void */ )
 {
-  return (string)(_query_property( P_RACE ) || "");
+  return (_query_property( P_RACE ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -454,7 +454,7 @@ string _query_race( /* void */ )
 //--------------------------------------------------------------------------
 string* _query_racestring( /* void */ )
 {
-  return (string*)_query_property( P_RACESTRING );
+  return _query_property( P_RACESTRING );
 }
 
 //--------------------------------------------------------------------------
@@ -466,7 +466,7 @@ string* _query_racestring( /* void */ )
 //--------------------------------------------------------------------------
 int _query_size( /* void */ )
 {
-  return (int)_query_property( P_SIZE );
+  return _query_property( P_SIZE );
 }
 
 //--------------------------------------------------------------------------
@@ -478,7 +478,7 @@ int _query_size( /* void */ )
 //--------------------------------------------------------------------------
 string _query_title( /* void */ )
 {
-  return (string)(_query_property( P_TITLE ) || "");
+  return (_query_property( P_TITLE ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -490,7 +490,7 @@ string _query_title( /* void */ )
 //--------------------------------------------------------------------------
 int _query_weight( /* void */ )
 {
-  return (int)(_query_property( P_WEIGHT ) || "");
+  return (_query_property( P_WEIGHT ) || "");
 }
 
 //--------------------------------------------------------------------------
@@ -563,7 +563,7 @@ string short( /* void */ )
 	 IS_LEARNING( previous_object() ) )
       return "(" + pl->Query( P_NAME ) + ") \n";
     else
-      return (string)0;
+      return 0;
 
   names = _query_name_full();
   if ( stringp( names ) )
