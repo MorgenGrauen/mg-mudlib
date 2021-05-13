@@ -1,0 +1,63 @@
+Autoload-Gegenstaende (Autoloader)
+==================================
+
+  Was sind Autoloader?
+
+    Autoload-Gegenstaende, ueblicherweise kurz Autoloader genannt, sind
+    Gegenstaende, die unter bestimmten Bedingungen einen Reboot oder Crash
+    des Morgengrauens ueberstehen und somit, anders als andere Gegenstaende,
+    nicht zerstoert werden.
+
+    Voraussetzung hierfuer ist, dass Du sie entweder bei Dir traegst oder in 
+    der kleinen, magischen Holztruhe in Deinem Seherhaus deponiert hast.
+    Dies sind die beiden einzigen Optionen, die standardmaessig unterstuetzt
+    werden. Autoloader, die Ihr woanders lagert, bleiben nicht erhalten.
+    Es ist allerdings unerheblich, ob Ihr Autoloader in einem Behaelter
+    bei Euch tragt (z.B. einem Postpaket) oder direkt im Inventar.
+    
+    Die Holztruhe, die meist Autoloadertruhe genannt wird, ist bei August
+    dem Schraenker in Wilhelmsburg erhaeltlich; es handelt sich dabei nicht
+    um die gewoehnliche Seherhaustruhe, die standardmaessig in jedem
+    Seherhaus steht.
+
+    Es ist zu beachten, dass von jedem Autoloader-Objekt in Eurem Inventar
+    aus technischen Gruenden nur jeweils eine einzelne Kopie den Reboot
+    ueberlebt. Ihr koennt aber eins der Objekte in der Autoloadertruhe
+    lagern und eins im Inventar behalten.
+
+    
+    Anmerkung: Magier koennen fuer Sonderfaelle, in denen es z.B. noetig ist,
+    mehrere Kopien eines Objekts ueber einen Reboot zu retten, spezielle
+    Loesungen schaffen. Wenn Ihr jedoch nicht sicher seid, ob Eure Autoloader
+    darunter fallen oder nicht, geht vorsichtshalber davon aus, dass
+    das nicht der Fall ist und verlasst euch auf den oben beschriebenen
+    Standardmechanismus: Inventar und/oder Autoloadertruhe.
+
+
+  Was sind Autoloader NICHT?
+
+    Autoloader koennen standardmaessig fallengelassen werden oder beim Tod 
+    verlorengehen, es sei denn, der programmierende Magier hat dies auf
+    anderem Weg explizit verhindert. Die Tatsache, dass ein Gegenstand bei
+    dem Befehl "inv +a" angezeigt wird, heisst also NUR, dass er bei Reboot
+    erhalten bleibt, nicht mehr, aber auch nicht weniger.
+
+    Zur Erlaeuterung, es gibt drei verschiedene Mechanismen im Morgengrauen,
+    die fuer verschiedene Szenarien zustaendig sind:
+
+    Autoload:   verhindert Verlust bei Reboot/Crash/Ende,
+    Nodrop:     verhindert Fallenlassen,
+    Neverdrop:  verhindert Verlust beim Tod.
+
+    Diese drei Mechanismen sind unabhaengig voneinander und beliebig 
+    kombinierbar, d.h. es ist durchaus moeglich, z.B. Gegenstaende zu 
+    schaffen, die man bei Reboot und Tod behaelt, aber fallenlassen kann;
+    genauso kann es Gegenstaende geben, die man lediglich nicht selbst
+    fallenlassen kann, die dafuer aber beim Tod verlorengehen und bei Reboot
+    zerstoert werden.
+
+  SIEHE AUCH:
+    reboot, crash, inv
+
+  LETZTE AENDERUNG:
+    2021-05-10, Arathorn
