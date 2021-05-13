@@ -232,28 +232,24 @@ protected int do_telnet_neg(int option, int action) {
       if (opt->state->localside)
         return -2;
       return send_telnet_neg( ({ WILL, option }) );
-      break;
     case WONT:
       if (opt->lo_wishes->localside != 0)
         return -1;
       if (!opt->state->localside)
         return -2;
       return send_telnet_neg( ({ WONT, option }) );
-      break;
     case DO:
       if (opt->lo_wishes->remoteside != 0)
         return -1;
       if (opt->state->remoteside)
         return -2;
       return send_telnet_neg( ({ DO, option }) );
-      break;
     case DONT:
       if (opt->lo_wishes->remoteside != 0)
         return -1;
       if (!opt->state->remoteside)
         return -2;
       return send_telnet_neg( ({ DONT, option }) );
-      break;
   }
   raise_error(sprintf("Unsupported telnet negotation action in "
       "do_telnet_neg(): %d\n",action));

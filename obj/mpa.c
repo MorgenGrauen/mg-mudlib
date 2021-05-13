@@ -752,7 +752,8 @@ varargs int InterpretTime(mixed a,int flag) {
     }
     return time()-t;
   }
-  else return write("Argumentfehler.\n"),0;
+  write("Argumentfehler.\n");
+  return 0;
 }
 
 static Catchup(string str)

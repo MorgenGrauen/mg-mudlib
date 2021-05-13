@@ -1102,12 +1102,12 @@ private void effekt()
   // erst die positiven, dann die negativen Wirkungen aktivieren
   // fuer jede Wirkung wird eine lfun act_<trankattribut>() gerufen, z.B.
   // act_attr_tragen() (-> act_T_CARRY() )
-  mapping notactivated =
-          filter(peff, function int (string k, int val)
-              {return !funcall(symbol_function("act_"+k,this_object()), val);})
-         +
-          filter(neff, function int (string k, int val)
-              {return !funcall(symbol_function("act_"+k,this_object()), val);});
+  // mapping notactivated = 
+  filter(peff, function int (string k, int val)
+      {return !funcall(symbol_function("act_"+k,this_object()), val);})
+  +
+  filter(neff, function int (string k, int val)
+      {return !funcall(symbol_function("act_"+k,this_object()), val);});
   // Meldungen ausgeben ueber nicht aktivierte Wirkungen?
   // TODO
 }

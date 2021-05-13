@@ -280,7 +280,6 @@ private string put_or_get(object o, object dest)
 
             return capitalize(wen0 + " kannst Du dort nicht hineinstecken.");
     }
-    return 0; // NOT REACHED
 }
 
 
@@ -1186,7 +1185,6 @@ object* find_obs(string str, int meth)
      else obs=(inv->present_objects(str) || ({}));
      return obs-({ ME });
    }
-   return(0);
 }
 
 int pick_obj(object ob)
@@ -1243,8 +1241,6 @@ int put_obj(object ob, object where)
 
 int give_obj(object ob, object where)
 {
-  object env;
-
   if (environment(ob)!=this_object()) {
     TME("Das solltest Du erstmal nehmen.");
     return 1;

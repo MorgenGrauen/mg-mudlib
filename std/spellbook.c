@@ -162,13 +162,12 @@ TryAttackSpell(object victim, int damage, mixed dtypes,
 varargs int
 TryDefaultAttackSpell(object victim, object caster, mapping sinfo, 
                       mixed si_spell) {
-  object team;
   int row;
   
   if (!si_spell) si_spell=sinfo[SI_SPELL];
   // Wenn der Spieler in einem Team ist, die Teamreihen-Boni
   // beruecksichtigen. Wenn nicht, eben nicht.
-  if (!team=(({object})caster->QueryProp(P_TEAM)))
+  if (!({object})caster->QueryProp(P_TEAM))
   return TryAttackSpell(victim,
                         GetRandFValueO(SI_SKILLDAMAGE,sinfo,caster),
                         GetData(SI_SKILLDAMAGE_TYPE,sinfo,caster),
@@ -299,7 +298,7 @@ prepare_spell(object caster, string spell, mapping sinfo) {
 varargs int
 UseSpell(object caster, string spell, mapping sinfo) {
   mapping ski,tmp;
-  string spellbook,sname,fname,txt;
+  string sname,fname,txt;
   int res,fat,cost;
   mixed ps;
 

@@ -349,7 +349,7 @@ private string|string* getChannel(string ch)
 int ChannelParser(string args)
 {
   string|string* ch;
-  int pos, type, err;
+  int type, err;
   string tmp;
   notify_fail("Benutzung: -<Ebene>[ ]['|:|;]<Text>\n"
               "           -<Ebene>[+|-|?|!|*]\n"

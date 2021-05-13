@@ -135,7 +135,6 @@ protected mixed RingBufferGet(struct std_ringbuffer buffer) {
       else
 	return copy(rbuffer);
   }
-  return 0;
 }
 
 /** Erzeugt einen neuen Ringbuffer der Groesse \a size und dem gleichen Modus

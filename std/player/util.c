@@ -96,7 +96,7 @@ static void DumpMapping(mapping x)
 // Lacht nicht ueber den Namen!!! -Boing
 // Nein, ueber den Namen lache ich nicht ... -Paracelsus
 static void DumpKeyValPair(mapping x, mixed key, int size)
-{ int j, vc;
+{ int j;
 
   PrettyDump(key);
   write(" : ");

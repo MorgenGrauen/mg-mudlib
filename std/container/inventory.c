@@ -62,7 +62,6 @@ varargs void InsertSensitiveObjectToList(object ob, string list, string key,
 void InsertSensitiveObject(object ob, mixed arg) {
   int i;
   mixed x;
-  mapping map_ldfied;
   
   if (!pointerp(arg))
     return;

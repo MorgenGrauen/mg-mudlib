@@ -30,6 +30,7 @@ static int _query_player_light()
 {
   if (environment())
     return environment()->QueryProp(P_INT_LIGHT) + QueryProp(P_LIGHT_MODIFIER);
+  return 0;
 }
 
 varargs int CannotSee(int silent)

@@ -65,7 +65,6 @@ private string _get_color(string color)
 // und bereitet beides fuer die Nutzung durch terminal_colours() vor.
 private void SetColorstrings()
 {
-  string term = QueryProp(P_TTY);
   mapping vars = QueryProp(P_VARIABLES);
   // 2nd value in templates is the additional amount of space the templates
   // itself needs in addition to the value inserted later in place of %s.
@@ -76,7 +75,7 @@ private void SetColorstrings()
   lstemplates.colormap[0]=ANSI_NORMAL;
   // Template fuer die Ausgabe und die Defaults fuer die Farbplatzhalter je
   // nach Terminal einstellen.
-  switch(term=QueryProp(P_TTY))
+  switch(QueryProp(P_TTY))
   {
     case "vt100":
       lstemplates.templates[DIR] = "%^LS_DIR_START%^%s/%^LS_DIR_END%^";
@@ -153,7 +152,6 @@ private string _ls_output_short(mixed filedata,
 private int _ls_maxlen(mixed filedata,int flags,int maxlen)
 {
   string base;
-  int size;
   base=filedata[BASENAME];
   if (!(flags&LS_A)&&(base[0]=='.')) return 0;
   maxlen=max(maxlen,sizeof(base));
@@ -250,7 +248,7 @@ static int _ls(string cmdline)
   mixed* args;
   string output;
   mixed *tmp;
-  closure output_fun,v_read,v_write,creator,sort_fun;
+  closure v_read,v_write,creator,sort_fun;
   
   cmdline=_unparsed_args()||"";
   args=parseargs(cmdline,&flags,LS_OPTS,1);

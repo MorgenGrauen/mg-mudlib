@@ -159,9 +159,8 @@ protected int _check_unwear_restrictions(object worn_by, int silent,
 }
 
 protected void _informunwear(object worn_by, int silent, int all) {
-  mixed res;
   // Gesetzte Resistenzen loeschen
-  ({void})worn_by->RemoveResistanceModifier(res=QueryProp(P_ARMOUR_TYPE));
+  ({void})worn_by->RemoveResistanceModifier(QueryProp(P_ARMOUR_TYPE));
   
   // Ruestungen koennen Attribute aendern/blockieren. Also muessen diese
   // nach dem Ausziehen aktualisiert werden

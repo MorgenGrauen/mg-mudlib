@@ -294,14 +294,14 @@ static void dumpEPObjects(string *doit)
 
 private string validOb(mixed ob)
 {
-  string fn, fpart;
+  string fn;
 
   if (!objectp(ob))
     return 0;
 
   fn = old_explode(object_name(ob),"#")[0];
-  fpart = old_explode(fn,"/")[<1];
  /*
+  string fpart = old_explode(fn,"/")[<1];
   if (query_once_interactive(ob))
     return 0;
 
@@ -346,7 +346,7 @@ nomask varargs int AddEPObject(object ob, mixed keys, int type, int bonusflag)
        else bonus = clear_bit(bonus, obs[fn, MPOS_NUM]);
   }
   else {
-    int nr, i;
+    int nr;
 
     nr = 0;
     while (test_bit(alloc,nr))
@@ -642,10 +642,10 @@ private int check_to_fast(string name, string fn, int gesetzt)
     lastfound[name, 0] = time();
 
     if ( lastfound[name, 1] >= LF_WARN ){
-        object *u;
         int i;
         string *tmp;
 
+//        object *u;
 //        u = filter( users(), "check_arch" );
 //        map( u, #'tell_object/*'*/, "**** FP-Liste/Script " +
 //                   capitalize(name) + " (" + dtime(time()) + ") ****\n" );
@@ -900,12 +900,11 @@ nomask varargs int ShowPlayerEPs(string pl,string pattern)
 
   output="";
   if (!pattern || pattern=="")
-    teststring="%s";
-  else teststring="%s"+pattern+"%s";
+    teststring="%~s";
+  else teststring="%~s"+pattern+"%~s";
   walk_mapping( obs, function void (string fn, string* v1, int v2, int v3)
       {
-        string unused;
-        if ( test_bit(ep, v2) && sscanf(fn, teststring, unused, unused) )
+        if ( test_bit(ep, v2) && sscanf(fn, teststring) )
           printep(v2, fn, v3, v1);
       });
   ({void})this_interactive()->More(output);
@@ -918,7 +917,6 @@ nomask varargs int ShowPlayerEPs(string pl,string pattern)
 nomask int QueryLEP(int lep) {
     raise_error("Bitte QueryLEP() im LEPMASTER abfragen, nicht im "
        "EPMASTER!");
-    return(-1); //never reached
 }
 
 string QueryForschung()

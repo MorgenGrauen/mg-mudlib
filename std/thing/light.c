@@ -85,5 +85,4 @@ public varargs int CheckLightType(int lighttype, int mode)
     default:
       return (lighttype & my_light_type);
   }
-  return 0;
 }

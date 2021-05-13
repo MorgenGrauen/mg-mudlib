@@ -490,7 +490,6 @@ int cmd_eat(string str) {
     write("Mit diesem Futter stimmt was nicht!"
       " Sprich mal mit einem Magier.\n");
     raise_error("Food ohne Werte.\n");
-    return 0;
   }
 
   if (!is_eatable()) {
@@ -515,7 +514,6 @@ int cmd_drink(string str) {
     write("Mit diesem Futter stimmt was nicht!"
       " Sprich mal mit einem Magier.\n");
     raise_error("Food ohne Werte.\n");
-    return 0;
   }
 
   if (!is_drinkable()) {

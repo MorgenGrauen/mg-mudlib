@@ -196,8 +196,7 @@ protected void InformUnwear(object pl, int silent, int all) {
 // Hierbei steht -1 dafuer, dass der Aufrufer return 0 machen sollte,
 // <= -2 sollte zur einem return !all fuehren.
 protected int _check_wear_restrictions(int silent, int all) {
-  mixed   type,res;
-  object  *armours;
+  mixed   res;
 
   // Man kann nur Kram anziehen, die man bei sich traegt
   if (environment()!=PL) {            

@@ -52,7 +52,6 @@ mixed _query_short() {
 	} else {
 		return "Ein grosser Haufen Krempel";
 	}
-  return 0;
 }
 
 // Prueft, ob wir in einen Spieler gemovt werden sollen.

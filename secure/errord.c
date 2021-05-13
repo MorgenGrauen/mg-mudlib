@@ -1163,7 +1163,6 @@ private int access_check(string uid, int mode) {
       // Zeit alle ab Vollmagier
       case M_WRITE:
         return LEARNER_SECURITY;
-        break;
       // Loeschen und Fixen duerfen zur Zeit nur Zustaendige.
       case M_DELETE:
       case M_REASSIGN:

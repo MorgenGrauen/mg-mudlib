@@ -365,7 +365,6 @@ string *eval_detail_entry(mixed key)
 
 int search_d(object r)
 {   int     i,j,room;
-    mapping m;
     string  *s,s1,*s2,PRE,END,*special,*zufinden,*details,re,*uebergehen;
     mixed   mi;
 

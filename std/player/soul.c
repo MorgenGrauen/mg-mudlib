@@ -633,7 +633,7 @@ private int zeige_adverbs(int mine)  {
 varargs static int
 SoulComm(string str, string _verb)  {
   int t_g,t_n,flag;
-  string str1,str2,str3,*taenze,vb;
+  string str1,str2,*taenze,vb;
   out_sel=out_vic=out_oth=who=0;
 //  if (this_interactive()!=ME) return 0;
   if (interactive(ME)) str=_unparsed_args(); // NPCs haben das nicht :(

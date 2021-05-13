@@ -304,7 +304,6 @@ static int _query_light()
 string short()
 {
   string s;
-  string desc;
 
   if(!(s=QueryProp(P_SHORT)))
     return 0;

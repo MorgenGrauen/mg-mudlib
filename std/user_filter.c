@@ -165,7 +165,7 @@ object *filter_users( string str )
 {
   object *res, *orig, *zwi;
   string *words;
-  int i, sz, f, l,t;
+  int i, sz, f, t;
   mixed x;
   
   orig = users();

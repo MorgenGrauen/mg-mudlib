@@ -203,7 +203,6 @@ int StdSkill_Nightvision(object me, string sname, mixed sinfo)
     }
     return sinfo[SI_SKILLABILITY]+1;
   }
-  return 0;
 }
 
 varargs int CannotSee(int silent)

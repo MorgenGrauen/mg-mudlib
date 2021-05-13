@@ -762,7 +762,6 @@ public int GiveKill(object pl, int bit)
 {
   mixed info;
   object po;
-  int drin;
   string pls, ek;
 
 
@@ -1161,10 +1160,6 @@ private string _getTip(mixed key)
 // return valid tips from database or existing 
 public string getTip(mixed key)
 {
-  string fn;
-  string tip;
-  string* path;
-  
   if (!ektipAllowed())
     return "";
   

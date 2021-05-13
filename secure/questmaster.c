@@ -164,7 +164,7 @@ private int allowed_write_access() {
 
 private int RecalculateQP() {
   int i;
-  mixed q,n;
+  mixed q;
 
   if (!allowed_write_access())
     return -1;
@@ -172,7 +172,6 @@ private int RecalculateQP() {
   max_QP=0;
   opt_QP=0;
 
-  n=m_indices(quests);
   q=m_values(quests);
     for (i=sizeof(q)-1;i>=0;i--)
       if (q[i][Q_ACTIVE]) {
@@ -189,7 +188,6 @@ int AddQuest(string name, int questpoints, int experience,
       string *allowedobj, string hint, int difficulty, int questclass,
       int active, string wiz, string scndwiz, int questattribute)
 {
-  mixed *quest;
   int i;
 
   if (!allowed_write_access()) return 0;
@@ -229,8 +227,6 @@ int AddQuest(string name, int questpoints, int experience,
 }
 
 int RemoveQuest(string name) {
-  mixed *quest;
-
   if (!allowed_write_access()) return 0;
   if (!quests[name]) return -1;
   QMLOG(sprintf("remove: %s %O (%s)",name,quests[name],
@@ -431,7 +427,7 @@ static int compare (mixed *i, mixed *j) {
 #define FILTER_UNGELOEST 2
 varargs string liste(mixed pl, int geloest_filter)
 {
-  int qgroups, i, j, qrfw;
+  int qgroups, i, j;
   mixed *qlists, *qgrouped, *qtmp;
   string str;
   string ja, nein, format, ueberschrift;
@@ -809,7 +805,6 @@ int ChangeMiniQuest(mixed mq_obj, int param, mixed newvalue) {
   }
 
   mixed *altemq = m_entry(miniquests, mq_obj);
-  int nummer = miniquests[mq_obj,MQ_DATA_QUESTNO];
   miniquests[mq_obj, param] = newvalue;
 
   save_info();

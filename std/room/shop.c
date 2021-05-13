@@ -35,8 +35,6 @@ nosave mapping fixed_ids;   // Ids
 
 varargs void AddFixedObject(string str, int val, string|string* ids)
 {
-  int i;
-
   // Achtung, bei solchen Objekten muss die Blueprint initialisiert werden!
   if (!str) return;
   if (!val) val=str->QueryProp(P_VALUE);
@@ -205,7 +203,6 @@ protected object* GetShopItems()
 {
   object store = load_object(storage);
   store->_register_shop(ME);
-  object* output = ({});
   object* all_items = all_inventory(store);
 
   // Wir brauchen eine Liste, die von jeder Blueprint nur einen Clone

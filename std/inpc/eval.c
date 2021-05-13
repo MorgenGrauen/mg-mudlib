@@ -100,7 +100,7 @@ varargs int sum_eval_enemies(mapping fac, mapping off, object *here) {
 
 varargs object *minimize_prop_filt(object *here, mixed prop) {
   object *obs,ob;
-  int i,mhp,hp,sz;
+  int i,mhp,hp;
   
   obs=0;
   if (!pointerp(here))
@@ -125,7 +125,7 @@ varargs object *minimize_prop_filt(object *here, mixed prop) {
 
 varargs object *maximize_prop_filt(object *here, mixed prop) {
   object *obs,ob;
-  int i,mwc,wc,sz;
+  int i,mwc,wc;
   
   obs=0;
   if (!pointerp(here))

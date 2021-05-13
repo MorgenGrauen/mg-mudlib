@@ -67,7 +67,6 @@ string short()
     case 1:  return "Eine Geldboerse mit einer Muenze.\n";
     default: return "Eine Geldboerse mit "+i+" Muenzen.\n";
   }
-  return 0;
 }
 
 // Geld darf nur rein, wenn diese Boerse schon Geld enthaelt

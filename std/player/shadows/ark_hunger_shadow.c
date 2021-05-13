@@ -46,6 +46,7 @@ int eat_food(int strength, int testonly)
   }
   return 0;
  }
+ return 0;
 }
 
 void Loeschen() {

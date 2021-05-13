@@ -119,7 +119,6 @@ void Identify( object ob )
 {
     closure cl;
     int i;
-    string info;
 
     spielerleiche = query_once_interactive(ob);
     cl=symbol_function("QueryProp", ob);
@@ -691,7 +690,7 @@ int _query_kma() { return sizeof(moerder_msgs); }
 
 object _channel( object ob )
 {
-  int m_FMM, m_HP, m_WC, m_AC, s_HP, s_WC, s_AC;
+  int m_FMM, m_HP, m_WC, m_AC;
   object rueck;
 
   if (member(inherit_list(previous_object()),CORPSE_OBJ)>-1)
@@ -723,9 +722,9 @@ object _channel( object ob )
                     (m_AC = ({int}) funcall( m_q, P_TOTAL_AC ))))
                   > 200000) ? 2 : 0) ||
            (nr = (((y = m_HP * (m_WC + m_AC)) >
-                   (z = 5 * (s_HP = ({int}) funcall( s_q, P_MAX_HP )) *
-                    ((s_WC = ({int}) funcall( s_q, P_TOTAL_WC )) +
-                     (s_AC = ({int}) funcall( s_q, P_TOTAL_AC )))))
+                   (z = 5 * (({int}) funcall( s_q, P_MAX_HP )) *
+                    ((({int}) funcall( s_q, P_TOTAL_WC )) +
+                     (({int}) funcall( s_q, P_TOTAL_AC )))))
                   ? 3 : 0)))
       {
         SetProp( P_NAME, "Geist "+({string}) ob->name(WESSEN, 0) );

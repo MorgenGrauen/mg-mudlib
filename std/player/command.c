@@ -208,6 +208,8 @@ static mixed _set_default_notify_fail(string s)
   }
   else if (!s||s=="")
     return (default_notify_fail=0);
+
+  return 0;
 }
 
 static mixed _query_default_notify_fail()

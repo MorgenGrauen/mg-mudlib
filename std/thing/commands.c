@@ -608,8 +608,7 @@ public int _cl(string str) {
   while(nindex--)
    if(!strstr(query_verb(),keys[nindex]) &&
       member((flag=added_cmds[keys[nindex], CMDIDX_FLAG]),1)>=0) {
-    int i,ret;
-    i=sizeof(flag);
+    int i = sizeof(flag);
     // Reihenfolge nicht aendern !
     while(i--)
       if(flag[i]==1) {

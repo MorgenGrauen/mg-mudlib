@@ -216,6 +216,7 @@ varargs string MaterialName(string mat, int casus, mixed idinf) {
       casus=0;
     return names[casus];
   }
+  return 0;
 }
 
 varargs string ConvMaterialList(mixed mats, int casus, mixed idinf) {
@@ -240,6 +241,7 @@ varargs string ConvMaterialList(mixed mats, int casus, mixed idinf) {
     }
     return ml;
   }
+  return 0;
 }
 
 int MaterialGroup(mapping mats, string grp) {
@@ -265,6 +267,7 @@ int MaterialGroup(mapping mats, string grp) {
        res=100;
      return res;
    }
+   return 0;
 }
 
 string *AllMaterials() {
@@ -318,6 +321,7 @@ string GroupName(string grp) {
     else
       return "Unbekanntes";
   }
+  return 0;
 }
 
 string GroupDescription(string grp) {
@@ -327,6 +331,7 @@ string GroupDescription(string grp) {
     else
       return "Gruppe unbekannt";
   }
+  return 0;
 }
 
 //==================== Generieren von Headerfile und Manpages
@@ -369,7 +374,7 @@ private string gen_material_h_materials_grp(string grp, string *left)
 }
 private string gen_material_h_materials()
 {
-  string txt, last_grp;
+  string txt;
   string *grps, *mats;
   txt = "// ****************************** Materialien ******************************\n";
   // Gruppenweise ordnen
@@ -470,7 +475,6 @@ private string gen_doc_foot(string other)
 varargs void GenMatList(string fn)
 {
   if (initialized) {
-    string txt;
     if (!stringp(fn) || !sizeof(fn))
       fn = DOC_DIR("materialliste");
     if (file_size(fn) >= 0) {
@@ -501,7 +505,6 @@ varargs void GenMatList(string fn)
 varargs void GenMatGroupList(string fn)
 {
   if (initialized) {
-    string txt;
     if (!stringp(fn) || !sizeof(fn))
       fn = DOC_DIR("materialgruppen");
     if (file_size(fn) >= 0) {
@@ -533,7 +536,6 @@ varargs void GenMatGroupList(string fn)
 varargs void GenHeaderFile(string fn)
 {
   if (initialized) {
-    string txt;
     if (!stringp(fn) || !sizeof(fn))
       fn = HEADERFILE;
     if (file_size(fn) >= 0)
@@ -680,7 +682,6 @@ private varargs mixed readGroupDesc(string id) {
   fn = MAT_DIR+"/groups/"+id;
   if (file_size(fn) > 0) {
     mapping parts;
-    string desc;
     parts = getDescParts(read_file(fn));
     m = ([P_NAME:parts["Name"],
           P_MEMBERS:({})]);
@@ -808,7 +809,7 @@ private mapping convMaterialDesc(string id, mapping desc) {
      ...)
   */
   mapping m;
-  mixed val, val2;
+  mixed val;
   m = ([]);
   // Der string fuer das #define zuerst:
   val = convMatId(desc["Materialid"]);
@@ -856,7 +857,6 @@ private varargs mixed readMaterialDesc(string id) {
   fn = MAT_DIR+"/materials/"+id;
   if (file_size(fn) > 0) {
     mapping parts;
-    string desc;
     parts = getDescParts(read_file(fn));
     m = convMaterialDesc(id, parts);
   } else {
@@ -891,7 +891,7 @@ public int IsScanning() {
 }
 
 private varargs void doScanMaterials(string* mats, int i, int step) {
-  int ticks, start;
+  int start;
   string matid;
   start = get_eval_cost();
   if (step < 2) {

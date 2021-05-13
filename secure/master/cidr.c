@@ -90,9 +90,7 @@ private int IPv4_net_size(string addr) {
       default: // ungueltige Adresse
         return __INT_MAX__;
     }
-
     // hier sollte man gar nicht ankommen.
-    return __INT_MAX__;
 }
 
 string IPv4_int2addr(int ip) {

@@ -70,7 +70,7 @@ string prompt(mixed pinfo, string add)
 
 int search(mixed pinfo)
 {
-  int l, lines;
+  int l;
   mixed tmp;
   l = pinfo[CURL];
   while((tmp = fread(pinfo, l, pinfo[PAGE])) &&

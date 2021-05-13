@@ -279,10 +279,9 @@ void StartEX(string in, mixed c)
 
 varargs int ex(mixed text, closure func, mixed fargs, string buffer)
 {
-  int c, l;
+  int l;
   mixed ct;
   if(!text) text = "";
-  c = sizeof(text);
   l = sizeof(text = explode(text, "\n")) - 1;
   ct = ({ CMD, text, 0, func, fargs, 0, 0});
   if(!ctrl[buffer]) StartEX(0, ct);

@@ -195,8 +195,6 @@ AddSkill(string sname, mapping ski) {
 
 varargs int
 AddSpell(string verb, mapping ski) {
-  mapping skills;
-
   if (!verb)
       return 0;
   if (!mappingp(ski))
@@ -352,7 +350,6 @@ varargs int
 LearnSpell(string spell,object pl) {
   mapping ski,restr;
   string res;
-  mixed learn_initfunc;
   int abil,diff;
 
   // Wenn kein pl gesetzt ist, nehmen wir this_player(), das ist der
@@ -393,7 +390,6 @@ LearnSkill(string skill) {
   mapping ski,restr;
   object pl;
   string res;
-  mixed learn_initfunc;
   int abil,diff;
 
   if (!IsGuildMember(pl=this_player())) {

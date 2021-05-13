@@ -29,5 +29,6 @@ string short()
   string sh;
   if( sh=QueryProp(P_SHORT) )
     return funcall(sh)+".\n";
+  return 0;
 }
 

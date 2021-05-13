@@ -18,18 +18,22 @@ inherit "/std/thing/description";
 // ([ "key": ({ ({eigenschaften}), ([raeume]) }) ])
 private mapping krautdaten;
 
+#if MUDNAME == "MorgenGrauen"
 // AN: enthaelt die Liste der gueltigen Kraeuter-Dateinamen ohne .c
 // am Ende. Ich vermute, dass es deswegen ein Mapping ist, damit in 
 // Validate() einfach member() drauf gemacht werden kann und man nur 0/1
 // als Rueckgabewerte pruefen muss, statt -1 bei nem member() auf ein Array.
 private mapping validfiles;
+#endif
 
 public void update(mapping data)
 {
   if (previous_object() == find_object(PLANTMASTER))
   {
     krautdaten = data;
+#if MUDNAME == "MorgenGrauen"
     validfiles = mkmapping(m_indices(krautdaten));
+#endif
   }
 }
 

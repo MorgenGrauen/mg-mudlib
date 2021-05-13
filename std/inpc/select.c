@@ -45,7 +45,6 @@ mapping scan_objects(mixed src) {
         ctime()+"select::scan_objects(). Rest "+to_string(cost)+
         ", i="+member(src, ob)+", Size "+to_string(sizeof(src))+".\n");
       return res;
-      break;
     }
     if (!objectp(ob))
       continue;
@@ -111,7 +110,6 @@ object find_best_weapon(mixed from) {
         "Break in select::find_best_weapon(). Rest-Ticks "+to_string(cost)+
         ", i = "+to_string(i)+", Size "+to_string(sizeof(res))+".\n");
       return bob; // zurueckgeben, was bisher drinsteht.
-      break;
     } 
   }
   return bob;
@@ -217,7 +215,6 @@ varargs int wear_best_armours(mixed from) {
 	to_string(cost)+", i="+member(diff, di)+", Size "+
 	to_string(sizeof(diff))+".\n");
       return 1; // zurueckgeben, was bisher drinsteht.
-      break;
     }
   }
   diff=na-oa;
@@ -235,7 +232,6 @@ varargs int wear_best_armours(mixed from) {
 	 to_string(cost)+", i="+member(diff, di)+", Size "+
 	 to_string(sizeof(diff))+".\n");
       return 1; // zurueckgeben, was bisher drinsteht.
-      break;
     }
   }
   return 1;

@@ -81,8 +81,6 @@ public varargs int ReceiveMsg(string msg, int msg_type, string msg_action,
 // erzeugt sortierte Liste an Kommunikationspartnern
 private string *sorted_commpartners(int reversed);
 
-private nosave string *buffer = ({});
-
 void create()
 {
   ::create();
@@ -989,7 +987,6 @@ static int _msg_beep(string str) {
 }
 
 static int _msg_prepend(string str) {
-  int beep_interval;
   notify_fail("Syntax: senderwiederholung ein/aus\n");
   if (stringp(str)) {
     if (str=="aus")  
@@ -1109,7 +1106,7 @@ varargs int _tell(string who, mixed msg)
 {
   object    ob;
   string    away,myname,ret;
-  mixed     ignore,it;
+  mixed     it;
   string    *xname;
   int       i,visflag;
 
@@ -1389,9 +1386,7 @@ private int is_learner(object o) { return IS_LEARNER(o); }
 
 static int _shout_to_wizards(mixed str)
 {
-  int     i, j;
   string    myname;
-  object   *u;
 
   str = _unparsed_args();
   if (!str||!sizeof(str)) {
@@ -1744,7 +1739,6 @@ public int TestIgnore(string|string* srcnames)
         default: // mehr als 3 Teile...
           raise_error(sprintf("TestIgnoreExt(): too many qualifiers, only 1 "
                 "is supported. Got: %s\n",srcname));
-          break;
       }
     }
   }

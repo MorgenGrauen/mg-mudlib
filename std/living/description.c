@@ -100,7 +100,7 @@ public string _query_internal_extralook() {
 public varargs int AddExtraLook(string look, int duration, string key, 
                                 string lookende, object ob) {
   mapping xl;
-  string oname;
+
   if (!stringp(key) || !sizeof(key)) {
     // Automatisch erzeugen, wenn moeglich
     if (!objectp(previous_object()) || 
@@ -243,10 +243,8 @@ string condition()
 }
 
 varargs string long() {
-  string str, cap_pronoun;
-  string descr, invl,tmp,exl;
-  int hpnt, max_hpnt;
-  mixed filter_ldfied;
+  string str;
+  string invl,tmp,exl;
   object ob;
 
   str = process_string( QueryProp(P_LONG) );
@@ -286,7 +284,7 @@ varargs string long() {
     }
   }
   
-  if(filter_ldfied = QueryProp(P_TRANSPARENT))
+  if(QueryProp(P_TRANSPARENT))
   {
     invl = make_invlist(PL, all_inventory(ME));
     if(invl != "")

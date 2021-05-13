@@ -264,7 +264,7 @@ static string _filter_addr( string addr )
 
 public string *DeliverMail( mixed msg, int expa )
 {
-    string sender, *recipients, *recok, t, *tmp;
+    string sender, *recipients, *recok, *tmp;
     <string|string*>* newmsg;
     int i;
 #ifdef INTERNET_MAIL_ENABLED
@@ -275,7 +275,6 @@ public string *DeliverMail( mixed msg, int expa )
         return 0;
 
     DEBUG( sprintf( "DeliverMail: %O %O\n", msg[0..4] +({0})+ msg[6..7], expa ) );
-    t = ctime(time());
 
     // Ohne Empfaenger wird abgebrochen
     if (!stringp(msg[MSG_RECIPIENT]))
@@ -365,6 +364,7 @@ public string *DeliverMail( mixed msg, int expa )
 #ifdef INTERNET_MAIL_ENABLED
             // Zustellung in den Rest des Internets.
             else {
+                string t = ctime(time());
                 ext = 1;
                 sender = explode( sender, "%" )[0];
                 rec = explode( regreplace( rec, "@", "%", 1 ), "%" )[0];
@@ -419,7 +419,7 @@ public string *DeliverMail( mixed msg, int expa )
 
 public int FingerMail( string user )
 {
-    int newfolder, i;
+    int newfolder;
 
     //Zugriff beschraenken, Zahl der gelesenen Mails ist Privatsphaere
     if (!objectp(this_interactive()) || !stringp(user) || !sizeof(user)) 

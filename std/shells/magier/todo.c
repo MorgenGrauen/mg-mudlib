@@ -12,7 +12,6 @@
 
 #define SAVEFILENAME sprintf("/players/%s/.todoliste",getuid())
 
-private nosave status todo_initialized;
 private nosave mixed *todo_data;
 mixed *todo_data_public;
 static mixed _query_localcmds()
@@ -23,9 +22,8 @@ static mixed _query_localcmds()
 
 private void todo_save()
 {
-
-  int i,j;
-  string a,b;
+  int j;
+  string a;
   a=SAVEFILENAME+".o";
   rm(a);
   if (j=sizeof(todo_data))

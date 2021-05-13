@@ -219,7 +219,6 @@ protected void InformUnwield(object pl, int silent)
 varargs int wield_me(int silent) 
 {
   raise_error("wield_me() ist veraltet. Bitte nutze DoWield()\n");
-  return 1;
 }
 
 // Die Funktion, die das eigentliche Zuecken durchfuehrt.

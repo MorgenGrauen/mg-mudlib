@@ -115,8 +115,7 @@ private string get_vis_name(object ob) {
 
 varargs string long()
 {
-  string exl, descr, tmp, size_descr;
-  object ob;
+  string descr, size_descr;
   mixed trans, w, a, r;
   int per;
   string fill, fill2;

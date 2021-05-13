@@ -43,7 +43,7 @@ private string _traveller(string *s)
 static int reise(string str)
 {
   mixed  t, ship, dstr;
-  string mit, nach, s1, s2;
+  string mit, nach;
   int    i;
 
   _notify_fail("Syntax: reise mit <transportmittel> nach <zielort>\n\n"

@@ -123,10 +123,9 @@ varargs mixed make_invlist(object viewer, mixed inv, int flags)
 {
   int iswiz;
   mixed objs, info;
-  string descr;
 
   iswiz = IS_LEARNER( viewer ) && ({int})viewer->QueryProp(P_WANTS_TO_LEARN);
-  descr = ""; objs = ({}); info = ({});
+  objs = ({}); info = ({});
   map(inv, #'stringenize/*'*/, iswiz | (flags & 2) | (flags & 4), &objs, &info);
   if(flags & 1) return info;
   inv = map(info, #'collect/*'*/) - ({ 0 });

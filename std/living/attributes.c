@@ -148,7 +148,7 @@ nomask public int DeleteTimedAttrModifier(string key)
 
 nomask protected void attribute_hb()
 {
-  int now,i,k,update,outdated;
+  int now,i,k,outdated;
   string* keys;
   mapping tonotify;
 	
@@ -433,9 +433,6 @@ nomask public void register_modifier(object modifier) {
 }
 
 protected void add_offsets(mapping arr) {
-  mixed *ind;
-  int i;
-  
   if ( !mappingp(arr) )
     return;
 
@@ -504,7 +501,6 @@ protected void create() {
 }
 
 static mixed _query_timed_attr_mod() {
-  mixed ret;
   return Set(P_TIMED_ATTR_MOD,	    
       ({attributes_timed_mods[0],
 	deep_copy(attributes_timed_mods[1]),

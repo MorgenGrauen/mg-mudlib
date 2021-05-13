@@ -63,7 +63,7 @@ inherit "/std/hook_consumer";
 // Verlustwahrsch. fuer Koeder falls Fisch zu schwer
 
 private object room, current_user;
-private int active, actime;
+private int active;
 private mapping aquarium = STDFISHLIST;
 
 nomask varargs void StopFishing(string msg_me, string msg_room);
@@ -307,7 +307,6 @@ static int angel(string str) {
         // - Haken mit Koeder ist dran.
         // - alte Beute wurde abgenommen.
         // - Move-Hook gesetzt, um Abbruch ausloesen zu koennen.
-        actime = time();
         current_user = TP;
         tell_object(TP, "Du wirfst die Angel aus.\n");
         tell_room(environment(TP), TP->Name()+" wirft eine Angel aus.\n", 

@@ -156,9 +156,8 @@ private void GMCP_send(string cmd, mixed data)
 
 private void GMCP_unregister_module(string mod)
 {
-  int version;
   // Wenn nicht "mod version" Schema, ignorieren
-  if (sscanf(mod, "%s %d", mod, version) != 2)
+  if (sscanf(mod, "%s %~d", mod) != 2)
       return;
 
   if (mod=="Core") // darf nicht abgeschaltet werden.

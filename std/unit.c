@@ -627,7 +627,6 @@ public int DoDecay(int silent) {
 // uebergeben. Wichtig: zu diesem Zeitpunkt hat sich an der Unit noch nix (!)
 // geaendert!
 protected void DoDecayMessage(int oldamount, int zerfall) {
-  string msg;
   if (oldamount == zerfall) {
     if (living(environment())) {
       tell_object(environment(), break_string(sprintf(

@@ -223,7 +223,6 @@ int loesche(string str)
 	    default: write("Interner Fehler. Bitte Erzmagier verstaendigen !\n");
 	    return 1;
 	  }
-  return 0;
 }
 
 void Crumble()

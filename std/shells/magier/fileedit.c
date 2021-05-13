@@ -60,7 +60,7 @@ private void _ed_file()
 static int _ed(string cmdline)
 {
   mixed *args,*args2;
-  int flags,i,arg_size;
+  int flags,arg_size;
   cmdline=_unparsed_args();
   args=parseargs(cmdline,&flags,"",1);
   if (flags==-1||!(arg_size=sizeof(args)))
@@ -149,7 +149,6 @@ static mixed cp_file(mixed filedata,int move,int flags, mixed *do_delete)
       if (flags&CP_V) printf(FILE_COPIED,source);
       return RET_OK;
   }
-  return 0; // not-reached
 }
 
 static void _cp_ask_overwrite2(string input, mixed *filedata,
@@ -290,9 +289,8 @@ static void _cp_ask_copy2(string input,mixed *filedata,int mode,
 
 static void _cp_ask_copy(mixed *filedata,int move, int flags)
 {
-  mixed data;
   string dest,source;
-  int delete_subs,jump;
+  int jump;
 
   if(!sizeof(filedata))
   {
@@ -441,7 +439,7 @@ static int _cp(string cmdline)
 
 static int _rmdir(string cmdline)
 {
-  string dest,tmp;
+  string dest;
   int flags;
   mixed *args;
   
@@ -492,7 +490,7 @@ static int _rmdir(string cmdline)
 
 static int _mkdir(string cmdline)
 {
-  string dest,tmp;
+  string dest;
   int flags,i;
   string *args;
   
@@ -581,13 +579,10 @@ static void _rm_ask_delete2(string input,mixed *filedata,int flags)
       _rm_ask_delete(filedata,flags);
       return;
   }
-  return;
 }
 
 private void _rm_ask_delete(mixed *filedata, int flags)
 {
-  int i;
-  mixed temp;
   if (!sizeof(filedata))
   {
     printf("rm: abgeschlossen.\n");
@@ -600,7 +595,7 @@ private void _rm_ask_delete(mixed *filedata, int flags)
       _rm_ask_delete(filedata[1..],flags);
       return;
     case FSIZE_DIR:
-      if (i=filedata[0][SUBDIRSIZE])
+      if (filedata[0][SUBDIRSIZE])
         printf("Ins Verzeichnis '%s' hinabsteigen?\n",
           filedata[0][FULLNAME]);
       else
@@ -652,7 +647,7 @@ private void rm_file(mixed filedata, mixed notused, int flags)
 
 static int _rm(string cmdline)
 {
-  mixed *args,*args2;
+  mixed *args;
   int flags,i;
   string mask;
   

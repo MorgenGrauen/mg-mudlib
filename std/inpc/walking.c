@@ -117,13 +117,17 @@ int walk_random() {
 }
 
 int walk_route() {
+  return 0;
 }
 
 int walk_to() {
+  return 0;
 }
 
 int walk_follow() {
+  return 0;
 }
 
 int walk_flee() {
+  return 0;
 }

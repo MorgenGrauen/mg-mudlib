@@ -50,7 +50,7 @@ private varargs string query_g_suffix(int gen, int casus, int anzahl)
 // Artikel vorschlagen: gibt es noch mehr Objekte im inv?
 protected varargs int SuggestArticle(string id)
 {
-  object ob,*obs;
+  object ob;
 
   // Raum oder Master: Bestimmt.
   if (!environment()) return 1;
@@ -110,8 +110,6 @@ public varargs string QueryPossPronoun(int|object what, int casus, int number)
 // Pronomen bestimmen nach KNG
 public varargs string QueryPronoun(int casus)
 {
-  int gender;
-
   // Plural ist immer einfach ...
   if (QueryProp(P_PLURAL)) 
   {

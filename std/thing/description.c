@@ -275,7 +275,6 @@ static string* _set_adjectives(string* adjectives)
 // zusamengebaut werden, dazu muss ich das leerzeichen aber erstmal
 // abschneiden und so weiter ...
 private string depointer_adj( <string|string*>* adj, int casus, int demon ) {
-  string msg;
   int start;
   string res,a;
 	adj = map( adj, #'DeclAdj, casus, demon );
@@ -498,7 +497,6 @@ private void _remove_details(string|string* keys, mapping details )
 // Detail(s) hinzufuegen
 public void AddDetail(string|string* keys, string|string*|mapping|closure descr)
 {
-    int i;
     mapping details;
 
     details = Query(P_DETAILS, F_VALUE);

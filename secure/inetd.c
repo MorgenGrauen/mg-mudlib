@@ -91,7 +91,6 @@
 #define RETRY                "_RETRY"
 
 private nosave mapping hosts, pending_data, incoming_packets;
-private nosave mapping static_host_list;
 private nosave string *received_ids;
 private nosave int packet_id;
 
@@ -202,9 +201,6 @@ void set_host_list() {
   if (!static_hosts)
       return; // retain the old list(s)
 
-  // remember the static hosts
-  static_host_list = m_reallocate(static_hosts,0);
-  
   // read the last host file dump and add the static hosts. Then the static
   // hosts have precedence over the ones from the dump.
   hosts = (read_host_list(HOST_FILE".dump") || ([])) + static_hosts;
@@ -601,7 +597,7 @@ string encode(mixed arg) {
 string encode_packet(mapping data) {
     int i;
     mixed indices;
-    string header, body, t1, t2;
+    string header, body;
     string *ret;
     status data_flag;
 
@@ -616,8 +612,8 @@ string encode_packet(mapping data) {
         // dabei nach ASCII wandeln und ggf. transliterieren. Aber sscanf
         // braucht wieder strings, daher muss es spaeter passieren (direkt vor
         // Senden).
-        if (sscanf(header, "%s:%s", t1, t2) ||
-            sscanf(header + body, "%s" + DELIMITER + "%s", t1, t2)
+        if (sscanf(header, "%~s:%~s") ||
+            sscanf(header + body, "%~s" + DELIMITER + "%~s")
         )
             return 0;
 
@@ -766,8 +762,6 @@ void reply_time_out(string id) {
     mapping data;
 
     if (data = pending_data[id]) {
-        object ob;
-
 #ifdef INETD_DIAGNOSTICS
         data[PACKET_LOSS]++;
 #endif

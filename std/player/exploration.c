@@ -21,8 +21,6 @@
 
 private string given_scores;
 
-private nosave mixed epnum;
-
 void create() {
   Set(P_LEP, SECURED|SAVE, F_MODE_AS);
 

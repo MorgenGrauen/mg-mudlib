@@ -130,7 +130,6 @@ mixed CustomizeObject()
 private mixed AddObject(string file)
 {
   object ob;
-  string err;
 
   // clean up the object list
   objects = filter_indices(objects, function int (string f) {

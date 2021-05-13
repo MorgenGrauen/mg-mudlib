@@ -92,8 +92,6 @@ static int cm_stopf(string str){
 }
 
 static int cm_smoke(string str){
-  object ob;
-
   _notify_fail("Was moechtest Du rauchen?\n");
   if(!str) return 0;
   if(!id(str)) return 0;

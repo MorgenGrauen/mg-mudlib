@@ -110,9 +110,6 @@ private void UpdateSACache(string *attrs) {
 
 private int InternalModifySkillAttribute(object caster, string atrname,
                                 mixed value, int duration) {
-  int zeit = utime()[1];
-  int ticks = get_eval_cost();
-
   // nur existierende SAs...
   if (!stringp(atrname)
       || member(VALID_SKILL_ATTRIBUTES, atrname) == -1)

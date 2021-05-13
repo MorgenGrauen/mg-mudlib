@@ -161,7 +161,6 @@ int AddPotionRoom(string room, int list) {
   if ( file_size( TIPS(to_string(nextroom)+".zt") ) < 0 ) {
     raise_error("Potionmaster: Tipfile missing, please create "+
       to_string(nextroom)+".zt");
-    return POT_NO_SUCH_FILE;
   }
   // Neuer Raum darf noch nicht in der Liste enthalten sein.
   if ( member(m_values(potions,POT_ROOMNAME), room)!=-1)

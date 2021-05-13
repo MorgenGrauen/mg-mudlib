@@ -132,10 +132,7 @@ void create()
 // where possible
 static string ComposeDesc(object item)
 {
-  int i;
-  string text, *buff;
-  
-  text=regreplace(item->QueryProp(P_SHORT)
+  string text=regreplace(item->QueryProp(P_SHORT)
                 ||item->name(RAW)
                 ||"<?>",
                 "^(Ein Paar|Ein|Eine|Der|Die|Das) ","",0);

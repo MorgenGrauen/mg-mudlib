@@ -26,7 +26,7 @@ string fread(mixed pinfo, int begin, int c)
   if(pinfo[FILE]) return read_file(pinfo[TEXT], begin, c);
   else
   {
-    int start, end, l, x;
+    int start, end;
 
     if(member(pinfo[JUNK], begin)) 
     {

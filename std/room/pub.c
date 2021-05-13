@@ -93,7 +93,6 @@ private string replace_dummy(string str)
     case "&6#": return "@WESSENQP1";
     case "&7#": return "@WEMQP1";
     case "&8#": return "@WENQP1";
-    default: return str;
   }
   return str;
 }

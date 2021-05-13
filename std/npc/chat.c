@@ -68,7 +68,6 @@ protected void process_chat(mixed strs) {
 }
 
 void DoAttackChat() {
-  string* c;
   if (!ME || !environment(ME))
     return;
   if (QueryProp(P_DISABLE_ATTACK)>0)return ;
@@ -77,7 +76,6 @@ void DoAttackChat() {
 }
 
 void DoChat() {
-  string *c;
   if (!ME || !environment(ME))
     return;
   if (random(100) < QueryProp(P_CHAT_CHANCE))

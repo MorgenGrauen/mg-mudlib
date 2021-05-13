@@ -207,7 +207,6 @@ protected int fill_bottle(object src)
       " fuellen koenntest!\n");
     return 0;
   }
-  return 0;
 }
 
 static int cmd_leere(string str)

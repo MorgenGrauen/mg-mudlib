@@ -59,9 +59,7 @@ static void start_retry_callout();
 
 static void remove_from_spool(string spool_file)
 {
-  int idx;
-
-  if(spool && (idx=member(spool,spool_file))!=-1)
+  if(spool && (member(spool,spool_file))!=-1)
     {
       spool -= ({ spool_file });
       if(!sizeof(spool))

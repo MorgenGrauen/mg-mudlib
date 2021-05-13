@@ -109,7 +109,7 @@ static int _check_keep(object ob)
 int _inventory(string str)
 {
   mixed *args, output;
-  int ansi, i, flags, minv;
+  int ansi, flags, minv;
   mixed inventory, weapons, armours, misc;
   string format;
 
@@ -681,8 +681,6 @@ private int _examine_rec(object *ref_objects, string *tokens, closure
       return 0;
     }
   }
-  // Nie erreicht.
-  return 0;
 }
 
 varargs int _examine(string str, int mode)
@@ -768,7 +766,6 @@ varargs int look_into(string str,int mode)
 varargs string env_descr(int allow_short,int flags, int force_short )
 {
   object env;
-  int brief;
 
   env = environment(ME);
 
@@ -778,7 +775,7 @@ varargs string env_descr(int allow_short,int flags, int force_short )
   if (!force_short && (!allow_short || !QueryProp(P_BRIEF)))
       return env->int_long(ME,ME,flags);
 
-  if (!flags && ((brief=QueryProp(P_BRIEF))>=2))
+  if (!flags && QueryProp(P_BRIEF)>=2)
       return "";
 
   return env->int_short(ME,ME);

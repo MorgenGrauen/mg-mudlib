@@ -163,7 +163,6 @@ nomask int QueryLevel(int lep) {
 #else
   return lep/100;
 #endif // __PFOERKL__
-  return 0;
 }
 
 // Wieviele LEP fehlen zum naechsten Level?

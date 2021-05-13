@@ -43,16 +43,6 @@ private mapping key2id;
 // krautprops[0] = 0; ID 0 darf nicht existieren
 private mixed *krautprops;
 
-// hier wird gespeichert welche Version einer Zutat fuer einen Spieler ist.
-// AN/TODO: Wenn das fuer Nichtseher nutzbar sein soll, sollte hier besser
-// mit getuuid() gearbeitet werden, statt getuid() zu verwenden.
-// player enthaelt fuer jede Spieler-UID einen Bitstring. Gesetztes Bit
-// bedeutet, dass der Spieler ueber das Kraut mit dieser ID etwas ueber
-// die Verwendung und Wirkung weiss. Es gibt jedoch noch keine Lernmoeglich-
-// keit und INSBESONDERE keine Funktionalitaet im Master, ueber die man 
-// die Bits setzen koennte.
-private mapping player;
-
 // verstuemmeltes mapping fuer den VC in service (Save-Dummy)
 private mapping map_ldfied;
 
@@ -129,7 +119,7 @@ protected void create()
       id2key=({});
       key2id=([]);
       krautprops=({});
-      player=([]);
+      //player=([]);
       map_ldfied=([]);
       rooms=([]);
    }
@@ -199,40 +189,11 @@ public string QueryPlantFile(int id)
 // verwenden kann. Laut Kommentar unten muss man dafuer wohl was ueber das
 // Kraut gelernt haben, von wem ist mir gerade noch nicht klar.
 // AN/TODO: Es ist bisher keine Funktionalitaet vorhanden, um die IDs fuer
-// den Spieler freizuschalten. Die Funktionsweise muss aus dem Beispielcode
-// unten fuer das Learn-On-Demand abgelesen werden.
+// den Spieler freizuschalten.
 nomask int CanUseIngredient(object pl, int id)
 {
   // Ich mach mal den harten Weg. -- Humni
   return 1;
-  // Bitstring des Spielers aus der Liste auslesen.
-   string str=player[getuid(pl)];
-   if (!stringp(str)) str="";
-   if (test_bit(str, id))
-      return 1; // make the common case fast
-   else {
-     // letztenendes habe ich mich entschlossen einzubauen, das man nur die
-     // Kraeuter verwenden kann, ueber die man schonmal etwas gelesen/gelernt
-     // hat, aus diesem Grund, ist folgender Block auskommentiert.
-     // Dieser Block bedeutet quasi ein "auto learning on demand" d.h.
-     // wird ein Kraut verwendet wird geprueft ob fuer diese Gruppe bereits
-     // eine ID freigeschaltet wurde - ansonsten wird eine freigeschaltet.
-     /*
-         // pruefen ob fuer den Key bereits ein Bit gesetzt ist, ggf. setzen
-         if (id>=sizeof(id2key)) return 0; // illegale Id
-         int idlist=key2id[id2key[id]];
-         int i;
-         for (i=sizeof(idlist)-1; i>=0; i--) {
-           if (test_bit(str, idlist[i])) return 0; // Key bereits vorhanden
-         }
-         // Zufaellig ein Bit fuer den Key setzen
-         i=random(sizeof(idlist));
-         player[getuid(pl)]=set_bit(str, idlist[i]);
-         save_object(object_name());
-         return (i==id);
-     */
-     return 0;
-   }
 }
 
 // Diese Funktion wird vom Metzelorakel aufgerufen, um die Belohnungen zu
@@ -340,7 +301,6 @@ nomask private int LoadIdList(string filename)
    // Allerdings muesste das vor dem explode() zur Zeilentrennung passieren.
    for ( ;si>=0; si--) 
    {
-     string lili=lines[si];
      if (strstr(lines[si],"##ende##")>=0) break;
    }
    si--;
@@ -708,9 +668,10 @@ int _showplant(string str)
 // angesteuert ueber das Planttool.
 int _showrooms(string str)
 {
-   int i, j, id;
-   string *list, dummy;
+   int i, id;
+   string *list;
    mixed *arr;
+
    if (!allowed()) return 0;
    notify_fail("Syntax: showrooms <id> oder showrooms all\n");
    if (str!="all") {
@@ -1152,7 +1113,7 @@ mapping make_potion(object* plants)
 // Fehler "index out of bounds", aber man muesste hier (TODO) sowieso mal
 // von explode() auf strstr() umbauen, denke ich.
 string _findplant(string str) {
-  int i, k;
+  int i;
   string *ind, *tmp;
 
   if(!str) return "";
@@ -1179,9 +1140,8 @@ mixed _checkTrank(string str)
   if (extern_call() && !allowed())
     return 0;
 
-  string *ind, *args, name;
+  string *ind, name;
   object *objs;
-  int k, l;
 
   objs = ({});
   if(!str) return "Keine Kraeuter uebergeben!";

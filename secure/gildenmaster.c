@@ -128,8 +128,6 @@ nomask static int security_check()
 }
 
 nomask int AddGuild(string gildob) {
-  object tp;
-
   if (!stringp(gildob) || !sizeof(gildob) || !security_check() 
       || file_size(GUILD_DIR+gildob+".c")<0)
       return 0;
@@ -141,8 +139,6 @@ nomask int AddGuild(string gildob) {
 }
 
 nomask int RemoveGuild(string gildob) {
-  object tp;
-
   if (!stringp(gildob) || !sizeof(gildob) 
       || !security_check())
       return 0;

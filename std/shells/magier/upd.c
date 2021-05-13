@@ -65,7 +65,6 @@ private object _reload(string file, int clone, int flags, string err)
   if (!obj=find_object(file[0..<3]+(clone?("#"+clone):"")))
   {
     int pos,pos2;
-    string bt;
 
     if(file_size(file)<0)
     {
@@ -356,7 +355,7 @@ varargs static int _make(string file, int flags,int recursive)
   if ( (!(flags&UPD_LOAD))&&
        ((obj = find_object(file)) || (flags & (UPD_M|UPD_I))))
   {
-    object *inv, env, *pl_inv;
+    object *inv, env;
     mapping pro;
     int i;
     mixed configdata;

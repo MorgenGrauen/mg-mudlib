@@ -177,8 +177,7 @@ void SetTravelCmds()
 
 mixed HasRoute(mixed dest)
 {
-  int i,s,z;
-  string str;
+  int i,s;
   object ob;
   mixed harb;
   
@@ -484,8 +483,7 @@ static varargs void disconnect(int change, int change_time)
 static varargs void connect(string room, string code)
 {
   mixed *arrivemsg, *t;
-  object *trav, ob;
-  string *trs, *msgs;
+  object *trav;
   int i;
 
   if (roomCode) disconnect();

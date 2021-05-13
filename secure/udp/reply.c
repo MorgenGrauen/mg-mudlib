@@ -12,7 +12,7 @@
 
 void udp_reply(mapping data)
 {
-  string err,recpt,serv;
+  string serv;
   object ob;
   
   if (pointerp(data[SYSTEM])&&member(data[SYSTEM],TIME_OUT)>-1)

@@ -505,7 +505,7 @@ static int _query_age() {
 static int _set_hp( int hp )
 {
     object *hooks;
-    int ret, i, old;
+    int ret, old;
 
     if ( (old = Query(P_HP, F_VALUE)) == hp )
         return old;
@@ -532,7 +532,7 @@ static int _set_hp( int hp )
 static int _set_sp( int sp )
 {
     object *hooks;
-    int ret, i, old;
+    int ret, old;
 
     if ( (old = Query(P_SP,F_VALUE)) == sp )
         return old;

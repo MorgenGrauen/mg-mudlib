@@ -273,7 +273,6 @@ private string get_family(string familie)
   }
   else
     return QueryFamilie(previous_object());
-  return 0;
 }
 
 // Die Familienaliase abfragen. Entweder ein bestimmtes oder alle. Eine

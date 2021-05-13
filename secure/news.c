@@ -151,8 +151,6 @@ int AddGroup(string name, string owner)
 
 int RemoveGroup(string name)
 {
-  int num;
-
   if (!name) return 0;
 
   if (!security(name) || process_call()) return -1; // Darf nicht
@@ -170,8 +168,6 @@ int RemoveGroup(string name)
 
 int SetGroup(string name,int dlevel,int        wlevel,int rlevel,int maxmessages,int expire)
 {
-  mixed *group;
-  
   if (!member(grouplist,name)) return -2;
   if (grouplist[name,G_OWNER]!=user_euid() &&
       (!security(name) || process_call())) return -1;
@@ -188,8 +184,6 @@ int SetGroup(string name,int dlevel,int        wlevel,int rlevel,int maxmessages
 
 int AddAllowed(string name,mixed deleters,mixed writers,mixed readers)
 {
-  mixed *group;
-
   if (!member(grouplist,name)) return -2;
 
   if ( grouplist[name,G_OWNER]!=user_euid() &&
@@ -214,8 +208,6 @@ int AddAllowed(string name,mixed deleters,mixed writers,mixed readers)
 
 int RemoveAllowed(string name,mixed deleters,mixed writers,mixed readers)
 {
-  mixed *group;
-
   if (!member(grouplist,name)) return -2;
 
   if (grouplist[name,G_OWNER]!=user_euid() &&
@@ -298,7 +290,6 @@ static int allowed(string name, int mode)
 int WriteNote(mixed message,mixed keepname)
 {
   mixed group;
-  int uidok,tmp;
   string name;
 
   if (!pointerp(message) || sizeof(message)!=6) return 0;
@@ -325,7 +316,6 @@ int WriteNote(mixed message,mixed keepname)
 
 int RemoveNote(string name, int note)
 {
-  int num;
   mixed group;
 
   if ((note<0) && (name=="dwnews"))
@@ -429,7 +419,7 @@ protected varargs void expire(string grp,int etime)
 
 void dump_group(string grp)
 {
-  int to_expire,size,last;
+  int size,last;
   mixed group;
 
   if (!ARCH_SECURITY || process_call()) return;
@@ -476,7 +466,6 @@ static void save_group_list()
 
 static mixed load_group(string name)
 {
-  int num;
   mixed *ret;
 
   if(!member(grouplist,name)) return -1;
@@ -498,7 +487,7 @@ static mixed load_group(string name)
 mixed GetGroups()
 {
   mixed *returnlist;
-  int i,group,slevel;
+  int i,slevel;
   string seuid;
 
   returnlist=sort_array(m_indices(grouplist),#'>); //');

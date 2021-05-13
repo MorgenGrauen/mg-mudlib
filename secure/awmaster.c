@@ -117,7 +117,7 @@ int xflags(object ob){
 void RegisterArmour()
 {   object  ob;
     string  id;
-    int     flag,h;
+    int     h;
 
     if (!objectp(ob=previous_object()) || 
       member(inherit_list(ob),"/std/armour.c")==-1)
@@ -126,26 +126,21 @@ void RegisterArmour()
     if (member(armours,id))
     {
         armours[id][AWM_TIME]=time();
-        flag=0;
         if ((h=({int})ob->QueryProp(P_AC)) > armours[id][AWM_CLASS])
         {
             armours[id][AWM_CLASS]=h;
-            flag=1;
         }
         if ((h=({int})ob->QueryProp(P_EFFECTIVE_AC)) > armours[id][AWM_EFF_CLASS])
         {
             armours[id][AWM_EFF_CLASS]=h;
-            flag=1;
         }
         if ((h=({int})ob->QueryProp(P_NR_HANDS)) < armours[id][AWM_HANDS])
         {
             armours[id][AWM_HANDS]=h;
-            flag=1;
         }
         if ((h=xflags(ob)) != armours[id][AWM_FLAGS])
         {
             armours[id][AWM_FLAGS]=h;
-            flag=1;
         }
     }
     else
@@ -171,7 +166,7 @@ void RegisterArmour()
 void RegisterWeapon()
 {   object  ob;
     string  id;
-    int     flag,h;
+    int     h;
 
     if (!objectp(ob=previous_object()) ||
       member(inherit_list(ob),"/std/weapon.c")==-1)
@@ -180,26 +175,21 @@ void RegisterWeapon()
     if (member(weapons,id))
     {
         weapons[id][AWM_TIME] = time();
-        flag=0;
         if ((h=({int})ob->QueryProp(P_WC)) > weapons[id][AWM_CLASS])
         {
             weapons[id][AWM_CLASS]=h;
-            flag=1;
         }
         if ((h=({int})ob->QueryProp(P_EFFECTIVE_WC)) > weapons[id][AWM_EFF_CLASS])
         {
             weapons[id][AWM_EFF_CLASS]=h;
-            flag=1;
         }
         if ((h=({int})ob->QueryProp(P_NR_HANDS)) < weapons[id][AWM_HANDS])
         {
             weapons[id][AWM_HANDS]=h;
-            flag=1;
         }
         if ((h=xflags(ob)) != weapons[id][AWM_FLAGS])
         {
             weapons[id][AWM_FLAGS]=h;
-            flag=1;
         }
     }
     else
