@@ -244,7 +244,7 @@ string query_g_suffix( int gen, int casus, int anzahl )
 string QueryPronoun(int casus)
 {
   switch(casus) {
-    case WER: return "er";  break;
+    case WER: return "er";
     case WEM: return "ihm";
   }
   return "ihn";
@@ -354,10 +354,11 @@ private void AnnounceNewPlayer(object pl) {
   }
 }
 
-// Kann bei reboot wieder raus... zesstra, 16.03.2007
-#if __BOOT_TIME__ < 1318110723
-#define BUGTIME 1318003200 
-#define BUGFIXTIME 1318109421
+// Spielerobjekte aufgrund eines Bugs bei der Berechnung der Schutzwirkung
+// von P_BODY erneuern
+#if __BOOT_TIME__ < 1620557318
+#define BUGTIME 1620409462
+#define BUGFIXTIME 1620635153
 void renew_player(string plname, int force) {
     object pl;
     mixed err;
@@ -415,8 +416,8 @@ void player_change(string eid, object trigob, mixed data) {
       break;
     case EVT_LIB_LOGIN:
       notify_player_change(data[E_PLNAME],1);
-#if __BOOT_TIME__ < 1318110723
-      // Spieler evtl. renewen? Bei reboot raus (08.10.2011)
+#if __BOOT_TIME__ < 1620557318
+      // Spieler evtl. renewen?
       renew_player(data[E_PLNAME],0);
 #endif
       break;
@@ -542,8 +543,8 @@ void myshout(string s)
 
 void catch_tell(string str)
 {
-  string name, dummy; mixed message;
-  int i,s;
+  string name; mixed message;
+  int i;
 
   if (!this_player())
     return;
@@ -575,7 +576,7 @@ void catch_tell(string str)
       return;
     }
 
-  if (sscanf(str,"%s %s sagt: %s",dummy,name,message)!=3)
+  if (sscanf(str,"%~s %s sagt: %s",name,message)!=3)
     if (sscanf(str,"%s sagt: %s",name,message)!=2)
       return;
 
@@ -642,16 +643,13 @@ static int determine_action(string mess, string name)
 
 int QueryBedingungen(object pl,string was)
 {
-  int ret,i,gen;
-  string s;
-
   if (IS_SEER(pl))
     return 1;
   
   if (({int})LEPMASTER->QueryReadyForWiz(pl)==1)
     return 1;
 
-  s=({string})LEPMASTER->QueryReadyForWizText(pl); 
+  string s=({string})LEPMASTER->QueryReadyForWizText(pl); 
 
   tell_object(pl, break_string("Merlin gruebelt ein wenig und teilt Dir "
                                "nach einigem Ueberlegen mit:\n\n", 78,0,1));
@@ -674,7 +672,6 @@ static int create_wizard(mixed who, mixed promoter)
   mixed *domains;
   object vertrag;
   int ret;
-  string gen;
 
   who=find_player(who);
   promoter=find_player(promoter);
@@ -1060,7 +1057,6 @@ void wandern()
   mapping rooms = m_allocate(sizeof(ex));
   foreach(string cmd, string|closure dest, string msg : ex)
   {
-    object ob;
     // nur normale Ausgaenge benutzen
     if (!stringp(dest)
         || dest = object_name(environment()))
