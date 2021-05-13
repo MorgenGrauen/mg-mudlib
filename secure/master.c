@@ -923,7 +923,8 @@ protected void log_error(string file, string message, int warn) {
   string cr;
   mixed *lfile_size;
 
-  if (handling_error == efun::time()) {
+  if (handling_error == efun::driver_info(DI_EVAL_NUMBER))
+  {
     // Fehler im Verlauf einer Fehlerbehandlung: Fehlerbehandlung minimieren,
     // nur Meldung an eingeloggte Erzmagier.
     tell_players("log_error(): Rekursiver Fehler in Fehlerbehandlung. "
@@ -931,7 +932,7 @@ protected void log_error(string file, string message, int warn) {
         + message, ARCH_LVL);
     return;
   }
-  handling_error = efun::time();
+  handling_error = efun::driver_info(DI_EVAL_NUMBER);
 
  //Fehlerdaten an den Errord zur Speicherung weitergeben, falls wir sowas
  //haben.
@@ -1038,7 +1039,7 @@ private void handle_runtime_error(string err, string prg, string curobj,
 private void call_runtime_error(string err, string prg, string curobj,
     int line, mixed culprit, int caught, object po)
 {
-  if (handling_error == efun::time())
+  if (handling_error == efun::driver_info(DI_EVAL_NUMBER))
   {
     // Fehler im Verlauf einer Fehlerbehandlung: Fehlerbehandlung minimieren,
     // nur Meldung an eingeloggte Regionsmagier.
@@ -1047,7 +1048,7 @@ private void call_runtime_error(string err, string prg, string curobj,
         + curobj + ": " + err, LORD_LVL);
     return;
   }
-  handling_error = efun::time();
+  handling_error = efun::driver_info(DI_EVAL_NUMBER);
 
   //Fehlerdaten an den Errord zur Speicherung weitergeben, falls wir sowas
   //haben.
