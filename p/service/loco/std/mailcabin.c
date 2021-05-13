@@ -46,9 +46,10 @@ Mit 'raus' kommst Du wieder raus.\n");
 }
 
 int besetzt() {
-  mixed in,i;
-  in=all_inventory(this_object());
-  for (i=0;i<sizeof(in);i++) if (living(in[i]) && in[i]!=this_player()) return 1;
+  mixed inv,i;
+  inv=all_inventory(this_object());
+  for (i=0;i<sizeof(inv);i++) if (living(inv[i]) && inv[i]!=this_player())
+    return 1;
   return 0;
 }
 
