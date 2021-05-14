@@ -1789,39 +1789,6 @@ nomask string secure_euid()
   return euid; // 'sichere' euid zurueckgeben
 }
 
-// INPUT_PROMPT und nen Leerprompt hinzufuegen, wenn keins uebergeben wird.
-// Das soll dazu dienen, dass alle ggf. ein EOR am Promptende kriegen...
-//#if __BOOT_TIME__ < 1360017213
-varargs void input_to( mixed fun, int flags, varargs mixed *args )
-{
-    mixed *arr;
-    int i;
-
-    if ( !this_player() || !previous_object() )
-       return;
-
-    // TODO: input_to(...,INPUT_PROMPT, "", ...), wenn kein INPUT_PROMPT
-    // vorkommt...
-    if ( flags&INPUT_PROMPT ) {    
-        arr = ({ fun, flags }) + args;
-    }
-    else {
-        // ggf. ein INPUT_PROMPT hinzufuegen und nen Leerstring als Prompt.
-        flags |= INPUT_PROMPT;
-        arr = ({ fun, flags, "" }) + args;
-    }
-
-    // Arrays gegen flatten quoten.
-    for ( i = sizeof(arr) - 1; i > 1; i-- )
-       if ( pointerp(arr[i]) )
-           arr[i] = quote(arr[i]);
-
-    apply( bind_lambda( unbound_lambda( ({}),
-                                     ({ #'efun::input_to/*'*/ }) + arr ),
-                       previous_object() ) );
-}
-//#endif
-
 nomask int set_light(int i)
 // erhoeht das Lichtlevel eines Objekts um i
 // result: das Lichtlevel innerhalb des Objekts
