@@ -144,8 +144,8 @@
 #define ERRORD "/secure/errord.c"
 #endif
 
-// Savefile-Version
-#define __LIB__SAVE_FORMAT_VERSION__ 1
+// Savefile-Version - we use the driver's default
+#define __LIB__SAVE_FORMAT_VERSION__ 2
 
 #endif // _CONFIG_
 
