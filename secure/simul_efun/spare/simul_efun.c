@@ -1789,7 +1789,7 @@ nomask string secure_euid()
   return euid; // 'sichere' euid zurueckgeben
 }
 
-nomask int set_light(int i)
+deprecated nomask int set_light(int i)
 // erhoeht das Lichtlevel eines Objekts um i
 // result: das Lichtlevel innerhalb des Objekts
 {
