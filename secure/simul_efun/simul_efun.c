@@ -1011,7 +1011,6 @@ int restore_object(string name)
   mixed save;
   mapping properties;
   int i;
-  closure cl;
 
   if (sizeof(name) < 1)
   {
@@ -1094,6 +1093,7 @@ int set_object_heart_beat(object ob, int flag)
 {
   if (objectp(ob))
     return funcall(bind_lambda(#'efun::configure_object,ob), ob, OC_HEART_BEAT, flag);
+  return 0;
 }
 
 // * Magierlevelgruppen ermitteln
@@ -1275,7 +1275,7 @@ private int last_callout_log=0;
 
 nomask varargs void call_out( varargs mixed *args )
 {
-    mixed tmp, *call_outs;
+    mixed *call_outs;
 
     // Bei >600 Callouts alle Objekte killen, die mehr als 30 Callouts laufen
     // haben.
@@ -1826,8 +1826,7 @@ nomask int set_light(int i)
 // erhoeht das Lichtlevel eines Objekts um i
 // result: das Lichtlevel innerhalb des Objekts
 {
-    object ob, *inv;
-    int lall, light, dark, tmp;
+    object ob;
 
     if (!(ob=previous_object())) return 0; // ohne das gehts nicht.
 
@@ -1898,9 +1897,8 @@ varargs string replace_personal(string str, <string|object>* obs, int caps) {
       int ob_nr = parts[i][<1]-'1';
       if (ob_nr<0 || ob_nr>=t) {
         set_this_object(previous_object());
-        raise_error(sprintf("replace_personal: using wrong object index %d\n",
-                    ob_nr));
-        return implode(parts, "");
+        raise_error(sprintf(
+              "replace_personal: using wrong object index %d\n", ob_nr));
       }
 
       // casus kann man schon hier entscheiden

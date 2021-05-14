@@ -128,10 +128,9 @@ void _remove_netdead()
 
 object find_netdead(string uuid)
 {
-  int i;
   string uid;
   // Wenn sscanf() 2 liefert, ist uuid auch ne uuid.
-  int is_uuid = sscanf(uuid, "%s_%d", uid, i) == 2;
+  int is_uuid = sscanf(uuid, "%s_%~d", uid) == 2;
   if (!is_uuid)
     uid = uuid;
  
@@ -306,7 +305,6 @@ mixed *dump_livings()
 // * regelmaessig Listen von Ballast befreien
 private void clean_name_living_m(string *keys, int left, int num)
 {
-  int i, j;
   mixed a;
 
   while (left && num--)

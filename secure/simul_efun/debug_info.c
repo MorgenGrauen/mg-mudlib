@@ -114,7 +114,6 @@ mixed debug_info(int what, varargs mixed* args)
             }
             else
                 return efun::objects(args[0], args[1]);
-            break;
         }
 
         case DINFO_MALLOC:
@@ -195,7 +194,6 @@ mixed debug_info(int what, varargs mixed* args)
 
                 default:
                     raise_error(sprintf("Bad argument '%s' to debug_info(DINFO_DUMP).\n", args[0]));
-                    return 0;
             }
             // set object for valid_write() master apply...
             set_this_object(previous_object());
