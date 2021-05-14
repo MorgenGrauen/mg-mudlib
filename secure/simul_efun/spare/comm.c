@@ -30,8 +30,6 @@ varargs void send_debug(object|string wiz, string msg, string msg_prefix)
 
 static int _shout_filter( object ob, string pat )
 {
-    string *ignore;
-
     if ( !environment(ob) )
        return 0;
 
