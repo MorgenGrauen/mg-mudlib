@@ -54,37 +54,9 @@ string autoincludehook(string base_file, string current_file, int sys_include)
   if (current_file)
     return 0;
 
-  string res=autoincludes[0]; // global default.
+  // Zuerst den global default holen.
+  string res=autoincludes[0];
 
-  string *p_arr = explode(base_file,"/")-({""});
-  //DEBUG(sprintf("AINC: File: %O, Pfad: %O\n",base_file, p_arr));
-
-  if (sizeof(p_arr) && m_contains(&topleveldir, autoincludes, p_arr[0])) {
-    // p_arr[0]: d, p, std, etc.
-    // erst wird der Defaulteintrag 0 genommen
-    res += topleveldir[0];
-    if (sizeof(p_arr) > 1 && m_contains(&region, topleveldir, p_arr[1])) {
-      // p_arr[1] ebene, polar, unterwelt, service, ...
-      // erst den Defaulteintrag der Region nehmen
-      res += region[0];
-      if (sizeof(p_arr) > 2 && m_contains(&ainc_string, region, p_arr[2])) {
-        // p_arr[2]: magiername. Fuer den Magier was hinterlegt.
-        res += ainc_string;
-      }
-    }
-    // Fuer einige Top-Level-Verzeichnisse sollen explizit eingeschaltete
-    // Pragmas auch fuer alte Files nicht ausgeschaltet werden. In dem Fall
-    // direkt beenden.
-    switch(p_arr[0])
-    {
-      case "std":
-      case "secure":
-      case "room":
-      case "obj":
-      case "items":
-        return res;
-    }
-  }
   // Fuer aeltere Files schalten wir einige Warnungen explizit aus. :-(
   // (1407179680 == "Mon,  4. Aug 2014, 21:14:40")
   // (1609455600 == "Fre,  1. Jan 2021, 00:00:00")
@@ -111,6 +83,28 @@ string autoincludehook(string base_file, string current_file, int sys_include)
                      no_warn_dead_code,no_warn_applied_functions");
   }
 #endif
+
+  // Aber schlussendlich werden jetzt noch Einstellungen fuer bestimmte,
+  // gezielt konfigurierte Verzeichnisse ermittelt. (Diese ueberschreiben ggf.
+  // auch die abgeschalteten Warnungen oben.)
+
+  string *p_arr = explode(base_file,"/")-({""});
+  //DEBUG(sprintf("AINC: File: %O, Pfad: %O\n",base_file, p_arr));
+
+  if (sizeof(p_arr) && m_contains(&topleveldir, autoincludes, p_arr[0])) {
+    // p_arr[0]: d, p, std, etc.
+    // erst wird der Defaulteintrag 0 genommen
+    res += topleveldir[0];
+    if (sizeof(p_arr) > 1 && m_contains(&region, topleveldir, p_arr[1])) {
+      // p_arr[1] ebene, polar, unterwelt, service, ...
+      // erst den Defaulteintrag der Region nehmen
+      res += region[0];
+      if (sizeof(p_arr) > 2 && m_contains(&ainc_string, region, p_arr[2])) {
+        // p_arr[2]: magiername. Fuer den Magier was hinterlegt.
+        res += ainc_string;
+      }
+    }
+  }
   //DEBUG(res);
   return res;
 }
