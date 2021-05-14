@@ -208,11 +208,6 @@ nomask varargs int snoop( object snooper, object snoopee )
      // soll jemand neues gesnoopt werden?
      if(snoopee)
      {
-#if __BOOT_TIME__ < 1588106971
-        // Diese Uptime duerfen nur EM+ und Sheriff snoopen.
-        if (!ARCH_SECURITY && !IS_DEPUTY(snooper))
-          return 0;
-#endif
         // Jemand mit niedrigerem Level kann keinen hoeherleveligen snoopen
         // lassen.
         if ( PO != snooper
@@ -436,44 +431,6 @@ int file_time(string path) {
 int query_wiz_level(object|string player) {
   return "/secure/master"->query_wiz_level(player);
 }
-
-#ifdef __ALISTS__
-// * Element aus Alist loeschen (by key)
-mixed *remove_alist(mixed key,mixed *alist)
-{
-  int i,j;
-
-  if (!pointerp(alist) || !sizeof(alist))
-    return alist;
-  if (!pointerp(alist[0]))
-  {
-    if ((i=assoc(key,alist))<0)
-      return alist;
-    return alist[0..i-1]+alist[i+1..];
-  }
-  i = assoc(key,alist[0]);
-  if ((i=assoc(key,alist[0]))<0)
-    return alist;
-  alist=alist[0..];
-  for (j=sizeof(alist)-1;j>=0;j--)
-    alist[j]=alist[j][0..i-1]+alist[j][i+1..];
-  return alist;
-}
-
-// * Element aus Alist loeschen (by pos)
-mixed *exclude_alist(int i,mixed *alist)
-{
-  int j;
-  if (!pointerp(alist) || !sizeof(alist) || i<0)
-    return alist;
-  if (!pointerp(alist[0]))
-    return alist[0..i-1]+alist[i+1..];
-  alist=alist[0..]; /* Create PHYSICAL copy of alist */
-  for (j=sizeof(alist)-1;j>=0;j--)
-    alist[j]=alist[j][0..i-1]+alist[j][i+1..];
-  return alist; /* order_alist is NOT necessary - see /doc/LPC/alist */
-}
-#endif // __ALISTS__
 
 // * German version of ctime()
 #define TAGE ({"Son","Mon","Die","Mit","Don","Fre","Sam"})
@@ -758,12 +715,6 @@ nomask void set_environment(object o1, object o2) {
 nomask void set_this_player(object pl) {
   raise_error("Available only for root\n");
 }
-
-#if __EFUN_DEFINED__(export_uid)
-nomask void export_uid(object ob) {
-  raise_error("Available only for root\n");
-}
-#endif
 
 // * Jetzt auch closures
 int process_flag;
