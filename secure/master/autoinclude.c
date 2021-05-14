@@ -24,6 +24,9 @@ private nosave mapping autoincludes = ([
                ]),
     "std":    ([
                  0: PRAGMA("strong_types") RTTCHECKS,
+                 "lwo": ([
+                            0: PRAGMA("lightweight"),
+                        ]),
                ]),
     "items":    ([
                  0: PRAGMA("strong_types") RTTCHECKS,
@@ -31,13 +34,20 @@ private nosave mapping autoincludes = ([
     "secure": ([
                  0: PRAGMA("strong_types,range_check") RTTCHECKS,
                ]),
+    "obj":      ([
+                 0: "",
+                 "lwo": ([
+                            0: PRAGMA("strong_types,lightweight") RTTCHECKS,
+                        ]),
+               ]),
     "p":      ([
                  0: "",
                  "daemon": ([
-                             0: PRAGMA("strong_types") RTTCHECKS
+                                0: PRAGMA("strong_types") RTTCHECKS,
                             ]),
                  "service": ([
-                              0: ""
+                                0: "",
+                                "padreic": PRAGMA("strong_types") RTTCHECKS,
                             ]),
                ]),
     0: DEFAULTS,
