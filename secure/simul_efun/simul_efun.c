@@ -48,7 +48,7 @@ int query_wiz_level(object|string player);
 nomask varargs int snoop(object snooper, object snoopee);
 varargs string country(mixed ip, string num);
 int query_wiz_grp(object|string wiz);
-public varargs object deep_present(mixed what, object ob);
+public object deep_present(string|object what, object ob=previous_object());
 nomask int secure_level();
 nomask string secure_euid();
 public nomask int process_call();
@@ -726,9 +726,10 @@ public nomask int process_call()
   else return(0);
 }
 
-private nomask string _process_string(string str,object po) {
-              set_this_object(po);
-              return(efun::process_string(str));
+private nomask string _process_string(string str, object|lwobject po)
+{
+    set_this_object(po);
+    return(efun::process_string(str));
 }
 
 private nomask int _illegal_ps_call(string s)
@@ -861,7 +862,7 @@ public int mkdirp(string dir) {
 
 
 // * Properties ggfs. mitspeichern
-mixed save_object(mixed name)
+mixed save_object(string|int name)
 {
   mapping properties;
   mapping save;
@@ -870,12 +871,18 @@ mixed save_object(mixed name)
   string oldpath;
 
   // nur Strings und 0 zulassen
-  if ((!stringp(name) || !sizeof(name)) && 
-      (!intp(name) || name!=0)) {
+  if ((!stringp(name) || !sizeof(name)) &&
+      (!intp(name) || name!=0))
+  {
       set_this_object(previous_object());
       raise_error(sprintf(
          "Only non-empty strings and 0 may be used as filename in "
          "sefun::save_object()! Argument was %O\n",name));
+  }
+  if(!objectp(previous_object()))
+  {
+    set_this_object(previous_object());
+    raise_error(sprintf("save_object() only calleable by objects!\n"));
   }
 
   if (stringp(name)) {
@@ -968,6 +975,11 @@ int restore_object(string name)
     set_this_object(previous_object());
     raise_error("Bad arg 1 to restore_object(): expected non-empty "
                 "'string'.\n");
+  }
+  if(!objectp(previous_object()))
+  {
+    set_this_object(previous_object());
+    raise_error(sprintf("restore_object() only calleable by objects!\n"));
   }
 
   // Wenn name vermutlich ein Pfad (also nicht mit #x:y anfaengt)
@@ -1319,7 +1331,7 @@ nomask varargs void call_out( varargs mixed *args )
 
 mixed call_out_info() {
   
-  object po = previous_object();
+  object|lwobject po = previous_object();
   mixed coi = efun::call_out_info();
 
   // ungefilterten Output nur fuer bestimmte Objekte, Objekte in /std oder
@@ -1348,13 +1360,12 @@ mixed query_closure_object(closure c) {
 // * Wir wollen nur EIN Argument ... ausserdem checks fuer den Netztotenraum
 varargs void move_object(mixed what, mixed where)
 {
-  object po,tmp;
-
-  po=previous_object();
+  // Wenn nur ein Argument angegeben wird, ist es das Ziel und wir nehmen
+  // previous_object() als zu bewegendes Objekt.
   if (!where)
   {
     where=what;
-    what=po;
+    what=previous_object();
   }
   if (((stringp(where) && where==NETDEAD_ROOM ) ||
        (objectp(where) && where==find_object(NETDEAD_ROOM))) &&
@@ -1373,7 +1384,7 @@ varargs void move_object(mixed what, mixed where)
     }
     set_object_heart_beat(what,0);
   }
-  tmp=what;
+  object tmp=what;
   while (tmp=environment(tmp))
       // Ja. Man ruft die _set_xxx()-Funktionen eigentlich nicht direkt auf.
       // Aber das Lichtsystem ist schon *so* rechenintensiv und gerade der
@@ -1383,7 +1394,7 @@ varargs void move_object(mixed what, mixed where)
       //
       // Tiamak
     tmp->_set_last_content_change();
-  funcall(bind_lambda(#'efun::move_object,po),what,where);
+  funcall(bind_lambda(#'efun::move_object,previous_object()),what,where);
   if (tmp=what)
     while (tmp=environment(tmp))
       tmp->_set_last_content_change();
@@ -1461,10 +1472,8 @@ void _dump_wizlist(string file, int sortby) {
       a[i][WL_ARRAY_TOTAL],a[i][WL_CALL_OUT]));
 }
 
-public varargs object deep_present(mixed what, object ob) {
-
-  if(!objectp(ob))
-    ob=previous_object();
+public object deep_present(string|object what, object ob=previous_object())
+{
   // Wenn ein Objekt gesucht wird: Alle Envs dieses Objekts ermitteln und
   // schauen, ob in diesen ob vorkommt. Dann ist what in ob enthalten.
   if(objectp(what)) {
@@ -1472,7 +1481,7 @@ public varargs object deep_present(mixed what, object ob) {
     // wenn ob kein Environment hat, ist es offensichtlich nicht in what
     // enthalten.
     if (!pointerp(envs)) return 0;
-    if (member(envs, ob) != -1) return what;
+    if (ob in envs) return what;
   }
   // sonst wirds teurer, ueber alle Objekte im (deep) Inv laufen und per id()
   // testen. Dabei muss aber die gewuenschte Nr. ("flasche 3") abgeschnitten
@@ -1514,6 +1523,7 @@ nomask varargs void garbage_collection(string str)
   if(previous_object()==0 || !IS_ARCH(geteuid(previous_object())) 
       || !ARCH_SECURITY)
   {
+    // historical info, but amusing message. ;-)
     write("Call GC now and the mud will crash in 5-6 hours. DONT DO IT!\n");
     return;
   }
@@ -1775,20 +1785,15 @@ public varargs string CountUp( string *s, string sep, string lastsep )
     return ret;
 }
 
-nomask varargs int query_next_reset(object ob) {
-
+nomask int query_next_reset(object ob=previous_object())
+{
     // Typpruefung: etwas anderes als Objekte oder 0 sollen Fehler sein.
     if (ob && !objectp(ob))
       raise_error(sprintf("Bad arg 1 to query_next_reset(): got %.20O, "
            "expected object.\n",ob));
 
-    // Defaultobjekt PO, wenn 0 uebergeben.
-    if ( !objectp(ob) )
-      ob = previous_object();
-
     return efun::object_info(ob, OI_NEXT_RESET_TIME);
 }
-
 
 
 // ### Ersatzaufloesung in Strings ###

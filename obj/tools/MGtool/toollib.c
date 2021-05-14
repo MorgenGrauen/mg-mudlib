@@ -116,6 +116,8 @@ string mixed_to_string(mixed mix, int lvl)
       return "({"+implode(map(mix,"mixed_to_string",ME,lvl-1),",")+"})";
       case T_OBJECT:
       return "["+short_path(object_name(mix))+"]";
+      case T_LWOBJECT:
+      return sprintf("%O",mix);
       case T_MAPPING:
       s=sizeof(keys=m_indices(mix));
       t=get_type_info(mix, 1);

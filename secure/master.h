@@ -66,12 +66,13 @@
 #define WIZ_HELP_MAIL_DIR "/doc/infomails/"
 
 // aus master.c
-string        creator_file(mixed str);
-protected mixed give_uid_to_object(string datei,object po);
-protected void  save_wiz_file();
+public   string creator_file(mixed str);
+protected mixed give_uid_to_object(string datei, object|lwobject po);
 protected mixed load_uid_hook(string datei);
-protected mixed clone_uid_hook(object blueprint,string new_name);
+protected mixed clone_uid_hook(object bluep, string new_name);
+protected mixed lwo_uid_hook(object bluep);
 protected mixed call_sefun(string sefun, varargs mixed args);
+protected void  save_wiz_file();
 
 // aus domains.c
 int            domain_master(string user, string domain);

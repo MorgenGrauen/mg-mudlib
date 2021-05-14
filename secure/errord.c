@@ -434,8 +434,8 @@ public int LogError(string msg,string prg,string curobj,int line,mixed culprit,
 
     struct fullissue_s issue = (<fullissue_s>);
 
-    //UID bestimmen
-    issue->uid=({string})master()->creator_file(curobj);
+    //UID bestimmen, curobj is 0 for lwobjects, then the program is used.
+    issue->uid=({string})master()->creator_file(curobj || prg);
     //DEBUG(sprintf("LogError: UID: %s\n",uid));
 
     //Loadname (besser als BP, falls rename_object() benutzt wurde) bestimmen
@@ -590,8 +590,8 @@ public int LogWarning(string msg,string prg,string curobj,int line, int in_catch
 
     struct fullissue_s issue = (<fullissue_s>);
 
-    //UID bestimmen
-    issue->uid=({string})master()->creator_file(curobj);
+    //UID bestimmen, curobj is 0 for lwobjects, then the program is used.
+    issue->uid=({string})master()->creator_file(curobj || prg);
     //DEBUG(sprintf("LogWarning UID: %s\n",uid));
 
     //Loadname (besser als BP, falls rename_object() benutzt wurde) bestimmen

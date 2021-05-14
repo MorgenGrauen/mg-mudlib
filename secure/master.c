@@ -114,6 +114,11 @@ protected void inaugurate_master(int arg) {
   set_driver_hook(H_CREATE_CLONE,       "create");
   set_driver_hook(H_CREATE_OB,          "create");
   set_driver_hook(H_CREATE_SUPER,       "create_super");
+#if MUDHOST != __HOST_NAME__
+  // LWOs sollen vorerst nur in Homemuds getestet werden.
+  set_driver_hook(H_CREATE_LWOBJECT,    "create_lw");
+  set_driver_hook(H_LWOBJECT_UIDS, #'lwo_uid_hook);
+#endif
 
   // Bei Reset reset() im Objekt aufrufen
   set_driver_hook(H_RESET,              "reset");
@@ -426,7 +431,8 @@ protected void reset()
 //                         #################
 
 // Magier-ID fuer Datei str (als Objekt oder als String) ermitteln
-string creator_file(mixed str) {
+public string creator_file(mixed str)
+{
   string *strs,tmp;
   int s;
 
@@ -508,12 +514,12 @@ string creator_file(mixed str) {
 
 // UID und EUID an Objekt geben (oder eben nicht)
 // Keine GD-Funktion, aber von Hooks aufgerufen
-protected mixed give_uid_to_object(string datei, object po)
+protected mixed give_uid_to_object(string datei, object|lwobject po)
 {
   string creator,pouid;
 
   // Parameter testen
-  if (!stringp(datei)||!objectp(po))  return 1;
+  if (!datei || !po)  return 1;
 
   // Keine Objekte in /log, /open oder /data
   if (strstr(datei, "/"LIBDATADIR"/") == 0
@@ -535,7 +541,7 @@ protected mixed give_uid_to_object(string datei, object po)
   // unten generieren.
   // Ausserdem nur UID setzen, keine eUID.
   if (pouid==ROOTID)
-    return ({creator,NOBODY}); // root does not create root objects!
+    return ({creator,NOBODY});
 
   // EUID mitsetzen, wenn PO und creator dieselbe UID sind.
   // Wenn creator die BACKBONEID ist (im allg. liegt das Objekt dann in
@@ -545,6 +551,21 @@ protected mixed give_uid_to_object(string datei, object po)
     return pouid;
 
   return ({creator,NOBODY});
+}
+
+// EUID und UID werden von give_uid_to_object() vergeben, diese sind in
+// inaugurate_master() als driver hooks angemeldet.
+
+protected mixed load_uid_hook(string datei) {
+    return(give_uid_to_object(datei, previous_object()));
+}
+
+protected mixed clone_uid_hook(object bluep, string new_name) {
+    return(give_uid_to_object(new_name, previous_object()));
+}
+
+protected mixed lwo_uid_hook(object bluep) {
+    return(give_uid_to_object(object_name(bluep), previous_object()));
 }
 
 // Die System-IDs muessen bekannt sein
@@ -772,9 +793,9 @@ int privilege_violation(string op, mixed who, mixed arg1, mixed arg2,
                         mixed arg3)
 {
 
-  if (objectp(who) && 
+  if (objectp(who) &&
       (who==this_object() || geteuid(who)==ROOTID))
-    return 1; 
+    return 1;
 
   switch(op)
   {
@@ -816,7 +837,6 @@ int privilege_violation(string op, mixed who, mixed arg1, mixed arg2,
       if (strstr(load_name(who), "/std/shells/") == 0
           && get_type_info(arg1, 2) == who
           && get_type_info(arg1, 3) == "/std/living/life"
-//          && get_type_info(arg1, 4) == "die"
           && arg2[LIMIT_EVAL] <= 10000000 ) {
           return 1;
       }
@@ -840,6 +860,14 @@ int privilege_violation(string op, mixed who, mixed arg1, mixed arg2,
 
     case "sqlite_pragma":
       return 1;
+
+    case "configure_lwobject":
+      // arg1: lwo to be configured, arg2: <what>, arg3: <data>
+      if (arg2 == LC_EUID) {
+        return who == arg1 // only the lwo itself for now (except of ROOT)
+               && getuid(arg1) == arg3; // and only to its own UID
+      }
+      return -1;
     case "attach_erq_demon":
     case "bind_lambda": 
     case "configure_interactive":
@@ -985,7 +1013,7 @@ protected void log_error(string file, string message, int warn) {
    Aufsplitten des Handlers und Nutzung von limited() */
 //keine GD-Funktion
 private void handle_runtime_error(string err, string prg, string curobj,
-    int line, mixed culprit, int caught, object po, int issueid)
+    int line, mixed culprit, int caught, object|lwobject po, int issueid)
 {
   string code;
   string debug_txt;
@@ -1037,7 +1065,7 @@ private void handle_runtime_error(string err, string prg, string curobj,
 
 //Keine GD-Funktion, limitiert die Kosten fuer den handler
 private void call_runtime_error(string err, string prg, string curobj,
-    int line, mixed culprit, int caught, object po)
+    int line, mixed culprit, int caught, object|lwobject po)
 {
   if (handling_error == efun::driver_info(DI_EVAL_NUMBER))
   {
@@ -1201,13 +1229,6 @@ protected void quota_demon() {
     return;
 }
 
-// Keine Prepositionen in parse_command
-//string *parse_command_prepos_list() { return ({}); }
-
-// Wie lautet das Wort fuer 'alle' ?
-//string *parse_command_all_word() { return ({}); }
-
-
 // Keine Besonderen Objektnamen
 string printf_obj_name(object ob) { return 0; }
 
@@ -1228,16 +1249,5 @@ protected void save_wiz_file()
   rm("/WIZLIST");
   write_file("/WIZLIST",implode(
      map(wizlist_info(),#'_save_wiz_file_loop),""));
-}
-
-// EUID und UID werden von give_uid_to_object() vergeben, diese sind in
-// inaugurate_master() als driver hooks angemeldet.
-
-protected mixed load_uid_hook(string datei) {
-    return(give_uid_to_object(datei, previous_object()));
-}
-
-protected mixed clone_uid_hook(object blueprint, string new_name) {
-    return(give_uid_to_object(new_name, previous_object()));
 }
 

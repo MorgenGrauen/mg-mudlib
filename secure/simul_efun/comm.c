@@ -4,12 +4,11 @@
 // ReceiveMsg().
 varargs void send_room(object|string room, string msg, int msg_type,
                        string msg_action, string msg_prefix, object *exclude,
-                       object origin)
+                       object origin=previous_object())
 {
   if (stringp(room))
     room=load_object(room);
 
-  origin ||= previous_object();
   object *dest = exclude ? all_inventory(room) - exclude :
                            all_inventory(room);
 
