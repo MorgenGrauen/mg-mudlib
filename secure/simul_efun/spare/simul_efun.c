@@ -48,7 +48,6 @@ int query_wiz_level(object|string player);
 nomask varargs int snoop(object snooper, object snoopee);
 varargs string country(mixed ip, string num);
 int query_wiz_grp(object|string wiz);
-public object deep_present(string|object what, object ob=previous_object());
 nomask int secure_level();
 nomask string secure_euid();
 public nomask int process_call();
