@@ -583,9 +583,11 @@ private int subscribe_init()
   {
     if (arr[0] == HP_ROOM)
     {
-      if (arr[1]->HRegisterToHook(H_HOOK_INIT, #'InitHookCallback,
-                                  H_HOOK_LIBPRIO(1), H_LISTENER,
-                                  0) <= 0)
+      int res = arr[1]->HRegisterToHook(H_HOOK_INIT, #'InitHookCallback,
+                                        H_HOOK_LIBPRIO(1), H_LISTENER,
+                                        0);
+      // 1 == Erfolg, -3 == bereits registriert
+      if(res != 1 && res != -3)
       {
         // von allen H_HOOK_INIT wieder abmelden...
         unsubscribe_init();
