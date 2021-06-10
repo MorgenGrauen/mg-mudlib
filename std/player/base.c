@@ -4426,6 +4426,9 @@ int telnet_cmd(string str) {
         tell_object(ME,
             "Deine Verbindung zum Morgengrauen ist nicht verschluesselt.\n");
       return 1;
+    case "client-gui":
+      GMCP_offer_clientgui(newargs);
+      return 1;
   }
   return 0;
 }

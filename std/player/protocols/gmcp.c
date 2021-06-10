@@ -67,7 +67,6 @@ nosave mapping gmcpdata;
 // grundsaetzlich aktiv ist.
 protected int GMCP_Status(string module)
 {
-  module ||= "Core";
   if (mappingp(gmcpdata) && member(gmcpdata, module))
   {
     struct gmcp_mod_s mod = gmcpdata[module];
@@ -297,25 +296,42 @@ protected void GMCPmod_Core_v1_recv(string cmd, mixed args)
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_Core_v1_send(mapping data)
 {
-  // Wenn Core registriert wird, wird diese Funktion gerufen und <data> als 0
-  // uebergeben. Wir nutzen das zur Erkennung, dass GMCP aktiviert wurde und
-  // senden die URI fuer das Client-UI-Package.
-  // Bemerkung: ja...  Warum zur Hoelle macht Mudlet das so? Es sollte ein
-  // Modul UI definiert werden, was vom Client angefordert wird, anstatt dass
-  // wir auf Verdacht da etwas aus einem nicht-angeforderten Modul rauspusten,
-  // sobald GMCP aktiviert wird.
-  // Wenn das mal jemand von anderen Clients anmeckert, fliegt es raus.
-  if (!data)
+  // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
+}
+
+// Uebermittelt eine Nachricht Client.GUI an den Client, wenn der Spieler das
+// via "telnet client-gui ..." anfordert.
+protected void GMCP_offer_clientgui(string client)
+{
+  if (!GMCP_Status())
+  {
+    tell_object(ME,
+      "Dein Client hat GMCP nicht aktiviert.\n");
+    return;
+  }
+  if (client == "mudlet")
   {
     <int|string>* version = (__DIR__"mudlet_gui")->current_version();
     if (version)
     {
+      // Don't know, why mudlet wants version value as string...
       GMCP_send("Client.GUI",
-          (["version": version[1], "url": version[0]]) );
+        (["version": to_string(version[1]), "url": version[0]]) );
+      tell_object(ME,
+        "Paketdaten wurden an Mudlet geschickt.\n");
+    }
+    else
+    {
+      tell_object(ME,
+        "Zur Zeit ist fuer Mudlet kein GUI-Paket verfuegbar.\n");
+
     }
   }
-
-  // Zur Zeit passiert hier weiter nix, spaeter mal Core.Goodbye senden.
+  else
+  {
+    tell_object(ME,
+        "Fuer diesen Client existiert kein GUI-Paket.\n");
+  }
 }
 
 
