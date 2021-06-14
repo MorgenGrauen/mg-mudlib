@@ -27,7 +27,8 @@ BESCHREIBUNG:
 
         Bitte beachtet: wenn euer Client GMCP verwendet und eines der Module
         MG.char, char oder Char aktiviert hat, wird der Report per GMCP
-        gesendet und *nicht* mehr als Text.
+        gesendet und *nicht* mehr als Text. (Hinweis: 'report aus' schaltet
+        nur den textuellen Report aus, nicht den via GMCP uebermittelten.)
 
         "report senden" kann zum Testen verwendet werden oder wenn der
         Client nach dem Verbinden alle Daten einmal braucht. (Nutzt man
