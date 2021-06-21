@@ -42,7 +42,7 @@ telnet
       Zur Zeit steht hier nur "mudlet" zur Verfuegung.
 
  SIEHE AUCH:
-    telnegs, telnet_keepalive, telnet gmcp, telnet_charset
+    telnegs, telnet_keepalive, gmcp, telnet_charset
     P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
