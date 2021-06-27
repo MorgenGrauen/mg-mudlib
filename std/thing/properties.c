@@ -138,10 +138,6 @@ public mixed SetProp( string name, mixed Value )
 {
   mixed result;
 
-  // nur fuer heute
-  if (!objectp(this_object()))
-    return 0;
-
   // NOSETMETHOD: Darf nicht gesetzt werden
   if (prop[F_MODE][name] & NOSETMETHOD ) return -1;
 
@@ -190,11 +186,6 @@ public mixed SetProp( string name, mixed Value )
 public mixed QueryProp( string name )
 {
   mixed result;
-
-  // nur fuer heute
-  if (!objectp(this_object()))
-    return;
-
   // Query-Methode vorhanden?
   mixed func = prop[F_QUERY_METHOD][name];
   if (func)
