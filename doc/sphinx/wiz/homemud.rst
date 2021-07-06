@@ -34,13 +34,13 @@ Anleitung fuer ein Homemud, unter Linux
 
     3. Gehe in das `src/`-Verzeichnis des drivers
 
-    4. Im `src/`-Verzeichnis, fuehere :code:`./autogen.sh` aus
+    4. Im `src/`-Verzeichnis, fuehre :code:`./autogen.sh` aus (Hierfuer ist das Paket autoconf empfehlenswert.)
 
     5. Im src/-Verzeichnis, passe die Pfade in settings/morgengrauen an, und
        fuehre settings/morgengrauen aus
 
     6. im src/-Verzeichnis, kompiliere und installiere den Treiber mit
-       :code:`make all` und :code:`make install-all`.
+       :code:`make all` und :code:`make install-all`. (Hierfuer wird das Paket bison benoetigt.)
 
     7. Falls noch nicht geschehen, schiebe die Mudlib in den Ordner, den Du in
        `settings/morgengrauen` eingestellt hast
@@ -105,5 +105,5 @@ Beispielinstallation
        bin/ldmud -m <alternative path to mudlib> <alternative port>
        # Einloggen als Jof.
 
-Letzte Aenderung: 2019-07-31 Zesstra
+Letzte Aenderung: 06.07.2021, Bugfix
 
