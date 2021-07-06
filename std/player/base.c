@@ -4419,10 +4419,12 @@ int telnet_cmd(string str) {
     case "charset":
       return set_telnet_charset(newargs);
     case "tls":
+#if __EFUN_DEFINED__(tls_query_connection_state)
       if (tls_query_connection_state(ME) > 0)
         tell_object(ME,
             "Deine Verbindung zum Morgengrauen ist TLS-verschluesselt.\n");
       else
+#endif
         tell_object(ME,
             "Deine Verbindung zum Morgengrauen ist nicht verschluesselt.\n");
       return 1;
