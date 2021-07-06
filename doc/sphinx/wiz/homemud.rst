@@ -8,7 +8,7 @@ Abhaengigkeiten
     benoetigt man folgende Pakete (die Namen koennen je nach Distribution
     abweichen):
 
-    libjson0/json-c, libssl, libsqlite3, libpcre3, libxml2, libgcrypt,
+    libjson0/json-c, libgnutls30, libsqlite3, libpcre3, libxml2, libgcrypt,
     libpcre3, libiconv (diese ist bei neueren Distributionen in libc6-dev
     enthalten).
 
@@ -20,7 +20,7 @@ Anleitung fuer ein Homemud, unter Linux
 ---------------------------------------
 
     Mit den folgenden Schritten installiert man die gegenwaertige mudlib und
-    einen Driver der Version LDMUD-3.5.x (x < 99).
+    einen Driver der Version LDMUD-3.6.4 oder https://github.com/zesstra/ldmud/releases/tag/mgreboot-20210507
 
     1. Lade den aktuellen Driver unter https://github.com/ldmud/ldmud herunter.
        Du kannst auch das Repo via git clonen.
