@@ -436,7 +436,7 @@ public int LogError(string msg,string prg,string curobj,int line,mixed culprit,
 
     //UID bestimmen, curobj is 0 for lwobjects, then the program is used.
     issue->uid=({string})master()->creator_file(curobj || prg);
-    //DEBUG(sprintf("LogError: UID: %s\n",uid));
+    //DEBUG(sprintf("LogError: UID: %s\n",issue->uid));
 
     //Loadname (besser als BP, falls rename_object() benutzt wurde) bestimmen
     if (!stringp(curobj) || !sizeof(curobj))
