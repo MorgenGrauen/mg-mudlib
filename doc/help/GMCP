@@ -150,7 +150,7 @@ General Mud Communication Protocol im MorgenGrauen
       Die Daten sind ein Objekt von Name-Wert-Paaren.
       (Moegliche weitere Angaben in der Zukunft: Questpunkte, Stufenpunkte
        (Genauigkeit 20% einer Stufe), ...)
-      MG.char.info { "level": 210, "guildlevel": 9 }
+      MG.char.info { "level": 210, "guild_level": 9 }
 
 1.2.7. MG.char.wimpy
   Vom Server gesendet:
