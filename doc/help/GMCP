@@ -141,7 +141,7 @@ General Mud Communication Protocol im MorgenGrauen
       Namen, der dem Spieler stattdessen angezeigt werden sollte.
       Diese Nachricht wird nur bei Modulaktivierung gesendet.
       Die Daten sind ein Objekt von Name-Beschreibung-Paaren.
-      MG.char.infoVars { "level": "Stufe", "guildlevel": "Gildenstufe" }
+      MG.char.infoVars { "level": "Stufe", "guild_level": "Gildenstufe" }
 
 1.2.6. MG.char.info
   Vom Server gesendet:
