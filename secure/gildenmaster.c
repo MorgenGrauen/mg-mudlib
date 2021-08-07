@@ -33,20 +33,22 @@ public mixed QueryProp( string name )
 }
 
 nomask int beitreten() {
-  object pl,gilde;
-  string gname,ogname;
+  object pl = this_player();
+  object gilde = previous_object();
 
-  if (!(pl=this_player()) || !(gilde=previous_object()))
+  if (!objectp(pl) || !objectp(gilde))
       return 0;
-  // Gilden sind Blueprints.
-  gname=object_name(gilde);
 
-  if ((GUILD_DIR+ogname)==gname) {
+  // Gilden sind Blueprints.
+  string gname = object_name(gilde);
+  string ogname = ({string})pl->QueryProp(P_GUILD);
+
+  if (GUILD_DIR+ogname == gname) {
     write("Du bist schon in dieser Gilde.\n");
     return -4;
   }
 
-  if ((ogname=({string})pl->QueryProp(P_GUILD)) && 
+  if (ogname &&
       (ogname!=((({string})pl->QueryProp(P_DEFAULT_GUILD)) || DEFAULT_GUILD))) {
     write("Du bist noch in einer anderen Gilde.\n");
     return -1;
