@@ -215,7 +215,7 @@ public int do_frage(string text)
   }
 
   if (closurep(info[0]) ) {
-    answer=funcall(info[0]);
+    answer=funcall(info[0], text);
     if( !answer || answer=="") return 1;
   } else {
     answer=process_string(info[0]);
@@ -223,13 +223,13 @@ public int do_frage(string text)
 
   if (closurep(info[3]) )
    {
-    noanswer=funcall(info[3]);
+    noanswer=funcall(info[3], text);
     if ( intp(noanswer) && noanswer > 0)
      {
        text = DEFAULT_NOINFO;
        info = GetInfoArr(text);
        if (closurep(info[0]) ) {
-         answer=funcall(info[0]);
+         answer=funcall(info[0], text);
          if( !answer || answer=="") return 1;
        } else {
          answer=process_string(info[0]);

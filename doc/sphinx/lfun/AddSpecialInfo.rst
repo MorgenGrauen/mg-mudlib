@@ -14,13 +14,13 @@ ARGUMENTE
 ::
 
      string|string* frage
-       Schluesselwoerter, fuer die der NPC eine Antwort geben soll, wenn
+       Schluesselphrase(n), fuer die der NPC eine Antwort geben soll, wenn
        man ihn danach fragt
 
      string functionname
        Name der Funktion, die gerufen werden soll, um den Informationstext
-       des NPCs zu ermitteln. Der gerufenen Funktion werden keine Argumente
-       uebergeben.
+       des NPCs zu ermitteln. Der gerufenen Funktion wird die vom Spieler
+       gefragte Schluesselphrase uebergeben.
 
      string indent    (optional)
        Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
@@ -29,8 +29,8 @@ ARGUMENTE
        Ist silent gesetzt, so erfolgt Antwort nur an Fragenden. 
 
      string|closure casebased   (optional)
-       Closure mit Returnwert string oder int.
-       Der Funktion werden keine Argumente uebergeben.
+       Closure mit Returnwert string oder int. Der Funktion wird die vom
+       Spieler gefragte Schluesselphrase uebergeben.
 
 DEFINIERT IN
 ------------
@@ -69,13 +69,13 @@ BEISPIELE
 		    "query_kekse",	// der Methodenname
 		    "sagt: ");
      // ist uebrigens das gleiche wie:
-     // static string query_kekse();
+     // static string query_kekse(string key);
      // ...
      // AddInfo(({"keks","kekse"}),
      //		#'query_kekse,		// ein Verweis auf die Methode
      //		"sagt: ");
      ...
-     static string query_kekse() {
+     static string query_kekse(string key) {
       if(present("keks"))
        return("Ich hab noch welche. Aetsch!");
       return("Menno. Keine mehr da!");
@@ -101,5 +101,4 @@ SIEHE AUCH
      Interna:
        :doc:`GetInfoArr` , :doc:`do_frage`
 
-24.09.2020, Arathorn
-
+09.08.2021, Zesstra
