@@ -61,6 +61,8 @@
 #include <config.h>
 #include <exploration.h>
 
+#include <functionlist.h>
+
 // TODO: langfristig waer hier private schoen.
 nosave mapping infos;
 
@@ -318,6 +320,26 @@ public varargs void AddInfo(string|string* key, string|closure info,
 public varargs void AddSpecialInfo(string|string* key, string functionname,
                string indent, int|string silent, string|closure casebased)
 {
+  // Externe Aufrufer durfen keine Closures auf static oder protected lfuns
+  // erstellen.
+  if (extern_call())
+  {
+      <string|int>* fexist = function_exists(functionname,
+                                             FEXISTS_ALL|NAME_HIDDEN);
+      // Gar nicht existierende/gefundene lfuns fuehren auch in diesem Fall
+      // weiter unten zum stillschweigenden return ohne Fehler, um das
+      // Verhalten konsistent bei internem wie externem Aufruf zu halten.
+      //TODO: Allerdings halte ich in beiden Faellen einen Fehler fuer das
+      //TODO::bessere Verhalten.
+      if (fexist
+          && (fexist[FEXISTS_FLAGS] & (TYPE_MOD_STATIC|TYPE_MOD_PROTECTED)))
+      {
+          raise_error(sprintf(
+                "%s ist static oder protected und darf nicht durch"
+                "externe Aufrufer eingetragen werden.\n",
+                functionname));
+      }
+  }
   closure cl = symbol_function(functionname,this_object());
 
   if (!cl)
