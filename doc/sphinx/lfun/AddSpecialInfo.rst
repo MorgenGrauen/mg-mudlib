@@ -3,15 +3,17 @@ AddSpecialInfo()
 
 FUNKTION
 --------
-::
 
   public varargs void AddSpecialInfo(string|string* keys, string functionname,
                  string indent, int|string silent, string|closure  casebased);
 
+DEFINIERT IN
+------------
+
+     /std/npc/info.c
 
 ARGUMENTE
 ---------
-::
 
      string|string* frage
        Schluesselphrase(n), fuer die der NPC eine Antwort geben soll, wenn
@@ -32,15 +34,9 @@ ARGUMENTE
        Closure mit Returnwert string oder int. Der Funktion wird die vom
        Spieler gefragte Schluesselphrase uebergeben.
 
-DEFINIERT IN
-------------
-::
-
-     /std/npc/info.c
 
 BESCHREIBUNG
 ------------
-::
 
      Wenn ein Spieler ein NPC mittels "frage <monstername> nach <frage>" nach
      einer Information mit dem Schluessel frage fragt, so wird die Methode
@@ -48,12 +44,11 @@ BESCHREIBUNG
 
      Fuer die Beschreibung der weiteren Parameter siehe man AddInfo(L).
 
-     AddSpecialInfo(keys, "function", ...) entspricht:
-     - AddInfo(keys, #'function, ...) 
+     ``AddSpecialInfo(keys, "function", ...)`` entspricht
+     ``AddInfo(keys, #'function, ...)``.
 
 BEMERKUNGEN
 -----------
-::
 
      Da AddSpecialInfo() und AddInfo() auf die gleichen Daten zugreifen,
      kann man Informationen, die mit AddSpecialInfo() gesetzt wurden, auch
@@ -61,7 +56,8 @@ BEMERKUNGEN
 
 BEISPIELE
 ---------
-::
+
+.. code-block:: pike
 
      // Das folgende Beispiel ist auch unter man AddInfo(L) zu finden.
      ### dynamisch ###
@@ -86,6 +82,7 @@ BEISPIELE
      //   "Das Monster sagt: Ich hab noch welche. Aetsch!
      // - sonst:
      //   "Das Monster sagt: "Menno. Keine mehr da!
+
 
 SIEHE AUCH
 ----------

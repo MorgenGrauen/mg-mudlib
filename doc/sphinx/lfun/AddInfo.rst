@@ -3,7 +3,6 @@ AddInfo()
 
 FUNKTION
 --------
-:: 
 
   public varargs void AddInfo(string|string* key, string|closure info,
                  string indent, int|string silent, string|closure casebased);
