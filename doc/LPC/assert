@@ -1,0 +1,76 @@
+NAME
+        assert
+
+SYNTAX
+        assert (expr, msg)
+
+DESCRIPTION
+
+        Wenn man ein Programm schreibt, ist es oft eine gute Idee, an
+        wichtigen Stellen Pruefungen auf grundlegende Annahmen (oder
+        "unmoegliche" Fehlerzustaende) zu formulieren.
+
+        Beispiele hierfuer koennten Pruefungen darauf sein, ob an eine
+        Funktion die richtigen Daten uebergeben wurden oder aus einer Property
+        die richtige Datenstruktur ausgelesen wurde oder ob eine Annahme
+        stimmt, von der die Magierin ausgeht und die wichtig ist fuer den
+        weiteren Ablauf.
+
+        Das 'assert'-Makro ist eine bequeme Moeglichkeit, solche Pruefungen
+        zu formulieren, welche an dieser Stelle einen Laufzeitfehler
+        ausloesen, falls <expr> unwahr sein sollte. Oder anders: es dient
+        dazu, die Annahme der Programmierin zu pruefen, dass <expr> in diesem
+        Moment != 0 ist.
+        In der Fehlermeldung wird in diesem Fall die aktuelle Datei, Zeile,
+        ggf. Funktion und die vom Benutzer formulierte <msg> ausgegeben.
+        Sollte einem nichts sinnvolles einfallen, schreibt einfach einen
+        String mit der <expr> rein.
+
+        Hierbei sollte man aber bedenken, ob es an dieser Stelle gut ist, die
+        Programmausfuehrung hart abzubrechen oder es notwendig sein koennte,
+        zunaechst "aufzuraeumen", um inkonsistente Zustaende spaeter zu
+        vermeiden. assert() sollte nur verwendet werden, wenn der Abbruch der
+        Programmausfuehrung an dieser Stelle eine *sinnvolle* Reaktion auf den
+        Fehlerzustand ist.
+        Es ist moeglich, dass assert() in ein catch(...;publish) zu
+        formulieren, um eine Fehlermeldung zu produzieren, aber die
+        Ausfuehrung fortzusetzen. Aber auch bitte ueberlegen, ob das sinnvoll
+        ist.
+
+        Das Makro ist in dem Systemheader <assert.h> definiert, welche also
+        zuvor inkludiert werden muss.
+
+        Es ist moeglich, in einem File alle assert() auf einmal abzuschalten,
+        indem vor dem Inkludieren von <assert.h> das Define NDEBUG definiert
+        wird (egalf auf welchen Wert). Das hat den Vorteil, dass man sie
+        spaeter (z.B. zum Debuggen) schnell wieder einschalten kann.
+
+        Der Ausdruck <expr> sollte *keinerlei* Seiteneffekte haben. Dies ist
+        speziell wichtig, wenn NDEBUG spaeter gesetzt wird, weil in dem Fall
+        auch der Seiteneffekt nicht mehr stattfindet: <expr> wird dann gar
+        nicht mehr ausgewertet. Beispielsweise ist assert (++i > 0); oder
+        assert (data = QueryProp(FOO)); eine sehr schlechte Idee.
+        Ohnehin waeren Ausdruecke mit Seiteneffekt sehr schlechter Stil.
+
+
+EXAMPLE
+
+        // Pruefung auf Vorraussetzungen einer Funktion
+        // Eine Funktion zum Bezahlen von Geld verlaesst sich darauf, dass sie
+        // nur mit positiven Werten gerufen wird. Wenn jemand sie mit
+        // negativen Werten ruft, kommt Unsinn dabei raus.
+        void pay(int money) {
+            assert(money > 0, "Negativen Betrag erhalten");
+            ...
+        // Bemerkung: man sollte keine Benutzereingaben mit assert() pruefen!
+
+        // Eine Funktion darf nur in leeren Raeumen gerufen werden und geht
+        // auch davon aus, dass der Raum leer ist:
+        int dispose_me() {
+            assert(!sizeof(all_inventory()); "Raum nicht leer!");
+            remove(1);
+        }
+
+SEE ALSO
+        raise_error(E), throw(E)
+
