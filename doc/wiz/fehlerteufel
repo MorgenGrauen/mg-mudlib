@@ -44,15 +44,16 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
     cd /d/unterwelt/raeume
     fehlerabfrage wald3
 
-- fehlerloeschen <id>
-  Fehler mit der ID <id> zum Loeschen markieren (z.B. wenn gefixt). Die 
-  eigentlich Loeschung findet innerhalb von 24h statt. Die Fehler werden nach 
+- fehlerloeschen [<id>] [<bemerkung>]
+  Fehler mit der ID <id> zum Loeschen markieren (z.B. wenn gefixt) und die 
+  Bemerkung, sofern eine uebergeben wurde, wird angehaengt. Die eigentliche
+  Loeschung findet innerhalb von 24h statt. Die Fehler werden nach 
   diesem Befehl nicht mehr in der Fehlerliste angezeigt. Ohne Angabe der <id>
   wird der letzte benutzte Fehler geloescht.
   Wiederholt man den Befehl, wird die Loeschmarkierung wieder entfernt.
   Es kann auch der Ladename eines Objekts angegeben werden, dann werden alle
   zu diesem Objekt gehoerenden Eintraege auf einmal geloescht, z.B.
-    fehlerloeschen d/unterwelt/raeume/wald3
+    fehlerloeschen /d/unterwelt/raeume/wald3
 
 - fehlereingabe <objekt|dateiname>
   Hiermit laesst sich per Hand ein Eintrag fuer das angegebene Objekt oder

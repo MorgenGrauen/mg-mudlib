@@ -185,7 +185,7 @@ public int CmdFehlerZeigen(string arg)
 
 // Loescht alle Fehler und Warnungen eines Objekts (soweit per modus
 // ausgewaehlt). Entscheidend ist der _Loadname_!
-private int DeleteErrorsForLoadname(string loadname)
+private int DeleteErrorsForLoadname(string loadname, string note)
 {
   int sum_deleted;
   // Bei == 0 wird sonst alles geloescht. ;-)
@@ -201,7 +201,7 @@ private int DeleteErrorsForLoadname(string loadname)
     {
       foreach(<int|string>* row : list)
       {
-          if (({int})ERRORD->ToggleDeleteError(row[0]) == 1)
+          if (({int})ERRORD->ToggleDeleteError(row[0], note) == 1)
           {
             tell_object(PL,
                 row[0] + " als geloescht markiert.\n");
@@ -217,15 +217,27 @@ public int CmdFehlerLoeschen(string arg)
 {
   int issueid;
   arg = ({string})this_player()->_unparsed_args(0);
+  // Fuehrende Leerzeichen entfernen, um ID und Notiz zuverlaessig trennen zu
+  // koennen.
+  arg = trim(arg, TRIM_LEFT);
 
   if (stringp(arg) && sizeof(arg))
       issueid = to_int(arg);
   else
       issueid = lfehler;
+  // Alles ab dem zweiten Wort sollte eine Notiz sein.
+  int spacepos = strstr(arg, " ");
+  string note;
+  if(spacepos != -1)
+  {
+    note = arg[spacepos + 1 ..];
+    arg = arg[.. spacepos - 1];
+  }
+  
 
   notify_fail("Einen Eintrag mit dieser ID/diesem Loadname gibt es nicht!\n");
 
-  int res = ({int})ERRORD->ToggleDeleteError(issueid);
+  int res = ({int})ERRORD->ToggleDeleteError(issueid, note);
   if (res == 1)
   {
     tell_object(PL,
@@ -248,7 +260,7 @@ public int CmdFehlerLoeschen(string arg)
     return 1;
   }
   // res war == -1 -> Fehler nicht gefunden. Vielleicht ist es nen Loadname
-  return DeleteErrorsForLoadname(arg);
+  return DeleteErrorsForLoadname(arg, note);
 }
 
 public int CmdRefresh(string arg) {
