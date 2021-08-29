@@ -353,7 +353,6 @@ private string  * errorlabel(int t)
       return ({"Ladezeitfehler","Ladezeitfehler","Dieser Ladezeitfehler"});
   }
   raise_error("Unkannter Fehlertyp: "+t+"\n");
-  return 0;
 }
 
 public int CmdFehlerListe(string arg) {
@@ -537,8 +536,6 @@ public int CmdMonitor(string arg) {
 }
 
 public int CmdModus(string arg) {
-  string txt;
-
   // Argument verwursten
   if (stringp(arg) && sizeof(arg)) {
     modus = select_modus(arg);
