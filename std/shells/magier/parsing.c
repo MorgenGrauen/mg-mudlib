@@ -78,6 +78,7 @@ private void _parseargs(string str, string *line,int flags,string opts,
     else
     {
       while(i--)
+      {
         if (str[i]!='-')
         {
           if((j = member(opts, str[i])) != -1)
@@ -89,6 +90,7 @@ private void _parseargs(string str, string *line,int flags,string opts,
                    "unterstuetzt.\n",str[i],query_verb()||"");
           }
         }
+      }
     }
     return;
   }
