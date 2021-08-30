@@ -377,8 +377,7 @@ public string LogReportedError(mapping err)
     else
         issue->prog = "unbekannt";
     issue->titp = getuid(this_interactive() || this_player());
-    if (objectp(err[F_OBJ]))
-      issue->tienv = object_name(environment(err[F_OBJ]));
+    issue->tienv = object_name(environment(this_interactive() || this_player()));
 
     //DEBUG(sprintf("%O\n",issue));
     issue->hashkey = hash(TLS_HASH_MD5,
