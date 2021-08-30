@@ -71,18 +71,25 @@ private void _parseargs(string str, string *line,int flags,string opts,
   { 
     int i,j;
     i=sizeof(str);
-    while(i--)
-      if (str[i]!='-')
-      {
-        if((j = member(opts, str[i])) != -1)
-          flags |= (1 << j);
-        else
+    if(i == 1 && query_verb() == "cd")
+    {
+      flags |= CD_B;
+    }
+    else
+    {
+      while(i--)
+        if (str[i]!='-')
         {
-          flags=-1;
-          printf("Das Flag '-%c' wird von dem Befehl '%s' nicht "
-                 "unterstuetzt.\n",str[i],query_verb()||"");
+          if((j = member(opts, str[i])) != -1)
+            flags |= (1 << j);
+          else
+          {
+            flags=-1;
+            printf("Das Flag '-%c' wird von dem Befehl '%s' nicht "
+                   "unterstuetzt.\n",str[i],query_verb()||"");
+          }
         }
-      }
+    }
     return;
   }
   if (build_fn)
