@@ -216,24 +216,25 @@ private int DeleteErrorsForLoadname(string loadname, string note)
 public int CmdFehlerLoeschen(string arg)
 {
   int issueid;
+  string note;
   arg = ({string})this_player()->_unparsed_args(0);
-  // Fuehrende Leerzeichen entfernen, um ID und Notiz zuverlaessig trennen zu
-  // koennen.
-  arg = trim(arg, TRIM_LEFT);
 
   if (stringp(arg) && sizeof(arg))
+  {
       issueid = to_int(arg);
+      // Fuehrende Leerzeichen entfernen, um ID und Notiz zuverlaessig trennen zu
+      // koennen.
+      arg = trim(arg, TRIM_LEFT);
+      // Alles ab dem zweiten Wort sollte eine Notiz sein.
+      int spacepos = strstr(arg, " ");
+      if(spacepos != -1)
+      {
+        note = arg[spacepos + 1 ..];
+        arg = arg[.. spacepos - 1];
+      }
+  }
   else
       issueid = lfehler;
-  // Alles ab dem zweiten Wort sollte eine Notiz sein.
-  int spacepos = strstr(arg, " ");
-  string note;
-  if(spacepos != -1)
-  {
-    note = arg[spacepos + 1 ..];
-    arg = arg[.. spacepos - 1];
-  }
-  
 
   notify_fail("Einen Eintrag mit dieser ID/diesem Loadname gibt es nicht!\n");
 
