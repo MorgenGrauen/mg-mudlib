@@ -4,7 +4,7 @@ short()
 FUNKTION
 --------
 
-     public varargs string short();
+     public string short();
 
 DEFINIERT IN
 ------------
@@ -19,7 +19,7 @@ ARGUMENTE
 BESCHREIBUNG
 ------------
 
-     Der Inhalt der Property P_SHORT wird ausgewertet, mit ".\n"
+     Der Inhalt der Property P_SHORT wird ausgewertet, mit ".\\n"
      abgeschlossen und zurueckgegeben.
 
      Durch Ueberladen von short() lassen sich ggf. weitere Eigenschaften des

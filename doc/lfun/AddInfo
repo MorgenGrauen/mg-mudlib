@@ -6,8 +6,9 @@ AddInfo()
 FUNKTION
 ========
 
-   public varargs void AddInfo(string|string* key, string|closure info,
-                  string indent, int|string silent, string|closure casebased);
+   public varargs void AddInfo(string|string* key, string|closure
+   info,
+      string indent, int|string silent, string|closure casebased);
 
 
 DEFINIERT IN
@@ -20,12 +21,13 @@ ARGUMENTE
 =========
 
    string|string* frage
-      Schluesselwoerter, fuer die der NPC eine Antwort geben soll,
+      Schluesselphrase(n), fuer die der NPC eine Antwort geben soll,
       wenn man ihn danach fragt
 
    string|closure meldung
       Information, die gegeben werden soll; wenn 'meldung' eine
-      Closure ist, wird der gerufenen Funktion nichts uebergeben.
+      Closure ist, wird der gerufenen Funktion die vom Spieler
+      gefragte Schluesselphrase uebergeben.
 
    string indent    (optional)
       Text, der sich bei mehrzeiligen Meldungen wiederholen soll.
@@ -34,8 +36,8 @@ ARGUMENTE
       Ist silent gesetzt, so erfolgt Antwort nur an Fragenden.
 
    string|closure casebased   (optional)
-      Closure mit Returnwert string oder int. Der Funktion werden
-      keine Argumente uebergeben.
+      Closure mit Returnwert string oder int. Der Funktion wird die
+      vom Spieler gefragte Schluesselphrase uebergeben.
 
 
 BESCHREIBUNG
@@ -48,7 +50,7 @@ BESCHREIBUNG
    Meldung wird der Name des Monsters vorangestellt.
 
    Frage:
-      Schluessel muessen kleingeschrieben sein, koennen aber
+      Schluesselphrasen muessen kleingeschrieben sein, koennen aber
       Leerzeichen enthalten.
 
    Meldung:
@@ -125,13 +127,13 @@ BEISPIELE
 
    // Beispiel 3: dynamisch
    // ein Prototyp, damit wir die Methode bekannt machen
-   protected string query_kekse();
+   protected string query_kekse(string key);
 
    AddInfo(({"keks","kekse"}),
        #'query_kekse,        // ein Verweis auf die Funktion
        "sagt: ");
 
-   protected string query_kekse() {
+   protected string query_kekse(string key) {
      if(present("keks", this_object()))
        return("Ich hab noch welche. Aetsch!");
      else if(present("keks", environment()))
@@ -146,8 +148,8 @@ BEISPIELE
 
    // Beispiel 4: dynamischer
    // ein Prototyp, damit wir die Methode bekannt machen
-   protected string query_kekse();
-   protected mixed case_fighting();
+   protected string query_kekse(string key);
+   protected mixed case_fighting(string key);
 
    AddInfo(({"keks","kekse"}),
        #'query_kekse,"        // ein Verweis auf die Funktion
@@ -155,13 +157,13 @@ BEISPIELE
        0,                     // nicht silent :)
        #'case_fighting);      // noch ein Funktionsverweis
 
-   protected string query_kekse() {
+   protected string query_kekse(string key) {
      if(present("keks"))
        return("Ich hab noch welche. Aetsch!");
      return("Menno. Keine mehr da!");
    }
 
-   protected mixed case_fighting() {
+   protected mixed case_fighting(string key) {
      if(InFight())
        return("Keine Zeit fuer Kekse. Muss kaempfen.");
      return 0;
@@ -177,7 +179,7 @@ BEISPIELE
 
    // Beispiel 5: ### dynamisch und komplex ###
    // ein Prototyp, damit wir die Methode bekannt machen
-   protected string question_gold();
+   protected string question_gold(string key);
 
    // "gold" wird eine Closure auf die Methode question_gold()
    // zugewiesen, ausserdem soll es still bleiben (wir informieren
@@ -185,7 +187,7 @@ BEISPIELE
    AddInfo("gold", #'question_gold, "murmelt: ", 1);
 
    // los gehts, wir generieren unsere Antwort selbst
-   protected string question_gold() {
+   protected string question_gold(string key) {
      // wieviel Kohle hat der Spieler
      int money = this_player()->QueryMoney();
      string* valuables = ({});
@@ -266,4 +268,4 @@ SIEHE AUCH
    Interna:
       GetInfoArr() , do_frage()
 
-24.09.2020, Arathorn
+09.08.2021, Zesstra

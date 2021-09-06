@@ -10,9 +10,9 @@ Abhaengigkeiten
    bauen, benoetigt man folgende Pakete (die Namen koennen je nach
    Distribution abweichen):
 
-   libjson0/json-c, libgnutls30, libsqlite3, libpcre3, libxml2, libgcrypt,
-   libpcre3, libiconv (diese ist bei neueren Distributionen in
-   libc6-dev enthalten).
+   libjson0/json-c, libgnutls30, libsqlite3, libpcre3, libxml2,
+   libgcrypt, libpcre3, libiconv (diese ist bei neueren Distributionen
+   in libc6-dev enthalten).
 
    Beachte, dass man auf debianbasierten System auch die
    entsprechenden Entwicklerpackete (**-dev*) mitinstallieren muss,
@@ -23,7 +23,8 @@ Anleitung fuer ein Homemud, unter Linux
 =======================================
 
    Mit den folgenden Schritten installiert man die gegenwaertige
-   mudlib und einen Driver der Version LDMUD-3.6.x
+   mudlib und einen Driver der Version LDMUD-3.6.4 oder
+   https://github.com/zesstra/ldmud/releases/tag/mgreboot-20210507
 
    1. Lade den aktuellen Driver unter
       https://github.com/ldmud/ldmud herunter. Du kannst auch das Repo
@@ -38,13 +39,15 @@ Anleitung fuer ein Homemud, unter Linux
 
    3. Gehe in das *src/*-Verzeichnis des drivers
 
-   4. Im *src/*-Verzeichnis, fuehere "./autogen.sh" aus
+   4. Im *src/*-Verzeichnis, fuehre "./autogen.sh" aus (Hierfuer
+      ist das Paket autoconf empfehlenswert.)
 
    5. Im src/-Verzeichnis, passe die Pfade in settings/morgengrauen
       an, und fuehre settings/morgengrauen aus
 
    6. im src/-Verzeichnis, kompiliere und installiere den Treiber
-      mit "make all" und "make install-all".
+      mit "make all" und "make install-all". (Hierfuer wird das Paket
+      bison benoetigt.)
 
    7. Falls noch nicht geschehen, schiebe die Mudlib in den Ordner,
       den Du in *settings/morgengrauen* eingestellt hast

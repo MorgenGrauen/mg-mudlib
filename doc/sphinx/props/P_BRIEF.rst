@@ -17,5 +17,11 @@ BESCHREIBUNG
 ------------
 ::
 
-     Ist gesetzt, wenn der Spieler nur die Kurzbeschreibung sehen will.
+     Speichert die Einstellung fuer "lang", "kurz" oder "ultrakurz" des
+     Spielers.
+     Werte: 0 fuer lang, 1 fuer kurz, 2 fuer ultrakurz.
 
+     Bitte nur lesend zugreifen, nicht nach Belieben in Spielern aendern.
+
+
+Letzte Aenderung: Arathorn, 2021-09-05
