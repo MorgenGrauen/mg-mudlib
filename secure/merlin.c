@@ -1054,30 +1054,35 @@ void wandern()
   mapping ex=({mapping})environment()->QueryProp(P_EXITS);
   if (!mappingp(ex))
     return;
-  mapping rooms = m_allocate(sizeof(ex));
+  mapping rooms = ([]);
   foreach(string cmd, string|closure dest, string msg : ex)
   {
     // nur normale Ausgaenge benutzen
-    if (!stringp(dest)
-        || dest = object_name(environment()))
+    if (!stringp(dest) || dest == object_name(environment()))
       continue;
-    rooms += ([dest]);
+    m_add(rooms, dest);
   }
-  if (!sizeof(rooms))
+  if (!sizeof(rooms)) {
+    move("/gilden/abenteurer",0);
     return;
+  }
 
   // Und nicht zuruecklatschen, wenn moeglich.
   if (prev_room && sizeof(m_indices(rooms))>1)
-    rooms-=([prev_room]);
+    m_delete(rooms, prev_room);
   prev_room=object_name(environment());
 
   string *raeume=m_indices(rooms);
-  move(raeume[sizeof(raeume)],0);
+  move(raeume[random(sizeof(raeume))],0);
 }
 
 string int_short()
 {
   return "Du bist im allseits beliebten Wizclub \"Zum lustigen Merlin\".\n";
+}
+
+string _query_int_short() {
+  return "Der Wizclub \"Zum lustigen Merlin\"";
 }
 
 string int_long(object who,mixed where)
