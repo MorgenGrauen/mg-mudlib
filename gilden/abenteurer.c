@@ -367,7 +367,6 @@ string karte() {
 }
 
 public varargs void init(object origin) {
-  int res;
   object ob;
 
   ::init(origin);
