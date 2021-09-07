@@ -19,11 +19,11 @@ DESCRIPTION
         Das 'assert'-Makro ist eine bequeme Moeglichkeit, solche Pruefungen
         zu formulieren, welche an dieser Stelle einen Laufzeitfehler
         ausloesen, falls <expr> unwahr sein sollte. Oder anders: es dient
-        dazu, die Annahme der Programmierin zu pruefen, dass <expr> in diesem
+        dazu, die Annahme der Magierin zu pruefen, dass <expr> in diesem
         Moment != 0 ist.
         In der Fehlermeldung wird in diesem Fall die aktuelle Datei, Zeile,
-        ggf. Funktion und die vom Benutzer formulierte <msg> ausgegeben.
-        Sollte einem nichts sinnvolles einfallen, schreibt einfach einen
+        ggf. Funktion und die vom Magier formulierte <msg> ausgegeben.
+        Sollte einem nichts sinnvolles einfallen, schreibt einfach man einen
         String mit der <expr> rein.
 
         Hierbei sollte man aber bedenken, ob es an dieser Stelle gut ist, die
