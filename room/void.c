@@ -47,5 +47,6 @@ string NotifyDestruct(object caller) {
     if( (caller!=this_object() && !ARCH_SECURITY) || process_call() ) {
       return "Du darfst das Void nicht zerstoeren!\n";
     }
+    return 0;
 }
 

@@ -87,5 +87,6 @@ public string NotifyDestruct(object caller) {
     if( (caller!=this_object() && !ARCH_SECURITY) || process_call() ) {
       return "Du darfst den Netztotenraum nicht zerstoeren!\n";
     }
+    return 0;
 }
 
