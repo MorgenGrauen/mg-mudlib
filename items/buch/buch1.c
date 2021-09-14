@@ -48,8 +48,6 @@ int oeffne(string str) {
 }
 
 int schliesse(string str) {
-  string was;
-
   if (!str || !id(str)) return 0;
   if (!QueryProp(P_SEITE)) write("Es ist schon geschlossen.\n");
   else {
@@ -75,11 +73,10 @@ int blaettere(string str) {
 
 int lies(string str)
 {
-  string was;
   int seite;
 
   notify_fail("Was willst Du lesen ? Syntax: LIES <ETWAS>.\n");
-  if(!str || !id(str) || sscanf(str,"%s",was)!=1) return 0;
+  if(!str || !id(str) || sscanf(str,"%~s")!=1) return 0;
   say(PL->name() + " liest in einem Buch.\n",PL);
 
   seite = QueryProp(P_SEITE);
