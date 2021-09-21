@@ -12,10 +12,10 @@ DEFINIERT IN
 ------------
 ::
 
-    /std/living/comm.c
     /std/npc/comm.c
     /std/player/comm.c
     /std/room/items.c
+    /sys/living/comm.h
 
 ARGUMENTE
 ---------
