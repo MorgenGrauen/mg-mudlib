@@ -1603,7 +1603,7 @@ static int score(string arg) {
     printf("Gilde ............ %-' '18s Gildenstufe ...... %d\n",
          capitalize(QueryProp(P_GUILD)), QueryProp(P_GUILD_LEVEL));
   }
-  printf("Erfahrung ........ %-' '18s Charakter ........ %-s\n\n",
+  printf("Erfahrung ........ %-' '18s Gesinnung ........ %-s\n\n",
          QueryProp(P_XP)+ " Punkte", al_to_title(QueryProp(P_ALIGN)));
   printf("%#-76.2s\n\n", tmp);
   printf("Gesundheit ....... %-3.3d %-' '14s Gift ............. %s\n",

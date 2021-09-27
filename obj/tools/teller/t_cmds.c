@@ -297,7 +297,7 @@ static scan_obj( object player, object obj )
     default     : gender = "neutrum    " ; break ;
   }
   printf(
-		"Geschlecht.: %s Charakter.: %11d (Magier)Stufe..: [%4s/%4d].\n", 
+		"Geschlecht.: %s Gesinnung.: %11d (Magier)Stufe..: [%4s/%4d].\n", 
     gender, obj->QueryProp(P_ALIGN),
 		player ? WizLevel(obj)+"" : "-", obj->QueryProp(P_LEVEL) );
 

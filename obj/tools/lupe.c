@@ -1562,7 +1562,7 @@ string stat(string arg)
     case MALE   : tmp2 = "maennlich" ; break ;
     default     : tmp2 = "boingisch" ; break ;
   }
-  printf("   Geschlecht : %s       Charakter : %-5d             Stufe : %-3d\n",
+  printf("   Geschlecht : %s       Gesinnung : %-5d             Stufe : %-3d\n",
 	 tmp2, ({int})ob->QueryProp(P_ALIGN), ({int})ob->QueryProp(P_LEVEL)) ;
   stats = ({mapping})ob->QueryProp(P_ATTRIBUTES) ;
 	if (!mappingp(stats)) stats=([]);
