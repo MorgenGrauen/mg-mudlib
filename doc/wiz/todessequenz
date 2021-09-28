@@ -41,11 +41,11 @@ einige Platzhalter verwenden. Man kann Meldungen einbauen, die abhaenig sind
     1:Der Tod sagt: SCHOEN GESTORBEN, <R>FREMDLING|MENSCHLEIN|SPITZOHR|DREIKAESEHOCH</R>?
     2:<R>||Der Tod sagt: ELFEN WAREN SCHON LANGE NICHT MEHR HIER!|</R>
 
-- vom Charakter: Der Charakter eines Spielers kann sich im Bereich von -1000
+- von der Gesinnung: Die Gesiinung eines Spielers kann sich im Bereich von -1000
   (satanisch) bis +1000 (heilig) bewegen. Zwischen <A> und </A> kann man
-  charakterabhaengige Meldungen einbauen. Die Abstufungen werden dabei in der
+  Meldungen abhaengig von der Gesinnung einbauen. Die Abstufungen werden dabei in der
   Form ##<Untergrenze>## angegeben, wobei <Untergrenze> die untere Grenze des
-  Charakterwertes ist, ab dem die Meldung ausgegeben wird.
+  Gesinnungswertes ist, ab dem die Meldung ausgegeben wird.
   Der Text direkt nach <A> entspricht einer Untergrenze von -1000, die
   weiteren Texte sollten in aufsteigender Reihenfolge angegeben werden.
   Beispiel:
@@ -61,7 +61,7 @@ einige Platzhalter verwenden. Man kann Meldungen einbauen, die abhaenig sind
     Der Tod sagt: OH, GUTEN TAG, EUER HEILIGKEIT!
     </A>
 
-- von der Zahl der Tode: Dies geht aehlich wie beim Charakter, allerdings
+- von der Zahl der Tode: Dies geht aehlich wie bei der Gesinnung, allerdings
   ist der Platzhalter hier <D>...</D>. Die Untergrenze fuer den ersten Text
   ist 1 (sonst waere der Spieler ja nicht hier ;)
   Beispiel:
@@ -75,7 +75,7 @@ einige Platzhalter verwenden. Man kann Meldungen einbauen, die abhaenig sind
     Der Tod sagt: NOCH EINMAL, UND ICH BEHALTE DICH ENDGUELTIG HIER!
     </D>
 
-- vom Level: Auch hier erfolgt die Auswertung wie beim Charakter, allerdings
+- vom Level: Auch hier erfolgt die Auswertung wie bei der Gesinnung, allerdings
   zwischen den Platzhaltern <L> und </L>. Die Untergrenze fuer den ersten
   Text ist 0.
   Beispiel:
