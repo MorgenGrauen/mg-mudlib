@@ -71,7 +71,9 @@ void create()
   }
   set_living_name("merlin");
   enable_commands();
+# ifndef __TESTMUD__
   call_out("wandern",25);
+# endif
   move("/gilden/abenteurer",0);
   MBanishListe = m_allocate(0,2);
   restore_object(SAVEFILE);
