@@ -1685,7 +1685,7 @@ SoulComm(string str, string _verb)  {
     if (!who)
       Return("Wen hast Du lieb?\n");
     if (CheckLife(NOT_SELF,NOT_DEAD,
-      "Ja, ich weiss, Du magst Dich, aber das musst Du nicht zur Schau"
+      "Ja, ich weiss, Du magst Dich, aber das musst Du nicht zur Schau "
         +"stellen.",
       "Du entwickelst seltsame Neigungen, finde ich."))
         return 1;
