@@ -95,8 +95,6 @@ public int do_damage(int dam, object enemy);
 public int reduce_hit_points(int dam);
 public int restore_hit_points(int heal);
 
-public int reduce_hit_point(int dam);  //Nur als Uebergansloesung (Rikus)
-
 public void restore_spell_points(int h);
 public void reduce_spell_points(int h);
 
