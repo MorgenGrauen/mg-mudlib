@@ -512,11 +512,6 @@ protected void call_notify_player_change(int rein)
         );
   }
   u->notify_player_change(capitalize(wer),rein,invis);
-
-  // und beim Ausloggen noch das Env informieren.
-  if (!rein) {
-    if(environment()) catch(environment()->PlayerQuit(ME);publish);
-  }
 }
 
 /** Ruft im uebergebenen Objekt ein init() auf, sofern notwendig.
@@ -1524,8 +1519,11 @@ int quit()
     tell_object(ME,"Speichere "+QueryProp(P_NAME)+".\n");
   }
 
-  if (interactive(ME))
+  if (interactive(ME)) {
     call_notify_player_change(0);
+    if(environment())
+      catch(environment()->PlayerQuit(ME);publish);
+  }
 
   remove_living_name();
   // EVT_LIB_LOGOUT wird in remove() getriggert.
