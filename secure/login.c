@@ -869,10 +869,8 @@ static int load_player_object( int guestflag )
 
             if ( interactive(ob) )
             {
-                /* The other object is still interactive; reconnect that "soul"
-                   to a dummy object and destruct that, thus disconnecting the
-                   other probably linkdead user. The real "body" is still
-                   there for reconnecting by login.c */
+                // The other object is still interactive; disconnect it first
+                // and attach our connection to the player object.
                 remove_interactive(ob);
                 was_interactive = 1;
             }
