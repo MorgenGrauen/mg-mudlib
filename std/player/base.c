@@ -491,27 +491,107 @@ static void ListAwaited() //Anwesende Erwartete auflisten
 }
 /** Teilt den Gilden und anderen Spielern mit, wer reingekommen ist.
   Ausserdem wird ggf. PlayerQuit() im Environment gerufen.
-  \param[in] rein int - wahr, wenn der Spieler einloggt.
+  \param[in] flags int - Flags fuer Rein/Raus/Ende
 */
-protected void call_notify_player_change(int rein)
+protected void call_notify_player_change(int flags)
 {
-  string wer = getuid(ME);
-  // erst die Gilde informieren
+  // Flag fuer Callbacks woanders hin. 1 wenn reinkommend, 0 sonst
+  // TODO: Flags komplett durchreichen an Gilden und Spielerobjekte.
+  int rein = flags & CNP_FLAG_ENTER;
+
+  if (rein)  // Spieler kommt rein
+  {
+    // Login-event ausloesen
+    EVENTD->TriggerEvent(EVT_LIB_LOGIN, ([
+          E_OBJECT: ME,
+          E_PLNAME: getuid(ME),
+          E_ENVIRONMENT: environment() ]) );
+
+    // falls Gegenstaende mit 'upd -ar' upgedated wurden, muessen die
+    // "verloren gegangenen" init()'s nachgeholt werden
+    if ( query_once_interactive(ME) && !IS_LEARNER(ME) )
+        call_out( "inits_nachholen", 0, Query(P_LAST_LOGOUT),
+                  all_inventory(ME) );
+
+    // jetzt die ganzen BecomesNetAlive() rufen.
+    object *inv;
+    if (ndead_location)
+    {
+      catch( ndead_location->BecomesNetAlive(ME);publish );
+      inv = all_inventory(ndead_location);
+      ndead_location = 0;
+    }
+    else
+      inv = ({});
+
+    inv += deep_inventory(ME);
+
+    //ZZ foreach statt call_other(), damit nen bug in BNA nicht die anderen
+    //BNA verhindert.
+    foreach(object ob: inv) {
+        //es ist nicht auszuschliessen, dass Items durch BecomesNetAlive()
+        //eines anderen zerstoert werden.
+        if (objectp(ob))
+          catch( call_other(ob, "BecomesNetAlive", ME);publish );
+    }
+
+    // Und Meldung ans Environment. Erst an dieser Stelle, weil der Spieler
+    // u.U. durch ein BecomesNetAlive() noch bewegt wurde.
+    if ( !(flags & CNP_FLAG_SILENT) && environment()
+         && object_name(environment()) != NETDEAD_ROOM )
+    {
+        if(query_hc_play()<=1)
+          tell_room(environment(),QueryProp(P_NAME)
+                    + " weilt wieder unter den Lebenden.\n",({ME}) );
+        else 
+          tell_room(environment(),QueryProp(P_NAME)
+                    + " weilt wieder unter den Verstorbenen.\n",({ME}) );
+    }
+  }
+  else  // Spieler geht raus (schlafe ein, ende)
+  {
+    // Logout-event ausloesen
+    EVENTD->TriggerEvent(EVT_LIB_LOGOUT, ([
+            E_OBJECT: ME,
+            E_PLNAME: getuid(ME),
+            E_ENVIRONMENT: environment() ]) );
+    // Dann die BecomesNetDead() rufen
+    object *inv = deep_inventory(ME);
+    if (environment())
+    {
+        catch(environment()->BecomesNetDead(ME);publish);
+        inv += all_inventory(environment());
+    }
+    foreach(object ob: inv)
+    {
+        if (objectp(ob)) //man weiss nie was BND() macht...
+            catch( call_other(ob, "BecomesNetDead", ME);publish );
+    }
+    // Bei Ende auch noch PlayerQuit() im Environment rufen.
+    if ((flags & CNP_FLAG_QUIT) && environment())
+        catch(environment()->PlayerQuit(ME);publish);
+  }
+
+  // Die Gilde informieren...
   string gilde = QueryProp(P_GUILD);
   if (stringp(gilde) && (find_object("/gilden/"+gilde)
         || file_size("/gilden/"+gilde+".c")>0))
     catch(("/gilden/"+gilde)->notify_player_change(ME, rein); publish);
 
-  // dann die anderen Spieler
-  int mag = IS_LEARNER(ME);
-  int invis = QueryProp(P_INVIS);
-  object *u = users() - ({ME}); // sich selber nicht melden 
-  if (mag && invis) {   // Invismagier nur Magiern melden
-    u = filter(u, function int (object o)
-        { return query_wiz_level(o) >= LEARNER_LVL; }
-        );
+  // und wenn nicht silent: dann noch die anderen Spieler informieren
+  if (!(flags & CNP_FLAG_SILENT))
+  {
+    string wer = getuid(ME);
+    int mag = IS_LEARNER(ME);
+    int invis = QueryProp(P_INVIS);
+    object *u = users() - ({ME}); // sich selber nicht melden 
+    if (mag && invis) {   // Invismagier nur Magiern melden
+        u = filter(u, function int (object o)
+            { return query_wiz_level(o) >= LEARNER_LVL; }
+            );
+    }
+    u->notify_player_change(capitalize(wer),rein,invis);
   }
-  u->notify_player_change(capitalize(wer),rein,invis);
 }
 
 /** Ruft im uebergebenen Objekt ein init() auf, sofern notwendig.
@@ -567,17 +647,19 @@ private void set_manual_encoding()
 /** Belebt einen Netztoten wieder.
   Wird im Login gerufen, wenn der Spieler netztot war. Aequivalent zu
   start_player()
-  @param[in] silent Wenn Flag gesetzt, werden keine Meldung an den Raum
-  ausgegeben.
+  @param[in] silent Wenn Flag gesetzt, werden div. Callbacks nicht gerufen und
+    Meldungen nicht ausgegeben. Wird vom Loginobjekt gesetzt, wenn das
+    Spielerobjekt bereits interaktiv ist und nur die Netzverbindung durch
+    Reconnect wechselt. *Nicht* zu verwechseln mit dem 'silent' von move & Co
+    oder durch P_INVIS!
   @param[in] ip Textuelle Repraesentation der IP-Adresse, von der der Spieler
-  kommt.
+    kommt.
   @see start_player()
 */
 varargs void Reconnect( int silent )
 {
     int num;
     string called_from_ip;
-    object *inv;
 
     if ( query_once_interactive(ME) )
     {
@@ -610,17 +692,14 @@ varargs void Reconnect( int silent )
     if ( ndead_currently )
         ndead_revive();
 
-    if ( !silent && interactive(ME) )
-        call_notify_player_change(1);
+    if ( interactive(ME) )
+    {
+        call_notify_player_change(
+                       CNP_FLAG_ENTER | (silent ? CNP_FLAG_SILENT : 0 ) );
+    }
 
     if ( query_once_interactive(ME) )
         modify_prompt();
-
-    // Login-event ausloesen
-    EVENTD->TriggerEvent(EVT_LIB_LOGIN, ([
-          E_OBJECT: ME,
-          E_PLNAME: getuid(ME),
-          E_ENVIRONMENT: environment() ]) );
 
     catch( num = "secure/mailer"->FingerMail(geteuid());publish );
 
@@ -649,11 +728,6 @@ varargs void Reconnect( int silent )
 
     Set( P_CALLED_FROM_IP, query_ip_number(ME) );
 
-    // falls Gegenstaende mit 'upd -ar' upgedated wurden, muessen die
-    // "verloren gegangenen" init()'s nachgeholt werden
-    if ( query_once_interactive(ME) && !IS_LEARNER(ME) )
-        call_out( "inits_nachholen", 0, Query(P_LAST_LOGOUT),
-                  all_inventory(ME) );
 
     // noch nicht geclonte Autoloader "nach"clonen
     while ( remove_call_out("load_auto_objects") != -1 )
@@ -661,35 +735,6 @@ varargs void Reconnect( int silent )
 
     if ( sizeof(autoload_rest) )
         call_out( "load_auto_objects", 0, autoload_rest );
-
-    if (ndead_location) {
-      catch( ndead_location->BecomesNetAlive(ME);publish );
-      inv = all_inventory(ndead_location);
-      ndead_location = 0;
-    }
-    else
-      inv = ({});
-
-    inv += deep_inventory(ME);
-
-    //ZZ foreach statt call_other(), damit nen bug in BNA nicht die anderen
-    //BNA verhindert.
-    foreach(object ob: inv) {
-        //es ist nicht auszuschliessen, dass Items durch BecomesNetAlive()
-        //eines anderen zerstoert werden.
-        if (objectp(ob))
-          catch( call_other(ob, "BecomesNetAlive", ME);publish );
-    }
-
-    // Erst an dieser Stelle, weil der Spieler u.U. durch ein BecomesNetAlive()
-    // noch bewegt wurde.
-    if ( !silent && environment() && object_name(environment()) != NETDEAD_ROOM )
-    {
-        if(query_hc_play()<=1)
-          tell_room(environment(),QueryProp(P_NAME) + " weilt wieder unter den Lebenden.\n",({ME}) );
-        else 
-          tell_room(environment(),QueryProp(P_NAME) + " weilt wieder unter den Verstorbenen.\n",({ME}) );
-    }
 
     NewbieIntroMsg();
 
@@ -704,8 +749,6 @@ varargs void Reconnect( int silent )
 */
 void NetDead()
 {
-  object *inv;
-
   catch(RemoveChannels();publish);
 
   if(query_hc_play()>1)
@@ -724,13 +767,7 @@ void NetDead()
     ndead_location = environment();
 
   if (query_once_interactive(ME))
-    call_notify_player_change(0);
-
-  // Logout-event ausloesen
-  EVENTD->TriggerEvent(EVT_LIB_LOGOUT, ([
-          E_OBJECT: ME,
-          E_PLNAME: getuid(ME),
-          E_ENVIRONMENT: environment() ]) );
+    call_notify_player_change(CNP_FLAG_SLEEP);
 
   set_next_reset(900);
   /* Bei Nicht-Magier-Shells wird comm::reset() aufgerufen, das prueft, ob
@@ -738,16 +775,6 @@ void NetDead()
      Die Methode wird von /std/shells/magier.c ueberschrieben, netztote
      Magier (die eigentlich schon anderweitig beseitigt worden sein sollten)
      werden remove()d und destruct()ed. --Amynthor 05.05.2008 */
-
-  if (environment()) {
-    catch(environment()->BecomesNetDead(ME);publish);
-    inv = deep_inventory(ME)+all_inventory(environment());
-  }
-  else inv=deep_inventory(ME);
-  foreach(object ob: inv) {
-      if (objectp(ob)) //man weiss nie was BND() macht...
-          catch( call_other(ob, "BecomesNetDead", ME);publish );
-  }
 }
 
 
@@ -1519,15 +1546,13 @@ int quit()
     tell_object(ME,"Speichere "+QueryProp(P_NAME)+".\n");
   }
 
-  if (interactive(ME)) {
-    call_notify_player_change(0);
-    if(environment())
-      catch(environment()->PlayerQuit(ME);publish);
-  }
-
   remove_living_name();
-  // EVT_LIB_LOGOUT wird in remove() getriggert.
-  if(catch(remove();publish)) destruct(ME);
+
+  // call_notify_player_change wird in remove() gerufen.
+
+  if(catch(remove();publish))
+    destruct(ME);
+
   return 1;
 }
 
@@ -2454,9 +2479,6 @@ private void InitPlayer4()
         catch( "/std/gilde"->try_player_advance(this_object()) ;publish );
     }
 
-    if ( interactive(ME) )
-        call_notify_player_change(1);
-
     if ( interactive(this_object()) ) {
         cat( "/etc/NEWS" );
 
@@ -2521,12 +2543,6 @@ private void InitPlayer4()
 
     // Die Shell muss FinalSetup() nicht implementieren. Daher Callother
     catch( ME->FinalSetup();publish );
-
-    // Login-event ausloesen
-    EVENTD->TriggerEvent(EVT_LIB_LOGIN, ([
-          E_OBJECT: ME,
-          E_PLNAME: getuid(ME),
-          E_ENVIRONMENT: environment() ]) );
 
     // erst jetzt GMCP freigeben und zu verhandeln.
     gmcp::startup_telnet_negs();
@@ -2601,6 +2617,11 @@ private void InitPlayer4()
     else
         set_is_wizard( ME, 0 );
 #endif
+
+    // Objekte informieren, Loginevent etc.
+    if ( interactive(ME) )
+        call_notify_player_change(CNP_FLAG_ENTER);
+
     if ( query_once_interactive(ME) )
         ListAwaited();
 

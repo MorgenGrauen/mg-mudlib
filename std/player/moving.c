@@ -52,16 +52,24 @@ static mixed _to_remove( object ob )
 // autoload and nodrop object may not fall into the environment
 static varargs int remove( int silent )
 {
+    // Andere wollen auch informiert werden ueber den (ggf. impliziten)
+    // Logout.
+    // Achtung: *kein* CNP_FLAG_SILENT - das hat eine andere Bedeutung als das
+    // argument silent hier!
+    if ( interactive(ME) )
+        call_notify_player_change(CNP_FLAG_QUIT);
+
+    // Inventar aufraeumen
     object* dest_obj = filter( deep_inventory(ME) - ({0}), "_to_remove" );
     filter_objects( dest_obj, "remove" );
     filter( dest_obj - ({0}), #'destruct );
 
     if ( !QueryProp(P_INVIS) && !silent )
         catch( say( name(WER, 1) + " verlaesst diese Welt.\n", ME );publish );
-    
     if ( ME && !silent )
         tell_object( ME, "Bis bald!\n" );
 
+    // Logmeldung, wenn jemand einen Spieler zerstoert.
     // Im Falle des Resets ist previous_object() == ME, aber
     // previous_object(0) == 0. Ausserdem ist der Caller-Stack leer. Also
     // schauen, ob es ein PO gibt, was nicht gleich dem Objekt selber ist, TI
@@ -75,13 +83,7 @@ static varargs int remove( int silent )
                          dtime(time()), ME, previous_object(),
                          this_interactive(), this_player() ) );
 
-    // Logout-event ausloesen
-    EVENTD->TriggerEvent(EVT_LIB_LOGOUT, ([
-	    E_OBJECT: ME,
-	    E_PLNAME: getuid(ME),
-	    E_ENVIRONMENT: environment() ]) );
-
-    return ::remove();
+    return ::remove(silent);
 }
 
 public string NotifyDestruct(object caller) {
