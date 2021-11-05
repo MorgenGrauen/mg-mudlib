@@ -28,10 +28,6 @@ static void mnpc_create()
 {
   if (PO && member(inherit_list(PO), "/std/room.c")!=-1)
     SetProp(MNPC_HOME, object_name(PO));
-  else if (PL && ENV(PL))
-    SetProp(MNPC_HOME, object_name(ENV(PL)));
-  else
-    SetProp(MNPC_HOME, MNPC_DFLT_HOME);
   SetProp(P_MNPC, 1);
   SetProp(MNPC_AREA, ({}));
   SetProp(MNPC_DELAY, MNPC_DFLT_DELAY);
