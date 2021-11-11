@@ -775,7 +775,6 @@ static void get_mud_played_answer (string str)
 static int load_player_object( int guestflag )
 {
     object ob;
-    int was_interactive;
 
     if ( sizeof(users()) >= 195 && !IS_WIZARD(loginname) ){
         write( "Die maximale Spielerzahl wurde bereits erreicht!!!\n"
@@ -860,9 +859,7 @@ static int load_player_object( int guestflag )
     }
     else {
         /* Test if we are already playing */
-        was_interactive = 0;
         ob = find_player(loginname) || find_netdead(loginname);
-
         if (ob) {
             write( "Du nimmst schon am Spiel teil!\n" );
             write( "Verwende Deine alte sterbliche Huelle ...\n" );
@@ -872,7 +869,6 @@ static int load_player_object( int guestflag )
                 // The other object is still interactive; disconnect it first
                 // and attach our connection to the player object.
                 remove_interactive(ob);
-                was_interactive = 1;
             }
             // Wenn Invislogin, P_INVIS setzen.
             if ( invis && IS_WIZARD(ob) )
@@ -886,7 +882,7 @@ static int load_player_object( int guestflag )
             if ( (({int})ob->QueryProp(P_LEVEL)) == -1 )
                 ob->start_player( cap_name );
             else
-                ob->Reconnect( was_interactive );
+                ob->Reconnect();
 
             call_out( "remove", 2 );
             return 1;
