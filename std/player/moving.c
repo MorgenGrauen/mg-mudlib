@@ -54,8 +54,6 @@ static varargs int remove( int silent )
 {
     // Andere wollen auch informiert werden ueber den (ggf. impliziten)
     // Logout.
-    // Achtung: *kein* CNP_FLAG_SILENT - das hat eine andere Bedeutung als das
-    // argument silent hier!
     if ( interactive(ME) )
         call_notify_player_change(CNP_FLAG_QUIT);
 
