@@ -102,9 +102,6 @@
 #define CNP_FLAG_ENTER  0x1    // player enters mud
 #define CNP_FLAG_SLEEP  0x2    // player disconnects/sleeps
 #define CNP_FLAG_QUIT   0x4    // player quits or is removed
-// silent logon, don't call most callbacks, because the player is already
-// online, but net connection is replaced by new one.
-#define CNP_FLAG_SILENT 0x8
 
 // prototypes
 

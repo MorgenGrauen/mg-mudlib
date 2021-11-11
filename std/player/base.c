@@ -537,8 +537,8 @@ protected void call_notify_player_change(int flags)
 
     // Und Meldung ans Environment. Erst an dieser Stelle, weil der Spieler
     // u.U. durch ein BecomesNetAlive() noch bewegt wurde.
-    if ( !(flags & CNP_FLAG_SILENT) && environment()
-         && object_name(environment()) != NETDEAD_ROOM )
+    if (environment()
+        && object_name(environment()) != NETDEAD_ROOM )
     {
         if(query_hc_play()<=1)
           tell_room(environment(),QueryProp(P_NAME)
@@ -578,20 +578,17 @@ protected void call_notify_player_change(int flags)
         || file_size("/gilden/"+gilde+".c")>0))
     catch(("/gilden/"+gilde)->notify_player_change(ME, rein); publish);
 
-  // und wenn nicht silent: dann noch die anderen Spieler informieren
-  if (!(flags & CNP_FLAG_SILENT))
-  {
-    string wer = getuid(ME);
-    int mag = IS_LEARNER(ME);
-    int invis = QueryProp(P_INVIS);
-    object *u = users() - ({ME}); // sich selber nicht melden 
-    if (mag && invis) {   // Invismagier nur Magiern melden
-        u = filter(u, function int (object o)
-            { return query_wiz_level(o) >= LEARNER_LVL; }
-            );
-    }
-    u->notify_player_change(capitalize(wer),rein,invis);
+  // dann noch die anderen Spieler informieren
+  string wer = getuid(ME);
+  int mag = IS_LEARNER(ME);
+  int invis = QueryProp(P_INVIS);
+  object *u = users() - ({ME}); // sich selber nicht melden 
+  if (mag && invis) {   // Invismagier nur Magiern melden
+    u = filter(u, function int (object o)
+        { return query_wiz_level(o) >= LEARNER_LVL; }
+        );
   }
+  u->notify_player_change(capitalize(wer),rein,invis);
 }
 
 /** Ruft im uebergebenen Objekt ein init() auf, sofern notwendig.
@@ -647,16 +644,9 @@ private void set_manual_encoding()
 /** Belebt einen Netztoten wieder.
   Wird im Login gerufen, wenn der Spieler netztot war. Aequivalent zu
   start_player()
-  @param[in] silent Wenn Flag gesetzt, werden div. Callbacks nicht gerufen und
-    Meldungen nicht ausgegeben. Wird vom Loginobjekt gesetzt, wenn das
-    Spielerobjekt bereits interaktiv ist und nur die Netzverbindung durch
-    Reconnect wechselt. *Nicht* zu verwechseln mit dem 'silent' von move & Co
-    oder durch P_INVIS!
-  @param[in] ip Textuelle Repraesentation der IP-Adresse, von der der Spieler
-    kommt.
   @see start_player()
 */
-varargs void Reconnect( int silent )
+varargs void Reconnect()
 {
     int num;
     string called_from_ip;
@@ -694,8 +684,7 @@ varargs void Reconnect( int silent )
 
     if ( interactive(ME) )
     {
-        call_notify_player_change(
-                       CNP_FLAG_ENTER | (silent ? CNP_FLAG_SILENT : 0 ) );
+        call_notify_player_change(CNP_FLAG_ENTER);
     }
 
     if ( query_once_interactive(ME) )
