@@ -68,7 +68,7 @@ varargs int GiveQuest(string questname, string message) {
   // Quest bereits gesetzt
   if (QueryQuest(questname))
     return GQ_ALREADY_SET;
-  AddExp(quest[1]);
+  this_object()->AddExp(quest[1]); // call_other erforderlich fuer Seherhaus-Block
   quests += ([ questname : quest[0]; time() ]);
   force_save();
   // Event ausloesen
