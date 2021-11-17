@@ -421,7 +421,7 @@ int DumpList() {
   // einmal auf die Platte geschrieben. Das ist Absicht, weil es speicher-
   // technisch sehr aufwendig waere, die Ausgabedaten stattdessen erst in
   // einer Variablen zu sammeln und dann wegzuschreiben.
-  foreach(int *listno : sort_array(m_indices(lists),#'>)) {
+  foreach(int listno : sort_array(m_indices(lists),#'>)) {
     // Zuerst den Header der ensprechenden Liste schreiben.
     DUMP(sprintf(LISTHEADER, listno, sizeof(lists[listno])));
     // Dann alle Potions der Liste durchgehen
