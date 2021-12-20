@@ -13,35 +13,66 @@ ERZMAGIER:
   Die MudGoetter Jof, Rumata und Zook sind dabei die hoechsten Instanzen;
   Jof macht sich allerdings in letzter Zeit etwas rar.
 
-Die Aufgabenbereiche der einzelnen Erzmagier sind wie folgt festgelegt:
+Die Aufgabenbereiche der Erzmagier sind wie folgt verteilt:
 
-      Amaryllis
-        Amaryllis ist fuer die Administration und das Hosting unseres
-        Servers zustaendig und hat ausserdem das Amt des Sheriffs inne.
-      Arathorn
-        Arathorn kuemmert sich um die Vergabe der Erstkill-Stupse (dazu
-        begutachtet er die NPCs). Darueberhinaus kuemmert er sich 
-        um die Weiterentwicklung der Mudlib.
-      Humni
-        Humni ist fuer die Gilden-Balance zustaendig und leitet das
-        Balance-Team. Des Weiteren ist er fuer die Heilungs-Balance
-        zustaendig.
-      Jof
-        Jof ist als MudGott fuer mehr oder weniger alles zustaendig.
-      Rumata
-        Rumata ist MudGoettin und damit auch Maedchen fuer alles.
-        Und delegiert dann ;-)
-      Zesstra
-        Zesstra kuemmert sich um unseren Driver und die Mudlib.
-      Zook
-        Zook ist einer der MudGoetter und damit Maedchen fuer 
-        alles. Er ernennt Regionsmagier und beruft diese gegebenenfalls
-        ab. Jungmagier koennen sich mit ihren Gesellenstuecken gerne bei
-        ihm melden.
-        Zook testet neue Abenteuer und Miniquests bevor sie auf die
-        Spieler losgelassen werden und traegt diese mit angemessener
-        Punktzahl ein. 
+      Administration und Hosting des Servers:
+        Amaryllis
+
+      Balance (und Erstkill-Stupse):
+        Fuer die Gilden-, Rassen- und Heilungsbalance ist Humni
+        zustaendig. Er wird fuer die Objekte vom Balance-Team
+        aus Spielern unterstuetzt.
+
+        Die Vergabe von Erstkill-Stupsen und damit verbunden die
+        NPC-Balance hat Arathorn uebernommen.
+
+      Driver
+        Die Driver-Entwicklung wird von Zesstra (gemeinsam mit
+        anderen Muds) betreut. 
+
+      Forscherpunkte / Zaubertraenke:
         Zook verwaltet die Forscherpunkte und Zaubertraenke.
+
+      Jungmagier / Gesellenstuecke:
+        Zook betreut neue Magier gemeinsam mit ihrem Sponsor bei
+        ihren ersten Schritten und nimmt ihr Gesellenstueck ab. 
+
+      Mudgoetter / Maedchen fuer alles:
+        Jof, Rumata, Zook 
+
+      Mudlib:
+        Fuer die Weiterentwicklungen, Korrekturen der Mudlib sind
+        Arathorn und Zesstra verantwortlich. 
+
+      Quests und Miniquests:
+        Neue Abenteuer und Miniquests werden von Zook getestet,
+        bevor sie auf Spieler los gelassen werden. Er vergibt
+        auch die dafuer vergebenen Punkte ein. 
+
+      Regionen:
+        Fuer die Regionen und die Ernennung und Abberufung von
+        Regionsmagiern ist Zook zustaendig. 
+
+      Sheriff:
+        Die Einhaltung der Regeln ueberwacht Amaryllis. 
+
+Verantwortlich sind unsere Erzmagier daher jeweils fuer:
+
+      Amaryllis:
+        Server-Administration, Sheriff
+      Arathorn:
+        Erstkill-Stupse, NPC-Balance, Mudlib
+      Humni:
+        Gilden-, Rassen, Heilungsbalance, Balance-Team
+      Jof:
+        Maedchen fuer alles
+      Rumata:
+        Maedchen fuer alles
+      Zesstra:
+        Driver, Mudlib
+      Zook:
+        Forscherpunkte, Zaubertraenke, Quests und Miniquests,
+        Regionen, Jungmagier und ihre Gesellenstuecke
 
 Sollte es Verzoegerungen bei Euren Anliegen geben, schreibt
 entweder erneut an das Mail-Alias "erzmagier" oder an Zook.
@@ -51,4 +82,5 @@ SIEHE AUCH:
         balance
 
 LETZTE AeNDERUNG:
-        2021-12-12 von Zook
+        2021-12-20 von Zook
+
