@@ -393,6 +393,27 @@ static int _execute(mixed fun, string str, mixed *parsed) {
   return 0;
 }
 
+// Objekt fuer @PRESENT suchen. Es sollen keine Objekte mit P_INVIS
+// auftauchen.
+private object _GetPresentObject(string str)
+{
+  // erst Inventory des PL, spaeter Environment des PL durchsuchen. 2 foreach,
+  // um zu vermeiden, die zwei Arrays (unnoetig) zu erzeugen und zu addieren.
+  foreach(object ob : all_inventory(PL))
+  {
+    // Kein call_strict(), falls Objekte ohne die Funktionen rumliegen.
+    if(({int})ob->id(str) && !({int})ob->QueryProp(P_INVIS))
+      return ob;
+  }
+  foreach(object ob : all_inventory(environment(PL)))
+  {
+    if(({int})ob->id(str) && !({int})ob->QueryProp(P_INVIS))
+      return ob;
+  }
+  return 0;
+}
+
+
 #define CHECK_PRESENT     1
 #define CHECK_ID          2
 #define CHECK_PUTGETNONE  4
@@ -482,10 +503,8 @@ static int _process_command(string str, string *noparsestr,
        else tmpstr=noparsestr[q_start];
 
        //DBG(tmpstr);
-       if(check_present&CHECK_PRESENT &&			// PRESENT ?
-          ((tmpobj=present(tmpstr,this_player())) ||
-           (tmpobj=present(tmpstr,environment(this_player())))))
-        matchstr=tmpobj;
+       if(check_present&CHECK_PRESENT &&      // PRESENT ?
+        matchstr = _GetPresentObject(tmpstr));
        else if(check_present&CHECK_ID && id(tmpstr))	// ID ?
         matchstr=this_object();
        else if((check_present&CHECK_PUTGET) &&	// PUT_GET_??? ?
