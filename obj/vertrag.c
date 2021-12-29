@@ -3,51 +3,18 @@
 #pragma no_shadow
 #pragma no_inherit
 
-inherit "std/thing";
+inherit "/std/thing";
 
 #include <properties.h>
 #include <language.h>
 #include <wizlevels.h>
 
 private int gelesen;
-private string unterschrieben;
+private string unterschrieben = "";
 
 static string text();
 
-public void create()
-{
-   if ( !geteuid(this_object()) )
-      call_out( "remove", 0 );
-   
-   if ( !IS_WIZARD(geteuid(this_object())) )
-      call_out( "remove", 0 );
-   
-   if ( !clonep(this_object()) )
-      return;
-   
-   thing::create();
-   SetProp( P_SHORT, "Ein Vertrag" );
-   SetProp( P_LONG, "@@unterschrieben@@" );
-   SetProp( P_NAME, "Vertrag" );
-   Set(P_READ_MSG, #'text, F_QUERY_METHOD); 
-   SetProp( P_GENDER, MALE );
-   SetProp( P_ARTICLE, 1 );
-   AddId("vertrag");
-   SetProp(P_NEVERDROP, 1);
-   AddCmd(({"unterschreibe","unterschreib","unterzeichne"}),"unterschreibe");
-   AddCmd(({"zerreisse", "zerreiss"}),"zerreisse");
-   
-   gelesen = 0;
-   unterschrieben = "";
-}
-
-static string _query_nodrop()
-{
-   if (this_player() && IS_WIZARD(this_player())) return 0;
-   return "Nein Nein! Dies ist dein Vertrag!\n";
-}
-
-static string unterschrieben()
+private string long_qm()
 {
    string s;
    
@@ -64,6 +31,35 @@ static string unterschrieben()
    return s;
 }
 
+public void create()
+{
+   if ( !geteuid(this_object()) )
+      call_out( "remove", 0 );
+   
+   if ( !IS_WIZARD(geteuid(this_object())) )
+      call_out( "remove", 0 );
+   
+   if ( !clonep(this_object()) )
+      return;
+   
+   thing::create();
+   SetProp( P_SHORT, "Ein Vertrag" );
+   Set( P_LONG, #'long_qm, F_QUERY_METHOD );
+   SetProp( P_NAME, "Vertrag" );
+   Set(P_READ_MSG, #'text, F_QUERY_METHOD); 
+   SetProp( P_GENDER, MALE );
+   SetProp( P_ARTICLE, 1 );
+   AddId("vertrag");
+   SetProp(P_NEVERDROP, 1);
+   AddCmd(({"unterschreibe","unterschreib","unterzeichne"}),"unterschreibe");
+   AddCmd(({"zerreisse", "zerreiss"}),"zerreisse");
+}
+
+static string _query_nodrop()
+{
+   if (this_player() && IS_WIZARD(this_player())) return 0;
+   return "Nein Nein! Dies ist dein Vertrag!\n";
+}
 
 static string text()
 {
