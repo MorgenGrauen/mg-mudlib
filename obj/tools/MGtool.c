@@ -17,12 +17,6 @@ inherit "/std/thing/properties";
 #include <rtlimits.h>
 #include <properties.h>
 
-#if !defined(QUERYCACHED)
-#define QUERYCACHED 4096
-#endif
-#if !defined (SETCACHED)
-#define SETCACHED 4096
-#endif
 #include <moving.h>
 #include "/secure/wizlevels.h"
 #include "/secure/config.h"
@@ -409,10 +403,6 @@ static string propflags(string key, object ob)
   tmp&PROTECTED ?      flags+=({"PRO"}) : flags+=({"   "});
   tmp&SECURED ?        flags+=({"SEC"}) : flags+=({"   "});
   tmp&NOSETMETHOD ?    flags+=({"NSM"}) : flags+=({"   "});
-  tmp&SETMNOTFOUND ?   flags+=({"SMN"}) : flags+=({"   "});
-  tmp&QUERYMNOTFOUND ? flags+=({"QMN"}) : flags+=({"   "});
-  tmp&QUERYCACHED ?    flags+=({"QCA"}) : flags+=({"   "});
-  tmp&SETCACHED ?      flags+=({"SCA"}) : flags+=({"   "});
   return ""+implode(flags,"|");
 }
 
