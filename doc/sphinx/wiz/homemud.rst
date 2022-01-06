@@ -16,6 +16,9 @@ Abhaengigkeiten
     Entwicklerpackete (`*-dev`) mitinstallieren muss, weil sie die notwendigen
     Header-Dateien der Files enthalten.
 
+    Fuer die Kompilation (nicht fuer den Betrieb) ist auch ein aktuelles "bison" (>=2.7.x) erforderlich.
+
+
 Anleitung fuer ein Homemud, unter Linux
 ---------------------------------------
 
