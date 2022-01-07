@@ -22,12 +22,13 @@
 #define MSG_DONT_STORE   2048
 #define MSG_DONT_WRAP    4096
 #define MSG_DONT_IGNORE  8192
+#define MSG_ALL_SENSES   16384 // all relevant senses, not one of them
 // Flags < 1048576 (2^20) reserviert fuer Flags
 #define MSG_ALL_BS_FLAGS (BS_LEAVE_MY_LFS | BS_SINGLE_SPACE | BS_BLOCK\
                           | BS_NO_PARINDENT | BS_INDENT_ONCE\
                           |BS_PREPEND_INDENT)
 #define MSG_ALL_FLAGS (MSG_DONT_BUFFER | MSG_DONT_STORE | MSG_DONT_WRAP\
-                      | MSG_DONT_IGNORE | MSG_ALL_BS_FLAGS)
+                      | MSG_DONT_IGNORE | MSG_ALL_SENSES | MSG_ALL_BS_FLAGS)
 
 // Nachrichtentypen, Werte ab 2^20
 #define MT_UNKNOWN    0
