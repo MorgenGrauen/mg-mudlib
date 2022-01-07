@@ -135,22 +135,38 @@ static int _goto(string dest)
   dest = _unparsed_args();
   if(!sizeof(dest))
     return USAGE("goto [lebewesen|filename]\n");
-  // Zuerst nur Spieler suchen, wenn keine existieren auch andere Livings.
-  target = (find_player(dest) || find_living_nr(dest));
-  if(objectp(target) && environment(target))
+  int flags;
+  dest = parseargs(dest, &flags, GOTO_OPTS, 0)[0];
+  if((flags & GOTO_L) && (flags & GOTO_R))
   {
-    target = environment(target);
+    notify_fail(
+      "goto: -r und -l koennen nicht gleichzeitig verwendet werden.\n");
+    return 0;
   }
-  else
+  if(!(flags & GOTO_R))
+  {
+    // Zuerst nur Spieler suchen, wenn keine existieren auch andere Livings.
+    object lv = (find_player(dest) || find_living_nr(dest));
+    if(objectp(lv) && environment(lv))
+    {
+      target = environment(lv);
+    }
+    else
+    {
+      notify_fail(
+        "goto: Kein Lebewesen mit dem Namen " + dest + " gefunden.\n");
+    }
+  }
+  if(!(flags & GOTO_L) && !target)
   {
     // Kein passendes Living, jetzt Raeume suchen.
-    string target2;
-    target2 = target = normalize_path(dest, getuid(), 1);
-    if (!find_object(target))
+    string path = normalize_path(dest, getuid(), 1);
+    target = find_object(path);
+    if(!target)
     {
+      notify_fail(sprintf("goto: Datei %O nicht vorhanden.\n",path));
       // ggf. .c dranhaengen
-      if (target2[<2..<1]!=".c") target2+=".c";
-      notify_fail(sprintf("goto: Datei %O nicht vorhanden.\n",target));
+      if (path[<2..<1]!=".c") path+=".c";
       // Erst schauen, ob die Datei existiert, falls nicht pruefen, ob im
       // gleichen Verzeichnis ein VC vorhanden ist, der sie liefern koennte.
       // Die Ueberpruefung ob das File moeglicherweise Ladbar sein koennte
@@ -158,12 +174,12 @@ static int _goto(string dest)
       // Die Variable vc dient nur dazu, weniger Zeilenumbrueche in
       // der if-Abfrage zu haben und sie damit besser lesbar zu machen.
       string vc;
-      vc = implode(explode(target, "/")[0..<2], "/") + "/virtual_compiler.c";
-      if(file_size(target2) > FSIZE_NOFILE ||
+      vc = implode(explode(path, "/")[0..<2], "/") + "/virtual_compiler.c";
+      if(file_size(path) > FSIZE_NOFILE ||
         (file_size(vc) > FSIZE_NOFILE) &&
-        ({int})vc->QueryValidObject(target2))
+        ({int})vc->QueryValidObject(path))
       {
-        string err = catch(load_object(target));
+        string err = catch(target = load_object(path));
         if(stringp(err))
         {
            notify_fail(sprintf("goto: Fehler beim Teleport nach %O:\n%s\n",

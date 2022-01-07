@@ -134,6 +134,10 @@
 #define SNOOP_F         2            // Snoope snoopenden Magier, wenn der
                                      // Charakter schon gesnoopt wird
 
+#define GOTO_OPTS       "rl"
+#define GOTO_R          1            // Nur Raeume
+#define GOTO_L          2            // Nur Livings
+
 #define NO_CHECK        M_GO|M_SILENT|M_NO_SHOW|M_NO_ATTACK|M_NOCHECK
 
 #define INV_SAVE        "/room/void.c"

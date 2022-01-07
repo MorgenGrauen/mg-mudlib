@@ -3,7 +3,7 @@ goto
 ----
 
  MAGIERKOMMANDO:
-    goto <ziel>
+    goto [-r] | [ -l ] <ziel>
     +<magier>
 
  ARGUMENTE:
@@ -21,6 +21,9 @@ goto
     Ist <ziel> dagegen der Name eines (eingeloggten) Spielers oder eines NPCs,
     so wirst Du in den Raum teleportiert, in dem sich das entsprechende
     Lebewesen aufhaelt.
+
+    -l sorgt dafuer, dass du nur zu einem Living teleportierst, -r dafuer,
+    dass du nur in einen Raum teleportierst.
     
     Wenn mehere NPCs des Namens existieren, kann man mit 'goto name nr' den
     gewuenschten auswaehlen.
