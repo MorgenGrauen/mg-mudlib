@@ -1832,18 +1832,22 @@ private int check_senses(int msg_type)
   // unterdrueckt werden.
   if (!senses)
     return 0;
-
+  
+  int orig_senses = senses;
+  
   if ((senses & MT_LOOK) && CannotSee(1))
     senses &= ~MT_LOOK;  // Sinn loeschen
 
   if ((senses & MT_LISTEN) && QueryProp(P_DEAF))
     senses &= ~MT_LISTEN;
 
-  // wenn kein Sinn mehr ueber, wird die Nachricht nicht wahrgenommen.
-  if (!senses)
-    return MSG_SENSE_BLOCK;
+  // Wenn kein Sinn mehr ueber ist oder all_types gesetzt ist und nicht mehr
+  // alle Sinne vorhanden sind, wird die Nachricht nicht wahrgenommen.
+  if (orig_senses == senses // kein Sinn geloescht, haeufigster Fall
+      || (!(msg_type&MSG_ALL_SENSES) && senses) ) // min. ein Sinn uebrig
+    return 0;
 
-  return 0;
+  return MSG_SENSE_BLOCK;
 }
 
 public varargs int ReceiveMsg(string msg, int msg_type, string msg_action,
@@ -1874,8 +1878,8 @@ public varargs int ReceiveMsg(string msg, int msg_type, string msg_action,
   // aber bestimmte Dinge lassen sich einfach nicht ignorieren.
   if (!(flags & MSG_DONT_IGNORE))
   {
-    // Sinne pruefen. (nur typen uebergeben, keine Flags)
-    int res=check_senses(type);
+    // Sinne pruefen.
+    int res=check_senses(msg_type);
     if (res) return res;
 
     // Spieler-definiertes Ignoriere? (nur typen uebergeben, keine Flags)
