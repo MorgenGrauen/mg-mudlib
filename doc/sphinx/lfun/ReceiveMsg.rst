@@ -48,6 +48,8 @@ BESCHREIBUNG
        MT_LOOK nur an Nichtblinde
        MT_LISTEN nur an Nichttaube
        MT_DEBUG nur an Magier/Testspieler
+       Bei gesetztem MSG_ALL_SENSES muessen alle fuer die angegebenen Typen
+       relevanten Sinne des Empfaengers benutzbar sein, nicht nur einer.
     2) Pruefen auf Ignorieren von
        - Aktion ('msg_action')
          - mit 'msg_action' || query_verb()
@@ -226,6 +228,8 @@ KONSTANTEN FUER PARAMETER
       MSG_DONT_STORE  Nachricht darf nicht in die Comm-History
       MSG_DONT_WRAP   Nachricht nicht per break_string umbrechen
       MSG_DONT_IGNORE Nachricht kann nicht ignoriert werden
+      MSG_ALL_TYPES   alle relevanten Sinne fuer die angegebenen Nachrichten-
+                      typen muessen benutzbar sein (UND statt ODER).
 
       MSG_BS_LEAVE_LFS    wie BS_LEAVE_MY_LFS fuer break_string()
       MSG_BS_SINGLE_SPACE wie BS_SINGLE_SPACE fuer break_string()
