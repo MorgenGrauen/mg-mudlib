@@ -19,6 +19,7 @@ protected functions virtual inherit "/std/util/path";
 #include <wizlevels.h>
 #include <moving.h>
 #include <properties.h>
+#include <files.h>
 
 private mixed verfolger()
 {
@@ -127,36 +128,59 @@ static object find_living_nr(string str)
   return livings[nr-1];
 }
 
-static int _goto(string dest){
-  mixed target;
-  string target2,err;
+static int _goto(string dest)
+{
+  string|object target;
 
-  if (!sizeof(dest=_unparsed_args()))
+  dest = _unparsed_args();
+  if(!sizeof(dest))
     return USAGE("goto [lebewesen|filename]\n");
-  if (!((target=find_living_nr(dest)) && (target=environment(target))))
+  // Zuerst nur Spieler suchen, wenn keine existieren auch andere Livings.
+  target = (find_player(dest) || find_living_nr(dest));
+  if(objectp(target) && environment(target))
   {
-     target2=target=normalize_path(dest, getuid(), 1);
-     if (!find_object(target))
-     {
-       // ggf. .c dranhaengen
-       if (target2[<2..<1]!=".c") target2+=".c";
-       notify_fail(sprintf("goto: Datei %O nicht vorhanden.\n",target));
-       if (!(file_size(target2)>-1||
-           file_size(implode(explode(target,"/")[0..<2],"/")+
-               "/virtual_compiler.c")>-1)||(err=catch(load_object(target))))
-       {
-         if (err)
-              notify_fail(sprintf("goto: Fehler beim Teleport nach %O:\n%s\n",
-                      dest,implode(explode(err,"\n")," ")));
-         target=match_living(dest,1);
-         if (!(stringp(target)&&(target=find_living(target))&&
-               (target=environment(target))))
-           return 0;
-       }
-     }
+    target = environment(target);
   }
+  else
+  {
+    // Kein passendes Living, jetzt Raeume suchen.
+    string target2;
+    target2 = target = normalize_path(dest, getuid(), 1);
+    if (!find_object(target))
+    {
+      // ggf. .c dranhaengen
+      if (target2[<2..<1]!=".c") target2+=".c";
+      notify_fail(sprintf("goto: Datei %O nicht vorhanden.\n",target));
+      // Erst schauen, ob die Datei existiert, falls nicht pruefen, ob im
+      // gleichen Verzeichnis ein VC vorhanden ist, der sie liefern koennte.
+      // Die Ueberpruefung ob das File moeglicherweise Ladbar sein koennte
+      // vor load_object() dient einer spezifischeren Fehlermeldung.
+      // Die Variable vc dient nur dazu, weniger Zeilenumbrueche in
+      // der if-Abfrage zu haben und sie damit besser lesbar zu machen.
+      string vc;
+      vc = implode(explode(target, "/")[0..<2], "/") + "/virtual_compiler.c";
+      if(file_size(target2) > FSIZE_NOFILE ||
+        (file_size(vc) > FSIZE_NOFILE) &&
+        ({int})vc->QueryValidObject(target2))
+      {
+        string err = catch(load_object(target));
+        if(stringp(err))
+        {
+           notify_fail(sprintf("goto: Fehler beim Teleport nach %O:\n%s\n",
+                    dest,implode(explode(err,"\n")," ")));
+        }
+      }
+      else
+      {
+        // Kein Ziel gefunden.
+        return 0;
+      }
+    }
+  }
+  if(!target)
+    return 0;
   if (verfolger()) _verfolge("");
-  if (move(target,M_TPORT|M_NOCHECK)<0)
+  if (move(target,M_TPORT|M_NOCHECK) != MOVE_OK)
     printf("Bewegung fehlgeschlagen!\n");
   return 1;
 }
