@@ -1817,13 +1817,14 @@ private int check_ignores(string msg, int msg_type, string msg_action,
 
 // Wird die nachricht wahrgenommen? Die Pruefung erfolgt aufgrund von
 // msg_type. Zur wird MT_LOOK und MT_LISTEN beruecksichtigt (Pruefung auf
-// BLindheit/Taubheit).
+// BLindheit/Taubheit). In Zukunft koennten aber weitere Typen und weitere
+// Kriterien wichtig werden und weitere Argumente uebergeben werden. (Dies
+// bitte beachten, falls diese Funktion protected/public werden sollte.)
 // Wichtig: enthaelt msg_action weder MT_LOOK noch MT_LISTEN, wird die
 // Nachricht wahrgenommen, da davon ausgegangen wird, dass sie mit den beiden
 // Sinn gar nix zu tun hat.
 // Rueckgabe: 0 oder MSG_SENSE_BLOCK
-private int check_senses(string msg, int msg_type, string msg_action,
-                              string msg_prefix, object origin)
+private int check_senses(int msg_type)
 {
   int senses = msg_type & (MT_LOOK|MT_LISTEN);
   // Wenn von vorherein kein Sinn angesprochen, dann ist es eine nachricht,
@@ -1874,7 +1875,7 @@ public varargs int ReceiveMsg(string msg, int msg_type, string msg_action,
   if (!(flags & MSG_DONT_IGNORE))
   {
     // Sinne pruefen. (nur typen uebergeben, keine Flags)
-    int res=check_senses(msg, type, msg_action, msg_prefix, origin);
+    int res=check_senses(type);
     if (res) return res;
 
     // Spieler-definiertes Ignoriere? (nur typen uebergeben, keine Flags)
