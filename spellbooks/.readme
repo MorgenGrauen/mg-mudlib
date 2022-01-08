@@ -1,0 +1,27 @@
+Hier liegen die Spellbooks der Gilden.
+
+Jede Gilde hat ein Verzlseichnis <gilde>, welches in einem
+eigenen git-Repos liegt.
+
+Spellbook-Stubs
+===============
+
+   Die Spellbooks stehen als git-Repository bereit und koennen mit
+
+     ssh-agent bash -c
+       'ssh-add ~/.ssh/id_morgengrauen_rsa;
+        git clone ssh://<user>@mg.mud.de:29418/spellbooks/<gildenname>'
+     (<user> und 'id_morgengrauen_rsa' mit eurem User/Keyfile ersetzen)
+
+   bzw nach entsprechendem Setup eurer ~/.ssh/config (siehe MUD-Doku)
+
+     git clone ssh://mgg/spellbooks/<gilde>
+
+   ausgecheckt werden.
+
+   Im MG liegen hier im Toplevel kleine Stubs fuer die Spellbooks,
+   welche das richtige Files aus <gilde>/ erben.
+   
+   In Testmuds werden die Stubs bei Bedarf automatisch fuer jedes hier
+   gefundene Gildenverzeichnis erstellt.
+
