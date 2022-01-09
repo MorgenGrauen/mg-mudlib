@@ -27,7 +27,7 @@ BEISPIELE
 ::
 
 	Abfrage der zugelassenen Gilden:
-	  find_object("/obj/gildenmaster")->QueryProp(P_VALID_GUILDS)
+	  load_object("/secure/gildenmaster")->QueryProp(P_VALID_GUILDS)
 	Das ergibt zum Beispiel:
           ({"abenteurer","zauberer","klerus","kaempfer"})
 
@@ -35,8 +35,8 @@ SIEHE AUCH
 ----------
 ::
 
-	P_GUILD, /obj/gildenmaster.c
+	P_GUILD, /secure/gildenmaster.c
 
 
-Last modified: Wed Jan 14 19:17:06 1998 by Patryn
+Last modified: 2022-01-09, Arathorn
 

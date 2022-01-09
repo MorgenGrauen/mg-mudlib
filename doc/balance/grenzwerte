@@ -59,16 +59,15 @@
       | AT_HELMET    |   15   |             --             |
       | AT_QUIVER    |    0   |             --             |
       | AT_RING      |    2   |             --             |
-      | AT_SHIELD    |   40   |             28             |
+      | AT_SHIELD    |   40*  |             28             |
       | AT_TROUSERS  |   15   |             --             |
       | AT_MISC      |    0   |             --             |
       +--------------+--------+----------------------------+
+       * Eine Sonderregel gilt fuer Schilde: Sind diese zweihaendig,
+         darf die P_AC bis zu 80 betragen.
 
     Ruestungen mit DefendFunc o.ae. muessen generell genehmigt werden
     (siehe Waffen).
-
-    Eine Sonderregel gilt fuer Schilde: Sind diese zweihaendig, darf 
-    die P_AC bis zu 80 betragen.
 
     Ruestungen und Waffen vom Typ AT_MISC oder WT_MISC duerfen keiner-
     lei positive Veraenderungen im Spieler hervorrufen, keine Stats
@@ -81,4 +80,4 @@
      attributsveraenderungen, resistenzen, kampfobjekte
 
 ------------------------------------------------------------------------------
-LETZTE AeNDERUNG: 2021-01-01 Arathorn.
+LETZTE AeNDERUNG: 2022-01-09 Arathorn.
