@@ -374,10 +374,8 @@ public string LogReportedError(mapping err)
     issue->obj = objectp(err[F_OBJ]) ? object_name(err[F_OBJ]) : err[F_OBJ];
     issue->loc = err[F_LINE];
     // Normalisieren auf fuehrenden / und kein .c
-    if (err[F_PROG]!="unbekannt")
+    if (stringp(err[F_PROG]))
         issue->prog = load_name(err[F_PROG]);
-    else
-        issue->prog = "unbekannt";
     issue->titp = getuid(this_interactive() || this_player());
     issue->tienv = object_name(environment(this_interactive() || this_player()));
 
@@ -632,8 +630,8 @@ public int LogWarning(string msg,string prg,string curobj,int line, int in_catch
     //Hashkey bestimmen, Typ, Name der Blueprint des buggenden Objekts, Programm
     //Zeilennr., Warnungsmeldung
     issue->hashkey=hash(TLS_HASH_MD5,
-        sprintf("%d%s%s%d%s", T_RTWARN, issue->loadname, issue->prog, line,
-                           msg));
+        sprintf("%d%s%s%d%s", T_RTWARN, issue->loadname,
+                issue->prog||"", line, msg));
     //DEBUG(sprintf("LogWarning: Hashkey: %s",hashkey));
 
 
