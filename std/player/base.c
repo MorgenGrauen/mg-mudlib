@@ -1481,10 +1481,7 @@ static void confirm_error(string answer, object obj, string str,
   */
 protected void smart_log(string myname, string str, object obj)
 {
-  mapping err = ([ F_PROG: "unbekannt",
-           F_LINE: 0,
-           F_MSG: str,
-           F_OBJ: obj
+  mapping err = ([ F_MSG: str, F_OBJ: obj
          ]);
 
   string desc="etwas unbekanntes";
