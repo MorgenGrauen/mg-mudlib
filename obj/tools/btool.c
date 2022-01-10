@@ -45,9 +45,8 @@ protected void create()
           BS("Syntax: btop <n>"));
         return 0;
       }
-      this_interactive()->ReceiveMsg(
-        BARCHIV->GetLightAnnounce(n),
-        MT_NOTIFICATION|MSG_BS_LEAVE_LFS);
+      this_interactive()->More(
+        BS(BARCHIV->GetLightAnnounce(n)));
       return 1;
     });
   AddCmd("bsuch",
