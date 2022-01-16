@@ -144,8 +144,10 @@
 #define ERRORD "/secure/errord.c"
 #endif
 
-// Savefile-Version - we use the driver's default
-#define __LIB__SAVE_FORMAT_VERSION__ 2
+// Savefile-Version (normalerweise aktuellste Version, aber wir wollen
+// explizit umstellen, wenn der Driver eine neue bekommt, damit nicht
+// Savefiles sofort nicht mehr mit alten Drivern geladen werden koennen).
+#define __LIB__SAVE_FORMAT_VERSION__ 3
 
 #endif // _CONFIG_
 
