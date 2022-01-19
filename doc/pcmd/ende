@@ -21,8 +21,11 @@ ende
     verschaffen, funktioniert der `ende'-Befehl erst zwei Minuten nach der
     letzten Kampfhandlung.
 
+    Um Verwechslungen mit schlafe ein zu vermeiden, wird bei Spielern unter
+    Level 10 zuerst nachgefragt, ob sie wirklich ende benutzen wollten.
+
  SIEHE AUCH:
     speichern, schlafe (ein)
 
  LETZTE AeNDERUNG:
-    Tue, 02.09.1997, 15:05:00 von Wargon
+    19.01.2022, Bugfix

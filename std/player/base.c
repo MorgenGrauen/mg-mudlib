@@ -1533,8 +1533,10 @@ int quit()
 }
 
 /** Wrapper im quit() herum, verhindert 'ende', falls Spieler kaempft.
-  * \return 0 oder Rueckgabewert von quit()
-  * @see quit()
+  * Wenn der Spieler unter Level 10 ist, wird gefragt, ob er sich wirklich
+  * mit Ende ausloggen will, um Verwechslungen mit schlafe ein zu vermeiden.
+  * \return 0 bei Abbruch wegen Kampf, 1 bei Nachfrage per ask_quit(), sonst Rueckgabewert von quit()
+  * @see quit(), ask_quit()
   */
 static int new_quit() {
   notify_fail("Du bist in Gedanken noch bei Deinem letzten Kampf.\n"+
@@ -1542,6 +1544,27 @@ static int new_quit() {
               "damit Du so nicht in RL weitermachst...\n");
   if (time()-Query(P_LAST_COMBAT_TIME)<120 && !IS_LEARNING(ME))
     return 0;
+  // Absicherung fuer kleine Spielern gegen Verwechslung mit schlafe ein
+  if(QueryProp(P_LEVEL) < 10)
+  {
+    write(break_string(
+      "Moechtest Du wirklich \"ende\" benutzen?\n"
+      "Du verlierst Deine Ausruestung und beginnst wieder an Deinem"
+      "Rassenstartpunkt. \n"
+      "Wenn du Dich einfach nur ausloggen und spaeter weiter spielen "
+      "willst, dann benutze besser \"schlafe ein\".\n\n", 78, 0,
+      BS_LEAVE_MY_LFS));
+    input_to(
+      function void (string str) {
+          if(str != "ja" && str != "Ja")
+              write("Ok, \"ende\" wird nicht ausgefuehrt.\n");
+          else
+              quit();
+      },
+      INPUT_PROMPT,
+      "Mittels \"ende\" ausloggen? (ja/nein):");
+    return 1;
+  }
   return quit();
 }
 
