@@ -120,6 +120,25 @@ team info             Gibt Informationen ueber die Teammitglieder.
                       vor anderen Teammitgliedern eingeordnet werden.
                       Ansonsten wird nach AR geordnet.
 
+team autoinform       Hiermit kann ein automatischer Bericht ueber
+                      Aenderungen der LP oder KP von Teammitgliedern
+                      eingestellt werden. Nur der Teamleiter kann einstellen,
+                      was berichtet wird, alle anderen im Team koennen nur
+                      einstellen, dass sie auch informiert werden wollen.
+                      Normalerweise wird der Bericht gesammelt hoechstens
+                      einmal pro Sekunde gesendet. Fuer die Nutzung dieses
+                      Berichts ist die Quest 'Hilf den Gnarfen' noetig.
+                      Mit Leerzeichen getrennt koennen die folgenden Angaben
+                      gemacht werden:
+                      aus: autoinform abschalten
+                      ein: ueber fallende LP informiert werden
+                      +lp: ueber steigende und fallende LP informiert werden
+                      kp: ueber fallende KP informiert werden
+                      +kp: ueber steigende und fallende KP informiert werden
+                      sofort: bei Aenderungen sofort einzeln informieren,
+                              nicht nur einmal pro Sekunde. Kann den Scroll
+                              deutlich erhoehen!
+
 team farben           Damit laesst sich aendern, ab wann die eigenen
                       Lebenspunkte bzw. Konzentrationspunkte gelb oder
                       gar rot (bzw. fett) angezeigt werden.

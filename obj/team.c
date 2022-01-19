@@ -11,6 +11,8 @@
 #include <new_skills.h>
 #include <ansi.h>
 #include <wizlevels.h>
+#include <living/comm.h>
+
 #define ME this_object()
 #define PO previous_object()
 #define TP this_player()
@@ -43,6 +45,7 @@ private nosave int autoinf_flags;
 private nosave mapping autoinf_hp;
 private nosave mapping autoinf_sp;
 private nosave int autoinf_time;
+private nosave object *autoinf_subscribers = ({});
 private nosave string *hist;
 
 private nosave object debugger;
@@ -1261,15 +1264,52 @@ int ChangeAutoInfo(string arg) {
   string *words,txt;
   int i,fl;
 
+  // Eigentlich braeuchte man die nur fuer die SP-Benachrichtigungen, aber
+  // dann wird alle viel komplizierter, weil man dann bei Aenderungen und
+  // Teamleiterwechseln pruefen muss etc.
+  if (!(TP->QueryProp(P_CAN_FLAGS) & CAN_REPORT_SP)) {
+    TP->ReceiveMsg("Du musst zunaechst die Quest \"Hilf den "
+        "Gnarfen\" bestehen, um diese Funktion nutzen zu koennen.",
+        MT_NOTIFICATION|MSG_DONT_IGNORE);
+    return 1;
+  }
   if (TP!=leader)
-    return notify_fail("Nur der Teamleiter kann automatisch "+
-                       "informiert werden.\n"),0;
+  {
+    switch(arg)
+    {
+      case "an":
+      case "ein":
+        if (!(TP in autoinf_subscribers))
+            autoinf_subscribers += ({TP});
+        TP->ReceiveMsg("Du erhaelst eine Kopie des Autoinform-Berichtes "
+            "an den Teamleiter, falls bzw. sobald dieser einen solchen "
+            "konfiguriert hat.",MT_NOTIFICATION|MSG_DONT_IGNORE);
+        break;
+
+      case "aus":
+        autoinf_subscribers -= ({TP});
+        TP->ReceiveMsg("Du erhaelst keine Kopie des Autoinform-Berichtes "
+            "an den Teamleiter.",MT_NOTIFICATION|MSG_DONT_IGNORE);
+        break;
+
+      default:
+        notify_fail("Nur der Teamleiter kann den Inhalt des "
+                    "Autoinform-Berichts konfigurieren.\n");
+        return 0;
+    }
+    return 1;
+  }
+  //else TP == leader
   words=old_explode(arg?arg:""," ");fl=0;
-  for (i=sizeof(words)-1;i>=0;i--) {
+  for (i=sizeof(words)-1;i>=0;i--)
+  {
     switch(words[i]) {
     case "aus":
-      write("Du wirst nicht mehr automatisch informiert.\n");
+      TP->ReceiveMsg(
+        "Du und das Team werden nicht mehr automatisch informiert.",
+        MT_NOTIFICATION|MSG_DONT_IGNORE);
       autoinf_flags=0;
+      autoinf_subscribers -= ({TP});
       return 1;
     case "+kp":
       fl|=AUTOINF_SP_PLUS;
@@ -1286,14 +1326,16 @@ int ChangeAutoInfo(string arg) {
     case "sofort":
       fl|=AUTOINF_INSTANT;
       break;
-    default:
-      ;
     }
   }
-  if (!fl)
-    return notify_fail("WIE moechtest Du automatisch informiert werden?\n"),0;
+  if (!fl) {
+    notify_fail("WIE moechtest Du automatisch informiert werden?\n");
+    return 0;
+  }
   if (fl==AUTOINF_INSTANT) fl|=AUTOINF_HP_MINUS;
   autoinf_flags=fl;
+  if (!(TP in autoinf_subscribers))
+      autoinf_subscribers += ({TP});
   txt="Du wirst"+((fl&AUTOINF_INSTANT)?" sofort ":" ")+"informiert, wenn";
   if (fl&(AUTOINF_HP_PLUS|AUTOINF_HP_MINUS)) {
     txt+=" die Lebenspunkte eines Teammitglieds";
@@ -1304,7 +1346,7 @@ int ChangeAutoInfo(string arg) {
     txt+=" die Konzentrationspunkte";
     if (fl&(AUTOINF_SP_PLUS)) txt+=" sich aendern"; else txt+=" fallen";
   }
-  write(break_string(txt+".\n",78));
+  TP->ReceiveMsg(txt+".", MT_NOTIFICATION|MSG_DONT_IGNORE);
   return 1;
 }
 
@@ -1330,11 +1372,17 @@ private void DoNotifyHpChange() {
     if (str!="") str+=", ";
     str+=sprintf("%s: %d KP",ob->name(WER),autoinf_sp[ob]);
   }
-
-  if (str!="" && IsMember(leader))
-    tell_object(leader,break_string(capitalize(str)+"\n",78));
   autoinf_hp=([]);
   autoinf_sp=([]);
+  str = capitalize(str);
+  // Und an alle Subscriber zustellen.
+  foreach(object pl: autoinf_subscribers)
+  {
+    if (pl)
+      pl->ReceiveMsg(str, MT_NOTIFICATION|MSG_DONT_IGNORE);
+    else
+      autoinf_subscribers -= ({0}); // bereinigen
+  }
 }
 
 void NotifyHpChange() {
