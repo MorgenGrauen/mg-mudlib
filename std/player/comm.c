@@ -1284,7 +1284,7 @@ static int _whisper(string str)
       QueryProp(P_PRESAY) : "") + name()) || "");
 
   _send(ob, permutate(msg), MT_LISTEN|MSG_DONT_STORE,
-        MSG_SAY, myname + " fluestert Dir zu: ");
+        MA_SAY, myname + " fluestert Dir zu: ");
   send_room(environment(),
             myname + " fluestert " + ob->name(WEM, 1) + " etwas zu.",
             MT_LISTEN|MSG_DONT_STORE, MA_SAY, 0, ({this_object(),ob}));
