@@ -1,0 +1,31 @@
+Informationen fuer blinde Spieler
+=================================
+
+Nuetzliche Kommandos
+--------------------
+
+  - grafik
+    schaltet die Anzeige von ASCII-Grafiken ein oder aus
+  - senderwiederholung
+    schaltet das Anzeigen des Absenders am Anfang jeder Zeile bei laengeren
+    Nachrichten ein oder aus
+  - klingelton
+    konfiguriert einen Piepton bei eingehenden Nachrichten
+  - tmhist
+    schaltet die Speicherung der letzten Nachrichten ein oder aus und zeigt
+    diese an
+
+Allgemeines
+-----------
+
+  Informationen ueber die Bedienbarkeit einiger Mudclients mit Screenreader
+  gibt es auf unserer Webseite unter
+  http://mg.mud.de/hilfe/blind/clients.shtml
+
+  Wenn Probleme auftreten fragt einfach auf den Ebenen, die meisten Spieler
+  und magier sind sehr hilfsbereit und mittlerweile spielen hier auch so
+  viele Sehbehinderte, dass so gut wie immer einer oder mehrere davon online
+  sind. Und auch viele sehende Mitspieler kennen mittlerweile die haeufigsten
+  Probleme und koennen helfen.
+
+Letzte Aenderung: 21.01.2022, Bugfix
