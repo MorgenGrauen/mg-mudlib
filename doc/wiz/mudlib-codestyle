@@ -2,7 +2,7 @@ Wollt ihr Code in der allgemeinen, oeffentlichen Mudlib anschliessen, bitte
 beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
 
 * Einrueckungen per Leerzeichen, nicht Tabs
-* Einrueckung von 2 Leerzeichen pro Ebene
+* Einrueckung von 2 oder 4 Leerzeichen pro Ebene
 * praegnante und viele Kommentare
 * Kommentare sollen nicht (nur) beschreiben, was der Code tut, sondern
   vor allem, was er tun soll und warum.
@@ -13,15 +13,16 @@ beachtet die folgenden Hinweise zum Codestyle (nicht erschoepfend):
 * Nach ifs, Loops & Co: umfasst der davon kontrollierte Code mehr als eine
   physische Zeile Code, einen Block mit { } formulieren.
 * keine return fun(), 0;
-* (type) Casts sollten vermieden werden.
-  (type) konvertieren nur, wenn die Typen zur Compilezeit *bekannt* und
-  unterschiedlich sind. Eine Alternative sind to_type(), wenn noetig.
-* Bei Callother in Programmen mit #pragma strict_types muessen deklarative
-  Casts ({type})call_other(...) verwendet werden, um dem Compiler zu sagen,
-  Typ das Ergebnis haben sollte. Der Compiler fuegt an der Stelle im Code auch
-  eine Pruefung ein, welche zur Laufzeit ausgefuehrt wird.
+* Folgende #pragmas sind zwingend:
+  rtt_checks (impliziert save_types)
+  strong_types (strict_types in neuem Code empfohlen)
+  warn_deprecated, warn_empty_casts, warn_missing_return, warn_dead_code,
+  warn_function_inconsistent, warn_applied_functions, range_check,
+  warn_unused_variables, warn_unused_values
 * Pfade, die absolut sind, sollen auch mit / beginnen, z.B. 
   inherit "/std/thing", nicht inherit "std/thing"
+* Der Code darf *keine* Warnungen des Compilers oder Laufzeitwarnungen
+  ausloesen!
 
 Commits und Patches
 * Bei Patches bitte keine inhaltlichen Aenderungen mit jeder Menge
@@ -30,10 +31,11 @@ Commits und Patches
 * Jeder Commit muss eine aussagekraeftige Commitmeldung haben und
   folgendem Style entsprechen:
   * Die erste Zeile ist der Betreff
-    Dieser beschreibt in 50-60 Zeichen, worum es geht
+    Dieser beschreibt in max. 50-60 Zeichen, worum es geht
   * Eine leere Zeile
   * Beliebig viele Zeilen mit Beschreibung von max. 70 Zeichen Laenge
-    Dieser Text sollte erklaeren, Warum und Wieso der Aenderung.
+    Dieser Text sollte die Aenderung erklaeren und auch das "Warum und
+    Wieso" der Aenderung erlaeutern.
 * Commits sollten sich sauber auf die aktuelle Spitze vom master-Zweig
   anwenden lassen. (Bzw. zumindest nicht schon Wochen alt sein.)
 
@@ -54,5 +56,5 @@ Sonstiges:
   Abschnitt "Letzte (inhaltliche) Aenderung" aktualisieren.
 
 LETZTE INHALTLICHE AeNDERUNG:
-  18.2.2018, Zesstra
+  22.1.2022, Zesstra
 
