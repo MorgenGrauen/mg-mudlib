@@ -1,4 +1,3 @@
-autoattack P_AGGRESSIVE
 P_AUTOATTACK P_AGGRESSIVE
 hochzeit P_MARRIED
 SI_SKILLFUNC skill_info_liste
