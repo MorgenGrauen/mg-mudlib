@@ -393,7 +393,7 @@ void SendMail(string questname, mixed *quest, object player) {
 
   text += break_string("Diese Nachricht wurde automatisch verschickt, "
         "wenn Du mit dem 'r' Kommando darauf antwortest, geht die Antwort "
-        "direkt an Ark als zustaendigem Erzmagier fuer Abenteuer.\n",78);
+        "direkt an Zook als zustaendigem Erzmagier fuer Abenteuer.\n",78);
 
   if (quest[Q_SCNDWIZ]!="") {
     text += break_string(
@@ -402,8 +402,8 @@ void SendMail(string questname, mixed *quest, object player) {
         +capitalize(quest[Q_SCNDWIZ])+ " wenden.",78);
   }
 
-  mail[MSG_FROM] = "Ark";
-  mail[MSG_SENDER] = "Ark";
+  mail[MSG_FROM] = "Zook";
+  mail[MSG_SENDER] = "Zook";
   mail[MSG_RECIPIENT] = getuid(player);
   mail[MSG_CC]=0;
   mail[MSG_BCC]=0;
