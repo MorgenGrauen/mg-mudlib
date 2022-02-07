@@ -181,7 +181,6 @@ string SetOfficeName(string n) {
 
 static varargs void write_mail(mixed str, string std_subject, string text) {
   string str2;
-  int h;
 
   carbon=process_names(str);
   if (!sizeof(carbon)) {
@@ -639,7 +638,7 @@ static varargs void update(int directflag,int nocondflag) {
   // directflag: Mailer wird im Direktmodus betrieben
   // nocondflag: Unbedingt neuladen
 
-  int i,j,k,newletters;
+  int j,k,newletters;
   mixed *ignored;
 
   if (!GetFolders(nocondflag)) return; // es hat sich nix getan
@@ -736,12 +735,12 @@ Titel: "+msg[MSG_SUBJECT]+"\n\
 // Format MUDNAME+":"+time().
 private string msgIDtoTime(string msg_id) {
   int msg_time;
-  string unused;
+
   // Damit das auch dann funktioniert, wenn man die Mailfolder aus dem
   // Livemud im Testmud einliest, das ja ggf. einen anderen Namen hat,
   // verwenden wir einen generischen Suchstring. Das Mud sollte dann aber
   // keinen : im Namen haben.
-  if (sscanf(msg_id, "%s:%d", unused, msg_time) == 2)
+  if (sscanf(msg_id, "%~s:%d", msg_time) == 2)
     return strftime("%d.%m.%Y", msg_time);
   else
     return "unbekannt";
@@ -896,7 +895,7 @@ static int RemoveFolder(string x) {
 
 static varargs int DeleteMessage(int *nrs) {
   int ret,x;
-  mixed m;
+
   if ( sizeof(nrs) > 15 ) LagWarning();
 
   for (x=sizeof(nrs)-1;x>=0;x--) {
@@ -942,7 +941,7 @@ static int MoveMessage(mixed msg,mixed fol) {
 
 
 static varargs int Reply(int nr,int group) {
-  mixed to,dummy;
+  mixed to;
   if (!pointerp(folders)||!pointerp(folders[0])||
       sizeof(folders[0])<=akt_folder) {
     write("Seltsamer Fehler: Kein aktueller Ordner!\n");
@@ -955,7 +954,7 @@ static varargs int Reply(int nr,int group) {
   }
 
   if (sscanf("\n"+lower_case(folders[1][akt_folder][nr][MSG_BODY]),
-	     "%s\nreply-to:%s\n",dummy,to)==2) { // Reply-to gesetzt
+	     "%~s\nreply-to:%s\n",to)==2) { // Reply-to gesetzt
     while (to[0]==' ') to=to[1..]; // ueberschuessige Leerzeichen entfernen
     while (to[<1]==' ') to=to[0..<2];
   }
@@ -976,7 +975,6 @@ static varargs int Reply(int nr,int group) {
 
 
 static varargs int Forward(mixed to,mixed nr,int appendflag) {
-  mixed msg;
   if (!pointerp(folders)||!pointerp(folders[0])||
       sizeof(folders[0])<=akt_folder) {
     write("Seltsamer Fehler: Kein aktueller Ordner!\n");
@@ -1007,7 +1005,6 @@ static varargs int Forward(mixed to,mixed nr,int appendflag) {
 
 
 static int ForwardArea(mixed to,int * nrs) {
-  mixed msg;
 
   if (!sizeof(nrs)) return 0;
   if (sizeof(nrs)==1) return Forward(to,nrs[0]);
@@ -1053,7 +1050,7 @@ static int ReadMessage(int nr) {
 static string Message2string(int nr) {
   mixed letter;
   string message;
-  int x;
+
   if (!pointerp(folders)||!pointerp(folders[0])||
       sizeof(folders[0])<=akt_folder){
     write("Seltsamer Fehler: Kein aktueller Ordner!\n");
@@ -1096,8 +1093,7 @@ WARNUNG!!! Diese Aktion kann sehr lange benoetigen. Bitte sparsam verwenden,\n\
 
 
 static varargs int SaveMessage(int * nrs) {
-  int x,nr;
-  string rest;
+  int nr;
   mixed letter;
 
   if (!IS_WIZARD(this_player())) {
@@ -1149,9 +1145,8 @@ static void ListAliases() {
 
 
 static void mail_cmds(string str) {
-
   string *strargs;
-  int i,nrargs;
+  int nrargs;
 
   update();
 
@@ -1355,9 +1350,7 @@ static mixed RecurseProcessNames(mixed a);
 
 
 static mixed process_names(mixed s) {
-  mixed a1,a2,h;
-  int i;
-  string domain;
+  mixed a1,a2;
 
   if (stringp(s)) {
       a1=explode(regreplace(lower_case(s),","," ",1)," ")-({""});
@@ -1387,7 +1380,7 @@ static mixed process_names(mixed s) {
                                              });
 #endif
     else if ( (str[0]>='a' && str[0]<='z') ||
-              sscanf(str,"%s@%s",domain,domain) ||
+              sscanf(str,"%~s@%~s") ||
               str[0]=='\\')
       a1+=({str});
   }
