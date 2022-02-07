@@ -85,10 +85,9 @@ int Xcall(string str)
 
 int Xcallouts(string str)
 {
-  object obj;
-  mixed callouts, args;
-  string fun, tmp, file;
-  int delay, i, s;
+  mixed callouts;
+  string tmp, file;
+  int i, s;
   
   SECURE2(TRUE);
   TK("Xcallouts: str: "+(str?str:"(NULL)"));
@@ -139,7 +138,6 @@ int Xcallouts(string str)
 int Xcat(string str)
 {
   string *tmp,file;
-  int s;
 
   SECURE2(TRUE);
   TK("Xcat: str: "+str);
@@ -734,9 +732,8 @@ int Xgrep(string str)
 
 int Xhbeats(string str)
 {
-  object obj;
   object *hbeatinfo;
-  string tmp, file;
+  string tmp;
   int i, s;
   
   SECURE2(TRUE);
@@ -944,7 +941,6 @@ int Xinventory(string str)
 
 int Xlag(string str)
 {
-  int i;
   float *lag;
   object daemon;
   string lags;
@@ -964,7 +960,7 @@ int Xlag(string str)
 
 int Xlight(string str)
 {
-  int s, addlight;
+  int addlight;
 
   SECURE2(TRUE);
   USAGE1(str, "xli(ght) [light]");
@@ -982,9 +978,9 @@ int Xlight(string str)
 
 int Xload(string str)
 {
-  int i, f;
+  int i;
   object obj, *inv, vroom;
-  string file, errlog, error, *strs;
+  string file, errlog, error;
   
   SECURE2(TRUE);
   USAGE2(str, "xloa(d) <filename>");
@@ -1029,7 +1025,6 @@ int Xload(string str)
 int Xlook(string str)
 {
   object obj;
-  string st;
   string file;
   
   SECURE2(TRUE);
@@ -1263,7 +1258,6 @@ int Xmtp(string str)
 
 int Xproc(string str)
 {
-  int s;
   string *strs;
 
   SECURE2(TRUE);
@@ -1275,14 +1269,14 @@ int Xproc(string str)
     return TRUE;
   }
   
-  if(!str||str==""||!(s=sizeof(strs=old_explode(str, " "))))
+  if(!str||str==""||!(sizeof(strs=old_explode(str, " "))))
   {
     WLN("Load averages:");
     cat(TOOL_PATH+"/proc/loadavg");
     return TRUE;
   }
   
-  while(s=sizeof(strs))
+  while(sizeof(strs))
   {
     switch(strs[0])
     {
@@ -1401,7 +1395,7 @@ int Xprof(string str)
 
 int Xprops(string str)
 {
-  int i, s, flag;
+  int flag;
   object obj;
   string *tmp;
   
@@ -1458,7 +1452,6 @@ int Xscan(string str)
 
 int Xset(string str)
 {
-  int i;
   mixed obj;
   string name, tmp;
   
@@ -1671,7 +1664,6 @@ int Xtool(string str)
 	else
 	  obj->update_tool(AUTOLOAD_ARGS, cloner);
 	return TRUE;
-	break;
 	case "first=on":
 	MODE_ON(MODE_FIRST);
 	move(cloner);
@@ -1949,15 +1941,14 @@ int Xwc(string str)
 int cmdavg_compare(string a, string b)
 {
   int x,y;
-  string dum;
-  sscanf(a,"%s cmdavg: %d",dum,x);
-  sscanf(b,"%s cmdavg: %d",dum,y);
+  sscanf(a,"%~s cmdavg: %d",x);
+  sscanf(b,"%~s cmdavg: %d",y);
   return x==y?0:(x>y?1:-1);
 }
 
 int Xwho(string opt)
 {
-  string *strs,str,func;
+  string *strs,func;
   
   SECURE2(TRUE);
   TK("Xwho: opt: \""+opt+"\"");

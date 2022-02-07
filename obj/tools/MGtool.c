@@ -58,8 +58,6 @@ nosave string  pipe_of=NULL;
 nosave int     xtk=FALSE;
 nosave mapping variable=([]);
 nosave string *cmds;
-private nosave mapping line_buffer=([]);
-private nosave string line_buffer_name="";
 private nosave string more_searchexpr="";
 int    morelines=MORE_LINES;
 int    modi=(MODE_FIRST|MODE_PROTECT|MODE_SHORT);
@@ -144,7 +142,7 @@ static varargs object XFindObj(string str, int silent)
 {
   object obj, env;
   string *strs;
-  int i, s, cnt;
+  int i, s;
   
   if(!str)
     return NULL;
@@ -176,7 +174,6 @@ static varargs object XFindObj(string str, int silent)
 static varargs object FindObj(string str, object env, int silent)
 {
   object obj, *inv;
-  string tmp;
   int num, e;
   
   if (!stringp(str) || !sizeof(str) || !objectp(env))
@@ -242,7 +239,6 @@ static object VarToObj(string str)
     default:
     return variable[str[1..<1]];
   }
-  return(NULL); //never reached
 }
 
 static string VarToFile(string str)
@@ -602,7 +598,7 @@ static string XFindFile(string file)
 
 static void XMoreFile(string file, int flag)
 {
-  int s,size;
+  int size;
   
   SECURE1();
   if(!file)
@@ -622,8 +618,8 @@ static void XMoreFile(string file, int flag)
 
 static void MoreFile(string str)
 {
-  int i, off;
-  string f, l, r;
+  int i;
+  string l;
   
   SECURE1();
   
@@ -641,7 +637,6 @@ static void MoreFile(string str)
       if(morefile==TMP_FILE||morefile==PIPE_FILE)
 	rm(morefile);
       return NULL;
-      break;
       case 'P':
       case 'U':
       moreflag=FALSE;
@@ -898,7 +893,7 @@ static void XmtpScript(string dir, string file, string opt)
 static string PlayerIdle(object obj)
 {
   string str;
-  int i, tmp;
+  int i;
   
   if(!obj)
     return NULL;
@@ -916,7 +911,7 @@ static string PlayerIdle(object obj)
 static string PlayerAge(object obj)
 {
   string str;
-  int i, tmp;
+  int i;
   
   if(!obj)
     return NULL;
@@ -940,7 +935,7 @@ static string crname(object who)
 static string PlayerWho(object obj)
 {
   object tmp;
-  string str, stmp;
+  string str;
   str=ARIGHT(""+LEVEL(obj)  ,  3, " ");
   str+=ALEFT(" "+crname(obj)+" ", 12, ".");
   str+=PlayerAge(obj);
@@ -1012,7 +1007,7 @@ static string PlayerStats(object obj, int flag)
 
 static string PlayerSnoop(object obj, int flag)
 {
-  string tmp, pre;
+  string pre;
   object victim;
   
   pre=(flag) ? ALEFT(crname(obj)+" ", 12, ".")+" " : "";
@@ -1219,8 +1214,6 @@ void update_tool(mixed *args, object obj)
 
 void create()
 {
-  object obj;
-  
   if(member(object_name(),'#')<0)
     return;
   if(!cloner&&!((cloner=TP)||(cloner=ENV(ME)))&&!interactive(cloner))
@@ -1258,10 +1251,8 @@ int Xtk(string str)
 
 void init()
 {
-  object first, prev;
-  
   if(member(object_name(),'#')<0) return;
-  first=first_inventory(ENV(ME));
+  object first=first_inventory(ENV(ME));
   if(MODE(MODE_PROTECT)&&is_player(first)&&!IS_ARCH(first))
   {
     WDLN("WARNING: "+crname(first)+" tried to move into your inventory");
@@ -1487,12 +1478,10 @@ varargs int ParseLine(string str)
     case 0:
     ret=CallFunc(verb,strip_string(UnquoteLine(arg)));
     SafeReturn(ret);
-    break;
     
     case 1:
     WDLN("Missing rhs of command pipe");
     SafeReturn(TRUE);
-    break;
     
     default:
     pipe_out=TRUE;
@@ -1648,7 +1637,6 @@ void add_insert_hook()
 
 static void VarCheck(int show)
 {
-  int i, s;
   foreach(string k, mixed v : variable)
   {
     if (v) continue;
@@ -1670,7 +1658,7 @@ int write_newinvobj(object obj)
 
 int CommandScan(string arg)
 {
-  string verb, cmd;
+  string verb;
   object rtp;
   rtp=RTP;
 

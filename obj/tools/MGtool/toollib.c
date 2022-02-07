@@ -36,7 +36,6 @@ string cap_string(string str)
 string short_path(string file)
 {
   int s;
-  string tmp;
   
   if(!file)
     return 0;
