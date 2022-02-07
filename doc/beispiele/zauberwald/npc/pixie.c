@@ -143,7 +143,7 @@ void Attack(object enemy)
    if (enemy && present(enemy, environment())) ::Attack(enemy);
 }
 
-void NotifyPlayerDeath(object who, object killer, object lost_exp)
+void NotifyPlayerDeath(object who, object killer, int lost_exp)
 {
   if (!who || killer!=ME) return; // uninteressant
   log_file("padreic/kill", ctime(time())+" "+capitalize(getuid(who))+" getoetet von /zauberwald/pixie\n");

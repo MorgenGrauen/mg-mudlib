@@ -117,7 +117,7 @@ varargs int move(mixed dest, int meth, string dir, string out, string in)
 int PreventFollow(object dest)
 {  return moving::mnpc_PreventFollow(dest);  }
 
-void NotifyPlayerDeath(object who, object killer, object lost_exp)
+void NotifyPlayerDeath(object who, object killer, int lost_exp)
 {
   if (!who || killer!=ME) return; // uninteressant
   log_file("padreic/kill", ctime(time())+" "+capitalize(getuid(who))+" getoetet von /zauberwald/laufeiche\n");

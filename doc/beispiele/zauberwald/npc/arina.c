@@ -88,7 +88,7 @@ int Defend(int dam, mixed dts, mixed spell, object enemy)
    return (int)::Defend(dam, dts, spell, enemy);
 }
 
-void NotifyPlayerDeath(object who, object killer, object lost_exp)
+void NotifyPlayerDeath(object who, object killer, int lost_exp)
 {
   if (!who || killer!=ME) return; // uninteressant
   log_file("padreic/kill", ctime(time())+" "+capitalize(getuid(who))+" getoetet von /zauberwald/arina\n");
