@@ -24,7 +24,7 @@
                                       "EDBG: "+x+"\n")
 
 // fuer FTP.
-private mapping monitored;
+private mapping monitored = ([]);
 
 
 #define D_LOGTIME    0  // Logendezeit, <int>
@@ -160,7 +160,7 @@ private void AddTemporaryPlayer(string uid) {
       
       mixed erstie;
       if (ob)
-        erstie = ({string})ob->QueryProp(P_SECOND);
+        erstie = ({int|string})ob->QueryProp(P_SECOND);
 
       ldata += ([uid: time() + LOGTIME + random(LOGTIME/2); 
 	              0;
