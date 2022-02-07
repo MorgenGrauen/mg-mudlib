@@ -16,13 +16,13 @@ ARGUMENTE:
         Dein aktueller Raum kann mit "hier" oder "raum" angegeben werden.
 
 BESCHREIBUNG:
-    Es soll tatsaechlich immer noch passieren, das der ein oder andere
-    gewissenhafte Forscher, einen Raum oder ein Objekt, etc untersucht
-    und dabei so gruendlich vorgeht, das ihm doch wirklich ein Detail
+    Es soll tatsaechlich immer noch passieren, dass der ein oder andere
+    gewissenhafte Forscher einen Raum oder ein Objekt etc. untersucht
+    und dabei so gruendlich vorgeht, dass ihm doch wirklich ein Detail
     ins Auge springt, welches NICHT beschrieben ist.
 
-    Die Zeiten, das Magier mit so einer offenkundigen Vergesslichkeit 
-    und Nachlaessigkeit ungeschoren davonkommen, sind aber entgueltig 
+    Die Zeiten, dass Magier mit so einer offenkundigen Vergesslichkeit 
+    und Nachlaessigkeit ungeschoren davonkommen, sind aber endgueltig 
     vorbei! Denn DIR ist ein Instrument in die Hand gelegt, mit dem Du
     diese Magier 'erinnern' kannst.
 
@@ -31,10 +31,10 @@ BESCHREIBUNG:
 
     Bei <text> sollte es sich um einen kurzen, knappen Hinweis handeln,
     der es dem Magier ermoeglicht, ueber die Notwendigkeit, das fehlende
-    Detail zu ergaenzen schnell entscheiden zu koennen.
+    Detail zu ergaenzen, schnell entscheiden zu koennen.
 
-    Wenn Du ein Detail an bestimmten Objekt oder NPC vermisst, kannst Du
-    dieses/diesen hinter einem Doppelpunkt angeben, damit der fuer das
+    Wenn Du ein Detail an einem bestimmten Objekt oder NPC vermisst, kannst
+    Du dieses/diesen hinter einem Doppelpunkt angeben, damit der fuer das
     Objekt verantwortliche Magier die Meldung bekommt.
     Wenn das Objekt nicht zu finden ist, wird die ganze Eingabe als
     Meldung aufgefasst.
@@ -42,7 +42,7 @@ BESCHREIBUNG:
 BEMERKUNG:
     Der Befehl 'detail' bezieht sich bei Nichtangabe eines Bezugsobjektes
     auf das letzte betrachtete Objekt. Hast Du also ein Objekt untersucht,
-    dann wird die Meldung fuer diese Objekt abgegeben. Hast Du aber den
+    dann wird die Meldung fuer dieses Objekt abgegeben. Hast Du aber den
     Raum untersucht oder 'schau' eingegeben, wird die Meldung fuer Deinen
     momentanen Raum abgesetzt.
 
