@@ -143,7 +143,7 @@ string ArticleList(string group)
                     list[i][N_AUTHOR]+":",
                     dtime(list[i][N_DATE])[5..11],
                     ttmp > 0 ? "+"+ttmp : " - ",
-                    make_link((string)list[i][N_TITLE]
+                    make_link(list[i][N_TITLE]
             +(ttmp > 0 ?
         " ("+dtime(to_int(t[tid, 3]))[5..11]
         +dtime(to_int(t[tid, 3]))[17..]+")" : ""),
