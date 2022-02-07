@@ -22,7 +22,7 @@ void init()
 // Umgebung eines Objektes kommt oder umgekehrt.
 {
    // gibt wieder eine Meldung an den Spieler aus...
-   tell_object(this_player(), ("Hello again :).\n");
+   tell_object(this_player(), "Hello again :).\n");
 }
 
 void reset()
