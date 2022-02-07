@@ -1302,13 +1302,16 @@ static void mail_cmds(string str) {
     break;
   case "spei":
   case "s":
-    if ((nrargs==2 && !IS_NUMBER(strargs[1]))) {
-      write("Syntax: s [nr|nr-nr [nr|nr-nr ...]]\n");
+    // Fallthrough fuer Nichtmagier auf "nicht verstanden"
+    if (IS_WIZARD(this_player())) {
+      if ((nrargs==2 && !IS_NUMBER(strargs[1]))) {
+        write("Syntax: s [nr|nr-nr [nr|nr-nr ...]]\n");
+        break;
+      }
+      if (nrargs==1) (SaveMessage(({akt_nr-1})));
+      else (SaveMessage(GetNumbers(strargs[1..])));
       break;
     }
-    if (nrargs==1) (SaveMessage(({akt_nr-1})));
-    else (SaveMessage(GetNumbers(strargs[1..])));
-    break;
   default:
     write("Kommando nicht verstanden. Eine Hilfsseite bekommst Du mit 'h'.\n");
     break;
