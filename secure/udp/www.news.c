@@ -101,6 +101,7 @@ private int thread(mixed article, int i, mapping t)
       t[info[TID], 3] = ""+article[N_DATE];
     return 1;
   }
+  return 0;
 }
 
 private int expired(mixed *list, int i)
