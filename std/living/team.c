@@ -368,6 +368,8 @@ int DeAssocMember(object npc) {
     return 0;
   obs-=({npc,0});
   SetProp(P_TEAM_ASSOC_MEMBERS,obs);
+  if(npc->QueryProp(P_TEAM_ASSOC_MEMBERS) == ME)
+    npc->SetProp(P_TEAM_ASSOC_MEMBERS,0);
   if (objectp(team=QueryProp(P_TEAM)))
     team->RemoveAssocMember(ME,npc);
   return 1;
