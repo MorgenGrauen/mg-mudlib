@@ -171,7 +171,7 @@ protected void create()
   SetProp(P_ALIGN, 0);
   SetProp(P_GENDER, NEUTER);
   Set(P_GENDER, SAVE, F_MODE_AS);
-  SetProp(P_TTY, "vt100");
+  SetProp(P_TTY, "ansi");
   Set(P_TTY, SAVE, F_MODE_AS);
   SetProp(P_WEIGHT, 75000);
   SetProp(P_MAX_HP,50);
@@ -2726,8 +2726,8 @@ private void InitPlayer3()
     if ( !QueryProp(P_TTY) || QueryProp(P_TTY) == "none" )
     {
         write( "Waehle einen Terminaltyp (kann spaeter mit <stty> geaendert "
-               "werden)\n");
-        input_to( "gettty", INPUT_PROMPT, "vt100, ansi, dumb (Standard: dumb): " );
+               "werden).\n");
+        input_to( "gettty", INPUT_PROMPT, "vt100, ansi, dumb (Standard: ansi): " );
         return;
     }
     InitPlayer4();

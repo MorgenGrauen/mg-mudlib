@@ -12,27 +12,32 @@ stty
         Terminaltyp: `dumb', `vt100' oder `ansi'
 
  BESCHREIBUNG:
-    Mit diesem Kommando kannst Du einstellen, an was fuer einem Terminal Du
-    sitzt. Folgende Typen werden momentan unterstuetzt:
+    Mit diesem Kommando kannst Du einstellen, ob Dein Client bestimmte
+    Faehigkeiten zur Darstellung von Farben und Hervorhebungen besitzt.
 
-     `ansi'    das Terminal versteht Farbcodes und Hervorhebungen wie
+    Folgende sog. Terminaltypen werden momentan unterstuetzt:
+
+     'ansi'    der Client versteht Farbcodes und Hervorhebungen wie
                Fettschrift
-     `vt100'   das Terminal ist einfarbig, kennt aber Fettschrift u.ae.
-     `dumb'    das Terminal versteht keine Hervorhebungen
+     'vt100'   der Client ist einfarbig, kennt aber Fettschrift u.ae.
+     'dumb'    der Client versteht keine Hervorhebungen
 
-    Der Terminaltyp wird u.a. bei Kommandos wie "wer" benutzt um bestimmte
+    Diese Einstellung wird u.a. bei Kommandos wie "wer" benutzt um bestimmte
     Woerter oder Phrasen hervorzuheben.
+    Neu angelegte Spieler verwenden 'ansi'. Sollte dies Probleme bereiten,
+    koennen Spieler hiermit andere Terminaltypen einstellen.
 
     Nach dem Einstellen des Terminaltyp sollte bei `vt100' und `ansi' eine
     Ausgabe erfolgen, welche die moeglichen Textattribute oder Farben
     darstellt. Bei ANSI wird das Ganze von einem lesbaren Text gefolgt. Sollte
-    also der folgende Satz
+    dabei der folgende Satz
 
       "Sollte dieser Text hier nicht richtig lesbar sein, benutze
       das Kommando stty reset!"
 
-    nicht erscheinen oder nur schwer lesbar sein, sollte man mit stty reset
-    die Farben wiederherstellen oder ein anderes Terminal einstellen.
+    nicht erscheinen oder nur schwer lesbar sein, sollte man zunaechst mit
+    stty reset die Standarddarstellung wiederherstellen und danach einen
+    anderen Terminaltyp einstellen.
 
  ACHTUNG:
     Manche Terminals sind u.U. nicht ganz ANSI kompatibel, was dazu fuehrt,
@@ -41,4 +46,5 @@ stty
     schwarzen Vordergrund einstellt und anschliessend einen Resetcode sendet.
 
  LETZTE AeNDERUNG:
-    Thu, 24.07.1997, 09:00:00 von Wargon
+    09.02.2022, Zesstra
+
