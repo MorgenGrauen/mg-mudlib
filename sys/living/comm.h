@@ -73,6 +73,7 @@
 #define MA_EMOTE      "emote"
 #define MA_SHOUT      "rufe"
 #define MA_SHOUT_SEFUN "shout"
+#define MA_TEAMRUF    "teamruf"
 #define MA_TELL       "teilemit"
 
 // Rueckgabewerte von ReceiveMsg()

@@ -127,21 +127,15 @@ int CmpFirstArrayElement(mixed *a, mixed *b) {
   return(a[0]<b[0]);
 }
 
-varargs private void gtell(string str, string who, int tohist) {
-  int i;
-  object *tmembers,rochus;
-  string prefix,msg;
+varargs private void gtell(string str, string who, int tohist)
+{
+  string prefix = sprintf("[%s:%s] ", name(), stringp(who) ? who : "");
+  foreach(object ob: Members())
+    ob->ReceiveMsg(str, MT_COMM|MT_FAR|MSG_DONT_STORE|MSG_DONT_BUFFER,
+          MA_TEAMRUF, prefix, this_player());
 
-  tmembers=Members();
-  prefix=sprintf("[%s:%s] ",name(),stringp(who)?who:"");
-  msg=break_string(str,78,prefix);
-  for (i=sizeof(tmembers)-1;i>=0;i--)
-    tell_object(tmembers[i],msg);
-  if (objectp(rochus=find_player("rochus"))
-      && rochus->QueryProp("debug_team"))
-    tell_object(rochus,msg);
   if (tohist)
-    hist=(hist+({break_string(str+" <"+ctime()[11..15]+">",78,prefix)}))[-100..];
+    hist=(hist+({break_string(str + strftime(" <%H:%M>"),78,prefix)}))[-100..];
 }
 
 int IsMember(object ob) {
