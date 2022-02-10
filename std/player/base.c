@@ -2741,7 +2741,7 @@ private void InitPlayer3()
 static void gettty( string ttystr )
 {
     if ( !ttystr || ttystr == "" )
-        ttystr = "dumb";
+        ttystr = "ansi";
 
     ttystr = lower_case(ttystr);
 
