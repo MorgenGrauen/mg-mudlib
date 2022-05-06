@@ -410,6 +410,17 @@ varargs int Leave(object who)
            name(WEN,1),"verlaesst","kommt herein");
 }
 
+// Details nur, wenn der Transporter angelegt hat bzw. fuer Livings an Bord.
+// Hintergrund: Transporter sind durch P_SHORT 0 zwar unsichtbar, es kann
+// aber mit ihnen interaggiert werden, dadurch koennen Spieler, die im Hafen
+// einen angelegten Transporter betrachten und ihn dadurch als Referenzobjekt
+// haben Details an ihm betrachten.
+public varargs string GetDetail(string key, string race, int sense)
+{
+  if(!roomCode && environment(PL) != ME) return 0;
+  return ::GetDetail(key, race, sense);
+}
+
 /*
  ****************** Internal Functions ******************
  */
