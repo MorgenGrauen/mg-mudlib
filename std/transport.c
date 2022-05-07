@@ -66,15 +66,27 @@ void changeHp();
  */
 
 string _query_short()
-{ 
-  if (roomCode) return Query(P_SHORT); 
-  return 0; 
+{
+  if (roomCode) return Query(P_SHORT, F_VALUE);
+  return 0;
+}
+
+// Waehrend der Reise echt unsichtbar und nicht-interagierbar machen, ausser
+// fuer PL innerhalb des Transporters.
+// Ansonsten koennten z.B. Spieler, die im Hafen einen angelegten Transporter
+// betrachten, ihn dadurch als Referenzobjekt haben und Details am
+// unsichtbaren, reisenden Transporter betrachten.
+visible int _query_invis()
+{
+  if(!roomCode && (!PL || environment(PL) != ME))
+      return 1;
+  return Query(P_INVIS, F_VALUE);
 }
 
 mixed _query_transparent()
-{ 
+{
   if (roomCode) return Query(P_TRANSPARENT);
-  return 0; 
+  return 0;
 }
 
 static mixed *_set_route(mixed *r) { return route = r; }
@@ -408,17 +420,6 @@ varargs int Leave(object who)
                                              process_string(lmsg[1]));
   return who->move(environment(),M_GO,
            name(WEN,1),"verlaesst","kommt herein");
-}
-
-// Details nur, wenn der Transporter angelegt hat bzw. fuer Livings an Bord.
-// Hintergrund: Transporter sind durch P_SHORT 0 zwar unsichtbar, es kann
-// aber mit ihnen interaggiert werden, dadurch koennen Spieler, die im Hafen
-// einen angelegten Transporter betrachten und ihn dadurch als Referenzobjekt
-// haben Details an ihm betrachten.
-public varargs string GetDetail(string key, string race, int sense)
-{
-  if(!roomCode && environment(PL) != ME) return 0;
-  return ::GetDetail(key, race, sense);
 }
 
 /*
