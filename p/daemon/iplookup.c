@@ -197,6 +197,14 @@ int remove(int silent) {
 
 // DEBUGGING CODE
 
+/* wenn der dienst lange nicht lief, sind viele werte nicht zu 
+ * gebrauchen, manueller aufruf loescht alle werte
+ */
+public void cleanup() {
+  ipmap = m_allocate( 0, 4 );
+	LOG( "hard erase ip cache");
+}
+
 #if 0
 public void dump( string key, mixed* data ) {
 	printf( "%s: %s (%s) s=%d bis %d\n", key, data[0], data[1],
