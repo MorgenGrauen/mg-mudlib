@@ -143,7 +143,7 @@ private string _ls_output_short(mixed filedata,
                tmp=sprintf(lstemplates.templates[OBJ],tmp); break;
              }
   }
-  if (!maxcount) return tmp+"\n";
+  if (!maxcount) return terminal_colour(tmp+"\n",lstemplates.colormap);
   return terminal_colour(sprintf("%-*s%s",(maxlen+sizeof(tmp)),tmp,
                  ((counter++)==maxcount?(counter=0,"\n"):"  ")),
                  lstemplates.colormap);

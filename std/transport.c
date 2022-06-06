@@ -66,15 +66,27 @@ void changeHp();
  */
 
 string _query_short()
-{ 
-  if (roomCode) return Query(P_SHORT); 
-  return 0; 
+{
+  if (roomCode) return Query(P_SHORT, F_VALUE);
+  return 0;
+}
+
+// Waehrend der Reise echt unsichtbar und nicht-interagierbar machen, ausser
+// fuer PL innerhalb des Transporters.
+// Ansonsten koennten z.B. Spieler, die im Hafen einen angelegten Transporter
+// betrachten, ihn dadurch als Referenzobjekt haben und Details am
+// unsichtbaren, reisenden Transporter betrachten.
+visible int _query_invis()
+{
+  if(!roomCode && (!PL || environment(PL) != ME))
+      return 1;
+  return Query(P_INVIS, F_VALUE);
 }
 
 mixed _query_transparent()
-{ 
+{
   if (roomCode) return Query(P_TRANSPARENT);
-  return 0; 
+  return 0;
 }
 
 static mixed *_set_route(mixed *r) { return route = r; }
