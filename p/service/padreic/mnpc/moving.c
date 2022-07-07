@@ -21,8 +21,10 @@ struct exit_s {
     int special;            // == 1 fuer special exits
 };
 
-// Letzter Spielerkontakt. -1, wenn der MNPC inaktiv zuhause rumsteht
-nosave int meet_last_player;
+// Letzter Spielerkontakt. Beim Laden auf Ladezeit faken.
+//  0, wenn der MNPC inaktiv rumsteht
+// -1, wenn der MNPC inaktiv zuhause rumsteht
+nosave int meet_last_player = time();
 
 static void mnpc_create()
 {
@@ -36,7 +38,6 @@ static void mnpc_create()
   SetProp(MNPC_WALK_TIME, MNPC_DFLT_WALK);
   SetProp(MNPC_FLAGS, 0);
   SetProp(P_ENABLE_IN_ATTACK_OUT, 1);
-  meet_last_player=time();
 }
 
 protected void RegisterWalk()
@@ -91,6 +92,10 @@ protected void Stop(int movehome)
   {
     move(QueryProp(MNPC_HOME), M_TPORT|M_NOCHECK);
     meet_last_player=-1;
+  }
+  else
+  {
+    meet_last_player = 0;
   }
 }
 
@@ -147,8 +152,8 @@ static void mnpc_InsertEnemy(object enemy)
 static void mnpc_reset()
 {
   int flags = QueryProp(MNPC_FLAGS);
-  // meet_last_player < 0 zeigt an, dass der MNPC schon zuhause ist.
-  if (meet_last_player < 0
+  // meet_last_player == -1 zeigt an, dass der MNPC schon zuhause ist.
+  if (meet_last_player == -1
       || !(flags & MNPC_WALK)
       || (flags & MNPC_NO_MOVE_HOME))
     return;
