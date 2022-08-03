@@ -183,12 +183,11 @@ string _query_racedescr()
         "Felinen betreiben sogar einen regelrechten Koerperkult, "+
         "insbesondere wenn es darum geht, das Fell oder die Krallen zu "+
         "faerben. Edelsteine kommen da als Accessoires gerade recht.\n"+
-        "Auch im Kampf gegen einen Felinen sollte man sehr vorsichtig "+
-        "sein, da Felinen ihre geringe Ausdauer durch eine hohe "+
-        "Geschwindigkeit sowie Geschick und Intelligenz wettmachen. "+
-        "Auch die Spitzen Krallen sind da nicht zu verachten und so "+
-        "mancher Gegner musste schon als Ersatz fuer einen Kratzbaum "+
-        "herhalten.",78,0,1);
+        "Im Kampf gegen einen Felinen sollte man sehr vorsichtig "+
+        "sein, da Felinen ueber eine hohe Geschwindigkeit sowie Geschick "+
+        "und Intelligenz verfuegen. Auch die spitzen Krallen sind "+
+        "nicht zu verachten und so mancher Gegner musste schon als Ersatz "+
+        "fuer einen Kratzbaum herhalten.",78,0,1);
 }
 
 // Geschlechtsabhaengiges Rassenbezeichnungs-Array
