@@ -216,7 +216,7 @@ private void GMCP_register_module(string modname)
   funcall(mod->sendcl, 0);
 }
 
-// Handler fuer das Core Modul von GMCP
+// Recv-Handler fuer das Core Modul von GMCP
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_Core_v1_recv(string cmd, mixed args)
 {
@@ -292,7 +292,7 @@ protected void GMCPmod_Core_v1_recv(string cmd, mixed args)
   }
 }
 
-// Handler fuer das Core Modul von GMCP
+// Send-Handler fuer das Core Modul von GMCP
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_Core_v1_send(mapping data)
 {
@@ -335,8 +335,8 @@ protected void GMCP_offer_clientgui(string client)
 }
 
 
-// Handler fuer das MG.Char Modul
-// Gerufen bei Empfang von Kommandos vom Client.
+// Send-Handler fuer das MG.Char Modul
+// Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_MG_char_v1_send(mapping data)
 {
   mapping squeue = m_allocate(5,0);
@@ -460,7 +460,7 @@ protected void GMCPmod_MG_char_v1_send(mapping data)
   }
 }
 
-// Handler fuer das MG.Char Modul
+// Recv-Handler fuer das MG.Char Modul
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_MG_char_v1_recv(string cmd, mixed args)
 {
@@ -469,13 +469,13 @@ protected void GMCPmod_MG_char_v1_recv(string cmd, mixed args)
 }
 
 /*
-// Handler fuer das MG.Room Modul von GMCP
+// Send-Handler fuer das MG.Room Modul von GMCP
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_MG_Room_v1_send(mapping data)
 {
 }
 
-// Handler fuer das Room Modul von GMCP
+// Recv-Handler fuer das Room Modul von GMCP
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_MG_Room_v1_recv(string cmd, mixed args)
 {
@@ -484,7 +484,7 @@ protected void GMCPmod_MG_Room_v1_recv(string cmd, mixed args)
 }
 */
 
-// Recv Handler fuer das comm.channel Modul von GMCP
+// Recv-Handler fuer das comm.channel Modul von GMCP
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_comm_channel_v1_recv(string cmd, mixed args)
 {
@@ -492,17 +492,17 @@ protected void GMCPmod_comm_channel_v1_recv(string cmd, mixed args)
       "Client-Kommando ignoriert: "+cmd,20);
 }
 
-// Send Handler fuer das comm.channel Modul von GMCP
+// Send-Handler fuer das comm.channel Modul von GMCP
 protected void GMCPmod_comm_channel_v1_send(mapping data)
 {
   // Ganz simpel: einfach raussenden...
   // Core uebergibt beim Einschalten 0 als data. Dieses modul muss aber beim
-  // Eisnchalten nix machen. Also nur ignorieren.
+  // Einschalten nix machen. Also nur ignorieren.
   if (mappingp(data))
     GMCP_send("comm.channel", data);
 }
 
-// Recv Handler fuer das MG.room Modul von GMCP
+// Recv-Handler fuer das MG.room Modul von GMCP
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_MG_room_v1_recv(string cmd, mixed args)
 {
@@ -510,7 +510,7 @@ protected void GMCPmod_MG_room_v1_recv(string cmd, mixed args)
       "Client-Kommando ignoriert: "+cmd,20);
 }
 
-// Send Handler fuer das comm.channel Modul von GMCP
+// Send-Handler fuer das comm.channel Modul von GMCP
 protected void GMCPmod_MG_room_v1_send(mapping data)
 {
   // Bekommt immer 0 als <data> uebergeben und sucht sich die Daten aus dem
@@ -580,7 +580,7 @@ protected void GMCPmod_MG_room_v1_send(mapping data)
 }
 
 
-// Handler fuer das "char" Modul von GMCP (Modul von Aardwolf)
+// Send-Handler fuer das "char" Modul von GMCP (Modul von Aardwolf)
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_char_v1_send(mapping data)
 {
@@ -656,7 +656,7 @@ protected void GMCPmod_char_v1_send(mapping data)
   }
 }
 
-// Handler fuer das "char" Modul von GMCP (Modul von Aardwolf)
+// Recv-Handler fuer das "char" Modul von GMCP (Modul von Aardwolf)
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_char_v1_recv(string cmd, mixed data)
 {
@@ -665,7 +665,7 @@ protected void GMCPmod_char_v1_recv(string cmd, mixed data)
 }
 
 
-// Handler fuer das "Char" Modul von GMCP (Modul von IRE)
+// Send-Handler fuer das "Char" Modul von GMCP (Modul von IRE)
 // Gerufen, wenn Daten zu senden sind.
 protected void GMCPmod_Char_v1_send(mapping data)
 {
@@ -737,7 +737,7 @@ protected void GMCPmod_Char_v1_send(mapping data)
   }
 }
 
-// Handler fuer das "Char" Modul von GMCP (Modul von IRE)
+// Recv-Handler fuer das "Char" Modul von GMCP (Modul von IRE)
 // Gerufen bei Empfang von Kommandos vom Client.
 protected void GMCPmod_Char_v1_recv(string cmd, mixed args)
 {
