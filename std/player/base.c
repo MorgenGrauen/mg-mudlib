@@ -1008,13 +1008,13 @@ static int self_delete()
     "verloren. Es gibt KEINE Moeglichkeit, ihn wiederzuerschaffen. Solltest "
     "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte "
     "den Befehl 'spielpause'.\n"+
-    "Fallst Du %s immer noch selbstloeschen willst, gib Dein Password "
+    "Fallst Du %s immer noch selbstloeschen willst, gib Dein Passwort "
     "ein.\n\n",
     (QueryProp(P_NO_ASCII_ART) ? "Bist Du Dir wirklich sicher?\n"
      : "     B I S T  D U  D I R  W I R K L I C H  S I C H E R ???????\n"),
-    query_real_name());
+    capitalize(query_real_name()));
   write(break_string(msg,78,0,BS_LEAVE_MY_LFS));
-  input_to("self_delete2",INPUT_PROMPT|INPUT_NOECHO, "Bitte das Password angeben: ");
+  input_to("self_delete2",INPUT_PROMPT|INPUT_NOECHO, "Bitte das Passwort angeben: ");
   return 1;
 }
 
