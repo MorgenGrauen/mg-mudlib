@@ -23,6 +23,7 @@
 #include "/sys/configuration.h"
 #include "/sys/driver_hook.h"
 #include "/sys/regexp.h"
+#include "/sys/signals.h"
 
 #include "/secure/master.h"
 #include "/secure/config.h"
@@ -1249,5 +1250,22 @@ protected void save_wiz_file()
   rm("/WIZLIST");
   write_file("/WIZLIST",implode(
      map(wizlist_info(),#'_save_wiz_file_loop),""));
+}
+
+protected int handle_external_signal(int signal)
+{
+  switch (signal)
+  {
+    case SIGHUP:
+    case SIGINT:
+    case SIGUSR1:
+      break;
+    case SIGUSR2:
+      tls_refresh_certs();
+      break;
+  }
+
+  // Standardfunktionalitaet des Drivers zusaetzlich ausfuehren.
+  return 0;
 }
 
