@@ -95,11 +95,16 @@ protected void inaugurate_master(int arg) {
   set_next_reset(RESETINT);
 
   // Driver konfigurieren
+  // bei DC_SIGACTION_SIGUSR1 wird immer der Master neugeladen.
+  configure_driver(DC_SIGACTION_SIGUSR1, DCS_RELOAD_MASTER);
+  // bei SIGUSR2 wird der Master informiert, aber der Driver macht immer sein
+  // Standardverhalten (Debuglog neu oeffnen).
+  configure_driver(DC_SIGACTION_SIGUSR2, DCS_INFORM_MASTER);
   // Lagerkennung erst ne Minute spaeter, waehrend preload darfs momentan
   // ruhig laggen (Zeit: vorlaeufig 1min)
   call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 200000);
 
-  // Hooks setzen 
+  // Hooks setzen
 
   // Standard-Encoding fuer Dateien
   set_driver_hook(H_FILE_ENCODING, "UTF-8");
