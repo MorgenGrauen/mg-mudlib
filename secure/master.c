@@ -63,11 +63,28 @@ private nosave int handling_error;
 //arg==0: Mud startet gerade, arg==1: Master wurde reaktiviert,
 //arg==2: Master reaktiviert (Variablen weg), arg==3: Master wurde
 //neugeladen.
-protected void inaugurate_master(int arg) {
+protected void inaugurate_master(int arg)
+{
+  efun::configure_object(this_object(), OC_EUID, ROOTID);
+
+  // Driver konfigurieren
+  // bei DC_SIGACTION_SIGUSR1 wird immer der Master neugeladen.
+  configure_driver(DC_SIGACTION_SIGUSR1, DCS_RELOAD_MASTER);
+  // bei SIGUSR2 wird der Master informiert, aber der Driver macht immer sein
+  // Standardverhalten (Debuglog neu oeffnen).
+  configure_driver(DC_SIGACTION_SIGUSR2, DCS_INFORM_MASTER);
+  // Und Encoding fuer Dateinamen im Filesystem
+  configure_driver(DC_FILESYSTEM_ENCODING, "UTF-8");
+  // Standard-Encoding fuer Interactives
+  configure_interactive(0, IC_ENCODING, "ASCII//TRANSLIT");
+  // Standard-Encoding fuer Dateien
+  set_driver_hook(H_FILE_ENCODING, "UTF-8");
+
+  // Lagerkennung erst ne Minute spaeter, waehrend preload darfs momentan
+  // ruhig laggen (Zeit: vorlaeufig 1min)
+  call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 200000);
 
   set_driver_hook(H_REGEXP_PACKAGE, RE_TRADITIONAL);
-
-  efun::configure_object(this_object(), OC_EUID, ROOTID);
 
   // Bei Neustart wizinfo initialisieren und ggf. Ordner in /data erstellen.
   if (!arg)
@@ -94,24 +111,7 @@ protected void inaugurate_master(int arg) {
   // Reset festsetzen (1h)
   set_next_reset(RESETINT);
 
-  // Driver konfigurieren
-  // bei DC_SIGACTION_SIGUSR1 wird immer der Master neugeladen.
-  configure_driver(DC_SIGACTION_SIGUSR1, DCS_RELOAD_MASTER);
-  // bei SIGUSR2 wird der Master informiert, aber der Driver macht immer sein
-  // Standardverhalten (Debuglog neu oeffnen).
-  configure_driver(DC_SIGACTION_SIGUSR2, DCS_INFORM_MASTER);
-  // Lagerkennung erst ne Minute spaeter, waehrend preload darfs momentan
-  // ruhig laggen (Zeit: vorlaeufig 1min)
-  call_out(#'configure_driver, 60, DC_LONG_EXEC_TIME, 200000);
-
   // Hooks setzen
-
-  // Standard-Encoding fuer Dateien
-  set_driver_hook(H_FILE_ENCODING, "UTF-8");
-  // Und Encoding fuer Dateinamen im Filesystem
-  configure_driver(DC_FILESYSTEM_ENCODING, "UTF-8");
-  // Standard-Encoding fuer Interactives
-  configure_interactive(0, IC_ENCODING, "ASCII//TRANSLIT");
 
   // Standardincludeverzeichnisse fuer #include <>
   set_driver_hook(H_INCLUDE_DIRS, ({"/secure/","/sys/"}) );
