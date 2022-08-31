@@ -371,6 +371,7 @@ public string LogReportedError(mapping err)
     issue->loadname = load_name(err[F_OBJ]);
     issue->message = err[F_MSG];
     issue->obj = objectp(err[F_OBJ]) ? object_name(err[F_OBJ]) : err[F_OBJ];
+    issue->loc = err[F_LINE];
     // Normalisieren auf fuehrenden / und kein .c
     if (err[F_PROG]!="unbekannt")
         issue->prog = load_name(err[F_PROG]);
