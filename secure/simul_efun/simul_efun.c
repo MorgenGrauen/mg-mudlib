@@ -7,6 +7,7 @@
 #pragma no_clone,no_shadow,no_inherit
 #pragma range_check,warn_deprecated
 #pragma warn_empty_casts,warn_missing_return,warn_function_inconsistent
+#pragma no_simul_efuns
 
 // Absolute Pfade erforderlich - zum Zeitpunkt, wo der Master geladen
 // wird, sind noch keine Include-Pfade da ...
@@ -49,7 +50,6 @@ nomask varargs int snoop(object snooper, object snoopee);
 varargs string country(mixed ip, string num);
 int query_wiz_grp(object|string wiz);
 nomask int secure_level();
-nomask string secure_euid();
 public nomask int process_call();
 nomask mixed __create_player_dummy(string name);
 varargs string replace_personal(string str, <string|object>* obs, int caps);

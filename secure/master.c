@@ -811,7 +811,8 @@ int privilege_violation(string op, mixed who, mixed arg1, mixed arg2,
       return 1;
 
     case "nomask simul_efun":
-      // <who> ist in diesem Fall ein string (Filename) und damit von dem
+    case "pragma no_simul_efuns":
+      // <who> ist in diesem Fall ein string (Programmname) und damit von dem
       // Check da oben nicht abgedeckt. Daher explizite Behandlung hier.
       // Ausserdem hat der Pfad (zur Zeit noch) keinen fuehrenden '/'.
       // Falls das jemand einschraenken will: der Kram fuer die simul_efuns
