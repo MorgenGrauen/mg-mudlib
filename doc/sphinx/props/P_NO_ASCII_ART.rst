@@ -24,7 +24,12 @@ BESCHREIBUNG
     abfragen und textliche Umschreibungen oder Alternativloesungen
     einbauen.
 
-    
+BEMERKUNGEN
+-----------
+
+  Bitte verzichtet in der Variante ohne ASCII-Art auf Sperrschrift und bietet
+  auch fuer Ausgaben in Sperrschrift (ohne ASCII-Art) eine Alternative an.
+  Screenreader lesen hier sonst einzelne Buchstaben vor.
 
 SIEHE AUCH
 ----------
@@ -32,6 +37,4 @@ SIEHE AUCH
 
     grafik
 
-
-    Letzte Aenderung: 2005-10-18, Zook.   
-
+Letzte Aenderung: 20.09.2022, Bugfix
