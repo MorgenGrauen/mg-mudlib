@@ -40,21 +40,21 @@ ARGUMENTE
     object ob:
       Ein Objekt, an dem die in 'look' und 'lookende' abgelegten Methoden
       bei Abfrage oder Ablauf aufgerufen werden.
-      Die Methoden bekommen das Living uebergeben und muessen selbst
-      umgebrochene Strings zurueckgeben.
-
+      
 BESCHREIBUNG
 ------------
     Der Extralook erscheint in der Langbeschreibung des Lebewesens.
 
     Texte dafuer koennen mit dieser Funktion hinzugefuegt und verwaltet werden.
     Wenn ihr nicht ohnehin unbedingt ein Objekt IM Spieler ablegt (wie zB
-    eine Ruestung mit einem Extralook) (1), dann ist diese Methode bevorzugt zu
+    eine Ruestung mit einem Extralook), dann ist diese Methode bevorzugt zu
     verwenden.
 
     Ueber die Angabe eines 'ob' koennen Looks auch dynamisch erstellt werden,
     dabei werden dann 'look' bzw. 'lookende' als Methoden am Objekt gerufen.
-    (1) Ein so fuer AddExtraLook verwendetes Objekt 'ob' muss nicht wie bisher
+    Die Methoden bekommen das Living uebergeben und muessen selbst
+    umgebrochene Strings zurueckgeben.
+    Ein so fuer AddExtraLook verwendetes Objekt 'ob' muss nicht wie bisher
     ueblich im Inv des Spieler liegen!
 
     Direkt angegebene Texte (also nicht von einem Objekt 'ob' bezogen) werden
@@ -63,17 +63,15 @@ BESCHREIBUNG
 
 BEMERKUNGEN
 -----------
-    - Die Meldung von <lookende> bzw. der Funktionsaufruf erfolgt, wenn der
-      Extralook der Lebewesen das erste Mal nach Ablauf der Gueltigkeit
-      aufgerufen wird.
-    - Im Fall von permanenten Eintraegen muss das uebergbene Objekt eine 
-      Blueprint sein, da Clones irgendwann (spaetestens mit Reboot) zerstoert
-      werden und der Eintrag dann bei Abfrage automatisch geloescht wird.
-    - Folgerung: Clone-Objekte koennen fuer selbst beschraenkt temporaere
-      Extralooks benutzt werden.
     - Die Endemeldung wird nicht genau mit Ablauf der angegebenen Zeit
       ausgegeben, sondern beim ersten Abruf der Langbeschreibung *nach*
       Ablauf der Zeit.
+    - Im Fall von permanenten Eintraegen muss das uebergbene Objekt eine 
+      Blueprint sein, da Clones irgendwann (spaetestens mit Reboot) zerstoert
+      werden und der Eintrag dann bei Abfrage automatisch geloescht wird.
+      Folgerung: Clones koennen fuer kurzlebige Extralooks benutzt werden,
+      deren Ablaufzeit an ein Objekt gebunden ist.
+
 
 RUECKGABEWERTE
 --------------
@@ -124,8 +122,11 @@ BEISPIELE
     living->AddExtraLook("get_my_special_extralook", 3600, 0, 0,
                          this_object());
 
-    // In diesem Fall muss this_object() natuerlich die Funktion
-    // "get_my_special_extralook()" definieren, die einen String zurueckgibt.
+    public string get_my_special_extralook(object lv)
+    {
+      return 
+        lv.Name() + " hat schon " + data[getuuid(lv)] + " mal gewonnen!\n");
+    }
 
 .. code-block:: pike
 
@@ -148,4 +149,4 @@ SIEHE AUCH
      :doc:`../props/P_EXTRA_LOOK`
 
 
-Letzte Aenderung: 2021-01-21, Arathorn
+Letzte Aenderung: 21.09.2022, Bugfix
