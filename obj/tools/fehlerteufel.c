@@ -51,7 +51,7 @@ private mapping feingabe;         // gerade eingegebener Fehler
 private varargs int update_issuelist(int lmodus);
 private void get_uids();
 private struct fullissue_s get_issue(string arg);
-private struct fullissue_s|struct fullissue_s* get_issues(string arg);
+private struct fullissue_s|struct fullissue_s* get_issues(string arg, int parsed = 0);
 
 // irgendeinen Fehler oder Warnung anzeigen.
 private int show_entry(struct fullissue_s issue)
@@ -183,85 +183,79 @@ public int CmdFehlerZeigen(string arg)
   return 0;
 }
 
-// Loescht alle Fehler und Warnungen eines Objekts (soweit per modus
-// ausgewaehlt). Entscheidend ist der _Loadname_!
-private int DeleteErrorsForLoadname(string loadname, string note)
-{
-  int sum_deleted;
-  // Bei == 0 wird sonst alles geloescht. ;-)
-  if (!loadname)
-    return 0;
-
-  foreach(int m: ALL_ERR_TYPES)
-  {
-    if (!(m & modus))
-      continue;
-    < <int|string>* >* list = ({< <int|string>* >*})ERRORD->QueryIssueListByLoadname(loadname,m);
-    if (pointerp(list))
-    {
-      foreach(<int|string>* row : list)
-      {
-          if (({int})ERRORD->ToggleDeleteError(row[0], note) == 1)
-          {
-            tell_object(PL,
-                row[0] + " als geloescht markiert.\n");
-          }
-      }
-      sum_deleted+=sizeof(list);
-    }
-  }
-  return sum_deleted;
-}
-
 public int CmdFehlerLoeschen(string arg)
 {
   int issueid;
   string note;
+  struct fullissue_s|struct fullissue_s* issues;
   arg = ({string})this_player()->_unparsed_args(0);
 
   if (stringp(arg) && sizeof(arg))
   {
-      issueid = to_int(arg);
-      // Fuehrende Leerzeichen entfernen, um ID und Notiz zuverlaessig trennen zu
-      // koennen.
-      arg = trim(arg, TRIM_LEFT);
-      // Alles ab dem zweiten Wort sollte eine Notiz sein.
-      int spacepos = strstr(arg, " ");
-      if(spacepos != -1)
-      {
-        note = arg[spacepos + 1 ..];
-        arg = arg[.. spacepos - 1];
-      }
+    // Fuehrende Leerzeichen entfernen, um ID und Notiz zuverlaessig trennen zu
+    // koennen.
+    arg = trim(arg, TRIM_LEFT);
+    // Alles ab dem zweiten Wort sollte eine Notiz sein.
+    int spacepos = strstr(arg, " ");
+    if(spacepos != -1)
+    {
+      note = arg[spacepos + 1 ..];
+      arg = arg[.. spacepos - 1];
+    }
+    issues = get_issues(arg, 1);
+    if(structp(issues))
+    {
+      issueid = issues->id;
+    }
   }
   else
-      issueid = lfehler;
+    issueid = lfehler;
 
   notify_fail("Einen Eintrag mit dieser ID/diesem Loadname gibt es nicht!\n");
 
-  int res = ({int})ERRORD->ToggleDeleteError(issueid, note);
-  if (res == 1)
+  if(issueid > 0)
   {
-    tell_object(PL,
-      "Fehler/Warnung wurde zum Loeschen markiert und wird in Kuerze "
-      "geloescht.\n");
-    lfehler = issueid;
-    return 1;
+    int res = ({int})ERRORD->ToggleDeleteError(issueid, note);
+    if (res == 1)
+    {
+      tell_object(PL,
+        "Fehler/Warnung wurde zum Loeschen markiert und wird in Kuerze "
+        "geloescht.\n");
+      lfehler = issueid;
+      return 1;
+    }
+    else if (res==0)
+    {
+      tell_object(PL,"Loeschmarkierung wurde entfernt.\n");
+      lfehler = issueid;
+      return 1;
+    }
+    else if (res < -1)
+    {
+      tell_object(PL, "Irgendwas ist beim Loeschen schiefgegangen. "
+                      "Keine Schreibrechte?\n");
+      lfehler = issueid;
+      return 1;
+    }
   }
-  else if (res==0)
+  else if(pointerp(issues))
   {
-    tell_object(PL,"Loeschmarkierung wurde entfernt.\n");
-    lfehler = issueid;
-    return 1;
+    int sum_deleted = 0;
+    string res = "";
+    foreach(struct fullissue_s issue : issues)
+    {
+      issueid = issue->id;
+      if(({int})ERRORD->ToggleDeleteError(issueid, note) == 1)
+      {
+        res += issueid + " als geloescht markiert.\n";
+        ++sum_deleted;
+      }
+    }
+    PL->ReceiveMsg(res, MT_NOTIFICATION | MSG_DONT_WRAP);
+    return sum_deleted;
   }
-  else if (res < -1)
-  {
-    tell_object(PL, "Irgendwas ist beim Loeschen schiefgegangen. "
-                    "Keine Schreibrechte?\n");
-    lfehler = issueid;
-    return 1;
-  }
-  // res war == -1 -> Fehler nicht gefunden. Vielleicht ist es nen Loadname
-  return DeleteErrorsForLoadname(arg, note);
+  // Offenbar kein Fehler gefunden
+  return 0;
 }
 
 public int CmdRefresh(string arg) {
@@ -1135,9 +1129,12 @@ private struct fullissue_s get_issue(string arg)
   return issue;
 }
 
-private struct fullissue_s|struct fullissue_s* get_issues(string arg)
+private struct fullissue_s|struct fullissue_s* get_issues(string arg, int parsed)
 {
-  arg=({string})PL->_unparsed_args();
+  // Manche Funktionen kuemmern sich selbst um _unparsed_args((), da z.B.
+  // noch eine Notiz abgeschnitten werden muss.
+  if(!parsed)
+    arg=({string})PL->_unparsed_args();
   struct fullissue_s|struct fullissue_s* issues;
 
   // Erstmal schauen, ob arg eine ID ist.
