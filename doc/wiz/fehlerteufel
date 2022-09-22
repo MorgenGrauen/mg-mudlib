@@ -145,6 +145,13 @@ dem Clonen von /obj/tools/fehlerteufel habt ihr folgende Moeglichkeiten:
   der Fehler in einem Objekt in /d/, solltet ihr auf jeden Fall
   d.region.magier benutzen, damit ggf. der RM der Region auch zustaendig wird.
 
+- faendere <id> <newtype> <bemerkung>
+  Wenn ein Fehler in der falschen Kategorie gemeldet wurde, kann man sie so
+  berichtigen, damit man ihn leichter wiederfindet. Es koennen nur von
+  Spielern gemeldete Fehler geaendert werden und auch nur zu Kategorien, die
+  von Spielern gemeldet werden koennen. Ihr koennt also keinen Typo zum
+  Laufzeitfehler erklaeren oder umgekehrt.
+
 UID-Filter:
   a) fehlerfilter an
      Schaltet den Filter ein
@@ -190,3 +197,4 @@ Randbemerkung:
 SIEHE AUCH:
  QueryUIDsForWizard(), QueryWizardForUID()
 
+Letzte Aenderung: 22.09.2022, Bugfix

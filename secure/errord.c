@@ -37,6 +37,7 @@ inherit "/secure/errord-structs";
 private int       access_check(string uid,int mode);
 private varargs int set_lock(int issueid, int lock, string note);
 private varargs int set_resolution(int issueid, int resolution, string note);
+public string* print_type(int type);
 
 private int versende_mail(struct fullissue_s fehler);
 
@@ -1024,6 +1025,28 @@ varargs int ReassignIssue(int issueid, string newuid, string note)
     return db_reassign_issue(issueid, newuid, note);
 }
 
+varargs int ChangeType(int issueid, int newtype, int oldtype, string note)
+{
+  struct fullissue_s issue = db_get_issue(issueid, 0);
+  if(!issue)
+    return -1;
+
+  if (!access_check(issue->uid, M_CHANGE_TYPE))
+  {
+    // Zugriff zum Schreiben nicht gestattet
+    return(-10);
+  }
+
+  sl_exec(
+    "UPDATE issues SET type=?1,mtime=?2 WHERE id=?3;",
+    newtype, time(), issueid);
+  db_add_note(
+    (<note_s> id: issueid, time: time(), user: getuid(TI),
+    txt: sprintf("Fehlertyp von %s auf %s geaendert. (%s)",
+    print_type(oldtype)[0], print_type(newtype)[0], (note || "<kein Kommentar>"))));
+  return 1;
+}
+
 /* *********** Eher fuer Debug-Zwecke *********************** */
 /*
 mixed QueryAll(int type) {
@@ -1167,6 +1190,7 @@ private int access_check(string uid, int mode) {
       case M_DELETE:
       case M_REASSIGN:
       case M_FIX:
+      case M_CHANGE_TYPE:
         // Master nach UIDs fragen, fuer die der jew. Magier
         // zustaendig ist.
         if (member(({string*})master()->QueryUIDsForWizard(secure_euid()),uid) >= 0)
@@ -1266,6 +1290,44 @@ public string format_error_spieler(struct fullissue_s issue)
   return txt;
 }
 
+public string* print_type(int type)
+{
+  string* res;
+  switch(type)
+  {
+    case T_RTERROR:
+      res = ({"Laufzeitfehler","Dieser Laufzeitfehler"});
+      break;
+    case T_REPORTED_ERR:
+      res = ({"Fehlerhinweis","Dieser Fehlerhinweis"});
+      break;
+    case T_REPORTED_TYPO:
+      res = ({"Typo","Dieser Typo"});
+      break;
+    case T_REPORTED_IDEA:
+      res = ({"Idee","Diese Idee"});
+      break;
+    case T_REPORTED_MD:
+      res = ({"Fehlendes Detail","Dieses fehlende Detail"});
+      break;
+    case T_REPORTED_SYNTAX:
+      res = ({"Syntaxproblem","Dieses Syntaxproblem"});
+      break;
+    case T_RTWARN:
+      res = ({"Laufzeitwarnung","Diese Laufzeitwarnung"});
+      break;
+    case T_CTWARN:
+      res = ({"Ladezeitwarnung","Diese Ladezeitwarnung"});
+      break;
+    case T_CTERROR:
+      res = ({"Ladezeitfehler","Dieser Ladezeitfehler"});
+      break;
+    default:
+      res = 0;
+  }
+  return res;
+}
+
 public string format_error(struct fullissue_s issue, int only_essential)
 {
   string txt;
@@ -1274,37 +1336,8 @@ public string format_error(struct fullissue_s issue, int only_essential)
   if (!issue)
     return 0;
 
-  switch(issue->type)
-  {
-    case T_RTERROR:
-      label=({"Laufzeitfehler","Dieser Laufzeitfehler"});
-      break;
-    case T_REPORTED_ERR:
-      label=({"Fehlerhinweis","Dieser Fehlerhinweis"});
-      break;
-    case T_REPORTED_TYPO:
-      label=({"Typo","Dieser Typo"});
-      break;
-    case T_REPORTED_IDEA:
-      label=({"Idee","Diese Idee"});
-      break;
-    case T_REPORTED_MD:
-      label=({"Fehlendes Detail","Dieses fehlende Detail"});
-      break;
-    case T_REPORTED_SYNTAX:
-      label=({"Syntaxproblem","Dieses Syntaxproblem"});
-      break;
-    case T_RTWARN:
-      label=({"Laufzeitwarnung","Diese Laufzeitwarnung"});
-      break;
-    case T_CTWARN:
-      label=({"Ladezeitwarnung","Diese Ladezeitwarnung"});
-      break;
-    case T_CTERROR:
-      label=({"Ladezeitfehler","Dieser Ladezeitfehler"});
-      break;
-    default: return 0;
-  }
+  label = print_type(issue->type);
+  if(!label) return 0;
 
   txt=sprintf( "\nDaten fuer %s mit ID %d:\n"
                "Hashkey: %s\n"

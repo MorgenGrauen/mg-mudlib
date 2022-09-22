@@ -22,6 +22,8 @@
 #define ALL_ERR_TYPES ({T_RTERROR, T_RTWARN, T_CTERROR, T_CTWARN, \
                         T_REPORTED_ERR, T_REPORTED_TYPO, T_REPORTED_IDEA, \
                         T_REPORTED_MD, T_REPORTED_SYNTAX })
+#define CHANGEABLE_TYPES ({T_REPORTED_ERR, T_REPORTED_TYPO, T_REPORTED_IDEA, \
+                           T_REPORTED_MD, T_REPORTED_SYNTAX})
 
 // Status
 #define STAT_DELETED  0x1
@@ -83,6 +85,7 @@
 #define M_FIX    4
 #define M_REASSIGN 8
 #define M_DELETE 16
+#define M_CHANGE_TYPE 32
 
 // Changelog
 #define CHANGELOG "/log/CHANGELOG"

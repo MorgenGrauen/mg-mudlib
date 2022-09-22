@@ -270,25 +270,48 @@ public int CmdRefresh(string arg) {
     return 1;
 }
 
-private int select_modus(string arg) {
+#define NO_FALLBACK 1
+#define NO_COMBINED_TYPES 2
+private int select_modus(string arg, int flags = 0) {
     int lmodus;
     switch(arg) {
     case "alles":
     case "alle":
-      lmodus = T_RTERROR | T_RTWARN | T_CTERROR | T_CTWARN | T_REPORTED_ERR
-               | T_REPORTED_IDEA | T_REPORTED_TYPO | T_REPORTED_MD | 
-               T_REPORTED_SYNTAX;
+      if(flags & NO_COMBINED_TYPES)
+      {
+        lmodus = 0;
+      }
+      else
+      {
+        lmodus = T_RTERROR | T_RTWARN | T_CTERROR | T_CTWARN | T_REPORTED_ERR
+                 | T_REPORTED_IDEA | T_REPORTED_TYPO | T_REPORTED_MD | 
+                 T_REPORTED_SYNTAX;
+      }
       break;
     case "fehler":
     case "error":
     case "errors":
-      lmodus=T_RTERROR | T_CTERROR | T_REPORTED_ERR;
+      if(flags & NO_COMBINED_TYPES)
+      {
+        lmodus = 0;
+      }
+      else
+      {
+        lmodus=T_RTERROR | T_CTERROR | T_REPORTED_ERR;
+      }
       break;
     case "warnungen":
     case "warnung":
     case "warning":
     case "warnings":
-      lmodus=T_RTWARN | T_CTWARN;
+      if(flags & NO_COMBINED_TYPES)
+      {
+        lmodus = 0;
+      }
+      else
+      {
+        lmodus=T_RTWARN | T_CTWARN;
+      }
       break;
     case "laufzeitfehler":
       lmodus=T_RTERROR;
@@ -326,7 +349,14 @@ private int select_modus(string arg) {
       lmodus=T_CTWARN;
       break;
     default:
-      lmodus=modus;
+      if(flags & NO_FALLBACK)
+      {
+        lmodus = 0;
+      }
+      else
+      {
+        lmodus=modus;
+      }
     }
     return lmodus;
 }
@@ -821,6 +851,65 @@ int CmdFehlerDirectory(string arg)
   return 1;
   }
 
+public int CmdFehlerAendere(string arg)
+{
+  string note;
+  arg = ({string})PL->_unparsed_args(0);
+  
+  notify_fail("Bitte ID, Typ und optional einen Kommentar angeben.\n");
+
+  if(!sizeof(arg)) return 0;
+  // Fuehrende Leerzeichen entfernen, um ID, Typ und Notiz zuverlaessig
+  // trennen zu koennen.
+  arg = trim(arg, TRIM_LEFT);
+  string* words = explode(arg, " ");
+  if(sizeof(words) < 2) return 0;
+  arg = words[0];
+  // Alles ab dem dritten Wort sollte eine Notiz sein.
+  if(sizeof(words) > 2)
+  {
+    note = implode(words[2..], " ");
+  }
+
+  struct fullissue_s issue = get_issue(arg);
+
+  if(!structp(issue))
+  {
+    notify_fail("Kein Fehler mit dieser ID gefunden.\n");
+    return 0;
+  }
+
+  int type = select_modus(words[1], NO_FALLBACK | NO_COMBINED_TYPES);
+  if(!type)
+  {
+    notify_fail("Fehlertyp nicht bekannt.\n");
+    return 0;
+  }
+
+  if(!(type in CHANGEABLE_TYPES) || !(issue->type in CHANGEABLE_TYPES))
+  {
+    ({int})PL->ReceiveMsg(
+      "Fehlertyp nicht aenderbar.\n",
+      MT_NOTIFICATION);
+    return 1;
+  }
+
+  if(({int})ERRORD->ChangeType(issue->id, type, issue->type, note) == 1)
+  {
+    string* type_name = ({string*})ERRORD->print_type(type);
+    ({int})PL->ReceiveMsg(
+      "Fehlertyp von " + issue->id + " auf " + type_name[0] + " geaendert.",
+      MT_NOTIFICATION);
+  }
+  else
+  {
+    ({int})PL->ReceiveMsg(
+      "Aendern nicht moeglich. Keine Schreibrechte?",
+      MT_NOTIFICATION);
+  }
+  return 1;
+}
+
 // ************** public 'internal' functions **************
 public string QueryOwner() {return owner;}
 public mixed QueryIssueList() {return issuelist;}
@@ -852,6 +941,8 @@ protected void create() {
     "wechseln\n"
     "fuebertrage <id> <newuid> <note>\n"
     "                    - Fehler an die UID uebertragen\n"
+    "faendere <id> <newtype> <note>\n"
+    "                    - Fehlertyp aendern\n"
     );
     SetProp(P_NAME,"Fehlerteufel");
     SetProp(P_GENDER,MALE);
@@ -879,6 +970,7 @@ protected void create() {
     AddCmd(({"fehleruebertrage","fuebertrage"}),"CmdReassign");
     AddCmd(({"fehlereingabe", "feingabe"}), "CmdFehlerEingabe");
     AddCmd(({"fehlerdir","fdir"}),"CmdFehlerDirectory");
+    AddCmd(({"fehleraendere", "faendere"}), "CmdFehlerAendere");
 }
 
 public varargs void init(object origin)
