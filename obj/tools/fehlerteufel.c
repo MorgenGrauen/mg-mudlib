@@ -48,7 +48,7 @@ private int fehlerzahl;       // fehlerzahl im letzten Reset.
 private mapping feingabe;         // gerade eingegebener Fehler
 
 // ************** private functions  **************
-private varargs int get_issuelist(int lmodus);
+private varargs int update_issuelist(int lmodus);
 private void get_uids();
 private struct fullissue_s get_issue(string arg);
 private struct fullissue_s|struct fullissue_s* get_issues(string arg);
@@ -398,7 +398,7 @@ public int CmdFehlerListe(string arg) {
     if (lmodus != modus)
     {
       fehlerbackup=issuelist; // Fehlerliste von 'modus' aufheben
-      get_issuelist(lmodus);  // neue Fehlerliste holen
+      update_issuelist(lmodus);  // neue Fehlerliste holen
     }
   }
   else
@@ -1047,7 +1047,7 @@ mapping _set_autoloadobj(mixed data)
 void reset()
 {
     get_uids();
-    int neuefehlerzahl=get_issuelist();
+    int neuefehlerzahl=update_issuelist();
 
     if (fehlerzahl < neuefehlerzahl)
       tell_object(environment(ME), break_string(
@@ -1077,7 +1077,7 @@ private void get_uids()
 /* Holt sich aus dem ErrorD die Liste ungeloeschter und ungefixter Fehler fuer
  * fuer die UIDs des Magier fuer alle Typen
  */
-private varargs int get_issuelist(int lmodus)
+private varargs int update_issuelist(int lmodus)
 {
     int count;
 
