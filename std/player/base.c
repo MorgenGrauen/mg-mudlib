@@ -1501,7 +1501,8 @@ protected void smart_log(string myname, string str, object obj)
   }
   _notify(sprintf(
           "Du hast %s an %s mit der Beschreibung \"%s\" eingegeben. "
-          "Moechtest Du dieses speichern?", desc,
+          "Wurde das richtige Zielobjekt ausgewaehlt und moechtest Du "
+          "speichern?", desc,
           (obj->IsRoom() ? "diesem Raum" : obj->name(WEM,1)),
           str), MA_UNKNOWN);
   input_to("confirm_error", INPUT_PROMPT, "]", obj, str, myname, desc, err);
