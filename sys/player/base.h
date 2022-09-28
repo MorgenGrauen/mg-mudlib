@@ -109,7 +109,7 @@ static void restart_heart_beats();
 
 nomask int query_hc_play();
 varargs nomask void set_hc_play(string str, int val);
-string SetDefaultHome(string str);
+protected string SetDefaultHome(string str);
 protected string SetDefaultPrayRoom(string str);
 
 void save_me(mixed value_items);
