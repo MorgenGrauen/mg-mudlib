@@ -3318,46 +3318,51 @@ static int idlezeit(string player)
   */
 static void ndead_revive()
 {
-    string fname;
-    int ret;
+  string fname;
+  int ret;
 
-    set_heart_beat(1);
-    ndead_next_check = NETDEAD_CHECK_TIME;
-    ndead_currently = 0;
-    ndead_lasttime = 0;
+  set_heart_beat(1);
+  ndead_next_check = NETDEAD_CHECK_TIME;
+  ndead_currently = 0;
+  ndead_lasttime = 0;
 
-    if ( !objectp(ndead_location) && 
-         stringp(ndead_l_filename) && sizeof(ndead_l_filename)) {
-        
-        if ( member( ndead_l_filename, '#' ) == -1 ){
-            catch(load_object( ndead_l_filename); publish);
-            ndead_location = find_object(ndead_l_filename);
-        }
-        else {
-            ndead_location = find_object(ndead_l_filename);
-            if ( !ndead_location && env_ndead_info ){
-                fname = explode( ndead_l_filename, "#" )[0];
-                catch(ndead_location = 
-                    (load_object(fname)->SetProp(P_NETDEAD_INFO, env_ndead_info));
-                    publish);
-                if ( !objectp(ndead_location) ){
-                    catch(load_object( ndead_location);publish);
-                    ndead_location = find_object(ndead_location);
-                }
-            }
-        }
+  if ( !objectp(ndead_location) && 
+       stringp(ndead_l_filename) && sizeof(ndead_l_filename))
+  {
+    if ( member( ndead_l_filename, '#' ) == -1 )
+    {
+      catch(load_object( ndead_l_filename); publish);
+      ndead_location = find_object(ndead_l_filename);
     }
-
-    if ( !objectp(ndead_location)
-        || catch(ret = move( ndead_location, M_GO|M_SILENT );publish) 
-        || ret != 1 ) {
-        move( "gilden/abenteurer", M_GO|M_SILENT );
-        ndead_location = environment();
+    else
+    {
+      ndead_location = find_object(ndead_l_filename);
+      if ( !ndead_location && env_ndead_info )
+      {
+        fname = explode( ndead_l_filename, "#" )[0];
+        catch(ndead_location = 
+            (load_object(fname)->SetProp(P_NETDEAD_INFO, env_ndead_info));
+            publish);
+        if ( !objectp(ndead_location) )
+        {
+          catch(load_object( ndead_location);publish);
+          ndead_location = find_object(ndead_location);
+        }
+      }
     }
+  }
 
-    //  ndead_location=0;
-    ndead_l_filename = 0;
-    env_ndead_info = 0;
+  if ( !objectp(ndead_location)
+      || catch(ret = move( ndead_location, M_GO|M_SILENT );publish) 
+      || ret != 1 )
+  {
+    move( "gilden/abenteurer", M_GO|M_SILENT );
+    ndead_location = environment();
+  }
+
+  //  ndead_location=0;
+  ndead_l_filename = 0;
+  env_ndead_info = 0;
 }
 
 /** Bewegt einen netztoten Spieler in den Netztotenraum
