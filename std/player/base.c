@@ -3352,15 +3352,23 @@ static void ndead_revive()
     }
   }
 
+  // Wenn immer noch kein ndead_location da oder die Bewegung dahin nicht
+  // klappt, ist das naechste Fallback das default_home der Shell.
   if ( !objectp(ndead_location)
       || catch(ret = move( ndead_location, M_GO|M_SILENT );publish) 
-      || ret != 1 )
+      || ret != MOVE_OK )
   {
-    move( "gilden/abenteurer", M_GO|M_SILENT );
+    ret = 0;
+    if(catch(ret = move(default_home, M_GO | M_SILENT); publish) ||
+        ret != MOVE_OK)
+    {
+      // und wenn auch das nicht klappt, bleibt die Abenteurergilde, die
+      // hoffentlich erreichbar ist. Wenn nicht, dann solls hart abbrechen...
+      move("/gilden/abenteurer", M_GO | M_SILENT);
+    }
     ndead_location = environment();
   }
 
-  //  ndead_location=0;
   ndead_l_filename = 0;
   env_ndead_info = 0;
 }
