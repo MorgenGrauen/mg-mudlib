@@ -1,0 +1,40 @@
+QueryDefaultHome()
+==================
+
+FUNKTION
+--------
+
+  string QueryDefaultHome()
+
+DEFINIERT IN
+------------
+
+  /std/player/base.c
+
+BESCHREIBUNG
+------------
+
+  Diese Funktion wird verwendet, um den Standard-Startraum der Shell
+  abzufragen.
+  Um den konkreten Startraum eines Spielerobjekts zu ermitteln, sollte
+  hingegen zunaechst P_START_HOME abgefragt werden.
+
+RUECKGABEWERT
+-------------
+
+  Der Pfad zum Standard-Startraum.
+
+BEMERKUNGEN
+-----------
+
+  Diese Funktion wird **nicht** verwendet, um Seherhaeuser oder
+  Magier-Workrooms abzufragen. Seherhaeuser werden ueber
+  /d/seher/haeuser/hausverwalter.c konfiguriert, Workrooms ueber
+  :doc:`../props/P_STARTHOME`.
+
+SIEHE AUCH
+----------
+
+  :doc:`SetDefaultHome`, :doc:`../props/P_START_HOME`
+
+Letzte Aenderung: 28.09.2022, Bugfix
