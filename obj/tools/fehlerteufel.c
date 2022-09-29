@@ -836,6 +836,7 @@ int CmdFehlerDirectory(string arg)
     else
     {
       path=implode(explode(path,"/")[..<2],"/");
+      PL->SetProp(P_LASTDIR, PL->QueryProp(P_CURRENTDIR));
       PL->SetProp(P_CURRENTDIR,path);
       PL->ReceiveMsg(
         "Aktuelles Verzeichnis ist jetzt: "+path,
