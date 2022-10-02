@@ -850,18 +850,17 @@ SoulComm(string str, string _verb)  {
     HELPCHECK("denk");
     if (ghost())
       Return("Womit willst Du denn denken? Du hast keine grauen Zellen...\n");
-//    ParseRest(str);
-    str2=old_explode(str||""," ")[0];
-    if (str
-    && (!adverb||((QueryStdAdverbs()[str2]||plr_adverbs[str2]))!=adverb))  {
+    if (str)
+    {
       out_sel="Du denkst   . o O ("+str+")";
       out_oth="@@name@@ denkt   . o O ("+str+")";
       out_vic="@@name@@ denkt   . o O ("+str+")";
     }
-    else  {
-      out_sel="Du faengst@@adverb@@ an zu denken.\nKleine "
+    else
+    {
+      out_sel="Du faengst an zu denken.\nKleine "
         +"Rauchwoelkchen steigen auf...";
-      out_oth="@@name@@ faengt@@adverb@@ an zu denken.\nKleine "
+      out_oth="@@name@@ faengt an zu denken.\nKleine "
         +"Rauchwoelkchen steigen auf...";
     }
     return FeelIt();
