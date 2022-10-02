@@ -583,7 +583,7 @@ FeelIt()  {
   }
   if (out_oth)
   say( break_string(convert_string( out_oth ),78), ({who,this_player()}) );
-  out_sel=out_vic=out_oth=0;
+  out_sel=out_vic=out_oth=sfoo=adverb=0;
   return 1;
 }
 
