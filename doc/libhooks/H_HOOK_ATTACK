@@ -1,0 +1,45 @@
+H_HOOK_ATTACK
+=============
+
+HOOK
+----
+
+  H_HOOK_ATTACK
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/combat.c
+
+BESCHREIBUNG
+------------
+
+  Wird im Attack() eines Lebewesens ausgeloest. Es ist moeglich das Attack()
+  abzubrechen, jedoch nicht die Daten zu veraendern.
+
+HOOK-DATEN
+----------
+
+  Es wird ein Array uebergeben:
+  ({object enemy})
+
+  - enemy: der ausgewaehlte Feind.
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_CANCELLED
+  <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow()
+
+Letzte Aenderung: 03.10.2022, Bugfix

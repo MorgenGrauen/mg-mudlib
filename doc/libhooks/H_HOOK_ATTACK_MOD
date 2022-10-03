@@ -1,0 +1,46 @@
+H_HOOK_ATTACK_MOD
+=================
+
+HOOK
+----
+
+  H_HOOK_ATTACK_MOD
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/combat.c
+
+BESCHREIBUNG
+------------
+
+  Wird im Attack() eines Lebewesens ausgeloest. Es ist moeglich das Attack()
+  abzubrechen oder die Daten zu veraendern.
+  Dieser Hook kommt nach der Auswertung von P_TMP_ATTACK_HOOK und
+  P_TMP_ATTACK_MOD zum Zuge, kann also auch die durch diese modifizierten
+  Daten aendern.
+
+HOOK-DATEN
+----------
+
+  Es wird ein Mapping uebergeben.
+  deep_copy(ainfo), siehe Defendinfo, Abschnitt ORIGINAL_AINFO
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_CANCELLED, H_ALTERED
+  <daten>   : wie uebergebenes Datenmapping
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), defeindinfo
+
+Letzte Aenderung: 03.10.2022, Bugfix

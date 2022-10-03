@@ -1,0 +1,45 @@
+H_HOOK_MOVE
+===========
+
+HOOK
+----
+
+  H_HOOK_MOVE
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/moving.c
+
+BESCHREIBUNG
+------------
+
+  Wird im move() eines Lebewesens ausgeloest. Es ist moeglich das move()
+  abzubrechen oder die Daten zu veraendern.
+
+HOOK-DATEN
+----------
+
+  Es wird ein Array uebergeben:
+  ({dest,method,direction,textout,textin})
+
+  Die Eintraege entsprechen den Parametern von move().
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_CANCELLED, H_ALTERED
+  <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), move()
+
+Letzte Aenderung: 03.10.2022, Bugfix
