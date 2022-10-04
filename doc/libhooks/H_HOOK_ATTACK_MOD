@@ -25,11 +25,24 @@ BESCHREIBUNG
   P_TMP_ATTACK_MOD zum Zuge, kann also auch die durch diese modifizierten
   Daten aendern.
 
+  Insb. wird dieser Hook aber auch erst nach Abfrage von Waffen und Skills
+  ausgefuehrt. Von diesen sind evtl. bereits Meldungen ausgegeben worden,
+  auch wenn das Attack an dieser Stelle vom Hook abgebrochen wird.
+
 HOOK-DATEN
 ----------
 
   Es wird ein Mapping uebergeben.
   deep_copy(ainfo), siehe Defendinfo, Abschnitt ORIGINAL_AINFO
+
+  Der Inhalt des zurueckgegebenen Mappings wird als Aenderung des
+  uebergebenen ainfo aufgefasst. Man kann so also auch nur einzelne Keys
+  zurueckgeben und aendern und ein leeres Mapping erzeugt keine Aenderung
+  (in diesem Fall aber bitte H_NO_MOD bevorzugen).
+  Die Aenderungen werden zur Zeit aber nur teilweise von SkillResTransfer()
+  in den eigentlichen Angriff uebernommen. Das sind aktuell folgende Keys:
+  SI_SKILLDAMAGE, SI_SKILLDAMAGE_MSG, SI_SKILLDAMAGE_MSG2,
+  SI_SKILLDAMAGE_TYPE, SI_SPELL
 
 RUECKGABEWERTE
 --------------
@@ -43,4 +56,4 @@ SIEHE AUCH
 
   HRegisterToHook(), HUnregisterFromHook(), HookFlow(), defeindinfo
 
-Letzte Aenderung: 03.10.2022, Bugfix
+Letzte Aenderung: 04.10.2022 Zesstra
