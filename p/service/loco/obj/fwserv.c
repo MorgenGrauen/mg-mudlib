@@ -41,7 +41,7 @@ void LoadFile(string s) {
 string QueryForward(string adr) {
 /* Setze eine Adresse um. Rueckgabe: Forwardadresse oder Name, wenn keine
    gesetzt ist. Externe Adressen werden nicht umgesetzt. */
-  string s, res;
+  string s;
   object player;
   int i;
 
@@ -149,4 +149,9 @@ static int Security(string name) {
 }
 
 
-QueryForwards() { if (Security(" N I X ")) return forwarddata; }
+mixed QueryForwards() {
+  if (Security(" N I X "))
+    return forwarddata;
+  else
+    return 0;
+}
