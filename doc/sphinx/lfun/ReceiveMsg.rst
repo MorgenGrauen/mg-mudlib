@@ -242,6 +242,7 @@ KONSTANTEN FUER PARAMETER
                      benutzt bzw. versucht, die Aktion zu erraten.
       MA_PUT         Jemand legt etwas hin und gibt jemanden etwas
       MA_TAKE        Jemand nimmt etwas
+      MA_GIVE        Jemand gibt jemandem etwas
       MA_MOVE_IN     Jemand betritt den Raum
       MA_MOVE_OUT    Jemand verlaesst den Raum
       MA_MOVE        Jemand bewegt sich 

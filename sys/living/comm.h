@@ -49,6 +49,7 @@
 #define MA_UNKNOWN    0
 #define MA_PUT        "wirf"
 #define MA_TAKE       "nimm"
+#define MA_GIVE       "gib"
 #define MA_MOVE_IN    "move_in"
 #define MA_MOVE_OUT   "move_out"
 #define MA_MOVE       "move"

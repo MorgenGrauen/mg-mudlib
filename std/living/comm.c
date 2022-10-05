@@ -28,6 +28,11 @@ protected string comm_guess_action() {
       action = MA_TAKE;
       break;
 
+    case "gebe":
+      // MA_GIVE == "gib"
+      action = MA_GIVE;
+      break;
+    
     case "norden":
     case "nordosten":
     case "osten":
