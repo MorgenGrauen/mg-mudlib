@@ -19,8 +19,9 @@ GERUFEN VON
 BESCHREIBUNG
 ------------
 
-  Wird im move() eines Lebewesens ausgeloest. Es ist moeglich das move()
-  abzubrechen oder die Daten zu veraendern.
+  Wird im move() eines Lebewesens ausgeloest, **bevor** die Bewegung
+  stattgefunden hat. Es ist moeglich das move() abzubrechen oder die Daten zu
+  veraendern.
 
 HOOK-DATEN
 ----------

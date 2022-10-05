@@ -3,6 +3,7 @@ H_HOOK_CONSUME
 
 HOOK
 ----
+
   H_HOOK_CONSUME
 
 DEFINIERT IN
@@ -31,6 +32,8 @@ HOOK-DATEN
 BEMERKUNGEN
 -----------
 
+  testonly kann durch den Hook nicht veraendert werden.
+
   Die in "man consume" erwaehnte alte Form des Mappings wird leider noch
   benutzt, Stand heute (16.02.2018) u.A. von /std/pub. Beruecksichtigt das
   in eurem Code.
@@ -47,4 +50,4 @@ SIEHE AUCH
 
   HRegisterToHook(), HUnregisterFromHook(), HookFlow(), consume()
 
-Letzte Aenderung: 16.02.2018, Bugfix
+Letzte Aenderung: 06.10.2018, Bugfix

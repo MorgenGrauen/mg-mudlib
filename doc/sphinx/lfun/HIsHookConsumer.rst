@@ -1,0 +1,39 @@
+HIsHookConsumer()
+=================
+
+FUNKTION
+--------
+
+  int HIsHookConsumer(int hookid, object|closure consumer)
+
+DEFINIERT IN
+------------
+
+  /std/hook_provider.c
+  /sys/hook.h
+
+ARGUMENTE
+---------
+
+  - hookid: gibt den Hook-Typ an
+  - consumer: Objekt oder Closure. Wenn ein Objekt uebergeben wird, wird
+    eine Closure auf :doc:`HookCallback` an diesem Objekt erstellt.
+
+BESCHREIBUNG
+------------
+
+  Prueft, ob eine Closure als consumer fuer einen bestimmten Hook eingetragen
+  ist.
+
+RUECKGABEWERTE
+--------------
+
+  1 : Closure ist als consumer registriert
+  0 : Closure nicht als Konsument gefunden
+
+SIEHE AUCH
+----------
+
+  :doc:`HRegisterToHook`, :doc:`HUnregisterFromHook`, :doc:`HookCallback`
+
+Letzte Aenderung: 08.10.2022, Bugfix

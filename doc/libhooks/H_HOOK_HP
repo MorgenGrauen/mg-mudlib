@@ -5,15 +5,17 @@ DEFINIERT IN:
    /sys/hook.h
 
 AUSGELOeST VON:
-   /std/living/life.c
+   /std/player/life.c
 
 BESCHREIBUNG:
    Wird ausgeloest, wenn sich die P_HP eines Spielers aendern.
    Dieser Hook laeuft nach der Aenderung der Lebenspunkte. Es ist nicht
    moeglich, diesen Hook abzubrechen oder die Lebenspunkte zu aendern.
+   Eine Set-Methode auf P_HP kann das Ausloesen des Hooks verhindern.
 
 EVENT-DATEN:
-   Es werden die neuen Lebenspunkte des Spielers uebergebe.
+   int hp
+   Die neuen Lebenspunkte des Spielers.
 
 RUeCKGABEWERTE:
    ({ <status>, <daten> })
@@ -24,5 +26,5 @@ SIEHE AUCH:
    HRegisterToHook(), HUnregisterFromHook(), HookFlow()
 
 -----------------------------------------------------------------------------
-7.2.2016, Zesstra
+Letzte Aenderung: 06.10.2022, Bugfix
 

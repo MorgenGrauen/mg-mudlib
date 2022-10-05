@@ -1,0 +1,55 @@
+H_HOOK_DEFEND
+=============
+
+HOOK
+----
+
+  H_HOOK_DEFEND
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/combat.c
+
+BESCHREIBUNG
+------------
+
+  Wird im Defend() eines Lebewesens ausgeloest. Es ist moeglich das Defend()
+  abzubrechen oder die Daten zu veraendern.
+  Dieser Hook kommt nach der Auswertung von P_TMP_DEFEND_HOOK zum Zuge, kann
+  also auch die durch diesen modifizierten Daten aendern.
+  Die Daten des Legacy-Hooks stehen, sofern vorhanden, in
+  spell[EINFO_DEFEND][DEFEND_HOOK].
+
+  Insb. wird dieser Hook aber auch erst nach Abfrage der Defender
+  ausgefuehrt. Von diesen sind evtl. bereits Meldungen ausgegeben worden,
+  auch wenn das Defend() an dieser Stelle vom Hook abgebrochen wird.
+
+  Parierwaffen, Ruestungen und Skills kommen erst nach dem Hook zum Zug.
+
+HOOK-DATEN
+----------
+
+  Es wird ein array uebergeben.
+  ({int dam, string* dam_type, mapping spell, object enemy})
+  Die Werte sind bereits normalisiert D.h., eine Ueberpruefung auf korrekte
+  Datentypen ist hier ueberfluessig.
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_CANCELLED, H_ALTERED
+  <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), Defend()
+
+Letzte Aenderung: 06.10.2022, Bugfix

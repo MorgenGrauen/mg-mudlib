@@ -1,0 +1,41 @@
+HUnregisterFromHook()
+=====================
+
+FUNKTION
+--------
+
+  int HUnregisterFromHook(int hookid, object|closure consumer)
+
+DEFINIERT IN
+------------
+
+  /std/hook_provider.c
+  /sys/hook.h
+
+ARGUMENTE
+---------
+
+  - hookid: gibt den Hook-Typ an
+  - consumer: Objekt oder Closure. Wenn ein Objekt uebergeben wird, wird
+    eine Closure auf :doc:`HookCallback` an diesem Objekt erstellt und
+    versucht diese auszutragen, andernfalls wird versuchtdie uebergebene
+    Closure ausgetragen.
+
+BESCHREIBUNG
+------------
+
+  Hebt die Registrierung von <consumer> fuer einen bestimmten Hook-Typ 
+  wieder auf.
+
+RUECKGABEWERTE
+--------------
+
+  1 : Austragen erfolgreich
+  0 : consumer nicht als Konsument gefunden
+
+SIEHE AUCH
+----------
+
+  :doc:`HRegisterToHook`, :doc:`HookCallback`, :doc:`HIsHookConsumer`
+
+Letzte Aenderung: 06.10.2022, Bugfix

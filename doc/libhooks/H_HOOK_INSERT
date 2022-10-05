@@ -1,0 +1,43 @@
+H_HOOK_INSERT
+=============
+
+HOOK
+----
+
+  H_HOOK_INSERT
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/player/restrictions.c
+
+BESCHREIBUNG
+------------
+
+  Wird ausgeloest, wenn ein Gegenstand ins Inventar eines Spielers bewegt
+  wird. Es ist nicht moeglich, diesen Hook abzubrechen oder die Daten zu
+  veraendern.
+
+HOOK-DATEN
+----------
+
+  object ob
+  Das eingefuegt Objekt.
+
+RUECKGABEWERTE
+--------------
+
+  ({ H_NO_MOD, <daten> })
+  <daten>   : Das eingefuegte Objekt
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow()
+
+Letzte Aenderung: 06.10.2002, Bugfix

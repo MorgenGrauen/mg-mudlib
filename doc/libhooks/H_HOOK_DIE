@@ -1,0 +1,45 @@
+H_HOOK_DIE
+==========
+
+HOOK
+----
+
+  H_HOOK_DIE
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/life.c
+
+BESCHREIBUNG
+------------
+
+  Wird im die() eines Lebewesens ausgeloest. Es ist moeglich das die()
+  abzubrechen oder die Daten zu veraendern.
+
+HOOK-DATEN
+----------
+
+  Es wird ein Array uebergeben:
+  ({poisondeath})
+
+  - poisondeath: Ist das Lebewesen an Gift gestorben?
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_CANCELLED, H_ALTERED
+  <daten>   : wie uebergebenes Datenarray
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), die()
+
+Letzte Aenderung: 05.10.2022, Bugfix

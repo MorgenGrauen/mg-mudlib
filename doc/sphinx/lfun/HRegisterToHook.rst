@@ -1,0 +1,78 @@
+HRegisterToHook()
+=================
+
+FUNKTION
+--------
+
+  int HRegisterToHook(int hookid, object|closure consumer, int hookprio,
+      int consumertype, int timeInSeconds)
+
+DEFINIERT IN
+------------
+
+  /std/hook_provider.c
+  /sys/hook.h
+
+ARGUMENTE
+---------
+
+  - hookid: gibt den Hook-Typ an
+    Man kann sich nur fuer Hooktypen eintragen, die die Methode
+    :doc:`HListHooks` angeboten hat.
+  - consumer: Objekt oder Closure. Wenn ein Objekt uebergeben wird, wird
+    eine Closure auf :doc:`HookCallback` an diesem Objekt erstellt und
+    gespeichert, andernfalls wird die uebergebene Closure gespeichert.
+    Diese Closure wird spaeter beim Ausloesen des Hooks aufgerufen.
+  - hookprio: Gibt die Prioritaet an, mit der der Hook laufen soll.
+    Diese Angabe bestimmt die Reihenfolge, in der die Hooks in der Liste der
+    Hooks eingetragen werden. Siehe Abschnitt Beschreibung fuer Details.
+  - consumertype: Gibt an, um welche Art von Consumer es sich handelt.
+  - timeInSeconds: gibt die Laufzeit des Hooks an. Falls 0 eingetragen wird,
+    laeuft der Hook ewig.
+
+BESCHREIBUNG
+------------
+
+  Registriert ein Objekt oder eine Closure als Hook-Konsument.
+
+  Die Callback-Methode wird mit folgenden Argumenten gerufen:
+  - object hooksource: das Objekt, in welchem das Ereignis ausgeloest wurde
+  - int hookid: die ID des Hooks
+  - mixed hookdata: die Daten des Hooks (siehe Doku zum jeweiligen Hook)
+
+  Fuer hookprio sind folgende Werte vorgesehen (Konstanten aus hook.h):
+  - H_HOOK_LIBPRIO(x)
+  - H_HOOK_GUILDPRIO(x) oder
+  - H_HOOK_OTHERPRIO(x).
+  x darf 0, 1 oder 2 sein (je niedriger, desto hoeher die Prioritaet).
+
+  Fuer consumertype gibt es vier festgelegte Arten, die fuer alle Hooks
+  existieren koennen, aber nicht muessen (Konstanten aus hook.h):
+  - H_LISTENER: Wird nur informiert
+  - H_DATA_MODIFICATOR: Kann Daten des Ereignisses aendern
+  - H_HOOK_MODIFICATOR: Kann das Ereignis zusaetzlich abbrechen
+  - H_HOOK_SURVEYOR: Kann zusaetzlich entscheiden, ob sich Objekte
+    registrieren, Daten modifizieren oder Ereignisse abbrechen koennen
+  Die Methode  :doc:`HConsumerTypeIsAllowed` gibt
+  Aufschluss darueber, welche Consumer-Typen tatsaechlich freigegeben sind.
+
+RUECKGABEWERTE
+--------------
+
+  1  : Registrierung erfolgreich
+  -1 : Hook unbekannt
+  -2 : consumer ist keine closure und es konnte kein Callback auf
+       HookCallback im consumer erstellt werden.
+  -3 : Consumer ist bereits registriert
+  -4 : Consumer-Typ ist nicht erlaubt
+  -5 : hookprio ist nicht erlaubt
+  -6 : Surveyor hat Registrierung nicht erlaubt
+  -7 : zuviele Hooks registriert / kein Hookeintrag frei
+
+SIEHE AUCH
+----------
+
+  :doc:`HUnregisterFromHook`, :doc:`HookCallback`, :doc:`HListHooks`,
+  :doc:`HIsHookConsumer`
+
+Letzte Aenderung: 05.10.2022, Bugfix

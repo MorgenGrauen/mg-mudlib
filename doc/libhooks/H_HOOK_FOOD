@@ -1,0 +1,45 @@
+H_HOOK_FOOD
+===========
+
+HOOK
+----
+
+  H_HOOK_FOOD
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/living/life.c
+
+BESCHREIBUNG
+------------
+
+  Wird bei Veraenderung von P_FOOD im Lebewesen ausgegeben. Aenderung der
+  Daten und Abbruch sind moeglich.
+  Wenn eine Set-Methode auf P_FOOD existiert, kann das Ausloesen des Hooks
+  verhindert werden.
+
+HOOK-DATEN
+----------
+
+  int food
+  Der Neue Wert der Property.
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status>, <daten> })
+  <status>  : H_NO_MOD, H_ALTERED, H_CANCELLED
+  <daten>   : int food
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow(), P_FOOD
+
+Letzte Aenderung: 06.10.2022, Bugfix

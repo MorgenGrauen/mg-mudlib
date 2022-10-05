@@ -1,0 +1,46 @@
+H_HOOK_INIT
+===========
+
+HOOK
+----
+
+  H_HOOK_INIT
+
+DEFINIERT IN
+------------
+
+  /sys/hook.h
+
+GERUFEN VON
+-----------
+
+  /std/room.c
+
+BESCHREIBUNG
+------------
+
+  Wird im init() eines Raumes ausgeloest. Es ist moeglich den Hook
+  abzubrechen.
+
+ANMERKUNG
+---------
+
+  ACHTUNG: Ein Abbruch des init() kann zu schweren Bugs fuehren.
+
+HOOK-DATEN
+----------
+
+  keine
+
+RUECKGABEWERTE
+--------------
+
+  ({ <status> })
+  <status>: H_NO_MOD, H_CANCELLED
+
+SIEHE AUCH
+----------
+
+  HRegisterToHook(), HUnregisterFromHook(), HookFlow()
+
+Letzte Aenderung: 06.10.2002, Bugfix
