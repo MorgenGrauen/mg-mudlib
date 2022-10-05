@@ -59,10 +59,9 @@ RUeCKGABEWERT
 BEISPIELE
 ---------
 
-  Folgendes Beispiel demonstriert beispielsweise, wie man Tode von
-  Spielern mitloggen kann (das Beispiel ist hierbei auf den am
-  haeufigsten auftretenden Fall bezogen, dass nur das toetende Objekt
-  den Tod protokollieren soll):
+  Folgendes Beispiel demonstriert, wie man Tode von Spielern mitloggen kann
+  (das Beispiel ist hierbei auf den am haeufigsten auftretenden Fall bezogen,
+  dass nur das toetende Objekt den Tod protokollieren soll):
 
   .. code-block:: pike
 
@@ -91,7 +90,7 @@ SIEHE AUCH
 ----------
 
   :doc:`Defend`, :doc:`do_damage`,
-  :doc:`../efun/catch`, :doc:`../efun/write_file`, :doc:`../sefun/log_file`
+  catch(), write_file(), :doc:`../sefun/log_file`
   :doc:`../props/P_LAST_DEATH_PROPS`
 
 04.04.2020, Zesstra

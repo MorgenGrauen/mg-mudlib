@@ -9,7 +9,7 @@ GETRIGGERT VON:
 
 BESCHREIBUNG:
    Dieser Event wird immer dann von einem Spielerobjekt ausgeloest, wenn 
-   der Spieler  gerade getoetet wurde (um genau zu sein: im die()).
+   der Spieler gerade getoetet wurde (um genau zu sein: im die()).
 
 EVENT-DATEN:
    Die Daten werden als Mapping uebergeben:
@@ -17,7 +17,7 @@ EVENT-DATEN:
       E_PLNAME:        (string) UID/Playername des getoeteten Spielers, 
       E_ENVIRONMENT:   (object) Environment des Opfer beim Tod,
       E_TIME:          (int) Zeitstempel des Todes,
-      P_LAST_KILLER:   (object) Der Killer, s. Property
+      P_KILLER:        (object) Der Killer, s. Property
       P_LAST_DAMAGE:   (int) s. Property,
       P_LAST_DAMTYPES: (string *) s. Property,
       P_LAST_DEATH_PROPS: (mixed) s. Property
@@ -32,5 +32,5 @@ SIEHE AUCH:
    events, RegisterEvent(), UnregisterEvent(), TriggerEvent(), eventd
 
 -----------------------------------------------------------------------------
-21.08.2007, Zesstra
+16.08.2022, Arathorn
 
