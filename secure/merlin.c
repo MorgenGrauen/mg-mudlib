@@ -351,7 +351,7 @@ private void AnnounceNewPlayer(object pl) {
   string plname = ({string})pl->Name(WER);
     CHMASTER->send("Anfaenger", this_object(),
       sprintf("%s macht nun ebenfalls das Morgengrauen unsicher. "
-              "Herzlich Willkommen %s!", plname, plname)
+              "Herzlich willkommen %s!", plname, plname)
       );
   }
 }

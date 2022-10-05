@@ -135,8 +135,8 @@ void create() {
  +"kommen und sind an manchen Stellen ganz schoen durchgebogen. Das grob ge-\n"
  +"schnittene Holz ist teilweise von Schwertstreichen zernarbt.\n");
   AddDetail(({"hafen", "hafenstrasse", "strasse"}),
-  "Zur Tuer hinaus gelangt man ueber die Hafenstrasse zum Hafen von Port Vain"
- +"\n");
+  "Zur Tuer hinaus gelangt man ueber die Hafenstrasse zum Hafen von Port "
+  "Vain.\n");
   AddDetail(({"boden", "fussboden", "dielen"}),
   "Die knarrenden Dielen der Gilde sind schon alt und abgeschabt. In den\n"
  +"Ritzen zwischen ihnen ist viel Dreck von den Stiefeln der Abenteurer.\n");
@@ -159,7 +159,7 @@ void create() {
   "Die Wellen auf dem Meer glitzern wie tausend Edelsteine.\n");
   AddDetail(({"spritzer", "lichtspritzer"}),
   "Wie tausend kleine Edelsteine verteilen sich diese winzigen, gluehenden\n"
- +"Lichtspritzer ueber das wundervolle Gemaelde\n");
+ +"Lichtspritzer ueber das wundervolle Gemaelde.\n");
   AddDetail(({"geschoss", "obergeschoss"}),
   "Ins obere Geschoss der Gilde kommen nur Magier, mittels eines besonderen\n"
  +"Zauberspruchs, der die Decke durchlaessig fuer sie macht.\n");
