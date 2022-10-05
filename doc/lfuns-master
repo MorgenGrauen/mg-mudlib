@@ -11,3 +11,5 @@ Verzeichnis der lfuns in master()
 * QueryWizardsForUID()
 
 * RemoveWizardFromUID()
+
+* find_userinfo()

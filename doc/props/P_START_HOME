@@ -18,4 +18,20 @@ DEFINIERT IN
 BESCHREIBUNG
 ============
 
-   Raum, in dem der Spieler nach dem Einloggen landen soll
+   Enthaelt den Pfad zu einem Startraum des Spielerobjekts. Dieser
+   wird bevorzugt vor dem Standard-Startraum der Shell verwendet.
+
+
+BEMERKUNGEN
+===========
+
+   Diese Property ist nicht zum Eintragen des Seherhauses gedacht,
+   hierfuer ist /d/seher/haeuser/hausverwalter zustaendig.
+
+
+SIEHE AUCH
+==========
+
+   SetDefaultHome(), QueryDefaultHome()
+
+Letzte Aenderung: 28.09.2022, Bugfix

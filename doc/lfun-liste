@@ -424,6 +424,8 @@ Verzeichnis der dokumentierten lfuns
 
 * QueryDamage()
 
+* QueryDefaultHome()
+
 * QueryDefend()
 
 * QueryDisguise()
@@ -597,6 +599,8 @@ Verzeichnis der dokumentierten lfuns
 * SetChats()
 
 * SetCoinsPerUnits()
+
+* SetDefaultHome()
 
 * SetDoorStatus()
 

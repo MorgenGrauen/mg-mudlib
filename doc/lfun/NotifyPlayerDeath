@@ -72,10 +72,10 @@ RUeCKGABEWERT
 BEISPIELE
 =========
 
-   Folgendes Beispiel demonstriert beispielsweise, wie man Tode von
-   Spielern mitloggen kann (das Beispiel ist hierbei auf den am
-   haeufigsten auftretenden Fall bezogen, dass nur das toetende Objekt
-   den Tod protokollieren soll):
+   Folgendes Beispiel demonstriert, wie man Tode von Spielern
+   mitloggen kann (das Beispiel ist hierbei auf den am haeufigsten
+   auftretenden Fall bezogen, dass nur das toetende Objekt den Tod
+   protokollieren soll):
 
       void NotifyPlayerDeath(object dead, object killer, int lost_exp)
       {
@@ -103,7 +103,7 @@ BEISPIELE
 SIEHE AUCH
 ==========
 
-   Defend(), do_damage(), *../efun/catch*, *../efun/write_file*,
-   log_file() P_LAST_DEATH_PROPS
+   Defend(), do_damage(), catch(), write_file(), log_file()
+   P_LAST_DEATH_PROPS
 
 04.04.2020, Zesstra
