@@ -81,15 +81,18 @@ void emit( string msg ) {
 /* Offizielle API funktion
  * xeval "/secure/misc/twitter"->twitter("@_zesstra_ welcome back")
  */
-void twitter(string msg) {
+int twitter(string msg) {
 	int err = 0;
 	if( !allowed() ) {
 		write( "Twitter ist ARCH+Berechtigte only.\n" );
-		return;
+		return 0;
 	}
 	msg = msg + "^" + sig(this_interactive()) + "\n";
-	if (sizeof(msg) > 279)
+	if (sizeof(msg) > 279) {
     write("Tweet ist zu lang.\n");
+    return 0;
+  }
+
   if(interactive(this_object())) {
 		tell_object(this_object(),msg);
 	} else {
@@ -97,8 +100,10 @@ void twitter(string msg) {
 		caller = this_interactive();
 		if( (err=net_connect(HOST,PORT))!=0 ) {
 			write( "Konnte Tweet nicht senden. err="+err+"\n" );
+      return 0;
 		}
 	}
+  return 1;
 }
 
 // sonderfunktion fuer den fall, dass man die verbindung

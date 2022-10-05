@@ -34,10 +34,13 @@ protected void create()
       str = PL->_unparsed_args(0);
       if(!sizeof(str))
         return 0;
-      "/secure/misc/twitter"->twitter(str);
-      this_interactive()->ReceiveMsg(
-        BS(sprintf("Tweet \'%s\' wird gesendet.",str)),
-        MT_NOTIFICATION|MSG_BS_LEAVE_LFS);
+
+      // Der Twitter-Relay gibt Fehlermeldungen selbst aus, d.h. nur bei
+      // Erfolg muessen wir selber etwas ausgeben.
+      if ("/secure/misc/twitter"->twitter(str))
+        this_interactive()->ReceiveMsg(
+          BS(sprintf("Tweet \'%s\' wird gesendet.",str)),
+          MT_NOTIFICATION|MSG_BS_LEAVE_LFS);
       return 1;
     });
 }
