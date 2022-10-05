@@ -114,34 +114,32 @@ static int cm_smoke(string str){
   write("Du rauchst in Ruhe Dein Pfeifchen.\n");
   write(break_string(des,78));
   if(find_call_out("smoke2")==-1)
-    call_out("smoke2",20,getuid(this_player()));
+    call_out("smoke2",20);
   return 1;
 }
 
-int smoke2(object pl){
-  object ob;
-  if(!rauchen) return 0;
-  if(!ob=find_player(getuid(pl))) return 0;
-  if(environment()!=ob) return 0;
-  tell_object(ob,"Genuesslich pustest Du ein paar Rauchkringel in die Luft.\n");
-  tell_room(environment(ob),ob->Name()+" pustet genuesslich ein paar "
-   +"Rauchkringel in die Luft.\n",({ob}));
+void smoke2(){
+  if(!rauchen || !this_player() || environment()!=this_player())
+    return 0;
+  tell_object(this_player(),
+    "Genuesslich pustest Du ein paar Rauchkringel in die Luft.\n");
+  tell_room(environment(this_player()),this_player()->Name()+" pustet "
+    "genuesslich ein paar Rauchkringel in die Luft.\n",({this_player()}));
   if(find_call_out("smoke3")==-1)
-    call_out("smoke3",20,getuid(environment()));
-  return 1;
+    call_out("smoke3",20);
 }
 
-int smoke3(object pl){
-  object ob;
-  if(!rauchen) return 0;
-  if(!ob=find_player(getuid(pl))) return 0;
-  if(environment()!=ob) return 0;
-  tell_object(ob,break_string("Genuesslich pustest Du ein paar Rauchkringel "
-   "in die Luft, rauchst Dein Pfeifchen auf und klopfst es aus.",78));
-  tell_room(environment(ob),break_string(ob->Name()+" pustet genuesslich ein "
-   "paar Rauchkringel in die Luft, beendet das Rauchpaeuschen und klopft "
-   +(ob->QueryProp(P_GENDER)==1?"sein":"ihr")+" Pfeifchen aus.",78),({ob}));
+void smoke3(){
+  if(!rauchen || !this_player() || environment()!=this_player())
+    return 0;
+  tell_object(this_player(),
+    break_string("Genuesslich pustest Du ein paar Rauchkringel "
+    "in die Luft, rauchst Dein Pfeifchen auf und klopfst es aus.",78));
+  tell_room(environment(this_player()),break_string(
+    this_player()->Name()+" pustet genuesslich ein paar Rauchkringel in die "
+    "Luft, beendet das Rauchpaeuschen und klopft "+
+    (this_player()->QueryProp(P_GENDER)==1?"sein":"ihr")+
+    " Pfeifchen aus.",78),({this_player()}));
   rauchen = 0;
   gestopft = 0;
-  return 1;
 }
