@@ -34,10 +34,14 @@
 #include <combat.h>
 #include <wizlevels.h>
 #include <new_skills.h>
+#include <hook.h>
 
 #define LICHTKUGEL "/gilden/files.abenteurer/lichtkugel"
 
 inherit "/std/spellbook";
+
+public <int|<int|string*|mapping|object>*>* Deckung(object caster,
+    int hookid, <int|string*|mapping|object>* data);
 
 void create() {
   ::create();
@@ -312,32 +316,40 @@ int ausweichen(object caster, mapping sinfo)
     return 0;
   }
 
-  if (caster->QueryProp(P_TMP_DEFEND_HOOK))
-  {
-    write("Das geht momentan nicht, Du wunderst Dich wieso!\n");
-    return 0;
-  }
-
   if (SpellSuccess(caster,sinfo)<=0)
     return MISSERFOLG;
 
-  caster->SetProp(P_TMP_DEFEND_HOOK, ({ time()+4, this_object(), "Deckung" }));
+  int hres = caster->HRegisterToHook(
+    H_HOOK_DEFEND,
+    #'Deckung,
+    H_HOOK_GUILDPRIO(0),
+    H_HOOK_MODIFICATOR,
+    4);
+  if(hres != 1)
+  {
+    caster->ReceiveMsg(
+      "Das geht momentan nicht, Du wunderst Dich wieso!",
+      MT_NOTIFICATION,
+      MA_SPELL);
+    return 0;
+  }
+
   return ERFOLG;
 }
 
-mixed Deckung(int dam, mixed dam_type, mixed spell, object enemy)
+// Diese Funktion wird auch von d/inseln/tilly/volgonen/rooms/std/para_vulkan.c 
+// verwendet und muss daher public sein.
+public <int|<int|string*|mapping|object>*>* Deckung(object caster,
+    int hookid, <int|string*|mapping|object>* data)
 {
-  if (!pointerp(dam_type))
-    dam_type = ({ dam_type });
-  if (sizeof(dam_type & m_indices(PHYSICAL_DAMAGE_TYPES)))
+  if (sizeof(data[1] & m_indices(PHYSICAL_DAMAGE_TYPES)))
   {
-    tell_object(previous_object(), "Du weichst gekonnt aus.\n");
-    if (previous_object()->QueryProp(P_TMP_DEFEND_HOOK)[1] == this_object())
-      previous_object()->SetProp(P_TMP_DEFEND_HOOK, 0);
-    return 0;
+    tell_object(caster, "Du weichst gekonnt aus.\n");
+    caster->HUnregisterFromHook(H_HOOK_DEFEND, #'Deckung);
+    return ({H_CANCELLED, data});
   }
-  tell_object(previous_object(), "Dein Ausweichversuch ist vergebens.\n");
-  return ({ dam, dam_type, spell, enemy });
+  tell_object(caster, "Dein Ausweichversuch ist vergebens.\n");
+  return ({H_NO_MOD, data});
 }
 
 int
