@@ -129,8 +129,7 @@ void create() {
 int
 steinschlag(object caster, mapping sinfo) {
   object victim;
-  int hands;
-  string vn, vnw, cn;
+  string vnw, cn;
   int suc;
 
   victim=FindEnemyVictim(sinfo[SI_SKILLARG],caster,
@@ -344,8 +343,6 @@ mixed Deckung(int dam, mixed dam_type, mixed spell, object enemy)
 int
 identifiziere(object caster, mapping sinfo) {
   object ob;
-  string* fi;
-  string cn;
   string result, info;
   int suc;
   ob=FindVictim(sinfo[SI_SKILLARG], caster,
@@ -353,7 +350,6 @@ identifiziere(object caster, mapping sinfo) {
   if (!ob)
     return 0;
 
-  cn = caster->name();
   if ((suc=SpellSuccess(caster,sinfo))<=0)
     return MISSERFOLG;
   if (suc < ob->SpellDefend(caster, sinfo))
@@ -424,7 +420,6 @@ licht(object caster, mapping sinfo)
 int
 saeurestrahl(object caster, mapping sinfo) {
   object victim;
-  int hands;
   string vnw;
   int suc;
 
@@ -458,7 +453,6 @@ saeurestrahl(object caster, mapping sinfo) {
 int
 feuerball(object caster, mapping sinfo) {
   object victim;
-  int hands;
   string vnw;
   int suc;
 
@@ -490,8 +484,7 @@ feuerball(object caster, mapping sinfo) {
 int
 pfeil(object caster, mapping sinfo) {
   object victim;
-  int hands;
-  string vn, vnw, cn;
+  string vnw, cn;
   int suc;
 
   victim=FindEnemyVictim(sinfo[SI_SKILLARG],caster,
