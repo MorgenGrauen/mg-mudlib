@@ -264,7 +264,7 @@ bereitgestellten Hooks zu benennen.
     'offerstate': 0 (nicht verfuegbar), 1 (verfuegbar)
 
 
-  * int HRegisterToHook(int hookid, mixed consumer, int hookprio,
+  * int HRegisterToHook(int hookid, object|closure consumer, int hookprio,
                         int consumertype, int timeInSeconds);
     
     Registriert ein Objekt oder eine Closure als Hook-Konsument.
@@ -307,7 +307,7 @@ bereitgestellten Hooks zu benennen.
           -7 : zuviele Hooks registriert / kein Hookeintrag frei
 
 
-  * int HUnregisterFromHook(int hookid, mixed consumer);
+  * int HUnregisterFromHook(int hookid, object|closure consumer);
 
     Hebt die Registrierung von <consumer> fuer einen bestimmten Hook-Typ 
     wieder auf.
@@ -351,7 +351,7 @@ bereitgestellten Hooks zu benennen.
     1 zurueck.
 
 
-  * int HIsHookConsumer(int hookid, mixed consumer);
+  * int HIsHookConsumer(int hookid, object|closure consumer);
     Ist <consumer> ein Objekt, liefert die Methode die Anzahl, wie oft dieses
     Objekt (mit verschiedenen Closures) fuer den Hook <hookid> eingetragen 
     ist.

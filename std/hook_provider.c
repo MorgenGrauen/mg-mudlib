@@ -167,7 +167,7 @@ protected void offerHook(int hookid, int offerstate)
 //          NEVER return the original to an external caller!
 // NOTE: whoever has the cl from hook_entry_s can call it, even if the lfun
 //       is private (and this object the only one knowing it).
-protected mixed * hookConsumerInfo(int hookid, object|closure consumer)
+protected struct hook_entry_s* hookConsumerInfo(int hookid, object|closure consumer)
 {
   closure filter_cl;
 
@@ -201,7 +201,7 @@ protected mixed * hookConsumerInfo(int hookid, object|closure consumer)
   return result;
 }
 
-int HIsHookConsumer(int hookid, mixed consumer) {
+int HIsHookConsumer(int hookid, object|closure consumer) {
   return sizeof(hookConsumerInfo(hookid,consumer)) != 0;
 }
 
@@ -209,12 +209,12 @@ int* HListHooks() {
   return m_indices(hookMapping);
 }
 
-int HUnregisterFromHook(int hookid, mixed consumer) {
+int HUnregisterFromHook(int hookid, object|closure consumer) {
 
   H_DMSG(sprintf("HUnregisterFromHook hookid %d consumer %O\n",hookid,consumer));
   if (objectp(consumer))
     consumer = symbol_function("HookCallback", consumer);
-  if (!closurep(consumer))
+  if (!consumer)
     return 0;
 
   struct hook_entry_s *info = hookConsumerInfo(hookid,consumer);
@@ -253,11 +253,11 @@ protected int askSurveyorsForRegistrationAllowance(
   return 1;
 }
 
-int HRegisterToHook(int hookid, mixed consumer, int hookprio,
+int HRegisterToHook(int hookid, object|closure consumer, int hookprio,
                        int consumertype, int timeInSeconds) {
   int ret, regtime;
 
-  if (!closurep(consumer) && !objectp(consumer))
+  if (!consumer)
     raise_error(sprintf("Wrong argument %.50O to HRegisterToHook(): consumer "
           "must be closure or object.\n",consumer));
 
@@ -360,20 +360,20 @@ int HRegisterToHook(int hookid, mixed consumer, int hookprio,
 }
 
 // Conveniences wrapper for simple listener hooks
-int HRegisterListener(int hookid, mixed consumer)
+int HRegisterListener(int hookid, object|closure consumer)
 {
   return HRegisterToHook(hookid, consumer, H_HOOK_OTHERPRIO(2), H_LISTENER, 0);
 }
 
 // Cnveniences wrapper for simple modificator hooks
-int HRegisterModifier(int hookid, mixed consumer)
+int HRegisterModifier(int hookid, object|closure consumer)
 {
   return HRegisterToHook(hookid, consumer, H_HOOK_OTHERPRIO(2),
                          H_HOOK_MODIFICATOR, 0);
 }
 
 // surveyors are asked for cancellation permittance
-protected int askSurveyorsForCancelAllowance(mixed surveyors,
+protected int askSurveyorsForCancelAllowance(struct hook_entry_s* surveyors,
   object modifiyingOb,mixed data,int hookid,int prio,object hookOb){
 
   foreach(struct hook_entry_s surveyor : surveyors) {
@@ -390,7 +390,7 @@ protected int askSurveyorsForCancelAllowance(mixed surveyors,
 }
 
 // surveyors are asked for data change permittance
-protected int askSurveyorsForModificationAllowance(mixed surveyors,
+protected int askSurveyorsForModificationAllowance(struct hook_entry_s* surveyors,
   object modifiyingOb,mixed data,int hookid,int prio,object hookOb){
 
   foreach(struct hook_entry_s surveyor : surveyors) {

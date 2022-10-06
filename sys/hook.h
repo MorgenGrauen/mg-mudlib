@@ -78,14 +78,14 @@
 int* HListHooks();
 
 // register to hook
-int HRegisterToHook(int hookid, mixed consumer, int hookprio,
+int HRegisterToHook(int hookid, object|closure consumer, int hookprio,
     int consumertype, int timeInSeconds);
 
 // unregister from hook
-int HUnregisterFromHook(int hookid, mixed consumer);
+int HUnregisterFromHook(int hookid, object|closure consumer);
 
 // check wether object is a consumer for a given hook
-int HIsHookConsumer(int hookid, mixed consumer);
+int HIsHookConsumer(int hookid, object|closure consumer);
 
 // offer a hook or stop offering it
 protected void offerHook(int hookid, int offerstate);
