@@ -1,12 +1,9 @@
 ReceiveMsg()
 ============
 
-ReceiveMsg()
-
 public varargs int ReceiveMsg(string msg, int msg_typ, string msg_action,
                               string msg_prefix, mixed origin)
-------------------------------------------------------------------------------------------------------------------------------------------------------
-::
+
 
 DEFINIERT IN
 ------------
