@@ -412,7 +412,8 @@ public int CmdFehlerListe(string arg) {
     txt="";
     if (!sizeof(typemap)) {
       tell_object(PL,
-        "Es sind keine " + errorlabel(typ)[1] + "Deiner UIDs bekannt. :-)");
+        "Es sind keine " + errorlabel(typ)[1] +
+        " Deiner UIDs bekannt. :-)\n");
       continue;
     }
     foreach(string uid, < <int|string>* >* list : typemap)
@@ -1086,17 +1087,21 @@ private varargs int update_issuelist(int lmodus)
       if (type & lmodus)
       {
           //DEBUG(sprintf("Type: %d\n",type));
+          m_add(issuelist, type, ([]));
           foreach(string uid : uids + xmonitoruids)
           {
             //DEBUG(sprintf("Type: %d, UID: %s\n",type,uid));
+            // Ggf. stehen UIDs mehrfach in der Liste, wenn eine UID fuer
+            // die der Magier zustaendig ist haendisch im Fehlermonitor oder
+            // im Master eingetragen ist
+            if(uid in issuelist[type]) continue;
             < <int|string>* >* list =
                   ({< <int|string>* >*})ERRORD->QueryIssueList(type,uid);
+            if(!sizeof(list)) continue;
+
             count += sizeof(list);
 
-            if (!member(issuelist, type))
-              issuelist += ([ type: ([ uid: list ]) ]);
-            else if (!member(issuelist[type], uid))
-              issuelist[type] += ([uid: list ]);
+            issuelist[type] += ([uid: list ]);
         }
       }
     }
