@@ -410,12 +410,6 @@ public int CmdFehlerListe(string arg) {
     if (!(typ & lmodus))
       continue; // Type nicht gewaehlt.
     txt="";
-    if (!sizeof(typemap)) {
-      tell_object(PL,
-        "Es sind keine " + errorlabel(typ)[1] +
-        " Deiner UIDs bekannt. :-)\n");
-      continue;
-    }
     foreach(string uid, < <int|string>* >* list : typemap)
     {
       if (!sizeof(list)) continue;
