@@ -24,6 +24,8 @@ void create()
   SetProp(P_GENDER, MALE);
   SetProp(P_RACE,"saurier");
   SetProp(P_ARTICLE,1);
+  SetProp(P_SIZE, 60);
+  SetProp(P_WEIGHT, 7000);
   AddId(({"muellschlucker","schlucker","kleinsaurier","saurier"}));
   create_default_npc( 1 );
   SetProp(P_XP,0);
