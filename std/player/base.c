@@ -4309,10 +4309,13 @@ private int set_keep_alive(string str) {
       tell_object(this_object(), break_string(
         "An Deinen Client werden keine Keep-Alive-Pakete geschickt.",78));
     else
+    {
       tell_object(this_object(), break_string(
-        "An Deinen Client werden alle 4 Minuten " 
-        "unsichtbare Daten geschickt, damit Deine Verbindung "
+        "An Deinen Client werden alle " 
+        + QueryProp(P_TELNET_KEEPALIVE_DELAY) * __HEART_BEAT_INTERVAL__
+        + " Sekunden unsichtbare Daten geschickt, damit Deine Verbindung "
         "zum "MUDNAME" nicht beendet wird.",78));
+    }
   }
   return 1;
 }
