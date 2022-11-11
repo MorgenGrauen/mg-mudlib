@@ -35,7 +35,7 @@ telnet
       Soll die Einstellung geloescht und der Default wiederhergestellt werden,
       muss als Argument \'loeschen\' angegeben werden.
       Fuer Details s. Hilfeseite telnet_charset
-    * client-gui <client>
+    * client-gui <client> oder gui <client>
       Sendet fuer den angegebenen Client eine Nachricht via GMCP (sofern das
       vom Client aktiviert wurde), welche diesem sagt, von wo das aktuelle
       GUI-Paket fuer den Client ladbar ist.
@@ -46,4 +46,4 @@ telnet
     P_TELNET_KEEPALIVE_DELAY
 
  LETZTE AeNDERUNG:
-    12.06.2021, Zesstra
+    11.11.2022, Zesstra
