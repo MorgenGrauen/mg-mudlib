@@ -571,7 +571,9 @@ public varargs void init(object origin)
     meet_last_player = time();
     // Wenn jemand in uns ist, auch falls noetig die Route fortsetzen,
     // denn wir haben natuerlich nicht H_HOOK_INIT in uns selbst abonniert.
-    if(environment(PL)==ME)
+    // Aber auch nur, wenn nicht jemand schon nen zeitverzögertes
+    // Continue per Hook getriggert hat.
+    if(environment(PL)==ME && find_call_out(#'Continue)==-1)
       Continue();
   }
 }
@@ -579,9 +581,9 @@ public varargs void init(object origin)
 // we try to continue our route once some living triggers init.
 private mixed InitHookCallback(object source, int hookid, mixed hookdata)
 {
-  if (hookid == H_HOOK_INIT && previous_object() == source)
-    Continue();
-
+  if (hookid == H_HOOK_INIT && previous_object() == source &&
+      find_call_out(#'Continue)==-1)
+      call_out(#'Continue, 0);
   return ({H_NO_MOD, hookdata});
 }
 
