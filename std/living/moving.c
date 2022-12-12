@@ -186,7 +186,7 @@ varargs public int move( object|string dest, int method, string direction,
                          string textout, string textin )
 {
     int para, invis, tmp;
-    object oldenv, *inv;
+    object oldenv;
     string fn,vc;
     mixed res;
     mixed hookData, hookRes;
@@ -313,30 +313,31 @@ varargs public int move( object|string dest, int method, string direction,
             if ( !sizeof(direction) )
                 direction = 0;
 
-            inv = all_inventory(environment()) - ({ this_object() });
-            inv = filter( inv, #'living/*'*/ );
-            inv -= filter_objects( inv, "CannotSee", 1 );
+            foreach (object who : all_inventory(environment())) {
+              if (who != this_object() && living(who) && !who->CannotSee(1))
+                who->ReceiveMsg(sprintf("%s %s%s%s.",
+                                Name(WER,2),
+                                textout,
+                                direction ? " " + direction : "",
+                                sizeof(mout) > 1 ? mout[1] : ""),
+                    MT_LOOK, MA_MOVE_OUT);
+            }
 
-            filter( inv, #'tell_object/*'*/,
-                          Name( WER, 2 ) + " " + textout +
-                          (direction ? " " + direction : "") +
-                          (sizeof(mout) > 1 ? mout[1] : "") + ".\n" );
         }
         // Magier sehen auch Bewegungen, die M_SILENT sind
         else if ( interactive(ME) ){
-            inv = (all_inventory(environment()) & users())
-                - ({ this_object() });
-            inv = filter( inv, #'_is_learner/*'*/ );
-
             if ( invis )
                 fn = "(" + capitalize(getuid(ME)) + ") verschwindet "
                     "unsichtbar.\n";
             else
                 fn = capitalize(getuid(ME)) + " verschwindet ganz leise.\n";
-            
-            filter( inv, #'tell_object/*'*/, fn );
+
+            foreach (object who : all_inventory(environment())) {
+              if (who != this_object() && _is_learner(who))
+                tell_object(who, fn);
+            }
         }
-        
+
         // Nackenschlag beim Fluechten:
         if ( !(method & M_NO_ATTACK) && objectp(ME) )
             ExitAttack();
@@ -383,23 +384,24 @@ varargs public int move( object|string dest, int method, string direction,
         else
               textin = ({string}) QueryProp(P_MSGIN);
       }
-            
-      inv = all_inventory(environment()) - ({ this_object() });
-      inv = filter( inv, #'living/*'*/ );
-            inv -= filter_objects( inv, "CannotSee", 1 );
-            filter( inv, #'tell_object/*'*/,
-                          capitalize(name( WER, 0 )) + " " + textin + ".\n" );
+
+      foreach (object who : all_inventory(environment())) {
+        if (who != this_object() && living(who) && !who->CannotSee(1))
+          who->ReceiveMsg(Name(WER,0)+" "+textin+".", MT_LOOK, MA_MOVE_IN);
+      }
     }
     // sonst: Magier sehen auch M_SILENT-Bewegungen, hier also nur an Magier
     // ausgeben, alle anderen sehen eh nix.
-    else if ( interactive(ME) ) {  
-      inv = (all_inventory(environment()) & users()) - ({this_object()});        
-      inv = filter( inv, #'_is_learner/*'*/ );        
+    else if ( interactive(ME) ) {
       if ( invis )
         fn = "(" + capitalize(getuid(ME)) + ") taucht unsichtbar auf.\n";
       else
-        fn = capitalize(getuid(ME)) + " schleicht leise herein.\n";        
-      filter( inv, #'tell_object, fn );    
+        fn = capitalize(getuid(ME)) + " schleicht leise herein.\n";
+
+        foreach (object who : all_inventory(environment())) {
+          if (who != this_object() && _is_learner(who))
+            tell_object(who, fn);
+        }
     }
 
     // "Objekt" ueber das Move informieren.
