@@ -41,30 +41,38 @@ void SetAttackChats(int chance, mixed strs) {
 #define SR_CHAT_TYP 1
 
 protected void process_chat(mixed strs) {
-  if(pointerp(strs) && sizeof(strs)) {
-    int msg_typ;
-    mixed entry = strs[random(sizeof(strs))];
+  if (!pointerp(strs) || !sizeof(strs))
+    return;
 
-    if(pointerp(entry) && sizeof(entry)>=2 && intp(entry[SR_CHAT_TYP])) {
-      msg_typ = entry[SR_CHAT_TYP];
-      entry = entry[SR_CHAT_MSG];
-    }
-    if(closurep(entry))
-      entry = funcall(entry, &msg_typ);
-    entry = process_string(entry);
+  int msg_typ;
+  mixed entry = strs[random(sizeof(strs))];
 
-    if(msg_typ)
-      msg_typ|=MSG_DONT_STORE|MSG_DONT_BUFFER;
-
-    // Nur nicht-leere Meldungen ausgeben, und nur dann, wenn der NPC noch
-    // existiert, denn im Falle von Attack-Chats koennte dieser z.B. durch
-    // reflektierten Schaden zerstoert worden sein.
-    if ( stringp(entry) && sizeof(entry) && objectp(this_object()) )
-      send_room(environment(),
-                entry,
-                msg_typ||(MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL|
-                          MSG_DONT_STORE|MSG_DONT_BUFFER|MSG_DONT_WRAP));
+  if(pointerp(entry) && sizeof(entry)>=2 && intp(entry[SR_CHAT_TYP])) {
+    msg_typ = entry[SR_CHAT_TYP];
+    entry = entry[SR_CHAT_MSG];
   }
+
+  if(closurep(entry))
+    entry = funcall(entry, &msg_typ);
+
+  // Falls wir in der Chat-Closure zerstoert wurden, nichts weiter tun.
+  if (!objectp(ME))
+    return;
+
+  if (msg_typ)
+    msg_typ |= MSG_DONT_STORE|MSG_DONT_BUFFER;
+
+  entry = process_string(entry);
+
+  // Falls wir durch process_string() zerstoert wurden oder keine Meldung
+  // (mehr) existiert, nichts weiter tun.
+  if (!objectp(ME) || !stringp(entry) || !sizeof(entry))
+    return;
+
+  send_room(environment(),
+            entry,
+            msg_typ||(MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL|
+                      MSG_DONT_STORE|MSG_DONT_BUFFER|MSG_DONT_WRAP));
 }
 
 void DoAttackChat() {
