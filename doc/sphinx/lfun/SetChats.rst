@@ -16,25 +16,29 @@ ARGUMENTE
 
     int chance
       Prozentuale Wahrscheinlichkeit einer Ausgabe
-    mixed strs
+    <string|closure|<string|closure|int>* >* strs
       Array mit den verschiedenen Moeglichkeiten der Monsterchats
+      (optional)
 
 BESCHREIBUNG
 ------------
 
     Der NPC gibt mit der Wahrscheinlichkeit <chance> pro Heartbeat einen
-    zufaellig gewaehlten Text aus dem Array <strs> in den Raum aus. Dabei
-    wird per Default send_room() ohne erneutes Umbrechen mit den Messagetypen
-    MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL verwendet.
-
-    Die einzelnen Arrayelemente koennen:
+    zufaellig gewaehlten Text aus dem Array <strs> in den Raum aus. Wird
+    kein <strs> uebergeben, wird nur die Chat-Chance geaendert und die
+    bisherigen Chats werden beibehalten.
     
-      * Strings sein
-      * Closures sein, deren Rueckgabe ausgegeben wird und die zusaetzlich
+    Per Default wird send_room() ohne erneutes Umbrechen mit den Messagetypen
+    MT_LOOK|MT_LISTEN|MT_FEEL|MT_SMELL zur Ausgabe verwendet.
+
+    Die einzelnen Arrayelemente koennen sein:
+
+      * Strings
+      * Closures, deren Rueckgabe ausgegeben wird und die zusaetzlich
         einen aenderbaren und in send_room() verwendeten 'msg_typ' per
         Referenz uebergeben bekommen
       * Arrays mit der Struktur
-        `({<string|closure msg >, <int msg_typ>})` sein, fuer
+        `({<string|closure msg >, <int msg_typ>})`, fuer
         die obige Regeln auf 'msg' angewendet werden und bei denen 'msg_typ'
         im send_room() verwendet wird
 

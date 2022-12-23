@@ -23,29 +23,30 @@
 /*
  * heart_beat is called so the monster may chat.
  */
-void SetChats(int chance, mixed strs) {
-  if (!pointerp(strs))
-    return;
-  SetProp(P_CHAT_CHANCE,chance);
-  SetProp(P_CHATS,strs);
+void SetChats(int chance,
+        <string|closure|<string|closure|int>* >* strs = QueryProp(P_CHATS))
+{
+  SetProp(P_CHAT_CHANCE, chance);
+  SetProp(P_CHATS, strs);
 }
 
-void SetAttackChats(int chance, mixed strs) {
-  if (!pointerp(strs))
-    return;
-  SetProp(P_ACHAT_CHANCE,chance);
-  SetProp(P_ACHATS,strs);
+void SetAttackChats(int chance,
+        <string|closure|<string|closure|int>* >* strs = QueryProp(P_ACHATS))
+{
+  SetProp(P_ACHAT_CHANCE, chance);
+  SetProp(P_ACHATS, strs);
 }
 
 #define SR_CHAT_MSG 0
 #define SR_CHAT_TYP 1
 
-protected void process_chat(mixed strs) {
-  if (!pointerp(strs) || !sizeof(strs))
+protected void process_chat(<string|closure|<string|closure|int>* >* strs)
+{
+  if (!sizeof(strs))
     return;
 
   int msg_typ;
-  mixed entry = strs[random(sizeof(strs))];
+  <string|closure|<string|closure|int>*> entry = strs[random(sizeof(strs))];
 
   if(pointerp(entry) && sizeof(entry)>=2 && intp(entry[SR_CHAT_TYP])) {
     msg_typ = entry[SR_CHAT_TYP];
