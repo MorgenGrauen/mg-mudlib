@@ -699,7 +699,7 @@ private void _send(object ob, string msg, int msg_type,
     case MSG_DELIVERED:
       break;  // nix machen
     case MSG_BUFFERED:
-      ReceiveMsg(ob->Name(WER) + " moechte gerade nicht gestoert werden."
+      ReceiveMsg(ob->Name(WER) + " moechte gerade nicht gestoert werden. "
           "Die Mitteilung wurde von einem kleinen Kobold in Empfang "
           "genommen. Er wird sie spaeter weiterleiten!",
           MT_NOTIFICATION, msg_action, 0, this_object());
@@ -715,7 +715,7 @@ private void _send(object ob, string msg, int msg_type,
           MT_NOTIFICATION, msg_action, 0, this_object());
       break;
     case MSG_BUFFER_FULL:
-      ReceiveMsg(ob->Name(WER) + " moechte gerade nicht gestoert werden."
+      ReceiveMsg(ob->Name(WER) + " moechte gerade nicht gestoert werden. "
           "Die Mitteilung ging verloren, denn der Kobold kann sich "
           "nichts mehr merken!", MT_NOTIFICATION, msg_action, 
           0, this_object());
