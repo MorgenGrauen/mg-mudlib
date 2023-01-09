@@ -1008,7 +1008,7 @@ static int self_delete()
     "verloren. Es gibt KEINE Moeglichkeit, ihn wiederzuerschaffen. Solltest "
     "Du nur zeitweilig vom "MUDNAME" wegbleiben wollen, so benutze bitte "
     "den Befehl 'spielpause'.\n"+
-    "Fallst Du %s immer noch selbstloeschen willst, gib Dein Passwort "
+    "Falls Du %s immer noch selbstloeschen willst, gib Dein Passwort "
     "ein.\n\n",
     (QueryProp(P_NO_ASCII_ART) ? "Bist Du Dir wirklich sicher?\n"
      : "     B I S T  D U  D I R  W I R K L I C H  S I C H E R ???????\n"),
@@ -1550,9 +1550,9 @@ static int new_quit() {
   {
     write(break_string(
       "Moechtest Du wirklich \"ende\" benutzen?\n"
-      "Du verlierst Deine Ausruestung und beginnst wieder an Deinem"
+      "Du verlierst Deine Ausruestung und beginnst wieder an Deinem "
       "Rassenstartpunkt. \n"
-      "Wenn du Dich einfach nur ausloggen und spaeter weiter spielen "
+      "Wenn Du Dich einfach nur ausloggen und spaeter weiter spielen "
       "willst, dann benutze besser \"schlafe ein\".\n\n", 78, 0,
       BS_LEAVE_MY_LFS));
     input_to(
