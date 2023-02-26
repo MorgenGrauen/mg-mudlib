@@ -158,13 +158,13 @@ void NewbieIntroMsg()
 				" zu begleiten. \n\nDerzeit "
 				+IstSindMsg(namen)+" eingeloggt. Du kannst "
 				"einen oder eine von ihnen ansprechen, "
-				"indem Du z.B. einfach \n"
+				"indem Du z.B. einfach folgendes eintippst: \n"
 				"  'teile "+
 				lower_case(namen[random(sizeof(namen))])+
 				" mit Hallo ich bin neu hier, kannst Du "
 				"mir bitte helfen?'\n"
-				"eintippst. Nur keine Scheu, diese Spieler "
-				"haben sich freiwillig dazu bereiterklaert!\n"
+				"Nur keine Scheu, diese Spieler "
+				"haben sich freiwillig dazu bereit erklaert!\n"
 				"\nDu kannst Dir diese Spieler jederzeit "
 				"mit 'kwer cicerones' anzeigen lassen.\n\n";
 		write(break_string(restext,78,"*  ",BS_LEAVE_MY_LFS));
