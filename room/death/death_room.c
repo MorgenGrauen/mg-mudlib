@@ -64,7 +64,7 @@ public void create()
              "zentral aufgestellten Schreibtisch, der mit Diagrammen und "
              "Buechern bedeckt ist. Die Waende verschwinden hinter Regalen, "
              "die gefuellt sind mit in Leder gebundenen, dunklen Waelzern, "
-             "von denen geheimnisvolle Runen leuchten.\nTod.", 78, 0, 1 ) );
+             "von denen geheimnisvolle Runen leuchten.\nTOD.", 78, 0, 1 ) );
 }
 
 public int ch_check_access(string ch, object user, string cmd) {
@@ -116,11 +116,11 @@ private string expand( string table, int value )
     string *texte;
 
     sz = sizeof( texte = explode( table, "##" ) - ({""}) );
-    
+
     for ( i = 0; i < sz; i++ )
         if ( i%2 ){
             sscanf( texte[i], "%d", wert );
-            
+
             if ( value < wert )
                 break;
         }
@@ -138,7 +138,7 @@ private string expand( string table, int value )
 
 // ziemlich vom htmld abgekupfert ;)
 private string
-parseText( string msg, object pl ) 
+parseText( string msg, object pl )
 {
   string *words, *texte, *todo, *done;
   int endFlag;
@@ -157,7 +157,7 @@ parseText( string msg, object pl )
       }
       else
           endFlag = 0;
-      
+
       switch( cmd[0] ){
       case 'A': /*** Alignment ersetzen ***/
           if (!endFlag){
@@ -171,7 +171,7 @@ parseText( string msg, object pl )
                   todo = todo[0..<2];
               }
           break;
-          
+
       case 'D': /*** Tode ersetzen ***/
           if ( !endFlag ){
               PUSH( cmd, todo );
@@ -184,7 +184,7 @@ parseText( string msg, object pl )
                   POP(todo);
               }
           break;
-          
+
       case 'L': /*** Level ersetzen ***/
           if ( !endFlag ){
               PUSH( cmd, todo );
@@ -197,7 +197,7 @@ parseText( string msg, object pl )
                   POP(todo);
               }
           break;
-          
+
       case 'Z': /*** Zufall ersetzen ***/
           if ( !endFlag ){
               PUSH( cmd, todo );
@@ -206,7 +206,7 @@ parseText( string msg, object pl )
           else{
               if ( todo[<1][0] == 'Z'){
                   int cnt, rnd, wert, sz2;
-                  
+
                   if ( !sscanf(todo[<1], "Z=%d", rnd) )
                       STOS(done) += "\n###\n### Syntax Error in <Z>!\n###\n\n";
                   else {
@@ -214,7 +214,7 @@ parseText( string msg, object pl )
                       sz2 = sizeof( texte = explode(TOS(done), "##") );
                       wert=0;
                       cnt=0;
-                      
+
                       for ( int k = 1; k < sz2; k += 2 ){
                           sscanf( texte[k], "%d", wert );
                           cnt += wert;
@@ -256,7 +256,7 @@ parseText( string msg, object pl )
               race = 2 * (member( ({ "Mensch", "Elf", "Zwerg", "Hobbit",
                                          "Feline", "Dunkelelf" }),
                                   ({string}) pl->QueryProp(P_RACE) ) + 1);
-              
+
               if ( race >= sizeof(texte) )
                   race = 0;
 
@@ -284,7 +284,7 @@ public void heart_beat()
 {
     for ( int j = sizeof(players); j--; )
         if ( !objectp(players[j][0]) ||
-             environment(players[j][0]) != 
+             environment(players[j][0]) !=
 	     find_object("/room/death/virtual/death_room_"+getuid(players[j][0])) )
             players[j] = 0;
 
@@ -305,14 +305,14 @@ public void heart_beat()
           msg = players[j][2][nr];
       else
           msg = 0;
-      
+
       if ( !msg )
           msg = players[j][3][1][nr];
-      
+
       if ( msg )
           tell_object( players[j][0], parseText( msg, players[j][0] ) );
   }
-  
+
   do_remove();
 }
 
@@ -322,13 +322,13 @@ do_remove()
     int res;
     string prayroom;
     object plobj, pl;
-    
+
     for ( int j = sizeof(players); j--; ){
         if ( players[j][1] >= players[j][3][0]){
             pl = players[j][0];
             while ( plobj = present("\ndeath_mark", pl) )
                 plobj->remove();
-            
+
             if ( !(prayroom = ({string}) pl->QueryPrayRoom()) )
                 prayroom="/room/pray_room";
 
@@ -339,7 +339,7 @@ do_remove()
             pl->Set( P_ENEMY_DEATH_SEQUENCE, 0 );
             pl->Set( P_NEXT_DEATH_SEQUENCE, 0 );
             pl->Set( P_POISON, 0, F_QUERY_METHOD );
-            
+
             if ( catch( res = ({int}) pl->move(prayroom, M_GO|M_SILENT|M_NOCHECK) )
                  || res < 1 )
                 pl->move( "/room/pray_room", M_GO|M_NOCHECK );
@@ -359,7 +359,7 @@ get_sequence( string str )
 {
     string *sequences;
     int i, len, cacheable;
-    
+
     if ( !stringp(str) || catch( len = file_size(str) ) || len <= 0 ){
         sequences = get_dir( "/room/death/sequences/*" ) - ({ ".", "..", ".svn" });
         str = "/room/death/sequences/" + sequences[random( sizeof(sequences) )];
@@ -372,13 +372,13 @@ get_sequence( string str )
             return ({ msgCache[str], str });
         }
     }
-    
+
     sequences = explode( read_file(str), "\n" );
     sscanf( sequences[0], "%d", len );
     string seq = implode( sequences[1..], "\n" );
     sequences = regexplode( seq, "[0-9][0-9]*:" );
     mapping m = ([]);
-    
+
     for ( i = 1; i < sizeof(sequences)-1; i += 2 )
         m[(int) sequences[i]] = sequences[i+1];
 
@@ -394,12 +394,13 @@ void add_player( object pl )
     int kart, kgen;
     int escaped;
     object kill_liv, kill_ob;
-    mixed dseq, act_seq, killer_name, killer_msg;
- 
+    mixed dseq, act_seq, killer_msg;
+    string|string* killer_name;
+  
     set_heart_beat(1);
     kgen = MALE;
 
-    foreach(object prev : caller_stack(1)) { 
+    foreach(object prev : caller_stack(1)) {
         if ( !objectp(prev) || prev == pl )
             continue;
 
@@ -434,7 +435,7 @@ void add_player( object pl )
             kgen = ({int}) pre->QueryProp(P_GENDER);
         }
 
-        killer_msg = pre->QueryProp(P_KILL_MSG);  
+        killer_msg = pre->QueryProp(P_KILL_MSG);
     }
 
     if ( !killer_name && kill_liv && function_exists( "QueryProp", kill_liv ) ){
@@ -462,7 +463,7 @@ void add_player( object pl )
         killer_msg = kill_ob->QueryProp(P_KILL_MSG);
         pre = kill_ob;
     }
-    
+
     // falls keine Sequenz gesetzt, eventuelle eigene Todessequenz nehmen
     if (!dseq)
       dseq = ({<string|mapping|mixed*>})pl->QueryProp(P_NEXT_DEATH_SEQUENCE);
@@ -504,8 +505,9 @@ void add_player( object pl )
         players[i][5] = pre;
 
 
-        if ( escaped ){
-            killer_name = "";
+        if ( escaped )
+        {
+            killer_name = "TOD";
             killer_msg = upperstring(getuid(pl)) + " VERSUCHTE, MIR ZU "
                 "ENTKOMMEN - JETZT HABE ICH WIEDER EXTRA-ARBEIT MIT "+
                 (({int}) pl->QueryProp(P_GENDER) != 2 ? "IHM" : "IHR") +
@@ -547,7 +549,7 @@ void add_player( object pl )
           if (testplayer[<5..<1]!="Gilde")
             magiertestie = 1;
         }
-          
+
         string kanal;
         if  (magiertestie || IS_LEARNING(pl))
             kanal = "TdT";
@@ -556,8 +558,9 @@ void add_player( object pl )
 
         CHMASTER->join( kanal, this_object() );
 
-        if ( (!stringp(killer_name) || killer_name != "") &&
-             (sizeof(killer_msg) < 4 || !killer_msg[3]) ){
+        if ( (!escaped && sizeof(killname)) &&
+             (sizeof(killer_msg) < 4 || !killer_msg[3]) )
+        {
             if ( killer_msg[2] == PLURAL )
                 CHMASTER->send( kanal, this_object(),
                                 killname + " haben gerade " +
@@ -570,21 +573,27 @@ void add_player( object pl )
 
         i = ({int}) pl->QueryProp(P_DEADS);
         if ( i && (getuid(pl) == "key" || i%100 == 0 || i%250 == 0) ){
-            SetProp( P_NAME, "Tod" );
+            SetProp( P_NAME, "TOD" );
             CHMASTER->send( kanal, this_object(),
                             sprintf( "DAS WAR SCHON DAS %dTE MAL!", i ) );
             SetProp( P_NAME, "Lars" );
         }
 
-        if( killer_msg[0] ){
-            if ( stringp(killer_name) && killer_name == "" ){
+        if( killer_msg[0] )
+        {
+            // escaped oder kein sinnvoller killer_name (ja, kein killname hier)?
+            // killer_name kann alles sein, was P_NAME/P_KILL_NAME sein kann.
+            if ( escaped || !sizeof(killer_name)
+                || (pointerp(killer_name) && sizeof(killer_name) != 4))
+            {
                 CHMASTER->send( kanal, this_object(),
                                 break_string( funcall(killer_msg[0]), 78,
                                               "["+kanal+":] " )[0..<2],
                                 MSG_EMPTY );
-                return; 
+                return;
             }
-            else {
+            else
+            {
                 if ( (killer_msg[1] < MSG_SAY) || (killer_msg[1] > MSG_GEMOTE) )
                     killer_msg[1] = MSG_SAY;
 
@@ -613,7 +622,7 @@ void add_player( object pl )
         }
 
         if (({int})pl->query_hc_play()>1){
-            SetProp( P_NAME, "Tod" );
+            SetProp( P_NAME, "TOD" );
             CHMASTER->send( kanal, this_object(),"NUN GEHOERST DU FUER EWIG MIR!" );
             SetProp( P_NAME, "Lars" );
         }
@@ -624,7 +633,7 @@ SmartLog( string creat, string myname, string str, string date )
 {
     int i;
     string fn;
-    
+
     for ( i = sizeof(players); i--; )
         if ( players[i][0] == this_player() )
             break;
@@ -650,7 +659,7 @@ SmartLog( string creat, string myname, string str, string date )
 }
 
 public mixed hier_geblieben( mixed dest, int methods, string direction,
-                             string textout, string textin ) 
+                             string textout, string textin )
 {
     // Magier duerfen Spieler heraustransen
     if ( this_interactive() && IS_LEARNER(this_interactive()) &&
@@ -670,7 +679,7 @@ public mixed hier_geblieben( mixed dest, int methods, string direction,
 	    // wenn mal fuer nen bestimmten Zwecks Bewegungen raus aus dem
 	    // Todesraum erforderlich sind, sollten hier entsprechende
 	    // Ausnahmen eingebaut werden.
-	    if ( (stringp(dest) && 
+	    if ( (stringp(dest) &&
 		  dest == object_name(environment(previous_object()))) ||
 		 (objectp(dest) &&
 		  dest == environment(previous_object())) ) {
@@ -684,6 +693,6 @@ public mixed hier_geblieben( mixed dest, int methods, string direction,
     // Spieler ist nicht mehr im Raum oder eingeschlafen
     if ( previous_object() )
         previous_object()->Set( P_TMP_MOVE_HOOK, 0 );
-    
+
     return ({ dest, methods, direction, textout, textin });
 }

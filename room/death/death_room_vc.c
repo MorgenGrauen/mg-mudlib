@@ -24,7 +24,7 @@ public void create()
 {
   if (IS_BLUE(this_object())) return;
     ::create();
-    
+
     SetProp( P_GENDER, MALE );
     SetProp( P_ARTICLE, 0 );
     SetProp( P_LIGHT,1 );
@@ -39,7 +39,7 @@ public void create()
              "zentral aufgestellten Schreibtisch, der mit Diagrammen und "
              "Buechern bedeckt ist. Die Waende verschwinden hinter Regalen, "
              "die gefuellt sind mit in Leder gebundenen, dunklen Waelzern, "
-             "von denen geheimnisvolle Runen leuchten.\nTod.", 78, 0, 1 ) );
+             "von denen geheimnisvolle Runen leuchten.\nTOD.", 78, 0, 1 ) );
     previous_object()->CustomizeObject();
     call_other("/room/death/death_room","???");
 }
@@ -71,7 +71,7 @@ static void deep_destruct( object ob )
 }
 
 public varargs void init(object oldenv)
-{  
+{
   string prayroom;
   int res;
 
@@ -83,7 +83,7 @@ public varargs void init(object oldenv)
 
   if ( !(prayroom = ({string}) this_player()->QueryPrayRoom()) )
       prayroom = "/room/pray_room";
-  
+
   if ( !({int})this_player()->QueryProp(P_GHOST) )
     {
       if ( IS_WIZARD(this_player()) &&
@@ -91,16 +91,16 @@ public varargs void init(object oldenv)
 	{
           if ( !({int})this_player()->QueryProp(P_INVIS) )
               tell_room( this_object(),
-                         "Der Tod sagt: WAS WILLST DU HIER, "+
+                         "TOD sagt: WAS WILLST DU HIER, "+
                          upperstring(({string})this_player()->name())+"?\n"+
-                         "Der Tod sagt: DU BIST UNSTERBLICH, DU HAST HIER "
+                         "TOD sagt: DU BIST UNSTERBLICH, DU HAST HIER "
                          "NICHTS ZU SUCHEN!\n\n" );
 	}
-      else 
+      else
 	{
-          write("Der Tod sagt: WAS TUST DU HIER? DEINE ZEIT IST NOCH "
+          write("TOD sagt: WAS TUST DU HIER? DEINE ZEIT IST NOCH "
                 "NICHT REIF!\n\n");
-          
+
 	  if ( catch(res = ({int}) this_player()->move( prayroom,M_GO|M_SILENT|M_NOCHECK ))
                || res < 1 && environment(this_player()) == this_object() )
               this_player()->move( "/room/pray_room", M_GO|M_SILENT|M_NOCHECK );
@@ -111,14 +111,14 @@ public varargs void init(object oldenv)
   if ( !IS_DEPUTY(this_player()) ){
     add_action( "filter_ldfied", "", 1 );
     this_player()->Set( P_TMP_MOVE_HOOK,
-                        ({ time()+31536000, 
-                           find_object("/room/death/death_room"), 
+                        ({ time()+31536000,
+                           find_object("/room/death/death_room"),
                            "hier_geblieben" }) );
   }
 
   this_player()->Set( P_NO_ATTACK, #'no_attack, F_QUERY_METHOD );
   this_player()->Set( P_POISON, #'no_poison, F_SET_METHOD );
-  
+
   "/room/death/death_room"->add_player(this_player());
 }
 
@@ -127,14 +127,14 @@ public int filter_ldfied( string str )
 {
     // Description:   Filter out relevant commands.
     string verb;
-    
+
     verb=query_verb();
-    
+
     if ( (verb == "schlafe" || verb == "schlaf") && str == "ein" ){
         write("DU KANNST DEM TOD NICHT ENTRINNEN!\n");
         return 0;
     }
-    
+
     if ( verb == "typo" || verb == "fehler" || verb == "bug" || verb == "idee" )
         return 0;
 
