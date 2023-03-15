@@ -16,28 +16,21 @@
 
       Der Schadenstyp DT_EXPLOSION wird jedoch nicht mehr genehmigt.
 
-      B) Waffen, die einen nichtphysikalischen Schadenstypen enthalten:
+      B) Waffen, die nichtphysikalische Schadenstypen enthalten:
 
       Einhaendige Waffen  :    ab P_WC >= 136
       Zweihaendige Waffen :    ab P_WC >= 181
 
-      Diese Waffen duerfen maximal 50% homogenen magischen Schaden machen.
+      Waffen mit homogenem magischem Schaden muessen mindestens 50% 
+      physikalische Schadenstypen machen, Waffen mit inhomogenem magischem 
+      Schaden mindestens 33%.
 
-      C) Waffen, die mehr als einen nichtpysikalischen Schadentypen enthalten:
+			Eine magische Schadensart darf maximal 50% ausmachen.
 
-      Solche Waffen sind grundsaetzlich genehmigungspflichtig, unabhaengig
-      von der WC.
-
-      Der Anteil der magischen Schadenstypen darf in Summe maximal 67%
-      betragen. Es _muss_ daher in solchen Waffen immer mindestens ein
-      physikalischer Schadenstyp gesetzt sein. Der Anteil an physikalischen
-      Schadenstypen betraegt demzufolge immer mindestens 33%.
-
-      D) Waffen mit Schadenstypen DT_TERROR, DT_SOUND oder DT_SQUEEZE:
+      C) Waffen mit Schadenstypen DT_TERROR, DT_SOUND oder DT_SQUEEZE:
 
       Solche Waffen sind grundsaetzlich genehmigungspflichtig, unabhaengig
       von der WC.
-
 
       Alle Waffen mit HitFunc oder entsprechender Funktion muessen genehmigt
       werden, wenn sie bei Spielern wirken und den Schaden erhoehen.
@@ -80,4 +73,4 @@
      attributsveraenderungen, resistenzen, kampfobjekte
 
 ------------------------------------------------------------------------------
-LETZTE AeNDERUNG: 2022-01-09 Arathorn.
+LETZTE AeNDERUNG: 2023-03-15 Humni.
