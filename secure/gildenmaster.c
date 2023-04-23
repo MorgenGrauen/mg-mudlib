@@ -96,7 +96,9 @@ varargs nomask int austreten(int loss) {
       write("Du kannst hier nicht aus einer anderen Gilde austreten.\n");
       return -1;
   }
-  if (gname[8..]==(({string})pl->QueryProp(P_DEFAULT_GUILD)||DEFAULT_GUILD))
+  if (gname[8..]==(({string})pl->QueryProp(P_DEFAULT_GUILD)||DEFAULT_GUILD)
+      &&
+      query_verb()!="selbstloeschung")
   {
         write("Aus dieser Gilde kannst Du nicht austreten.\n");
         return -1;
