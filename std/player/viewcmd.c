@@ -228,7 +228,7 @@ int _inventory(string str)
   SetProp(P_REFERENCE_OBJECT, this_object());
 
   if (output=="") 
-    output += (ansi?ANSI_BOLD:"")+"Die Liste ist leer."+(ansi?ANSI_NORMAL:"");
+    output += (ansi?ANSI_BOLD:"")+"Du hast nichts dabei."+(ansi?ANSI_NORMAL:"");
   More(output);
   return 1;
 }
