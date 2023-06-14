@@ -1013,3 +1013,10 @@ int DeleteData(string uid) {
 
 mixed testfun() {return "bin da\n";}
 
+public int HasAutoloader(string uuid, string loadname) {
+  if (!sizeof(uuid) || !sizeof(loadname) || clonep() || !(uuid in data))
+    return -1;
+
+  return (loadname in data[uuid]);
+}
+
