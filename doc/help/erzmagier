@@ -16,7 +16,7 @@ ERZMAGIER:
 Die Aufgabenbereiche der Erzmagier sind wie folgt verteilt:
 
       Administration und Hosting des Servers:
-        Amaryllis
+        Rumata, Zesstra, Zook       
 
       Balance (und Erstkill-Stupse):
         Fuer die Gilden-, Rassen- und Heilungsbalance ist Humni
@@ -54,12 +54,10 @@ Die Aufgabenbereiche der Erzmagier sind wie folgt verteilt:
         Regionsmagiern ist Zook zustaendig. 
 
       Sheriff:
-        Die Einhaltung der Regeln ueberwacht Amaryllis. 
+        Die Einhaltung der Regeln ueberwacht uebergangsweise Zook. 
 
 Verantwortlich sind unsere Erzmagier daher jeweils fuer:
 
-      Amaryllis:
-        Server-Administration, Sheriff
       Arathorn:
         Erstkill-Stupse, NPC-Balance, Mudlib
       Humni:
@@ -69,10 +67,11 @@ Verantwortlich sind unsere Erzmagier daher jeweils fuer:
       Rumata:
         Maedchen fuer alles
       Zesstra:
-        Driver, Mudlib
+        Driver, Mudlib, Rechneradministration
       Zook:
         Forscherpunkte, Zaubertraenke, Quests und Miniquests,
-        Regionen, Jungmagier und ihre Gesellenstuecke
+        Regionen, Jungmagier und ihre Gesellenstuecke,
+        Rechneradministration
 
 Sollte es Verzoegerungen bei Euren Anliegen geben, schreibt
 entweder erneut an das Mail-Alias "erzmagier" oder an Zook.
@@ -82,5 +81,5 @@ SIEHE AUCH:
         balance
 
 LETZTE AeNDERUNG:
-        2021-12-20 von Zook
+        2023-07-13 von Zook
 
