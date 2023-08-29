@@ -16,7 +16,6 @@ ARGUMENTE
 
     uuid
       UUID des Spielers, dessen Autoloader durchsucht werden sollen
-
     loadname
       Ladename des gesuchten Autoloaders
 
@@ -33,10 +32,9 @@ RUeCKGABEWERT
       wenn der Spieler den Autoloader eingelagert hat
     0
       wenn nicht
-   -1
+    \-1
       wenn Unfug uebergeben wurde, der Spieler keine Truhe besitzt oder die
       Funktion nicht in der Blueprint aufgerufen wurde
-
 
 HINWEIS
 -------
