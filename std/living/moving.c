@@ -314,7 +314,7 @@ varargs public int move( object|string dest, int method, string direction,
                 direction = 0;
 
             foreach (object who : all_inventory(environment())) {
-              if (who != this_object() && living(who) && !who->CannotSee(1))
+              if (who != this_object() && living(who) && !({int})who->CannotSee(1))
                 who->ReceiveMsg(sprintf("%s %s%s%s.",
                                 Name(WER,2),
                                 textout,
@@ -386,7 +386,7 @@ varargs public int move( object|string dest, int method, string direction,
       }
 
       foreach (object who : all_inventory(environment())) {
-        if (who != this_object() && living(who) && !who->CannotSee(1))
+        if (who != this_object() && living(who) && !({int})who->CannotSee(1))
           who->ReceiveMsg(Name(WER,0)+" "+textin+".", MT_LOOK, MA_MOVE_IN);
       }
     }
