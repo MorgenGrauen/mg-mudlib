@@ -1262,7 +1262,7 @@ SoulComm(string str, string _verb)  {
         "Bitte huste nur Lebewesen was."))
           return 1;
       out_sel="Du hustest@@ wem@@@@adverb@@"+(who? " was" : "")+".";
-      if (who) out_vic="@@name@@ hustet Dir@@adverb@@was.";
+      if (who) out_vic="@@name@@ hustet Dir@@adverb@@ was.";
       out_oth="@@name@@ hustet@@ wem@@@@adverb@@"+(who? " was" : "")+".";
     }
     return FeelIt();

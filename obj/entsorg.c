@@ -12,7 +12,7 @@ void create()
 
   SetProp(P_SHORT,"Ein Muellschlucker");
   SetProp(P_LONG,break_string(
-    "Der Muellschlucker gehoert zu Familie der Kleinsaurier und zeichnet "+
+    "Der Muellschlucker gehoert zur Familie der Kleinsaurier und zeichnet "+
     "sich durch ein sehr grosses Maul und nahezu unbegrenzten Appetit aus. "+
     "Das einzige, was er nicht mag, sind Dinge, die materiellen Wert haben. "+
     "Alles andere kann man ihm mit 'fuettere muellschlucker mit <name>' "+
@@ -22,7 +22,7 @@ void create()
     "pass auf, was Du wegwirfst.",78));
   SetProp(P_NAME,"Muellschlucker");
   SetProp(P_GENDER, MALE);
-  SetProp(P_RACE,"saurier");
+  SetProp(P_RACE,"Saurier");
   SetProp(P_ARTICLE,1);
   SetProp(P_SIZE, 60);
   SetProp(P_WEIGHT, 7000);
