@@ -18,27 +18,30 @@ DEFINIERT IN
 ARGUMENTE
 =========
 
-   silent - Soll an das Lebewesen direkt automatisch eine Meldung
-            ausgegeben werden wenn es nichts sehen kann?
+   silent - Wenn ungleich 0, wird an das Lebewesen keine Meldung
+            ausgegeben, wenn es nichts sehen kann.
 
 
 BESCHREIBUNG
 ============
 
-   Diese Funktion prueft ob das Lebewesen etwas sehen kann, oder nicht.
-   Hierbei wird sowohl das Lichtlevel mit saemtlichen Modifikatoren,
-   als auch Nachtsicht und die Property P_BLIND beruecksichtigt. Da
-   diese Funktion bei zukuenftigen Mudlibaenderungen immer aktualisiert
-   werden duerfte, sollte man sie nach Moeglichkeit benutzen und die
-   Abfragen nicht selbst implementieren.
+   Diese Funktion prueft, ob das Lebewesen etwas sehen kann oder nicht.
+   Hierbei werden sowohl das Lichtlevel mit saemtlichen Modifikatoren,
+   als auch Nachtsicht und die Property P_BLIND beruecksichtigt.
+
+   Wenn die Funktion ohne Argument aufgerufen wird, wird eine Meldung an
+   das Lebewesen ausgegeben, falls es blind ist. Diese Meldung ist entweder
+   der Inhalt von P_BLIND, sofern dort ein String eingetragen ist, oder
+   aber die Standardmeldung "Du bist blind.".
 
 
 RUeCKGABEWERT
 =============
 
-   0, wenn der Spieler etwas sehen kann
-   1, wenn der Spieler nichts sehen kann: Blindheit
-   2, wenn der Spieler nichts sehen kann: zu wenig Licht/keine Nachtsicht
+   0, wenn das Lebewesen etwas sehen kann
+   1, wenn das Lebewesen wegen Blindheit nichts sehen kann
+   2, wenn das Lebewesen wegen zu wenig Licht bzw. mangels Nachtsicht nichts
+      sehen kann
 
 
 SIEHE AUCH
@@ -46,4 +49,4 @@ SIEHE AUCH
 
    P_BLIND, P_LIGHT_MODIFIER, P_PLAYER_LIGHT
 
-Last modified: Mon Jan 17 18:22:27 2000 by Padreic
+Last modified: 2022-11-23 Arathorn

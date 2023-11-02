@@ -1,0 +1,78 @@
+
+HookCallback()
+**************
+
+
+FUNKTION
+========
+
+   mixed HookCallback(object hooksource, int hookid, mixed hookdata)
+
+
+DEFINIERT IN
+============
+
+   Eigenen Objekten
+
+
+ARGUMENTE
+=========
+
+   * hooksource: Das Objekt, in dem das Ereignis ausgeloest wurde
+
+   * hookid: Hooktyp des ausgeloesten Hooks
+
+   * hookdata: Daten des ausgeloesten Hooks (S. Doku des jeweiligen
+     Hooks.)
+
+
+BESCHREIBUNG
+============
+
+   Standard-Callback-Methode fuer Hooks. Wird beim Registrieren ein
+   Objekt uebergeben, wird versucht, eine Closure auf HookCallback()
+   an diesem Objekt zu erstellen. Man kann die Funktion auch anders
+   benennen und direkt als Closure uebergeben. Dies ist insb. bei
+   mehreren Hooks im gleichen Objekt hilfreich, weil es den Code
+   uebersichtlicher macht. Die Argumente muessen jedoch immer die
+   gleichen wie bei HookCallback() sein.
+
+   Die Reihenfolge des Aufrufs der Konsumenten ist Surveyor, Hook-
+   Modifikator, Data-Modifikator, Listener. Innerhalb der Gruppen wird
+   nach Prioritaet abgearbeitet. Ein Surveyor-Hook kann verhindern,
+   dass Hooks bestimmte Aenderungen durchfuehren.
+
+
+RUECKGABEWERTE
+==============
+
+   ({<status>, <hookdata>})
+
+   * Status: Eine der folgenden Konstanten: - H_NO_MOD: keine
+     Veraenderung - H_ALTERED: Daten des Hooks geaendert -
+     H_CANCELLED: Die Ausfuehrung der Hook-Kette und das ausloesende
+
+        Ereignis werden abgebrochen
+
+     Nicht alle Hooks unterstuetzen jeden Status.
+
+   * hookdata: Die ggf. modifizierten Hookdaten. (S. Doku des
+     jeweiligen Hooks.)
+
+
+BEMERKUNGEN
+===========
+
+   Bitte nutzt in neuem code nicht mixed, sondern unions entsprechend
+   der Dokumentation der verwendeten Hooks.
+
+   Auch reine Listener-Objekte muesse nein Array zurueckgeben, dessen
+   erstes Element H_NO_MOD sein muss.
+
+
+SIEHE AUCH
+==========
+
+   HRegisterToHook(), HUnregisterFromHook(), unions
+
+Letzte Aenderung: 06.10.2022, Bugfix

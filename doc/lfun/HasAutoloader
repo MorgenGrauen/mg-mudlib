@@ -1,3 +1,4 @@
+
 HasAutoloader()
 ***************
 
@@ -34,10 +35,15 @@ BESCHREIBUNG
 RUeCKGABEWERT
 =============
 
-    1   wenn der Spieler den Autoloader eingelagert hat
-    0   wenn nicht
-   -1   wenn Unfug uebergeben wurde, der Spieler keine Truhe besitzt
-        oder die Funktion nicht in der Blueprint aufgerufen wurde
+   1
+      wenn der Spieler den Autoloader eingelagert hat
+
+   0
+      wenn nicht
+
+   -1
+      wenn Unfug uebergeben wurde, der Spieler keine Truhe besitzt
+      oder die Funktion nicht in der Blueprint aufgerufen wurde
 
 
 HINWEIS

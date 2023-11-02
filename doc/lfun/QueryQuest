@@ -30,7 +30,7 @@ RUeCKGABEWERT
     1 : Spieler hat die Quest bereits geloest  (OK)
     0 : Ungueltiger Questname oder der Spieler
         hat die Quest noch nicht.              (QQ_KEY_INVALID)
-    2 : Gaeste koennen keine Quest loesen      (QQ_QUEST)
+    2 : Gaeste koennen keine Quest loesen      (QQ_GUEST)
 
 
 BESCHREIBUNG

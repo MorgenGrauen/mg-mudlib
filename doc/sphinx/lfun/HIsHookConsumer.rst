@@ -29,6 +29,7 @@ RUECKGABEWERTE
 --------------
 
   1 : Closure ist als consumer registriert
+
   0 : Closure nicht als Konsument gefunden
 
 SIEHE AUCH
