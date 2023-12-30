@@ -260,13 +260,25 @@ Verzeichnis der dokumentierten lfuns
 
 * GuildName()
 
+* HIsHookConsumer()
+
+* HListHooks()
+
+* HRegisterToHook()
+
+* HUnregisterFromHook()
+
 * Halt()
+
+* HasAutoloader()
 
 * HasExtraLook()
 
 * HasMiniQuest()
 
 * HitFunc()
+
+* HookCallback()
 
 * Identify()
 
