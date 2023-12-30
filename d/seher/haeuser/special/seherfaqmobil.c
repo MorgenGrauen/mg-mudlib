@@ -56,15 +56,17 @@ mapping synonym = ([
 ]);
 
 protected void create() {
-  if ( !clonep() ) {
-    set_next_reset(-1);
-    return;
-  }
   ::create();
   
   SetProp(P_SHORT,"Die SeherFAQ");
   SetProp(P_NAME,"SeherFAQ");
   SetProp(P_GENDER,FEMALE); 
+
+  if ( !clonep() ) {
+    set_next_reset(-1);
+    return;
+  }
+
   SetProp(P_LONG, break_string(
     "Dies ist die SeherFAQ. Wenn Du weitere Fragen oder Anregungen zu "
     "dieser FAQ hast, sei so nett und schicke dem Regionsmagier Seher oder "
