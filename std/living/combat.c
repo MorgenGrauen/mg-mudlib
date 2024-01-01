@@ -888,6 +888,36 @@ public void RemoveDefender(object friend)
   SetProp(P_DEFENDERS,defs);
 }
 
+public object* QueryDefenders()
+{
+  return filter(QueryProp(P_DEFENDERS) || ({}), #'objectp);
+}
+
+public object* QueryPresentDefenders(object* defenders =
+    QueryProp(P_DEFENDERS))
+{
+  // Alles selbst pruefen, um Durchlaeufe zu sparen.
+  return filter(defenders,
+    function int(object o)
+    {
+      return (objectp(o) && 
+        (environment(o) == environment(ME) || environment(o) == ME));
+    });
+}
+
+public object* QueryNearDefenders(object* defenders =
+    QueryProp(P_DEFENDERS))
+{
+  // alles selbst pruefen, um Durchlaeufe zu sparen.
+  return filter(defenders,
+    function int(object o)
+    {
+      return (objectp(o) &&
+        ((environment(o) == environment(ME) || environment(o) == ME) &&
+        o->PresentPosition() == 1;
+    });
+}
+
 public void InformDefend(object enemy)
 {
   UseSkill(SK_INFORM_DEFEND,([ SI_ENEMY  : enemy,

@@ -3,20 +3,17 @@ DefendOther()
 
 FUNKTION
 --------
-::
 
     public <int|string*|mapping|object>* DefendOther(int dam,
                        string* dam_type, int|mapping si_spell, object enemy)
 
 DEFINIERT IN
 ------------
-::
 
     /std/living/combat.c
 
 ARGUMENTE
 ---------
-::
 
     int dam
       Der Schaden, der voraussichtlich beim zu verteidigenden Lebewesen
@@ -46,7 +43,6 @@ RUeCKGABEWERT
 
 BESCHREIBUNG
 ------------
-::
 
     Es ist moeglich, dass Objekte Angriffe auf Lebewesen abwehren oder
     umwandeln, sofern diese Objekte bei dem angegriffenen Lebewesen
@@ -116,7 +112,9 @@ SIEHE AUCH
 ----------
 
   Funktionen:
-    :doc:`../lfun/AddDefender`, :doc:`../lfun/RemoveDefender`, :doc:`../lfun/InformDefend`, :doc:`../lfun/Kill`, :doc:`../lfun/IsEnemy`, :doc:`../lfun/Defend`
+    :doc:`AddDefender`, :doc:`RemoveDefender`, :doc:`InformDefend`, :doc:`DefendOther`,
+    :doc:`Kill`, :doc:`IsEnemy`, :doc:`Defend`, :doc:`QueryDefenders`, 
+    :doc:`QueryPresentDefenders`, :doc:`QueryNearDefenders`, 
   Properties
     :doc:`../props/P_DEFENDERS`
   Objekte:

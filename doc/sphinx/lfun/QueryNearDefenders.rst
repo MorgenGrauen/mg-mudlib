@@ -1,0 +1,42 @@
+QueryNearDefenders()
+====================
+
+FUNKTION
+--------
+
+  public object* QueryNearDefenders(object* defenders)
+
+DEFINIERT IN
+------------
+
+  /std/living/combat.c
+
+ARGUMENTE
+---------
+
+  object* defenders: Ein Object-Array mit Defendern, aus denen ausgewaehlt 
+                     werden soll.
+
+RUeCKGABEWERT
+-------------
+
+  Object-Array mit den nahen Verteidigern (s.u.).
+
+BESCHREIBUNG
+------------
+
+  Gibt ein Object-Array mit den Defendern im Environment von this_object()
+  oder in this_object() zurueck, die in Reihe 1 stehen oder in keinem Team
+  sind.
+  Wird <defenders> nicht uebergeben, wird das Ergebnis von QueryDefenders()
+  benutzt.
+  
+SIEHE AUCH
+----------
+
+  :doc:`AddDefender`, :doc:`RemoveDefender`, :doc:`QueryDefenders`, 
+  :doc:`QueryPresentDefenders`,
+  :doc:`InformDefend`, :doc:`DefendOther`,
+  :doc:`../props/P_DEFENDER`, /std/living/combat.c
+
+Letzte Aenderung: 28.10.2022, Bugfix

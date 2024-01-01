@@ -1,0 +1,42 @@
+QueryPresentDefenders()
+=======================
+
+FUNKTION
+--------
+
+  public object* QueryPresentDefenders(object* defenders)
+
+DEFINIERT IN
+------------
+
+  /std/living/combat.c
+
+ARGUMENTE
+---------
+
+  object* defenders: Ein Object-Array mit Defendern, aus denen ausgewaehlt 
+                     werden soll.
+
+RUeCKGABEWERT
+-------------
+
+  Object-Array mit den eingetragenen Defendern im gleichen Environment oder
+  in this_object().
+
+BESCHREIBUNG
+------------
+
+  Gibt ein Object-Array mit den Defendern im Environment von this_object()
+  oder in this_object() zurueck.
+  Wird <defenders> nicht uebergeben, wird das Ergebnis von QueryDefenders()
+  benutzt.
+  
+SIEHE AUCH
+----------
+
+  :doc:`AddDefender`, :doc:`RemoveDefender`, :doc:`QueryDefenders`, 
+  :doc:`QueryNearDefenders`, 
+  :doc:`InformDefend`, :doc:`DefendOther`,
+  :doc:`../props/P_DEFENDER`, /std/living/combat.c
+
+Letzte Aenderung: 28.10.2022, Bugfix
