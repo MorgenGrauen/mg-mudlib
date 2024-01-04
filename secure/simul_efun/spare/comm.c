@@ -9,6 +9,11 @@ varargs void send_room(object|string room, string msg, int msg_type,
   if (stringp(room))
     room=load_object(room);
 
+  // Keine Ausgabe im Netztotenraum. Die Anwesenden fangen damit sowieso
+  // nichts an und aufgrund der aufwaendigen Checks besteht die Gefahr, dass
+  // die Ticks ausgehen.
+  if(object_name(room) == "/room/netztot") return;
+
   object *dest = exclude ? all_inventory(room) - exclude :
                            all_inventory(room);
 
