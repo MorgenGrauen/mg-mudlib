@@ -913,8 +913,8 @@ public object* QueryNearDefenders(object* defenders =
     function int(object o)
     {
       return (objectp(o) &&
-        ((environment(o) == environment(ME) || environment(o) == ME) &&
-        o->PresentPosition() == 1;
+        (environment(o) == environment(ME) || environment(o) == ME) &&
+        o->PresentPosition() == 1);
     });
 }
 
