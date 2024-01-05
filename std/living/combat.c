@@ -862,6 +862,7 @@ public void AddDefender(object friend)
     return;
 
   object* defs = QueryProp(P_DEFENDERS) || ({});
+  defs -= ({0});
 
   if(friend in defs)
     return;
@@ -876,6 +877,7 @@ public void RemoveDefender(object friend)
     return;
 
   object* defs = QueryProp(P_DEFENDERS) || ({});
+  defs -= ({0});
 
   if(!(friend in defs))
     return;
@@ -1061,73 +1063,55 @@ public int Defend(int dam, string|string* dam_type, int|mapping spell, object en
     }
   }
 
-  // Man kann Verteidiger haben. Diese kommen als erste zum Zuge
-  if ( res=QueryProp(P_DEFENDERS) )
-  { object *defs,*defs_here;
+  // Man kann Verteidiger haben. Diese kommen als erste zum Zuge, falls sie
+  // anwesend sind.
+  object* defs_here = QueryPresentDefenders();
+  if (sizeof(defs_here))
+  {
+    // Die werden erstmal alle informiert.
+    defs_here->InformDefend(enemy);
+    // Leider koennten dabei Objekte zerstoert worden sein. *seufz*
+    defs_here -= ({0});
 
-    defs=({});
-    defs_here=({});
-    if ( !pointerp(res) )
-      res=({res});
-    // erst alle anwesenden finden.
-    foreach(object defender: res) {
-      if ( objectp(defender) && (member(defs,defender)<0) )
-      {
-        defs+=({defender});
-        //  Verteidiger muessen im gleichen Raum oder im Living selber
-        //  enthalten sein.
-        if ( environment(defender) == environment()
-            || environment(defender) == ME)
-        {
-          call_other(defender,"InformDefend",enemy);
-          if (defender)
-            defs_here += ({ defender });
-        }
-      }
-    }
-    //Anwesende Verteidiger eintragen.
-    spell[EINFO_DEFEND][PRESENT_DEFENDERS]=defs_here;
+    // Anwesende Verteidiger eintragen.
+    spell[EINFO_DEFEND][PRESENT_DEFENDERS] = defs_here;
 
-    // P_DEFENDERS auch gleich aktualisieren
-    if ( sizeof(defs)<1 )
-      defs=0;
-    SetProp(P_DEFENDERS,defs);
-
-    if ( spell[SP_PHYSICAL_ATTACK] ) {
-      // Bei physischen Angriffen nur Verteidiger aus Reihe 1
-      // nehmen (z.B. fuer Rueckendeckung)
-      foreach(object defender: defs_here) {
-        if ( (defender->PresentPosition())>1 ) {
-          defs_here-=({defender});
-        }
-      }
+    // Bei physischen Angriffen koennen nur Verteidiger aus Reihe 1 helfen
+    // (z.B. fuer Rueckendeckung der Kaempfer)
+    if(spell[SP_PHYSICAL_ATTACK])
+    {
+      defs_here = QueryNearDefenders(defs_here);
     }
  
-    if ( (i=sizeof(defs_here)) )
+    if(sizeof(defs_here))
     {
-      mixed edefendtmp=({defs_here[random(i)],0,0,0}); 
-      res=call_other(edefendtmp[DEF_DEFENDER],"DefendOther",
-                     dam,dam_type,spell,enemy);
-      if ( pointerp(res) && (sizeof(res)>=3) && intp(res[0])
+      // Wenn in Frage kommende Verteidiger anwesend sind, einen davon
+      // auswaehlen...
+      <object|int|string*|mapping>* edefendtmp = ({defs_here[random(sizeof(defs_here))], 0, 0, 0}); 
+      // ... und DefendOther() darin rufen. Das wirkt wie ein Defend-Hook-Light
+      res = call_other(edefendtmp[DEF_DEFENDER], "DefendOther",
+                       dam, dam_type, spell, enemy);
+      // Wenn das Defender valide Daten geliefert hat und den Schaden oder
+      // Schadenstyp geaendert hat (z.B. Umwandlung von Feuer nach Eis),
+      // werden die neuen Daten uebernommen.
+      if(pointerp(res) && (sizeof(res)>=3) && intp(res[0])
           && pointerp(res[1]))
       {
-        // Helfer koennen den Schaden oder Schadenstyp aendern,
-        // z.B. Umwandlung von Feuer nach Eis oder so...
-        dam=res[0];
-        edefendtmp[DEF_DAM]=dam;
-        dam_type=res[1];
-        edefendtmp[DEF_DAMTYPE]=dam_type;
-
-        if ( mappingp(res[2]) )
+        dam = res[0];
+        edefendtmp[DEF_DAM] = dam;
+        dam_type = res[1];
+        edefendtmp[DEF_DAMTYPE] = dam_type;
+        if(mappingp(res[2]))
         {
-          spell=res[2];
+          spell = res[2];
           // teuer, aber geht nicht anders (Rekursion vermeiden)
-          edefendtmp[DEF_SPELL]=deep_copy(res[2]);
+          edefendtmp[DEF_SPELL] = deep_copy(res[2]);
         }
-        spell[EINFO_DEFEND][CURRENT_DAMTYPE]=dam_type;
-        spell[EINFO_DEFEND][CURRENT_DAM]=dam;
+        // Die Werte sind jetzt auch die aktuell wirksamen Werte.
+        spell[EINFO_DEFEND][CURRENT_DAMTYPE] = dam_type;
+        spell[EINFO_DEFEND][CURRENT_DAM] = dam;
       }
-      spell[EINFO_DEFEND][DEFENDING_DEFENDER]=edefendtmp;
+      spell[EINFO_DEFEND][DEFENDING_DEFENDER] = edefendtmp;
     }
   } // Ende Defender-Verarbeitung
 
