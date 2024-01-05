@@ -857,35 +857,31 @@ public void Attack(object enemy)
 }
 
 public void AddDefender(object friend)
-{ object *defs;
-
-  if ( !objectp(friend) )
+{
+  if(!objectp(friend))
     return;
 
-  if ( !pointerp(defs=QueryProp(P_DEFENDERS)) )
-    defs=({});
+  object* defs = QueryProp(P_DEFENDERS) || ({});
 
-  if ( member(defs,friend)>=0 )
+  if(friend in defs)
     return;
 
-  defs+=({friend});
-  SetProp(P_DEFENDERS,defs);
+  defs += ({friend});
+  SetProp(P_DEFENDERS, defs);
 }
 
 public void RemoveDefender(object friend)
-{ object *defs;
-
+{
   if ( !objectp(friend) )
     return;
 
-  if ( !pointerp(defs=QueryProp(P_DEFENDERS)) )
-    defs=({});
+  object* defs = QueryProp(P_DEFENDERS) || ({});
 
-  if ( member(defs,friend)==-1 )
+  if(!(friend in defs))
     return;
 
   defs -= ({friend});
-  SetProp(P_DEFENDERS,defs);
+  SetProp(P_DEFENDERS, defs);
 }
 
 public object* QueryDefenders()
