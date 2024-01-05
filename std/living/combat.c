@@ -66,6 +66,10 @@ protected void create()
   // durch die Setmethode).
   Set(P_ARMOURS,PROTECTED,F_MODE_AS);
   SetProp(P_ARMOURS, ({}));
+  // Kein direktes Setzen von P_DEFENDERS, Setzen nur ueber
+  // die Zugriffsmethoden.
+  Set(P_DEFENDERS, PROTECTED, F_MODE_AS);
+  SetProp(P_DEFENDERS, ({}));
   attack_busy=100;
   att2_time=0;
   enemies=([]);
@@ -876,7 +880,7 @@ public void RemoveDefender(object friend)
   if ( !objectp(friend) )
     return;
 
-  object* defs = QueryProp(P_DEFENDERS) || ({});
+  object* defs = QueryProp(P_DEFENDERS);
   defs -= ({0});
 
   if(!(friend in defs))
@@ -888,7 +892,7 @@ public void RemoveDefender(object friend)
 
 public object* QueryDefenders()
 {
-  return filter(QueryProp(P_DEFENDERS) || ({}), #'objectp);
+  return filter(QueryProp(P_DEFENDERS), #'objectp);
 }
 
 public object* QueryPresentDefenders(object* defenders =
