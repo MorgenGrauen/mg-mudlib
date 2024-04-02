@@ -78,8 +78,11 @@ string _query_short()
 // unsichtbaren, reisenden Transporter betrachten.
 visible int _query_invis()
 {
-  if(!roomCode && (!PL || environment(PL) != ME))
-      return 1;
+  if(!roomCode &&
+      (!PL || (environment(PL) != ME && PL->query_verb() != "reise")))
+  {
+    return 1;
+  }
   return Query(P_INVIS, F_VALUE);
 }
 
