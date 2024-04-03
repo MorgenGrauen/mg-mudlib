@@ -910,10 +910,14 @@ public object* QueryNearDefenders(object* defenders =
   return filter(defenders,
     function int(object o)
     {
+      // Nahe sind: Objekte im eigenen Inventar oder Objekt im Environment,
+      // welche in Teamreihe 1 oder 0 (haben einfach keine Teamreihe) sind.
       return (objectp(o) &&
-        (environment(o) == environment(ME) || environment(o) == ME) &&
-        o->PresentPosition() == 1);
-    });
+        ( environment(o) == ME ||
+          (environment(o) == environment(ME) && o->PresentPosition() <= 1) )
+        );
+    }
+    );
 }
 
 public void InformDefend(object enemy)
