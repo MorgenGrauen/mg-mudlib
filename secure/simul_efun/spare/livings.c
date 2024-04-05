@@ -239,19 +239,26 @@ object find_player(string uuid) {
   return res;
 }
 
-private int check_match( string str, int players_only )
+// Liefert 1 wenn es (mindestens) ein Living mit dem Namen lname gibt.
+private int check_match( string lname, int players_only )
 {
-    mixed match;
+    string|string* match;
 
-    if ( !(match = name_living_m[str]) )
+    // Livings (Objekte) fuer den Namen abfragen, ggf. mehrere
+    // Remark: nervig, dass da string|string* im Mapping steht...
+    if ( !(match = name_living_m[lname]) )
        return 0;
-
     if ( !pointerp(match) )
        match = ({ match });
 
+    // Und in der Liste koennten auch noch zerstoerte Objekt rumgammeln.
     match -= ({0});
 
-    if ( sizeof(match) ){
+    // Wenn was gefunden...
+    if ( sizeof(match) )
+    {
+       // ... ggf. noch einschraenken auf Spieler.
+       // BTW: kann max. 1 im Ergebnis sein, d.h. return 0 oder 1 hier.
        if ( players_only )
            return sizeof(filter( match, #'query_once_interactive/*'*/ ))
               > 0;
@@ -259,41 +266,48 @@ private int check_match( string str, int players_only )
            return 1;
     }
 
-    m_delete( name_living_m, str );
-    clean_log( sprintf("check_match loescht %s\n", str) );
+    // Wenn kein Objekt unter dem Namen gefunden wurde, kann der ganze Eintrag
+    // fuer den Namen weg.
+    m_delete( name_living_m, lname );
+    clean_log( sprintf("check_match loescht %s\n", lname) );
     return 0;
 }
 
-//TODO:: string|string* exclude
-varargs mixed match_living( string str, int players_only, mixed exclude )
+// Liefert den genauen Namen des (existierenden) Livings (der mit lname
+// anfaengt) oder -1 wenn lname nicht eindeutig ist oder -2 wenn gar kein
+// Living zu finden ist, dessen Name mit lname beginnt.
+string|int match_living(string lname, int players_only=0,
+                        string|string* exclude=({}))
 {
-    int i, s;
-    mixed match, *user;
-
-    if ( !str || str == "" )
+    if ( !lname || lname == "" )
        return 0;
 
     if ( !pointerp(exclude) )
        exclude = ({ exclude });
 
-    if ( member(exclude, str) < 0 && check_match(str, players_only) )
-       return str;
+    // Wird etwas unter genau diesem Namen gefunden?
+    if ( !(lname in exclude) && check_match(lname, players_only) )
+       return lname;
 
-    user = m_indices(name_living_m);
-    s = sizeof(str);
-    match = 0;
+    // Wenn nicht, muessen alle Eintraege durchsucht werden. :-(
+    string match = 0;
 
-    for ( i = sizeof(user); i--; )
-       if ( str == user[i][0..s-1] && member( exclude, user[i] ) < 0 )
-           if ( match )
+    foreach(string candidate : name_living_m)
+    {
+       if ( strstr(candidate, lname) == 0 && !(candidate in exclude) )
+           if ( match ) // schonmal gefunden? -> mehr als ein match?
               return -1;
-           else
-              if ( check_match(user[i], players_only) )
-                  match = user[i];
-
+           else {
+              // Gibt es auch wirklich (noch) ein Objekt zu dem Namen?
+              if ( check_match(candidate, players_only) )
+                  match = candidate;
+           }
+    }
+    // ok, wirklich nix zu finden.
     if ( !match )
        return -2;
 
+    // Ansonsten den genauen Namen zurueckliefern.
     return match;
 }
 
