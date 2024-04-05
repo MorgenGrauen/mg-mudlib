@@ -79,7 +79,7 @@ string _query_short()
 visible int _query_invis()
 {
   if(!roomCode &&
-      (!PL || (environment(PL) != ME && PL->query_verb() != "reise")))
+      (!PL || (environment(PL) != ME && query_verb() != "reise")))
   {
     return 1;
   }
