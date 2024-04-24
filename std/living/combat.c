@@ -892,7 +892,7 @@ public object* QueryDefenders()
 }
 
 public object* QueryPresentDefenders(object* defenders =
-    QueryProp(P_DEFENDERS))
+    QueryProp(P_DEFENDERS) || ({}))
 {
   // Alles selbst pruefen, um Durchlaeufe zu sparen.
   return filter(defenders,
@@ -904,7 +904,7 @@ public object* QueryPresentDefenders(object* defenders =
 }
 
 public object* QueryNearDefenders(object* defenders =
-    QueryProp(P_DEFENDERS))
+    QueryProp(P_DEFENDERS) || ({}))
 {
   // alles selbst pruefen, um Durchlaeufe zu sparen.
   return filter(defenders,
