@@ -61,12 +61,11 @@ int remove(int silent) {
 
 // liefert Mittelwertarray zurueck
 //TODO: <int|string>* results 
-private mixed calc_averages(mixed data, mixed results, int index, float scale) { 
+private mixed calc_averages(mixed data, mixed results, int index, 
+              float scale=1.0) { 
   float tmp;
   int t;
 
-  if (!scale) scale=1.0;
-  
   // 2s
   results[0] = to_float(data[index]) * scale;
 
