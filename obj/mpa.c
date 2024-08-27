@@ -294,8 +294,8 @@ static varargs string Message2string(mixed msg,mixed messages,int flag,string gr
   // Achtung: Wenn flag&M2S_REMOTE, muss msg int sein
   // group: Name der Rubrik, wenn nicht aktuelle Rubrik. Nur bei M2S_REMOTE
 
-  string txt,hs,s,*m,s2;
-  int i,hi,thisnr,ansiflag;
+  string txt,hs,s,*m;
+  int hi,thisnr,ansiflag;
 
   if (flag&M2S_REMOTE) txt="Rubrik: "+(group?group:GROUP)+", Artikel: "+
     (intp(msg)?to_string(msg+1):"???")+" von "+sizeof(messages)+"\n";
@@ -346,7 +346,6 @@ static varargs string Message2string(mixed msg,mixed messages,int flag,string gr
 static varargs lies(mixed str) {
   mixed num;
   mixed *messages;
-  int tid;
 
   if (str=="?"||str=="-?") return 
     write("Syntax: lies <nr>\n"
@@ -423,9 +422,7 @@ static varargs mixed GetGroupName(mixed g,mixed groups) {
 
 static rubrik(str)
 {
-  mixed *gruppen;
   mixed news;
-  int anz,i;
   
   if (str=="?"||str=="-?") return
     write("Syntax: rubrik <rubrik>\n"
@@ -489,7 +486,6 @@ static int CheckThreads(string rubrik,int timeout) {
 static int rubriken(mixed arg)
 {
   mixed *gruppen, *messages;
-  mixed news;
   int anz,i,lasttime,timeout,foundone;
   string s;
   
@@ -1013,14 +1009,11 @@ static int CatchNewsError(int err,string text4minus3) {
     case -3: write(text4minus3+"\n"); return 0;
     default: write("Interner Fehler "+err+", Erzmagier verstaendigen!\n"); return 0;
   }
-  return 0;
 }
 
 static varargs int schreib(string str,string pretext,int called_by_itself,
                            string statuslines)
 {
-  int err;
-
   if (str=="?"||str=="-?") {
     write("Syntax: schreib <Titel>\n"
           "  beginnt einen neuen Artikel in der Zeitung.\n");
@@ -1056,7 +1049,7 @@ Gib jetzt Deinen Text ein,\n\
 }
 
 static varargs Reply(string str,string newtitle) {
-  mixed dummy,replytitle,s;
+  mixed dummy,replytitle;
   int nr;
 
   if ((dummy=(str||newtitle))=="?"||dummy=="-?") {
@@ -1149,7 +1142,6 @@ static void InformPlayers(string group,string player,string text)
 }
 
 static PostNote(text) {
-  int err;
   string sig;
 
   if (!text) {
@@ -1192,7 +1184,7 @@ Artikel landet im Reisswolf.\n"),1;
 //static // allowing aliasing *Rumata* 5/8/96
 inhalt(str) {
   int i,endflag,timeout;
-  string *gruppen,s,txt,suche;
+  string s,txt,suche;
   mixed messages;
 
   if (str=="?"||str=="-?") return
@@ -1299,7 +1291,6 @@ static int loesche(string str) {
   default: write("Interner Fehler. Bitte Erzmagier verstaendigen !\n");
     return 1;
   }
-  return 0;
 }
 
 // Low-level Funktion zum Abonnieren/Abbestellen von Rubriken
@@ -1330,7 +1321,6 @@ private int _subscribe(string groupname, int bestellen) {
 }
 
 static Unsubscribe(str) {
-  int timeout;
   if (str=="?"||str=="-?") return
     write("Syntax: unsubscribe <rubrik>"
           "  oder: bestelle <rubrik> ab\n"),1;
@@ -1355,7 +1345,6 @@ static Bestelle(str) { /* ab ! */
 }
 
 static Subscribe(str) {
-  int timeout;
   if (str=="?"||str=="-?") return
     write("Syntax: abonniere <rubrik>\n"
           "  oder: subscribe <rubrik>\n"),1;
@@ -1397,7 +1386,7 @@ private void InitialSubscriptions() {
 }
 
 static MoveMessage(str) {
-  int num,i;
+  int num;
   mixed msg/*,expl*/;
   string gr;
   if (str=="?"||str=="-?") return
@@ -1578,9 +1567,8 @@ protected void NotifyMove(object dest, object oldenv, int method) {
 }
 
 int GetTID(mixed message) {
-  string dummy;
   int tid;
-  return (sscanf(message[M_MESSAGE],"%s" STATUSESCAPE " tid=%d",dummy,tid)==2) 
+  return (sscanf(message[M_MESSAGE],"%~s" STATUSESCAPE " tid=%d",tid)==2) 
     ? tid : message[M_TIME];
 }
 

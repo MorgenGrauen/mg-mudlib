@@ -305,72 +305,72 @@ int cmd_blaettern(string str)
 
 int take_page(string str)
 {
- if (!stringp(str))
- return 0;
- if (present(str,environment()))
- return 0;
- notify_fail(BS(
- "Wo siehst Du denn hier ein Buch ?",78));
- if (!(MQTBMASTER->QueryTagebuchAufPult(this_player()))&&
-     strstr(lower_case(str),"buch")!=-1)
- return 0;
- if ((owner!=getuid(this_player()))&&
-     strstr(lower_case(str),"buch")!=-1)
- notify_fail(BS(
- "Dies ist nicht Dein Lesepult oder Dein Buch darauf, deshalb l"+
- "aesst Du es vorsichtshalber liegen.",78));
- return 0;
- if ((owner!=getuid(this_player()))&&
-     strstr(lower_case(str),"seite")!=-1)
- notify_fail(BS(
- "Die Eigentuemerin oder der Eigentuemer des Lesepults haette s"+
- "icher etwas dagegen, wenn Du das Buch zerstoerst, also laesst"+
- " Du es lieber.",78));
- return 0;
- // Heilung 1x alle 6 Stunden.
- if (this_player()->check_and_update_timed_key(21600,"Ark_Hels_Schwarzes_Buch")==-1)
- {
-  object o;
-  this_player()->ReceiveMsg(BS(
-  "Du reisst erst vorsichtig eine schwarze Seite und dann eine"+
-  " weitere aus dem goldenen Buch. Dann ueberfaellt Dich eine "+
-  "kleine Schwaeche, die Dich vor weiterem Zerstoeren innehalt"+
-  "en laesst. Du solltest Hels Grosszuegigkeit nicht ueberscha"+
-  "etzen.",78),MT_FEEL,MA_TAKE);
-  tell_room(environment(),BS(
-  this_player()->Name(WER)+" reisst zwei Seiten aus dem Buch, "+
-  "das auf dem Pult liegt. Dann haelt "+this_player()->QueryPronoun(WER)+""+
-  " inne, wahrscheinlich folgt "+this_player()->QueryPronoun(WER)+""+
-  " einer klugen Eingebung.",78));
-  o=clone_object(OBJ("reg_seite"));
-  if (o->move(this_player())!=MOVE_OK)
-  {
-   o->remove(1);
+  if (!stringp(str) || present(str,environment()))
+    return 0;
+
+  notify_fail(BS(
+    "Wo siehst Du denn hier ein Buch ?",78));
+  if (!(MQTBMASTER->QueryTagebuchAufPult(this_player()))&&
+      strstr(lower_case(str),"buch")!=-1)
+    return 0;
+
+  notify_fail(BS(
+    "Dies ist nicht Dein Lesepult oder Dein Buch darauf, deshalb l"+
+    "aesst Du es vorsichtshalber liegen.",78));
+  if ((owner!=getuid(this_player()))&&
+      strstr(lower_case(str),"buch")!=-1)
+    return 0;
+ 
+  notify_fail(BS(
+    "Die Eigentuemerin oder der Eigentuemer des Lesepults haette s"+
+    "icher etwas dagegen, wenn Du das Buch zerstoerst, also laesst"+
+    " Du es lieber.",78));
+  if (owner!=getuid(this_player()) && strstr(str,"seite")!=-1)
+    return 0;
+ 
+  // Heilung 1x alle 6 Stunden.
+  if (this_player()->check_and_update_timed_key(21600,
+                        "Ark_Hels_Schwarzes_Buch")==-1) {
    this_player()->ReceiveMsg(BS(
-   "Du kannst die erste Seite nicht mehr tragen, sie loest sic"+
-   "h einfach auf.",78),MT_MAGIC,MA_REMOVE);
-  }
-  // Die erste Seite behandelt, hier, falls man auch die zweite
-  // Seite nicht tragen kann oder mit der ersten am Limit ist.
-  o=clone_object(OBJ("reg_seite"));
-  if (o->move(this_player())!=MOVE_OK)
-  {
-   o->remove(1);
-   this_player()->ReceiveMsg(BS(
-   "Du kannst die zweite Seite nicht mehr tragen, sie loest si"+
-   "ch einfach auf.",78),MT_MAGIC,MA_REMOVE);
-  }
-  return 1;
+     "Du reisst erst vorsichtig eine schwarze Seite und dann eine"+
+     " weitere aus dem goldenen Buch. Dann ueberfaellt Dich eine "+
+     "kleine Schwaeche, die Dich vor weiterem Zerstoeren innehalt"+
+     "en laesst. Du solltest Hels Grosszuegigkeit nicht ueberscha"+
+     "etzen.",78),MT_FEEL,MA_TAKE);
+   tell_room(environment(),BS(
+   this_player()->Name(WER)+" reisst zwei Seiten aus dem Buch, "+
+     "das auf dem Pult liegt. Dann haelt "+this_player()->QueryPronoun(WER)+
+     " inne, wahrscheinlich folgt "+this_player()->QueryPronoun(WER)+
+     " einer klugen Eingebung.",78));
+   object o = clone_object(OBJ("reg_seite"));
+   if (o->move(this_player())!=MOVE_OK)
+   {
+     o->remove(1);
+     this_player()->ReceiveMsg(BS(
+       "Du kannst die erste Seite nicht mehr tragen, sie loest sic"+
+       "h einfach auf.",78),MT_MAGIC,MA_REMOVE);
+   }
+   // Die erste Seite behandelt, hier, falls man auch die zweite
+   // Seite nicht tragen kann oder mit der ersten am Limit ist.
+   o=clone_object(OBJ("reg_seite"));
+   if (o->move(this_player())!=MOVE_OK)
+   {
+     o->remove(1);
+     this_player()->ReceiveMsg(BS(
+       "Du kannst die zweite Seite nicht mehr tragen, sie loest si"+
+       "ch einfach auf.",78),MT_MAGIC,MA_REMOVE);
+   }
+   return 1;
  }
- this_player()->ReceiveMsg(BS(
- "Vergeblich reisst Du mehr oder weniger vorsichtig an einigen"+
- " schwarzen Seiten im Buch herum, doch sie bleiben stoerrisch"+
- ". Es wird wohl ein wenig dauern, bis Du das wieder versuchen"+
- " kannst.",78),MT_MAGIC,MA_USE);
- tell_room(environment(),BS(
- this_player()->Name(WER)+" reisst im Buch auf dem Lesepult he"+
- "rum.",78),({this_player()}));
- return 1;
+  this_player()->ReceiveMsg(BS(
+    "Vergeblich reisst Du mehr oder weniger vorsichtig an einigen"+
+    " schwarzen Seiten im Buch herum, doch sie bleiben stoerrisch"+
+    ". Es wird wohl ein wenig dauern, bis Du das wieder versuchen"+
+    " kannst.",78),MT_MAGIC,MA_USE);
+  tell_room(environment(),BS(
+    this_player()->Name(WER)+" reisst im Buch auf dem Lesepult he"+
+    "rum.",78),({this_player()}));
+  return 1;
 }
 
 int cmd_lesen(string str)

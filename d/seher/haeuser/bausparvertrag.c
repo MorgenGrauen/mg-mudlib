@@ -98,9 +98,9 @@ int lesen(string str)
 int Einzahlung()
 {
   int *al;
-  object env, po;
+  object env;
 
-  if (old_explode(object_name(po=previous_object()),"#")[0] != PATH+"sb_einzahlung") {
+  if (old_explode(object_name(previous_object()),"#")[0] != PATH+"sb_einzahlung") {
     env = environment();
     HLOG( (env ? getuid(env) : "BANK.LOG"), sprintf("Vertrag: Einzahlung von aussen! TI = %O, PO = %O\n", this_interactive(), previous_object()));
   }

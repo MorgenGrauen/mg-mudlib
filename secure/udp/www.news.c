@@ -57,7 +57,7 @@ string GroupList()
 
 private mixed tinfo(mixed article)
 {
-  mixed tmp, info;
+  mixed tmp;
   string rn, rt, rg, tid;
   int j, k;
 

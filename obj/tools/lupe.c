@@ -149,7 +149,6 @@ void _set_autoloadobj()
 
 void _load_profile()
 {
-  object profile;
   string pfile;
   
   if (geteuid() && environment() && geteuid(environment())==geteuid() &&
@@ -161,8 +160,6 @@ void _load_profile()
 
 varargs void init(object origin)
 {
-  int i,ch;
-  
   ::init(origin);
   if (environment()!=this_player()) return;
 //  if (!IS_LEARNER(this_player())) return;
@@ -249,10 +246,9 @@ int arglen;
 string getarg(string args)
 {
   string arg;
-  string rest;
-  if (sscanf(args,"\"%s\"%s",arg,rest)==2 ||
-      sscanf(args,"\'%s\'%s",arg,rest)==2 ||
-      sscanf(args,"|%s|%s",arg,rest)==2)
+  if (sscanf(args,"\"%s\"%~s",arg)==2 ||
+      sscanf(args,"\'%s\'%~s",arg)==2 ||
+      sscanf(args,"|%s|%~s",arg)==2)
   {
     if (arg=="")
       arglen=2;
@@ -260,13 +256,13 @@ string getarg(string args)
       arglen=sizeof(arg)+2;
     return arg;
   }
-  if (sscanf(args,"%s %s",arg,rest)==2)
+  if (sscanf(args,"%s %~s",arg)==2)
     args=arg;
-  if (sscanf(args,"%s.%s",arg,rest)==2)
+  if (sscanf(args,"%s.%~s",arg)==2)
     args=arg;
-  if (sscanf(args,"%s[%s",arg,rest)==2)
+  if (sscanf(args,"%s[%~s",arg)==2)
     args=arg;
-  if (sscanf(args,"%s]%s",arg,rest)==2)
+  if (sscanf(args,"%s]%~s",arg)==2)
     args=arg;
   if (args=="")
     arglen=0;
@@ -326,7 +322,7 @@ int evalcmd(string str)
 
 int eval(string str)
 {
-  int i,flag,old_sp,first;
+  int i,flag,first;
   mixed *old_stack;
   string arg,tmp;
   err=0;
@@ -658,7 +654,6 @@ string swap(string arg)
 
 string over(string arg)
 {
-  object ob;
   if (sizeof(stack)<2)
   {
     err="stack underflow";
@@ -708,7 +703,7 @@ string array_desc(mixed arr)
 {
   string str,line,res;
   mixed tmp;
-  int i,j;
+  int i;
   str=rec_desc(arr);
   if (sizeof(str)<=MAXLINELEN-4)
     return "--> "+str+"\n";
@@ -780,12 +775,11 @@ string clr(string arg)
 string dump(string arg)
 {
   object ob;
-  string s;
   ob=pop();
   if (err) return arg;
   push(ob);
   write("FILENAME: "+object_name(ob)+" ");
-  if (!hide_short && (({string})s=ob->short()))
+  if (!hide_short && (({string})ob->short()))
     write(" SHORT: "+({string})ob->name());
   write("\n");
   return arg;
@@ -914,7 +908,7 @@ object call_result;
 string call(string arg)
 {
   string func,args;
-  int temp,i;
+  int temp;
   string rest,tmp;
 
   object ob;
@@ -925,7 +919,7 @@ string call(string arg)
   args=getrest(arg);
   if (err) return args;
   argv=({});
-  i=0;
+  
   while (1)
   {
     args=strip(args);
@@ -1199,7 +1193,7 @@ mixed get_callout()
 {
   mixed *calls,ret;
   string tmp;
-  int i,j;
+  int i;
 
   calls=call_out_info();
   ret=({});
@@ -1237,7 +1231,7 @@ mixed get_heartbeat()
 string make(string arg)
 {
   object *list, ob, env;
-  string file,temp,dummy;
+  string file,temp;
   int i,cloned;
  
   ob=pop();
@@ -1250,7 +1244,7 @@ string make(string arg)
   env=environment(ob);
   file=object_name(ob);
   write("Updating "+object_name(ob)+"...\n");
-  if (sscanf(file,"%s#%s",temp,dummy)==2)
+  if (sscanf(file,"%s#%~s",temp)==2)
   {
     file=temp;
     cloned=1;
@@ -1362,8 +1356,6 @@ void vanish()
 
 mixed rusage(string arg)
 {
-  mixed *resusage;
-  int i,j;
 /*
   resusage=({mixed *})efun::rusage();
   for (i=0;i<18;i++){
@@ -1389,7 +1381,8 @@ string align(string s,int x){
 
 static string swho(string arg)
 {
-  object *userlist, snooper, found;mixed active;
+  object *userlist, snooper;
+  mixed active;
   int i,j,done;
 
   if (geteuid(this_interactive())!=geteuid()) return arg;
@@ -1475,7 +1468,6 @@ string idle(string arg)
 string stat(string arg)
 {
   object ob;
-  mapping quests;
   mixed stats, arr, tmp,tmp2, list;
   string titel, level, stat_str,weapon,armour;
   int pl;
@@ -1871,7 +1863,6 @@ mixed renew_player(string arg)
 mixed copy_ldfied(string arg)
 {
   object ob, new;
-  mapping props;
 
   ob=pop();
   if (!ob)
@@ -1882,7 +1873,6 @@ mixed copy_ldfied(string arg)
     return arg;
   }
   new=clone_object(old_explode(object_name(ob),"#")[0]);
-  props=({mapping})ob->QueryProperties();
   ({mapping})new->SetProperties(ob->QueryProperties());
   push(new);
   ({int})new->move(this_player(),M_NOCHECK);
