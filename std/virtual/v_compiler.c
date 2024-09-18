@@ -105,7 +105,7 @@ public int QueryValidObject(string oname) {
     return(1); //fall-through, offenbar zustaendig.
 }
 
-mixed CustomizeObject()
+string CustomizeObject()
 {
   string file;
   // Wenn !clonep ist es schon ein per VC umbenanntes File und wir koennen den
