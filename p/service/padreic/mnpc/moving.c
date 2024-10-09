@@ -99,12 +99,24 @@ protected void Stop(int movehome)
   }
 }
 
+private void check_home()
+{
+  if (!QueryProp(MNPC_HOME))
+  {
+    catch(
+      raise_error("unknown MNPC_HOME\n");
+      publish);
+    // Laufen stoppen, sonst bugt es im reset
+    SetProp(MNPC_FLAGS, 0);
+  }
+}
+
 static int _set_mnpc_flags(int flags)
 {
   if (flags & MNPC_WALK)
   {
-    if (!QueryProp(MNPC_HOME))
-      raise_error("unknown MNPC_HOME\n");
+    // Check verzoegern, damit MNPC_HOME ggf. von aussen gesetzt werden kann
+    call_out(#'check_home, 1);
     // RegisterWalk prueft, ob der MNPC schon angemeldet ist.
     RegisterWalk();
   }
