@@ -11,7 +11,7 @@
 
 #pragma strong_types,rtt_checks,no_clone,no_inherit,no_shadow
 
-#define CURRENT_VERSION 4
+#define CURRENT_VERSION 5
 
 // Liefert die URL zum Download und die aktuelle Version des
 // MorgenGrauen.mpackage fuer Mudlet.
