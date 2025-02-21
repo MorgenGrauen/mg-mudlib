@@ -3850,7 +3850,7 @@ void notify_player_change(string who, int rein, int invis)
     // Anderenfalls wuerde sie einzeln buchstabiert.
     if ( QueryProp(P_NO_ASCII_ART) )
     {
-      delayed_write( ({ ({ sprintf("%s IST JETZT %sDA !!!\n", 
+      delayed_write( ({ ({ sprintf("%s IST JETZT %sDA!!!\n", 
                            name, (rein?"":"NICHT MEHR ")) }) }) );
     }
     else 
