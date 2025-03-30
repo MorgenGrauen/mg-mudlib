@@ -375,7 +375,7 @@ public string LogReportedError(mapping err)
     issue->loc = err[F_LINE];
     // Normalisieren auf fuehrenden / und kein .c
     if (err[F_PROG]!="unbekannt")
-        issue->prog = load_name(err[F_PROG]);
+        issue->prog=err[F_PROG][0] in "/#<" ? err[F_PROG] : "/" + err[F_PROG];
     else
         issue->prog = "unbekannt";
     issue->titp = getuid(this_interactive() || this_player());
@@ -467,7 +467,7 @@ public int LogError(string msg,string prg,string curobj,int line,mixed culprit,
 
     // prg und curobj auf fuehrenden / und ohne .c am Ende normieren.
     if (stringp(prg))
-        issue->prog = load_name(prg);
+        issue->prog=prg[0] in "/#<" ? prg : "/" + prg;
     if (stringp(curobj) && curobj[0]!='/')
     {
       curobj="/"+curobj;
@@ -610,9 +610,10 @@ public int LogWarning(string msg,string prg,string curobj,int line, int in_catch
         //d.h. load_name() 0 liefert.
         issue->loadname="<Illegal object name>";
 
-    // prg und curobj auf abs. Pfade normalisieren.
+    // prg und curobj auf abs. Pfade normalisieren. Dabei Spezialfaelle
+    // beruecksichtigen, z.B. dass prg "#'call_out" sein kann.
     if (stringp(prg))
-        issue->prog=load_name(prg);
+        issue->prog=prg[0] in "/#<" ? prg : "/" + prg;
     if (stringp(curobj) && curobj[0]!='/')
     {
       curobj="/"+curobj;
