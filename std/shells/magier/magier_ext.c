@@ -5,6 +5,16 @@
 #pragma no_clone
 
 protected functions virtual inherit "/std/util/path";
+inherit "/std/shells/magier/parsing";
+inherit "/std/shells/magier/upd";
+inherit "/std/shells/magier/fileview";
+inherit "/std/shells/magier/objects";
+inherit "/std/shells/magier/fileedit";
+//inherit "/std/shells/magier/todo";
+inherit "/std/shells/magier/players";
+inherit "/std/shells/magier/admin";
+inherit "/std/shells/magier/moving";
+inherit "/std/shells/magier/comm";
 
 #include <wizlevels.h>
 #include <logging.h>
@@ -19,18 +29,6 @@ protected functions virtual inherit "/std/util/path";
 #include <properties.h>
 #include <files.h>
 #include <events.h>
-
-inherit "/std/shells/magier/parsing";
-inherit "/std/shells/magier/upd";
-inherit "/std/shells/magier/fileview";
-inherit "/std/shells/magier/objects";
-inherit "/std/shells/magier/fileedit";
-//inherit "/std/shells/magier/todo";
-inherit "/std/shells/magier/players";
-inherit "/std/shells/magier/admin";
-inherit "/std/shells/magier/moving";
-inherit "/std/shells/magier/comm";
-
 
 //                              #######
 //############################### SET #################################
