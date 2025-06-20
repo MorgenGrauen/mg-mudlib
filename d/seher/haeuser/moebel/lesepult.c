@@ -435,47 +435,12 @@ int cmd_eintragen(string str)
  return 0;
 }
 
-string calc_name()
-{
-string *nam;
-string res;
-int i,j;
- res="";
- if (owner=="")
- return "";
- nam=explode(upperstring(owner),"");
- if (j=sizeof(nam))
- {
-  switch(j)
-  {
-   case 3..4:
-    res="          ";
-    break;
-   case 5:
-    res="        ";
-    break;
-   case 7:
-    res="      ";
-    break;
-   case 9:
-    res="    ";
-    break;
-   default:
-    res="   ";
-  }
-  for (i=0;i<j;i++)
-  {
-   res+=nam[i]+" ";
-  }
- }
- return res;
-}
-
-string rd_lettern(string key)
-{
- return "\n"+
- "    De Templum Os Hel\n\n"+
- calc_name()+"\n\n";
+string rd_lettern(string key) {
+  return sprintf("\n"
+                 "%26|s\n\n"
+                 "%26|s\n\n",
+                 "De Templum Os Hel",
+                 regreplace(upperstring(owner), "", " ", 1));
 }
 
 string rd_inhalt(string key)
