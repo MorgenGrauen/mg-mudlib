@@ -283,7 +283,7 @@ public varargs mapping QueryFamilyAlias(string verb, string familie)
   // Familie ermitteln und Zugriffsrecht pruefen.
   familie = get_family(familie);
   if (!familie || !sizeof(familie))
-    return 0;
+    return ([]);
 
   mixed tmp;
   if (verb)
