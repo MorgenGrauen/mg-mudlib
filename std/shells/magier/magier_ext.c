@@ -154,7 +154,8 @@ static int _cd(string cmdline)
 static string _set_currentdir(string path)
 {
   Set(P_CURRENTDIR, path);
-  modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
+  if (interactive())
+    modify_prompt();  // Prompt mit neuem Pfad setzen, telnetneg
   return path;
 }
 
