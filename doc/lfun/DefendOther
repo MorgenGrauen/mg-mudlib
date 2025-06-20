@@ -7,7 +7,7 @@ FUNKTION
 ========
 
    public <int|string*|mapping|object>* DefendOther(int dam,
-                      string* dam_type, int|mapping si_spell, object enemy)
+      string* dam_type, int|mapping si_spell, object enemy)
 
 
 DEFINIERT IN
@@ -20,20 +20,20 @@ ARGUMENTE
 =========
 
    int dam
-     Der Schaden, der voraussichtlich beim zu verteidigenden Lebewesen
-     verursacht werden soll.
+      Der Schaden, der voraussichtlich beim zu verteidigenden
+      Lebewesen verursacht werden soll.
 
    string* dam_type
-     Der Schadenstyp (oder die Schadenstypen), der beim zu
-     verteidigenden Lebewesen verursacht werden sollen.
+      Der Schadenstyp (oder die Schadenstypen), der beim zu
+      verteidigenden Lebewesen verursacht werden sollen.
 
    mapping si_spell
-     Mapping mit zusaetzlichen Informationen zum Angriff
-     Alte Objekte uebergeben manchmal einen Integer (0 fuer
-     physikalischen Angriff, 1 fuer Zauber.
+      Mapping mit zusaetzlichen Informationen zum Angriff Alte Objekte
+      uebergeben manchmal einen Integer (0 fuer physikalischen
+      Angriff, 1 fuer Zauber.
 
    object enemy
-     Der Feind, der ein zu verteidigendes Lebewesen angegriffen hat.
+      Der Feind, der ein zu verteidigendes Lebewesen angegriffen hat.
 
 
 RUeCKGABEWERT
@@ -51,11 +51,10 @@ BESCHREIBUNG
 
    Es ist moeglich, dass Objekte Angriffe auf Lebewesen abwehren oder
    umwandeln, sofern diese Objekte bei dem angegriffenen Lebewesen
-   mittels AddDefender() angemeldet wurden und sich der selben Umgebung
-   befinden.
-   Zumeist wird es sich bei den Objekten natuerlich ebenfalls um
-   andere Lebewesen handeln, die das Lebewesen, bei dem sie angemeldet
-   sind, verteidigen sollen.
+   mittels AddDefender() angemeldet wurden und sich der selben
+   Umgebung befinden. Zumeist wird es sich bei den Objekten natuerlich
+   ebenfalls um andere Lebewesen handeln, die das Lebewesen, bei dem
+   sie angemeldet sind, verteidigen sollen.
 
    Bei einem Angriff auf das Lebewesen koennen alle Objekte per Aufruf
    von DefendOther() in einen Angriff eingreifen, wobei die
@@ -118,8 +117,9 @@ SIEHE AUCH
 ==========
 
    Funktionen:
-      AddDefender(), RemoveDefender(), InformDefend(), Kill(),
-      IsEnemy(), Defend()
+      AddDefender(), RemoveDefender(), InformDefend(), DefendOther(),
+      Kill(), IsEnemy(), Defend(), QueryDefenders(),
+      QueryPresentDefenders(), QueryNearDefenders(),
 
    Properties
       P_DEFENDERS

@@ -440,6 +440,8 @@ Verzeichnis der dokumentierten lfuns
 
 * QueryDefend()
 
+* QueryDefenders()
+
 * QueryDisguise()
 
 * QueryDoorKey()
@@ -472,6 +474,8 @@ Verzeichnis der dokumentierten lfuns
 
 * QueryName()
 
+* QueryNearDefenders()
+
 * QueryOpenMiniQuestsForPlayer()
 
 * QueryOwn()
@@ -485,6 +489,8 @@ Verzeichnis der dokumentierten lfuns
 * QueryPrayRoom()
 
 * QueryPreferedEnemy()
+
+* QueryPresentDefenders()
 
 * QueryPronoun()
 
