@@ -56,10 +56,10 @@ private nosave mapping data = mindata + ([
     "CRAWL DELAY"      : "1",
     "DESCRIPTION"      : DESCRIPTION,
     "CREATED"          : "1992",
-    "ICON"             : "http://mg.mud.de/newweb/img/icon.gif",
-    "IP"               : "87.79.24.60",
+    "ICON"             : "http://morgengrauen.info/newweb/img/icon.gif",
+    "IP"               : __HOST_IP_NUMBER__,
     "CONTACT"          : "mud@mg.mud.de",
-    "WEBSITE"          : "http://mg.mud.de/",
+    "WEBSITE"          : "http://morgengrauen.info/",
     "AREAS"            : "13",
     "MOBILES"          : "7000",
     "OBJECTS"          : "5000",
@@ -114,7 +114,7 @@ private nosave mapping data = mindata + ([
     "HIRING BUILDERS"  : "1",
     "HIRING CODERS"    : "1",
     "CODEBASE-NOTES"         : "download daily snapshot of our public base "
-                               "mudlib at https://mg.mud.de/gerrit/plugins/gitiles/mudlib-public/+/refs/heads/master, "
+                               "mudlib at https://gerrit.morgengrauen.info/plugins/gitiles/mudlib-public/+/refs/heads/master, "
                                "get our driver at http://www.ldmud.eu/; "
                                "or ask in Morgengrauen if you have questions",
     "FAMILY-NOTES"           : "Descendant of Nightfall, base for several "

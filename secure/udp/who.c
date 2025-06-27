@@ -41,7 +41,7 @@ void udp_who(mapping data)
     "*------------------------------------------------------------------------*"});
   header=MUDNAME", LDMud "+__VERSION__;
   lines[1]="|"+adjust(header,sizeof(lines[0])-2)+"|";
-  header="Adresse: MG.Mud.DE (87.79.24.60) 23 (alternativ 4711)";
+  header="Adresse: mg.morgengrauen.info (" __HOST_IP_NUMBER__ ") 23 (alternativ 4711)";
   lines[2]="|"+adjust(header,sizeof(lines[0])-2)+"|";
   header="Uptime: "+uptime();
   lines[3]="|"+adjust(header,sizeof(lines[0])-2)+"|";

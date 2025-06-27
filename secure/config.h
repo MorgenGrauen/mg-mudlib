@@ -9,8 +9,8 @@
  */
 
 #define MUDHOST "mg"
-#define FTPD_IP "87.79.24.60"
-#define UDPSERV "87.79.24.60"
+#define FTPD_IP "89.58.11.82"
+#define UDPSERV "89.58.11.82"
 
 // Guess a MUDNAME if none is set.
 #ifndef MUDNAME

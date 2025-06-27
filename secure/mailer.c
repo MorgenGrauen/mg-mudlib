@@ -258,7 +258,7 @@ static string _filter_addr( string addr )
 #define FOOTER \
     "\n*****************************************************************\n" \
     "* MorgenGrauen MailRelay v1.0 - Processed %s, %s *\n" \
-    "* MorgenGrauen - mg.mud.de 23 -                  87.79.24.60 23 *\n" \
+    "* MorgenGrauen - mg.mud.de 23 -                  89.58.11.82 23 *\n" \
     "*****************************************************************"
 #endif
 

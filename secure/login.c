@@ -43,7 +43,7 @@ inherit "/secure/mini_props.c";
 inherit "/secure/telnetneg.c";
 
 #define SSL_GRRETING "REMOTE_HOST="
-#define PROXIES ({"127.0.0.1","87.79.24.60"})
+#define PROXIES ({"127.0.0.1",__HOST_IP_NUMBER__})
 #define GUESTMASTER "/secure/guestmaster"
 
 #ifndef DEBUG
@@ -190,7 +190,7 @@ public nomask int logon()
     // braucht eine Weile, wenn das Ergebnis noch nicht gecacht ist.
     // An dieser Stelle wird das Ergebnis nicht ausgewertet. Achja, wie
     // machen das natuerlich nicht fuer die IP vom Mudrechner...
-    if (query_ip_number(this_object()) != "87.79.24.60")
+    if (query_ip_number(this_object()) != __HOST_IP_NUMBER__)
     {
       ({int})"/p/daemon/dnslookup"->check_tor(query_ip_number(this_object()),
           query_mud_port());
